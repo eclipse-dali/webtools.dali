@@ -12,27 +12,32 @@ package org.eclipse.jpt.core.tests.extension.resource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMappingProvider;
 
 public class JavaTestAttributeMappingProvider
-	implements JavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
 	// singleton
-	private static final JavaTestAttributeMappingProvider INSTANCE = new JavaTestAttributeMappingProvider();
-
+	private static final JavaTestAttributeMappingProvider INSTANCE = 
+		new JavaTestAttributeMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaTestAttributeMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -43,6 +48,5 @@ public class JavaTestAttributeMappingProvider
 
 	public JavaTestAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
 		return ((TestJpaFactory) factory).buildJavaTestAttributeMapping(parent);
-	}		
-
+	}
 }

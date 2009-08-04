@@ -20,7 +20,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLink
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
-public abstract class EclipseLinkContextModelTestCase extends ContextModelTestCase
+public abstract class EclipseLinkContextModelTestCase
+	extends ContextModelTestCase
 {
 	protected EclipseLinkContextModelTestCase(String name) {
 		super(name);

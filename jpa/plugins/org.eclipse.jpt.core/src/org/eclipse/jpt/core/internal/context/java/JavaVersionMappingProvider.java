@@ -17,26 +17,29 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 
 public class JavaVersionMappingProvider
-	implements JavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaVersionMappingProvider INSTANCE = new JavaVersionMappingProvider();
-
+	private static final JavaVersionMappingProvider INSTANCE = 
+		new JavaVersionMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaVersionMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -44,7 +47,7 @@ public class JavaVersionMappingProvider
 	public String getAnnotationName() {
 		return VersionAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildJavaVersionMapping(parent);
 	}

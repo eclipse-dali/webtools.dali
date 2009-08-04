@@ -11,19 +11,12 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
@@ -89,8 +82,8 @@ public interface JpaPlatform
 	AnnotationEditFormatter getAnnotationEditFormatter();
 
 
-	// ********** Java type mappings **********
-
+	// ********** Java type/attribute mappings **********
+	
 	/**
 	 * Build a Java type mapping for the specified key and persistent type.
 	 * Use identity when comparing keys; so clients must use the same key
@@ -99,7 +92,7 @@ public interface JpaPlatform
 	 * platform.
 	 */
 	JavaTypeMapping buildJavaTypeMappingFromMappingKey(String key, JavaPersistentType type);
-
+	
 	/**
 	 * Build a Java type mapping for the specified annotation and persistent
 	 * type. Use identity when comparing annotation names; so clients must
@@ -108,77 +101,50 @@ public interface JpaPlatform
 	 * supported by the platform.
 	 */
 	JavaTypeMapping buildJavaTypeMappingFromAnnotation(String annotationName, JavaPersistentType type);
-
-
-	// ********** Java attribute mappings **********
-
+	
 	/**
-	 * Build a Java attribute mapping for the specified key and persistent attribute.
-	 * Use identity when comparing keys; so clients must use the same key
-	 * constants as the providers.
-	 * Throw an IllegalArgumentException if the key is not supported by the
-	 * platform.
+	 * Return a {@link JavaAttributeMappingProvider} that describes the interpretation of the attribute
+	 * as it exists, ignoring all annotations.
+	 * This may not be null (@see {@link NullDefaultJavaAttributeMappingProvider},) else
+	 * an {@link IllegalStateException} is thrown.
+	 * 
+	 * @param attribute The persistent attribute to analyze
+	 * @return The mapping provider describing the unannotated state of the attribute
 	 */
-	JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String key, JavaPersistentAttribute attribute);
-
+	JavaAttributeMappingProvider getDefaultJavaAttributeMappingProvider(JavaPersistentAttribute attribute);
+	
 	/**
-	 * Build a Java attribute mapping for the specified annotation and persistent
-	 * attribute. Use identity when comparing annotation names; so clients must
-	 * use the same name constants as the providers.
-	 * Throw an IllegalArgumentException if the mapping annotation is not
-	 * supported by the platform.
+	 * Return a {@link JavaAttributeMappingProvider} that describes the interpretation of the attribute
+	 * as it exists, complete with annotations.  It is assumed that the attribute's default mapping
+	 * has already been determined.
+	 * This may be null.
+	 * 
+	 * @param attribute The persistent attribute to analyze
+	 * @return The mapping provider describing the annotated state of the attribute
 	 */
-	JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String annotationName, JavaPersistentAttribute attribute);
-
+	JavaAttributeMappingProvider getSpecifiedJavaAttributeMappingProvider(JavaPersistentAttribute attribute);
+	
 	/**
-	 * Build a default Java attribute mapping for the specified persistent attribute.
+	 * Return a {@link JavaAttributeMappingProvider} for the given mapping key.
+	 * Throw an {@link IllegalArgumentException} if the key is not supported by the platform.
 	 */
-	JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute attribute);
-
+	JavaAttributeMappingProvider getSpecifiedJavaAttributeMappingProvider(String mappingKey);
+	
+	
+	// ********** Mapping Files **********
+	
 	/**
-	 * Return the Java attribute mapping key for the default mapping for the
-	 * specified attribute.
-	 * @see org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider#defaultApplies(JavaPersistentAttribute)
+	 * Return a {@link MappingFileDefinition} to describe the context model for a file of the given
+	 * content type.
+	 * Thrown an {@link IllegalArgumentException} if the content type is not supported by the platform.
+	 * 
+	 * @param contentType The content type of a potential mapping file
+	 * @return The mapping file definition that can be used to describe the context model of such
+	 * a file
 	 */
-	String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute attribute);
-
-
-	// ********** Mapping File **********
-
-	MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
-
-
-	// ********** ORM type mappings **********
-
-	XmlTypeMapping buildOrmResourceTypeMapping(String key, IContentType contentType);
-
-	/**
-	 * Build an ORM type mapping for the specified mapping key and persistent type.
-	 * Use identity when comparing keys; so clients must use the same key
-	 * constants as the providers.
-	 */
-	OrmTypeMapping buildOrmTypeMappingFromMappingKey(OrmPersistentType type, XmlTypeMapping resourceMapping);
-
-
-	// ********** ORM attribute mappings **********
-
-	XmlAttributeMapping buildOrmResourceAttributeMapping(String key, IContentType contentType);
-
-	/**
-	 * Build an ORM attribute mapping for the specified key and persistent attribute.
-	 * Use identity when comparing keys; so clients must use the same key
-	 * constants as the providers.
-	 */
-	OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping);
-
-	/**
-	 * Build a virtual resource attribute mapping to be used when the mapping is not specified in the orm.xml
-	 * file.  There is no XmlAttributeMapping in this case, so we build one that delegates to the 
-	 * JavaAttributeMapping as necessary
-	 */
-	XmlAttributeMapping buildVirtualOrmResourceMappingFromMappingKey(String key, OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping);
-
-
+	MappingFileDefinition getMappingFileDefinition(IContentType contentType);
+	
+	
 	// ********** database **********
 
 	/**

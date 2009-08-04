@@ -10,12 +10,9 @@
 package org.eclipse.jpt.core;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.MappingFileProvider;
-import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
@@ -44,33 +41,22 @@ public interface JpaPlatformProvider
 	ListIterator<JpaResourceModelProvider> resourceModelProviders();
 
 	/**
+	 * Return the mapping file definitions supported by this platform.
+	 */
+	ListIterator<MappingFileDefinition> mappingFileDefinitions();
+
+	/**
 	 * Return the java type mapping providers that apply to this platform.
 	 */
 	ListIterator<JavaTypeMappingProvider> javaTypeMappingProviders();
+	
+	/**
+	 * Return the mapping providers to use for default java attribute mappings for this platform.
+	 */
+	ListIterator<JavaAttributeMappingProvider> defaultJavaAttributeMappingProviders();
 
 	/**
-	 * Return the java attribute mapping providers that apply to this platform.
+	 * Return the mapping providers to use for specified java attribute mappings for this platform.
 	 */
-	ListIterator<JavaAttributeMappingProvider> javaAttributeMappingProviders();
-
-	/**
-	 * Return the mapping file providers that apply to this platform.
-	 */
-	ListIterator<MappingFileProvider> mappingFileProviders();
-
-	/**
-	 * Return the default java attribute mapping providers that apply to this platform.
-	 */
-	ListIterator<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders();
-
-	/**
-	 * Return the orm type mapping providers that apply to this platform.
-	 */
-	ListIterator<OrmTypeMappingProvider> ormTypeMappingProviders();
-
-	/**
-	 * Return the orm attribute mapping providers that apply to this platform.
-	 */
-	ListIterator<OrmAttributeMappingProvider> ormAttributeMappingProviders();
-
+	ListIterator<JavaAttributeMappingProvider> specifiedJavaAttributeMappingProviders();
 }

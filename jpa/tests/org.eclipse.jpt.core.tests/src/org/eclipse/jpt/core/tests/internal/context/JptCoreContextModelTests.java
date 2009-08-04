@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import org.eclipse.jpt.core.tests.internal.context.java.JptCoreContextJavaModelTests;
 import org.eclipse.jpt.core.tests.internal.context.orm.JptCoreOrmContextModelTests;
 import org.eclipse.jpt.core.tests.internal.context.persistence.JptCorePersistenceContextModelTests;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.java.Generic2_0JavaContextModelTests;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.orm.Generic2_0OrmContextModelTests;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 public class JptCoreContextModelTests extends TestCase
 {

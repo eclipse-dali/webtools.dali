@@ -9,14 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.platform;
 
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -25,7 +22,6 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 public class Generic2_0JpaPlatformFactory
 	implements JpaPlatformFactory
 {
-
 	/**
 	 * zero-argument constructor
 	 */
@@ -33,23 +29,14 @@ public class Generic2_0JpaPlatformFactory
 		super();
 	}
 	
+	
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
-			buildJpaFactory(), 
-			buildJpaAnnotationProvider(), 
-			buildJpaValidation(),
-			GenericJpaPlatformProvider.instance(), 
-			Generic2_0JpaPlatformProvider.instance());
-	}
-	
-	protected JpaFactory buildJpaFactory() {
-		return new Generic2_0JpaFactory();
-	}
-	
-	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
-			Generic2_0JpaAnnotationDefinitionProvider.instance());
+			new Generic2_0JpaFactory(), 
+			new GenericJpaAnnotationProvider(Generic2_0JpaAnnotationDefinitionProvider.instance()),
+			Generic2_0JpaPlatformProvider.instance(),
+			buildJpaValidation());
 	}
 	
 	protected JpaValidation buildJpaValidation() {

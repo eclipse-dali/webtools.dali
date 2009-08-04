@@ -9,32 +9,37 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v1_1;
 
-import java.util.List;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileProvider;
-import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.internal.JarResourceModelProvider;
+import org.eclipse.jpt.core.internal.JavaResourceModelProvider;
+import org.eclipse.jpt.core.internal.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.PersistenceResourceModelProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaEntityProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappingFileDefinition;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkMappingFile1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkBasicCollectionMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkBasicMapMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkBasicMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkEmbeddedIdMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkEmbeddedMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkIdMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkManyToManyMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkManyToOneMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkNullAttributeMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkOneToManyMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkOneToOneMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkTransformationMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkTransientMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkVariableOneToOneMapping1_1Provider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkVersionMapping1_1Provider;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkMappingFileDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLink1_1MappingFileDefinition;
 
 /**
  * EclipseLink platform
@@ -45,79 +50,98 @@ public class EclipseLink1_1JpaPlatformProvider
 	public static final String ID = "eclipselink1_1"; //$NON-NLS-1$
 
 	// singleton
-	private static final JpaPlatformProvider INSTANCE = new EclipseLink1_1JpaPlatformProvider();
-
+	private static final JpaPlatformProvider INSTANCE = 
+			new EclipseLink1_1JpaPlatformProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JpaPlatformProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLink1_1JpaPlatformProvider() {
 		super();
 	}
-
 	
-	// ********* JPA files *********	
+	
+	// ********** resource models **********
 	
 	@Override
-	protected void addResourceModelProvidersTo(List<JpaResourceModelProvider> providers) {
-		providers.add(EclipseLink1_1OrmResourceModelProvider.instance());
+	protected JpaResourceModelProvider[] buildResourceModelProviders() {
+		// order should not be important here
+		return new JpaResourceModelProvider[] {
+			JavaResourceModelProvider.instance(),
+			JarResourceModelProvider.instance(),
+			PersistenceResourceModelProvider.instance(),
+			OrmResourceModelProvider.instance(),
+			EclipseLinkOrmResourceModelProvider.instance(),
+			EclipseLink1_1OrmResourceModelProvider.instance()};
 	}
 
 	
-	// ********* java *********	
-
+	// ********* java type mappings *********	
+	
 	@Override
-	protected void addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider> providers) {
-		//none specific to EclipseLink1.1
-	}
-
-	@Override
-	protected void addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider> providers) {
-		//none specific to EclipseLink1.1
-	}
-
-	@Override
-	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
-		//none specific to EclipseLink1.1
+	protected JavaTypeMappingProvider[] buildNonNullJavaTypeMappingProviders() {
+		// order determined by analyzing order that eclipselink uses
+		// NOTE: no type mappings specific to eclipselink
+		return new JavaTypeMappingProvider[] {
+			JavaEntityProvider.instance(),
+			JavaEmbeddableProvider.instance(),
+			JavaMappedSuperclassProvider.instance()};
 	}
 	
 	
-	// ********* ORM *********
+	// ********* java attribute mappings *********	
 	
 	@Override
-	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
-		//none specific to EclipseLink 1.1
+	protected JavaAttributeMappingProvider[] buildNonNullDefaultJavaAttributeMappingProviders() {
+		// order determined by analyzing order that eclipselink uses
+		// NOTE: no new attribute mappings from eclipselink 1.0 to 1.1
+		return new JavaAttributeMappingProvider[] {
+			JavaEmbeddedMappingProvider.instance(),
+			JavaEclipseLinkOneToManyMappingProvider.instance(),
+			JavaEclipseLinkOneToOneMappingProvider.instance(),
+			JavaEclipseLinkVariableOneToOneMappingProvider.instance(),
+			JavaBasicMappingProvider.instance()};
 	}
 	
 	@Override
-	protected void addMappingFileProvidersTo(List<MappingFileProvider> providers) {
-		providers.add(EclipseLinkMappingFile1_1Provider.instance());
+	protected JavaAttributeMappingProvider[] buildNonNullSpecifiedJavaAttributeMappingProviders() {
+		// order determined by analyzing order that eclipselink uses
+		// NOTE: no new attribute mappings from eclipselink 1.0 to 1.1
+		return new JavaAttributeMappingProvider[] {
+			JavaTransientMappingProvider.instance(),
+			JavaEclipseLinkBasicCollectionMappingProvider.instance(),
+			JavaEclipseLinkBasicMapMappingProvider.instance(),
+			JavaIdMappingProvider.instance(),
+			JavaVersionMappingProvider.instance(),
+			JavaBasicMappingProvider.instance(),
+			JavaEmbeddedMappingProvider.instance(),
+			JavaEmbeddedIdMappingProvider.instance(),
+			JavaEclipseLinkTransformationMappingProvider.instance(),
+			JavaManyToManyMappingProvider.instance(),
+			JavaManyToOneMappingProvider.instance(),
+			JavaEclipseLinkOneToManyMappingProvider.instance(),
+			JavaEclipseLinkOneToOneMappingProvider.instance(),
+			JavaEclipseLinkVariableOneToOneMappingProvider.instance()};
 	}
-
+	
+	
+	// ********* mapping files *********	
+	
 	@Override
-	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
-		providers.add(OrmEclipseLinkBasicCollectionMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkBasicMapMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkTransformationMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkVariableOneToOneMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkBasicMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkIdMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkEmbeddedIdMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkEmbeddedMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkManyToManyMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkManyToOneMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkOneToManyMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkOneToOneMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkVersionMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkTransientMapping1_1Provider.instance());
-		providers.add(OrmEclipseLinkNullAttributeMapping1_1Provider.instance());
+	protected MappingFileDefinition[] buildMappingFileDefinitions() {
+		// order should not be important here
+		return new MappingFileDefinition[] {
+			GenericOrmMappingFileDefinition.instance(),
+			EclipseLinkMappingFileDefinition.instance(),
+			EclipseLink1_1MappingFileDefinition.instance()};
 	}
-
-
 }

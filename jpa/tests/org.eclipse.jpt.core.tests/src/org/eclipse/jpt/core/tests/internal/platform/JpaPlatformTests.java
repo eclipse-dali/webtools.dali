@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
@@ -109,12 +110,18 @@ public class JpaPlatformTests extends ContextModelTestCase
 	public void testBuildJavaAttributeMappingFromMappingKey() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-
-		JavaAttributeMapping javaAttributeMapping = getJpaProject().getJpaPlatform().buildJavaAttributeMappingFromMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY, getJavaPersistentType().getAttributeNamed("name"));	
-		assertTrue(javaAttributeMapping instanceof JavaTestAttributeMapping);
 		
-		javaAttributeMapping = jpaPlatform().buildJavaAttributeMappingFromMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, getJavaPersistentType().getAttributeNamed("name"));
-		assertTrue(javaAttributeMapping instanceof TestJavaBasicMapping);
+		JavaAttributeMappingProvider mappingProvider = 
+			jpaPlatform().getSpecifiedJavaAttributeMappingProvider(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY);
+		JavaAttributeMapping mapping = 
+			mappingProvider.buildMapping(getJavaPersistentType().getAttributeNamed("name"), jpaPlatform().getJpaFactory());	
+		assertTrue(mapping instanceof JavaTestAttributeMapping);
+		
+		mappingProvider = jpaPlatform().getSpecifiedJavaAttributeMappingProvider(
+				MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		mapping = mappingProvider.buildMapping(
+					getJavaPersistentType().getAttributeNamed("name"), jpaPlatform().getJpaFactory());
+		assertTrue(mapping instanceof TestJavaBasicMapping);
 	}
 	
 }

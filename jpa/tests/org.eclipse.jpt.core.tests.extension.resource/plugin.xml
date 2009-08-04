@@ -8,9 +8,7 @@
 		<jpaPlatform
 			id="core.testJpaPlatform"
 			label="Test Jpa Platform"
-			factoryClass="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformFactory"
-			default="true">
-		</jpaPlatform>
+			factoryClass="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformFactory"/>
 		
 	</extension>
 	

@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -160,9 +161,10 @@ public abstract class AbstractMappingFileRef
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		return this.getJpaPlatform().buildMappingFile(this, resource);
+		MappingFileDefinition mappingFileDef = getJpaPlatform().getMappingFileDefinition(resource.getContentType());
+		return (mappingFileDef == null) ? null : mappingFileDef.buildMappingFile(this, resource, getJpaFactory());
 	}
-
+	
 	@Override
 	public void postUpdate() {
 		super.postUpdate();

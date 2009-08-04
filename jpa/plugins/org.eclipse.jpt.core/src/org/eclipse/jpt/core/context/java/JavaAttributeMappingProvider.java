@@ -21,23 +21,34 @@ import org.eclipse.jpt.core.JpaFactory;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaAttributeMappingProvider {
-
+public interface JavaAttributeMappingProvider 
+{
 	/**
 	 * Return the attribute mapping's key.
 	 */
 	String getKey();
-
+	
 	/**
 	 * Return the attribute mapping's Java annotation name.
 	 */
 	String getAnnotationName();
-
+	
 	/**
 	 * Build a Java attribute mapping for the specified attribute. Use the specified
 	 * factory for creation so extenders can simply override the appropriate
 	 * creation method instead of building a provider for the same key.
 	 */
 	JavaAttributeMapping buildMapping(JavaPersistentAttribute attribute, JpaFactory factory);
-
+	
+	/**
+	 * Return whether this mapping provider should be used for the given {@link JavaPersistentAttribute} 
+	 * in the default (ignoring all mapping annotations) case.
+	 */
+	boolean defaultApplies(JavaPersistentAttribute persistentAttribute);
+	
+	/**
+	 * Return whether this mapping provider should be used for the given {@link JavaPersistentAttribute} 
+	 * in the specified (observing all mapping annotations) case.
+	 */
+	boolean specifiedApplies(JavaPersistentAttribute persistentAttribute);
 }

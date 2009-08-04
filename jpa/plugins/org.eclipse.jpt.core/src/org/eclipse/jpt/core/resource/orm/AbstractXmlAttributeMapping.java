@@ -32,7 +32,9 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlAttributeMapping extends AbstractJpaEObject implements XmlAttributeMapping
+public abstract class AbstractXmlAttributeMapping
+	extends AbstractJpaEObject
+	implements XmlAttributeMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

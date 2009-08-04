@@ -13,31 +13,35 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMappingProvider;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
 
 public class JavaEclipseLinkTransformationMappingProvider
-	implements JavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaEclipseLinkTransformationMappingProvider INSTANCE = new JavaEclipseLinkTransformationMappingProvider();
-
+	private static final JavaEclipseLinkTransformationMappingProvider INSTANCE = 
+			new JavaEclipseLinkTransformationMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaEclipseLinkTransformationMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -45,7 +49,7 @@ public class JavaEclipseLinkTransformationMappingProvider
 	public String getAnnotationName() {
 		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
 		return ((EclipseLinkJpaFactory) factory).buildJavaEclipseLinkTransformationMapping(parent);
 	}

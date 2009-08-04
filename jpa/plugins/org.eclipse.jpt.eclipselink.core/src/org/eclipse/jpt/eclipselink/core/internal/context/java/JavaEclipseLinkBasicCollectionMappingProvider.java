@@ -13,31 +13,35 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMappingProvider;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkBasicCollectionAnnotation;
 
 public class JavaEclipseLinkBasicCollectionMappingProvider
-	implements JavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaEclipseLinkBasicCollectionMappingProvider INSTANCE = new JavaEclipseLinkBasicCollectionMappingProvider();
-
+	private static final JavaEclipseLinkBasicCollectionMappingProvider INSTANCE = 
+			new JavaEclipseLinkBasicCollectionMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaEclipseLinkBasicCollectionMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return EclipseLinkMappingKeys.BASIC_COLLECTION_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -45,7 +49,7 @@ public class JavaEclipseLinkBasicCollectionMappingProvider
 	public String getAnnotationName() {
 		return EclipseLinkBasicCollectionAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
 		return ((EclipseLinkJpaFactory) factory).buildJavaEclipseLinkBasicCollectionMapping(parent);
 	}

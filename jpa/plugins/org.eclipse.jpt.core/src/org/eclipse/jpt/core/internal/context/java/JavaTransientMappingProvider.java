@@ -17,26 +17,29 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 
 public class JavaTransientMappingProvider
-	implements JavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaTransientMappingProvider INSTANCE = new JavaTransientMappingProvider();
-
+	private static final JavaTransientMappingProvider INSTANCE = 
+		new JavaTransientMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaTransientMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}

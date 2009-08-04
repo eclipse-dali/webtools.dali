@@ -11,32 +11,35 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 
 public class JavaBasicMappingProvider
-	implements DefaultJavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaBasicMappingProvider INSTANCE = new JavaBasicMappingProvider();
-
+	private static final JavaBasicMappingProvider INSTANCE = 
+		new JavaBasicMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingProvider instance() {
+	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaBasicMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -44,13 +47,13 @@ public class JavaBasicMappingProvider
 	public String getAnnotationName() {
 		return BasicAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildJavaBasicMapping(parent);
 	}
 	
+	@Override
 	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
 		return persistentAttribute.typeIsBasic();
 	}
-
 }

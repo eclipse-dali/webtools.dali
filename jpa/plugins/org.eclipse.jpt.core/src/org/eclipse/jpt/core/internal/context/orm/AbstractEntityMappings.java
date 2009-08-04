@@ -15,12 +15,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
@@ -111,6 +112,8 @@ public abstract class AbstractEntityMappings
 	}
 	
 	protected abstract PersistenceUnitMetadata buildPersistenceUnitMetadata();
+	
+	
 	// **************** JpaNode impl *******************************************
 	
 	@Override
@@ -348,7 +351,9 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public OrmPersistentType addPersistentType(String mappingKey, String className) {
-		XmlTypeMapping typeMapping = getJpaPlatform().buildOrmResourceTypeMapping(mappingKey, getContentType());
+		OrmTypeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmTypeMappingProvider(mappingKey);
+		XmlTypeMapping typeMapping = mappingProvider.buildResourceMapping();
 		OrmPersistentType persistentType = buildPersistentType(typeMapping);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
@@ -531,6 +536,10 @@ public abstract class AbstractEntityMappings
 
 	public IContentType getContentType() {
 		return this.getOrmXml().getContentType();
+	}
+	
+	public MappingFileDefinition getMappingFileDefinition() {
+		return getJpaPlatform().getMappingFileDefinition(getContentType());
 	}
 	
 

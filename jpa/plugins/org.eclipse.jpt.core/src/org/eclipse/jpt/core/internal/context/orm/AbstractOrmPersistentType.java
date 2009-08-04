@@ -15,12 +15,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -28,10 +28,12 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -99,7 +101,11 @@ public abstract class AbstractOrmPersistentType
 	public IContentType getContentType() {
 		return this.getEntityMappings().getContentType();
 	}
-
+	
+	public MappingFileDefinition getMappingFileDefinition() {
+		return getJpaPlatform().getMappingFileDefinition(getContentType());
+	}
+	
 	public String getDefaultPackage() {
 		return this.getEntityMappings().getDefaultPersistentTypePackage();
 	}
@@ -128,13 +134,16 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	protected OrmTypeMapping buildTypeMapping(XmlTypeMapping resourceMapping) {
-		return this.getJpaPlatform().buildOrmTypeMappingFromMappingKey(this, resourceMapping);
+		OrmTypeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmTypeMappingProvider(resourceMapping.getMappingKey());
+		return mappingProvider.buildMapping(this, resourceMapping, getJpaFactory());
 	}
 
 	public OrmTypeMapping getMapping() {
 		return this.typeMapping;
 	}
-
+	
+	
 	// **************** PersistentType.Owner implementation *****************************
 	
 	public AccessType getOverridePersistentTypeAccess() {
@@ -180,7 +189,9 @@ public abstract class AbstractOrmPersistentType
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
-		XmlTypeMapping resourceTypeMapping = getJpaPlatform().buildOrmResourceTypeMapping(newMappingKey, getContentType());
+		OrmTypeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmTypeMappingProvider(newMappingKey);
+		XmlTypeMapping resourceTypeMapping = mappingProvider.buildResourceMapping();
 		this.typeMapping = buildTypeMapping(resourceTypeMapping);
 		this.getEntityMappings().changeMapping(this, oldMapping, this.typeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);
@@ -296,7 +307,9 @@ public abstract class AbstractOrmPersistentType
 			getMapping().getResourceTypeMapping().setAttributes(resourceAttributes);
 		}
 		
-		XmlAttributeMapping resourceMapping = getJpaPlatform().buildOrmResourceAttributeMapping(mappingKey, getContentType());
+		OrmAttributeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmAttributeMappingProvider(mappingKey);
+		XmlAttributeMapping resourceMapping = mappingProvider.buildResourceMapping();
 		
 		OrmPersistentAttribute newPersistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping);
 		int insertionIndex = insertionIndex(newPersistentAttribute);
@@ -430,7 +443,9 @@ public abstract class AbstractOrmPersistentType
 			getMapping().getResourceTypeMapping().setAttributes(resourceAttributes);
 		}
 		
-		XmlAttributeMapping resourceMapping = getJpaPlatform().buildOrmResourceAttributeMapping(mappingKey, getContentType());
+		OrmAttributeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmAttributeMappingProvider(mappingKey);
+		XmlAttributeMapping resourceMapping = mappingProvider.buildResourceMapping();
 		OrmPersistentAttribute persistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping);
 		int index = insertionIndex(persistentAttribute);
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
@@ -860,7 +875,10 @@ public abstract class AbstractOrmPersistentType
 
 	//not firing change notification so this can be reused in initialize and update
 	protected OrmPersistentAttribute addVirtualPersistentAttribute(JavaAttributeMapping javaAttributeMapping) {
-		XmlAttributeMapping resourceMapping = getJpaPlatform().buildVirtualOrmResourceMappingFromMappingKey(javaAttributeMapping.getKey(), getMapping(), javaAttributeMapping);
+		OrmAttributeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmAttributeMappingProvider(javaAttributeMapping.getKey());
+		XmlAttributeMapping resourceMapping = 
+				mappingProvider.buildVirtualResourceMapping(getMapping(), javaAttributeMapping, getJpaFactory());
 		OrmPersistentAttribute virtualPersistentAttribute = buildVirtualOrmPersistentAttribute(javaAttributeMapping, resourceMapping);
 		this.virtualPersistentAttributes.add(virtualPersistentAttribute);
 		return virtualPersistentAttribute;

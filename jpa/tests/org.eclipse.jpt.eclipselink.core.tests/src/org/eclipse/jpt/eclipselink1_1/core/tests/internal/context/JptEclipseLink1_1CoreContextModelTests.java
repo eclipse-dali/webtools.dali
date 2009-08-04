@@ -10,14 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink1_1.core.tests.internal.context;
 
-import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.orm.JptEclipseLink1_1CoreOrmContextModelTests;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.orm.JptEclipseLink1_1CoreOrmContextModelTests;
 
 public class JptEclipseLink1_1CoreContextModelTests extends TestCase
-{	
+{
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptEclipseLink1_1CoreContextModelTests.class.getName());
 		suite.addTestSuite(EclipseLink1_1JpaProjectTests.class);

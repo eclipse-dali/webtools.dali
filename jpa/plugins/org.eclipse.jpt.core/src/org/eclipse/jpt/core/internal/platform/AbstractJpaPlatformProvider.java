@@ -9,52 +9,46 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileProvider;
-import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullJavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMappingProvider;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
  * it is initialized).
  */
-public abstract class AbstractJpaPlatformProvider implements JpaPlatformProvider
+public abstract class AbstractJpaPlatformProvider
+	implements JpaPlatformProvider
 {
 	private JpaResourceModelProvider[] resourceModelProviders;
 
 	private JavaTypeMappingProvider[] javaTypeMappingProviders;
 
-	private JavaAttributeMappingProvider[] javaAttributeMappingProviders;
+	private JavaAttributeMappingProvider[] specifiedJavaAttributeMappingProviders;
 
-	private MappingFileProvider[] mappingFileProviders;
+	private JavaAttributeMappingProvider[] defaultJavaAttributeMappingProviders;
 
-	private DefaultJavaAttributeMappingProvider[] defaultJavaAttributeMappingProviders;
-
-	private OrmTypeMappingProvider[] ormTypeMappingProviders;
-
-	private OrmAttributeMappingProvider[] ormAttributeMappingProviders;
+	private MappingFileDefinition[] mappingFileDefinitions;
 
 
 	/**
 	 * zero-argument constructor
 	 */
-	public AbstractJpaPlatformProvider() {
+	protected AbstractJpaPlatformProvider() {
 		super();
 	}
 
 
 	// ********** resource models **********
-
+	
 	public ListIterator<JpaResourceModelProvider> resourceModelProviders() {
 		return new ArrayListIterator<JpaResourceModelProvider>(getResourceModelProviders());
 	}
@@ -65,19 +59,10 @@ public abstract class AbstractJpaPlatformProvider implements JpaPlatformProvider
 		}
 		return this.resourceModelProviders;
 	}
-
-	protected JpaResourceModelProvider[] buildResourceModelProviders() {
-		ArrayList<JpaResourceModelProvider> providers = new ArrayList<JpaResourceModelProvider>();
-		this.addResourceModelProvidersTo(providers);
-		return providers.toArray(new JpaResourceModelProvider[providers.size()]);
-	}
-
-	/**
-	 * Implement this to specify JPA resource model providers.
-	 */
-	protected abstract void addResourceModelProvidersTo(List<JpaResourceModelProvider> providers);
-
-
+	
+	protected abstract JpaResourceModelProvider[] buildResourceModelProviders();
+	
+	
 	// ********** Java type mappings **********
 	
 	public ListIterator<JavaTypeMappingProvider> javaTypeMappingProviders() {
@@ -90,148 +75,114 @@ public abstract class AbstractJpaPlatformProvider implements JpaPlatformProvider
 		}
 		return this.javaTypeMappingProviders;
 	}
-
-	protected JavaTypeMappingProvider[] buildJavaTypeMappingProviders() {
-		ArrayList<JavaTypeMappingProvider> providers = new ArrayList<JavaTypeMappingProvider>();
-		this.addJavaTypeMappingProvidersTo(providers);
-		return providers.toArray(new JavaTypeMappingProvider[providers.size()]);
-	}
-
+	
 	/**
-	 * Implement this to specify type mapping providers.
+	 * Return an array of mapping providers to use for analyzing the mapping of a type given all 
+	 * annotations on it.  The order is important, as once a mapping provider tests positive for an 
+	 * attribute, all following mapping providers are ignored.
+	 * Extenders may either overwrite this method or {@link #buildNonNullJavaTypeMappingProviders()}.
+	 * Doing the former places the additional requirement on the extender to provide a "null"
+	 * mapping provider (@see {@link NullJavaTypeMappingProvider}.)
 	 */
-	protected abstract void addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider> providers);
-
-
+	protected JavaTypeMappingProvider[] buildJavaTypeMappingProviders() {
+		return CollectionTools.add(
+			buildNonNullJavaTypeMappingProviders(), 
+			NullJavaTypeMappingProvider.instance());
+	}
+	
+	/**
+	 * No-op implementation of this method. 
+	 * @see #buildJavaTypeMappingProviders()
+	 */
+	protected JavaTypeMappingProvider[] buildNonNullJavaTypeMappingProviders() {
+		return new JavaTypeMappingProvider[0];
+	}
+	
+	
 	// ********** Java attribute mappings **********
 	
-	public ListIterator<JavaAttributeMappingProvider> javaAttributeMappingProviders() {
-		return new ArrayListIterator<JavaAttributeMappingProvider>(getJavaAttributeMappingProviders());
-	}
-	
-	protected synchronized JavaAttributeMappingProvider[] getJavaAttributeMappingProviders() {
-		if (this.javaAttributeMappingProviders == null) {
-			this.javaAttributeMappingProviders = this.buildJavaAttributeMappingProviders();
-		}
-		return this.javaAttributeMappingProviders;
+	public ListIterator<JavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
+		return new ArrayListIterator<JavaAttributeMappingProvider>(getDefaultJavaAttributeMappingProviders());
 	}
 
-	protected JavaAttributeMappingProvider[] buildJavaAttributeMappingProviders() {
-		ArrayList<JavaAttributeMappingProvider> providers = new ArrayList<JavaAttributeMappingProvider>();
-		this.addJavaAttributeMappingProvidersTo(providers);
-		return providers.toArray(new JavaAttributeMappingProvider[providers.size()]);
-	}
-
-	/**
-	 * Implement this to specify attribute mapping providers.
-	 */
-	protected abstract void addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider> providers);
-
-
-	// ********** default Java attribute mappings **********
-	
-	public ListIterator<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
-		return new ArrayListIterator<DefaultJavaAttributeMappingProvider>(getDefaultJavaAttributeMappingProviders());
-	}
-
-	protected synchronized DefaultJavaAttributeMappingProvider[] getDefaultJavaAttributeMappingProviders() {
+	protected synchronized JavaAttributeMappingProvider[] getDefaultJavaAttributeMappingProviders() {
 		if (this.defaultJavaAttributeMappingProviders == null) {
 			this.defaultJavaAttributeMappingProviders = this.buildDefaultJavaAttributeMappingProviders();
 		}
 		return this.defaultJavaAttributeMappingProviders;
 	}
-
-	protected DefaultJavaAttributeMappingProvider[] buildDefaultJavaAttributeMappingProviders() {
-		ArrayList<DefaultJavaAttributeMappingProvider> providers = new ArrayList<DefaultJavaAttributeMappingProvider>();
-		this.addDefaultJavaAttributeMappingProvidersTo(providers);
-		return providers.toArray(new DefaultJavaAttributeMappingProvider[providers.size()]);
-	}
-
-	/**
-	 * Implement this to specify default attribute mapping providers.
-	 */
-	protected abstract void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers);
-
-	/**
-	 * the "null" attribute mapping is used when the attribute is neither
-	 * modified with a mapping annotation nor mapped by a "default" mapping
-	 */
-	protected JavaAttributeMappingProvider getNullAttributeMappingProvider() {
-		return JavaNullAttributeMappingProvider.instance();
-	}
-
-
-	// ********** Mapping File **********
 	
-	public ListIterator<MappingFileProvider> mappingFileProviders() {
-		return new ArrayListIterator<MappingFileProvider>(getMappingFileProviders());
+	/**
+	 * Return an array of mapping providers to use for analyzing the default mapping of an attribute
+	 * in the absence of any annotations.  The order is important, as once a mapping provider tests
+	 * positively for a given attribute, all following mapping providers are ignored.
+	 * Extenders may either overwrite this method or 
+	 * {@link #buildNonNullDefaultJavaAttributeMappingProviders()}.
+	 * Doing the former places the additional requirement on the extender to provide a "null"
+	 * mapping provider (@see {@link NullDefaultJavaAttributeMappingProvider}.)
+	 */
+	protected JavaAttributeMappingProvider[] buildDefaultJavaAttributeMappingProviders() {
+		return CollectionTools.add(
+			buildNonNullDefaultJavaAttributeMappingProviders(), 
+			NullDefaultJavaAttributeMappingProvider.instance());
 	}
 	
-	protected synchronized MappingFileProvider[] getMappingFileProviders() {
-		if (this.mappingFileProviders == null) {
-			this.mappingFileProviders = this.buildMappingFileProviders();
+	/**
+	 * No-op implementation of this method. 
+	 * @see #buildDefaultJavaAttributeMappingProviders()
+	 */
+	protected JavaAttributeMappingProvider[] buildNonNullDefaultJavaAttributeMappingProviders() {
+		return new JavaAttributeMappingProvider[0];
+	}
+	
+	public ListIterator<JavaAttributeMappingProvider> specifiedJavaAttributeMappingProviders() {
+		return new ArrayListIterator<JavaAttributeMappingProvider>(
+			getSpecifiedJavaAttributeMappingProviders());
+	}
+	
+	protected synchronized JavaAttributeMappingProvider[] getSpecifiedJavaAttributeMappingProviders() {
+		if (this.specifiedJavaAttributeMappingProviders == null) {
+			this.specifiedJavaAttributeMappingProviders = this.buildSpecifiedJavaAttributeMappingProviders();
 		}
-		return this.mappingFileProviders;
-	}
-
-	protected MappingFileProvider[] buildMappingFileProviders() {
-		ArrayList<MappingFileProvider> providers = new ArrayList<MappingFileProvider>();
-		this.addMappingFileProvidersTo(providers);
-		return providers.toArray(new MappingFileProvider[providers.size()]);
-	}
-
-	/**
-	 * Implement this to specify mapping file providers.
-	 */
-	protected abstract void addMappingFileProvidersTo(List<MappingFileProvider> providers);
-
-
-	// ********** ORM type mappings **********
-	
-	public ListIterator<OrmTypeMappingProvider> ormTypeMappingProviders() {
-		return new ArrayListIterator<OrmTypeMappingProvider>(getOrmTypeMappingProviders());
+		return this.specifiedJavaAttributeMappingProviders;
 	}
 	
-	protected synchronized OrmTypeMappingProvider[] getOrmTypeMappingProviders() {
-		if (this.ormTypeMappingProviders == null) {
-			this.ormTypeMappingProviders = this.buildOrmTypeMappingProviders();
-		}
-		return this.ormTypeMappingProviders;
-	}
-
-	protected OrmTypeMappingProvider[] buildOrmTypeMappingProviders() {
-		ArrayList<OrmTypeMappingProvider> providers = new ArrayList<OrmTypeMappingProvider>();
-		this.addOrmTypeMappingProvidersTo(providers);
-		return providers.toArray(new OrmTypeMappingProvider[providers.size()]);
-	}
-
 	/**
-	 * Implement this to specify type mapping providers.
+	 * Return an array of mapping providers to use for analyzing the specified mapping of an attribute
+	 * given all annotations on it.  The order is important, as once a mapping provider tests
+	 * positively for a given attribute, all following mapping providers are ignored.
+	 * Extenders may either overwrite this method or 
+	 * {@link #buildNonNullSpecifiedJavaAttributeMappingProviders()}.
+	 * Doing the former places the additional requirement on the extender to provide a "null"
+	 * mapping provider (@see {@link NullSpecifiedJavaAttributeMappingProvider}.)
 	 */
-	protected abstract void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers);
-
-
-	// ********** ORM attribute mappings **********
-
-	public ListIterator<OrmAttributeMappingProvider> ormAttributeMappingProviders() {
-		return new ArrayListIterator<OrmAttributeMappingProvider>(getOrmAttributeMappingProviders());
+	protected JavaAttributeMappingProvider[] buildSpecifiedJavaAttributeMappingProviders() {
+		return CollectionTools.add(
+			buildNonNullSpecifiedJavaAttributeMappingProviders(), 
+			NullSpecifiedJavaAttributeMappingProvider.instance());
 	}
-
-	protected synchronized OrmAttributeMappingProvider[] getOrmAttributeMappingProviders() {
-		if (this.ormAttributeMappingProviders == null) {
-			this.ormAttributeMappingProviders = this.buildOrmAttributeMappingProviders();
-		}
-		return this.ormAttributeMappingProviders;
-	}
-
-	protected OrmAttributeMappingProvider[] buildOrmAttributeMappingProviders() {
-		ArrayList<OrmAttributeMappingProvider> providers = new ArrayList<OrmAttributeMappingProvider>();
-		this.addOrmAttributeMappingProvidersTo(providers);
-		return providers.toArray(new OrmAttributeMappingProvider[providers.size()]);
-	}
-
+	
 	/**
-	 * Implement this to specify attribute mapping providers.
+	 * No-op implementation of this method. 
+	 * @see #buildSpecifiedJavaAttributeMappingProviders()
 	 */
-	protected abstract void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers);
+	protected JavaAttributeMappingProvider[] buildNonNullSpecifiedJavaAttributeMappingProviders() {
+		return new JavaAttributeMappingProvider[0];
+	}
+	
+	
+	// ********** Mapping Files **********
+	
+	public ListIterator<MappingFileDefinition> mappingFileDefinitions() {
+		return new ArrayListIterator<MappingFileDefinition>(getMappingFileDefinitions());
+	}
+	
+	protected synchronized MappingFileDefinition[] getMappingFileDefinitions() {
+		if (this.mappingFileDefinitions == null) {
+			this.mappingFileDefinitions = this.buildMappingFileDefinitions();
+		}
+		return this.mappingFileDefinitions;
+	}
+	
+	protected abstract MappingFileDefinition[] buildMappingFileDefinitions();
 }

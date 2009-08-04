@@ -24,7 +24,9 @@ import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping;
  * VirtualVersion is an implementation of Version used when there is 
  * no tag in the orm.xml and an underlying javaVersionMapping exists.
  */
-public class VirtuaEclipseLinklXmlNullAttributeMapping1_1 extends XmlNullAttributeMapping implements XmlAttributeMapping
+public class VirtuaEclipseLinklXmlNullAttributeMapping1_1
+	extends XmlNullAttributeMapping 
+	implements XmlAttributeMapping
 {
 	
 	protected OrmTypeMapping ormTypeMapping;

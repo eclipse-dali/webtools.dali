@@ -26,6 +26,8 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlAttributeMapping extends org.eclipse.jpt.core.resource.orm.XmlAttributeMapping, XmlAccessMethodsHolder, XmlPropertyContainer
+public interface XmlAttributeMapping 
+	extends org.eclipse.jpt.core.resource.orm.XmlAttributeMapping, 
+			XmlAccessMethodsHolder, XmlPropertyContainer
 {
 } // XmlAttributeMapping

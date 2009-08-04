@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.java.JptEclipseLinkCoreJavaContextModelTests;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.orm.JptEclipseLinkCoreOrmContextModelTests;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.JptEclipseLinkCorePersistenceContextModelTests;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.java.JptEclipseLinkCoreJavaContextModelTests;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.orm.JptEclipseLinkCoreOrmContextModelTests;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.JptEclipseLinkCorePersistenceContextModelTests;
 
 public class JptEclipseLinkCoreContextModelTests extends TestCase
 {

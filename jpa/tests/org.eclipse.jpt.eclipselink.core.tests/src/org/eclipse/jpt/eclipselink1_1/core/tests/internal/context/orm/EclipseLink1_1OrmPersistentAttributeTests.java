@@ -33,9 +33,9 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
-public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1OrmContextModelTestCase
+public class EclipseLink1_1OrmPersistentAttributeTests 
+	extends EclipseLink1_1OrmContextModelTestCase
 {
-
 	@Override
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetDataModelProvider());		

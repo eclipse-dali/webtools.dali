@@ -21,18 +21,18 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmNullAttributeMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
+public class EclipseLinkOrmPersistentAttributeTests
+	extends EclipseLinkOrmContextModelTestCase
 {
 	public EclipseLinkOrmPersistentAttributeTests(String name) {
 		super(name);
@@ -145,8 +145,9 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof GenericOrmOneToOneMapping);
-		
+		assertEquals(specifiedOrmPersistentAttribute.getMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		System.out.println(specifiedOrmPersistentAttribute.getMapping().getClass().getName());
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkOneToOneMapping);
 		
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormPersistentAttribute.makeSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -158,7 +159,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof GenericOrmIdMapping);
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkIdMapping);
 		
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());

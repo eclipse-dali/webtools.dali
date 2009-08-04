@@ -14,8 +14,10 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
@@ -60,7 +62,9 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 	}
 
 	protected OrmAttributeMapping buildAttributeMapping(XmlAttributeMapping resourceMapping) {
-		return getJpaPlatform().buildOrmAttributeMappingFromMappingKey(this, resourceMapping);
+		OrmAttributeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmAttributeMappingProvider(resourceMapping.getMappingKey());
+		return mappingProvider.buildMapping(this, resourceMapping, getJpaFactory());
 	}
 	
 	public String getId() {
@@ -104,7 +108,9 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 			return;
 		}
 		OrmAttributeMapping oldMapping = this.attributeMapping;
-		XmlAttributeMapping resourceAttributeMapping = getJpaPlatform().buildOrmResourceAttributeMapping(newMappingKey, getContentType());
+		OrmAttributeMappingProvider mappingProvider = 
+				getMappingFileDefinition().getOrmAttributeMappingProvider(newMappingKey);
+		XmlAttributeMapping resourceAttributeMapping = mappingProvider.buildResourceMapping();
 		this.attributeMapping = buildAttributeMapping(resourceAttributeMapping);
 		
 		getPersistentType().changeMapping(this, oldMapping, this.attributeMapping);
@@ -179,6 +185,10 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 
 	public IContentType getContentType() {
 		return this.getPersistentType().getContentType();
+	}
+	
+	public MappingFileDefinition getMappingFileDefinition() {
+		return getJpaPlatform().getMappingFileDefinition(getContentType());
 	}
 
 	public boolean contains(int textOffset) {

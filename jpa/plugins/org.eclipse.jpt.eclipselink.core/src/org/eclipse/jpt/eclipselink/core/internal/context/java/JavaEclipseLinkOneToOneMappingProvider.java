@@ -10,32 +10,36 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 
 public class JavaEclipseLinkOneToOneMappingProvider
-	implements DefaultJavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaEclipseLinkOneToOneMappingProvider INSTANCE = new JavaEclipseLinkOneToOneMappingProvider();
-
+	private static final JavaEclipseLinkOneToOneMappingProvider INSTANCE = 
+			new JavaEclipseLinkOneToOneMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingProvider instance() {
+	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaEclipseLinkOneToOneMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return JavaOneToOneMappingProvider.instance().getKey();
 	}
@@ -43,11 +47,12 @@ public class JavaEclipseLinkOneToOneMappingProvider
 	public String getAnnotationName() {
 		return JavaOneToOneMappingProvider.instance().getAnnotationName();
 	}
-
+	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
 		return JavaOneToOneMappingProvider.instance().buildMapping(parent, factory);
 	}
 	
+	@Override
 	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
 		String targetEntity = persistentAttribute.getSingleReferenceEntityTypeName();
 		return (targetEntity != null)

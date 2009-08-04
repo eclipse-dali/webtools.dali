@@ -17,26 +17,29 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
 
 public class JavaManyToManyMappingProvider
-	implements JavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaManyToManyMappingProvider INSTANCE = new JavaManyToManyMappingProvider();
-
+	private static final JavaManyToManyMappingProvider INSTANCE = 
+		new JavaManyToManyMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaManyToManyMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}

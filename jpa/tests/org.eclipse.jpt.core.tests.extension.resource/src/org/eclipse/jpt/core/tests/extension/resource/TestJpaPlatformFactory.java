@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -26,7 +23,6 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 public class TestJpaPlatformFactory
 	implements JpaPlatformFactory
 {
-
 	/**
 	 * zero-argument constructor
 	 */
@@ -34,23 +30,14 @@ public class TestJpaPlatformFactory
 		super();
 	}
 	
+	
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
-			buildJpaFactory(), 
-			buildJpaAnnotationProvider(), 
-			buildJpaValidation(),
-			GenericJpaPlatformProvider.instance(),
-			TestJpaPlatformProvider.instance());
-	}
-	
-	protected JpaFactory buildJpaFactory() {
-		return new TestJpaFactory();
-	}
-	
-	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
-			GenericJpaAnnotationDefinitionProvider.instance());
+			new TestJpaFactory(), 
+			new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()), 
+			TestJpaPlatformProvider.instance(),
+			buildJpaValidation());
 	}
 	
 	protected JpaValidation buildJpaValidation() {

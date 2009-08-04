@@ -11,32 +11,35 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.EmbeddedIdAnnotation;
 
 public class JavaEmbeddedIdMappingProvider
-	implements DefaultJavaAttributeMappingProvider
+	extends AbstractJavaAttributeMappingProvider
 {
-
 	// singleton
-	private static final JavaEmbeddedIdMappingProvider INSTANCE = new JavaEmbeddedIdMappingProvider();
-
+	private static final JavaEmbeddedIdMappingProvider INSTANCE = 
+		new JavaEmbeddedIdMappingProvider();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingProvider instance() {
+	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singletong usage
 	 */
 	private JavaEmbeddedIdMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -44,12 +47,8 @@ public class JavaEmbeddedIdMappingProvider
 	public String getAnnotationName() {
 		return EmbeddedIdAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildJavaEmbeddedIdMapping(parent);
-	}
-	
-	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getEmbeddable() != null;
 	}
 }
