@@ -251,10 +251,19 @@ public class GenerationComposite extends FormPane<IdMapping>
 		);
 
 		// Sequence Generator pane
-		new SequenceGeneratorComposite(
+		this.buildSequenceGeneratorComposite(container, generatorHolder, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16);
+	}
+	
+	protected SequenceGeneratorComposite buildSequenceGeneratorComposite(
+			Composite container, 
+			PropertyValueModel<GeneratorContainer> generatorHolder, 
+			int topMargin,
+			int leftMargin) {
+
+		return new SequenceGeneratorComposite(
 			this,
 			generatorHolder,
-			addSubPane(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16)
+			this.addSubPane(container, topMargin, leftMargin)
 		);
 	}
 

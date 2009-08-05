@@ -259,8 +259,10 @@ public class JptUiMappingsMessages {
 	public static String SecondaryTableDialog_schema;
 	public static String SecondaryTablesComposite_edit;
 	public static String SecondaryTablesComposite_secondaryTables;
+	public static String SequenceGeneratorComposite_catalog;
 	public static String SequenceGeneratorComposite_default;
 	public static String SequenceGeneratorComposite_name;
+	public static String SequenceGeneratorComposite_schema;
 	public static String SequenceGeneratorComposite_sequence;
 	public static String SequenceGeneratorComposite_sequenceGenerator;
 	public static String TableChooser_label;

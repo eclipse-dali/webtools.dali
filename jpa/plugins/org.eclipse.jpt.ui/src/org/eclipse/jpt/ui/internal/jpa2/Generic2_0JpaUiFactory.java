@@ -11,12 +11,14 @@ package org.eclipse.jpt.ui.internal.jpa2;
 
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaEmbeddable2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaEntity2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaIdMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaMappedSuperclass2_0Composite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -52,5 +54,13 @@ public class Generic2_0JpaUiFactory extends GenericJpaUiFactory
 			PropertyValueModel<JavaEmbeddable> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
 		return new JavaEmbeddable2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+
+	@Override
+	public JpaComposite createJavaIdMappingComposite(
+			PropertyValueModel<JavaIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new JavaIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

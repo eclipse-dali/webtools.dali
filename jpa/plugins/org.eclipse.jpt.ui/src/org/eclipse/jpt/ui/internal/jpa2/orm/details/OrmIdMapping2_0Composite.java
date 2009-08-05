@@ -13,9 +13,9 @@ import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.ui.internal.jpa2.java.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.GenerationComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -39,7 +39,7 @@ public class OrmIdMapping2_0Composite extends AbstractIdMappingComposite<OrmIdMa
 		initializeTypePane(container);
 
 		// Generation pane
-		new GenerationComposite(this, addSubPane(container, 10));
+		new Generation2_0Composite(this, addSubPane(container, 10));
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

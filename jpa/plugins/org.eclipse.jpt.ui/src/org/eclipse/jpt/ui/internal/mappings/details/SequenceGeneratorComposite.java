@@ -80,7 +80,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 		};
 	}
 
-	private SequenceCombo<SequenceGenerator> buildSequenceNameCombo(Composite parent) {
+	protected SequenceCombo<SequenceGenerator> buildSequenceNameCombo(Composite parent) {
 
 		return new SequenceCombo<SequenceGenerator>(this, buildSequenceGeneratorHolder(), parent) {
 
