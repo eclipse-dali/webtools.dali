@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.osgi.framework.Version;
 
 @SuppressWarnings("nls")
 public class CombinationIndexedDeclarationAnnotationAdapterTests extends AnnotationTestCase {
@@ -444,22 +446,32 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 	}
 
 	public void testNewMarkerAnnotation24() throws Exception {
-		this.createAnnotationAndMembers("JoinColumn", "String name(); String text(); int num();");
-		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
-		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(text=\"blah\",num=42)");
-		String expected1 = "@JoinColumns( {";
-		String expected2 = "@JoinColumn(text = \"blah\", num = 42), null,";
-		String expected3 = "@JoinColumn " + CR + "    })";
-		this.assertSourceDoesNotContain(expected1, cu);
-		this.assertSourceDoesNotContain(expected2, cu);
-		this.assertSourceDoesNotContain(expected3, cu);
-		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
-				"annot.JoinColumn", "annot.JoinColumns", "value", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
-		aa.newMarkerAnnotation();
-		this.assertSourceContains(expected1, cu);
-		this.assertSourceContains(expected2, cu);
-		this.assertSourceContains(expected3, cu);
+		
+		//This test should only run on WTP 3.2 builds for now (not 3.3)- see bug 285604
+		//This condition should be removed and test updated after Dali 3.0 branches
+		Version version = Platform.getBundle("org.eclipse.jdt.core").getVersion();
+		int majorVersion = version.getMajor();
+		int minorVersion = version.getMinor();
+		
+		//Don't run this test if jdt core version is above 3.5
+		if (majorVersion == 3 && minorVersion <= 5) {
+			this.createAnnotationAndMembers("JoinColumn", "String name(); String text(); int num();");
+			this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
+			ICompilationUnit cu = this.createTestType("@annot.JoinColumn(text=\"blah\",num=42)");
+			String expected1 = "@JoinColumns( {";
+			String expected2 = "@JoinColumn(text = \"blah\", num = 42), null,";
+			String expected3 = "@JoinColumn " + CR + "    })";
+			this.assertSourceDoesNotContain(expected1, cu);
+			this.assertSourceDoesNotContain(expected2, cu);
+			this.assertSourceDoesNotContain(expected3, cu);
+			DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
+					"annot.JoinColumn", "annot.JoinColumns", "value", 2);
+			AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+			aa.newMarkerAnnotation();
+			this.assertSourceContains(expected1, cu);
+			this.assertSourceContains(expected2, cu);
+			this.assertSourceContains(expected3, cu);
+		}
 	}
 
 	public void testNewMarkerAnnotation25() throws Exception {
