@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 
 public interface JavaJoinColumnInAssociationOverrideJoiningStrategy 
@@ -16,9 +17,11 @@ public interface JavaJoinColumnInAssociationOverrideJoiningStrategy
 		JavaJpaContextNode,
 		JavaJoinColumnJoiningStrategy
 {
-	
+
 	void initialize(AssociationOverrideAnnotation associationOverride);
 	
 	void update(AssociationOverrideAnnotation associationOverride);
+	
+	ListIterator<JavaJoinColumn> joinColumns();
 
 }

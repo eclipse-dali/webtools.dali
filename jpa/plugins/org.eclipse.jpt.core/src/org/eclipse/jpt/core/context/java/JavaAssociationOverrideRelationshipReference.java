@@ -34,7 +34,7 @@ public interface JavaAssociationOverrideRelationshipReference
 {
 	JavaAssociationOverride getAssociationOverride();
 	
-	JavaJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	JavaJoinColumnInAssociationOverrideJoiningStrategy getJoinColumnJoiningStrategy();
 
 	void initialize(AssociationOverrideAnnotation associationOverride);
 	

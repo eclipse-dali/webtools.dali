@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
@@ -19,4 +20,5 @@ public interface OrmJoinColumnInAssociationOverrideJoiningStrategy
 {
 	void update(XmlAssociationOverride xao);
 
+	ListIterator<OrmJoinColumn> joinColumns();
 }

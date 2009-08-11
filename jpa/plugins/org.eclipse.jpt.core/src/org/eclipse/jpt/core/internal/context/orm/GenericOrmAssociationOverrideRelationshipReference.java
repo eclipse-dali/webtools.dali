@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnInAssociationOverrideJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -52,7 +51,7 @@ public class GenericOrmAssociationOverrideRelationshipReference extends Abstract
 	// **************** join columns *******************************************
 	
 
-	public OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+	public OrmJoinColumnInAssociationOverrideJoiningStrategy getJoinColumnJoiningStrategy() {
 		return this.joinColumnJoiningStrategy;
 	}
 	

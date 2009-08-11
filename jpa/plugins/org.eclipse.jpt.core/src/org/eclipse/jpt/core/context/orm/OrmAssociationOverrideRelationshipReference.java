@@ -38,7 +38,7 @@ public interface OrmAssociationOverrideRelationshipReference
 {
 	OrmAssociationOverride getAssociationOverride();
 
-	OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	OrmJoinColumnInAssociationOverrideJoiningStrategy getJoinColumnJoiningStrategy();
 	
 	void update(XmlAssociationOverride xao) ;
 	
