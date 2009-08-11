@@ -40,11 +40,14 @@ public final class VirtualAssociationOverrideAnnotation
 	}
 	
 	private Vector<JoinColumnAnnotation> buildJoinColumns() {
-		Vector<JoinColumnAnnotation> result = new Vector<JoinColumnAnnotation>(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumnsSize());
-		for (JoinColumn joinColumn : CollectionTools.iterable(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumns())) {
-			result.add(new VirtualAssociationOverrideJoinColumnAnnotation(this, joinColumn));
+		if (this.joiningStrategy != null) {
+			Vector<JoinColumnAnnotation> result = new Vector<JoinColumnAnnotation>(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumnsSize());
+			for (JoinColumn joinColumn : CollectionTools.iterable(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumns())) {
+				result.add(new VirtualAssociationOverrideJoinColumnAnnotation(this, joinColumn));
+			}
+			return result;
 		}
-		return result;
+		return new Vector<JoinColumnAnnotation>();
 	}
 
 	public String getAnnotationName() {
