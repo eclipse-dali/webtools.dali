@@ -55,6 +55,10 @@ public class GenericOrmMappedByJoiningStrategy
 		return this.getParent();
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	public OrmRelationshipMapping getRelationshipMapping() {
 		return getParent().getRelationshipMapping();
 	}

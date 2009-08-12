@@ -46,5 +46,14 @@ public interface RelationshipReference extends JpaContextNode
 	final static String PREDOMINANT_JOINING_STRATEGY_PROPERTY = 
 		"predominantStrategy";  //$NON-NLS-1$
 	
+	/**
+	 * Return the predominant joining strategy, this should not be null
+	 */
 	JoiningStrategy getPredominantJoiningStrategy();
+	
+	/**
+	 * Return whether the mapping can be overriden with an association override
+	 */
+	boolean isOverridableAssociation();
+
 }

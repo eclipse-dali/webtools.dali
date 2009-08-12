@@ -71,6 +71,10 @@ public class GenericJavaAssociationOverrideRelationshipReference extends Abstrac
 		this.joinColumnJoiningStrategy.update(associationOverride);
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	
 	// ********** validation **********
 

@@ -42,4 +42,9 @@ public interface JoiningStrategy extends JpaContextNode
 	 * Remove this strategy from the relationship reference
 	 */
 	void removeStrategy();
+	
+	/**
+	 * Return whether the mapping can be overridden with an association override
+	 */
+	boolean isOverridableAssociation();
 }

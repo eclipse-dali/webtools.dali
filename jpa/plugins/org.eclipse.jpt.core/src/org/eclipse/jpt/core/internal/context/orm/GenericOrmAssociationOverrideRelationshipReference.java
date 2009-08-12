@@ -47,7 +47,11 @@ public class GenericOrmAssociationOverrideRelationshipReference extends Abstract
 		this.joinColumnJoiningStrategy.update(xao);
 	}	
 	
-
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
+	
 	// **************** join columns *******************************************
 	
 

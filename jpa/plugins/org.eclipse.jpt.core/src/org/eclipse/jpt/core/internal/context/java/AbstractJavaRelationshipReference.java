@@ -32,7 +32,11 @@ public abstract class AbstractJavaRelationshipReference
 	public JavaRelationshipMapping getRelationshipMapping() {
 		return (JavaRelationshipMapping) getParent();
 	}
-	
+		
+	public boolean isOverridableAssociation() {
+		return getPredominantJoiningStrategy().isOverridableAssociation();
+	}
+
 	
 	// **************** predominant joining strategy ***************************
 	

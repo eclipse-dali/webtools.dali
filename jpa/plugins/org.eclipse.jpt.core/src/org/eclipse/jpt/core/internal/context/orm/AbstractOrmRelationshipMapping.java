@@ -71,6 +71,11 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		return this.relationshipReference.isOwnedBy(mapping);
 	}
 	
+	@Override
+	public boolean isOverridableAssociationMapping() {
+		return this.relationshipReference.isOverridableAssociation();
+	}	
+	
 	
 	// **************** target entity ******************************************
 

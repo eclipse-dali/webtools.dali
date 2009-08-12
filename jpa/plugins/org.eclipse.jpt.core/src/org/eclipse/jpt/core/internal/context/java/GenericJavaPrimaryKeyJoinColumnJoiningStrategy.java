@@ -66,6 +66,9 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		return this.getRelationshipReference().getRelationshipMapping();
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
 	
 	// **************** primary key join columns *******************************
 	

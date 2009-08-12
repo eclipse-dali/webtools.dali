@@ -68,6 +68,10 @@ public class GenericJavaJoinTableJoiningStrategy
 		}
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	
 	// **************** join table *********************************************
 	

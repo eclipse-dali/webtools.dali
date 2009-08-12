@@ -68,6 +68,11 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		return this.relationshipReference.isOwnedBy(mapping);
 	}
 	
+	@Override
+	public boolean isOverridableAssociationMapping() {
+		return this.relationshipReference.isOverridableAssociation();
+	}
+	
 	public Iterator<String> allTargetEntityAttributeNames() {
 		Entity targetEntity = this.getResolvedTargetEntity();
 		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();

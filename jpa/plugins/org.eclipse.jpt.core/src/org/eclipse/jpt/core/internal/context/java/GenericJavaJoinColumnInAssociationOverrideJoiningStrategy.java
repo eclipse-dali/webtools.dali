@@ -45,6 +45,10 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		return getAssociationOverride().getOwner().getTypeMapping();
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	protected JavaAssociationOverride getAssociationOverride() {
 		return this.getRelationshipReference().getAssociationOverride();
 	}

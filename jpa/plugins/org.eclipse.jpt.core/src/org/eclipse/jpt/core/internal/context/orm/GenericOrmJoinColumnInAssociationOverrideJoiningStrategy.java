@@ -41,6 +41,10 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		return getAssociationOverride().getOwner().getTypeMapping();
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	protected OrmAssociationOverride getAssociationOverride() {
 		return this.getRelationshipReference().getAssociationOverride();
 	}

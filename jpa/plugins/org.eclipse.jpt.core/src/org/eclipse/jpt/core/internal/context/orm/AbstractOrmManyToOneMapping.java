@@ -57,9 +57,4 @@ public abstract class AbstractOrmManyToOneMapping<T extends XmlManyToOne>
 	public OrmManyToOneRelationshipReference getRelationshipReference() {
 		return (OrmManyToOneRelationshipReference) super.getRelationshipReference();
 	}
-	
-	@Override
-	public boolean isOverridableAssociationMapping() {
-		return true;
-	}
 }

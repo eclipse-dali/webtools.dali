@@ -56,6 +56,10 @@ public abstract class AbstractOrmRelationshipReference
 		return (OrmRelationshipMapping) getParent();
 	}
 	
+	public boolean isOverridableAssociation() {
+		return getPredominantJoiningStrategy().isOverridableAssociation();
+	}
+	
 	
 	// **************** predominant joining strategy ***************************
 	

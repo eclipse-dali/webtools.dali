@@ -72,6 +72,10 @@ public class GenericOrmJoinTableJoiningStrategy
 		}
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	
 	// **************** join table *********************************************
 	

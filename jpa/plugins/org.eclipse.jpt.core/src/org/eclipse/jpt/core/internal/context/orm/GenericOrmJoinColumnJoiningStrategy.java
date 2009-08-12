@@ -39,6 +39,10 @@ public class GenericOrmJoinColumnJoiningStrategy
 		return getRelationshipMapping().getTypeMapping();
 	}
 	
+	public boolean isOverridableAssociation() {
+		return true;
+	}
+	
 	@Override
 	public OrmJoinColumnEnabledRelationshipReference getRelationshipReference() {
 		return (OrmJoinColumnEnabledRelationshipReference) super.getRelationshipReference();

@@ -70,9 +70,4 @@ public abstract class AbstractJavaOneToOneMapping
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
 		this.mappingAnnotation.setOptional(newOptional);
 	}
-	
-	@Override
-	public boolean isOverridableAssociationMapping() {
-		return true;
-	}
 }

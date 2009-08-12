@@ -57,6 +57,10 @@ public class GenericJavaMappedByJoiningStrategy
 		return getParent().getRelationshipMapping();
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	public boolean relationshipIsOwnedBy(RelationshipMapping otherMapping) {
 		String thisEntity = 
 			(getRelationshipMapping().getEntity()) == null ?

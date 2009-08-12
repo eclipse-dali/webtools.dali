@@ -96,6 +96,10 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		}
 	}
 	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
 	
 	// **************** primary key join columns *******************************
 	
