@@ -10,11 +10,12 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -130,7 +131,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 	
-		new ControlEnabler(buildDiscriminatorValueEnabledHolder(), discriminatorValueCombo, discriminatorValueLabel);
+		SWTTools.controlEnabledState(buildDiscriminatorValueEnabledHolder(), discriminatorValueCombo, discriminatorValueLabel);
 		
 		new DiscriminatorColumnComposite<Entity>(this, container);
 

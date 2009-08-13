@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.tests.internal.util;
 
 import static org.junit.Assert.*;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,7 +46,7 @@ public final class ControlEnablerTest {
 
 		Combo combo = new Combo(parent, SWT.BORDER);
 
-		new ControlEnabler(booleanHolder, combo);
+		SWTTools.controlEnabledState(booleanHolder, combo);
 
 		assertTrue(
 			"The Combo should be enabled",

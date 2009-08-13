@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -21,11 +22,11 @@ import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -344,11 +345,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends FormPane<Sec
 	}
 
 	private void installOverrideDefaultButtonEnabler(Button overrideDefaultButton) {
-
-		new ControlEnabler(
-			buildControlBooleanHolder(),
-			overrideDefaultButton
-		);
+		SWTTools.controlEnabledState(buildControlBooleanHolder(), overrideDefaultButton);
 	}
 
 	private void installPrimaryKeyJoinColumnListPaneEnabler(AddRemoveListPane<SecondaryTable> pkJoinColumnListPane) {

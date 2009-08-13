@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2009 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,15 +8,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import com.ibm.icu.text.Collator;
 import java.util.Comparator;
 import java.util.List;
+
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -28,6 +28,8 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
+
+import com.ibm.icu.text.Collator;
 
 /**
  * Here the layout of this pane:
@@ -72,7 +74,7 @@ public class TemporalTypeComposite extends FormPane<TemporalConverter> {
 			buildTemporalTypeConverter()
 		);
 		
-		new ControlEnabler(buildBooleanHolder(), combo);
+		SWTTools.controlEnabledState(buildBooleanHolder(), combo);
 	}
 
 	private WritablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {

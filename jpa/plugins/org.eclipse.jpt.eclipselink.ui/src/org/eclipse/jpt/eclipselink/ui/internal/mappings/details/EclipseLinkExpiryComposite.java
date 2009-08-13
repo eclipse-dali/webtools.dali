@@ -1,17 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -119,7 +120,7 @@ public class EclipseLinkExpiryComposite extends FormPane<EclipseLinkCaching> {
 			EclipseLinkUiMappingsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryMilliseconds
 		);
 		
-		new ControlEnabler(buildTimeToLiveExpiryEnabler(), expireAfterLabel, combo.getCombo(), millisecondsLabel);
+		SWTTools.controlEnabledState(buildTimeToLiveExpiryEnabler(), expireAfterLabel, combo.getCombo(), millisecondsLabel);
 	}
 	
 	protected void addTimeOfDayComposite(Composite parent) {
@@ -139,7 +140,7 @@ public class EclipseLinkExpiryComposite extends FormPane<EclipseLinkCaching> {
 			buildTimeOfDayExpirySecondHolder(timeOfDayExpiryHolder),
 			null);
 
-		new ControlEnabler(buildTimeOfDayExpiryEnabler(), expireAtLabel, dateTime);
+		SWTTools.controlEnabledState(buildTimeOfDayExpiryEnabler(), expireAtLabel, dateTime);
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildNoExpiryHolder() {

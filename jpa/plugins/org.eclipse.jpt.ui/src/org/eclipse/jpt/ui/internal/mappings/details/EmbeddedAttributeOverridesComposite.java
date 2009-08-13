@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -21,10 +22,10 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
@@ -174,7 +175,7 @@ public class EmbeddedAttributeOverridesComposite extends FormPane<BaseEmbeddedMa
 	}
 
 	private void installOverrideDefaultButtonEnabler(Button overrideDefaultButton) {
-		new ControlEnabler(
+		SWTTools.controlEnabledState(
 			buildOverrideVirtualAttributeOverrideEnablerHolder(),
 			overrideDefaultButton
 		);

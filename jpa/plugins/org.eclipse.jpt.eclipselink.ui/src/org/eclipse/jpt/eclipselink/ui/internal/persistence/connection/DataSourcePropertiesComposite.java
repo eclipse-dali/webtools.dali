@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -139,11 +139,11 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 	}
 
 	private void installJTADataSourceControlEnabler(Text text, Label label) {
-		new ControlEnabler(buildJTADataSourceHolder(), text, label);
+		SWTTools.controlEnabledState(buildJTADataSourceHolder(), text, label);
 	}
 
 	private void installNonJTADataSourceControlEnabler(Text text, Label label) {
-		new ControlEnabler(buildNonJTADataSourceHolder(), text, label);
+		SWTTools.controlEnabledState(buildNonJTADataSourceHolder(), text, label);
 	}
 	
 	public String getHelpID() {
