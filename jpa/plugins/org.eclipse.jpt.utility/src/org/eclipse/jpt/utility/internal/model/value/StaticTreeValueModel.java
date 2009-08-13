@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,9 +17,9 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.value.TreeValueModel;
 
 /**
- * Implementation of TreeValueModel that can be used for
+ * Implementation of {@link TreeValueModel} that can be used for
  * returning an iterator on a static tree, but still allows listeners to be added.
- * Listeners will NEVER be notified of any changes, because there should be none.
+ * Listeners will <em>never</em> be notified of any changes, because there should be none.
  */
 public class StaticTreeValueModel<E>
 	extends AbstractModel
@@ -32,7 +32,7 @@ public class StaticTreeValueModel<E>
 
 
 	/**
-	 * Construct a read-only TreeValueModel for the specified nodes.
+	 * Construct a read-only tree value model for the specified nodes.
 	 */
 	public StaticTreeValueModel(Iterable<? extends E> nodes) {
 		super();
@@ -52,8 +52,8 @@ public class StaticTreeValueModel<E>
 	// ********** Object overrides **********
 
 	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection(this.nodes()));
+	public void toString(StringBuilder sb) {
+		sb.append(this.nodes);
 	}
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
@@ -30,17 +31,18 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * A <code>CompositeListValueModel</code> wraps another
- * <code>ListValueModel</code> and uses a <code>Transformer</code>
+ * {@link ListValueModel} and uses a {@link Transformer}
  * to convert each item in the wrapped list to yet another
- * <code>ListValueModel</code>. This composite list contains
+ * {@link ListValueModel}. This composite list contains
  * the combined items from all these component lists.
- * 
- * Terminology:
- * - sources - the items in the wrapped list value model; these
+ * <p>
+ * Terminology:<ul>
+ * <li><em>sources</em> - the items in the wrapped list value model; these
  *    are converted into component LVMs by the transformer
- * - componentLVMs - the component list value models that are combined
+ * <li><em>component LVMs</em> - the component list value models that are combined
  *    by this composite list value model
- * - items - the items held by the component LVMs
+ * <li><em>items</em> - the items held by the component LVMs
+ * </ul>
  */
 public class CompositeListValueModel<E1, E2>
 	extends ListValueModelWrapper<E1>
@@ -55,7 +57,7 @@ public class CompositeListValueModel<E1, E2>
 	/**
 	 * Cache of the sources, component LVMs, lists.
 	 */
-	private final ArrayList<Info> infoList;
+	private final ArrayList<Info> infoList = new ArrayList<Info>();
 	protected class Info {
 		// the object passed to the transformer
 		final E1 source;
@@ -85,11 +87,12 @@ public class CompositeListValueModel<E1, E2>
 
 	/**
 	 * Construct a list value model with the specified wrapped
-	 * list value model. Use this constructor if
-	 *     - the wrapped list value model already contains other
-	 *       list value models or
-	 *     - you want to override the <code>transform(E1)</code> method
-	 *       instead of building a <code>Transformer</code>
+	 * list value model. Use this constructor if<ul>
+	 * <li> the wrapped list value model already contains other
+	 *       list value models, or
+	 * <li> you want to override {@link #transform(E1)}
+	 *       instead of building a {@link Transformer}
+	 * </ul>
 	 */
 	public CompositeListValueModel(ListValueModel<? extends E1> listHolder) {
 		this(listHolder, Transformer.Null.<E1, ListValueModel<E2>>instance());
@@ -102,17 +105,18 @@ public class CompositeListValueModel<E1, E2>
 	public CompositeListValueModel(ListValueModel<? extends E1> listHolder, Transformer<E1, ListValueModel<E2>> transformer) {
 		super(listHolder);
 		this.transformer = transformer;
-		this.infoList = new ArrayList<Info>();
 		this.componentLVMListener = this.buildComponentLVMListener();
 		this.size = 0;
 	}
 
 	/**
 	 * Construct a list value model with the specified, unchanging, wrapped
-	 * list. Use this constructor if
-	 *     - the wrapped list already contains list value models or
-	 *     - you want to override the <code>transform(E1)</code> method
-	 *       instead of building a <code>Transformer</code>
+	 * list. Use this constructor if<ul>
+	 * <li> the wrapped list value model already contains other
+	 *       list value models, or
+	 * <li> you want to override {@link #transform(E1)}
+	 *       instead of building a {@link Transformer}
+	 * </ul>
 	 */
 	public CompositeListValueModel(List<? extends E1> list) {
 		this(new StaticListValueModel<E1>(list));
@@ -123,6 +127,27 @@ public class CompositeListValueModel<E1, E2>
 	 * list and transformer.
 	 */
 	public CompositeListValueModel(List<? extends E1> list, Transformer<E1, ListValueModel<E2>> transformer) {
+		this(new StaticListValueModel<E1>(list), transformer);
+	}
+
+	/**
+	 * Construct a list value model with the specified, unchanging, wrapped
+	 * list. Use this constructor if<ul>
+	 * <li> the wrapped list value model already contains other
+	 *       list value models, or
+	 * <li> you want to override {@link #transform(E1)}
+	 *       instead of building a {@link Transformer}
+	 * </ul>
+	 */
+	public CompositeListValueModel(E1... list) {
+		this(new StaticListValueModel<E1>(list));
+	}
+
+	/**
+	 * Construct a list value model with the specified, unchanging, wrapped
+	 * list and transformer.
+	 */
+	public CompositeListValueModel(E1[] list, Transformer<E1, ListValueModel<E2>> transformer) {
 		this(new StaticListValueModel<E1>(list), transformer);
 	}
 
@@ -226,7 +251,7 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsAdded(ListAddEvent event) {
-		this.addComponentSources(event.getIndex(), this.getAddedItems(event), event.getItemsSize(), true);  // true = fire event
+		this.addComponentSources(event.getIndex(), this.getItems(event), event.getItemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -403,7 +428,7 @@ public class CompositeListValueModel<E1, E2>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(CollectionTools.list(this.listIterator(), this.size));
+		StringTools.append(sb, this);
 	}
 
 
@@ -413,7 +438,7 @@ public class CompositeListValueModel<E1, E2>
 	 * Transform the specified object into a list value model.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Transformer</code>.
+	 * alternative to building a {@link Transformer}.
 	 */
 	protected ListValueModel<E2> transform(E1 value) {
 		return this.transformer.transform(value);

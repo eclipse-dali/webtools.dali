@@ -15,14 +15,16 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * A <code>TransformationPropertyValueModel</code> wraps another
- * <code>PropertyValueModel</code> and uses a <code>Transformer</code>
- * to transform the wrapped value before it is returned by <code>value()</code>.
+ * {@link PropertyValueModel} and uses a {@link Transformer}
+ * to transform the wrapped value before it is returned by {@link #getValue()}.
  * <p>
- * As an alternative to building a <code>Transformer</code>,
+ * As an alternative to building a {@link Transformer},
  * a subclass of <code>TransformationPropertyValueModel</code> can
- * either override the <code>transform_(Object)</code> method or,
+ * either override {@link #transform_(Object)} or,
  * if something other than null should be returned when the wrapped value
- * is null, override the <code>transform(Object)</code> method.
+ * is null, override {@link #transform(Object)}.
+ * 
+ * @see Transformer
  */
 public class TransformationPropertyValueModel<T1, T2>
 	extends PropertyValueModelWrapper<T1>
@@ -36,9 +38,9 @@ public class TransformationPropertyValueModel<T1, T2>
 	/**
 	 * Construct a property value model with the specified nested
 	 * property value model and the default transformer.
-	 * Use this constructor if you want to override the
-	 * <code>transform_(Object)</code> or <code>transform(Object)</code>
-	 * method instead of building a <code>Transformer</code>.
+	 * Use this constructor if you want to override
+	 * {@link #transform_(Object)} or {@link #transform(Object)}
+	 * method instead of building a {@link Transformer}.
 	 */
 	public TransformationPropertyValueModel(PropertyValueModel<? extends T1> valueHolder) {
 		super(valueHolder);
@@ -73,9 +75,11 @@ public class TransformationPropertyValueModel<T1, T2>
 	protected void valueChanged(PropertyChangeEvent event) {
 		// transform the values before propagating the change event
 	    @SuppressWarnings("unchecked")
-		Object oldValue = this.transformOld((T1) event.getOldValue());
+	    T1 eventOldValue = (T1) event.getOldValue();
+		Object oldValue = this.transformOld(eventOldValue);
 	    @SuppressWarnings("unchecked")
-		Object newValue = this.transformNew((T1) event.getNewValue());
+	    T1 eventNewValue = (T1) event.getNewValue();
+		Object newValue = this.transformNew(eventNewValue);
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
@@ -84,7 +88,10 @@ public class TransformationPropertyValueModel<T1, T2>
 
 	/**
 	 * Transform the specified value and return the result.
-	 * This is called by #value() and #valueChanged(PropertyChangeEvent).
+	 * This is called by
+	 * {@link #getValue()},
+	 * {@link #transformOld(T1)}, and
+	 * {@link #transformNew(T1)}.
 	 */
 	protected T2 transform(T1 value) {
 		return this.transformer.transform(value);
@@ -114,6 +121,12 @@ public class TransformationPropertyValueModel<T1, T2>
 	protected T2 transformNew(T1 value) {
 		return this.transform(value);
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getValue());
+	}
+
 
 	// ********** default transformer **********
 

@@ -11,21 +11,22 @@ package org.eclipse.jpt.utility.model.event;
 
 import java.util.List;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "list replace" event gets delivered whenever a model replaces items in a
- * "bound" or "constrained" list. A ListReplaceEvent is sent as an
- * argument to the ListChangeListener.
- * 
+ * "bound" or "constrained" list. A <code>ListReplaceEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.ListChangeListener}.
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class ListReplaceEvent extends ListEvent {
+public final class ListReplaceEvent extends ListEvent {
 
 	/** The index at which the items were replaced. */
 	private final int index;
@@ -94,6 +95,15 @@ public class ListReplaceEvent extends ListEvent {
 	 */
 	public int getItemsSize() {
 		return this.newItems.length;
+	}
+
+	@Override
+	protected void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(": "); //$NON-NLS-1$
+		StringTools.append(sb, this.oldItems);
+		sb.append(" => "); //$NON-NLS-1$
+		StringTools.append(sb, this.newItems);
 	}
 
 

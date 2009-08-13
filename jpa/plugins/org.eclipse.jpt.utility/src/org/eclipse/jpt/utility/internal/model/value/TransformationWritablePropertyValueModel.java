@@ -14,19 +14,18 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * A <code>TransformationWritablePropertyValueModel</code> wraps another
- * <code>WritablePropertyValueModel</code> and uses a <code>BidiTransformer</code>
+ * {@link WritablePropertyValueModel} and uses a {@link BidiTransformer}
  * to:<ul>
- * <li>transform the wrapped value before it is returned by <code>value()</code>
+ * <li>transform the wrapped value before it is returned by {@link #getValue()}
  * <li>"reverse-transform" the new value that comes in via
- * <code>setValue(Object)</code>
+ * {@link #setValue(Object)}
  * </ul>
- * As an alternative to building a <code>BidiTransformer</code>,
+ * As an alternative to building a {@link BidiTransformer},
  * a subclass of <code>TransformationWritablePropertyValueModel</code> can
- * override the <code>transform_(Object)</code> and 
- * <code>reverseTransform_(Object)</code> methods; or,
- * if something other than null should be returned when the wrapped value
- * is null or the new value is null, override the <code>transform(Object)</code>
- * and <code>reverseTransform(Object)</code> methods.
+ * override {@link #transform_(Object)} and {@link #reverseTransform_(Object)};
+ * or, if something other than null should be returned when the wrapped value
+ * is null or the new value is null, override {@link #transform(Object)}
+ * and {@link #reverseTransform(Object)}.
  */
 public class TransformationWritablePropertyValueModel<T1, T2>
 	extends TransformationPropertyValueModel<T1, T2>
@@ -39,9 +38,9 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 	 * Construct a writable property value model with the specified nested
 	 * writable property value model and the default bidi transformer.
 	 * Use this constructor if you want to override the
-	 * <code>transform_(Object)</code> and <code>reverseTransform_(Object)</code>
-	 * (or <code>transform(Object)</code> and <code>reverseTransform(Object)</code>)
-	 * methods instead of building a <code>BidiTransformer</code>.
+	 * {@link #transform_(Object)} and {@link #reverseTransform_(Object)}
+	 * (or {@link #transform(Object)} and {@link #reverseTransform(Object)})
+	 * methods instead of building a {@link BidiTransformer}.
 	 */
 	public TransformationWritablePropertyValueModel(WritablePropertyValueModel<T1> valueHolder) {
 		super(valueHolder);
@@ -65,7 +64,7 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 
 	public void setValue(T2 value) {
 		// "reverse-transform" the object before passing it to the the nested value model
-		this.valueHolder().setValue(this.reverseTransform(value));
+		this.getValueHolder().setValue(this.reverseTransform(value));
 	}
 
 
@@ -73,10 +72,10 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 
 	/**
 	 * "Reverse-transform" the specified value and return the result.
-	 * This is called by #setValue(Object).
+	 * This is called by {@link #setValue(Object)}.
 	 */
 	protected T1 reverseTransform(T2 value) {
-		return this.transformer().reverseTransform(value);
+		return this.getTransformer().reverseTransform(value);
 	}
 
 	/**
@@ -90,17 +89,19 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 	// ********** queries **********
 
 	/**
-	 * Our constructors accept only a WritablePropertyValueModel<T1>.
+	 * Our constructors accept only a {@link WritablePropertyValueModel<T1>},
+	 * so this cast should be safe.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<T1> valueHolder() {
+	protected WritablePropertyValueModel<T1> getValueHolder() {
 		return (WritablePropertyValueModel<T1>) this.valueHolder;
 	}
 
 	/**
-	 * Our constructors accept only a bidirectional transformer.
+	 * Our constructors accept only a {@link BidiTransformer<T1, T2>},
+	 * so this cast should be safe.
 	 */
-	protected BidiTransformer<T1, T2> transformer() {
+	protected BidiTransformer<T1, T2> getTransformer() {
 		return (BidiTransformer<T1, T2>) this.transformer;
 	}
 
@@ -110,10 +111,10 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 	/**
 	 * The default bidi transformer will return null if the wrapped value is null.
 	 * If the wrapped value is not null, it is transformed by a subclass
-	 * implementation of #transform_(Object).
+	 * implementation of {@link #transform_(Object)}.
 	 * The default bidi transformer will also return null if the new value is null.
 	 * If the new value is not null, it is reverse-transformed by a subclass
-	 * implementation of #reverseTransform_(Object).
+	 * implementation of {@link #reverseTransform_(Object)}.
 	 */
 	protected class DefaultBidiTransformer
 		extends DefaultTransformer

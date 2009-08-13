@@ -199,10 +199,10 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertFalse(this.setHolderContainsAny(this.buildRemoveItems()));
 	}
 
-	public void testSetCollection() {
+	public void testSetValues() {
 		assertTrue(this.bagHolderContains("bar"));
 		assertFalse(this.bagHolderContains("jar"));
-		this.bagHolder.setCollection(this.buildAddItems());
+		this.bagHolder.setValues(this.buildAddItems());
 		assertFalse(this.bagHolderContains("bar"));
 		assertTrue(this.bagHolderContains("jar"));
 
@@ -211,12 +211,12 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.bagHolder.remove(null);
 		assertFalse(this.bagHolderContains(null));
 
-		this.bagHolder.setCollection(new HashBag<String>());
+		this.bagHolder.setValues(new HashBag<String>());
 		assertFalse(this.bagHolderContains("jar"));
 
 		assertTrue(this.setHolderContains("bar"));
 		assertFalse(this.setHolderContains("jar"));
-		this.setHolder.setCollection(this.buildAddItems());
+		this.setHolder.setValues(this.buildAddItems());
 		assertFalse(this.setHolderContains("bar"));
 		assertTrue(this.setHolderContains("jar"));
 
@@ -225,7 +225,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.setHolder.remove(null);
 		assertFalse(this.setHolderContains(null));
 
-		this.setHolder.setCollection(new HashBag<String>());
+		this.setHolder.setValues(new HashBag<String>());
 		assertFalse(this.setHolderContains("jar"));
 	}
 
@@ -283,7 +283,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.setCollection(this.buildBag());
+		this.bagHolder.setValues(this.buildBag());
 		this.verifyBagEvent(CHANGE);
 
 		this.bagEvent = null;
@@ -340,7 +340,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.setCollection(this.buildSet());
+		this.setHolder.setValues(this.buildSet());
 		this.verifySetEvent(CHANGE);
 
 		this.setEvent = null;

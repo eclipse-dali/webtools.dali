@@ -14,35 +14,30 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * An adapter that allows us to make a CollectionValueModel behave like
- * a read-only ListValueModel, sorta.
- * 
+ * An adapter that allows us to make a {@link CollectionValueModel} behave like
+ * a read-only {@link ListValueModel}, sorta.
+ * <p>
  * To maintain a reasonably consistent appearance to client code, we
  * keep an internal list somewhat in synch with the wrapped collection.
- * 
- * NB: Since we only listen to the wrapped collection when we have
+ * <p>
+ * <b>NB:</b> Since we only listen to the wrapped collection when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * collection while we are listening to it, results to various methods
- * (e.g. #size(), getItem(int)) will be unpredictable whenever
+ * (e.g. {@link #size()}, {@link #get(int)}) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
- * most likely, client objects will also be listeners.
+ * most likely, clients will also be listeners.
  */
 public class CollectionListValueModelAdapter<E>
-	extends AbstractModel
+	extends AbstractListValueModel
 	implements ListValueModel<E>
 {
 	/** The wrapped collection value model. */
@@ -62,7 +57,7 @@ public class CollectionListValueModelAdapter<E>
 	// ********** constructors **********
 
 	/**
-	 * Wrap the specified CollectionValueModel.
+	 * Wrap the specified collection value model.
 	 */
 	public CollectionListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder) {
 		super();
@@ -71,18 +66,13 @@ public class CollectionListValueModelAdapter<E>
 		}
 		this.collectionHolder = collectionHolder;
 		this.collectionChangeListener = this.buildCollectionChangeListener();
-		this.list = new ArrayList<E>();
+		this.list = new ArrayList<E>(collectionHolder.size());
 		// postpone building the list and listening to the underlying collection
 		// until we have listeners ourselves...
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, ListChangeListener.class, LIST_VALUES);
-	}
 
 	/**
 	 * The wrapped collection has changed, forward an equivalent
@@ -133,63 +123,6 @@ public class CollectionListValueModelAdapter<E>
 	}
 
 
-	// ********** extend change support **********
-
-	/**
-	 * Override to start listening to the collection holder if necessary.
-	 */
-	@Override
-	public void addChangeListener(ChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModel();
-		}
-		super.addChangeListener(listener);
-	}
-
-	/**
-	 * Override to start listening to the collection holder if necessary.
-	 */
-	@Override
-	public void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
-			this.engageModel();
-		}
-		super.addListChangeListener(listName, listener);
-	}
-
-	/**
-	 * Override to stop listening to the collection holder if appropriate.
-	 */
-	@Override
-	public void removeChangeListener(ChangeListener listener) {
-		super.removeChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModel();
-		}
-	}
-
-	/**
-	 * Override to stop listening to the collection holder if appropriate.
-	 */
-	@Override
-	public void removeListChangeListener(String listName, ListChangeListener listener) {
-		super.removeListChangeListener(listName, listener);
-		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
-			this.disengageModel();
-		}
-	}
-
-
-	// ********** queries **********
-
-	protected boolean hasListeners() {
-		return this.hasAnyListChangeListeners(LIST_VALUES);
-	}
-
-	protected boolean hasNoListeners() {
-		return ! this.hasListeners();
-	}
-
 	/**
 	 * Return the index of the specified item, using object
 	 * identity instead of equality.
@@ -215,25 +148,21 @@ public class CollectionListValueModelAdapter<E>
 	// ********** behavior **********
 
 	protected void buildList() {
-		Iterator<? extends E> stream = this.collectionHolder.iterator();
 		// if the new collection is empty, do nothing
-		if (stream.hasNext()) {
-			this.list.ensureCapacity(this.collectionHolder.size());
-			while (stream.hasNext()) {
-				this.list.add(stream.next());
-			}
-			this.postBuildList();
+		int size = this.collectionHolder.size();
+		if (size != 0) {
+			this.buildList(size);
 		}
 	}
 
-	/**
-	 * Allow subclasses to manipulate the internal list before
-	 * sending out change notification.
-	 */
-	protected void postBuildList() {
-		// the default is to do nothing...
+	protected void buildList(int size) {
+		this.list.ensureCapacity(size);
+		for (E each : this.collectionHolder) {
+			this.list.add(each);
+		}
 	}
 
+	@Override
 	protected void engageModel() {
 		this.collectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 		// synch our list *after* we start listening to the collection holder,
@@ -241,6 +170,7 @@ public class CollectionListValueModelAdapter<E>
 		this.buildList();
 	}
 
+	@Override
 	protected void disengageModel() {
 		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 		// clear out the list when we are not listening to the collection holder
@@ -261,18 +191,18 @@ public class CollectionListValueModelAdapter<E>
 		return (Iterable<E>) event.getItems();
 	}
 
-	// minimize scope of suppressed warnings
-	@SuppressWarnings("unchecked")
-	protected Iterable<E> getItems(CollectionRemoveEvent event) {
-		return (Iterable<E>) event.getItems();
-	}
-
 	protected void itemsRemoved(CollectionRemoveEvent event) {
 		// we have to remove the items individually,
 		// since they are probably not in sequence
 		for (E item : this.getItems(event)) {
 			this.removeItemFromList(this.lastIdentityIndexOf(item), this.list, LIST_VALUES);
 		}
+	}
+
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	protected void collectionCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
@@ -284,24 +214,28 @@ public class CollectionListValueModelAdapter<E>
 	 * and fire the appropriate events
 	 */
 	protected void collectionChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
-		// put in empty check so we don't fire events unnecessarily
-		if ( ! this.list.isEmpty()) {
-			@SuppressWarnings("unchecked")
-			ArrayList<E> removedItems = (ArrayList<E>) this.list.clone();
-			this.list.clear();
-			this.fireItemsRemoved(LIST_VALUES, 0, removedItems);
-		}
-
-		this.buildList();
-		// put in empty check so we don't fire events unnecessarily
-		if ( ! this.list.isEmpty()) {
-			this.fireItemsAdded(LIST_VALUES, 0, this.list);
+		int size = this.collectionHolder.size();
+		if (size == 0) {
+			if (this.list.isEmpty()) {
+				// no change
+			} else {
+				this.clearList(this.list, LIST_VALUES);
+			}
+		} else {
+			if (this.list.isEmpty()) {
+				this.buildList(size);
+				this.fireItemsAdded(LIST_VALUES, 0, this.list);
+			} else {
+				this.list.clear();
+				this.buildList(size);
+				this.fireListChanged(LIST_VALUES, this.list);
+			}
 		}
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.collectionHolder);
+		sb.append(this.list);
 	}
 
 }

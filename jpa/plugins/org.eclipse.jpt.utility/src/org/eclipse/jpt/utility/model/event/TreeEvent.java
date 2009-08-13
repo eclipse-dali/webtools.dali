@@ -13,11 +13,12 @@ import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "tree" event gets delivered whenever a model changes a "bound"
- * or "constrained" tree. A TreeEvent is sent as an
- * argument to the TreeChangeListener. The intent is that any listener
+ * or "constrained" tree. A <code>TreeEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.TreeChangeListener}.
+ * The intent is that any listener
  * can keep itself synchronized with the model's tree via the tree events
  * it receives and need not maintain a reference to the original tree.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

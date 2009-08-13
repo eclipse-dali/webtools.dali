@@ -11,11 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.EventListener;
-import java.util.Iterator;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
@@ -23,25 +19,21 @@ import org.eclipse.jpt.utility.model.event.TreeClearEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.TreeValueModel;
 
 /**
- * This extension of PropertyAdapter provides TreeChange support.
- * This allows us to convert a set of one or more trees into
- * a single tree, NODES.
- * 
- * The typical subclass will override the following methods:
- * #nodes_()
- *     at the very minimum, override this method to return an iterator
- *     on the subject's tree aspect; it does not need to be overridden if
- *     #nodes() is overridden and its behavior changed
- * #nodes()
- *     override this method only if returning an empty iterator when the
- *     subject is null is unacceptable
+ * This extension of {@link AspectTreeValueModelAdapter} provides
+ * basic tree change support.
+ * This converts a set of one or more trees into
+ * a single {@link #NODES} tree.
+ * <p>
+ * The typical subclass will override the following methods (see the descriptions
+ * in {@link AspectTreeValueModelAdapter}):<ul>
+ * <li>{@link #nodes_()}
+ * <li>{@link #nodes()}
+ * </ul>
  */
 public abstract class TreeAspectAdapter<S extends Model, E>
-	extends AspectAdapter<S>
-	implements TreeValueModel<E>
+	extends AspectTreeValueModelAdapter<S, E>
 {
 	/**
 	 * The name of the subject's trees that we use for the value.
@@ -49,14 +41,14 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	protected final String[] treeNames;
 		protected static final String[] EMPTY_TREE_NAMES = new String[0];
 
-	/** A listener that listens to the subject's tree aspect. */
+	/** A listener that listens to the subject's tree aspects. */
 	protected final TreeChangeListener treeChangeListener;
 
 
 	// ********** constructors **********
 
 	/**
-	 * Construct a TreeAspectAdapter for the specified subject
+	 * Construct a tree aspect adapter for the specified subject
 	 * and tree.
 	 */
 	protected TreeAspectAdapter(String treeName, S subject) {
@@ -64,7 +56,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a TreeAspectAdapter for the specified subject
+	 * Construct a tree aspect adapter for the specified subject
 	 * and trees.
 	 */
 	protected TreeAspectAdapter(String[] treeNames, S subject) {
@@ -72,7 +64,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a TreeAspectAdapter for the specified subject holder
+	 * Construct a tree aspect adapter for the specified subject holder
 	 * and trees.
 	 */
 	protected TreeAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... treeNames) {
@@ -82,7 +74,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a TreeAspectAdapter for the specified subject holder
+	 * Construct a tree aspect adapter for the specified subject holder
 	 * and trees.
 	 */
 	protected TreeAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> treeNames) {
@@ -90,7 +82,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a TreeAspectAdapter for an "unchanging" tree in
+	 * Construct a tree aspect adapter for an "unchanging" tree in
 	 * the specified subject. This is useful for a tree aspect that does not
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new tree.
@@ -102,9 +94,6 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 
 	// ********** initialization **********
 
-	/**
-	 * The subject's tree aspect has changed, notify the listeners.
-	 */
 	protected TreeChangeListener buildTreeChangeListener() {
 		// transform the subject's tree change events into VALUE tree change events
 		return new TreeChangeListener() {
@@ -128,52 +117,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
 
-	// ********** TreeValueModel implementation **********
-
-	/**
-	 * Return the nodes of the subject's tree aspect.
-	 */
-	public Iterator<E> nodes() {
-		return (this.subject == null) ? EmptyIterator.<E>instance() : this.nodes_();
-	}
-
-	/**
-	 * Return the nodes of the subject's tree aspect.
-	 * At this point we can be sure that the subject is not null.
-	 * @see #nodes()
-	 */
-	protected Iterator<E> nodes_() {
-		throw new UnsupportedOperationException();
-	}
-
-
 	// ********** AspectAdapter implementation **********
-
-	@Override
-	protected Object getValue() {
-		return this.nodes();
-	}
-
-	@Override
-	protected Class<? extends EventListener> getListenerClass() {
-		return TreeChangeListener.class;
-	}
-
-	@Override
-	protected String getListenerAspectName() {
-		return NODES;
-	}
-
-    @Override
-	protected boolean hasListeners() {
-		return this.hasAnyTreeChangeListeners(NODES);
-	}
-
-    @Override
-	protected void fireAspectChanged(Object oldValue, Object newValue) {
-		@SuppressWarnings("unchecked") Iterator<E> newIterator = (Iterator<E>) newValue;
-		this.fireTreeChanged(NODES, CollectionTools.collection(newIterator));
-	}
 
     @Override
 	protected void engageSubject_() {
@@ -186,16 +130,6 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	protected void disengageSubject_() {
     	for (String treeName : this.treeNames) {
 			((Model) this.subject).removeTreeChangeListener(treeName, this.treeChangeListener);
-		}
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		for (int i = 0; i < this.treeNames.length; i++) {
-			if (i != 0) {
-				sb.append(", "); //$NON-NLS-1$
-			}
-			sb.append(this.treeNames[i]);
 		}
 	}
 

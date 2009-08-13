@@ -54,11 +54,11 @@ public class SWTListChangeListenerWrapper
 	}
 
 	public void listCleared(ListClearEvent event) {
-		this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
+		this.executeOnUIThread(this.buildListClearedRunnable(event));
 	}
 
 	public void listChanged(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
+		this.executeOnUIThread(this.buildListChangedRunnable(event));
 	}
 
 	private Runnable buildItemsAddedRunnable(final ListAddEvent event) {
@@ -109,7 +109,7 @@ public class SWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildCollectionClearedRunnable(final ListClearEvent event) {
+	private Runnable buildListClearedRunnable(final ListClearEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTListChangeListenerWrapper.this.listCleared_(event);
@@ -121,7 +121,7 @@ public class SWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildCollectionChangedRunnable(final ListChangeEvent event) {
+	private Runnable buildListChangedRunnable(final ListChangeEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTListChangeListenerWrapper.this.listChanged_(event);

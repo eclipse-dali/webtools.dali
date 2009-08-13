@@ -11,24 +11,24 @@ package org.eclipse.jpt.utility.model.event;
 
 import java.util.List;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "list change" event gets delivered whenever a model changes a "bound"
- * or "constrained" list. A ListChangeEvent is sent as an
- * argument to the ListChangeListener.
- * 
- * A ListChangeEvent is accompanied by the list name and
+ * or "constrained" list. A <code>ListChangeEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.ListChangeListener}.
+ * A <code>ListChangeEvent</code> is accompanied by the list name and
  * the current state of the list.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class ListChangeEvent extends ListEvent {
+public final class ListChangeEvent extends ListEvent {
 
 	/**
 	 * The the list in its current state.
@@ -72,6 +72,13 @@ public class ListChangeEvent extends ListEvent {
 	 */
 	public int getListSize() {
 		return this.list.length;
+	}
+
+	@Override
+	protected void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(": "); //$NON-NLS-1$
+		StringTools.append(sb, this.list);
 	}
 
 

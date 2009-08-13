@@ -21,18 +21,18 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * An adapter that allows us to make a <code>CollectionValueModel</code>
- * (or <code>ListValueModel</code>) behave like a <code>ListValueModel</code>
+ * An adapter that allows us to make a {@link CollectionValueModel}
+ * (or {@link ListValueModel}) behave like a {@link ListValueModel}
  * that keeps its contents sorted and notifies listeners appropriately.
  * <p>
- * The comparator can be changed at any time; allowing the same
+ * The {@link Comparator} can be changed at any time; allowing the same
  * adapter to be used with different sort criteria (e.g. when the user
  * wants to sort a list of files first by name, then by date, then by size).
  * <p>
- * NB: Since we only listen to the wrapped collection when we have
+ * <b>NB:</b> Since we only listen to the wrapped collection when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * collection while we are listening to it, results to various methods
- * (e.g. <code>#size()</code>, <code>#getItem(int)</code>) will be
+ * (e.g. {@link #size()}, {@link #get(int)}) will be
  * unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
@@ -94,12 +94,12 @@ public class SortedListValueModelAdapter<E>
 	// ********** behavior **********
 
 	/**
-	 * Sort the internal list before
-	 * sending out change notification.
+	 * Sort the internal list before the superclass
+	 * sends out change notification.
 	 */
 	@Override
-	protected void postBuildList() {
-		super.postBuildList();
+	protected void buildList(int size) {
+		super.buildList(size);
 		Collections.sort(this.list, this.comparator);
 	}
 

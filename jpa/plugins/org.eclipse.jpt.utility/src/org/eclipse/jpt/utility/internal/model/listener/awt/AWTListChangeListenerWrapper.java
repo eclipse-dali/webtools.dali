@@ -22,10 +22,10 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 /**
  * Wrap another list change listener and forward events to it on the AWT
  * event queue.
- * Forward *every* event asynchronously via the UI thread so the listener
+ * Forward <em>every</em> event asynchronously via the UI thread so the listener
  * receives in the same order they were generated.
  */
-public class AWTListChangeListenerWrapper
+public final class AWTListChangeListenerWrapper
 	implements ListChangeListener
 {
 	private final ListChangeListener listener;

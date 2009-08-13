@@ -9,28 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * This abstract class provides the infrastructure needed to wrap
  * another list value model, "lazily" listen to it, and propagate
- * its change notifications.
+ * its change notifications. Subclasses must implement the appropriate
+ * {@link ListValueModel}.
  */
 public abstract class ListValueModelWrapper<E>
-	extends AbstractModel
+	extends AbstractListValueModel
 {
-
 	/** The wrapped list value model. */
 	protected final ListValueModel<? extends E> listHolder;
 
@@ -52,14 +48,9 @@ public abstract class ListValueModelWrapper<E>
 		this.listHolder = listHolder;
 		this.listChangeListener = this.buildListChangeListener();
 	}
-	
+
 
 	// ********** initialization **********
-
-	@Override
-	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, ListChangeListener.class, ListValueModel.LIST_VALUES);
-	}
 
 	protected ListChangeListener buildListChangeListener() {
 		return new ListChangeListener() {
@@ -89,58 +80,12 @@ public abstract class ListValueModelWrapper<E>
 	}
 
 
-	// ********** extend change support **********
-
-	/**
-	 * Extend to start listening to the nested model if necessary.
-	 */
-	@Override
-	public synchronized void addChangeListener(ChangeListener listener) {
-		if (this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
-			this.engageModel();
-		}
-		super.addChangeListener(listener);
-	}
-	
-	/**
-	 * Extend to start listening to the nested model if necessary.
-	 */
-	@Override
-	public synchronized void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName.equals(ListValueModel.LIST_VALUES) && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
-			this.engageModel();
-		}
-		super.addListChangeListener(listName, listener);
-	}
-	
-	/**
-	 * Extend to stop listening to the nested model if necessary.
-	 */
-	@Override
-	public synchronized void removeChangeListener(ChangeListener listener) {
-		super.removeChangeListener(listener);
-		if (this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
-			this.disengageModel();
-		}
-	}
-	
-	/**
-	 * Extend to stop listening to the nested model if necessary.
-	 */
-	@Override
-	public synchronized void removeListChangeListener(String listName, ListChangeListener listener) {
-		super.removeListChangeListener(listName, listener);
-		if (listName.equals(ListValueModel.LIST_VALUES) && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
-			this.disengageModel();
-		}
-	}
-	
-
 	// ********** behavior **********
 
 	/**
 	 * Start listening to the list holder.
 	 */
+	@Override
 	protected void engageModel() {
 		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
@@ -148,24 +93,20 @@ public abstract class ListValueModelWrapper<E>
 	/**
 	 * Stop listening to the list holder.
 	 */
+	@Override
 	protected void disengageModel() {
 		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.listHolder);
-	}
-
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getAddedItems(ListAddEvent event) {
+	protected Iterable<E> getItems(ListAddEvent event) {
 		return (Iterable<E>) event.getItems();
 	}
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getRemovedItems(ListRemoveEvent event) {
+	protected Iterable<E> getItems(ListRemoveEvent event) {
 		return (Iterable<E>) event.getItems();
 	}
 

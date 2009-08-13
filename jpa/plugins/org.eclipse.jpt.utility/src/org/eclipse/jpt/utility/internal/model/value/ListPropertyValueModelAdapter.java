@@ -23,23 +23,24 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * a list value model, "lazily" listen to it, and convert
  * its change notifications into property value model change
  * notifications.
- * 
- * Subclasses must override:
- * - #buildValue()
+ * <p>
+ * Subclasses must override:<ul>
+ * <li>{@link #buildValue()}<p>
  *     to return the current property value, as derived from the
  *     current list value
- * 
- * Subclasses might want to override:
- * - #itemsAdded(ListChangeEvent event)
- * - #itemsRemoved(ListChangeEvent event)
- * - #itemsReplaced(ListChangeEvent event)
- * - #itemsMoved(ListChangeEvent event)
- * - #listCleared(ListChangeEvent event)
- * - #listChanged(ListChangeEvent event)
- *     to improve performance (by not recalculating the value, if possible)
+ * </ul>
+ * Subclasses might want to override the following methods
+ * to improve performance (by not recalculating the value, if possible):<ul>
+ * <li>{@link #itemsAdded(ListAddEvent event)}
+ * <li>{@link #itemsRemoved(ListRemoveEvent event)}
+ * <li>{@link #itemsReplaced(ListReplaceEvent event)}
+ * <li>{@link #itemsMoved(ListMoveEvent event)}
+ * <li>{@link #listCleared(ListClearEvent event)}
+ * <li>{@link #listChanged(ListChangeEvent event)}
+ * </ul>
  */
 public abstract class ListPropertyValueModelAdapter<T>
-	extends AspectPropertyValueModelAdapter<T>
+	extends AbstractPropertyValueModelAdapter<T>
 {
 	/** The wrapped list value model. */
 	protected final ListValueModel<?> listHolder;
@@ -104,11 +105,6 @@ public abstract class ListPropertyValueModelAdapter<T>
 	@Override
 	protected void disengageModel_() {
 		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.listHolder);
 	}
 
 	

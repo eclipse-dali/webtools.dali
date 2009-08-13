@@ -13,16 +13,16 @@ import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "list move" event gets delivered whenever a model moves the elements in
- * a "bound" or "constrained" list. A ListMoveEvent is sent
- * as an argument to the ListChangeListener.
- * 
+ * a "bound" or "constrained" list. A <code>ListMoveEvent</code> is sent
+ * as an argument to the {@link org.eclipse.jpt.utility.model.listener.ListChangeListener}.
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class ListMoveEvent extends ListEvent {
+public final class ListMoveEvent extends ListEvent {
 
 	/** The index to which the items were moved. */
 	private final int targetIndex;
@@ -76,6 +76,17 @@ public class ListMoveEvent extends ListEvent {
 	 */
 	public int getLength() {
 		return this.length;
+	}
+
+	@Override
+	protected void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(": "); //$NON-NLS-1$
+		sb.append(this.sourceIndex);
+		sb.append(" => "); //$NON-NLS-1$
+		sb.append(this.targetIndex);
+		sb.append(" length="); //$NON-NLS-1$
+		sb.append(this.length);
 	}
 
 

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
@@ -27,10 +28,10 @@ import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * This wrapper extends a ListValueModel (or CollectionValueModel)
+ * This wrapper extends a {@link ListValueModel} (or {@link CollectionValueModel})
  * with fixed collections of items on either end.
  * <p>
- * NB: Be careful using or wrapping this list value model, since the
+ * <b>NB:</b> Be careful using or wrapping this list value model, since the
  * "extended" items may be unexpected by the client code or wrapper.
  */
 public class ExtendedListValueModelWrapper<E>
@@ -187,11 +188,7 @@ public class ExtendedListValueModelWrapper<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.prefix);
-		sb.append(' ');
-		super.toString(sb);
-		sb.append(' ');
-		sb.append(this.suffix);
+		StringTools.append(sb, this);
 	}
 
 

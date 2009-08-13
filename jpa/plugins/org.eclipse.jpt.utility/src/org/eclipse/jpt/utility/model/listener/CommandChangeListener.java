@@ -29,27 +29,29 @@ import org.eclipse.jpt.utility.model.event.TreeClearEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
- * Convenience implementation of ChangeListener.
+ * Convenience implementation of {@link ChangeListener}.
  * All change notifications are funneled through a single command (or method).
  * This class can be used by either passing a command to its constructor or by
- * subclassing it and overriding either the #modelChanged(ChangeEvent) method
- * (if access to the event is required) or the #modelChanged() method (if access
+ * subclassing it and overriding either {@link #modelChanged(ChangeEvent)}
+ * (if access to the event is required) or {@link #modelChanged()} (if access
  * to the event is not required).
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class CommandChangeListener implements ChangeListener {
+public class CommandChangeListener
+	implements ChangeListener
+{
 	protected final Command command;
 
 	/**
-	 * Construct a change listener with a null command.
-	 * Use this constructor if you want to override the
-	 * <code>modelChanged(ChangeEvent)</code> or <code>modelChanged()</code>
-	 * method instead of building a <code>Command</code>.
+	 * Construct a change listener with a <code>null</code> command.
+	 * Use this constructor if you want to override
+	 * {@link #modelChanged(ChangeEvent)} or {@link #modelChanged()}
+	 * method instead of building a {@link Command}.
 	 */
 	public CommandChangeListener() {
 		this(Command.Null.instance());

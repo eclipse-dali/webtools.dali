@@ -188,7 +188,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	 * the value is true if the wrapped collection contains the specified item,
 	 * otherwise the value is false
 	 */
-	private static class LocalAdapter
+	static class LocalAdapter
 		extends CollectionPropertyValueModelAdapter<Boolean>
 		implements WritablePropertyValueModel<Boolean>
 	{

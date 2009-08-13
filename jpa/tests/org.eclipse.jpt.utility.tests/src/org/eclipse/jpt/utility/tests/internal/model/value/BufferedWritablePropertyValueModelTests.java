@@ -37,9 +37,9 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 	PropertyChangeEvent adapterEvent;
 
 	private BufferedWritablePropertyValueModel.Trigger trigger;
-	private WritablePropertyValueModel<Integer> bufferedIDHolder;
-	private WritablePropertyValueModel<String> bufferedNameHolder;
-	private WritablePropertyValueModel<Date> bufferedHireDateHolder;
+	private BufferedWritablePropertyValueModel<Integer> bufferedIDHolder;
+	private BufferedWritablePropertyValueModel<String> bufferedNameHolder;
+	private BufferedWritablePropertyValueModel<Date> bufferedHireDateHolder;
 	PropertyChangeEvent bufferedEvent;
 
 	public BufferedWritablePropertyValueModelTests(String name) {
@@ -110,7 +110,7 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValue() {
+	public void testGetValue() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
 		this.bufferedIDHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
@@ -144,7 +144,7 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		assertEquals(null, this.bufferedHireDateHolder.getValue());
 	}
 
-	public void testAccept() {
+	public void testTriggerAccept() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
 		this.bufferedIDHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
@@ -181,7 +181,7 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		assertEquals(null, this.bufferedHireDateHolder.getValue());
 	}
 
-	public void testReset() {
+	public void testTriggerReset() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
 		this.bufferedIDHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
@@ -333,6 +333,94 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		assertNull(this.employeeEvent);
 	}
 
+	/**
+	 * changing the value should trigger buffering
+	 */
+	public void testBuffering1() {
+		PropertyChangeListener bufferedListener = this.buildBufferedListener();
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+
+		this.bufferedNameHolder.setValue("Ripley");
+		assertEquals("Freddy", this.nameAdapter.getValue());
+		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertTrue(this.bufferedNameHolder.isBuffering());
+	}
+
+	/**
+	 * setting to the same value should not trigger buffering (?)
+	 */
+	public void testBuffering2() {
+		PropertyChangeListener bufferedListener = this.buildBufferedListener();
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+
+		this.bufferedNameHolder.setValue("Freddy");
+		assertEquals("Freddy", this.bufferedNameHolder.getValue());
+		assertEquals("Freddy", this.nameAdapter.getValue());
+		assertFalse(this.bufferedNameHolder.isBuffering());
+	}
+
+	/**
+	 * setting to the original value should not trigger buffering (?)
+	 */
+	public void testBuffering3() {
+		PropertyChangeListener bufferedListener = this.buildBufferedListener();
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+
+		this.bufferedNameHolder.setValue("Ripley");
+		assertEquals("Freddy", this.nameAdapter.getValue());
+		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertTrue(this.bufferedNameHolder.isBuffering());
+
+		this.bufferedNameHolder.setValue("Freddy");
+		assertEquals("Freddy", this.nameAdapter.getValue());
+		assertEquals("Freddy", this.bufferedNameHolder.getValue());
+		assertFalse(this.bufferedNameHolder.isBuffering());
+	}
+
+	/**
+	 * back-door changes are ignored - "Last One In Wins"
+	 */
+	public void testChangeConflict1() {
+		PropertyChangeListener bufferedListener = this.buildBufferedListener();
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+
+		this.bufferedNameHolder.setValue("Ripley");
+		assertEquals("Freddy", this.employee.getName());
+		assertEquals("Freddy", this.nameAdapter.getValue());
+		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+
+		this.nameAdapter.setValue("Jason");
+		assertEquals("Jason", this.employee.getName());
+		assertEquals("Jason", this.nameAdapter.getValue());
+		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+
+		this.trigger.accept();
+		// "Jason" is dropped on the floor...
+		assertEquals("Ripley", this.employee.getName());
+		assertEquals("Ripley", this.nameAdapter.getValue());
+		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+	}
+
+	/**
+	 * back-door changes can de-activate buffering (?)
+	 */
+	public void testChangeConflict2() {
+		PropertyChangeListener bufferedListener = this.buildBufferedListener();
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+
+		this.bufferedNameHolder.setValue("Ripley");
+		assertEquals("Freddy", this.employee.getName());
+		assertEquals("Freddy", this.nameAdapter.getValue());
+		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertTrue(this.bufferedNameHolder.isBuffering());
+
+		this.nameAdapter.setValue("Ripley");
+		assertEquals("Ripley", this.employee.getName());
+		assertEquals("Ripley", this.nameAdapter.getValue());
+		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertFalse(this.bufferedNameHolder.isBuffering());
+	}
+
 	private ChangeListener buildBufferedListener() {
 		return new ChangeAdapter() {
 			@Override
@@ -370,7 +458,7 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 
 	// ********** inner class **********
 
-	private class Employee extends AbstractModel {
+	class Employee extends AbstractModel {
 		private int id;
 			public static final String ID_PROPERTY = "id";
 		private String name;

@@ -13,16 +13,16 @@ import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "property change" event gets delivered whenever a model changes a "bound"
- * or "constrained" property. A PropertyChangeEvent is sent as an
- * argument to the PropertyChangeListener.
- * 
+ * or "constrained" property. A <code>PropertyChangeEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.PropertyChangeListener}.
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class PropertyChangeEvent extends ChangeEvent {
+public final class PropertyChangeEvent extends ChangeEvent {
 
 	/** Name of the property that changed. */
 	private final String propertyName;
@@ -83,6 +83,10 @@ public class PropertyChangeEvent extends ChangeEvent {
 	@Override
 	protected void toString(StringBuilder sb) {
 		sb.append(this.propertyName);
+		sb.append(": "); //$NON-NLS-1$
+		sb.append(this.oldValue);
+		sb.append(" => "); //$NON-NLS-1$
+		sb.append(this.newValue);
 	}
 
 

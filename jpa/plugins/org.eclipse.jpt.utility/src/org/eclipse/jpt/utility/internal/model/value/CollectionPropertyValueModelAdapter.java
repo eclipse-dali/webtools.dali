@@ -21,21 +21,22 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
  * a collection value model, "lazily" listen to it, and convert
  * its change notifications into property value model change
  * notifications.
- * 
- * Subclasses must override:
- * - #buildValue()
+ * <p>
+ * Subclasses must override:<ul>
+ * <li>{@link #buildValue()}<p>
  *     to return the current property value, as derived from the
  *     current collection value
- * 
- * Subclasses might want to override:
- * - #itemsAdded(CollectionChangeEvent event)
- * - #itemsRemoved(CollectionChangeEvent event)
- * - #collectionCleared(CollectionChangeEvent event)
- * - #collectionChanged(CollectionChangeEvent event)
- *     to improve performance (by not recalculating the value, if possible)
+ * </ul>
+ * Subclasses might want to override the following methods
+ * to improve performance (by not recalculating the value, if possible):<ul>
+ * <li>{@link #itemsAdded(CollectionAddEvent event)}
+ * <li>{@link #itemsRemoved(CollectionRemoveEvent event)}
+ * <li>{@link #collectionCleared(CollectionClearEvent event)}
+ * <li>{@link #collectionChanged(CollectionChangeEvent event)}
+ * </ul>
  */
-public abstract class CollectionPropertyValueModelAdapter<T>
-	extends AspectPropertyValueModelAdapter<T>
+public abstract class CollectionPropertyValueModelAdapter<V>
+	extends AbstractPropertyValueModelAdapter<V>
 {
 	/** The wrapped collection value model. */
 	protected final CollectionValueModel<?> collectionHolder;
@@ -94,11 +95,6 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	@Override
 	protected void disengageModel_() {
 		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.collectionHolder);
 	}
 
 	

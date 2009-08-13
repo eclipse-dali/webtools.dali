@@ -289,15 +289,15 @@ public class JoiningStrategyJoinColumnsComposite
 		}
 		
 		@Override
-		protected void engageValueHolder() {
-			super.engageValueHolder();
+		protected void engageModel() {
+			super.engageModel();
 			this.valueHolder.addStateChangeListener(this.stateChangeListener);
 		}
 		
 		@Override
-		protected void disengageValueHolder() {
+		protected void disengageModel() {
 			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
-			super.disengageValueHolder();
+			super.disengageModel();
 		}
 	}
 }

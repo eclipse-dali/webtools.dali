@@ -9,47 +9,45 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 /**
- * Implementation of CollectionValueModel that can be used for
+ * Implementation of {@link CollectionValueModel} that can be used for
  * returning an iterator on a static collection, but still allows listeners to be added.
- * Listeners will NEVER be notified of any changes, because there should be none.
+ * Listeners will <em>never</em> be notified of any changes, because there should be none.
  */
 public class StaticCollectionValueModel<E>
 	extends AbstractModel
 	implements CollectionValueModel<E>
 {
 	/** The collection. */
-	protected final Collection<? extends E> collection;
+	protected final Collection<E> collection;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * Construct a static CollectionValueModel for the specified array.
+	 * Construct a static collection value model for the specified array.
 	 */
-	public StaticCollectionValueModel(E[] array) {
-		this(CollectionTools.list(array));
+	public StaticCollectionValueModel(E... array) {
+		this(Arrays.asList(array));
 	}
 
 	/**
-	 * Construct a static CollectionValueModel for the specified collection.
+	 * Construct a static collection value model for the specified collection.
 	 */
 	public StaticCollectionValueModel(Collection<? extends E> collection) {
 		super();
-		if (collection == null) {
-			throw new NullPointerException();
-		}
-		this.collection = collection;
+		this.collection = new ArrayList<E>(collection);
 	}
+
 
 	// ********** CollectionValueModel implementation **********
 
@@ -58,15 +56,15 @@ public class StaticCollectionValueModel<E>
 	}
 
 	public Iterator<E> iterator() {
-		return new ReadOnlyIterator<E>(this.collection.iterator());
+		return this.collection.iterator();
 	}
 
 
 	// ********** Object overrides **********
 
 	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.collection);
+	public void toString(StringBuilder sb) {
+		sb.append(this.collection);
 	}
 
 }

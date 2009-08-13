@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
@@ -21,36 +22,33 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * Implementation of ListValueModel that can be used for
+ * Implementation of {@link ListValueModel} that can be used for
  * returning a list iterator on a static list, but still allows listeners to be added.
- * Listeners will NEVER be notified of any changes, because there should be none.
+ * Listeners will <em>never</em> be notified of any changes, because there should be none.
  */
 public class StaticListValueModel<E>
 	extends AbstractModel
 	implements ListValueModel<E>
 {
 	/** The value. */
-	protected final List<? extends E> list;
+	protected final List<E> list;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * Construct a static ListValueModel for the specified array.
+	 * Construct a static list value model for the specified array.
 	 */
-	public StaticListValueModel(E[] array) {
-		this(CollectionTools.list(array));
+	public StaticListValueModel(E... array) {
+		this(Arrays.asList(array));
 	}
 
 	/**
-	 * Construct a static ListValueModel for the specified list.
+	 * Construct a static list value model for the specified list.
 	 */
 	public StaticListValueModel(List<? extends E> list) {
 		super();
-		if (list == null) {
-			throw new NullPointerException();
-		}
-		this.list = list;
+		this.list = new ArrayList<E>(list);
 	}
 
 
@@ -80,8 +78,8 @@ public class StaticListValueModel<E>
 	// ********** Object overrides **********
 
 	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.list);
+	public void toString(StringBuilder sb) {
+		sb.append(this.list);
 	}
 
 }

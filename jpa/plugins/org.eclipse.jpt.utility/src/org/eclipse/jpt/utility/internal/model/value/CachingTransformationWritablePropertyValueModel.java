@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,18 +14,17 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * A <code>CachingTransformationWritablePropertyValueModel<code> augments the
- * behavior of a <code>TransformationWritablePropertyValueModel<code> by caching
+ * behavior of a {@link TransformationWritablePropertyValueModel} by caching
  * the transformed value.
  * The transformed value is calculated and cached during initialization and every
  * time the wrapped value changes. This can be useful when the old value
- * passed in to <code>valueChanged(PropertyChangeEvent)</code> can no longer
- * be "transformed" because its state is no longer valid.
+ * passed in to {@link #valueChanged(org.eclipse.jpt.utility.model.event.PropertyChangeEvent)}
+ * can no longer be "transformed" because its state is no longer valid.
  * This caching can also improve time performance in some situations.
  */
 public class CachingTransformationWritablePropertyValueModel<T1, T2>
 	extends TransformationWritablePropertyValueModel<T1, T2>
 {
-
 	/**
 	 * Cache the transformed value so that during property change event notification
 	 * we do not have to transform the old value. The old value could no longer be valid in
@@ -39,10 +38,10 @@ public class CachingTransformationWritablePropertyValueModel<T1, T2>
 	/**
 	 * Construct a writable property value model with the specified nested
 	 * writable property value model and the default bidi transformer.
-	 * Use this constructor if you want to override the
-	 * <code>transform_(Object)</code> and <code>reverseTransform_(Object)</code>
-	 * (or <code>transform(Object)</code> and <code>reverseTransform(Object)</code>)
-	 * methods instead of building a <code>BidiTransformer</code>.
+	 * Use this constructor if you want to override
+	 * {@link #transform_(Object)} and {@link reverseTransform_(Object)}
+	 * (or {@link #transform(Object)} and {@link #reverseTransform(Object)})
+	 * methods instead of building a {@link BidiTransformer}.
 	 */
 	public CachingTransformationWritablePropertyValueModel(WritablePropertyValueModel<T1> valueHolder) {
 		super(valueHolder);
@@ -63,8 +62,8 @@ public class CachingTransformationWritablePropertyValueModel<T1, T2>
 	 * We have listeners, transform the nested value and cache the result.
 	 */
 	@Override
-	protected void engageValueHolder() {
-		super.engageValueHolder();
+	protected void engageModel() {
+		super.engageModel();
 		this.cachedValue = this.transform(this.valueHolder.getValue());
 	}
 
@@ -72,9 +71,9 @@ public class CachingTransformationWritablePropertyValueModel<T1, T2>
 	 * We have no more listeners, clear the cached value.
 	 */
 	@Override
-	protected void disengageValueHolder() {
+	protected void disengageModel() {
 		this.cachedValue = null;
-		super.disengageValueHolder();
+		super.disengageModel();
 	}
 
 	/**
@@ -88,6 +87,7 @@ public class CachingTransformationWritablePropertyValueModel<T1, T2>
 
 	/**
 	 * Transform the specified new value, caching it before returning it.
+	 * A bit of a side-effect, but it seems reasonable.
 	 */
 	@Override
 	protected T2 transformNew(T1 value) {

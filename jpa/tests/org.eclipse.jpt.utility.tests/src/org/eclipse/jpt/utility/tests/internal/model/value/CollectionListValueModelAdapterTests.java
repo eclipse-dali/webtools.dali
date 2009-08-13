@@ -180,15 +180,15 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	public void testCollectionChangedToEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			@Override
-			public void itemsAdded(ListAddEvent e) {/* OK */}
+			public void listCleared(ListClearEvent e) {/* OK */}
 			@Override
-			public void itemsRemoved(ListRemoveEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
 		JList jList = new JList(new ListModelAdapter(this.adapter));
-		this.wrappedCollectionHolder.setCollection(new HashBag<String>());
+		this.wrappedCollectionHolder.setValues(new HashBag<String>());
 		assertEquals(0, jList.getModel().getSize());
 	}
 	
@@ -204,7 +204,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		HashBag<String> bag = new HashBag<String>();
 		bag.add("foo");
 		bag.add("bar");
-		this.wrappedCollectionHolder.setCollection(bag);
+		this.wrappedCollectionHolder.setValues(bag);
 		assertEquals(2, jList.getModel().getSize());
 	}
 	
@@ -218,7 +218,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
 		HashBag<String> bag = new HashBag<String>();
-		this.wrappedCollectionHolder.setCollection(bag);
+		this.wrappedCollectionHolder.setValues(bag);
 		assertEquals(0, jList.getModel().getSize());
 	}
 

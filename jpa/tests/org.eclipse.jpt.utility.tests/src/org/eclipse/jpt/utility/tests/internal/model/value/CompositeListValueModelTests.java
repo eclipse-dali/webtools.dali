@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -410,7 +410,7 @@ public class CompositeListValueModelTests extends TestCase {
 
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		this.uberLVM.setList(newList);
+		this.uberLVM.setListValues(newList);
 
 		Object[] expected = new Object[] { "lll", "mmm", "nnn", "ooo", "ppp", "qqq" };
 		assertEquals(expected.length, this.compositeLVM.size());
@@ -805,7 +805,7 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testChangeItems_Begin() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		this.lvm0.setList(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
+		this.lvm0.setListValues(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
 
 		Object[] expected = new Object[] { "xxx", "yyy", "zzz", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
 		assertEquals(expected.length, this.compositeLVM.size());
@@ -819,7 +819,7 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testChangeItems_Middle() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		this.lvm1.setList(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
+		this.lvm1.setListValues(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
 
 		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "xxx", "yyy", "zzz", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
 		assertEquals(expected.length, this.compositeLVM.size());
@@ -833,7 +833,7 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testChangeItems_End() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		this.lvm3.setList(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
+		this.lvm3.setListValues(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
 
 		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "xxx", "yyy", "zzz" };
 		assertEquals(expected.length, this.compositeLVM.size());

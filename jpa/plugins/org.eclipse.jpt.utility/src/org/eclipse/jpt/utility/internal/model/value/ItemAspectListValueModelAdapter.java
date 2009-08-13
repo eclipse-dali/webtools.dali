@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.Counter;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
@@ -29,23 +30,22 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * Abstract list value model that provides behavior for wrapping a list value
- * model (or collection value model) and listening for changes to aspects of the
- * *items* held by the list (or collection). Changes to the actual list
+ * Abstract list value model that provides behavior for wrapping a {@link ListValueModel}
+ * (or {@link CollectionValueModel}) and listening for changes to aspects of the
+ * <em>items</em> held by the list (or collection). Changes to the actual list
  * (or collection) are also monitored.
  * 
  * This is useful if you have a collection of items that can be modified by adding
  * or removing items or the items themselves might change in a fashion that
- * might change the collection's external appearance.
+ * might change the list or collection's external appearance.
  * 
- * Subclasses need to override two methods:
- * 
- * #listenToItem(Model)
+ * Subclasses need to override two methods:<ul>
+ * <li>{@link #engageItem_(Model)}<p>
  *     begin listening to the appropriate aspect of the specified item and call
- *     #itemAspectChanged(Object) whenever the aspect changes
- * 
- * #stopListeningToItem(Model)
+ *     {@link #itemAspectChanged(EventObject)} whenever the aspect changes
+ * <li>{@link #disengageItem_(Model)}<p>
  *     stop listening to the appropriate aspect of the specified item
+ * </ul>
  */
 public abstract class ItemAspectListValueModelAdapter<E>
 	extends ListValueModelWrapper<E>
@@ -127,7 +127,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		if (counter == null) {
 			counter = new Counter();
 			this.counters.put(item, counter);
-			this.startListeningToItem((Model) item);
+			this.engageItem_((Model) item);
 		}
 		counter.increment();
 	}
@@ -135,7 +135,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	/**
 	 * Start listening to the specified item.
 	 */
-	protected abstract void startListeningToItem(Model item);
+	protected abstract void engageItem_(Model item);
 
 	/**
 	 * Stop listening to the list holder and the items in the list.
@@ -165,14 +165,19 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		}
 		if (counter.decrement() == 0) {
 			this.counters.remove(item);
-			this.stopListeningToItem((Model) item);
+			this.disengageItem_((Model) item);
 		}
 	}
 
 	/**
 	 * Stop listening to the specified item.
 	 */
-	protected abstract void stopListeningToItem(Model item);
+	protected abstract void disengageItem_(Model item);
+
+	@Override
+	public void toString(StringBuilder sb) {
+		StringTools.append(sb, this);
+	}
 
 
 	// ********** list change support **********
@@ -185,7 +190,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	protected void itemsAdded(ListAddEvent event) {
 		// re-fire event with the wrapper as the source
 		this.fireItemsAdded(event.clone(this, LIST_VALUES));
-		this.engageItems(this.getAddedItems(event));
+		this.engageItems(this.getItems(event));
 	}
 
 	/**
@@ -194,7 +199,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 */
 	@Override
 	protected void itemsRemoved(ListRemoveEvent event) {
-		this.disengageItems(this.getRemovedItems(event));
+		this.disengageItems(this.getItems(event));
 		// re-fire event with the wrapper as the source
 		this.fireItemsRemoved(event.clone(this, LIST_VALUES));
 	}

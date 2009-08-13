@@ -18,18 +18,19 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
  * a model, "lazily" listen to it, and convert
  * its state change notifications into property value model change
  * notifications.
- * 
- * Subclasses must override:
- * - #buildValue()
+ * <p>
+ * Subclasses must implement:<ul>
+ * <li>{@link #buildValue()}<p>
  *     to return the current property value, as derived from the
  *     current model
- * 
- * Subclasses might want to override:
- * - #stateChanged(StateChangeEvent event)
- *     to improve performance (by not recalculating the value, if possible)
+ * </ul>
+ * Subclasses might want to override the following methods
+ * to improve performance (by not recalculating the value, if possible):<ul>
+ * <li>{@link #stateChanged(StateChangeEvent event)}
+ * </ul>
  */
 public abstract class StatePropertyValueModelAdapter<T>
-	extends AspectPropertyValueModelAdapter<T>
+	extends AbstractPropertyValueModelAdapter<T>
 {
 	/** The wrapped model. */
 	protected final Model model;
@@ -78,11 +79,6 @@ public abstract class StatePropertyValueModelAdapter<T>
 	@Override
 	protected void disengageModel_() {
 		this.model.removeStateChangeListener(this.stateChangeListener);
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.model);
 	}
 
 	

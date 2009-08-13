@@ -12,30 +12,25 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
- * An adapter that allows us to make a PropertyValueModel behave like
- * a read-only, single-element ListValueModel, sorta.
- * 
+ * An adapter that allows us to make a {@link PropertyValueModel} behave like
+ * a read-only, single-element {@link ListValueModel}, sorta.
+ * <p>
  * If the property's value is null, an empty iterator is returned
- * (i.e. you can't have a list with a null element).
+ * (i.e. you can't have a collection with a <code>null</code> element).
  */
 public class PropertyListValueModelAdapter<E>
-	extends AbstractModel
+	extends AbstractListValueModel
 	implements ListValueModel<E>
 {
-
 	/** The wrapped property value model. */
 	protected final PropertyValueModel<? extends E> valueHolder;
 
@@ -49,7 +44,8 @@ public class PropertyListValueModelAdapter<E>
 	// ********** constructors/initialization **********
 
 	/**
-	 * Wrap the specified property value model.
+	 * Convert the specified property value model to a list
+	 * value model.
 	 */
 	public PropertyListValueModelAdapter(PropertyValueModel<? extends E> valueHolder) {
 		super();
@@ -62,20 +58,16 @@ public class PropertyListValueModelAdapter<E>
 		// until we have listeners ourselves...
 	}
 
-	@Override
-	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, ListChangeListener.class, LIST_VALUES);
-	}
-
 	/**
 	 * The wrapped value has changed, forward an equivalent
 	 * list change event to our listeners.
 	 */
 	protected PropertyChangeListener buildPropertyChangeListener() {
 		return new PropertyChangeListener() {
-			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent event) {
-				PropertyListValueModelAdapter.this.valueChanged((E) event.getNewValue());
+				@SuppressWarnings("unchecked")
+				E eventNewValue = (E) event.getNewValue();
+				PropertyListValueModelAdapter.this.valueChanged(eventNewValue);
 			}
 			@Override
 			public String toString() {
@@ -104,10 +96,10 @@ public class PropertyListValueModelAdapter<E>
 
 	public E get(int index) {
 		if (this.value == null) {
-			throw this.ioobe(index, 0);
+			throw this.buildIOOBE(index, 0);
 		}
 		if (index > 0) {
-			throw this.ioobe(index, 1);
+			throw this.buildIOOBE(index, 1);
 		}
 		return this.value;
 	}
@@ -118,70 +110,13 @@ public class PropertyListValueModelAdapter<E>
 	}
 
 
-	// ********** extend change support **********
-
-	/**
-	 * Override to start listening to the value holder if necessary.
-	 */
-	@Override
-	public void addChangeListener(ChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModel();
-		}
-		super.addChangeListener(listener);
-	}
-
-	/**
-	 * Override to start listening to the value holder if necessary.
-	 */
-	@Override
-	public void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
-			this.engageModel();
-		}
-		super.addListChangeListener(listName, listener);
-	}
-
-	/**
-	 * Override to stop listening to the value holder if appropriate.
-	 */
-	@Override
-	public void removeChangeListener(ChangeListener listener) {
-		super.removeChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModel();
-		}
-	}
-
-	/**
-	 * Override to stop listening to the value holder if appropriate.
-	 */
-	@Override
-	public void removeListChangeListener(String listName, ListChangeListener listener) {
-		super.removeListChangeListener(listName, listener);
-		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
-			this.disengageModel();
-		}
-	}
-
-
-	// ********** queries **********
-
-	protected boolean hasListeners() {
-		return this.hasAnyListChangeListeners(LIST_VALUES);
-	}
-
-	protected boolean hasNoListeners() {
-		return ! this.hasListeners();
-	}
-
-
 	// ********** behavior **********
 
-	protected IndexOutOfBoundsException ioobe(int index, int size) {
+	protected IndexOutOfBoundsException buildIOOBE(int index, int size) {
 		return new IndexOutOfBoundsException("Index: " + index + ", Size: " + size); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Override
 	protected void engageModel() {
 		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
 		// synch our value *after* we start listening to the value holder,
@@ -189,6 +124,7 @@ public class PropertyListValueModelAdapter<E>
 		this.value = this.valueHolder.getValue();
 	}
 
+	@Override
 	protected void disengageModel() {
 		this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
 		// clear out the value when we are not listening to the value holder
@@ -215,7 +151,7 @@ public class PropertyListValueModelAdapter<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.valueHolder);
+		StringTools.append(sb, this);
 	}
 
 }

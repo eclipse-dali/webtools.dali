@@ -9,29 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Collections;
 import java.util.Iterator;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
- * An adapter that allows us to make a PropertyValueModel behave like
- * a read-only, single-element CollectionValueModel, sorta.
- * 
+ * An adapter that allows us to make a {@link PropertyValueModel} behave like
+ * a read-only, single-element {@link CollectionValueModel}, sorta.
+ * <p>
  * If the property's value is null, an empty iterator is returned
- * (i.e. you can't have a collection with a null element).
+ * (i.e. you can't have a collection with a <code>null</code> element).
  */
 public class PropertyCollectionValueModelAdapter<E>
-	extends AbstractModel
+	extends AbstractCollectionValueModel
 	implements CollectionValueModel<E>
 {
 	/** The wrapped property value model. */
@@ -47,7 +44,8 @@ public class PropertyCollectionValueModelAdapter<E>
 	// ********** constructors/initialization **********
 
 	/**
-	 * Wrap the specified ListValueModel.
+	 * Convert the specified property value model to a collection
+	 * value model.
 	 */
 	public PropertyCollectionValueModelAdapter(PropertyValueModel<? extends E> valueHolder) {
 		super();
@@ -56,13 +54,9 @@ public class PropertyCollectionValueModelAdapter<E>
 		}
 		this.valueHolder = valueHolder;
 		this.propertyChangeListener = this.buildPropertyChangeListener();
+		this.value = null;
 		// postpone building the value and listening to the underlying value
 		// until we have listeners ourselves...
-	}
-
-	@Override
-	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, VALUES);
 	}
 
 	/**
@@ -71,9 +65,10 @@ public class PropertyCollectionValueModelAdapter<E>
 	 */
 	protected PropertyChangeListener buildPropertyChangeListener() {
 		return new PropertyChangeListener() {
-			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent event) {
-				PropertyCollectionValueModelAdapter.this.valueChanged((E) event.getNewValue());
+				@SuppressWarnings("unchecked")
+				E eventNewValue = (E) event.getNewValue();
+				PropertyCollectionValueModelAdapter.this.valueChanged(eventNewValue);
 			}
 			@Override
 			public String toString() {
@@ -86,10 +81,11 @@ public class PropertyCollectionValueModelAdapter<E>
 	// ********** CollectionValueModel implementation **********
 
 	public Iterator<E> iterator() {
-		return (this.value == null) ?
-					EmptyIterator.<E>instance()
-				:
-					new SingleElementIterator<E>(this.value);
+		return (this.value == null) ? EmptyIterator.<E>instance() : this.iterator_();
+	}
+
+	protected Iterator<E> iterator_() {
+		return new SingleElementIterator<E>(this.value);
 	}
 
 	public int size() {
@@ -97,66 +93,9 @@ public class PropertyCollectionValueModelAdapter<E>
 	}
 
 
-	// ********** extend change support **********
+	// ********** AbstractCollectionValueModel implementation **********
 
-	/**
-	 * Override to start listening to the value holder if necessary.
-	 */
 	@Override
-	public void addChangeListener(ChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModel();
-		}
-		super.addChangeListener(listener);
-	}
-
-	/**
-	 * Override to start listening to the value holder if necessary.
-	 */
-	@Override
-	public void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName.equals(VALUES) && this.hasNoListeners()) {
-			this.engageModel();
-		}
-		super.addCollectionChangeListener(collectionName, listener);
-	}
-
-	/**
-	 * Override to stop listening to the value holder if appropriate.
-	 */
-	@Override
-	public void removeChangeListener(ChangeListener listener) {
-		super.removeChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModel();
-		}
-	}
-
-	/**
-	 * Override to stop listening to the value holder if appropriate.
-	 */
-	@Override
-	public void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName.equals(VALUES) && this.hasNoListeners()) {
-			this.disengageModel();
-		}
-	}
-
-
-	// ********** queries **********
-
-	protected boolean hasListeners() {
-		return this.hasAnyCollectionChangeListeners(VALUES);
-	}
-
-	protected boolean hasNoListeners() {
-		return ! this.hasListeners();
-	}
-
-
-	// ********** behavior **********
-
 	protected void engageModel() {
 		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
 		// synch our value *after* we start listening to the value holder,
@@ -164,33 +103,39 @@ public class PropertyCollectionValueModelAdapter<E>
 		this.value = this.valueHolder.getValue();
 	}
 
+	@Override
 	protected void disengageModel() {
 		this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
 		// clear out the value when we are not listening to the value holder
 		this.value = null;
 	}
 
+
+	// ********** behavior **********
+
 	/**
 	 * synchronize our internal value with the wrapped value
 	 * and fire the appropriate events
 	 */
 	protected void valueChanged(E newValue) {
-		// put in "empty" check so we don't fire events unnecessarily
-		if (this.value != null) {
-			E oldValue = this.value;
-			this.value = null;
-			this.fireItemRemoved(VALUES, oldValue);
-		}
+		E oldValue = this.value;
 		this.value = newValue;
-		// put in "empty" check so we don't fire events unnecessarily
-		if (this.value != null) {
-			this.fireItemAdded(VALUES, this.value);
+		if (oldValue == null) {
+			// we wouldn't get the event if the new value were null too
+			this.fireItemAdded(VALUES, newValue);
+		} else {
+			if (newValue == null) {
+				this.fireItemRemoved(VALUES, oldValue);
+			} else {
+				// we wouldn't get the event if the new value was the same as the old
+				this.fireCollectionChanged(VALUES, Collections.singleton(newValue));
+			}
 		}
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.valueHolder);
+		StringTools.append(sb, this);
 	}
 
 }

@@ -20,11 +20,11 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Extend ValueAspectAdapter to listen to one or more
+ * Extend {@link ValueAspectAdapter} to listen to one or more
  * tree aspects of the value in the wrapped value model.
  */
-public class ValueTreeAdapter<T extends Model>
-	extends ValueAspectAdapter<T>
+public class ValueTreeAdapter<V extends Model>
+	extends ValueAspectAdapter<V>
 {
 	/** The names of the value's trees that we listen to. */
 	protected final String[] treeNames;
@@ -38,7 +38,7 @@ public class ValueTreeAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the specified value trees.
 	 */
-	public ValueTreeAdapter(WritablePropertyValueModel<T> valueHolder, String... treeNames) {
+	public ValueTreeAdapter(WritablePropertyValueModel<V> valueHolder, String... treeNames) {
 		super(valueHolder);
 		this.treeNames = treeNames;
 		this.valueTreeListener = this.buildValueTreeListener();
@@ -50,16 +50,16 @@ public class ValueTreeAdapter<T extends Model>
 	protected TreeChangeListener buildValueTreeListener() {
 		return new TreeChangeListener() {
 			public void nodeAdded(TreeAddEvent event) {
-				ValueTreeAdapter.this.valueAspectChanged();
+				ValueTreeAdapter.this.nodeAdded(event);
 			}
 			public void nodeRemoved(TreeRemoveEvent event) {
-				ValueTreeAdapter.this.valueAspectChanged();
+				ValueTreeAdapter.this.nodeRemoved(event);
 			}
 			public void treeCleared(TreeClearEvent event) {
-				ValueTreeAdapter.this.valueAspectChanged();
+				ValueTreeAdapter.this.treeCleared(event);
 			}
 			public void treeChanged(TreeChangeEvent event) {
-				ValueTreeAdapter.this.valueAspectChanged();
+				ValueTreeAdapter.this.treeChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -69,7 +69,7 @@ public class ValueTreeAdapter<T extends Model>
 	}
 
 
-	// ********** behavior **********
+	// ********** ValueAspectAdapter implementation **********
 
 	@Override
 	protected void engageValue_() {
@@ -83,6 +83,25 @@ public class ValueTreeAdapter<T extends Model>
 		for (String treeName : this.treeNames) {
 			this.value.removeTreeChangeListener(treeName, this.valueTreeListener);
 		}
+	}
+
+
+	// ********** change events **********
+
+	protected void nodeAdded(@SuppressWarnings("unused") TreeAddEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void nodeRemoved(@SuppressWarnings("unused") TreeRemoveEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void treeCleared(@SuppressWarnings("unused") TreeClearEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void treeChanged(@SuppressWarnings("unused") TreeChangeEvent event) {
+		this.valueAspectChanged();
 	}
 
 }

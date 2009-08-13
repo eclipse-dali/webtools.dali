@@ -11,11 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.EventListener;
-import java.util.ListIterator;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
@@ -24,34 +20,27 @@ import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
- * This extension of AspectAdapter provides ListChange support.
- * This allows us to convert a set of one or more collections into
- * a single collection, LIST_VALUES.
- * 
- * The typical subclass will override the following methods:
- * #listIterator_()
- *     at the very minimum, override this method to return a list iterator
- *     on the subject's list aspect; it does not need to be overridden if
- *     #listIterator() is overridden and its behavior changed
- * #get(int)
- *     override this method to improve performance
- * #size_()
- *     override this method to improve performance; it does not need to be overridden if
- *     #size() is overridden and its behavior changed
- * #listIterator()
- *     override this method only if returning an empty list iterator when the
- *     subject is null is unacceptable
- * #size()
- *     override this method only if returning a zero when the
- *     subject is null is unacceptable
+ * This extension of {@link AspectListValueModelAdapter} provides
+ * basic list change support.
+ * This converts a set of one or more lists into
+ * a single {@link #LIST_VALUES} list.
+ * <p>
+ * The typical subclass will override the following methods (see the descriptions
+ * in {@link AspectListValueModelAdapter}):<ul>
+ * <li>{@link #listIterator_()}
+ * <li>{@link #get(int)}
+ * <li>{@link #size_()}
+ * <li>{@link #toArray_()}
+ * <li>{@link #listIterator()}
+ * <li>{@link #size()}
+ * <li>{@link #toArray()}
+ * </ul>
  */
 public abstract class ListAspectAdapter<S extends Model, E>
-	extends AspectAdapter<S>
-	implements ListValueModel<E>
+	extends AspectListValueModelAdapter<S, E>
 {
 	/**
 	 * The name of the subject's lists that we use for the value.
@@ -59,16 +48,14 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	protected final String[] listNames;
 		protected static final String[] EMPTY_LIST_NAMES = new String[0];
 
-	/** A listener that listens to the subject's list aspect. */
+	/** A listener that listens to the subject's list aspects. */
 	protected final ListChangeListener listChangeListener;
-
-	private static final Object[] EMPTY_ARRAY = new Object[0];
 
 
 	// ********** constructors **********
 
 	/**
-	 * Construct a ListAspectAdapter for the specified subject
+	 * Construct a list aspect adapter for the specified subject
 	 * and list.
 	 */
 	protected ListAspectAdapter(String listName, S subject) {
@@ -76,7 +63,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a ListAspectAdapter for the specified subject
+	 * Construct a list aspect adapter for the specified subject
 	 * and lists.
 	 */
 	protected ListAspectAdapter(String[] listNames, S subject) {
@@ -84,7 +71,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a ListAspectAdapter for the specified subject holder
+	 * Construct a list aspect adapter for the specified subject holder
 	 * and lists.
 	 */
 	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... listNames) {
@@ -94,7 +81,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a ListAspectAdapter for the specified subject holder
+	 * Construct a list aspect adapter for the specified subject holder
 	 * and lists.
 	 */
 	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> listNames) {
@@ -102,7 +89,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	}
 
 	/**
-	 * Construct a ListAspectAdapter for an "unchanging" list in
+	 * Construct a list aspect adapter for an "unchanging" list in
 	 * the specified subject. This is useful for a list aspect that does not
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new list.
@@ -114,9 +101,6 @@ public abstract class ListAspectAdapter<S extends Model, E>
 
 	// ********** initialization **********
 
-	/**
-	 * The subject's list aspect has changed, notify the listeners.
-	 */
 	protected ListChangeListener buildListChangeListener() {
 		// transform the subject's list change events into VALUE list change events
 		return new ListChangeListener() {
@@ -146,98 +130,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	}
 
 
-	// ********** ListValueModel implementation **********
-
-	/**
-	 * Return the elements of the subject's list aspect.
-	 */
-	public ListIterator<E> iterator() {
-		return this.listIterator();
-	}
-
-	/**
-	 * Return the elements of the subject's list aspect.
-	 */
-	public ListIterator<E> listIterator() {
-		return (this.subject == null) ? EmptyListIterator.<E>instance() : this.listIterator_();
-	}
-
-	/**
-	 * Return the elements of the subject's list aspect.
-	 * At this point we can be sure that the subject is not null.
-	 * @see #listIterator()
-	 */
-	protected ListIterator<E> listIterator_() {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Return the element at the specified index of the subject's list aspect.
-	 */
-	public E get(int index) {
-		return CollectionTools.get(this.listIterator(), index);
-	}
-
-	/**
-	 * Return the size of the subject's list aspect.
-	 */
-	public int size() {
-		return this.subject == null ? 0 : this.size_();
-	}
-
-	/**
-	 * Return the size of the subject's list aspect.
-	 * At this point we can be sure that the subject is not null.
-	 * @see #size()
-	 */
-	protected int size_() {
-		return CollectionTools.size(this.listIterator());
-	}
-
-	/**
-	 * Return an array manifestation of the subject's list aspect.
-	 */
-	public Object[] toArray() {
-		return this.subject == null ? EMPTY_ARRAY : this.toArray_();
-	}
-
-	/**
-	 * Return an array manifestation of the subject's list aspect.
-	 * At this point we can be sure that the subject is not null.
-	 * @see #toArray()
-	 */
-	protected Object[] toArray_() {
-		return CollectionTools.array(this.listIterator(), this.size());
-	}
-
-
 	// ********** AspectAdapter implementation **********
-
-	@Override
-	protected ListIterator<E> getValue() {
-		return this.iterator();
-	}
-
-	@Override
-	protected Class<? extends EventListener> getListenerClass() {
-		return ListChangeListener.class;
-	}
-
-	@Override
-	protected String getListenerAspectName() {
-		return LIST_VALUES;
-	}
-
-	@Override
-	protected boolean hasListeners() {
-		return this.hasAnyListChangeListeners(LIST_VALUES);
-	}
-
-	@Override
-	protected void fireAspectChanged(Object oldValue, Object newValue) {
-		@SuppressWarnings("unchecked") ListIterator<E> listIterator = (ListIterator<E>) newValue;
-		this.fireListChanged(LIST_VALUES, CollectionTools.list(listIterator));
-	}
 
 	@Override
 	protected void engageSubject_() {
@@ -250,16 +143,6 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	protected void disengageSubject_() {
     	for (String listName : this.listNames) {
 			((Model) this.subject).removeListChangeListener(listName, this.listChangeListener);
-		}
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		for (int i = 0; i < this.listNames.length; i++) {
-			if (i != 0) {
-				sb.append(", "); //$NON-NLS-1$
-			}
-			sb.append(this.listNames[i]);
 		}
 	}
 

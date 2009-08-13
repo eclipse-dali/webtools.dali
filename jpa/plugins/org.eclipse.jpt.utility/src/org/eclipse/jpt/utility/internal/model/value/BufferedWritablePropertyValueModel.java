@@ -15,22 +15,23 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * A BufferedPropertyValueModel is used to hold a temporary copy of the value
+ * A <code>BufferedWritablePropertyValueModel</code> is used to hold a temporary copy of the value
  * in another property value model (the "wrapped" value holder). The application
  * can modify this temporary copy, ad nauseam; but the temporary copy is only
  * passed through to the "wrapped" value holder when the trigger "accepts" the
  * buffered value. Alternatively, the application can "reset" the buffered value
  * to the original, "wrapped" value.
- * 
- * The trigger is another value model that holds a Boolean and the application
- * changes the trigger's value to true on "accept", false on "reset". Typically,
- * in a dialog:
- * 	- pressing the OK button will trigger an "accept" and close the dialog
- * 	- pressing the Cancel button will simply close the dialog,
- * 		dropping the "buffered" values into the bit bucket
- * 	- pressing the Apply button will trigger an "accept" and leave the dialog open
- * 	- pressing the Restore button will trigger a "reset" and leave the dialog open
- * 
+ * <p>
+ * The trigger is another {@link PropertyValueModel} that holds a {@link Boolean}
+ * and the application changes the trigger's value to true on "accept", false on "reset".
+ * Typically, in a dialog:<ul>
+ * <li>pressing the "OK" button will trigger an "accept" and close the dialog
+ * <li>pressing the "Cancel" button will simply close the dialog,
+ *   dropping the "buffered" values into the bit bucket
+ * <li>pressing the "Apply" button will trigger an "accept" and leave the dialog open
+ * <li>pressing the "Restore" button will trigger a "reset" and leave the dialog open
+ * </ul>
+ * <p>
  * A number of buffered property value models can wrap another set of
  * property aspect adapters that adapt the various aspects of a single
  * domain model. All the bufferd property value models can be hooked to the
@@ -94,7 +95,7 @@ public class BufferedWritablePropertyValueModel<T>
 		this.accepting = false;
 		this.triggerChangeListener = this.buildTriggerChangeListener();
 	}
-	
+
 
 	// ********** initialization **********
 
@@ -109,7 +110,7 @@ public class BufferedWritablePropertyValueModel<T>
 			}
 		};
 	}
-	
+
 
 	// ********** ValueModel implementation **********
 
@@ -123,14 +124,31 @@ public class BufferedWritablePropertyValueModel<T>
 
 	/**
 	 * Assign the new value to our "buffered" value.
-	 * It will be forwarded to the wrapped value holder
+	 * It will be pushed to the wrapped value holder
 	 * when the trigger is "accepted".
 	 */
 	public void setValue(T value) {
-		Object old = this.getValue();
-		this.bufferedValue = value;
-		this.buffering = true;
-		this.firePropertyChanged(VALUE, old, this.bufferedValue);
+		if (this.buffering) {
+			if (this.valuesAreEqual(value, this.valueHolder.getValue())) {
+				// the buffered value is being set back to the original value
+				this.reset();
+			} else {
+				// the buffered value is being changed
+				Object old = this.bufferedValue;
+				this.bufferedValue = value;
+				this.firePropertyChanged(VALUE, old, value);
+			}
+		} else {
+			if (this.valuesAreEqual(value, this.valueHolder.getValue())) {
+				// the buffered value is being set to the same value as the original value - ignore
+			} else {
+				// the buffered value is being set for the first time
+				Object old = this.valueHolder.getValue();
+				this.bufferedValue = value;
+				this.buffering = true;
+				this.firePropertyChanged(VALUE, old, value);
+			}
+		}
 	}
 
 
@@ -140,8 +158,8 @@ public class BufferedWritablePropertyValueModel<T>
 	 * extend to engage the trigger holder also
 	 */
 	@Override
-	protected void engageValueHolder() {
-		super.engageValueHolder();
+	protected void engageModel() {
+		super.engageModel();
 		this.triggerHolder.addPropertyChangeListener(VALUE, this.triggerChangeListener);
 	}
 
@@ -149,33 +167,46 @@ public class BufferedWritablePropertyValueModel<T>
 	 * extend to disengage the trigger holder also
 	 */
 	@Override
-	protected void disengageValueHolder() {
+	protected void disengageModel() {
 		this.triggerHolder.removePropertyChangeListener(VALUE, this.triggerChangeListener);
-		super.disengageValueHolder();
+		super.disengageModel();
 	}
 
 
 	// ********** behavior **********
 
 	/**
-	 * If we do not yet have a "buffered" value, simply propagate the
-	 * change notification with the buffered model as the source.
-	 * If we do have a "buffered" value, do nothing.
+	 * If we are currently "accepting" the value (i.e passing it on to the
+	 * "wrapped" model), ignore change notifications, since we caused
+	 * them and our own listeners are already aware of the change.
 	 */
 	@Override
 	protected void valueChanged(PropertyChangeEvent event) {
-		if (this.accepting) {
-			// if we are currently "accepting" the value, ignore change notifications,
-			// since we caused them and our own listeners are already aware of the change
-			return;
+		if ( ! this.accepting) {
+			this.valueChanged_(event);
 		}
+	}
+
+	/**
+	 * If we have a "buffered" value, check whether the "wrapped" value has
+	 * changed to be the same as the "buffered" value. If it has, stop "buffering";
+	 * if not, do nothing.
+	 * If we do not yet have a "buffered" value, simply propagate the
+	 * change notification with the buffered model as the source.
+	 */
+	protected void valueChanged_(PropertyChangeEvent event) {
 		if (this.buffering) {
-			this.handleChangeConflict(event);
+			if (this.valuesAreEqual(event.getNewValue(), this.bufferedValue)) {
+				// the buffered value is being set back to the original value
+				this.reset();
+			} else {
+				this.handleChangeConflict(event);
+			}
 		} else {
 			this.firePropertyChanged(event.clone(this));
 		}
 	}
-	
+
 	/**
 	 * By default, if we have a "buffered" value and the "wrapped" value changes,
 	 * we simply ignore the new "wrapped" value and simply overlay it with the
@@ -188,35 +219,46 @@ public class BufferedWritablePropertyValueModel<T>
 	protected void handleChangeConflict(@SuppressWarnings("unused") PropertyChangeEvent event) {
 		// the default is to do nothing
 	}
-	
+
 	/**
-	 * The trigger changed:
-	 * If it is now true, "accept" the buffered value and forward
+	 * The trigger changed:<ul>
+	 * <li>If it is now true, "accept" the buffered value and push
 	 * it to the wrapped value holder.
-	 * If it is now false, "reset" the buffered value to its original value.
+	 * <li>If it is now false, "reset" the buffered value to its original value.
+	 * </ul>
 	 */
 	protected void triggerChanged(PropertyChangeEvent event) {
-		if ( ! this.buffering) {
-			// if nothing has been "buffered", we don't need to do anything:
-			// nothing needs to be passed through; nothing needs to be reset;
-			return;
+		// if nothing has been "buffered", we don't need to do anything:
+		// nothing needs to be passed through; nothing needs to be reset;
+		if (this.buffering) {
+			if (((Boolean) event.getNewValue()).booleanValue()) {
+				this.accept();
+			} else {
+				this.reset();
+			}
 		}
-		if (((Boolean) event.getNewValue()).booleanValue()) {
-			// set the accepting flag so we ignore any events
-			// fired by the wrapped value holder
-			this.accepting = true;
-			this.valueHolder().setValue(this.bufferedValue);
+	}
+
+	protected void accept() {
+		// set the accepting flag so we ignore any events
+		// fired by the wrapped value holder
+		this.accepting = true;
+		try {
+			this.getValueHolder().setValue(this.bufferedValue);
+		} finally {
 			this.bufferedValue = null;
 			this.buffering = false;
 			// clear the flag once the "accept" is complete
 			this.accepting = false;
-		} else {
-			// notify our listeners that our value has been reset
-			Object old = this.bufferedValue;
-			this.bufferedValue = null;
-			this.buffering = false;
-			this.firePropertyChanged(VALUE, old, this.valueHolder.getValue());
 		}
+	}
+
+	protected void reset() {
+		// notify our listeners that our value has been reset
+		Object old = this.bufferedValue;
+		this.bufferedValue = null;
+		this.buffering = false;
+		this.firePropertyChanged(VALUE, old, this.valueHolder.getValue());
 	}
 
 	@Override
@@ -236,10 +278,10 @@ public class BufferedWritablePropertyValueModel<T>
 	}
 
 	/**
-	 * Our constructor accepts only a WritablePropertyValueModel<T>.
+	 * Our constructor accepts only a {@link WritablePropertyValueModel}{@code<T>}.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<T> valueHolder() {
+	protected WritablePropertyValueModel<T> getValueHolder() {
 		return (WritablePropertyValueModel<T>) this.valueHolder;
 	}
 
@@ -247,10 +289,10 @@ public class BufferedWritablePropertyValueModel<T>
 	// ********** inner class **********
 
 	/**
-	 * Trigger is a special property value model that only maintains its
-	 * value (of true or false) during the change notification caused by
-	 * the #setValue(Object) method. In other words, a Trigger object
-	 * only has a valid value 
+	 * <code>Trigger</code> is a special property value model that only maintains its
+	 * value (of <code>true</code> or <code>false</code>) during the change notification caused by
+	 * {@link #setValue(T)}. In other words, a <code>Trigger</code>
+	 * only has a valid value when it is being set.
 	 */
 	public static class Trigger extends SimplePropertyValueModel<Boolean> {
 
@@ -269,7 +311,7 @@ public class BufferedWritablePropertyValueModel<T>
 
 		/**
 		 * Extend so that this method can only be invoked during
-		 * change notification triggered by #setValue(Object).
+		 * change notification triggered by {@link #setValue(Object)}.
 		 */
 		@Override
 		public Boolean getValue() {
@@ -280,7 +322,7 @@ public class BufferedWritablePropertyValueModel<T>
 		}
 
 		/**
-		 * Extend to reset the value to null once all the
+		 * Extend to reset the value to <code>null</code> once all the
 		 * listeners have been notified.
 		 */
 		@Override
@@ -293,25 +335,28 @@ public class BufferedWritablePropertyValueModel<T>
 		// ********** convenience methods **********
 
 		/**
-		 * Set the trigger's value:
-		 * 	- true indicates "accept"
-		 * 	- false indicates "reset"
+		 * Set the trigger's value:<ul>
+		 * 	<li><code>true</code> indicates "accept"
+		 * 	<li><code>false</code> indicates "reset"
+		 * </ul>
 		 */
 		public void setValue(boolean value) {
 			this.setValue(Boolean.valueOf(value));
 		}
 
 		/**
-		 * Return the trigger's value:
-		 * 	- true indicates "accept"
-		 * 	- false indicates "reset"
+		 * Return the trigger's value:<ul>
+		 * 	<li><code>true</code> indicates "accept"
+		 * 	<li><code>false</code> indicates "reset"
+		 * </ul>
+		 * This method can only be invoked during change notification.
 		 */
 		public boolean booleanValue() {
 			return this.getValue().booleanValue();
 		}
 
 		/**
-		 * Accept the trigger (i.e. set its value to true).
+		 * Accept the trigger (i.e. set its value to <code>true</code>).
 		 */
 		public void accept() {
 			this.setValue(true);
@@ -319,14 +364,15 @@ public class BufferedWritablePropertyValueModel<T>
 
 		/**
 		 * Return whether the trigger has been accepted
-		 * (i.e. its value was changed to true).
+		 * (i.e. its value was changed to <code>true</code>).
+		 * This method can only be invoked during change notification.
 		 */
 		public boolean isAccepted() {
 			return this.booleanValue();
 		}
 
 		/**
-		 * Reset the trigger (i.e. set its value to false).
+		 * Reset the trigger (i.e. set its value to <code>false</code>).
 		 */
 		public void reset() {
 			this.setValue(false);
@@ -334,7 +380,8 @@ public class BufferedWritablePropertyValueModel<T>
 
 		/**
 		 * Return whether the trigger has been reset
-		 * (i.e. its value was changed to false).
+		 * (i.e. its value was changed to <code>false</code>).
+		 * This method can only be invoked during change notification.
 		 */
 		public boolean isReset() {
 			return ! this.booleanValue();

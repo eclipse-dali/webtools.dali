@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,7 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(CollectionPropertyValueModelAdapterTests.class);
 		suite.addTestSuite(CompositeCollectionValueModelTests.class);
 		suite.addTestSuite(CompositeListValueModelTests.class);
+		suite.addTestSuite(CompositePropertyValueModelTests.class);
 		suite.addTestSuite(ExtendedListValueModelWrapperTests.class);
 		suite.addTestSuite(FilteringCollectionValueModelTests.class);
 		suite.addTestSuite(FilteringPropertyValueModelTests.class);
@@ -47,6 +48,7 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(PropertyCollectionValueModelAdapterTests.class);
 		suite.addTestSuite(PropertyListValueModelAdapterTests.class);
 		suite.addTestSuite(ReadOnlyWritablePropertyValueModelWrapperTests.class);
+		suite.addTestSuite(SetCollectionValueModelTests.class);
 		suite.addTestSuite(StaticCollectionValueModelTests.class);
 		suite.addTestSuite(StaticListValueModelTests.class);
 		suite.addTestSuite(SimpleCollectionValueModelTests.class);

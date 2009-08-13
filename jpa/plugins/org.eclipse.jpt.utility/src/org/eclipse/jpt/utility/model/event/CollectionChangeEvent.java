@@ -11,24 +11,24 @@ package org.eclipse.jpt.utility.model.event;
 
 import java.util.Collection;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "collection change" event gets delivered whenever a model changes a "bound"
- * or "constrained" collection. A CollectionChangeEvent is sent as an
- * argument to the CollectionChangeListener.
- * 
- * A CollectionChangeEvent is accompanied by the collection name and
+ * or "constrained" collection. A <code>CollectionChangeEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.CollectionChangeListener}.
+ * A <code>CollectionChangeEvent</code> is accompanied by the collection name and
  * the current state of the collection.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class CollectionChangeEvent extends CollectionEvent {
+public final class CollectionChangeEvent extends CollectionEvent {
 
 	/**
 	 * The the collection in its current state.
@@ -72,6 +72,13 @@ public class CollectionChangeEvent extends CollectionEvent {
 	 */
 	public int getCollectionSize() {
 		return this.collection.length;
+	}
+
+	@Override
+	protected void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(": "); //$NON-NLS-1$
+		StringTools.append(sb, this.collection);
 	}
 
 

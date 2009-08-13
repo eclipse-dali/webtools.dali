@@ -722,15 +722,15 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 		
 		@Override
-		protected void engageValueHolder() {
-			super.engageValueHolder();
+		protected void engageModel() {
+			super.engageModel();
 			this.valueHolder.addStateChangeListener(this.stateChangeListener);
 		}
 		
 		@Override
-		protected void disengageValueHolder() {
+		protected void disengageModel() {
 			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
-			super.disengageValueHolder();
+			super.disengageModel();
 		}
 
 	}
@@ -779,15 +779,15 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 		
 		@Override
-		protected void engageValueHolder() {
-			super.engageValueHolder();
+		protected void engageModel() {
+			super.engageModel();
 			this.valueHolder.addStateChangeListener(this.stateChangeListener);
 		}
 		
 		@Override
-		protected void disengageValueHolder() {
+		protected void disengageModel() {
 			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
-			super.disengageValueHolder();
+			super.disengageModel();
 		}
 	}
 }

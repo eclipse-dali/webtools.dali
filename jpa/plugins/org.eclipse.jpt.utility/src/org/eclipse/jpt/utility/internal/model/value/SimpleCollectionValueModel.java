@@ -18,23 +18,24 @@ import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.WritableCollectionValueModel;
 
 /**
- * Implementation of CollectionValueModel and Collection that simply holds a
- * collection and notifies listeners of any changes.
+ * Implementation of {@link WritableCollectionValueModel} and {@link Collection}
+ * that simply holds a collection and notifies listeners of any changes.
  */
 public class SimpleCollectionValueModel<E>
 	extends AbstractModel
-	implements CollectionValueModel<E>, Collection<E>
+	implements WritableCollectionValueModel<E>, Collection<E>
 {
 	/** The collection. */
-	protected Collection<E> collection;
+	protected final Collection<E> collection;
 
 
 	// ********** constructors **********
 
 	/**
-	 * Construct a CollectionValueModel for the specified collection.
+	 * Construct a collection value model for the specified collection.
 	 */
 	public SimpleCollectionValueModel(Collection<E> collection) {
 		super();
@@ -45,7 +46,7 @@ public class SimpleCollectionValueModel<E>
 	}
 
 	/**
-	 * Construct a CollectionValueModel with an empty initial collection.
+	 * Construct a collection value model with an empty initial collection.
 	 */
 	public SimpleCollectionValueModel() {
 		this(new HashBag<E>());
@@ -65,6 +66,21 @@ public class SimpleCollectionValueModel<E>
 
 	public int size() {
 		return this.collection.size();
+	}
+
+
+	// ********** WritableCollectionValueModel implementation **********
+
+	/**
+	 * Allow the collection's elements to be replaced.
+	 */
+	public void setValues(Iterable<E> values) {
+		if (values == null) {
+			throw new NullPointerException();
+		}
+		this.collection.clear();
+		CollectionTools.addAll(this.collection, values);
+		this.fireCollectionChanged(VALUES, this.collection);
 	}
 
 
@@ -134,18 +150,7 @@ public class SimpleCollectionValueModel<E>
 	}
 
 
-	// ********** additional behavior **********
-
-	/**
-	 * Allow the collection to be replaced.
-	 */
-	public void setCollection(Collection<E> collection) {
-		if (collection == null) {
-			throw new NullPointerException();
-		}
-		this.collection = collection;
-		this.fireCollectionChanged(VALUES, this.collection);
-	}
+	// ********** miscellaneous **********
 
 	@Override
 	public void toString(StringBuilder sb) {

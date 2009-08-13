@@ -15,11 +15,11 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Extend ValueAspectAdapter to listen to the
+ * Extend {@link ValueAspectAdapter} to listen to the
  * "state" of the value in the wrapped value model.
  */
-public class ValueStateAdapter<T extends Model>
-	extends ValueAspectAdapter<T>
+public class ValueStateAdapter<V extends Model>
+	extends ValueAspectAdapter<V>
 {
 	/** Listener that listens to value. */
 	protected final StateChangeListener valueStateListener;
@@ -30,7 +30,7 @@ public class ValueStateAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the value state.
 	 */
-	public ValueStateAdapter(WritablePropertyValueModel<T> valueHolder) {
+	public ValueStateAdapter(WritablePropertyValueModel<V> valueHolder) {
 		super(valueHolder);
 		this.valueStateListener = this.buildValueStateListener();
 	}
@@ -41,7 +41,7 @@ public class ValueStateAdapter<T extends Model>
 	protected StateChangeListener buildValueStateListener() {
 		return new StateChangeListener() {
 			public void stateChanged(StateChangeEvent event) {
-				ValueStateAdapter.this.valueAspectChanged();
+				ValueStateAdapter.this.stateChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -49,9 +49,9 @@ public class ValueStateAdapter<T extends Model>
 			}
 		};
 	}
-	
 
-	// ********** behavior **********
+
+	// ********** ValueAspectAdapter implementation **********
 
 	@Override
 	protected void engageValue_() {
@@ -61,6 +61,13 @@ public class ValueStateAdapter<T extends Model>
 	@Override
 	protected void disengageValue_() {
 		this.value.removeStateChangeListener(this.valueStateListener);
+	}
+
+
+	// ********** change events **********
+
+	protected void stateChanged(@SuppressWarnings("unused") StateChangeEvent event) {
+		this.valueAspectChanged();
 	}
 
 }

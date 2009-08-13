@@ -86,7 +86,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
-		collectionHolder.setCollection(this.buildCollection());
+		collectionHolder.setValues(this.buildCollection());
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 	}
@@ -111,7 +111,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		this.compare(listValueModel, synchList);
 
 		// test concurrent modification exception
-		listHolder.setList(this.buildList());
+		listHolder.setListValues(this.buildList());
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 	}
@@ -167,7 +167,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
-		collectionHolder.setCollection(this.buildCollection());
+		collectionHolder.setValues(this.buildCollection());
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 	}
@@ -192,7 +192,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(5, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
-		listHolder.setList(this.buildList());
+		listHolder.setListValues(this.buildList());
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 	}

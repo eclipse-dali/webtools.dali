@@ -9,25 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * This abstract class provides the infrastructure needed to wrap
  * another property value model, "lazily" listen to it, and propagate
- * its change notifications.
+ * its change notifications. Subclasses must implement the appropriate
+ * {@link PropertyValueModel}.
+ * <p>
+ * Subclasses must implement the following methods:<ul>
+ * <li>{@link #valueChanged(PropertyChangeEvent)}<p>
+ *     implement this method to propagate the appropriate change notification
+ * </ul>
  */
-public abstract class PropertyValueModelWrapper<T>
-	extends AbstractModel
+public abstract class PropertyValueModelWrapper<V>
+	extends AbstractPropertyValueModel
 {
-
 	/** The wrapped property value model. */
-	protected final PropertyValueModel<? extends T> valueHolder;
+	protected final PropertyValueModel<? extends V> valueHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped value holder. */
 	protected final PropertyChangeListener valueChangeListener;
@@ -39,7 +40,7 @@ public abstract class PropertyValueModelWrapper<T>
 	 * Construct a property value model with the specified wrapped
 	 * property value model. The value holder is required.
 	 */
-	protected PropertyValueModelWrapper(PropertyValueModel<? extends T> valueHolder) {
+	protected PropertyValueModelWrapper(PropertyValueModel<? extends V> valueHolder) {
 		super();
 		if (valueHolder == null) {
 			throw new NullPointerException();
@@ -48,11 +49,6 @@ public abstract class PropertyValueModelWrapper<T>
 		this.valueChangeListener = this.buildValueChangeListener();
 	}
 	
-	@Override
-	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, PropertyValueModel.VALUE);
-	}
-
 	protected PropertyChangeListener buildValueChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
@@ -66,74 +62,24 @@ public abstract class PropertyValueModelWrapper<T>
 	}
 	
 
-	// ********** extend change support **********
-
-	/**
-	 * Extend to start listening to the nested model if necessary.
-	 */
-    @Override
-	public synchronized void addChangeListener(ChangeListener listener) {
-		if (this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
-			this.engageValueHolder();
-		}
-		super.addChangeListener(listener);
-	}
-	
-	/**
-	 * Extend to start listening to the nested model if necessary.
-	 */
-    @Override
-	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (propertyName.equals(PropertyValueModel.VALUE) && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
-			this.engageValueHolder();
-		}
-		super.addPropertyChangeListener(propertyName, listener);
-	}
-	
-	/**
-	 * Extend to stop listening to the nested model if necessary.
-	 */
-    @Override
-	public synchronized void removeChangeListener(ChangeListener listener) {
-		super.removeChangeListener(listener);
-		if (this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
-			this.disengageValueHolder();
-		}
-	}
-	
-	/**
-	 * Extend to stop listening to the nested model if necessary.
-	 */
-    @Override
-	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		super.removePropertyChangeListener(propertyName, listener);
-		if (propertyName.equals(PropertyValueModel.VALUE) && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
-			this.disengageValueHolder();
-		}
-	}
-	
-
 	// ********** behavior **********
 	
 	/**
 	 * Begin listening to the value holder.
 	 */
-	protected void engageValueHolder() {
+	@Override
+	protected void engageModel() {
 		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
 	}
 	
 	/**
 	 * Stop listening to the value holder.
 	 */
-	protected void disengageValueHolder() {
+	@Override
+	protected void disengageModel() {
 		this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
 	}
 	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.valueHolder);
-	}
-
 
 	// ********** property change support **********
 

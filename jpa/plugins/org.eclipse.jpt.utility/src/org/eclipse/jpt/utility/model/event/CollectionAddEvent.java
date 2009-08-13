@@ -11,14 +11,15 @@ package org.eclipse.jpt.utility.model.event;
 
 import java.util.Collection;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "collection add" event gets delivered whenever a model adds items to a
- * "bound" or "constrained" collection. A CollectionAddEvent is sent as an
- * argument to the CollectionChangeListener.
- * 
+ * "bound" or "constrained" collection. A <code>CollectionAddEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.CollectionChangeListener}.
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -40,7 +41,7 @@ import org.eclipse.jpt.utility.model.Model;
  * - add protocol to support both single items and collections
  * 	adds conditional logic to downstream code
  */
-public class CollectionAddEvent extends CollectionEvent {
+public final class CollectionAddEvent extends CollectionEvent {
 
 	/** The items added to the collection. */
 	private final Object[] items;
@@ -81,6 +82,13 @@ public class CollectionAddEvent extends CollectionEvent {
 	 */
 	public int getItemsSize() {
 		return this.items.length;
+	}
+
+	@Override
+	protected void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(": "); //$NON-NLS-1$
+		StringTools.append(sb, this.items);
 	}
 
 

@@ -129,7 +129,7 @@ public class TableModelAdapter<E>
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListAddEvent event) {
-				TableModelAdapter.this.addRows(event.getIndex(), event.getItemsSize(), this.getAddedItems(event));
+				TableModelAdapter.this.addRows(event.getIndex(), event.getItemsSize(), this.getItems(event));
 			}
 			public void itemsRemoved(ListRemoveEvent event) {
 				TableModelAdapter.this.removeRows(event.getIndex(), event.getItemsSize());
@@ -148,7 +148,7 @@ public class TableModelAdapter<E>
 			}
 			// minimized scope of suppressed warnings
 			@SuppressWarnings("unchecked")
-			protected Iterable<Object> getAddedItems(ListAddEvent event) {
+			protected Iterable<Object> getItems(ListAddEvent event) {
 				return (Iterable<Object>) event.getItems();
 			}
 			// minimized scope of suppressed warnings

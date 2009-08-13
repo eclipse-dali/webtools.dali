@@ -231,7 +231,7 @@ public class SimpleListValueModelTests extends TestCase {
 
 		assertTrue(this.listContains("bar"));
 		assertFalse(this.listContains("jar"));
-		this.listHolder.setList(newList);
+		this.listHolder.setListValues(newList);
 		assertFalse(this.listContains("bar"));
 		assertTrue(this.listContains("jar"));
 
@@ -240,7 +240,7 @@ public class SimpleListValueModelTests extends TestCase {
 		this.listHolder.remove(1);
 		assertFalse(this.listContains(null));
 
-		this.listHolder.setList(new ArrayList<String>());
+		this.listHolder.setListValues(new ArrayList<String>());
 		assertFalse(this.listContains("jar"));
 	}
 
@@ -277,7 +277,7 @@ public class SimpleListValueModelTests extends TestCase {
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.setList(this.buildList());
+		this.listHolder.setListValues(this.buildList());
 		this.verifyEvent(CHANGE);
 
 		this.event = null;

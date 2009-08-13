@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 /**
  * An empty list value model for when you don't
  * need to support a list.
- * 
+ * <p>
  * We don't use a singleton because we hold on to listeners.
  */
 public final class NullListValueModel<E>

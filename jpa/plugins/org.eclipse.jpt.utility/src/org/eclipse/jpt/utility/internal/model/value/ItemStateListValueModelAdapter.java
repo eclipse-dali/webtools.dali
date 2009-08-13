@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * Extend ItemAspectListValueModelAdapter to listen to the
+ * Extend {@link ItemAspectListValueModelAdapter} to listen to the
  * "state" of each item in the wrapped list model.
  */
 public class ItemStateListValueModelAdapter<E>
@@ -62,12 +62,12 @@ public class ItemStateListValueModelAdapter<E>
 	// ********** behavior **********
 
 	@Override
-	protected void startListeningToItem(Model item) {
+	protected void engageItem_(Model item) {
 		item.addStateChangeListener(this.itemStateListener);
 	}
 
 	@Override
-	protected void stopListeningToItem(Model item) {
+	protected void disengageItem_(Model item) {
 		item.removeStateChangeListener(this.itemStateListener);
 	}
 

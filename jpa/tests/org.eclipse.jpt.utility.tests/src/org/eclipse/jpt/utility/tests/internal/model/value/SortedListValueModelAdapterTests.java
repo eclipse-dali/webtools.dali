@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -182,6 +183,17 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.adapter.removeChangeListener(cl);
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
+	}
+
+	public void testCollectionChange() {
+		this.wrappedCollectionHolder.add("fred");
+		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
+			public void listChanged(ListChangeEvent e) {/* OK */}
+		});
+		this.wrappedCollectionHolder.setValues(Arrays.asList(new String[] {"foo", "bar", "baz"}));
+		assertEquals(3, this.adapter.size());
+		this.verifyList(this.wrappedCollection, this.adapter);
 	}
 
 	class TestListChangeListener implements ListChangeListener {

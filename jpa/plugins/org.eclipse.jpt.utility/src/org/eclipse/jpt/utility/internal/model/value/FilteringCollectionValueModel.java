@@ -26,21 +26,21 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * A <code>FilteringCollectionValueModel</code> wraps another
- * <code>CollectionValueModel</code> and uses a <code>Filter</code>
+ * {@link CollectionValueModel} and uses a {@link Filter}
  * to determine which items in the collection are returned by calls
- * to <code>#iterator()</code>.
+ * to {@link #iterator()}.
  * <p>
  * The filter can be changed at any time; allowing the same
  * adapter to be used with different filter criteria (e.g. when the user
- * wants to view a list of .java files).
+ * wants to view a list of <code>.java</code> files).
  * <p>
- * NB: If the objects in the "filtered" collection can change in such a way
+ * <b>NB:</b> If the objects in the "filtered" collection can change in such a way
  * that they should be removed from the "filtered" collection, you will
- * need to wrap the original collection in an ItemAspectListValueModelAdapter.
+ * need to wrap the original collection in an {@link ItemAspectListValueModelAdapter}.
  * For example, if the filter only "accepts" items whose names begin
  * with "X" and the names of the items can change, you will need to
  * wrap the original list of unfiltered items with an
- * ItemPropertyListValueModelAdapter that listens for changes to each
+ * {@link ItemPropertyListValueModelAdapter} that listens for changes to each
  * item's name and fires the appropriate event whenever an item's name
  * changes. The event will cause this wrapper to re-filter the changed
  * item and add or remove it from the "filtered" collection as appropriate.
@@ -53,7 +53,7 @@ public class FilteringCollectionValueModel<E>
 	private Filter<E> filter;
 
 	/** Cache the items that were accepted by the filter */
-	private final Collection<E> filteredItems;
+	private final Collection<E> filteredItems = new ArrayList<E>();
 
 
 	// ********** constructors **********
@@ -73,7 +73,6 @@ public class FilteringCollectionValueModel<E>
 	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionHolder, Filter<E> filter) {
 		super(collectionHolder);
 		this.filter = filter;
-		this.filteredItems = new ArrayList<E>();
 	}
 
 	/**
@@ -170,6 +169,11 @@ public class FilteringCollectionValueModel<E>
 		this.filteredItems.clear();
 		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder));
 		this.fireCollectionChanged(VALUES, this.filteredItems);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.filteredItems);
 	}
 
 }

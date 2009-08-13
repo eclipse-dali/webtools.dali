@@ -110,7 +110,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		newCollection.add("fox");
 		newCollection.add("baz");
 		
-		this.collectionHolder.setCollection(newCollection);
+		this.collectionHolder.setValues(newCollection);
 
 		Iterator<String> collectionValues = this.collectionHolder.iterator();
 		assertEquals("fox", collectionValues.next());
@@ -194,7 +194,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		newCollection.add("fox");
 		newCollection.add("baz");
 		
-		this.collectionHolder.setCollection(newCollection);
+		this.collectionHolder.setValues(newCollection);
 
 		this.verifyEvent(this.collectionChangedEvent, this.collectionHolder);
 		

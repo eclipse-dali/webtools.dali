@@ -221,13 +221,13 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 			@Override
 			public void itemsAdded(CollectionAddEvent e) {/* OK */}
 			@Override
-			public void itemsRemoved(CollectionRemoveEvent e) {/* OK */}
+			public void collectionCleared(CollectionClearEvent e) {/* OK */}
 		});
 		this.wrappedListHolder.add(0, "foo");
 		this.wrappedListHolder.add(1, "bar");
 		this.wrappedListHolder.add(2, "baz");
 		JList jList = new JList(new ListModelAdapter(this.adapter));
-		this.wrappedListHolder.setList(new ArrayList<String>());
+		this.wrappedListHolder.setListValues(new ArrayList<String>());
 		assertEquals(0, jList.getModel().getSize());
 	}
 	
@@ -243,7 +243,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("foo");
 		list.add("bar");
-		this.wrappedListHolder.setList(list);
+		this.wrappedListHolder.setListValues(list);
 		assertEquals(2, jList.getModel().getSize());
 	}
 	
@@ -257,7 +257,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
 		ArrayList<String> list = new ArrayList<String>();
-		this.wrappedListHolder.setList(list);
+		this.wrappedListHolder.setListValues(list);
 		assertEquals(0, jList.getModel().getSize());
 	}
 

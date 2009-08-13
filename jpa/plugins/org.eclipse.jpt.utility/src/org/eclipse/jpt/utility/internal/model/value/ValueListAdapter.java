@@ -22,13 +22,12 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Extend ValueAspectAdapter to listen to one or more list
+ * Extend {@link ValueAspectAdapter} to listen to one or more list
  * aspects of the value in the wrapped value model.
  */
-public class ValueListAdapter<T extends Model>
-	extends ValueAspectAdapter<T>
+public class ValueListAdapter<V extends Model>
+	extends ValueAspectAdapter<V>
 {
-
 	/** The names of the value's lists that we listen to. */
 	protected final String[] listNames;
 
@@ -41,7 +40,7 @@ public class ValueListAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListAdapter(WritablePropertyValueModel<T> valueHolder, String... listNames) {
+	public ValueListAdapter(WritablePropertyValueModel<V> valueHolder, String... listNames) {
 		super(valueHolder);
 		this.listNames = listNames;
 		this.valueListListener = this.buildValueListListener();
@@ -50,29 +49,25 @@ public class ValueListAdapter<T extends Model>
 
 	// ********** initialization **********
 
-	/**
-	 * All we really care about is the fact that a List aspect has 
-	 * changed. Do the same thing no matter which event occurs.
-	 */
 	protected ListChangeListener buildValueListListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListAddEvent event) {
-				ValueListAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.itemsAdded(event);
 			}
 			public void itemsRemoved(ListRemoveEvent event) {
-				ValueListAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.itemsRemoved(event);
 			}
 			public void itemsReplaced(ListReplaceEvent event) {
-				ValueListAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.itemsReplaced(event);
 			}
 			public void itemsMoved(ListMoveEvent event) {
-				ValueListAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.itemsMoved(event);
 			}
 			public void listCleared(ListClearEvent event) {
-				ValueListAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.listCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
-				ValueListAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.listChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -80,6 +75,9 @@ public class ValueListAdapter<T extends Model>
 			}
 		};
 	}
+
+
+	// ********** ValueAspectAdapter implementation **********
 
 	@Override
 	protected void engageValue_() {
@@ -93,6 +91,33 @@ public class ValueListAdapter<T extends Model>
 		for (String listName : this.listNames) {
 			this.value.removeListChangeListener(listName, this.valueListListener);
 		}
+	}
+
+
+	// ********** change events **********
+
+	protected void itemsAdded(@SuppressWarnings("unused") ListAddEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void itemsRemoved(@SuppressWarnings("unused") ListRemoveEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void itemsReplaced(@SuppressWarnings("unused") ListReplaceEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void itemsMoved(@SuppressWarnings("unused") ListMoveEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void listCleared(@SuppressWarnings("unused") ListClearEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void listChanged(@SuppressWarnings("unused") ListChangeEvent event) {
+		this.valueAspectChanged();
 	}
 
 }

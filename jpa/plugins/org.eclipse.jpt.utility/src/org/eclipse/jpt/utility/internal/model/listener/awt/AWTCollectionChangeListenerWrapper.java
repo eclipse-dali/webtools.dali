@@ -20,10 +20,10 @@ import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 /**
  * Wrap another collection change listener and forward events to it on the AWT
  * event queue.
- * Forward *every* event asynchronously via the UI thread so the listener
+ * Forward <em>every</em> event asynchronously via the UI thread so the listener
  * receives in the same order they were generated.
  */
-public class AWTCollectionChangeListenerWrapper
+public final class AWTCollectionChangeListenerWrapper
 	implements CollectionChangeListener
 {
 	private final CollectionChangeListener listener;

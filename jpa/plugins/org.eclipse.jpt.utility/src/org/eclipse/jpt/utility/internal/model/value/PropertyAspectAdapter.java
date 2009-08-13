@@ -11,49 +11,28 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.EventListener;
 
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * This AspectAdapter provides basic PropertyChange support.
- * This allows us to convert a set of one or more properties into
- * a single property, VALUE.
- * 
- * The typical subclass will override the following methods:
- * #buildValue_()
- *     at the very minimum, override this method to return the value of the
- *     subject's property (or "virtual" property); it does not need to be
- *     overridden if #buildValue() is overridden and its behavior changed
- * #setValue_(Object)
- *     override this method if the client code needs to *set* the value of
- *     the subject's property; oftentimes, though, the client code (e.g. UI)
- *     will need only to *get* the value; it does not need to be
- *     overridden if #setValue(Object) is overridden and its behavior changed
- * #buildValue()
- *     override this method only if returning a null value when the subject is null
- *     is unacceptable
- * #setValue(Object)
- *     override this method only if something must be done when the subject
- *     is null (e.g. throw an exception)
+ * This {@link AspectPropertyValueModelAdapter} provides basic property change support.
+ * This converts a set of one or more standard properties into
+ * a single {@link #VALUE} property.
+ * <p>
+ * The typical subclass will override the following methods (see the descriptions
+ * in {@link AspectPropertyValueModelAdapter}):<ul>
+ * <li>{@link #buildValue_()}
+ * <li>{@link #setValue_(Object)}
+ * <li>{@link #buildValue()}
+ * <li>{@link #setValue(Object)}
+ * </ul>
  */
-public abstract class PropertyAspectAdapter<S extends Model, T>
-	extends AspectAdapter<S>
-	implements WritablePropertyValueModel<T>
+public abstract class PropertyAspectAdapter<S extends Model, V>
+	extends AspectPropertyValueModelAdapter<S, V>
 {
-	/**
-	 * Cache the current value of the aspect so we
-	 * can pass an "old value" when we fire a property change event.
-	 * We need this because the value may be calculated and may
-	 * not be in the property change event fired by the subject,
-	 * especially when dealing with multiple aspects.
-	 */
-	protected T value;
-
 	/** The name of the subject's properties that we use for the value. */
 	protected final String[] propertyNames;
 		protected static final String[] EMPTY_PROPERTY_NAMES = new String[0];
@@ -65,7 +44,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	// ********** constructors **********
 
 	/**
-	 * Construct a PropertyAspectAdapter for the specified subject
+	 * Construct a property aspect adapter for the specified subject
 	 * and property.
 	 */
 	protected PropertyAspectAdapter(String propertyName, S subject) {
@@ -73,7 +52,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
 	/**
-	 * Construct a PropertyAspectAdapter for the specified subject
+	 * Construct a property aspect adapter for the specified subject
 	 * and properties.
 	 */
 	protected PropertyAspectAdapter(String[] propertyNames, S subject) {
@@ -81,19 +60,17 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
 	/**
-	 * Construct a PropertyAspectAdapter for the specified subject holder
+	 * Construct a property aspect adapter for the specified subject holder
 	 * and properties.
 	 */
 	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... propertyNames) {
 		super(subjectHolder);
 		this.propertyNames = propertyNames;
 		this.propertyChangeListener = this.buildPropertyChangeListener();
-		// our value is null when we are not listening to the subject
-		this.value = null;
 	}
 
 	/**
-	 * Construct a PropertyAspectAdapter for the specified subject holder
+	 * Construct a property aspect adapter for the specified subject holder
 	 * and properties.
 	 */
 	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> propertyNames) {
@@ -101,10 +78,10 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
 	/**
-	 * Construct a PropertyAspectAdapter for an "unchanging" property in
+	 * Construct a property aspect adapter for an "unchanging" property in
 	 * the specified subject. This is useful for a property aspect that does not
 	 * change for a particular subject; but the subject will change, resulting in
-	 * a new property. (A TransformationPropertyValueModel could also be
+	 * a new property. (A {@link TransformationPropertyValueModel} could also be
 	 * used in this situation.)
 	 */
 	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
@@ -114,14 +91,11 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 
 	// ********** initialization **********
 
-	/**
-	 * The subject's property has changed, notify the listeners.
-	 */
 	protected PropertyChangeListener buildPropertyChangeListener() {
 		// transform the subject's property change events into VALUE property change events
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				PropertyAspectAdapter.this.propertyChanged();
+				PropertyAspectAdapter.this.propertyChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -131,67 +105,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
 
-	// ********** PropertyValueModel implementation **********
-
-	/**
-	 * Return the value of the subject's property.
-	 */
-	@Override
-	public final T getValue() {
-		return this.value;
-	}
-
-
-	// ********** WritablePropertyValueModel implementation **********
-
-	/**
-	 * Set the value of the subject's property.
-	 */
-	public void setValue(T value) {
-		if (this.subject != null) {
-			this.setValue_(value);
-		}
-	}
-
-	/**
-	 * Set the value of the subject's property.
-	 * At this point we can be sure that the subject is not null.
-	 * @see #setValue(Object)
-	 */
-	protected void setValue_(@SuppressWarnings("unused") T value) {
-		throw new UnsupportedOperationException();
-	}
-
-
 	// ********** AspectAdapter implementation **********
-
-	@Override
-	protected Class<? extends EventListener> getListenerClass() {
-		return PropertyChangeListener.class;
-	}
-
-	@Override
-	protected String getListenerAspectName() {
-		return VALUE;
-	}
-
-    @Override
-	protected boolean hasListeners() {
-		return this.hasAnyPropertyChangeListeners(VALUE);
-	}
-
-    @Override
-	protected void fireAspectChanged(Object oldValue, Object newValue) {
-		this.firePropertyChanged(VALUE, oldValue, newValue);
-	}
-
-    @Override
-	protected void engageSubject() {
-		super.engageSubject();
-		// synch our value *after* we start listening to the subject,
-		// since its value might change when a listener is added
-		this.value = this.buildValue();
-	}
 
     @Override
 	protected void engageSubject_() {
@@ -201,56 +115,14 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
     @Override
-	protected void disengageSubject() {
-		super.disengageSubject();
-		// clear out our value when we are not listening to the subject
-		this.value = null;
-	}
-
-    @Override
 	protected void disengageSubject_() {
     	for (String propertyName : this.propertyNames) {
 			((Model) this.subject).removePropertyChangeListener(propertyName, this.propertyChangeListener);
 		}
 	}
 
-
-	// ********** AbstractModel implementation **********
-
-	@Override
-	public void toString(StringBuilder sb) {
-		for (int i = 0; i < this.propertyNames.length; i++) {
-			if (i != 0) {
-				sb.append(", "); //$NON-NLS-1$
-			}
-			sb.append(this.propertyNames[i]);
-		}
-	}
-
-
-	// ********** behavior **********
-
-	/**
-	 * Return the aspect's value.
-	 * At this point the subject may be null.
-	 */
-	protected T buildValue() {
-		return (this.subject == null) ? null : this.buildValue_();
-	}
-
-	/**
-	 * Return the value of the subject's property.
-	 * At this point we can be sure that the subject is not null.
-	 * @see #buildValue()
-	 */
-	protected T buildValue_() {
-		throw new UnsupportedOperationException();
-	}
-
-	protected void propertyChanged() {
-		T old = this.value;
-		this.value = this.buildValue();
-		this.fireAspectChanged(old, this.value);
+    protected void propertyChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
+		this.propertyChanged();
 	}
 
 }

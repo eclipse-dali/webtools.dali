@@ -20,13 +20,12 @@ import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Extend ValueAspectAdapter to listen to one or more collection
+ * Extend {@link ValueAspectAdapter} to listen to one or more collection
  * aspects of the value in the wrapped value model.
  */
-public class ValueCollectionAdapter<T extends Model>
-	extends ValueAspectAdapter<T>
+public class ValueCollectionAdapter<V extends Model>
+	extends ValueAspectAdapter<V>
 {
-
 	/** The names of the value's collections that we listen to. */
 	protected final String[] collectionNames;
 
@@ -39,7 +38,7 @@ public class ValueCollectionAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the specified value collections.
 	 */
-	public ValueCollectionAdapter(WritablePropertyValueModel<T> valueHolder, String... collectionNames) {
+	public ValueCollectionAdapter(WritablePropertyValueModel<V> valueHolder, String... collectionNames) {
 		super(valueHolder);
 		this.collectionNames = collectionNames;
 		this.valueCollectionListener = this.buildValueCollectionListener();
@@ -48,23 +47,19 @@ public class ValueCollectionAdapter<T extends Model>
 
 	// ********** initialization **********
 
-	/**
-	 * All we really care about is the fact that a Collection aspect has 
-	 * changed. Do the same thing no matter which event occurs.
-	 */
 	protected CollectionChangeListener buildValueCollectionListener() {
 		return new CollectionChangeListener() {
 			public void itemsAdded(CollectionAddEvent event) {
-				ValueCollectionAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.itemsAdded(event);
 			}
 			public void itemsRemoved(CollectionRemoveEvent event) {
-				ValueCollectionAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.itemsRemoved(event);
 			}
 			public void collectionCleared(CollectionClearEvent event) {
-				ValueCollectionAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.collectionCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
-				ValueCollectionAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.collectionChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -72,6 +67,9 @@ public class ValueCollectionAdapter<T extends Model>
 			}
 		};
 	}
+
+
+	// ********** ValueAspectAdapter implementation **********
 
 	@Override
 	protected void engageValue_() {
@@ -85,6 +83,25 @@ public class ValueCollectionAdapter<T extends Model>
 		for (String collectionName : this.collectionNames) {
 			this.value.removeCollectionChangeListener(collectionName, this.valueCollectionListener);
 		}
+	}
+
+
+	// ********** change events **********
+
+	protected void itemsAdded(@SuppressWarnings("unused") CollectionAddEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void itemsRemoved(@SuppressWarnings("unused") CollectionRemoveEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void collectionCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
+		this.valueAspectChanged();
+	}
+
+	protected void collectionChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
+		this.valueAspectChanged();
 	}
 
 }

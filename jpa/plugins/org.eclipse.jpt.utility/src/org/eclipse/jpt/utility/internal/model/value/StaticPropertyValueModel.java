@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,9 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
- * Implementation of PropertyValueModel that can be used for
+ * Implementation of {@link PropertyValueModel} that can be used for
  * returning a static value, but still allows listeners to be added.
- * Listeners will NEVER be notified of any changes, because there should be none.
+ * Listeners will <em>never</em> be notified of any changes, because there should be none.
  */
 public class StaticPropertyValueModel<T>
 	extends AbstractModel
@@ -29,7 +29,7 @@ public class StaticPropertyValueModel<T>
 
 
 	/**
-	 * Construct a static PropertyValueModel for the specified value.
+	 * Construct a static property value model for the specified value.
 	 */
 	public StaticPropertyValueModel(T value) {
 		super();
@@ -47,8 +47,8 @@ public class StaticPropertyValueModel<T>
 	// ********** Object overrides **********
 
 	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.value);
+	public void toString(StringBuilder sb) {
+		sb.append(this.value);
 	}
 
 }

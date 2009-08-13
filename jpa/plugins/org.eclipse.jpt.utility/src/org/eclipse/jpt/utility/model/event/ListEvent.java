@@ -14,12 +14,13 @@ import org.eclipse.jpt.utility.model.Model;
 // TODO add "item/original/nested event" for item changed?
 /**
  * A "list" event gets delivered whenever a model changes a "bound"
- * or "constrained" list. A ListEvent is sent as an
- * argument to the ListChangeListener. The intent is that any listener
+ * or "constrained" list. A <code>ListEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.ListChangeListener}.
+ * The intent is that any listener
  * can keep itself synchronized with the model's list via the list
  * events it receives and need not maintain a reference to the original
  * list.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

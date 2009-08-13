@@ -14,20 +14,22 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.WritableListValueModel;
 
 /**
- * Implementation of ListValueModel and List that simply holds a
- * collection and notifies listeners of any changes.
+ * Implementation of {@link ListValueModel} and {@link List} that simply holds a
+ * list and notifies listeners of any changes.
  */
 public class SimpleListValueModel<E>
 	extends AbstractModel
-	implements ListValueModel<E>, List<E>
+	implements WritableListValueModel<E>, List<E>
 {
 	/** The list. */
 	protected List<E> list;
@@ -36,7 +38,7 @@ public class SimpleListValueModel<E>
 	// ********** constructors **********
 
 	/**
-	 * Construct a ListValueModel for the specified list.
+	 * Construct a list value model for the specified list.
 	 */
 	public SimpleListValueModel(List<E> list) {
 		super();
@@ -47,7 +49,7 @@ public class SimpleListValueModel<E>
 	}
 
 	/**
-	 * Construct a ListValueModel with an empty initial list.
+	 * Construct a list value model with an empty initial list.
 	 */
 	public SimpleListValueModel() {
 		this(new ArrayList<E>());
@@ -75,6 +77,21 @@ public class SimpleListValueModel<E>
 
 	public E get(int index) {
 		return this.list.get(index);
+	}
+
+
+	// ********** WritableListValueModel implementation **********
+
+	/**
+	 * Allow the list's elements to be replaced.
+	 */
+	public void setListValues(Iterable<E> list) {
+		if (list == null) {
+			throw new NullPointerException();
+		}
+		this.list.clear();
+		CollectionTools.addAll(this.list, list);
+		this.fireListChanged(LIST_VALUES, this.list);
 	}
 
 
@@ -178,17 +195,6 @@ public class SimpleListValueModel<E>
 
 
 	// ********** additional behavior **********
-
-	/**
-	 * Allow the list to be replaced.
-	 */
-	public void setList(List<E> list) {
-		if (list == null) {
-			throw new NullPointerException();
-		}
-		this.list = list;
-		this.fireListChanged(LIST_VALUES, this.list);
-	}
 
 	/**
 	 * Move a single element.

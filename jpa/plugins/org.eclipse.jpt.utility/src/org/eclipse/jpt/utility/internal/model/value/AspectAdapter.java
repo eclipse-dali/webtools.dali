@@ -19,11 +19,11 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
- * This abstract extension of AbstractModel provides a base for adding 
- * change listeners (PropertyChange, CollectionChange, ListChange, TreeChange)
+ * This abstract extension of {@link AbstractModel} provides a base for adding 
+ * change listeners (property change, collection change, list change, tree change)
  * to a subject and converting the subject's change notifications into a single
- * set of change notifications for a common aspect (e.g. VALUE).
- * 
+ * set of change notifications for a common aspect (e.g. <code>VALUE</code>).
+ * <p>
  * The adapter will only listen to the subject (and subject holder) when the
  * adapter itself actually has listeners. This will allow the adapter to be
  * garbage collected when appropriate
@@ -42,29 +42,29 @@ public abstract class AspectAdapter<S>
 	/**
 	 * A value model that holds the subject
 	 * that holds the aspect and provides change notification.
-	 * This is useful when there are a number of AspectAdapters
+	 * This is useful when there are a number of aspect adapters
 	 * that have the same subject and that subject can change.
-	 * All the AspectAdapters should share the same subject holder.
+	 * All the aspect adapters should share the same subject holder.
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
 	protected final PropertyValueModel<? extends S> subjectHolder;
 
-	/** A listener that keeps us in synch with the subjectHolder. */
+	/** A listener that keeps us in synch with the subject holder. */
 	protected final PropertyChangeListener subjectChangeListener;
 
 
 	// ********** constructors **********
 
 	/**
-	 * Construct an AspectAdapter for the specified subject.
+	 * Construct an aspect adapter for the specified subject.
 	 */
 	protected AspectAdapter(S subject) {
 		this(new StaticPropertyValueModel<S>(subject));
 	}
 
 	/**
-	 * Construct an AspectAdapter for the specified subject holder.
+	 * Construct an aspect adapter for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
 	protected AspectAdapter(PropertyValueModel<? extends S> subjectHolder) {

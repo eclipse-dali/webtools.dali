@@ -16,13 +16,13 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Extend ValueAspectAdapter to listen to one or more
+ * Extend {@link ValueAspectAdapter} to listen to one or more
  * properties of the value in the wrapped value model.
  */
-public class ValuePropertyAdapter<T extends Model>
-	extends ValueAspectAdapter<T>
+public class ValuePropertyAdapter<V extends Model>
+	extends ValueAspectAdapter<V>
 {
-	/** The names of the value's properties that we listen to. */
+	/** The names of the value's properties we listen to. */
 	protected final String[] propertyNames;
 
 	/** Listener that listens to the value. */
@@ -34,7 +34,7 @@ public class ValuePropertyAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the specified value properties.
 	 */
-	public ValuePropertyAdapter(WritablePropertyValueModel<T> valueHolder, String... propertyNames) {
+	public ValuePropertyAdapter(WritablePropertyValueModel<V> valueHolder, String... propertyNames) {
 		super(valueHolder);
 		this.propertyNames = propertyNames;
 		this.valuePropertyListener = this.buildValuePropertyListener();
@@ -46,7 +46,7 @@ public class ValuePropertyAdapter<T extends Model>
 	protected PropertyChangeListener buildValuePropertyListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				ValuePropertyAdapter.this.valueAspectChanged();
+				ValuePropertyAdapter.this.propertyChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -56,7 +56,7 @@ public class ValuePropertyAdapter<T extends Model>
 	}
 	
 
-	// ********** behavior **********
+	// ********** ValueAspectAdapter implementation **********
 
 	@Override
 	protected void engageValue_() {
@@ -70,6 +70,13 @@ public class ValuePropertyAdapter<T extends Model>
 		for (String propertyName : this.propertyNames) {
 			this.value.removePropertyChangeListener(propertyName, this.valuePropertyListener);
 		}
+	}
+
+
+	// ********** change events **********
+
+	protected void propertyChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
+		this.valueAspectChanged();
 	}
 
 }

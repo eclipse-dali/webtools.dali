@@ -21,21 +21,22 @@ import org.eclipse.jpt.utility.model.value.TreeValueModel;
  * a tree value model, "lazily" listen to it, and convert
  * its change notifications into property value model change
  * notifications.
- * 
- * Subclasses must override:
- * - #buildValue()
+ * <p>
+ * Subclasses must override:<ul>
+ * <li>{@link #buildValue()}<p>
  *     to return the current property value, as derived from the
- *     current tree value
- * 
- * Subclasses might want to override:
- * - #nodeAdded(TreeChangeEvent event)
- * - #nodeRemoved(TreeChangeEvent event)
- * - #treeCleared(TreeChangeEvent event)
- * - #treeChanged(TreeChangeEvent event)
- *     to improve performance (by not recalculating the value, if possible)
+ *     current collection value
+ * </ul>
+ * Subclasses might want to override the following methods
+ * to improve performance (by not recalculating the value, if possible):<ul>
+ * <li>{@link #nodeAdded(TreeChangeEvent event)}
+ * <li>{@link #nodeRemoved(TreeChangeEvent event)}
+ * <li>{@link #treeCleared(TreeChangeEvent event)}
+ * <li>{@link #treeChanged(TreeChangeEvent event)}
+ * </ul>
  */
 public abstract class TreePropertyValueModelAdapter<T>
-	extends AspectPropertyValueModelAdapter<T>
+	extends AbstractPropertyValueModelAdapter<T>
 {
 	/** The wrapped tree value model. */
 	protected final TreeValueModel<?> treeHolder;

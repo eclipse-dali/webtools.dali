@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,18 +15,17 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * A <code>FilteringPropertyValueModel</code> wraps another
- * <code>PropertyValueModel</code> and uses a <code>Filter</code>
+ * {@link PropertyValueModel} and uses a {@link Filter}
  * to determine when the wrapped value is to be returned by calls
- * to <code>value()</code>.
+ * to {@link #getValue()}.
  * <p>
- * As an alternative to building a <code>Filter</code>, a subclass
- * of <code>FilteringPropertyValueModel</code> can override the
- * <code>accept(Object)</code> method.
+ * As an alternative to building a {@link Filter}, a subclass
+ * can override {@link #accept(T)}.
  * <p>
  * One, possibly undesirable, side-effect of using this value model is that
  * it must return *something* as the value. The default behavior is
  * to return <code>null</code> whenever the wrapped value is not "accepted",
- * which can be configured and/or overridden.
+ * which can be configured and/or overridden ({@link #getDefaultValue()}).
  */
 public class FilteringPropertyValueModel<T>
 	extends PropertyValueModelWrapper<T>
@@ -39,11 +38,10 @@ public class FilteringPropertyValueModel<T>
 	// ********** constructors **********
 
 	/**
-	 * Construct a property value model with the specified nested
+	 * Construct a filtering property value model with the specified nested
 	 * property value model and a disabled filter.
-	 * Use this constructor if you want to override the
-	 * <code>accept(Object)</code>
-	 * method instead of building a <code>Filter</code>.
+	 * Use this constructor if you want to override {@link #accept(T)}
+	 * instead of building a {@link Filter}.
 	 * The default value will be <code>null</code>.
 	 */
 	public FilteringPropertyValueModel(PropertyValueModel<? extends T> valueHolder) {
@@ -51,11 +49,10 @@ public class FilteringPropertyValueModel<T>
 	}
 
 	/**
-	 * Construct a property value model with the specified nested
+	 * Construct a filtering property value model with the specified nested
 	 * property value model, specified default value, and a disabled filter.
-	 * Use this constructor if you want to override the
-	 * <code>accept(Object)</code>
-	 * method instead of building a <code>Filter</code>
+	 * Use this constructor if you want to override {@link #accept(T)}
+	 * instead of building a {@link Filter}
 	 * <em>and</em> you need to specify
 	 * a default value other than <code>null</code>.
 	 */
@@ -64,7 +61,7 @@ public class FilteringPropertyValueModel<T>
 	}
 
 	/**
-	 * Construct an property value model with the specified nested
+	 * Construct a filtering property value model with the specified nested
 	 * property value model and filter.
 	 * The default value will be <code>null</code>.
 	 */
@@ -73,7 +70,7 @@ public class FilteringPropertyValueModel<T>
 	}
 
 	/**
-	 * Construct an property value model with the specified nested
+	 * Construct a filtering property value model with the specified nested
 	 * property value model, filter, and default value.
 	 */
 	public FilteringPropertyValueModel(PropertyValueModel<? extends T> valueHolder, Filter<T> filter, T defaultValue) {
@@ -96,9 +93,11 @@ public class FilteringPropertyValueModel<T>
 	protected void valueChanged(PropertyChangeEvent event) {
 		// filter the values before propagating the change event
 		@SuppressWarnings("unchecked")
-		Object oldValue = this.filterValue((T) event.getOldValue());
+		T eventOldValue = (T) event.getOldValue();
+		Object oldValue = this.filterValue(eventOldValue);
 		@SuppressWarnings("unchecked")
-		Object newValue = this.filterValue((T) event.getNewValue());
+		T eventNewValue = (T) event.getNewValue();
+		Object newValue = this.filterValue(eventNewValue);
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
@@ -110,17 +109,17 @@ public class FilteringPropertyValueModel<T>
 	 * otherwise return the default value.
 	 */
 	protected T filterValue(T value) {
-		return this.accept(value) ? value : this.defaultValue();
+		return this.accept(value) ? value : this.getDefaultValue();
 	}
 
 	/**
-	 * Return whether the <code>FilteringPropertyValueModel</code> should
-	 * return the specified value from a call to the
-	 * <code>value()</code> method; the value came
+	 * Return whether the filtering property value model should
+	 * return the specified value from a call to
+	 * {@link #getValue()}; the value came
 	 * from the nested property value model
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Filter</code>.
+	 * alternative to building a {@link Filter}.
 	 */
 	protected boolean accept(T value) {
 		return this.filter.accept(value);
@@ -131,8 +130,13 @@ public class FilteringPropertyValueModel<T>
 	 * the nested value was rejected by the filter.
 	 * The default is <code>null</code>.
 	 */
-	protected T defaultValue() {
+	protected T getDefaultValue() {
 		return this.defaultValue;
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getValue());
 	}
 
 }

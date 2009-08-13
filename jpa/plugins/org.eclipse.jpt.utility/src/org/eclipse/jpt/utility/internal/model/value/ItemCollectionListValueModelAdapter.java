@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * Extend ItemAspectListValueModelAdapter to listen to one or more collection
+ * Extend {@link ItemAspectListValueModelAdapter} to listen to one or more collection
  * aspects of each item in the wrapped list model.
  */
 public class ItemCollectionListValueModelAdapter<E>
@@ -85,14 +85,14 @@ public class ItemCollectionListValueModelAdapter<E>
 	// ********** behavior **********
 
 	@Override
-	protected void startListeningToItem(Model item) {
+	protected void engageItem_(Model item) {
 		for (String collectionName : this.collectionNames) {
 			item.addCollectionChangeListener(collectionName, this.itemCollectionListener);
 		}
 	}
 
 	@Override
-	protected void stopListeningToItem(Model item) {
+	protected void disengageItem_(Model item) {
 		for (String collectionName : this.collectionNames) {
 			item.removeCollectionChangeListener(collectionName, this.itemCollectionListener);
 		}

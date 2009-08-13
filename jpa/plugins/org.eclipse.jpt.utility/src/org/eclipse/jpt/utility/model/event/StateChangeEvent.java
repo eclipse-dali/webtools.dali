@@ -16,15 +16,16 @@ import org.eclipse.jpt.utility.model.Model;
  * such extent that it cannot be delineated all aspects of it that have changed.
  * Any listener can synchronize with the model as necessary since the model is
  * available as the event's 'source'.
- * A StateChangeEvent is sent as an argument to the StateChangeListener.
- * 
+ * A <code>StateChangeEvent</code> is sent as an argument to the
+ * {@link org.eclipse.jpt.utility.model.listener.StateChangeListener}.
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class StateChangeEvent extends ChangeEvent {
+public final class StateChangeEvent extends ChangeEvent {
 
 	private static final long serialVersionUID = 1L;
 

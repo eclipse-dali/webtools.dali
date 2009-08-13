@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,24 +14,23 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * A <code>CachingTransformationPropertyValueModel</code> wraps another
- * <code>PropertyValueModel</code> and uses a <code>Transformer</code>
- * to transform the wrapped value before it is returned by <code>getValue()</code>.
+ * {@link PropertyValueModel} and uses a {@link Transformer}
+ * to transform the wrapped value before it is returned by {@link #getValue()}.
  * The transformed value is calculated and cached during initialization and every
  * time the wrapped value changes. This can be useful when the old value
- * passed in to <code>valueChanged(PropertyChangeEvent)</code> can no longer
- * be "transformed" because its state is no longer valid.
+ * passed in to {@link #valueChanged(org.eclipse.jpt.utility.model.event.PropertyChangeEvent)}
+ * can no longer be "transformed" because its state is no longer valid.
  * This caching can also improve time performance in some situations.
  * <p>
- * As an alternative to building a <code>Transformer</code>,
+ * As an alternative to building a {@link Transformer},
  * a subclass of <code>CachingTransformationPropertyValueModel</code> can
- * either override the <code>transform_(Object)</code> method or,
+ * either override {@link #transform_(Object)} or,
  * if something other than null should be returned when the wrapped value
- * is null, override the <code>transform(Object)</code> method.
+ * is null, override {@link #transform(Object)}.
  */
 public class CachingTransformationPropertyValueModel<T1, T2>
 	extends TransformationPropertyValueModel<T1, T2>
 {
-
 	/**
 	 * Cache the transformed value so that during property change event notification
 	 * we do not have to transform the old value. The old value could no longer be valid in
@@ -45,9 +44,9 @@ public class CachingTransformationPropertyValueModel<T1, T2>
 	/**
 	 * Construct a property value model with the specified nested
 	 * property value model and the default transformer.
-	 * Use this constructor if you want to override the
-	 * <code>transform_(Object)</code> or <code>transform(Object)</code>
-	 * method instead of building a <code>Transformer</code>.
+	 * Use this constructor if you want to override
+	 * {@link #transform_(Object)} or {@link #transform(Object)}
+	 * instead of building a {@link Transformer}.
 	 */
 	public CachingTransformationPropertyValueModel(PropertyValueModel<? extends T1> valueHolder) {
 		super(valueHolder);
@@ -68,8 +67,8 @@ public class CachingTransformationPropertyValueModel<T1, T2>
 	 * We have listeners, transform the nested value and cache the result.
 	 */
 	@Override
-	protected void engageValueHolder() {
-		super.engageValueHolder();
+	protected void engageModel() {
+		super.engageModel();
 		this.cachedValue = this.transform(this.valueHolder.getValue());
 	}
 
@@ -77,9 +76,9 @@ public class CachingTransformationPropertyValueModel<T1, T2>
 	 * We have no more listeners, clear the cached value.
 	 */
 	@Override
-	protected void disengageValueHolder() {
+	protected void disengageModel() {
 		this.cachedValue = null;
-		super.disengageValueHolder();
+		super.disengageModel();
 	}
 
 	/**
@@ -93,6 +92,7 @@ public class CachingTransformationPropertyValueModel<T1, T2>
 
 	/**
 	 * Transform the specified new value, caching it before returning it.
+	 * A bit of a side-effect, but it seems reasonable.
 	 */
 	@Override
 	protected T2 transformNew(T1 value) {

@@ -11,38 +11,37 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Abstract model that provides behavior for wrapping a property
- * value model and listening for changes to aspects of the *value* contained
- * by the property value model. Changes to the actual value are also monitored.
- * 
+ * Abstract class that provides support for wrapping a {@link WritablePropertyValueModel}
+ * and listening for changes to <em>aspects</em> of the <em>value</em> contained
+ * by the {@link WritablePropertyValueModel}. Changes to the {@link WritablePropertyValueModel}'s
+ * value are also monitored.
+ * <p>
  * This is useful if you have a value that may change, but whose aspects can also
  * change in a fashion that might be of interest to the client.
- * 
- * NB: Clients will need to listen for two different change notifications: a property
- * change event will be be fired when the value changes; a state change event
- * will be fired when an aspect of the value changes.
- * 
- * Subclasses need to override two methods:
- * 
- * #engageValue_()
+ * <p>
+ * <b>NB:</b> Clients will need to listen for two different change notifications:
+ * a property change event will be be fired when the <em>value</em> changes;
+ * a state change event will be fired when an <em>aspect</em> of the value changes.
+ * <p>
+ * Subclasses need to override two methods:<ul>
+ * <li>{@link #engageValue_()}<p>
  *     begin listening to the appropriate aspect of the value and call
- *     #valueAspectChanged(Object) whenever the aspect changes
- * 
- * #disengageValue_()
+ *     {@link #valueAspectChanged()} whenever the aspect changes
+ *     (this will fire a state change event)
+ * <li>{@link #disengageValue_()}<p>
  *     stop listening to the appropriate aspect of the value
+ * </ul>
  */
-public abstract class ValueAspectAdapter<T>
-	extends PropertyValueModelWrapper<T>
-	implements WritablePropertyValueModel<T>
+public abstract class ValueAspectAdapter<V>
+	extends PropertyValueModelWrapper<V>
+	implements WritablePropertyValueModel<V>
 {
 	/** Cache the value so we can disengage. Null until we have a listener*/
-	protected T value;
+	protected V value;
 
 
 	// ********** constructors/initialization **********
@@ -50,13 +49,13 @@ public abstract class ValueAspectAdapter<T>
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	protected ValueAspectAdapter(WritablePropertyValueModel<T> valueHolder) {
+	protected ValueAspectAdapter(WritablePropertyValueModel<V> valueHolder) {
 		super(valueHolder);
+		this.value = null;
 	}
 
 	/**
-	 * Override to allow both property value model change and state change
-	 * listeners.
+	 * Override to allow both property and state change listeners.
 	 */
 	@Override
 	protected ChangeSupport buildChangeSupport() {
@@ -66,15 +65,15 @@ public abstract class ValueAspectAdapter<T>
 
 	// ********** PropertyValueModel implementation **********
 
-	public T getValue() {
+	public V getValue() {
 		return this.value;
 	}
 
 
 	// ********** WritablePropertyValueModel implementation **********
 
-	public void setValue(T value) {
-		this.valueHolder().setValue(value);
+	public void setValue(V value) {
+		this.getValueHolder().setValue(value);
 	}
 
 
@@ -90,63 +89,65 @@ public abstract class ValueAspectAdapter<T>
 
 	// ********** extend change support **********
 
+	/**
+	 * Extend to start listening to the underlying model if necessary.
+	 */
 	@Override
 	public synchronized void addStateChangeListener(StateChangeListener listener) {
-		if (this.hasNoRelevantListeners()) {
-			this.engageValue();
+		if (this.hasNoListeners()) {
+			this.engageModel();
 		}
 		super.addStateChangeListener(listener);
 	}
 
+	/**
+	 * Extend to stop listening to the underlying model if necessary.
+	 */
 	@Override
 	public synchronized void removeStateChangeListener(StateChangeListener listener) {
 		super.removeStateChangeListener(listener);
-		if (this.hasNoRelevantListeners()) {
-			this.disengageValue();
+		if (this.hasNoListeners()) {
+			this.disengageModel();
 		}
 	}
-	
+
+
+	// ********** AbstractPropertyValueModel overrides **********
+
+	/**
+	 * Extend to check for state change listeners.
+	 */
 	@Override
-	public synchronized void addChangeListener(ChangeListener listener) {
-		if (this.hasNoRelevantListeners()) {
-			this.engageValue();
-		}
-		super.addChangeListener(listener);
+	protected boolean hasListeners() {
+		return this.hasAnyStateChangeListeners() || super.hasListeners();
 	}
-	
+
+
+	// ********** PropertyValueModelWrapper overrides **********
+
+	/**
+	 * Extend to engage an aspect of the value model's value.
+	 */
 	@Override
-	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (this.hasNoRelevantListeners()) {
-			this.engageValue();
-		}
-		super.addPropertyChangeListener(propertyName, listener);
+	protected void engageModel() {
+		super.engageModel();
+		this.engageValue();
 	}
-	
+
+	/**
+	 * Extend to disengage an aspect of the value model's value.
+	 */
 	@Override
-	public synchronized void removeChangeListener(ChangeListener listener) {
-		super.removeChangeListener(listener);
-		if (this.hasNoRelevantListeners()) {
-			this.disengageValue();
-		}
+	protected void disengageModel() {
+		this.disengageValue();
+		super.disengageModel();
 	}
-	
-	@Override
-	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		super.removePropertyChangeListener(propertyName, listener);
-		if (this.hasNoRelevantListeners()) {
-			this.disengageValue();
-		}
-	}
-	
-	protected boolean hasNoRelevantListeners() {
-		return hasNoStateChangeListeners() && hasNoPropertyChangeListeners(VALUE);
-	}
-	
+
 
 	// ********** behavior **********
 
 	/**
-	 * Start listening to the current value.
+	 * Start listening to an aspect of the current value.
 	 */
 	protected void engageValue() {
 		this.value = this.valueHolder.getValue();
@@ -156,13 +157,13 @@ public abstract class ValueAspectAdapter<T>
 	}
 
 	/**
-	 * Start listening to the current value.
-	 * At this point we can be sure that the value is not null.
+	 * Start listening to some aspect of the current value.
+	 * At this point we can be sure the value is not null.
 	 */
 	protected abstract void engageValue_();
 
 	/**
-	 * Stop listening to the current value.
+	 * Stop listening to an aspect of the current value.
 	 */
 	protected void disengageValue() {
 		if (this.value != null) {
@@ -172,8 +173,8 @@ public abstract class ValueAspectAdapter<T>
 	}
 
 	/**
-	 * Stop listening to the current value.
-	 * At this point we can be sure that the value is not null.
+	 * Stop listening to an aspect of the current value.
+	 * At this point we can be sure the value is not null.
 	 */
 	protected abstract void disengageValue_();
 
@@ -185,11 +186,16 @@ public abstract class ValueAspectAdapter<T>
 	}
 
 	/**
-	 * Our constructors accept only a WritablePropertyValueModel<T1>.
+	 * Our constructor accepts only a {@link WritablePropertyValueModel}{@code<V>}.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<T> valueHolder() {
-		return (WritablePropertyValueModel<T>) this.valueHolder;
+	protected WritablePropertyValueModel<V> getValueHolder() {
+		return (WritablePropertyValueModel<V>) this.valueHolder;
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getValue());
 	}
 
 }

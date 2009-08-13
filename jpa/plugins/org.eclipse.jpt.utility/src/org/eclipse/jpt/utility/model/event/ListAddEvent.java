@@ -11,14 +11,15 @@ package org.eclipse.jpt.utility.model.event;
 
 import java.util.List;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "list add" event gets delivered whenever a model adds items to a
- * "bound" or "constrained" list. A ListAddEvent is sent as an
- * argument to the ListChangeListener.
- * 
+ * "bound" or "constrained" list. A <code>ListAddEvent</code> is sent as an
+ * argument to the {@link org.eclipse.jpt.utility.model.listener.ListChangeListener}.
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,7 +29,7 @@ import org.eclipse.jpt.utility.model.Model;
 /*
  * See design discussion in CollectionAddEvent
  */
-public class ListAddEvent extends ListEvent {
+public final class ListAddEvent extends ListEvent {
 
 	/** The index at which the items were added. */
 	private final int index;
@@ -81,6 +82,13 @@ public class ListAddEvent extends ListEvent {
 	 */
 	public int getItemsSize() {
 		return this.items.length;
+	}
+
+	@Override
+	protected void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(": "); //$NON-NLS-1$
+		StringTools.append(sb, this.items);
 	}
 
 

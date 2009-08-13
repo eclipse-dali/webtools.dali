@@ -11,14 +11,15 @@ package org.eclipse.jpt.utility.model.event;
 
 import java.util.Collection;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "collection remove" event gets delivered whenever a model removes items
- * from a "bound" or "constrained" collection. A CollectionRemoveEvent is sent
- * as an argument to the CollectionChangeListener.
- * 
+ * from a "bound" or "constrained" collection. A <code>CollectionRemoveEvent</code> is sent
+ * as an argument to the {@link org.eclipse.jpt.utility.model.listener.CollectionChangeListener}.
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,7 +29,7 @@ import org.eclipse.jpt.utility.model.Model;
 /*
  * See design discussion in CollectionAddEvent
  */
-public class CollectionRemoveEvent extends CollectionEvent {
+public final class CollectionRemoveEvent extends CollectionEvent {
 
 	/** The items removed from the collection. */
 	private final Object[] items;
@@ -69,6 +70,13 @@ public class CollectionRemoveEvent extends CollectionEvent {
 	 */
 	public int getItemsSize() {
 		return this.items.length;
+	}
+
+	@Override
+	protected void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(": "); //$NON-NLS-1$
+		StringTools.append(sb, this.items);
 	}
 
 

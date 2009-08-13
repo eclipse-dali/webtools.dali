@@ -17,10 +17,10 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 /**
  * Wrap another property change listener and forward events to it on the AWT
  * event queue.
- * Forward *every* event asynchronously via the UI thread so the listener
+ * Forward <em>every</em> event asynchronously via the UI thread so the listener
  * receives in the same order they were generated.
  */
-public class AWTPropertyChangeListenerWrapper
+public final class AWTPropertyChangeListenerWrapper
 	implements PropertyChangeListener
 {
 	private final PropertyChangeListener listener;

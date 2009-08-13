@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
- * This extension of AspectAdapter provides ListChange support
+ * This extension of {@link AspectAdapter} provides list change support
  * by adapting a subject's state change events to a minimum set
  * of list change events.
  */
@@ -43,7 +43,7 @@ public abstract class ListCurator<S extends Model, E>
 	// ********** constructors **********
 
 	/**
-	 * Construct a Curator for the specified subject.
+	 * Construct a curator for the specified subject.
 	 */
 	protected ListCurator(S subject) {
 		this(new StaticPropertyValueModel<S>(subject));
@@ -165,7 +165,7 @@ public abstract class ListCurator<S extends Model, E>
 	// ********** ListCurator protocol **********
 
 	/**
-	 * This is intended to be different from #ListValueModel.iterator().
+	 * This is intended to be different from {@link ListValueModel#iterator()}.
 	 * It is intended to be used only when the subject changes or the
 	 * subject's "state" changes (as signified by a state change event).
 	 */
@@ -216,6 +216,11 @@ public abstract class ListCurator<S extends Model, E>
 
 	private void removeItemFromInventory(int index, @SuppressWarnings("unused") E item) {
 		this.removeItemFromList(index, this.record, LIST_VALUES);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.record);
 	}
 
 }

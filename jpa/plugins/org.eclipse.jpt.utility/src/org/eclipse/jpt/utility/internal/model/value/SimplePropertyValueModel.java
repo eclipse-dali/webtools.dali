@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Implementation of WritablePropertyValueModel that simply holds on to an
+ * Implementation of {@link WritablePropertyValueModel} that simply holds on to an
  * object and uses it as the value.
  */
 public class SimplePropertyValueModel<T>
@@ -28,7 +28,7 @@ public class SimplePropertyValueModel<T>
 
 
 	/**
-	 * Construct a PropertyValueModel for the specified value.
+	 * Construct a property value model for the specified value.
 	 */
 	public SimplePropertyValueModel(T value) {
 		super();
@@ -36,7 +36,7 @@ public class SimplePropertyValueModel<T>
 	}
 
 	/**
-	 * Construct a PropertyValueModel with a starting value of null.
+	 * Construct a property value model with a starting value of null.
 	 */
 	public SimplePropertyValueModel() {
 		this(null);

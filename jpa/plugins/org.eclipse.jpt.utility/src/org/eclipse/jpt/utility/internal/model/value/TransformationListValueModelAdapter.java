@@ -26,29 +26,29 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * An adapter that allows us to transform a ListValueModel
- * (or CollectionValueModel) into a read-only ListValueModel
+ * An adapter that allows us to transform a {@link ListValueModel}
+ * (or {@link CollectionValueModel}) into a read-only {@link ListValueModel}
  * whose items are tranformations of the items in the wrapped
- * ListValueModel. It will keep its contents in synch with
- * the contents of the wrapped ListValueModel and notifies its
+ * {@link ListValueModel}. It will keep its contents in synch with
+ * the contents of the wrapped {@link ListValueModel} and notifies its
  * listeners of any changes.
  * <p>
- * The transformer can be changed at any time; allowing the same
+ * The {@link Ttransformer} can be changed at any time; allowing the same
  * adapter to be used with different transformations.
  * <p>
- * NB: Since we only listen to the wrapped list when we have
+ * <b>NB:</b> Since we only listen to the wrapped list when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * list while we are listening to it, results to various methods
- * (e.g. #size(), #getItem(int)) will be unpredictable whenever
+ * (e.g. {@link #size()}, {@link #get(int)}) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
- * most likely, client objects will also be listeners.
+ * most likely, clients will also be listeners.
  */
 public class TransformationListValueModelAdapter<E1, E2>
 	extends ListValueModelWrapper<E1>
 	implements ListValueModel<E2>
 {
 
-	/** This transforms the items, unless the subclass overrides #transformItem(Object). */
+	/** This transforms the items, unless the subclass overrides {@link #transformItem(Object)}). */
 	protected Transformer<E1, E2> transformer;
 
 	/** The list of transformed items. */
@@ -138,14 +138,14 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * Transform the items associated with the specified event.
 	 */
 	protected List<E2> transformItems(ListAddEvent event) {
-		return this.transformItems(this.getAddedItems(event), event.getItemsSize());
+		return this.transformItems(this.getItems(event), event.getItemsSize());
 	}
 
 	/**
 	 * Transform the items associated with the specified event.
 	 */
 	protected List<E2> transformItems(ListRemoveEvent event) {
-		return this.transformItems(this.getRemovedItems(event), event.getItemsSize());
+		return this.transformItems(this.getItems(event), event.getItemsSize());
 	}
 
 	/**
@@ -195,6 +195,11 @@ public class TransformationListValueModelAdapter<E1, E2>
 		this.transformedList.clear();
 		this.transformedList.addAll(this.transformItems(this.listHolder));
 		this.fireListChanged(LIST_VALUES, this.transformedList);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.transformedList);
 	}
 
 
