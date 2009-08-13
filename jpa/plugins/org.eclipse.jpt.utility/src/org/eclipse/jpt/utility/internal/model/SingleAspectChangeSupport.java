@@ -33,10 +33,11 @@ import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
  * This change support class changes the behavior of the standard
- * change support in several ways:
- * 	- All events fired by the source must specify the single aspect.
- * 	- Listeners are required to be either "general purpose" listeners or
+ * change support in several ways:<ul>
+ * <li>All events fired by the source must specify the single aspect.
+ * <li>Listeners are required to be either "general purpose" listeners or
  * 	    listeners of the single aspect.
+ * </ul>
  */
 public class SingleAspectChangeSupport
 	extends ChangeSupport

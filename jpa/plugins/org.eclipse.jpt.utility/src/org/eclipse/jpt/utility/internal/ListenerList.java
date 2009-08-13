@@ -18,7 +18,8 @@ import java.util.Arrays;
 import java.util.EventListener;
 
 /**
- * Maintain a thread-safe list of listeners that does not allow duplicates.
+ * Maintain a thread-safe list of listeners that does not allow adding
+ * duplicate listeners or removing non-listeners.
  */
 public class ListenerList<L extends EventListener>
 	implements Serializable
@@ -29,7 +30,7 @@ public class ListenerList<L extends EventListener>
 
 
 	/**
-	 * Construct a listener list for listeners of the specified listener class type.
+	 * Construct a listener list for listeners of the specified type.
 	 */
 	public ListenerList(Class<L> listenerClass) {
 		super();
@@ -37,7 +38,7 @@ public class ListenerList<L extends EventListener>
 	}
 
 	/**
-	 * Construct a listener list for listeners of the specified listener class type.
+	 * Construct a listener list for listeners of the specified type.
 	 * Add the specified listener to the list.
 	 */
 	public ListenerList(Class<L> listenerClass, L listener) {
@@ -77,6 +78,7 @@ public class ListenerList<L extends EventListener>
 
 	/**
 	 * Add the specified listener to the listener list.
+	 * Duplicate listeners are not allowed.
 	 */
 	public synchronized void add(L listener) {
 		if (listener == null) {
@@ -90,6 +92,7 @@ public class ListenerList<L extends EventListener>
 
 	/**
 	 * Remove the specified listener from the listener list.
+	 * Removing a listener that is not on the list is not allowed.
 	 */
 	public synchronized void remove(L listener) {
 		if (listener == null) {
@@ -117,6 +120,9 @@ public class ListenerList<L extends EventListener>
 
 	// ********** serialization **********
 
+	/**
+	 * Silently drop any non-serializable listeners.
+	 */
 	private synchronized void writeObject(ObjectOutputStream s) throws IOException {
 		// write out any hidden stuff
 		s.defaultWriteObject();

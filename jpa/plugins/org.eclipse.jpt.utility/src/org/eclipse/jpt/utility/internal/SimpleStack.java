@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
- * Straightforward implementation of the Stack interface.
+ * Straightforward implementation of the {@link Stack} interface.
  */
 public class SimpleStack<E>
 	implements Stack<E>, Cloneable, Serializable
@@ -41,7 +41,7 @@ public class SimpleStack<E>
 	 * collection. The stack will pop its elements in reverse of the
 	 * order they are returned by the collection's iterator (i.e. the
 	 * last element returned by the collection's iterator will be the
-	 * first element returned by #pop()).
+	 * first element returned by {@link #pop()}).
 	 */
 	public SimpleStack(Collection<? extends E> c) {
 		super();

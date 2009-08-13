@@ -19,12 +19,19 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 /**
  * Interface to be implemented by models that notify listeners of
  * changes to bound properties, collections, lists, and/or trees.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @see ChangeListener
+ * @see StateChangeListener
+ * @see PropertyChangeListener
+ * @see CollectionChangeListener
+ * @see ListChangeListener
+ * @see TreeChangeListener
  */
 public interface Model {
 

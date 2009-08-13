@@ -40,7 +40,7 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 
 /**
- * Reasonable implementation of the <code>Model</code> protocol
+ * Reasonable implementation of the {@link Model} protocol
  * with numerous convenience methods.
  */
 public abstract class AbstractModel
