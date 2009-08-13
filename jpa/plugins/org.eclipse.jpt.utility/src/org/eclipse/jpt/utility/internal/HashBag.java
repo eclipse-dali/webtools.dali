@@ -195,8 +195,15 @@ public class HashBag<E>
 	}
 
 	/**
+	 * Return a hash for the specified object.
+	 */
+	private int hash(Object o) {
+		return (o == null) ? 0 : this.rehash(o.hashCode());
+	}
+
+	/**
 	 * Tweak the specified hash, to defend against poor implementations
-	 * of <code>#hashCode()</code>
+	 * of <code>#hashCode()</code>.
 	 */
 	private int rehash(int h) {
 		h ^= (h >>>20) ^ (h >>> 12);
@@ -222,7 +229,7 @@ public class HashBag<E>
 	 * Internal {@link #addAll(Collection)} for construction and cloning.
 	 * (No check for re-hash; no change to mod count; no return value.)
 	 */
-	private void addAll_(Collection<? extends E> c) {
+	private void addAll_(Iterable<? extends E> c) {
 		for (E e : c) {
 			this.add_(e);
 		}
@@ -241,7 +248,7 @@ public class HashBag<E>
 	 * (No check for re-hash; no change to mod count; no return value.)
 	 */
 	private void add_(E o, int cnt) {
-		int hash = (o == null) ? 0 : this.rehash(o.hashCode());
+		int hash = this.hash(o);
 		int index = this.index(hash);
 		for (Entry<E> e = this.table[index]; e != null; e = e.next) {
 			Object eo;
@@ -276,12 +283,12 @@ public class HashBag<E>
 	}
 
 	/**
-	 * This implementation searches for the object in the hash table by calculating
+	 * Search for the object's entry in the hash table by calculating
 	 * the object's hash code and examining the entries in the corresponding hash
 	 * table bucket.
 	 */
 	private Entry<E> getEntry(Object o) {
-		int hash = (o == null) ? 0 : this.rehash(o.hashCode());
+		int hash = this.hash(o);
 		for (Entry<E> e = this.table[this.index(hash)]; e != null; e = e.next) {
 			Object eo;
 			if ((e.hash == hash) && (((eo = e.object) == o) || ((o != null) && o.equals(eo)))) {
@@ -302,9 +309,9 @@ public class HashBag<E>
 	}
 
 	/**
-	 * Rehashes the contents of this bag into a new hash table
+	 * Rehashes the contents of the bag into a new hash table
 	 * with a larger capacity. This method is called when the
-	 * number of different elements in this map exceeds its
+	 * number of different elements in the bag exceeds its
 	 * capacity and load factor.
 	 */
 	private void rehash() {
@@ -355,7 +362,7 @@ public class HashBag<E>
 			return false;
 		}
 		this.modCount++;
-		int hash = (o == null) ? 0 : this.rehash(o.hashCode());
+		int hash = this.hash(o);
 		int index = this.index(hash);
 
 		// if the object is already in the bag, simply bump its count
@@ -371,7 +378,7 @@ public class HashBag<E>
 		// rehash the table if we are going to exceed the threshold
 		if (this.uniqueCount >= this.threshold) {
 			this.rehash();
-			index = this.index(hash);
+			index = this.index(hash);  // need to re-calculate the index
 		}
 
 		// create the new entry and put it in the table
@@ -407,7 +414,7 @@ public class HashBag<E>
 		if (cnt <= 0) {
 			return false;
 		}
-		int hash = (o == null) ? 0 : this.rehash(o.hashCode());
+		int hash = this.hash(o);
 		int index = this.index(hash);
 
 		for (Entry<E> e = this.table[index], prev = null; e != null; prev = e, e = e.next) {
@@ -456,21 +463,17 @@ public class HashBag<E>
 	@Override
 	public HashBag<E> clone() {
 		try {
-			return this.clone_();
+			@SuppressWarnings("unchecked")
+			HashBag<E> clone = (HashBag<E>) super.clone();
+			clone.table = this.buildTable(this.table.length);
+			clone.size = 0;
+			clone.uniqueCount = 0;
+			clone.modCount = 0;
+			clone.addAll_(this);
+			return clone;
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError();
 		}
-	}
-
-	private HashBag<E> clone_() throws CloneNotSupportedException {
-		@SuppressWarnings("unchecked")
-		HashBag<E> clone = (HashBag<E>) super.clone();
-		clone.table = this.buildTable(this.table.length);
-		clone.size = 0;
-		clone.uniqueCount = 0;
-		clone.modCount = 0;
-		clone.addAll_(this);
-		return clone;
 	}
 
 
@@ -591,8 +594,7 @@ public class HashBag<E>
 
 
 	private class HashIterator implements Iterator<E> {
-		private final Entry<E>[] localTable = HashBag.this.table;
-		private int index = this.localTable.length;	// start at the end of the table
+		private int index = HashBag.this.table.length;	// start at the end of the table
 		private Entry<E> nextEntry = null;
 		private int nextEntryCount = 0;
 		private Entry<E> lastReturnedEntry = null;
@@ -611,7 +613,7 @@ public class HashBag<E>
 		public boolean hasNext() {
 			Entry<E> e = this.nextEntry;
 			int i = this.index;
-			Entry<E>[] tab = this.localTable;
+			Entry<E>[] tab = HashBag.this.table;
 			// Use locals for faster loop iteration
 			while ((e == null) && (i > 0)) {
 				e = tab[--i];		// move backwards through the table
@@ -627,7 +629,7 @@ public class HashBag<E>
 			}
 			Entry<E> et = this.nextEntry;
 			int i = this.index;
-			Entry<E>[] tab = this.localTable;
+			Entry<E>[] tab = HashBag.this.table;
 			// Use locals for faster loop iteration
 			while ((et == null) && (i > 0)) {
 				et = tab[--i];		// move backwards through the table
@@ -653,9 +655,8 @@ public class HashBag<E>
 			if (HashBag.this.modCount != this.expectedModCount) {
 				throw new ConcurrentModificationException();
 			}
-			Entry<E>[] tab = this.localTable;
-			int slot = HashBag.this.index(this.lastReturnedEntry.hash, tab.length);
-			for (Entry<E> e = tab[slot], prev = null; e != null; prev = e, e = e.next) {
+			int slot = HashBag.this.index(this.lastReturnedEntry.hash, HashBag.this.table.length);
+			for (Entry<E> e = HashBag.this.table[slot], prev = null; e != null; prev = e, e = e.next) {
 				if (e == this.lastReturnedEntry) {
 					HashBag.this.modCount++;
 					this.expectedModCount++;
@@ -663,7 +664,7 @@ public class HashBag<E>
 					if (e.count == 0) {
 						// if we are removing the last one, remove the entry from the table
 						if (prev == null) {
-							tab[slot] = e.next;
+							HashBag.this.table[slot] = e.next;
 						} else {
 							prev.next = e.next;
 						}
@@ -684,8 +685,7 @@ public class HashBag<E>
 
 
 	private class EntryIterator implements Iterator<Entry<E>> {
-		private Entry<E>[] localTable = HashBag.this.table;
-		private int index = this.localTable.length;	// start at the end of the table
+		private int index = HashBag.this.table.length;	// start at the end of the table
 		private Entry<E> nextEntry = null;
 		private Entry<E> lastReturnedEntry = null;
 
@@ -703,7 +703,7 @@ public class HashBag<E>
 		public boolean hasNext() {
 			Entry<E> e = this.nextEntry;
 			int i = this.index;
-			Entry<E>[] tab = this.localTable;
+			Entry<E>[] tab = HashBag.this.table;
 			// Use locals for faster loop iteration
 			while ((e == null) && (i > 0)) {
 				e = tab[--i];		// move backwards through the table
@@ -719,7 +719,7 @@ public class HashBag<E>
 			}
 			Entry<E> et = this.nextEntry;
 			int i = this.index;
-			Entry<E>[] tab = this.localTable;
+			Entry<E>[] tab = HashBag.this.table;
 			// Use locals for faster loop iteration
 			while ((et == null) && (i > 0)) {
 				et = tab[--i];		// move backwards through the table
@@ -741,15 +741,14 @@ public class HashBag<E>
 			if (HashBag.this.modCount != this.expectedModCount) {
 				throw new ConcurrentModificationException();
 			}
-			Entry<E>[] tab = this.localTable;
-			int slot = HashBag.this.index(this.lastReturnedEntry.hash, tab.length);
-			for (Entry<E> e = tab[slot], prev = null; e != null; prev = e, e = e.next) {
+			int slot = HashBag.this.index(this.lastReturnedEntry.hash, HashBag.this.table.length);
+			for (Entry<E> e = HashBag.this.table[slot], prev = null; e != null; prev = e, e = e.next) {
 				if (e == this.lastReturnedEntry) {
 					HashBag.this.modCount++;
 					this.expectedModCount++;
 					// remove the entry from the table
 					if (prev == null) {
-						tab[slot] = e.next;
+						HashBag.this.table[slot] = e.next;
 					} else {
 						prev.next = e.next;
 					}
