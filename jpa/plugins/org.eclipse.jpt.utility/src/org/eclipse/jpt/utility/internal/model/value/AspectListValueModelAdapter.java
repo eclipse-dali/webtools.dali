@@ -94,7 +94,7 @@ public abstract class AspectListValueModelAdapter<S, E>
 	 * @see #listIterator()
 	 */
 	protected ListIterator<E> listIterator_() {
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	/**

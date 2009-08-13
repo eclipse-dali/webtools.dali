@@ -77,7 +77,7 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 	 * @see #iterator()
 	 */
 	protected Iterator<E> iterator_() {
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	/**

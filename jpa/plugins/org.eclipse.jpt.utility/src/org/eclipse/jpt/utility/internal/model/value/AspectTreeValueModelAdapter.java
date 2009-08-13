@@ -71,7 +71,7 @@ public abstract class AspectTreeValueModelAdapter<S, E>
 	 * @see #nodes()
 	 */
 	protected Iterator<E> nodes_() {
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 

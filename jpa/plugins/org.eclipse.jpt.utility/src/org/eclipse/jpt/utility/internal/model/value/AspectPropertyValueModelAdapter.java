@@ -99,7 +99,7 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	 * @see #setValue(Object)
 	 */
 	protected void setValue_(@SuppressWarnings("unused") V value) {
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 
@@ -157,7 +157,7 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	 * @see #buildValue()
 	 */
 	protected V buildValue_() {
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	/**
