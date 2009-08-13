@@ -123,7 +123,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	
-	//******************** updatating *********************
+	//******************** updating *********************
 	public void initialize(JavaResourcePersistentType jrpt) {
 		this.javaResourcePersistentType = jrpt;
 	}

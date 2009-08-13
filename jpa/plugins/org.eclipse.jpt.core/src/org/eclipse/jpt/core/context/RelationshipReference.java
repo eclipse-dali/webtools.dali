@@ -52,7 +52,7 @@ public interface RelationshipReference extends JpaContextNode
 	JoiningStrategy getPredominantJoiningStrategy();
 	
 	/**
-	 * Return whether the mapping can be overriden with an association override
+	 * Return whether the mapping can be overridden with an association override
 	 */
 	boolean isOverridableAssociation();
 
