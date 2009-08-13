@@ -7,25 +7,25 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.tests.internal.swt;
+package org.eclipse.jpt.ui.tests.internal.utility.swt;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
-import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeEvent;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -33,8 +33,8 @@ import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.model.Model;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.WritableCollectionValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -49,10 +49,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * an example UI for testing various permutations of the
- * StructuredContentProviderAdapter
+ * Play around with a set of list boxes.
  */
-public class ListBoxModelAdapterUITest
+@SuppressWarnings("nls")
+public class ListBoxModelBindingUITest
 	extends ApplicationWindow
 {
 	final TaskList taskList;
@@ -60,14 +60,14 @@ public class ListBoxModelAdapterUITest
 	private Text taskTextField;
 
 	public static void main(String[] args) throws Exception {
-		Window window = new ListBoxModelAdapterUITest(args);
+		Window window = new ListBoxModelBindingUITest(args);
 		window.setBlockOnOpen(true);
 		window.open();
 		Display.getCurrent().dispose();
 		System.exit(0);
 	}
 
-	private ListBoxModelAdapterUITest(String[] args) {
+	private ListBoxModelBindingUITest(@SuppressWarnings("unused") String[] args) {
 		super(null);
 		this.taskList = new TaskList();
 		this.taskListHolder = new SimplePropertyValueModel<TaskList>(this.taskList);
@@ -153,15 +153,15 @@ public class ListBoxModelAdapterUITest
 	}
 
 	private void buildUnsortedObjectListPanel(Composite parent) {
-		this.buildListPanel2(parent, "object unsorted", this.buildUnsortedObjectListModel(), this.buildPriorityTaskListAdapter());
+		this.buildListPanel(parent, "object unsorted", this.buildUnsortedObjectListModel(), this.buildPriorityTaskListAdapter());
 	}
 
 	private void buildStandardSortedObjectListPanel(Composite parent) {
-		this.buildListPanel2(parent, "object sorted", this.buildStandardSortedObjectListModel(), this.buildPriorityTaskListAdapter());
+		this.buildListPanel(parent, "object sorted", this.buildStandardSortedObjectListModel(), this.buildPriorityTaskListAdapter());
 	}
 
 	private void buildCustomSortedObjectListPanel(Composite parent) {
-		this.buildListPanel2(parent, "object reverse sorted", this.buildCustomSortedObjectListModel(), this.buildPriorityTaskListAdapter());
+		this.buildListPanel(parent, "object reverse sorted", this.buildCustomSortedObjectListModel(), this.buildPriorityTaskListAdapter());
 	}
 
 	private ListValueModel<String> buildUnsortedPrimitiveListModel() {
@@ -188,7 +188,7 @@ public class ListBoxModelAdapterUITest
 		return new SortedListValueModelAdapter<Task>(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
 	}
 
-	private <E> ListBoxModelAdapter<E> buildListPanel(Composite parent, String label, ListValueModel<E> model, CollectionValueModel<E> selectedItemsModel) {
+	private <E> org.eclipse.swt.widgets.List buildListPanel(Composite parent, String label, ListValueModel<E> model, WritableCollectionValueModel<E> selectedItemsModel) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayout(new FormLayout());
 
@@ -208,29 +208,8 @@ public class ListBoxModelAdapterUITest
 			fd.left = new FormAttachment(0);
 			fd.right = new FormAttachment(100);
 		listBox.setLayoutData(fd);
-		return ListBoxModelAdapter.adapt(model, selectedItemsModel, listBox);  // use #toString()
-	}
-
-	private void buildListPanel2(Composite parent, String label, ListValueModel<Task> model, CollectionValueModel<Task> selectedItemsModel) {
-		ListBoxModelAdapter<Task> adapter = this.buildListPanel(parent, label, model, selectedItemsModel);
-		adapter.addDoubleClickListener(this.buildDoubleClickListener());
-		adapter.addSelectionChangeListener(this.buildSelectionChangeListener());
-	}
-
-	private ListBoxModelAdapter.DoubleClickListener<Task> buildDoubleClickListener() {
-		return new ListBoxModelAdapter.DoubleClickListener<Task>() {
-			public void doubleClick(ListBoxModelAdapter.DoubleClickEvent<Task> event) {
-				System.out.println("double-click: " + event.selection());
-			}
-		};
-	}
-
-	private ListBoxModelAdapter.SelectionChangeListener<Task> buildSelectionChangeListener() {
-		return new ListBoxModelAdapter.SelectionChangeListener<Task>() {
-			public void selectionChanged(SelectionChangeEvent<Task> event) {
-				ListBoxModelAdapterUITest.this.taskList.setPriorityTasks(event.selection());
-			}
-		};
+		SWTTools.bind(model, selectedItemsModel, listBox);  // use #toString()
+		return listBox;
 	}
 
 	private Comparator<String> buildCustomStringComparator() {
@@ -267,13 +246,24 @@ public class ListBoxModelAdapterUITest
 		};
 	}
 
-	private CollectionValueModel<Task> buildPriorityTaskListAdapter() {
-		return new CollectionAspectAdapter<TaskList, Task>(this.taskListHolder, TaskList.PRIORITY_TASKS_COLLECTION) {
-			@Override
-			protected Iterator<Task> iterator_() {
-				return this.subject.priorityTasks();
-			}
-		};
+	private WritableCollectionValueModel<Task> buildPriorityTaskListAdapter() {
+		return new PriorityTaskListAdapter(this.taskListHolder);
+	}
+
+	static class PriorityTaskListAdapter
+		extends CollectionAspectAdapter<TaskList, Task>
+		implements WritableCollectionValueModel<Task>
+	{
+		PriorityTaskListAdapter(WritablePropertyValueModel<TaskList> taskListHolder) {
+			super(taskListHolder, TaskList.PRIORITY_TASKS_COLLECTION);
+		}
+		@Override
+		protected Iterator<Task> iterator_() {
+			return this.subject.priorityTasks();
+		}
+		public void setValues(Iterable<Task> values) {
+			this.subject.setPriorityTasks(values);
+		}
 	}
 
 	private void buildControlPanel(Composite parent, Control taskListPanel) {
@@ -314,7 +304,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("clear list", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.clearTasks();
+				ListBoxModelBindingUITest.this.clearTasks();
 			}
 		};
 		action.setToolTipText("clear all the tasks");
@@ -325,7 +315,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("clear model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.clearModel();
+				ListBoxModelBindingUITest.this.clearModel();
 			}
 		};
 		action.setToolTipText("clear the task list model");
@@ -336,7 +326,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("restore model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.restoreModel();
+				ListBoxModelBindingUITest.this.restoreModel();
 			}
 		};
 		action.setToolTipText("restore the task list model");
@@ -347,7 +337,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("add priority", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.addPriorityTask();
+				ListBoxModelBindingUITest.this.addPriorityTask();
 			}
 		};
 		action.setToolTipText("add a task to the priority tasks");
@@ -358,7 +348,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("remove priority", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.removePriorityTask();
+				ListBoxModelBindingUITest.this.removePriorityTask();
 			}
 		};
 		action.setToolTipText("remove a task from the priority tasks");
@@ -369,7 +359,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("clear priority", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.clearPriorityTasks();
+				ListBoxModelBindingUITest.this.clearPriorityTasks();
 			}
 		};
 		action.setToolTipText("clear the priority tasks");
@@ -410,7 +400,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("add", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.addTask();
+				ListBoxModelBindingUITest.this.addTask();
 			}
 		};
 		action.setToolTipText("add a task with the name in the entry field");
@@ -436,7 +426,7 @@ public class ListBoxModelAdapterUITest
 		Action action = new Action("remove", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				ListBoxModelAdapterUITest.this.removeTask();
+				ListBoxModelBindingUITest.this.removeTask();
 			}
 		};
 		action.setToolTipText("remove the task with the name in the entry field");
@@ -507,14 +497,14 @@ public class ListBoxModelAdapterUITest
 	// ********** TaskList **********
 
 	// note absence of validation...
-	private class TaskList extends AbstractModel {
+	public static class TaskList extends AbstractModel {
 		private final List<String> taskNames = new ArrayList<String>();
 			public static final String TASK_NAMES_LIST = "taskNames";
 		private final List<Task> tasks = new ArrayList<Task>();
 			public static final String TASKS_LIST = "tasks";
 		private final Collection<Task> priorityTasks = new HashSet<Task>();
 			public static final String PRIORITY_TASKS_COLLECTION = "priorityTasks";
-		TaskList() {
+		public TaskList() {
 			super();
 		}
 		public ListIterator<String> taskNames() {
@@ -542,10 +532,9 @@ public class ListBoxModelAdapterUITest
 			}
 		}
 		public void clearTasks() {
-			this.taskNames.clear();
-			this.fireListCleared(TASK_NAMES_LIST);
-			this.tasks.clear();
-			this.fireListCleared(TASKS_LIST);
+			this.clearCollection(this.priorityTasks, PRIORITY_TASKS_COLLECTION);
+			this.clearList(this.taskNames, TASK_NAMES_LIST);
+			this.clearList(this.tasks, TASKS_LIST);
 		}
 		public boolean addPriorityTask(Task task) {
 			return this.addItemToCollection(task, this.priorityTasks, PRIORITY_TASKS_COLLECTION);
@@ -556,11 +545,9 @@ public class ListBoxModelAdapterUITest
 		public void clearPriorityTasks() {
 			this.clearCollection(this.priorityTasks, PRIORITY_TASKS_COLLECTION);
 		}
-		public void setPriorityTasks(Iterator<Task> tasks) {
+		public void setPriorityTasks(Iterable<Task> tasks) {
 			this.priorityTasks.clear();
-			while (tasks.hasNext()) {
-				this.priorityTasks.add(tasks.next());
-			}
+			CollectionTools.addAll(this.priorityTasks, tasks);
 			this.fireCollectionChanged(PRIORITY_TASKS_COLLECTION, this.priorityTasks);
 		}
 	}
@@ -568,15 +555,16 @@ public class ListBoxModelAdapterUITest
 
 	// ********** Task **********
 
-	private class Task extends AbstractModel implements Displayable {
+	public static class Task extends AbstractModel implements Displayable {
 		private String name;
-		private Date creationTimeStamp;
+		private int instanceCount;
+		private static int INSTANCE_COUNT = 1;
 		public Task(String name) {
 			this.name = name;
-			this.creationTimeStamp = new Date();
+			this.instanceCount = INSTANCE_COUNT++;
 		}
 		public String displayString() {
-			return this.name + ": " + this.creationTimeStamp.getTime();
+			return this.name + ": " + this.instanceCount;
 		}
 		public int compareTo(Displayable o) {
 			return DEFAULT_COMPARATOR.compare(this, o);
