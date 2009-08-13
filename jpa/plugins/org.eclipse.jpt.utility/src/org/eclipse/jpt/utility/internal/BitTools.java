@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal;
 /**
  * Assorted bit tools
  */
-public class BitTools {
+public final class BitTools {
 
 	/**
 	 * Return whether the specified 'flags' has the specified
@@ -98,7 +98,7 @@ public class BitTools {
 	 * Return whether the specified 'flags' has all the specified
 	 * 'flagsToCheck' set.
 	 */
-	public static boolean allFlagsAreSet(int flags, int[] flagsToCheck) {
+	public static boolean allFlagsAreSet(int flags, int... flagsToCheck) {
 		for (int i = flagsToCheck.length; i-- > 0; ) {
 			if ( ! allFlagsAreSet(flags, flagsToCheck[i])) {
 				return false;
@@ -111,7 +111,7 @@ public class BitTools {
 	 * Return whether the specified 'flags' has all the specified
 	 * 'flagsToCheck' turned off.
 	 */
-	public static boolean allFlagsAreOff(int flags, int[] flagsToCheck) {
+	public static boolean allFlagsAreOff(int flags, int... flagsToCheck) {
 		for (int i = flagsToCheck.length; i-- > 0; ) {
 			if ( ! allFlagsAreOff(flags, flagsToCheck[i])) {
 				return false;
@@ -124,7 +124,7 @@ public class BitTools {
 	 * Return whether the specified 'flags' has ONLY the specified
 	 * 'flagsToCheck' set.
 	 */
-	public static boolean onlyFlagsAreSet(int flags, int[] flagsToCheck) {
+	public static boolean onlyFlagsAreSet(int flags, int... flagsToCheck) {
 		int combinedFlags = orFlags(flagsToCheck);
 		return allFlagsAreSet(flags, combinedFlags) && allFlagsAreOff(flags, ~combinedFlags);
 	}
@@ -133,7 +133,7 @@ public class BitTools {
 	 * Return whether the specified 'flags' has ONLY the specified
 	 * 'flagsToCheck' turned off.
 	 */
-	public static boolean onlyFlagsAreOff(int flags, int[] flagsToCheck) {
+	public static boolean onlyFlagsAreOff(int flags, int... flagsToCheck) {
 		int combinedFlags = orFlags(flagsToCheck);
 		return allFlagsAreOff(flags, combinedFlags) && allFlagsAreSet(flags, ~combinedFlags);
 	}
@@ -142,7 +142,7 @@ public class BitTools {
 	 * Return whether the specified 'flags' has any one of the specified
 	 * 'flagsToCheck' set.
 	 */
-	public static boolean anyFlagsAreSet(int flags, int[] flagsToCheck) {
+	public static boolean anyFlagsAreSet(int flags, int... flagsToCheck) {
 		for (int i = flagsToCheck.length; i-- > 0; ) {
 			if (anyFlagsAreSet(flags, flagsToCheck[i])) {
 				return true;
@@ -155,7 +155,7 @@ public class BitTools {
 	 * Return whether the specified 'flags' has any one of the specified
 	 * 'flagsToCheck' turned off.
 	 */
-	public static boolean anyFlagsAreOff(int flags, int[] flagsToCheck) {
+	public static boolean anyFlagsAreOff(int flags, int... flagsToCheck) {
 		for (int i = flagsToCheck.length; i-- > 0; ) {
 			if (anyFlagsAreOff(flags, flagsToCheck[i])) {
 				return true;
@@ -167,7 +167,7 @@ public class BitTools {
 	/**
 	 * OR all the specified 'flags' together and return the result.
 	 */
-	public static int orFlags(int[] flags) {
+	public static int orFlags(int... flags) {
 		int last = flags.length - 1;
 		int result = flags[last];
 		for (int i = last; i-- > 0; ) {
@@ -179,7 +179,7 @@ public class BitTools {
 	/**
 	 * AND all the specified 'flags' together and return the result.
 	 */
-	public static int andFlags(int[] flags) {
+	public static int andFlags(int... flags) {
 		int last = flags.length - 1;
 		int result = flags[last];
 		for (int i = last; i-- > 0; ) {
@@ -191,7 +191,7 @@ public class BitTools {
 	/**
 	 * XOR all the specified 'flags' together and return the result.
 	 */
-	public static int xorFlags(int[] flags) {
+	public static int xorFlags(int... flags) {
 		int last = flags.length - 1;
 		int result = flags[last];
 		for (int i = last; i-- > 0; ) {
