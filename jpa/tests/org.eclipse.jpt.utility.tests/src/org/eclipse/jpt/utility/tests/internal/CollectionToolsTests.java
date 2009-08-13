@@ -3693,13 +3693,13 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 0, 4)));
 
 		result = new String[] {"jar"};
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 1)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 5)));
 
 		result = new String[0];
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 0)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 5)));
 
 		result = new String[] {"joo", "jar", "jaz"};
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 3)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 6)));
 	}
 
 	public void testSubArrayIntArrayIntInt() {
@@ -3708,13 +3708,13 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 0, 4)));
 
 		result = new int[] {9090};
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 1)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 5)));
 
 		result = new int[0];
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 0)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 5)));
 
 		result = new int[] {4, 9090, 42};
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 3)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 6)));
 	}
 
 	public void testSubArrayCharArrayIntInt() {
@@ -3723,13 +3723,13 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 0, 4)));
 
 		result = new char[] {'e'};
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 1)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 5)));
 
 		result = new char[0];
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 0)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 5)));
 
 		result = new char[] {'d', 'e', 'f'};
-		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 3)));
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 6)));
 	}
 
 	public void testSwapObjectArray() {

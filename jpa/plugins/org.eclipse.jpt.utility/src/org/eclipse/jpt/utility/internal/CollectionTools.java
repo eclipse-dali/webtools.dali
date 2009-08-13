@@ -34,8 +34,12 @@ public final class CollectionTools {
 
 	@SuppressWarnings("unchecked")
 	private static <E> E[] newArray(E[] array, int length) {
-		return (E[]) Array.newInstance(array.getClass().getComponentType(), length);
+		Class arrayType = array.getClass();
+		return (E[]) ((arrayType == OBJECT_ARRAY_CLASS) ?
+				new Object[length] :
+				Array.newInstance(arrayType.getComponentType(), length));
 	}
+	private static final Class<Object[]> OBJECT_ARRAY_CLASS = java.lang.Object[].class;
 
 	/**
 	 * Return a new array that contains the elements in the
@@ -163,7 +167,7 @@ public final class CollectionTools {
 	 * java.util.Collection#addAll(java.util.Iterator iterator)
 	 */
 	public static <E> boolean addAll(Collection<? super E> collection, Iterator<? extends E> iterator) {
-		return (iterator.hasNext()) ? collection.addAll(list(iterator)) : false;
+		return iterator.hasNext() ? collection.addAll(list(iterator)) : false;
 	}
 
 	/**
@@ -173,7 +177,7 @@ public final class CollectionTools {
 	 * java.util.Collection#addAll(java.util.Iterator iterator)
 	 */
 	public static <E> boolean addAll(Collection<? super E> collection, Iterator<? extends E> iterator, int size) {
-		return (iterator.hasNext()) ? collection.addAll(list(iterator, size)) : false;
+		return iterator.hasNext() ? collection.addAll(list(iterator, size)) : false;
 	}
 
 	/**
@@ -213,7 +217,7 @@ public final class CollectionTools {
 	 * java.util.List#addAll(java.util.Iterator iterator)
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, Iterator<? extends E> iterator) {
-		return (iterator.hasNext()) ? list.addAll(index, list(iterator)) : false;
+		return iterator.hasNext() ? list.addAll(index, list(iterator)) : false;
 	}
 
 	/**
@@ -223,7 +227,7 @@ public final class CollectionTools {
 	 * java.util.List#addAll(java.util.Iterator iterator)
 	 */
 	public static <E> boolean addAll(List<? super E> list, int index, Iterator<? extends E> iterator, int size) {
-		return (iterator.hasNext()) ? list.addAll(index, list(iterator, size)) : false;
+		return iterator.hasNext() ? list.addAll(index, list(iterator, size)) : false;
 	}
 
 	/**
@@ -297,7 +301,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(Object[] array, java.util.Iterator iterator)
 	 */
 	public static <E> E[] addAll(E[] array, Iterator<? extends E> iterator) {
-		return (iterator.hasNext()) ? addAll_(array, list(iterator)) : array;
+		return iterator.hasNext() ? addAll_(array, list(iterator)) : array;
 	}
 
 	/**
@@ -307,7 +311,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(Object[] array, java.util.Iterator iterator)
 	 */
 	public static <E> E[] addAll(E[] array, Iterator<? extends E> iterator, int size) {
-		return (iterator.hasNext()) ? addAll_(array, list(iterator, size)) : array;
+		return iterator.hasNext() ? addAll_(array, list(iterator, size)) : array;
 	}
 
 	/**
@@ -461,7 +465,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(Object[] array, int index, java.util.Iterator iterator)
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterator<? extends E> iterator) {
-		return (iterator.hasNext()) ? addAll_(array, index, list(iterator)) : array;
+		return iterator.hasNext() ? addAll_(array, index, list(iterator)) : array;
 	}
 
 	/**
@@ -471,7 +475,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(Object[] array, int index, java.util.Iterator iterator)
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterator<? extends E> iterator, int size) {
-		return (iterator.hasNext()) ? addAll_(array, index, list(iterator, size)) : array;
+		return iterator.hasNext() ? addAll_(array, index, list(iterator, size)) : array;
 	}
 
 	/**
@@ -671,9 +675,9 @@ public final class CollectionTools {
 	/**
 	 * Return an array corresponding to the specified iterable;
 	 * the runtime type of the returned array is that of the specified array.
-	 * If the collection fits in the specified array, it is returned therein.
+	 * If the iterable fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the
-	 * specified array and the size of this collection.
+	 * specified array and the size of the iterable.
 	 * @see java.util.Collection#toArray(java.lang.Object[])
 	 * java.lang.Iterable#toArray(Object[])
 	 */
@@ -684,9 +688,9 @@ public final class CollectionTools {
 	/**
 	 * Return an array corresponding to the specified iterable;
 	 * the runtime type of the returned array is that of the specified array.
-	 * If the collection fits in the specified array, it is returned therein.
+	 * If the iterable fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the
-	 * specified array and the size of this collection.
+	 * specified array and the size of the iterable.
 	 * @see java.util.Collection#toArray(java.lang.Object[])
 	 * java.lang.Iterable#toArray(Object[])
 	 */
@@ -700,7 +704,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#toArray()
 	 */
 	public static Object[] array(Iterator<?> iterator) {
-		return (iterator.hasNext()) ? list(iterator).toArray() : EMPTY_OBJECT_ARRAY;
+		return iterator.hasNext() ? list(iterator).toArray() : EMPTY_OBJECT_ARRAY;
 	}
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
@@ -710,33 +714,54 @@ public final class CollectionTools {
 	 * java.util.Iterator#toArray()
 	 */
 	public static Object[] array(Iterator<?> iterator, int size) {
-		return (iterator.hasNext()) ? list(iterator, size).toArray() : EMPTY_OBJECT_ARRAY;
+		return iterator.hasNext() ? list(iterator, size).toArray() : EMPTY_OBJECT_ARRAY;
 	}
 
 	/**
 	 * Return an array corresponding to the specified iterator;
 	 * the runtime type of the returned array is that of the specified array.
-	 * If the collection fits in the specified array, it is returned therein.
+	 * If the iterator fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the
-	 * specified array and the size of this collection.
+	 * specified array and the size of the iterator.
 	 * @see java.util.Collection#toArray(java.lang.Object[])
 	 * java.util.Iterator#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, E[] array) {
-		return (iterator.hasNext()) ? list(iterator).toArray(array) : newArray(array, 0);
+		return iterator.hasNext() ?
+				list(iterator).toArray(array) :
+				emptyArray(array);
 	}
 
 	/**
 	 * Return an array corresponding to the specified iterator;
 	 * the runtime type of the returned array is that of the specified array.
-	 * If the collection fits in the specified array, it is returned therein.
+	 * If the iterator fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the
-	 * specified array and the size of this collection.
+	 * specified array and the size of the iterator.
 	 * @see java.util.Collection#toArray(java.lang.Object[])
 	 * java.util.Iterator#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, int size, E[] array) {
-		return (iterator.hasNext()) ? list(iterator, size).toArray(array) : newArray(array, 0);
+		return iterator.hasNext() ?
+				list(iterator, size).toArray(array) :
+				emptyArray(array);
+	}
+
+	/**
+	 * If the specified array is empty, return it;
+	 * otherwise, set its first element to null.
+	 * @see java.util.Collection#toArray(java.lang.Object[])
+	 */
+	private static <E> E[] emptyArray(E[] array) {
+		return (array.length == 0) ? array : clearFirst(array);
+	}
+
+	/**
+	 * Set the specified array's first element to null and and return the array.
+	 */
+	private static <E> E[] clearFirst(E[] array) {
+		array[0] = null;
+		return array;
 	}
 
 	/**
@@ -819,10 +844,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#clear(Object[] array)
 	 */
 	public static <E> E[] clear(E[] array) {
-		if (array.length == 0) {
-			return array;
-		}
-		return newArray(array, 0);
+		return (array.length == 0) ? array : newArray(array, 0);
 	}
 
 	/**
@@ -1710,7 +1732,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#lastIndexOf(Object o)
 	 */
 	public static int lastIndexOf(Iterator<?> iterator, Object value) {
-		return (iterator.hasNext()) ? list(iterator).lastIndexOf(value) : -1;
+		return iterator.hasNext() ? list(iterator).lastIndexOf(value) : -1;
 	}
 
 	/**
@@ -1720,7 +1742,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#lastIndexOf(Object o)
 	 */
 	public static int lastIndexOf(Iterator<?> iterator, int size, Object value) {
-		return (iterator.hasNext()) ? list(iterator, size).lastIndexOf(value) : -1;
+		return iterator.hasNext() ? list(iterator, size).lastIndexOf(value) : -1;
 	}
 
 	/**
@@ -2235,7 +2257,7 @@ public final class CollectionTools {
 	 * java.util.Collection#removeAll(java.util.Iterator iterator)
 	 */
 	public static boolean removeAll(Collection<?> collection, Iterator<?> iterator) {
-		return (iterator.hasNext()) ? collection.removeAll(set(iterator)) : false;
+		return iterator.hasNext() ? collection.removeAll(set(iterator)) : false;
 	}
 
 	/**
@@ -2245,7 +2267,7 @@ public final class CollectionTools {
 	 * java.util.Collection#removeAll(java.util.Iterator iterator)
 	 */
 	public static boolean removeAll(Collection<?> collection, Iterator<?> iterator, int size) {
-		return (iterator.hasNext()) ? collection.removeAll(set(iterator, size)) : false;
+		return iterator.hasNext() ? collection.removeAll(set(iterator, size)) : false;
 	}
 
 	/**
@@ -2282,7 +2304,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAll(Object[] array, Iterator iterator)
 	 */
 	public static <E> E[] removeAll(E[] array, Iterator<?> iterator) {
-		return (iterator.hasNext()) ? removeAll_(array, set(iterator)) : array;
+		return iterator.hasNext() ? removeAll_(array, set(iterator)) : array;
 	}
 
 	/**
@@ -2291,7 +2313,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAll(Object[] array, Iterator iterator)
 	 */
 	public static <E> E[] removeAll(E[] array, Iterator<?> iterator, int size) {
-		return (iterator.hasNext()) ? removeAll_(array, set(iterator, size)) : array;
+		return iterator.hasNext() ? removeAll_(array, set(iterator, size)) : array;
 	}
 
 	/**
@@ -2300,7 +2322,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAll(Object[] array, Collection collection)
 	 */
 	public static <E> E[] removeAll(E[] array, Collection<?> collection) {
-		return (collection.isEmpty()) ? array : removeAll_(array, collection);
+		return collection.isEmpty() ? array : removeAll_(array, collection);
 	}
 
 	/**
@@ -2627,8 +2649,7 @@ public final class CollectionTools {
 		}
 		ArrayList<E> temp = list(array);
 		return removeDuplicateElements(temp, len) ?
-					temp.toArray(newArray(array, temp.size()))
-				:
+					temp.toArray(newArray(array, temp.size())) :
 					array;
 	}
 
@@ -2785,9 +2806,8 @@ public final class CollectionTools {
 	 * assume arrayLength > 0
 	 */
 	private static <E> E[] retainAll(E[] array, int arrayLength, Iterator<?> iterator) {
-		return (iterator.hasNext()) ?
-				retainAll_(array, set(iterator), arrayLength)
-			:
+		return iterator.hasNext() ?
+				retainAll_(array, set(iterator), arrayLength) :
 				newArray(array, 0);
 	}
 
@@ -2795,9 +2815,8 @@ public final class CollectionTools {
 	 * assume arrayLength > 0
 	 */
 	private static <E> E[] retainAll(E[] array, int arrayLength, Iterator<?> iterator, int iteratorSize) {
-		return (iterator.hasNext()) ?
-				retainAll_(array, set(iterator, iteratorSize), arrayLength)
-			:
+		return iterator.hasNext() ?
+				retainAll_(array, set(iterator, iteratorSize), arrayLength) :
 				newArray(array, 0);
 	}
 
@@ -2815,9 +2834,8 @@ public final class CollectionTools {
 	 * assume arrayLength > 0
 	 */
 	private static <E> E[] retainAll(E[] array, Collection<?> collection, int arrayLength) {
-		return (collection.isEmpty()) ?
-				newArray(array, 0)
-			:
+		return collection.isEmpty() ?
+				newArray(array, 0) :
 				retainAll_(array, collection, arrayLength);
 	}
 
@@ -3382,40 +3400,46 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return a sub-array of the specified array, starting at the specified
-	 * position with the specified length.
-	 * java.util.Arrays#subArray(E[] array, int start, int length)
+	 * Return a sub-array of the specified array with elements copied from
+	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
+	 * java.util.Arrays#subArray(E[] array, int fromIndex, int toIndex)
 	 */
-	public static <E> E[] subArray(E[] array, int start, int length) {
+	public static <E> E[] subArray(E[] array, int fromIndex, int toIndex) {
+		int length = toIndex - fromIndex;
 		E[] result = newArray(array, length);
 		if (length > 0) {
-			System.arraycopy(array, start, result, 0, length);
+			System.arraycopy(array, fromIndex, result, 0, length);
 		}
 		return result;
 	}
 
 	/**
-	 * Return a sub-array of the specified array, starting at the specified
-	 * position with the specified length.
-	 * java.util.Arrays#subArray(int[] array, int start, int length)
+	 * Return a sub-array of the specified array with elements copied from
+	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
+	 * java.util.Arrays#subArray(int[] array, int fromIndex, int toIndex)
 	 */
-	public static int[] subArray(int[] array, int start, int length) {
+	public static int[] subArray(int[] array, int fromIndex, int toIndex) {
+		int length = toIndex - fromIndex;
 		int[] result = new int[length];
 		if (length > 0) {
-			System.arraycopy(array, start, result, 0, length);
+			System.arraycopy(array, fromIndex, result, 0, length);
 		}
 		return result;
 	}
 
 	/**
-	 * Return a sub-array of the specified array, starting at the specified
-	 * position with the specified length.
-	 * java.util.Arrays#subArray(char[] array, int start, int length)
+	 * Return a sub-array of the specified array with elements copied from
+	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
+	 * <p>
+	 * <code>
+	 * java.util.Arrays#subArray(char[] array, int fromIndex, int toIndex)
+	 * </code>
 	 */
-	public static char[] subArray(char[] array, int start, int length) {
+	public static char[] subArray(char[] array, int fromIndex, int toIndex) {
+		int length = toIndex - fromIndex;
 		char[] result = new char[length];
 		if (length > 0) {
-			System.arraycopy(array, start, result, 0, length);
+			System.arraycopy(array, fromIndex, result, 0, length);
 		}
 		return result;
 	}
