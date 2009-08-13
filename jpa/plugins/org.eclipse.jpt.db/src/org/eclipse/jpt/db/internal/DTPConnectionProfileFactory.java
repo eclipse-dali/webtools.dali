@@ -72,7 +72,7 @@ public final class DTPConnectionProfileFactory
 
 	// ********** connection profiles **********
 
-	public ConnectionProfile buildConnectionProfile(String name, DatabaseFinder finder) {
+	public synchronized ConnectionProfile buildConnectionProfile(String name, DatabaseFinder finder) {
 		for (IConnectionProfile dtpProfile : this.dtpProfileManager.getProfiles()) {
 			if (dtpProfile.getName().equals(name)) {
 				return new DTPConnectionProfileWrapper(dtpProfile, finder);
@@ -94,7 +94,7 @@ public final class DTPConnectionProfileFactory
 		};
 	}
 
-	private Iterator<IConnectionProfile> dtpConnectionProfiles() {
+	private synchronized Iterator<IConnectionProfile> dtpConnectionProfiles() {
 		return new ArrayIterator<IConnectionProfile>(this.dtpProfileManager.getProfiles());
 	}
 

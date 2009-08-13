@@ -392,7 +392,7 @@ final class DTPTableWrapper
 	// ********** clear **********
 
 	@Override
-	void clear() {
+	synchronized void clear() {
 		if (this.foreignKeys != null) {
 			this.clearForeignKeys();
 		}

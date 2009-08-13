@@ -296,7 +296,7 @@ final class DTPForeignKeyWrapper
 	}
 
 	@Override
-	void clear() {
+	synchronized void clear() {
 		// the foreign key does not "contain" any other objects,
 		// so we don't need to forward the #clear()
 		this.defaultAttributeNameCalculated = false;
