@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,14 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.tests.internal.swt;
+package org.eclipse.jpt.ui.tests.internal.utility.swt;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -37,7 +37,8 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Play around with a set of check boxes.
  */
-public class CheckBoxModelAdapterUITest
+@SuppressWarnings("nls")
+public class CheckBoxModelBindingUITest
 	extends ApplicationWindow
 {
 	private final TestModel testModel;
@@ -47,14 +48,14 @@ public class CheckBoxModelAdapterUITest
 	private final WritablePropertyValueModel<Boolean> notFlag2Holder;
 
 	public static void main(String[] args) throws Exception {
-		Window window = new CheckBoxModelAdapterUITest(args);
+		Window window = new CheckBoxModelBindingUITest(args);
 		window.setBlockOnOpen(true);
 		window.open();
 		Display.getCurrent().dispose();
 		System.exit(0);
 	}
 
-	private CheckBoxModelAdapterUITest(String[] args) {
+	private CheckBoxModelBindingUITest(@SuppressWarnings("unused") String[] args) {
 		super(null);
 		this.testModel = new TestModel(true, true);
 		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
@@ -135,19 +136,19 @@ public class CheckBoxModelAdapterUITest
 	private void buildFlag1CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("flag 1");
-		BooleanButtonModelAdapter.adapt(this.flag1Holder, checkBox);
+		SWTTools.bind(this.flag1Holder, checkBox);
 	}
 
 	private void buildFlag2CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("flag 2");
-		BooleanButtonModelAdapter.adapt(this.flag2Holder, checkBox);
+		SWTTools.bind(this.flag2Holder, checkBox);
 	}
 
 	private void buildNotFlag2CheckBox(Composite parent) {
 		Button checkBox = new Button(parent, SWT.CHECK);
 		checkBox.setText("not flag 2");
-		BooleanButtonModelAdapter.adapt(this.notFlag2Holder, checkBox);
+		SWTTools.bind(this.notFlag2Holder, checkBox);
 	}
 
 	private void buildUnattachedCheckBox(Composite parent) {
@@ -192,7 +193,7 @@ public class CheckBoxModelAdapterUITest
 		Action action = new Action("flip flag 1", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				CheckBoxModelAdapterUITest.this.flipFlag1();
+				CheckBoxModelBindingUITest.this.flipFlag1();
 			}
 		};
 		action.setToolTipText("flip flag 1");
@@ -206,7 +207,7 @@ public class CheckBoxModelAdapterUITest
 	private void buildNotFlag2ToggleButton(Composite parent) {
 		Button checkBox = new Button(parent, SWT.TOGGLE);
 		checkBox.setText("not flag 2");
-		BooleanButtonModelAdapter.adapt(this.notFlag2Holder, checkBox);
+		SWTTools.bind(this.notFlag2Holder, checkBox);
 	}
 
 	private void buildClearModelButton(Composite parent) {
@@ -217,7 +218,7 @@ public class CheckBoxModelAdapterUITest
 		Action action = new Action("clear model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				CheckBoxModelAdapterUITest.this.clearModel();
+				CheckBoxModelBindingUITest.this.clearModel();
 			}
 		};
 		action.setToolTipText("clear model");
@@ -236,7 +237,7 @@ public class CheckBoxModelAdapterUITest
 		Action action = new Action("restore model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				CheckBoxModelAdapterUITest.this.restoreModel();
+				CheckBoxModelBindingUITest.this.restoreModel();
 			}
 		};
 		action.setToolTipText("restore model");
@@ -255,7 +256,7 @@ public class CheckBoxModelAdapterUITest
 		Action action = new Action("print model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				CheckBoxModelAdapterUITest.this.printModel();
+				CheckBoxModelBindingUITest.this.printModel();
 			}
 		};
 		action.setToolTipText("print model");
@@ -270,7 +271,7 @@ public class CheckBoxModelAdapterUITest
 	}
 
 
-	private class TestModel extends AbstractModel {
+	public static class TestModel extends AbstractModel {
 		private boolean flag1;
 			public static final String FLAG1_PROPERTY = "flag1";
 		private boolean flag2;

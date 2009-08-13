@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -18,7 +19,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.CComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.DateTimeModelAdapter;
@@ -29,6 +29,7 @@ import org.eclipse.jpt.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -3273,7 +3274,7 @@ public abstract class Pane<T extends Model>
 		}
 
 		button.setLayoutData(new GridData());
-		BooleanButtonModelAdapter.adapt(booleanHolder, button);
+		SWTTools.bind(booleanHolder, button);
 
 		if (helpId != null) {
 			getHelpSystem().setHelp(button, helpId);
