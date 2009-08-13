@@ -16,12 +16,12 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.StaticCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
 
 @SuppressWarnings("nls")
-public class StaticCloneIterableTests extends TestCase {
+public class SnapshotCloneIterableTests extends TestCase {
 
-	public StaticCloneIterableTests(String name) {
+	public SnapshotCloneIterableTests(String name) {
 		super(name);
 	}
 
@@ -32,7 +32,7 @@ public class StaticCloneIterableTests extends TestCase {
 		c.add("2");
 		c.add("3");
 		assertEquals(4, c.size());
-		Iterable<String> iterable = new StaticCloneIterable<String>(c);
+		Iterable<String> iterable = new SnapshotCloneIterable<String>(c);
 		int i = 0;
 		for (String s : iterable) {
 			assertEquals(String.valueOf(i++), s);
@@ -51,7 +51,7 @@ public class StaticCloneIterableTests extends TestCase {
 
 	public void testRemove() {
 		final Collection<String> collection = this.buildCollection();
-		Iterable<String> iterable = new StaticCloneIterable<String>(collection) {
+		Iterable<String> iterable = new SnapshotCloneIterable<String>(collection) {
 			@Override
 			protected void remove(String current) {
 				collection.remove(current);

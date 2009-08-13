@@ -14,7 +14,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 /**
  * Pull together remover state and behavior.
  * 
- * @see FixedCloneIterable
+ * @see SnapshotCloneIterable
  * @see LiveCloneIterable
  */
 public abstract class CloneIterable<E>

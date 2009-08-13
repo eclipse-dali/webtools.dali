@@ -17,31 +17,31 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
 /**
- * A <code>FixedCloneIterable</code> returns an iterator on a static copy of a
+ * A <code>SnapshotCloneIterable</code> returns an iterator on a "snapshot" of a
  * collection, allowing for concurrent access to the original collection. A
- * copy of the collection is created at construction time.
+ * copy of the collection is created when the iterable is constructed.
  * As a result, the contents of the collection will be the same with
  * every call to <code>#iterable()</code>.
  * <p>
- * The original collection passed to the <code>FixedCloneIterable</code>'s
- * constructor should be synchronized (e.g. java.util.Vector);
+ * The original collection passed to the <code>SnapshotCloneIterable</code>'s
+ * constructor should be thread-safe (e.g. java.util.Vector);
  * otherwise you run the risk of a corrupted collection.
  * <p>
- * By default, the iterator returned by a <code>FixedCloneIterable</code> does not
+ * By default, the iterator returned by a <code>SnapshotCloneIterable</code> does not
  * support the <code>#remove()</code> operation; this is because it does not
- * have access to the original collection. But if the <code>FixedCloneIterable</code>
+ * have access to the original collection. But if the <code>SnapshotCloneIterable</code>
  * is supplied with an <code>CloneIterator.Remover</code> it will delegate the
- * <code>#remove()</code> operation to the <code>Remover</code>.
- * Alternatively, a subclass can override the <code>#remove(Object)</code>
+ * iterator's <code>#remove()</code> operation to the <code>Remover</code>.
+ * Alternatively, a subclass can override the iterable's <code>#remove(Object)</code>
  * method.
  * <p>
  * This iterable is useful for multiple passes over a collection that should not
- * be changed between passes (e.g. by another thread).
+ * be changed (e.g. by another thread) between passes.
  * 
  * @see CloneIterator
  * @see LiveCloneIterable
  */
-public class StaticCloneIterable<E>
+public class SnapshotCloneIterable<E>
 	extends CloneIterable<E>
 {
 	private final Object[] array;
@@ -50,22 +50,23 @@ public class StaticCloneIterable<E>
 	// ********** constructors **********
 
 	/**
-	 * Construct a static iterable for the specified collection.
+	 * Construct a "snapshot" iterable for the specified collection.
 	 * The <code>#remove()</code> method will not be supported
-	 * by the <code>Iterator</code> returned by <code>#iterable()</code>
-	 * unless a subclass overrides the <code>#remove(Object)</code>.
+	 * by the iterator returned by <code>#iterable()</code>
+	 * unless a subclass overrides the iterable's <code>#remove(Object)</code>
+	 * method.
 	 */
-	public StaticCloneIterable(Collection<? extends E> collection) {
+	public SnapshotCloneIterable(Collection<? extends E> collection) {
 		super();
 		this.array = collection.toArray();
 	}
 
 	/**
-	 * Construct a static iterable for the specified collection.
-	 * Use the specified remover to remove objects from the
-	 * original collection.
+	 * Construct a "snapshot" iterable for the specified collection.
+	 * The specified remover will be used by any generated iterators to
+	 * remove objects from the original collection.
 	 */
-	public StaticCloneIterable(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
+	public SnapshotCloneIterable(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
 		super(remover);
 		this.array = collection.toArray();
 	}

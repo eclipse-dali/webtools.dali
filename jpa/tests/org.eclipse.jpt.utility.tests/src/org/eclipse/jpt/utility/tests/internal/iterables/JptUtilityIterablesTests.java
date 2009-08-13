@@ -29,7 +29,7 @@ public class JptUtilityIterablesTests {
 		suite.addTestSuite(LiveCloneIterableTests.class);
 		suite.addTestSuite(ReadOnlyIterableTests.class);
 		suite.addTestSuite(SingleElementIterableTests.class);
-		suite.addTestSuite(StaticCloneIterableTests.class);
+		suite.addTestSuite(SnapshotCloneIterableTests.class);
 		suite.addTestSuite(TransformationIterableTests.class);
 		suite.addTestSuite(TreeIterableTests.class);
 

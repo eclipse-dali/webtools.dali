@@ -20,22 +20,22 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
  * collection, allowing for concurrent access to the original collection. A
  * copy of the collection is created every time <code>#iterable()</code> is
  * called. As a result, the contents of the collection can be different with
- * each call to <code>#iterable()</code> (i.e. it is "live).
+ * each call to <code>#iterable()</code> (i.e. it is "live").
  * <p>
  * The original collection passed to the <code>LiveCloneIterabler</code>'s
- * constructor should be synchronized (e.g. java.util.Vector);
+ * constructor should be thread-safe (e.g. java.util.Vector);
  * otherwise you run the risk of a corrupted collection.
  * <p>
  * By default, the iterator returned by a <code>LiveCloneIterable</code> does not
  * support the <code>#remove()</code> operation; this is because it does not
  * have access to the original collection. But if the <code>LiveCloneIterable</code>
  * is supplied with an <code>CloneIterator.Remover</code> it will delegate the
- * <code>#remove()</code> operation to the <code>Remover</code>.
- * Alternatively, a subclass can override the <code>#remove(Object)</code>
+ * iterator's <code>#remove()</code> operation to the <code>Remover</code>.
+ * Alternatively, a subclass can override the iterable's <code>#remove(Object)</code>
  * method.
  * 
  * @see CloneIterator
- * @see FixedCloneIterable
+ * @see SnapshotCloneIterable
  */
 public class LiveCloneIterable<E>
 	extends CloneIterable<E>
@@ -46,10 +46,11 @@ public class LiveCloneIterable<E>
 	// ********** constructors **********
 
 	/**
-	 * Construct a live iterable for the specified collection.
+	 * Construct a "live" iterable for the specified collection.
 	 * The <code>#remove()</code> method will not be supported
-	 * by the <code>Iterator</code> returned by <code>#iterable()</code>
-	 * unless a subclass overrides the <code>#remove(Object)</code>.
+	 * by the iterator returned by <code>#iterable()</code>
+	 * unless a subclass overrides them iterable's <code>#remove(Object)</code>
+	 * method.
 	 */
 	public LiveCloneIterable(Collection<? extends E> collection) {
 		super();
@@ -57,9 +58,9 @@ public class LiveCloneIterable<E>
 	}
 
 	/**
-	 * Construct a live iterable for the specified collection.
-	 * Use the specified remover to remove objects from the
-	 * original collection.
+	 * Construct a "live" iterable for the specified collection.
+	 * The specified remover will be used by any generated iterators to
+	 * remove objects from the original collection.
 	 */
 	public LiveCloneIterable(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
 		super(remover);

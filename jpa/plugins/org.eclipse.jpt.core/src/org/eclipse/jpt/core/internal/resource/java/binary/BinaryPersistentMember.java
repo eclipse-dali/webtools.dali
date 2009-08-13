@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.utility.internal.iterables.StaticCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
@@ -105,7 +105,7 @@ abstract class BinaryPersistentMember
 	}
 
 	public Annotation getMappingAnnotation() {
-		Iterable<Annotation> annotations = new StaticCloneIterable<Annotation>(this.mappingAnnotations);
+		Iterable<Annotation> annotations = new SnapshotCloneIterable<Annotation>(this.mappingAnnotations);
 		for (ListIterator<String> stream = this.validMappingAnnotationNames(); stream.hasNext();) {
 			Annotation annotation = this.selectAnnotationNamed(annotations, stream.next());
 			if (annotation != null) {
