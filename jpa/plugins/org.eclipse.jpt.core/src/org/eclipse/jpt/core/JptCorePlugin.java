@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -293,9 +292,11 @@ public class JptCorePlugin extends Plugin {
 	 * (Web projects have a different deployment structure than non-web projects)
 	 */
 	public static IPath getJarDeploymentRootPath(IProject project) {
-		return projectHasWebFacet(project) ? 
-			new Path("/" + J2EEConstants.WEB_INF) : 
-			new Path("/");
+		return new Path(getJarDeploymentRootPathName(project));
+	}
+	
+	private static String getJarDeploymentRootPathName(IProject project) {
+		return projectHasWebFacet(project) ? ("/" + J2EEConstants.WEB_INF) : "/"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public static IFile getPlatformFile(IProject project, String defaultURI) {

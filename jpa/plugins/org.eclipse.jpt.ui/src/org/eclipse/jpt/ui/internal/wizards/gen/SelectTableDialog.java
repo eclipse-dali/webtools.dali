@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.CommonImages;
+import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
@@ -31,7 +31,7 @@ public class SelectTableDialog extends ElementListSelectionDialog {
 	public SelectTableDialog(Shell shell){
 		super(shell, new ILabelProvider(){
 			public Image getImage(Object element) {
-				return CommonImages.createImage(CommonImages.TABLE_IMAGE) ;
+				return ImageRepository.getTableImage();
 			}
 
 			public String getText(Object element) {

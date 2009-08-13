@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,7 +63,7 @@ public class SynchronizedObject<T>
 	/**
 	 * Return the current value.
 	 */
-	public T value() {
+	public T getValue() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
@@ -114,7 +114,7 @@ public class SynchronizedObject<T>
 	 * Return the object this object locks on while performing
 	 * its operations.
 	 */
-	public Object mutex() {
+	public Object getMutex() {
 		return this.mutex;
 	}
 
@@ -349,24 +349,30 @@ public class SynchronizedObject<T>
 
 	@Override
 	public boolean equals(Object obj) {
-		if ( ! (obj instanceof SynchronizedObject)) {
+		if ( ! (obj instanceof SynchronizedObject<?>)) {
 			return false;
 		}
-		Object v1 = this.value();
-		Object v2 = ((SynchronizedObject<?>) obj).value();
+		Object v1 = this.getValue();
+		Object v2 = ((SynchronizedObject<?>) obj).getValue();
 		return (v1 == null) ?
 			(v2 == null) : v1.equals(v2);
 	}
 
 	@Override
 	public int hashCode() {
-		Object v = this.value();
+		Object v = this.getValue();
 		return (v == null) ? 0 : v.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return String.valueOf(this.value());
+		return String.valueOf(this.getValue());
+	}
+
+	private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException {
+		synchronized (this.mutex) {
+			s.defaultWriteObject();
+		}
 	}
 
 }

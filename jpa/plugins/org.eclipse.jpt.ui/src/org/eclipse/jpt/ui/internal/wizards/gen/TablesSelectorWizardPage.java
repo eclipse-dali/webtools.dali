@@ -41,8 +41,8 @@ import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
-import org.eclipse.jpt.ui.CommonImages;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -325,7 +325,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 		Button selectAllButton = new Button(buttonComposite, SWT.PUSH);
 		selectAllButton.setToolTipText(JptUiMessages.General_selectAll);
-		selectAllButton.setImage( CommonImages.createImage(CommonImages.DESC_BUTTON_SELECT_ALL)  );
+		selectAllButton.setImage( ImageRepository.getSelectAllButtonImage()  );
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		selectAllButton.setLayoutData(gridData);
@@ -339,7 +339,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 		Button deselectAllButton = new Button(buttonComposite, SWT.PUSH);
 		deselectAllButton.setToolTipText(JptUiMessages.General_deselectAll);
-		deselectAllButton.setImage( CommonImages.createImage(CommonImages.DESC_BUTTON_DESELECT_ALL) );
+		deselectAllButton.setImage( ImageRepository.getDeselectAllButtonImage() );
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		deselectAllButton.setLayoutData(gridData);

@@ -26,8 +26,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- *
- *
+ * Dali UI plug-in.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -35,20 +35,26 @@ import org.osgi.framework.BundleContext;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 @SuppressWarnings("nls")
-public class JptUiPlugin extends AbstractUIPlugin
+public class JptUiPlugin
+	extends AbstractUIPlugin
 {
 	private final Listener focusListener;
 
-	private static JptUiPlugin INSTANCE;
+
+	// ********** constants **********
 
 	/**
-	 * The plug-in identifier of JPA UI support
-	 * (value <code>"org.eclipse.jpt.ui"</code>).
+	 * The plug-in identifier of JPA UI support (value {@value}).
 	 */
-	public static final String PLUGIN_ID = "org.eclipse.jpt.ui";  //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.jpt.ui";
 
 	private static final String FOCUS_DATA_KEY = PLUGIN_ID + ".focus";
 	private static final Object FOCUS_DATA = new Object();
+
+
+	// ********** singleton **********
+
+	private static JptUiPlugin INSTANCE;
 
 	/**
 	 * Returns the singleton JPT UI plug-in.
@@ -56,6 +62,9 @@ public class JptUiPlugin extends AbstractUIPlugin
 	public static JptUiPlugin instance() {
 		return INSTANCE;
 	}
+
+
+	// ********** logging **********
 
 	public static void log(IStatus status) {
         INSTANCE.getLog().log(status);
@@ -70,35 +79,40 @@ public class JptUiPlugin extends AbstractUIPlugin
 	}
 
 
-	// **************** Image API **********************************************
+	// ********** images **********
 
 	/**
-	 * This gets a .gif from the icons folder.
+	 * Return an image descriptor for the specified <code>.gif<code>
+	 * file in the icons folder.
 	 */
 	public static ImageDescriptor getImageDescriptor(String key) {
-		if (! key.startsWith("icons/")) {
+		if ( ! key.startsWith("icons/")) {
 			key = "icons/" + key;
 		}
-		if (! key.endsWith(".gif")) {
+		if ( ! key.endsWith(".gif")) {
 			key = key + ".gif";
 		}
 		return imageDescriptorFromPlugin(PLUGIN_ID, key);
 	}
 
 	/**
-	 * This returns an image for a .gif from the icons folder
+	 * Return an image for the specified <code>.gif<code>
+	 * file in the icons folder.
 	 */
 	public static Image getImage(String key) {
-		ImageDescriptor desc = getImageDescriptor(key);
-		return (desc == null) ? null : desc.createImage();
+		ImageDescriptor descriptor = getImageDescriptor(key);
+		return (descriptor == null) ? null : descriptor.createImage();
 	}
 
 
-	// **************** Construction *******************************************
+	// ********** construction **********
 
 	public JptUiPlugin() {
 		super();
 		this.focusListener = this.buildFocusListener();
+		if (INSTANCE != null) {
+			throw new IllegalStateException();
+		}
 		INSTANCE = this;
 	}
 
@@ -109,6 +123,9 @@ public class JptUiPlugin extends AbstractUIPlugin
 			}
 		};
 	}
+
+
+	// ********** focus handling **********
 
 	/**
 	 * This method is called whenever a "focus in" event is generated.
@@ -161,16 +178,19 @@ public class JptUiPlugin extends AbstractUIPlugin
 		control.setData(FOCUS_DATA_KEY, FOCUS_DATA);
 	}
 
+
+	// ********** platform **********
+
 	/**
-	 * Return the JPA platform UI corresponding to the given JPA platform
+	 * Return the JPA platform UI corresponding to the specified JPA platform.
 	 */
 	public JpaPlatformUi getJpaPlatformUi(JpaPlatform jpaPlatform) {
 		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(jpaPlatform.getId());
 	}
-	
+
 	public JpaNavigatorProvider getJpaNavigatorProvider(JpaPlatform jpaPlatform) {
-		JpaPlatformUi platform = getJpaPlatformUi(jpaPlatform);
-		return platform == null ? null : platform.getNavigatorProvider();
+		JpaPlatformUi platform = this.getJpaPlatformUi(jpaPlatform);
+		return (platform == null) ? null : platform.getNavigatorProvider();
 	}
 
 

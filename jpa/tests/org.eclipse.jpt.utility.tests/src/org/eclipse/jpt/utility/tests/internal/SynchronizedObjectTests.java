@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.tests.internal;
 import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.SynchronizedObject;
 
+@SuppressWarnings("nls")
 public class SynchronizedObjectTests extends TestCase {
 	private volatile SynchronizedObject<Object> so;
 	private volatile boolean exCaught;
@@ -45,21 +46,21 @@ public class SynchronizedObjectTests extends TestCase {
 
 	public void testAccessors() throws Exception {
 		this.so.setValue(null);
-		assertNull(this.so.value());
+		assertNull(this.so.getValue());
 		assertFalse(this.so.isNotNull());
 		assertTrue(this.so.isNull());
 
 		this.so.setValue(this.value);
-		assertEquals(this.value, this.so.value());
+		assertEquals(this.value, this.so.getValue());
 		assertTrue(this.so.isNotNull());
 		assertFalse(this.so.isNull());
 
 		this.so.setNull();
-		assertNull(this.so.value());
+		assertNull(this.so.getValue());
 		assertFalse(this.so.isNotNull());
 		assertTrue(this.so.isNull());
 
-		assertSame(this.so, this.so.mutex());
+		assertSame(this.so, this.so.getMutex());
 	}
 
 	public void testEquals() throws Exception {
@@ -90,7 +91,7 @@ public class SynchronizedObjectTests extends TestCase {
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to null by t2
-		assertNull(this.so.value());
+		assertNull(this.so.getValue());
 		// make a reasonable guess about how long t2 took
 		long time = this.elapsedTime();
 		assertTrue("t2 finished a bit early (expected value should be > 150): " + time, time > 150);
@@ -104,7 +105,7 @@ public class SynchronizedObjectTests extends TestCase {
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to null by t1
-		assertNull(this.so.value());
+		assertNull(this.so.getValue());
 		// make a reasonable guess about how long t2 took
 		long time = this.elapsedTime();
 		assertTrue("t2 finished a bit late (expected value should be < 150): " + time, time < 150);
@@ -164,7 +165,7 @@ public class SynchronizedObjectTests extends TestCase {
 			Thread.sleep(50);
 		}
 		assertFalse(this.exCaught);
-		assertEquals("foo", this.so.value());
+		assertEquals("foo", this.so.getValue());
 		assertEquals("foo", this.soValue);
 		// make a reasonable guess about how long t2 took
 		long time = this.elapsedTime();
@@ -237,7 +238,7 @@ public class SynchronizedObjectTests extends TestCase {
 		return new Command() {
 			public void execute(SynchronizedObject<Object> sObject) throws Exception {
 				SynchronizedObjectTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedObjectTests.this.setSOValue(sObject.value());
+				SynchronizedObjectTests.this.setSOValue(sObject.getValue());
 				SynchronizedObjectTests.this.setEndTime(System.currentTimeMillis());
 			}
 		};

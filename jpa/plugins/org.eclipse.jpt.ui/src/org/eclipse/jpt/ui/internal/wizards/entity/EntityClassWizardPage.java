@@ -59,7 +59,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 public class EntityClassWizardPage extends NewJavaClassWizardPage{
 
-	private static final String JPA_FACET = "jpt.jpa";//$NON-NLS-1$
+	private static final String JPA_FACET = JptCorePlugin.FACET_ID;
 	private static final String META_INF = "META-INF";//$NON-NLS-1$
 	private static final String EMPTY = "";//$NON-NLS-1$
 	private static final char SLASH = '/';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,26 +42,26 @@ public class SynchronizedBooleanTests extends TestCase {
 
 	public void testAccessors() throws Exception {
 		this.sb.setValue(false);
-		assertFalse(this.sb.value());
+		assertFalse(this.sb.getValue());
 		assertFalse(this.sb.isTrue());
 		assertTrue(this.sb.isFalse());
 
 		this.sb.setValue(true);
-		assertTrue(this.sb.value());
+		assertTrue(this.sb.getValue());
 		assertTrue(this.sb.isTrue());
 		assertFalse(this.sb.isFalse());
 
 		this.sb.setFalse();
-		assertFalse(this.sb.value());
+		assertFalse(this.sb.getValue());
 		assertFalse(this.sb.isTrue());
 		assertTrue(this.sb.isFalse());
 
 		this.sb.setTrue();
-		assertTrue(this.sb.value());
+		assertTrue(this.sb.getValue());
 		assertTrue(this.sb.isTrue());
 		assertFalse(this.sb.isFalse());
 
-		assertSame(this.sb, this.sb.mutex());
+		assertSame(this.sb, this.sb.getMutex());
 	}
 
 	public void testEquals() throws Exception {
@@ -89,7 +89,7 @@ public class SynchronizedBooleanTests extends TestCase {
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to true by t2
-		assertTrue(this.sb.value());
+		assertTrue(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
 		assertTrue(this.elapsedTime() > 150);
 	}
@@ -99,7 +99,7 @@ public class SynchronizedBooleanTests extends TestCase {
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to true by t1
-		assertTrue(this.sb.value());
+		assertTrue(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
 		assertTrue(this.elapsedTime() < 150);
 	}
@@ -123,7 +123,7 @@ public class SynchronizedBooleanTests extends TestCase {
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to false by t2
-		assertFalse(this.sb.value());
+		assertFalse(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
 		assertTrue(this.elapsedTime() > 150);
 	}
@@ -133,7 +133,7 @@ public class SynchronizedBooleanTests extends TestCase {
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to true by t1
-		assertTrue(this.sb.value());
+		assertTrue(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
 		assertTrue(this.elapsedTime() < 150);
 	}

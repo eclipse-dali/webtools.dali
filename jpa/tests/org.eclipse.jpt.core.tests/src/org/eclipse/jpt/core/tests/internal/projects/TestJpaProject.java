@@ -60,7 +60,7 @@ public class TestJpaProject extends TestJavaProject {
 			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
 		}
 		this.installFacet("jst.utility", "1.0");
-		this.installFacet("jpt.jpa", jpaFacetVersion, jpaConfig);
+		this.installFacet(JptCorePlugin.FACET_ID, jpaFacetVersion, jpaConfig);
 		this.addJar(jpaJarName());
 		if (eclipseLinkJarName() != null) {
 			this.addJar(eclipseLinkJarName());

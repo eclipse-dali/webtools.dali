@@ -17,7 +17,7 @@ import static org.eclipse.jpt.ui.internal.wizards.gen.SWTUtil.createText;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.gen.internal2.Association;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
-import org.eclipse.jpt.ui.CommonImages;
+import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -79,7 +79,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		table1TextField = createText(assocTablesGroup, 1);
 		
 		Button browser1 = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		browser1.setImage( CommonImages.createImage( CommonImages.DESC_BUTTON_BROWSE )); 
+		browser1.setImage( ImageRepository.getBrowseButtonImage()); 
 
 		browser1.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
@@ -98,7 +98,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		table2TextField = createText(assocTablesGroup, 1);
 		
 		Button browser2 = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		browser2.setImage( CommonImages.createImage( CommonImages.DESC_BUTTON_BROWSE )); 
+		browser2.setImage( ImageRepository.getBrowseButtonImage()); 
 
 		browser2.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
@@ -118,7 +118,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		joinTableTextField.setEnabled(false);
 
 		joinTableBrowse = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		joinTableBrowse.setImage( CommonImages.createImage( CommonImages.DESC_BUTTON_BROWSE )); 
+		joinTableBrowse.setImage( ImageRepository.getBrowseButtonImage()); 
 		joinTableBrowse.setEnabled(false);
 		
 		joinTableBrowse.addSelectionListener(new SelectionListener(){

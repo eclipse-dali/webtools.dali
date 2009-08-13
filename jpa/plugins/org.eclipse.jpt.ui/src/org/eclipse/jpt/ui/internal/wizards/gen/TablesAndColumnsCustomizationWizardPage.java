@@ -32,7 +32,7 @@ import org.eclipse.jpt.gen.internal2.ORMGenColumn;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal2.ORMGenTable;
 import org.eclipse.jpt.gen.internal2.util.DTPUtil;
-import org.eclipse.jpt.ui.CommonImages;
+import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -331,12 +331,12 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		@Override
 		public Image getImage(Object element) {
 			if( element instanceof ORMGenTable ){
-				return CommonImages.createImage( CommonImages.TABLE_IMAGE );
+				return ImageRepository.getTableImage();
 			}else 	if( element instanceof ORMGenColumn ){
 				ORMGenColumn col = ( ORMGenColumn)element;
-				if( col.isPrimaryKey() )
-					return CommonImages.createImage( CommonImages.COLUMN_KEY_IMAGE);
-				return CommonImages.createImage( CommonImages.COLUMN_IMAGE);
+				return col.isPrimaryKey() ?
+						ImageRepository.getKeyColumnImage() :
+						ImageRepository.getColumnImage();
 			}
 			return null;
 		}

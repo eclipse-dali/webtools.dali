@@ -119,7 +119,7 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 	/**
 	 * Prompts a dialog showing a tree structure of the source paths where the
 	 * only files shown are JPA mapping descriptors file. The XML file has to be
-	 * an XML file with the root tag: &lt;entity-mappings&gt;.
+	 * an XML file with the root tag: {@code <entity-mappings>}.
 	 *
 	 * @param listSelectionModel The selection model used to select the new files
 	 */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,10 @@ import java.io.Serializable;
 import org.eclipse.jpt.utility.Command;
 
 /**
- * This class provides synchronized access to a boolean value.
+ * This class provides synchronized access to a <code>boolean</code> value.
  * It also provides protocol for suspending a thread until the
  * boolean value is set to true or false, with optional time-outs.
+ * 
  * @see BooleanHolder
  */
 public class SynchronizedBoolean
@@ -33,7 +34,7 @@ public class SynchronizedBoolean
 	// ********** constructors **********
 
 	/**
-	 * Create a synchronized boolean with the specified initial value
+	 * Create a synchronized <code>boolean</code> with the specified initial value
 	 * and mutex.
 	 */
 	public SynchronizedBoolean(boolean value, Object mutex) {
@@ -43,7 +44,7 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Create a synchronized boolean with the specified initial value.
+	 * Create a synchronized <code>boolean</code> with the specified initial value.
 	 */
 	public SynchronizedBoolean(boolean value) {
 		super();
@@ -52,7 +53,7 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Create a synchronized boolean with an initial value of false
+	 * Create a synchronized <code>boolean</code> with an initial value of <code>false</code>
 	 * and specified mutex.
 	 */
 	public SynchronizedBoolean(Object mutex) {
@@ -60,7 +61,7 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Create a synchronized boolean with an initial value of false.
+	 * Create a synchronized <code>boolean</code> with an initial value of <code>false</code>.
 	 */
 	public SynchronizedBoolean() {
 		this(false);
@@ -72,7 +73,7 @@ public class SynchronizedBoolean
 	/**
 	 * Return the current boolean value.
 	 */
-	public boolean value() {
+	public boolean getValue() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
@@ -142,7 +143,7 @@ public class SynchronizedBoolean
 	 * Return the object this object locks on while performing
 	 * its operations.
 	 */
-	public Object mutex() {
+	public Object getMutex() {
 		return this.mutex;
 	}
 
@@ -355,20 +356,24 @@ public class SynchronizedBoolean
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof SynchronizedBoolean) {
-			return this.value() == ((SynchronizedBoolean) o).value();
-		}
-		return false;
+		return (o instanceof SynchronizedBoolean) &&
+			(this.getValue() == ((SynchronizedBoolean) o).getValue());
 	}
 
 	@Override
 	public int hashCode() {
-		return this.value() ? 1 : 0;
+		return this.getValue() ? 1 : 0;
 	}
 
 	@Override
 	public String toString() {
-		return String.valueOf(this.value());
+		return String.valueOf(this.getValue());
+	}
+
+	private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException {
+		synchronized (this.mutex) {
+			s.defaultWriteObject();
+		}
 	}
 
 }

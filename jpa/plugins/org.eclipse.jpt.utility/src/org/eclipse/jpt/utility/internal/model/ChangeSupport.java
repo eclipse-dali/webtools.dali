@@ -22,6 +22,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
@@ -48,11 +49,11 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 
 /**
- * Support object that can be used by implementors of the Model interface.
+ * Support object that can be used by implementors of the {@link Model} interface.
  * It provides for state, property, collection, list, and tree change notifications to
  * listeners.
- * 
- * NB1: There is lots of copy-n-paste code in this class. Nearly all of this duplication
+ * <p>
+ * <b>NB1:</b> There is lots of copy-n-paste code in this class. Nearly all of this duplication
  * is an effort to prevent the unnecessary creation of new objects (typically event
  * objects). Since many events are fired when there are no listeners, we postpone
  * the creation of event objects until we know we have interested listeners.
@@ -62,21 +63,21 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * code would not prove onerous; but that has not proven to be
  * the case, as we have added support for "state" changes, "dirty" notification,
  * and custom "notifiers", with more to come, I'm sure....  ~bjv
- * 
- * NB2: This class will check to see if, during the firing of events, a listener
+ * <p>
+ * <b>NB2:</b> This class will check to see if, during the firing of events, a listener
  * on the original, cloned, list of listeners has been removed from the master
  * list of listeners *before* it is notified. If the listener has been removed
  * "concurrently" it will *not* be notified.
- * 
- * NB3: Any listener that is added during the firing of events will *not* be
+ * <p>
+ * <b>NB3:</b> Any listener that is added during the firing of events will *not* be
  * also notified. This is a bit inconsistent with NB2, but seems reasonable
  * since any added listener should already be in synch with the model.
- * 
- * NB4: This class is serializable, but it will only write out listeners that
+ * <p>
+ * <b>NB4:</b> This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.
  * 
- * TODO use objects (IDs?) instead of strings to identify aspects?
  */
+// TODO use objects (IDs?) instead of strings to identify aspects?
 public class ChangeSupport
 	implements Serializable
 {
@@ -2617,17 +2618,7 @@ public class ChangeSupport
 	 * Convenience method for checking whether an attribute value has changed.
 	 */
 	public boolean valuesAreEqual(Object value1, Object value2) {
-		return valuesAreEqual_(value1, value2);
-	}
-
-	protected static boolean valuesAreEqual_(Object value1, Object value2) {
-		if ((value1 == null) && (value2 == null)) {
-			return true;	// both are null
-		}
-		if ((value1 == null) || (value2 == null)) {
-			return false;	// one is null but the other is not
-		}
-		return value1.equals(value2);
+		return Tools.valuesAreEqual(value1, value2);
 	}
 
 	/**
@@ -2635,11 +2626,7 @@ public class ChangeSupport
 	 * Convenience method for checking whether an attribute value has changed.
 	 */
 	public boolean valuesAreDifferent(Object value1, Object value2) {
-		return valuesAreDifferent_(value1, value2);
-	}
-
-	protected static boolean valuesAreDifferent_(Object value1, Object value2) {
-		return ! valuesAreEqual_(value1, value2);
+		return Tools.valuesAreDifferent(value1, value2);
 	}
 
 	/**
@@ -2647,18 +2634,7 @@ public class ChangeSupport
 	 * in the same order.
 	 */
 	public boolean elementsAreEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return elementsAreEqual_(iterable1, iterable2);
-	}
-
-	protected static boolean elementsAreEqual_(Iterable<?> iterable1, Iterable<?> iterable2) {
-		Iterator<?> iterator1 = iterable1.iterator();
-		Iterator<?> iterator2 = iterable2.iterator();
-		while (iterator1.hasNext() && iterator2.hasNext()) {
-			if (valuesAreDifferent_(iterator1.next(), iterator2.next())) {
-				return false;
-			}
-		}
-		return ( ! iterator1.hasNext()) && ( ! iterator2.hasNext());
+		return Tools.elementsAreEqual(iterable1, iterable2);
 	}
 
 	/**
@@ -2666,11 +2642,7 @@ public class ChangeSupport
 	 * in the same order.
 	 */
 	public boolean elementsAreDifferent(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return elementsAreDifferent_(iterable1, iterable2);
-	}
-
-	protected static boolean elementsAreDifferent_(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return ! elementsAreEqual_(iterable1, iterable2);
+		return Tools.elementsAreDifferent(iterable1, iterable2);
 	}
 
 

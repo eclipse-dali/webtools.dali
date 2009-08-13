@@ -95,7 +95,7 @@ public class JpaModelTests extends TestCase {
 	}
 
 	public void testProjectCloseReopen() throws Exception {
-		this.testProject.installFacet("jpt.jpa", "1.0");
+		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0");
 
 		this.testProject.getProject().close(null);
 		assertFalse(this.testProject.getProject().isOpen());
@@ -115,7 +115,7 @@ public class JpaModelTests extends TestCase {
 	}
 
 	public void testProjectDeleteReimport() throws Exception {
-		this.testProject.installFacet("jpt.jpa", "1.0");
+		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0");
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 		assertEquals(1, JptCorePlugin.getJpaModel().jpaProjectsSize());
@@ -145,7 +145,7 @@ public class JpaModelTests extends TestCase {
 	public void testFacetInstallUninstall() throws Exception {
 		assertNull(JptCorePlugin.getJpaProject(this.testProject.getProject()));
 
-		this.testProject.installFacet("jpt.jpa", "1.0");
+		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0");
 		assertEquals(1, JptCorePlugin.getJpaModel().jpaProjectsSize());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
@@ -156,7 +156,7 @@ public class JpaModelTests extends TestCase {
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
 
-		this.testProject.uninstallFacet("jpt.jpa", "1.0");
+		this.testProject.uninstallFacet(JptCorePlugin.FACET_ID, "1.0");
 		assertEquals(0, JptCorePlugin.getJpaModel().jpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);

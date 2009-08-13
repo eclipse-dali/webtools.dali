@@ -35,7 +35,7 @@ import org.eclipse.jpt.gen.internal2.AssociationRole;
 import org.eclipse.jpt.gen.internal2.ORMGenColumn;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal2.util.DTPUtil;
-import org.eclipse.jpt.ui.CommonImages;
+import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -138,7 +138,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		
 		createAssociationLink = new Button(c, SWT.NONE);
 		createAssociationLink.setToolTipText( JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_newAssoc );
-		createAssociationLink.setImage( CommonImages.createImage( CommonImages.DESC_BUTTON_ADD) );
+		createAssociationLink.setImage( ImageRepository.getAddButtonImage() );
 		createAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
 			public void widgetSelected(SelectionEvent e) {
@@ -149,7 +149,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		
 		deleteAssociationLink = new Button(c, SWT.NONE);
 		deleteAssociationLink.setForeground( new Color(Display.getDefault(), 0,0,255));
-		deleteAssociationLink.setImage( CommonImages.createImage( CommonImages.DESC_BUTTON_DELETE)  );
+		deleteAssociationLink.setImage( ImageRepository.getDeleteButtonImage()  );
 		deleteAssociationLink.setToolTipText( JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_delAssoc );
 		deleteAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
@@ -265,7 +265,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		LayoutUtil.setWidthHint(referrerRoleCascadeField.getTextControl(null), maxFieldWidth );
 		Button btn = referrerRoleCascadeField.getChangeControl(null);
 		GridData data = (GridData)btn.getLayoutData();
-		btn.setImage( CommonImages.createImage( CommonImages.DESC_BUTTON_BROWSE) );
+		btn.setImage( ImageRepository.getBrowseButtonImage() );
 		data.horizontalAlignment = SWT.BEGINNING;
 		data.widthHint = 30;
 		btn.setLayoutData(data);
@@ -383,7 +383,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		int maxFieldWidth = convertWidthInCharsToPixels(40);
 		LayoutUtil.setWidthHint(referencedRoleCascadeField.getTextControl(null), maxFieldWidth );
 		Button btn = referencedRoleCascadeField.getChangeControl(null);
-		btn.setImage( CommonImages.createImage( CommonImages.DESC_BUTTON_BROWSE) );
+		btn.setImage( ImageRepository.getBrowseButtonImage() );
 		GridData data = (GridData)btn.getLayoutData();
 		data.horizontalAlignment = SWT.BEGINNING;
 		data.widthHint = 30;

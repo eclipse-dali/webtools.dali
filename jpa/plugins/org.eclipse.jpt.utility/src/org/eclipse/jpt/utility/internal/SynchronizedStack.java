@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.EmptyStackException;
 import org.eclipse.jpt.utility.Command;
 
 /**
- * Thread-safe implementation of the Stack interface.
+ * Thread-safe implementation of the {@link Stack} interface.
  * This also provides protocol for suspending a thread until the
  * stack is empty or not empty, with optional time-outs.
  */
@@ -38,6 +38,9 @@ public class SynchronizedStack<E>
 	 */
 	public SynchronizedStack(Stack<E> stack, Object mutex) {
 		super();
+		if (stack == null) {
+			throw new NullPointerException();
+		}
 		this.stack = stack;
 		this.mutex = mutex;
 	}
@@ -48,6 +51,9 @@ public class SynchronizedStack<E>
 	 */
 	public SynchronizedStack(Stack<E> stack) {
 		super();
+		if (stack == null) {
+			throw new NullPointerException();
+		}
 		this.stack = stack;
 		this.mutex = this;
 	}
@@ -259,10 +265,10 @@ public class SynchronizedStack<E>
 	// ********** additional public protocol **********
 
 	/**
-	 * Return the object this object locks on while performing
+	 * Return the object the stack locks on while performing
 	 * its operations.
 	 */
-	public Object mutex() {
+	public Object getMutex() {
 		return this.mutex;
 	}
 
@@ -273,6 +279,12 @@ public class SynchronizedStack<E>
 	public String toString() {
 		synchronized (this.mutex) {
 			return this.stack.toString();
+		}
+	}
+
+	private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException {
+		synchronized (this.mutex) {
+			s.defaultWriteObject();
 		}
 	}
 

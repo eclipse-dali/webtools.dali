@@ -29,8 +29,8 @@ import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
-import org.eclipse.jpt.ui.CommonImages;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -86,7 +86,7 @@ public class DatabaseGroup
 		this.connectionComboBox = this.buildComboBox(parent, widthHint, this.buildConnectionComboBoxSelectionListener());
 
 		// add connection button
-		this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, CommonImages.createImage( CommonImages.ADD_CONNECTION_IMAGE ), this.buildAddConnectionLinkSelectionListener());
+		this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, ImageRepository.getAddConnectionButtonImage(), this.buildAddConnectionLinkSelectionListener());
 
 		// A composite holds the reconnect button & text
 		this.buildLabel(parent, 1, ""); //$NON-NLS-1$
@@ -99,7 +99,7 @@ public class DatabaseGroup
 		// Make the reconnect button to be closer to the connection combo.
 		gl.marginTop = -5;
 		comp.setLayout(gl);
-		this.reconnectButton = this.buildButton(comp, JptUiEntityGenMessages.connectLink, CommonImages.createImage( CommonImages.RECONNECT_IMAGE ),  this.buildReconnectLinkSelectionListener());
+		this.reconnectButton = this.buildButton(comp, JptUiEntityGenMessages.connectLink, ImageRepository.getReconnectButtonImage(),  this.buildReconnectLinkSelectionListener());
 		this.buildLabel(comp, 1, JptUiEntityGenMessages.schemaInfo);
 
 		// schema combo-box

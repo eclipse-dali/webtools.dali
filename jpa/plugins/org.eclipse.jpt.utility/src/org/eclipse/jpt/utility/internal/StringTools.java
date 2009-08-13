@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
@@ -3320,6 +3322,26 @@ public final class StringTools {
 		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
 		sb.append(zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8));
 		sb.append(']');
+	}
+
+	public static <T> String append(StringBuilder sb, T[] array) {
+		return append(sb, new ArrayListIterator<T>(array));
+	}
+
+	public static <T> String append(StringBuilder sb, Iterable<T> iterable) {
+		return append(sb, iterable.iterator());
+	}
+
+	public static <T> String append(StringBuilder sb, Iterator<T> iterator) {
+		sb.append('[');
+		while (iterator.hasNext()) {
+			sb.append(iterator.next());
+			if (iterator.hasNext()) {
+				sb.append(", "); //$NON-NLS-1$
+			}
+		}
+		sb.append(']');
+		return sb.toString();
 	}
 
 

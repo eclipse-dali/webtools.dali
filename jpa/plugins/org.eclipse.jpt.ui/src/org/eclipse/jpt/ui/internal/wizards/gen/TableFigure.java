@@ -19,7 +19,7 @@ import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.jpt.ui.CommonImages;
+import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -47,7 +47,7 @@ public class TableFigure extends Figure {
 	    setOpaque(true);
 	    setSize(150, 20);
 		
-		Label nameLabel = new Label("", CommonImages.createImage( CommonImages.TABLE_OBJ_IMAGE));
+		Label nameLabel = new Label("", ImageRepository.getTableObjImage());
 		nameLabel.setFont(tableFont);
 		nameLabel.setText(name);
 		nameLabel.setForegroundColor(borderColor);
