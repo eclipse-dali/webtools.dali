@@ -17,19 +17,19 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * This class implements the <code>Bag</code> interface with a
+ * This class implements the {@link Bag} interface with a
  * hash table, using object-identity in place of object-equality when
  * comparing elements. In other words, in an <code>IdentityHashBag</code>,
  * two objects <code>k1</code> and <code>k2</code> are considered
- * equal if and only if <code>(k1 == k2)</code>. (In normal <code>Bag</code>
- * implementations (like <code>HashBag</code>) two objects <code>k1</code>
+ * equal if and only if <code>(k1 == k2)</code>. (In normal {@link Bag}
+ * implementations (like {@link HashBag}) two objects <code>k1</code>
  * and <code>k2</code> are considered equal if and only if
  * <code>(k1 == null ? k2 == null : k1.equals(k2))</code>.)
  * <p>
  * <b>
- * This class is <i>not</i> a general-purpose <code>Bag</code>
- * implementation! While this class implements the <code>Bag</code> interface, it
- * intentionally violates <code>Bag's</code> general contract, which mandates the
+ * This class is <em>not</em> a general-purpose {@link Bag}
+ * implementation! While this class implements the {@link Bag} interface, it
+ * intentionally violates {@link Bag}'s general contract, which mandates the
  * use of the <code>equals</code> method when comparing objects. This class is
  * designed for use only in the rare cases wherein object-identity
  * semantics are required.
@@ -63,13 +63,26 @@ import java.util.NoSuchElementException;
  * </pre>
  * <p>
  * The iterators returned by this class's <code>iterator</code> method are
- * <i>fail-fast</i>: if the bag is modified at any time after the iterator is
+ * <em>fail-fast</em>: if the bag is modified at any time after the iterator is
  * created, in any way except through the iterator's own <code>remove</code>
- * method, the iterator throws a <code>ConcurrentModificationException</code>.
+ * method, the iterator throws a {@link ConcurrentModificationException}.
  * Thus, in the face of concurrent modification, the iterator fails quickly
  * and cleanly, rather than risking arbitrary, non-deterministic behavior at
  * an undetermined time in the future.
+ * <p>
+ * Note that the fail-fast behavior of an iterator cannot be guaranteed
+ * as it is, generally speaking, impossible to make any hard guarantees in the
+ * presence of unsynchronized concurrent modification. Fail-fast iterators
+ * throw <code>ConcurrentModificationException</code> on a best-effort basis.
+ * Therefore, it would be wrong to write a program that depended on this
+ * exception for its correctness: <em>the fail-fast behavior of iterators
+ * should be used only to detect bugs.</em>
  * 
+ * @param <E> the type of elements maintained by the bag
+ * 
+ * @see Collection
+ * @see Bag
+ * @see SynchronizedBag
  * @see	Collections#synchronizedCollection(Collection)
  */
 
@@ -250,11 +263,6 @@ public class IdentityHashBag<E>
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> Entry<E> buildEntry(int hash, Object o, Entry<T> next) {
-		return new Entry(hash, o, next);
-	}
-
-	@SuppressWarnings("unchecked")
 	private <T> Entry<E> buildEntry(int hash, Object o, int cnt, Entry<T> next) {
 		return new Entry(hash, o, cnt, next);
 	}
@@ -266,35 +274,7 @@ public class IdentityHashBag<E>
 	 */
 	@Override
 	public boolean add(E o) {
-		this.modCount++;
-		Entry<E>[] tab = this.table;
-		int hash = 0;
-		int index = 0;
-
-		// if the object is already in the bag, simply bump its count
-		hash = System.identityHashCode(o);
-		index = (hash & 0x7FFFFFFF) % tab.length;
-		for (Entry<E> e = tab[index]; e != null; e = e.next) {
-			if ((e.hash == hash) && (e.object == o)) {
-				e.count++;
-				this.count++;
-				return true;
-			}
-		}
-
-		// rehash the table if the threshold is exceeded
-		if (this.uniqueCount >= this.threshold) {
-			this.rehash();
-			tab = this.table;
-			index = (hash & 0x7FFFFFFF) % tab.length;
-		}
-
-		// create the new entry and put it in the table
-		Entry<E> e = this.buildEntry(hash, o, tab[index]);
-		tab[index] = e;
-		this.count++;
-		this.uniqueCount++;
-		return true;
+		return this.add(o, 1);
 	}
 
 	/**
@@ -344,27 +324,7 @@ public class IdentityHashBag<E>
 	 */
 	@Override
 	public boolean remove(Object o) {
-		Entry<E>[] tab = this.table;
-		int hash = System.identityHashCode(o);
-		int index = (hash & 0x7FFFFFFF) % tab.length;
-		for (Entry<E> e = tab[index], prev = null; e != null; prev = e, e = e.next) {
-			if ((e.hash == hash) && (e.object == o)) {
-				this.modCount++;
-				e.count--;
-				// if we are removing the last one, remove the entry from the table
-				if (e.count == 0) {
-					if (prev == null) {
-						tab[index] = e.next;
-					} else {
-						prev.next = e.next;
-					}
-					this.uniqueCount--;
-				}
-				this.count--;
-				return true;
-			}
-		}
-		return false;
+		return this.remove(o, 1);
 	}
 
 	/**
@@ -430,7 +390,7 @@ public class IdentityHashBag<E>
 	public void clear() {
 		Entry<E>[] tab = this.table;
 		this.modCount++;
-		for (int i = tab.length; --i >= 0; ) {
+		for (int i = tab.length; i-- > 0; ) {
 			tab[i] = null;
 		}
 		this.count = 0;
@@ -465,14 +425,10 @@ public class IdentityHashBag<E>
 	 * Hash table collision list entry.
 	 */
 	private static class Entry<E> implements Bag.Entry<E> {
-		int hash;
-		E object;
+		final int hash;
+		final E object;
 		int count;
 		Entry<E> next;
-
-		Entry(int hash, E object, Entry<E> next) {
-			this(hash, object, 1, next);
-		}
 
 		Entry(int hash, E object, int count, Entry<E> next) {
 			this.hash = hash;
@@ -548,6 +504,10 @@ public class IdentityHashBag<E>
 	@SuppressWarnings("unchecked")
 	public Iterator<E> uniqueIterator() {
 		return (this.count == 0) ? EMPTY_ITERATOR : new UniqueIterator();
+	}
+
+	public int uniqueCount() {
+		return this.uniqueCount;
 	}
 
 	@SuppressWarnings("unchecked")

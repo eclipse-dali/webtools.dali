@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,8 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
  * A collection that allows duplicate elements.
  * <p>
  * The <code>Bag</code> interface places additional stipulations,
- * beyond those inherited from the <code>java.util.Collection</code> interface,
- * on the contracts of the <code>equals</code> and <code>hashCode</code> methods.
+ * beyond those inherited from the {@link java.util.Collection} interface,
+ * on the contracts of the {@link #equals(Object)} and {@link #hashCode()} methods.
  * 
  * @see HashBag
  */
@@ -45,7 +45,7 @@ public interface Bag<E> extends java.util.Collection<E> {
 	 * This ensures that <code>b1.equals(b2)</code> implies that
 	 * <code>b1.hashCode() == b2.hashCode()</code> for any two bags
 	 * <code>b1</code> and <code>b2</code>, as required by the general
-	 * contract of the <code>Object.hashCode</code> method.
+	 * contract of the {@link Object#hashCode()} method.
 	 */
 	int hashCode();
 
@@ -56,6 +56,7 @@ public interface Bag<E> extends java.util.Collection<E> {
 
 	/**
 	 * Add the specified object the specified number of times to the bag.
+	 * Return whether the bag changed.
 	 */
 	boolean add(E o, int count);
 
@@ -73,6 +74,11 @@ public interface Bag<E> extends java.util.Collection<E> {
 	java.util.Iterator<E> uniqueIterator();
 
 	/**
+	 * Return the number of unique items in the bag.
+	 */
+	int uniqueCount();
+
+	/**
 	 * Return an iterator that returns an entry for each item in the bag
 	 * once and only once, irrespective of how many times
 	 * the item was added to the bag. The entry will indicate the item's
@@ -83,13 +89,13 @@ public interface Bag<E> extends java.util.Collection<E> {
 
 	/**
 	 * A bag entry (element-count pair).
-	 * The <code>Bag.entries</code> method returns an iterator whose
-	 * elements are of this class. The <i>only</i> way to obtain a reference
+	 * The {@link Bag#entries()} method returns an iterator whose
+	 * elements are of this class. The <em>only</em> way to obtain a reference
 	 * to a bag entry is from the iterator returned by this method. These
-	 * <code>Bag.Entry</code> objects are valid <i>only</i> for the duration
+	 * <code>Bag.Entry</code> objects are valid <em>only</em> for the duration
 	 * of the iteration; more formally, the behavior of a bag entry is
 	 * undefined if the backing bag has been modified after the entry was
-	 * returned by the iterator, except through the <code>setCount</code>
+	 * returned by the iterator, except through the {@link #setCount(int)}
 	 * operation on the bag entry.
 	 */
 	interface Entry<E> {
@@ -110,7 +116,7 @@ public interface Bag<E> extends java.util.Collection<E> {
 		 * Set the entry's count; i.e. the number of times the entry's element
 		 * occurs in the bag. The new count must be a positive number.
 		 * Return the previous count of the entry's element.
-		 * NB: Use the iterator's <code>remove</code> method to set the
+		 * NB: Use {@link Iterator#remove()} to set the
 		 * count to zero.
 		 */
 		int setCount(int count);
@@ -152,6 +158,9 @@ public interface Bag<E> extends java.util.Collection<E> {
 		public Iterator<E> uniqueIterator() {
 			return EmptyIterator.instance();
 		}
+		public int uniqueCount() {
+			return 0;
+		}
 		public int count(Object o) {
 			return 0;
 		}
@@ -169,7 +178,7 @@ public interface Bag<E> extends java.util.Collection<E> {
 			if (o == this) {
 				return true;
 			}
-			if ( ! (o instanceof Bag)) {
+			if ( ! (o instanceof Bag<?>)) {
 				return false;
 			}
 			return ((Bag<?>) o).size() == 0;
