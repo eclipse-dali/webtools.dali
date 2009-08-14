@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 
 /**
  *  Customization
@@ -107,7 +107,7 @@ public interface Customization extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_PROFILER = "eclipselink.profiler"; //$NON-NLS-1$
 		static final String DEFAULT_PROFILER = 
-			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(Profiler.no_profiler);
+			AbstractPersistenceUnitProperties.getPropertyStringValueOf(Profiler.no_profiler);
 		String ECLIPSELINK_SESSION_PROFILER_CLASS_NAME = "org.eclipse.persistence.sessions.SessionProfiler"; //$NON-NLS-1$
 		
 	Boolean getDefaultValidationOnly();

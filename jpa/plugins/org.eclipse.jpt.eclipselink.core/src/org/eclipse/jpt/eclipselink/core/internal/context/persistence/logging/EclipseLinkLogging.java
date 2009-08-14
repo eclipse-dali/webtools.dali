@@ -66,7 +66,7 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 			return null;	// no property found
 		}
 		Logger standardLogger = this.getEnumValue(ECLIPSELINK_LOGGER, Logger.values());
-		return (standardLogger == null) ? value : getEclipseLinkStringValueOf(standardLogger);
+		return (standardLogger == null) ? value : getPropertyStringValueOf(standardLogger);
 	}
 
 	// ********** behavior **********
@@ -311,7 +311,7 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 			this.setLogger_((String) null);
 			return;
 		}
-		this.setLogger_(getEclipseLinkStringValueOf(newLogger));
+		this.setLogger_(getPropertyStringValueOf(newLogger));
 	}
 
 	/**

@@ -50,6 +50,8 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
@@ -72,6 +74,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlOneToMany2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlOneToOne2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlTransient2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlVersion2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericPersistenceUnit2_0;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
@@ -95,6 +98,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
@@ -120,6 +124,14 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 	
 	protected GenericOrmXml2_0 buildOrmXml2_0(MappingFileRef parent, JpaXmlResource resource) {
 		return new GenericOrmXml2_0(parent, resource);
+	}
+
+	
+	// ********** Persistence Context Model **********
+	
+	@Override
+	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
+		return new GenericPersistenceUnit2_0(parent, xmlPersistenceUnit);
 	}
 
 	// ********** Generic 2.0-specific ORM Context Model **********

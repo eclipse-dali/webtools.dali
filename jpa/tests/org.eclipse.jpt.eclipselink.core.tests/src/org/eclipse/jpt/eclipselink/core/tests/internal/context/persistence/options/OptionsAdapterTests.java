@@ -10,18 +10,18 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.options;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetDatabase;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetServer;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  * Tests the update of model objects by the Option adapter when the
  * PersistenceUnit changes.
  */
-public class OptionsAdapterTests extends PersistenceUnitTestCase
+public class OptionsAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Options options;
 
@@ -158,7 +158,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	public void testSetTargetDatabase() throws Exception {
 		this.verifyModelInitialized(
 			TARGET_DATABASE_KEY,
-			this.getEclipseLinkStringValueOf(TARGET_DATABASE_TEST_VALUE)); // model is storing EclipseLinkStringValue
+			this.getPropertyStringValueOf(TARGET_DATABASE_TEST_VALUE)); // model is storing EclipseLinkStringValue
 		this.verifySetProperty(
 			TARGET_DATABASE_KEY,
 			TARGET_DATABASE_TEST_VALUE,
@@ -198,7 +198,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
 		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
-		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
+		this.verifyPutProperty(propertyName, this.getPropertyStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
@@ -211,7 +211,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	public void testSetTargetServer() throws Exception {
 		this.verifyModelInitialized(
 			TARGET_SERVER_KEY,
-			this.getEclipseLinkStringValueOf(TARGET_SERVER_TEST_VALUE)); // model is storing EclipseLinkStringValue
+			this.getPropertyStringValueOf(TARGET_SERVER_TEST_VALUE)); // model is storing EclipseLinkStringValue
 		// verify set enum value
 		this.verifySetProperty(
 			TARGET_SERVER_KEY,
@@ -252,7 +252,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
 		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
-		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
+		this.verifyPutProperty(propertyName, this.getPropertyStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
@@ -368,7 +368,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	
 	private String convertToEclipseLinkStringValue(Object expectedValue) {
 		return (String) ((expectedValue != null && expectedValue.getClass().isEnum()) ?
-				this.getEclipseLinkStringValueOf(expectedValue) : // model is storing EclipseLinkStringValue
+				this.getPropertyStringValueOf(expectedValue) : // model is storing EclipseLinkStringValue
 				expectedValue); // already a EclipseLinkStringValue
 	}
 	

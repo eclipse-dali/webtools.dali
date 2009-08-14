@@ -9,8 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.options;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 
 /**
  *  Session Options
@@ -49,7 +49,7 @@ public interface Options extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_TARGET_DATABASE = "eclipselink.target-database"; //$NON-NLS-1$
 		static final String DEFAULT_TARGET_DATABASE = 
-			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(TargetDatabase.auto);
+			AbstractPersistenceUnitProperties.getPropertyStringValueOf(TargetDatabase.auto);
 
 	String getDefaultTargetServer();
 	String getTargetServer();
@@ -59,7 +59,7 @@ public interface Options extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_TARGET_SERVER = "eclipselink.target-server"; //$NON-NLS-1$
 		static final String DEFAULT_TARGET_SERVER = 
-			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(TargetServer.none);
+			AbstractPersistenceUnitProperties.getPropertyStringValueOf(TargetServer.none);
 
 	String getDefaultEventListener();
 	String getEventListener();

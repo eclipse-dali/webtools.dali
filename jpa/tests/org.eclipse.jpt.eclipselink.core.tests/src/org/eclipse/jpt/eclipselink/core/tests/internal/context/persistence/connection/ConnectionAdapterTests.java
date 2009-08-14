@@ -10,17 +10,17 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.connection;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  *  ConnectionAdapterTests
  */
 @SuppressWarnings("nls")
-public class ConnectionAdapterTests extends PersistenceUnitTestCase
+public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Connection connection;
 

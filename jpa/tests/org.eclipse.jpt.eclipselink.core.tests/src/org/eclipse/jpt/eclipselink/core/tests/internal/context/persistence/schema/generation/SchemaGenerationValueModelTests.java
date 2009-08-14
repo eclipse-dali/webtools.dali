@@ -10,11 +10,11 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
  * Tests the PropertyValueModel of SchemaGeneration model and the update of the
  * PersistenceUnit.
  */
-public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
+public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private SchemaGeneration schemaGen;
 	private PropertyValueModel<SchemaGeneration> schemaGenHolder;
@@ -150,7 +150,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		// Modify the persistenceUnit directly
 		this.subject.setProperty(
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
-			this.getEclipseLinkStringValueOf(newDdlGenerationType),
+			this.getPropertyStringValueOf(newDdlGenerationType),
 			false);
 		this.verifyDdlGenerationTypeAAValue(newDdlGenerationType);
 		assertNotNull(this.ddlGenerationTypeEvent);

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 
 /**
  *  Caching

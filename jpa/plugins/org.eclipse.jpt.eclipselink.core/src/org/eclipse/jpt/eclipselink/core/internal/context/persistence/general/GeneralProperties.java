@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.general;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 
 /**
  *  GeneralProperties

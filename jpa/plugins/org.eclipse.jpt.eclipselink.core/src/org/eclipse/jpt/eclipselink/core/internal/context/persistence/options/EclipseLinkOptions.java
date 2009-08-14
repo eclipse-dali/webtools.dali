@@ -62,7 +62,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			return null;
 		}
 		TargetDatabase standardTargetDatabase = this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, TargetDatabase.values());
-		return (standardTargetDatabase == null) ? value : getEclipseLinkStringValueOf(standardTargetDatabase);
+		return (standardTargetDatabase == null) ? value : getPropertyStringValueOf(standardTargetDatabase);
 	}
 	
 	protected String getTargetServerFromPersistenceXml() {
@@ -72,7 +72,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			return null;
 		}
 		TargetServer standardTargetServer = this.getEnumValue(ECLIPSELINK_TARGET_SERVER, TargetServer.values());
-		return (standardTargetServer == null) ? value : getEclipseLinkStringValueOf(standardTargetServer);
+		return (standardTargetServer == null) ? value : getPropertyStringValueOf(standardTargetServer);
 	}
 
 	// ********** behavior **********
@@ -243,7 +243,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			this.setTargetDatabase_((String) null);
 			return;
 		}
-		this.setTargetDatabase_(getEclipseLinkStringValueOf(newTargetDatabase));
+		this.setTargetDatabase_(getPropertyStringValueOf(newTargetDatabase));
 	}
 
 	/**
@@ -304,7 +304,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			this.setTargetServer_((String) null);
 			return;
 		}
-		this.setTargetServer_(getEclipseLinkStringValueOf(newTargetServer));
+		this.setTargetServer_(getPropertyStringValueOf(newTargetServer));
 	}
 
 	/**

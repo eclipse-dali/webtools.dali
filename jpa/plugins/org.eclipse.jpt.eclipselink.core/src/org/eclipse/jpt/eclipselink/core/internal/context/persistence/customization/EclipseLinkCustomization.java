@@ -111,7 +111,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			return null;	// no property found
 		}
 		Profiler standardProfiler = this.getEnumValue(ECLIPSELINK_PROFILER, Profiler.values());
-		return (standardProfiler == null) ? value : getEclipseLinkStringValueOf(standardProfiler);
+		return (standardProfiler == null) ? value : getPropertyStringValueOf(standardProfiler);
 	}
 
 	// ********** behavior **********
@@ -636,7 +636,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.setProfiler_((String) null);
 			return;
 		}
-		this.setProfiler_(getEclipseLinkStringValueOf(newProfiler));
+		this.setProfiler_(getPropertyStringValueOf(newProfiler));
 	}
 
 	/**

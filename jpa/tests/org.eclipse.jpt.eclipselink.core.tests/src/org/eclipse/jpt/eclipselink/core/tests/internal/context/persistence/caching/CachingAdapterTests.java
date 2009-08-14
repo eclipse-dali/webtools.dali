@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.caching;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.FlushClearCache;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListClearEvent;
@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
  * PersistenceUnit changes.
  */
 @SuppressWarnings("nls")
-public class CachingAdapterTests extends PersistenceUnitTestCase
+public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Caching caching;
 	private ListChangeEvent entitiesEvent;

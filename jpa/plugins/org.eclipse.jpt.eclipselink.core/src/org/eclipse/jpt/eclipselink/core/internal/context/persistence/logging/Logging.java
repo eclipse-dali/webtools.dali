@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 
 /**
  * Logging
@@ -73,6 +73,6 @@ public interface Logging extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_LOGGER = "eclipselink.logging.logger"; //$NON-NLS-1$
 		static final String DEFAULT_LOGGER = 
-			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(Logger.default_logger);
+			AbstractPersistenceUnitProperties.getPropertyStringValueOf(Logger.default_logger);
 		String ECLIPSELINK_LOGGER_CLASS_NAME = "org.eclipse.persistence.logging.SessionLog"; //$NON-NLS-1$
 }

@@ -12,13 +12,13 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.cust
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Weaving;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListClearEvent;
@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
  * PersistenceUnit changes.
  */
 @SuppressWarnings("nls")
-public class CustomizationAdapterTests extends PersistenceUnitTestCase
+public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Customization customization;
 	private ListChangeEvent entitiesEvent;
@@ -477,7 +477,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	public void testSetProfiler() throws Exception {
 		this.verifyModelInitialized(
 			PROFILER_KEY,
-			this.getEclipseLinkStringValueOf(PROFILER_TEST_VALUE)); // model is storing EclipseLinkStringValue
+			this.getPropertyStringValueOf(PROFILER_TEST_VALUE)); // model is storing EclipseLinkStringValue
 		// verify set enum value
 		this.verifySetProperty(
 			PROFILER_KEY,
@@ -518,7 +518,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
 		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
-		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
+		this.verifyPutProperty(propertyName, this.getPropertyStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
@@ -700,7 +700,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
 			
 			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
-				this.getEclipseLinkStringValueOf(PROFILER_TEST_VALUE) : // model is storing EclipseLinkStringValue
+				this.getPropertyStringValueOf(PROFILER_TEST_VALUE) : // model is storing EclipseLinkStringValue
 				expectedValue;
 		}
 		super.verifyPutProperty(propertyName, expectedValue_);

@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.customization;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * CustomizationValueModelTests
  */
-public class CustomizationValueModelTests extends PersistenceUnitTestCase
+public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Customization customization;
 

@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
  * when the PersistenceUnit changes.
  */
 @SuppressWarnings("nls")
-public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
+public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private SchemaGeneration schemaGeneration;
 
@@ -74,11 +74,11 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
 		this.persistenceUnitSetProperty("property.0", "value.0");
-		this.persistenceUnitSetProperty(OUTPUT_MODE_KEY, this.getEclipseLinkStringValueOf(OUTPUT_MODE_TEST_VALUE));
+		this.persistenceUnitSetProperty(OUTPUT_MODE_KEY, this.getPropertyStringValueOf(OUTPUT_MODE_TEST_VALUE));
 		this.persistenceUnitSetProperty("property.2", "value.2");
 		this.persistenceUnitSetProperty("property.3", "value.3");
 		this.persistenceUnitSetProperty("property.4", "value.4");
-		this.persistenceUnitSetProperty(DDL_GENERATION_TYPE_KEY, this.getEclipseLinkStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
+		this.persistenceUnitSetProperty(DDL_GENERATION_TYPE_KEY, this.getPropertyStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
 		this.persistenceUnitSetProperty(CREATE_FILE_NAME_KEY, CREATE_FILE_NAME_TEST_VALUE);
 		this.persistenceUnitSetProperty(DROP_FILE_NAME_KEY, DROP_FILE_NAME_TEST_VALUE);
 		this.persistenceUnitSetProperty(APPLICATION_LOCATION_KEY, APPLICATION_LOCATION_TEST_VALUE);

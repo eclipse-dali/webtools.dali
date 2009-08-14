@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
+package org.eclipse.jpt.core.internal.context.persistence;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -47,6 +47,5 @@ public interface PersistenceUnitProperties extends Model
 	 * A Property with the given name was removed
 	 */
 	void propertyRemoved(String propertyName);
-
 
 }

@@ -10,18 +10,18 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.logging;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logger;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.LoggingLevel;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  * Tests the update of model objects by the Logging adapter when the
  * PersistenceUnit changes.
  */
-public class LoggingAdapterTests extends PersistenceUnitTestCase
+public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Logging logging;
 
@@ -209,7 +209,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	public void testSetLogger() throws Exception {
 		this.verifyModelInitialized(
 			LOGGER_KEY,
-			this.getEclipseLinkStringValueOf(LOGGER_TEST_VALUE)); // model is storing EclipseLinkStringValue
+			this.getPropertyStringValueOf(LOGGER_TEST_VALUE)); // model is storing EclipseLinkStringValue
 		// verify set enum value
 		this.verifySetProperty(
 			LOGGER_KEY,
@@ -250,7 +250,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
 		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
-		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
+		this.verifyPutProperty(propertyName, this.getPropertyStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
@@ -312,7 +312,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		if (propertyName.equals(Logging.LOGGER_PROPERTY)) {
 			
 			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
-				this.getEclipseLinkStringValueOf(LOGGER_TEST_VALUE) : // model is storing EclipseLinkStringValue
+				this.getPropertyStringValueOf(LOGGER_TEST_VALUE) : // model is storing EclipseLinkStringValue
 				expectedValue;
 		}
 		super.verifyPutProperty(propertyName, expectedValue_);

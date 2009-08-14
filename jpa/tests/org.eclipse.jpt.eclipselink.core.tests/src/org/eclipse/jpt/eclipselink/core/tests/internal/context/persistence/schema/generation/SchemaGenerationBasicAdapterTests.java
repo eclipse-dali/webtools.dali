@@ -11,12 +11,12 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.sche
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
  * Tests the update of OutputMode model object by the SchemaGeneration adapter
  * when the PersistenceUnit changes.
  */
-public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
+public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private SchemaGeneration schemaGeneration;
 
@@ -66,11 +66,11 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
 		this.persistenceUnitSetProperty("property.0", "value.0");
-		this.persistenceUnitSetProperty(outputModeKey, this.getEclipseLinkStringValueOf(OUTPUT_MODE_TEST_VALUE));
+		this.persistenceUnitSetProperty(outputModeKey, this.getPropertyStringValueOf(OUTPUT_MODE_TEST_VALUE));
 		this.persistenceUnitSetProperty("property.2", "value.2");
 		this.persistenceUnitSetProperty("property.3", "value.3");
 		this.persistenceUnitSetProperty("property.4", "value.4");
-		this.persistenceUnitSetProperty(ddlGenTypeKey, this.getEclipseLinkStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
+		this.persistenceUnitSetProperty(ddlGenTypeKey, this.getPropertyStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
 		return;
 	}
 
