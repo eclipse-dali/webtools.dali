@@ -27,6 +27,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
@@ -44,6 +45,7 @@ import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionMod
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -86,8 +88,7 @@ public class OverridesComposite extends FormPane<Entity>
 	private Composite joinColumnsPane;
 	private JoinColumnsComposite<JoinColumnJoiningStrategy> joinColumnsComposite;
 	private WritablePropertyValueModel<BaseOverride> selectedOverrideHolder;
-	private WritablePropertyValueModel<Boolean> overrideVirtualAttributeOverrideHolder;
-	private WritablePropertyValueModel<Boolean> overrideVirtualAssociationOverrideHolder;
+	private WritablePropertyValueModel<Boolean> overrideVirtualOverrideHolder;
 
 	private WritablePropertyValueModel<JoinColumnJoiningStrategy> selectedJoinColumnJoiningStrategyHolder;
 	/**
@@ -140,6 +141,17 @@ public class OverridesComposite extends FormPane<Entity>
 		// Overrides list pane
 		initializeOverridesList(container);
 
+		int groupBoxMargin = getGroupBoxMargin();
+		
+		// Override Default check box
+		Button overrideCheckBox = addCheckBox(
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			getOverrideVirtualOverrideHolder(),
+			null
+		);
+		SWTTools.controlVisibleState(buildSelectedOverrideBooleanHolder(), overrideCheckBox);
+		
 		// Property pane
 		PageBook pageBook = addPageBook(container);
 		initializeJoinColumnsPane(pageBook);
@@ -147,6 +159,15 @@ public class OverridesComposite extends FormPane<Entity>
 		installOverrideControlSwitcher(this.selectedOverrideHolder, pageBook);
 	}
 
+	private PropertyValueModel<Boolean> buildSelectedOverrideBooleanHolder() {
+		return new TransformationPropertyValueModel<BaseOverride, Boolean>(this.selectedOverrideHolder) {
+			@Override
+			protected Boolean transform(BaseOverride value) {
+				return Boolean.valueOf(value != null);
+			}
+		};
+	}
+	
 	private AddRemoveListPane<Entity> initializeOverridesList(Composite container) {
 
 		return new AddRemoveListPane<Entity>(
@@ -172,17 +193,7 @@ public class OverridesComposite extends FormPane<Entity>
 	}
 	
 	private void initializeColumnPane(PageBook pageBook) {
-
-		int groupBoxMargin = getGroupBoxMargin();
 		this.columnPane = addSubPane(pageBook, 5);
-
-		// Override Default check box
-		addCheckBox(
-			addSubPane(this.columnPane, 0, groupBoxMargin, 0, groupBoxMargin),
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			getOverrideVirtualAttributeOverrideHolder(),
-			null
-		);
 
 		// Column widgets (for IOverrideAttribute)
 		ColumnComposite columnComposite = new ColumnComposite(
@@ -192,27 +203,27 @@ public class OverridesComposite extends FormPane<Entity>
 			false
 		);
 
-		installColumnsPaneEnabler(columnComposite);
+		installColumnsPaneEnabler(columnComposite, buildAttributeOverrideHolder());
 	}
 
-	private void installColumnsPaneEnabler(ColumnComposite pane) {
+	private void installColumnsPaneEnabler(ColumnComposite pane, PropertyValueModel<AttributeOverride> overrideHolder) {
 		new PaneEnabler(
-			getOverrideVirtualAttributeOverrideHolder(),
+			buildOverrideBooleanHolder(overrideHolder),
 			pane
 		);
 	}
 
+	private PropertyValueModel<Boolean> buildOverrideBooleanHolder(PropertyValueModel<? extends BaseOverride> overrideHolder) {
+		return new TransformationPropertyValueModel<BaseOverride, Boolean>(overrideHolder) {
+			@Override
+			protected Boolean transform_(BaseOverride value) {
+				return Boolean.valueOf(!value.isVirtual());
+			}
+		};
+	}
+
 	private void initializeJoinColumnsPane(PageBook pageBook) {
-
 		this.joinColumnsPane = addSubPane(pageBook);
-
-		// Override Default check box
-		addCheckBox(
-			addSubPane(this.joinColumnsPane, 5, getGroupBoxMargin()),
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			getOverrideVirtualAssociationOverrideHolder(),
-			null
-		);
 
 		Group joinColumnsGroupPane = addTitledGroup(
 			this.joinColumnsPane,
@@ -229,11 +240,11 @@ public class OverridesComposite extends FormPane<Entity>
 				false
 			);
 
-		installJoinColumnsPaneEnabler(this.joinColumnsComposite);
+		installJoinColumnsPaneEnabler(this.joinColumnsComposite, buildAssociationOverrideHolder());
 	}
 
-	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinColumnJoiningStrategy> pane) {
-		pane.installJoinColumnsPaneEnabler(getOverrideVirtualAssociationOverrideHolder());
+	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinColumnJoiningStrategy> pane, PropertyValueModel<AssociationOverride> overrideHolder) {
+		pane.installJoinColumnsPaneEnabler(buildOverrideBooleanHolder(overrideHolder));
 	}
 
 	private void installOverrideControlSwitcher(PropertyValueModel<BaseOverride> overrideHolder,
@@ -291,7 +302,7 @@ public class OverridesComposite extends FormPane<Entity>
 			}
 		};
 	}
-
+	
 	private WritablePropertyValueModel<AttributeOverride> buildAttributeOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<BaseOverride, AttributeOverride>(this.selectedOverrideHolder) {
 			@Override
@@ -300,7 +311,7 @@ public class OverridesComposite extends FormPane<Entity>
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<Column> buildColumnHolder(PropertyValueModel<AttributeOverride> attributeOverrideHolder) {
 		return new TransformationPropertyValueModel<AttributeOverride, Column>(attributeOverrideHolder) {
 			@Override
@@ -352,44 +363,23 @@ public class OverridesComposite extends FormPane<Entity>
 		return new JoinColumnsProvider();
 	}
 
-	protected WritablePropertyValueModel<Boolean> getOverrideVirtualAssociationOverrideHolder() {
-		if (this.overrideVirtualAssociationOverrideHolder == null) {
-			this.overrideVirtualAssociationOverrideHolder = buildOverrideVirtualAssociationOverrideHolder();
+	protected WritablePropertyValueModel<Boolean> getOverrideVirtualOverrideHolder() {
+		if (this.overrideVirtualOverrideHolder == null) {
+			this.overrideVirtualOverrideHolder = buildOverrideVirtualOverrideHolder();
 		}
-		return this.overrideVirtualAssociationOverrideHolder;
+		return this.overrideVirtualOverrideHolder;
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideVirtualAssociationOverrideHolder() {
-		return new CachingTransformationWritablePropertyValueModel<AssociationOverride, Boolean>(buildAssociationOverrideHolder()) {
+
+	private WritablePropertyValueModel<Boolean> buildOverrideVirtualOverrideHolder() {
+		return new CachingTransformationWritablePropertyValueModel<BaseOverride, Boolean>(this.selectedOverrideHolder) {
 			@Override
 			public void setValue(Boolean value) {
 				updateOverride(value.booleanValue());
 			}
 
 			@Override
-			protected Boolean transform_(AssociationOverride value) {
-				return Boolean.valueOf(!value.isVirtual());
-			}
-		};
-	}
-
-	protected WritablePropertyValueModel<Boolean> getOverrideVirtualAttributeOverrideHolder() {
-		if (this.overrideVirtualAttributeOverrideHolder == null) {
-			this.overrideVirtualAttributeOverrideHolder = buildOverrideVirtualAttributeOverrideHolder();
-		}
-		return this.overrideVirtualAttributeOverrideHolder;
-	}
-
-
-	private WritablePropertyValueModel<Boolean> buildOverrideVirtualAttributeOverrideHolder() {
-		return new CachingTransformationWritablePropertyValueModel<AttributeOverride, Boolean>(buildAttributeOverrideHolder()) {
-			@Override
-			public void setValue(Boolean value) {
-				updateOverride(value.booleanValue());
-			}
-
-			@Override
-			protected Boolean transform_(AttributeOverride value) {
+			protected Boolean transform_(BaseOverride value) {
 				return Boolean.valueOf(!value.isVirtual());
 			}
 		};
