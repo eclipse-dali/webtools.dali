@@ -54,7 +54,7 @@ public interface BaseColumn extends NamedColumn
 	boolean isInsertable();
 	
 	boolean isDefaultInsertable();
-		String DEFAULT_INSERTABLE_PROPERTY = "defaulInsertable"; //$NON-NLS-1$
+		String DEFAULT_INSERTABLE_PROPERTY = "defaultInsertable"; //$NON-NLS-1$
 		boolean DEFAULT_INSERTABLE = true;
 	Boolean getSpecifiedInsertable();
 	void setSpecifiedInsertable(Boolean newSpecifiedInsertable);
@@ -64,7 +64,7 @@ public interface BaseColumn extends NamedColumn
 	boolean isUpdatable();
 	
 	boolean isDefaultUpdatable();
-		String DEFAULT_UPDATABLE_PROPERTY = "defaulUpdatable"; //$NON-NLS-1$
+		String DEFAULT_UPDATABLE_PROPERTY = "defaultUpdatable"; //$NON-NLS-1$
 		boolean DEFAULT_UPDATABLE = true;
 	Boolean getSpecifiedUpdatable();
 	void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable);
