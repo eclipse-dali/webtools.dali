@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.tests.internal.context.orm.JptCoreOrmContextModelTes
 import org.eclipse.jpt.core.tests.internal.context.persistence.JptCorePersistenceContextModelTests;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.java.Generic2_0JavaContextModelTests;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.orm.Generic2_0OrmContextModelTests;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.persistence.Generic2_0PersistenceContextModelTests;
 
 public class JptCoreContextModelTests extends TestCase
 {
@@ -30,6 +31,7 @@ public class JptCoreContextModelTests extends TestCase
 		suite.addTest(JptCoreContextJavaModelTests.suite());
 		suite.addTest(Generic2_0JavaContextModelTests.suite());
 		suite.addTest(Generic2_0OrmContextModelTests.suite());
+		suite.addTest(Generic2_0PersistenceContextModelTests.suite());
 		return suite;
 	}
 
