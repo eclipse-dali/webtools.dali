@@ -985,7 +985,7 @@ public abstract class AbstractJavaEntity
 		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		JavaAssociationOverride virtualAssociationOverride = null;
 		if (associationOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
+			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
 				if (persistentAttribute.getName().equals(associationOverrideName)) {
 					//store the virtualAttributeOverride so we can fire change notification later
 					virtualAssociationOverride = buildVirtualAssociationOverride(persistentAttribute);
