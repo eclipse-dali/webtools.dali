@@ -19,7 +19,6 @@ import org.eclipse.jpt.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.Model;
@@ -70,10 +69,6 @@ import org.eclipse.swt.widgets.TableColumn;
 @SuppressWarnings("nls")
 public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 {
-	/**
-	 * Flag used to prevent circular
-	 */
-	private boolean locked;
 
 	/**
 	 * The main widget of this add/remove pane.
@@ -297,10 +292,6 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		}});
 	}
 
-	private SimplePropertyValueModel<Object> buildSelectedItemHolder() {
-		return new SimplePropertyValueModel<Object>();
-	}
-
 	private PropertyChangeListener buildSelectedItemPropertyChangeListener() {
 		return new SWTPropertyChangeListenerWrapper(
 			buildSelectedItemPropertyChangeListener_()
@@ -313,26 +304,8 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 				if (table.isDisposed()) {
 					return;
 				}
-
-				if (!locked) {
-					locked = true;
-
-					try {
-						Object value = e.getNewValue();
-						getSelectionModel().setSelectedValue(e.getNewValue());
-						int index = -1;
-
-						if (value != null) {
-							index = CollectionTools.indexOf(getListHolder().iterator(), value);
-						}
-
-						table.select(index);
-						updateButtons();
-					}
-					finally {
-						locked = false;
-					}
-				}
+				getSelectionModel().setSelectedValue(e.getNewValue());
+				updateButtons();
 			}
 		};
 	}
@@ -496,7 +469,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 
 		TableModelAdapter model = TableModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,
-			buildSelectedItemHolder(),
+			getSelectedItemHolder(),
 			table,
 			buildColumnAdapter(),
 			buildTableLabelProvider(labelProvider)
@@ -529,43 +502,31 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * selection model and (3) the buttons.
 	 */
 	private void selectionChanged() {
+		WritablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
+		ObjectListSelectionModel selectionModel = getSelectionModel();
+		int selectionCount = this.table.getSelectionCount();
 
-		if (locked) {
-			return;
+		if (selectionCount == 0) {
+			selectedItemHolder.setValue(null);
+			selectionModel.clearSelection();
+		}
+		else if (selectionCount != 1) {
+			selectedItemHolder.setValue(null);
+			selectionModel.clearSelection();
+
+			for (int index : this.table.getSelectionIndices()) {
+				selectionModel.addSelectionInterval(index, index);
+			}
+		}
+		else {
+			int selectedIndex = this.table.getSelectionIndex();
+			Object selectedItem = getListHolder().get(selectedIndex);
+
+			selectedItemHolder.setValue(selectedItem);
+			selectionModel.setSelectedValue(selectedItem);
 		}
 
-		locked = true;
-
-		try {
-			WritablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
-			ObjectListSelectionModel selectionModel = getSelectionModel();
-			int selectionCount = table.getSelectionCount();
-
-			if (selectionCount == 0) {
-				selectedItemHolder.setValue(null);
-				selectionModel.clearSelection();
-			}
-			else if (selectionCount != 1) {
-				selectedItemHolder.setValue(null);
-				selectionModel.clearSelection();
-
-				for (int index : table.getSelectionIndices()) {
-					selectionModel.addSelectionInterval(index, index);
-				}
-			}
-			else {
-				int selectedIndex = table.getSelectionIndex();
-				Object selectedItem = getListHolder().get(selectedIndex);
-
-				selectedItemHolder.setValue(selectedItem);
-				selectionModel.setSelectedValue(selectedItem);
-			}
-
-			updateButtons();
-		}
-		finally {
-			locked = false;
-		}
+		updateButtons();
 	}
 
 	/**
