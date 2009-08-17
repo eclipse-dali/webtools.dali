@@ -136,10 +136,14 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 			JptUiMappingsMessages.EntityComposite_queries
 		);
 
-		new QueriesComposite(this, buildQueryContainer(), container);
+		addQueriesComposite(container, buildQueryContainerHolder());
 	}
 	
-	private PropertyValueModel<QueryContainer> buildQueryContainer() {
+	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+		new QueriesComposite(this, queryContainerHolder, container);
+	}
+	
+	private PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
 		return new PropertyAspectAdapter<Entity, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
@@ -152,9 +156,13 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverridesSection
+			JptUiMappingsMessages.OverridesComposite_attributeOverridesSection
 		);
 
+		addAttributeOverridesComposite(container);
+	}
+	
+	protected void addAttributeOverridesComposite(Composite container) {
 		new OverridesComposite(this, container);
 	}
 
@@ -175,7 +183,11 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGenerationSection
 		);
 
-		new GeneratorsComposite(this, buildGeneratorContainer(), container);
+		addGeneratorsComposite(container, buildGeneratorContainer());
+	}
+	
+	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
+		new GeneratorsComposite(this, generatorContainerHolder, container);
 	}
 	
 	private PropertyValueModel<GeneratorContainer> buildGeneratorContainer() {

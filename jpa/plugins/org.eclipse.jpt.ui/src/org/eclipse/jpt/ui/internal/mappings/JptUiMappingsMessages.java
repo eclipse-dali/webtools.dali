@@ -31,9 +31,9 @@ public class JptUiMappingsMessages {
 	public static String QueryStateObject_typeMustBeSpecified;
 	public static String NamedQueryComposite_nameTextLabel;
 
-	public static String AttributeOverridesComposite_attributeOverridesGroup;
-	public static String AttributeOverridesComposite_attributeOverridesSection;
-	public static String AttributeOverridesComposite_overrideDefault;
+	public static String OverridesComposite_attributeOverridesGroup;
+	public static String OverridesComposite_attributeOverridesSection;
+	public static String OverridesComposite_overrideDefault;
 	public static String BasicGeneralSection_enumeratedLabel;
 	public static String BasicGeneralSection_fetchLabel;
 	public static String BasicGeneralSection_lobLabel;
@@ -228,7 +228,7 @@ public class JptUiMappingsMessages {
 	public static String OrmSecondaryTablesComposite_defineInXml;
 	public static String OverridesComposite_association;
 	public static String OverridesComposite_attribute;
-	public static String OverridesComposite_joinColumn;
+	public static String AssociationOverridesComposite_joinColumn;
 	public static String OverridesComposite_noName;
 	public static String PrimaryKeyJoinColumnDialog_addDescriptionTitle;
 	public static String PrimaryKeyJoinColumnDialog_addTitle;

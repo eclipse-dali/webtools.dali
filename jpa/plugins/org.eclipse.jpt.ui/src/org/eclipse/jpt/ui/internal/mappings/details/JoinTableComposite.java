@@ -23,6 +23,7 @@ import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.JoinColumnsEditor;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
@@ -35,9 +36,6 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -205,11 +203,11 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	}
 
 	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		pane.installJoinColumnsPaneEnabler(new InverseJoinColumnPaneEnablerHolder());
+		new PaneEnabler(new InverseJoinColumnPaneEnablerHolder(), pane);
 	}
 
 	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		pane.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
+		new PaneEnabler(new JoinColumnPaneEnablerHolder(), pane);
 	}
 
 	private void addInverseJoinColumn(JoinTable joinTable) {
@@ -336,24 +334,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			@Override
 			protected int size_() {
 				return this.subject.specifiedInverseJoinColumnsSize();
-			}
-		};
-	}
-
-	private SelectionListener buildOverrideDefaultInverseSelectionListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updateInverseJoinColumns();
-			}
-		};
-	}
-
-	private SelectionListener buildOverrideDefaultSelectionListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updateJoinColumns();
 			}
 		};
 	}

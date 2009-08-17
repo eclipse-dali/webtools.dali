@@ -133,7 +133,7 @@ public class EmbeddedAttributeOverridesComposite extends FormPane<BaseEmbeddedMa
 		// Attribute Overrides group box
 		container = addTitledGroup(
 			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverridesGroup
+			JptUiMappingsMessages.OverridesComposite_attributeOverridesGroup
 		);
 
 		// Attribute Overrides list
@@ -148,7 +148,7 @@ public class EmbeddedAttributeOverridesComposite extends FormPane<BaseEmbeddedMa
 		// Override Default check box
 		Button overrideDefaultButton = addUnmanagedCheckBox(
 			addSubPane(container, 0, getGroupBoxMargin()),
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			JptUiMappingsMessages.OverridesComposite_overrideDefault,
 			getOverrideVirtualAttributeOverrideHolder(),
 			null
 		);

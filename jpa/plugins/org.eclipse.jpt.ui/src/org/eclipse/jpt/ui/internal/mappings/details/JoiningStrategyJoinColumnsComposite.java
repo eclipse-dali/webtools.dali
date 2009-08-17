@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.JoinColumnsEditor;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
@@ -74,7 +75,7 @@ public class JoiningStrategyJoinColumnsComposite
 		
 		this.joinColumnsComposite = new JoinColumnsComposite<JoinColumnJoiningStrategy>(this, container, buildJoinColumnsProvider());
 		
-		this.joinColumnsComposite.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
+		new PaneEnabler(new JoinColumnPaneEnablerHolder(), this.joinColumnsComposite);
 	}
 	
 	private JoinColumnsEditor<JoinColumnJoiningStrategy> buildJoinColumnsProvider() {
