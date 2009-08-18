@@ -10,8 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.internal.jpa1.GenericJpaProject;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.GenericConnection2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.options.GenericOptions2_0;
@@ -21,7 +20,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 /**
  *  GenericPersistenceUnit2_0
  */
-public class GenericPersistenceUnit2_0 extends GenericPersistenceUnit
+public class GenericPersistenceUnit2_0 extends AbstractPersistenceUnit
 {
 	private JpaConnection2_0 connection;
 	private JpaOptions2_0 options;
@@ -51,11 +50,6 @@ public class GenericPersistenceUnit2_0 extends GenericPersistenceUnit
 		super.propertyRemoved(propertyName);
 		this.connection.propertyRemoved(propertyName);
 		this.options.propertyRemoved(propertyName);
-	}
-
-	@Override
-	public GenericJpaProject getJpaProject() {
-		return (GenericJpaProject) super.getJpaProject();
 	}
 
 	// **************** properties *********************************************
