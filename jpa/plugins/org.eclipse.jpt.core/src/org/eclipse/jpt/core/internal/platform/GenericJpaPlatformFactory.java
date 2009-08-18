@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
-import org.eclipse.jpt.core.JpaValidation;
+import org.eclipse.jpt.core.JpaPlatformVariation;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -33,14 +33,17 @@ public class GenericJpaPlatformFactory
 			new GenericJpaFactory(), 
 			new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()),
 			GenericJpaPlatformProvider.instance(), 
-			this.buildJpaValidation());
+			this.buildJpaPlatformVariation());
 	}
 	
 	
-	protected JpaValidation buildJpaValidation() {
-		return new JpaValidation() {
+	protected JpaPlatformVariation buildJpaPlatformVariation() {
+		return new JpaPlatformVariation() {
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
 				return Supported.MAYBE;
+			}
+			public boolean isJoinTableOverridable() {
+				return false;
 			}
 		};
 	}

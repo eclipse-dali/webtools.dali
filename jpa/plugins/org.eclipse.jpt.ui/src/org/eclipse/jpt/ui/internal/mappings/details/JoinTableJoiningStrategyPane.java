@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link ManyToOneJoiningStrategyPane}
  * @see {@link ManyToManyJoiningStrategyPane}
  *
- * @version 2.1
+ * @version 3.0
  * @since 2.1
  */
 public class JoinTableJoiningStrategyPane
@@ -52,6 +52,13 @@ public class JoinTableJoiningStrategyPane
 		super(parentPane, parent);
 	}
 	
+	
+	public JoinTableJoiningStrategyPane(FormPane<?> parentPane,
+		PropertyValueModel<? extends JoinTableEnabledRelationshipReference> subjectHolder,
+        Composite parent) {
+
+		super(parentPane, subjectHolder, parent);
+	}
 	
 	@Override
 	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {

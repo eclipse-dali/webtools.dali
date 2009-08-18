@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipReference;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -41,7 +40,7 @@ import org.eclipse.ui.part.PageBook;
  * @see {@link MappedByJoiningStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  *
- * @version 2.1
+ * @version 3.0
  * @since 2.1
  */
 public abstract class AbstractJoiningStrategyPane
@@ -67,11 +66,11 @@ public abstract class AbstractJoiningStrategyPane
 		super(parentPane, parent);
 	}
 	
-	protected AbstractJoiningStrategyPane(PropertyValueModel<? extends R> subjectHolder,
-        Composite parent,
-        WidgetFactory widgetFactory) {
+	protected AbstractJoiningStrategyPane(FormPane<?> parentPane, 
+		PropertyValueModel<? extends R> subjectHolder,
+        Composite parent) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parentPane, subjectHolder, parent);
 	}
 	
 	
@@ -96,6 +95,7 @@ public abstract class AbstractJoiningStrategyPane
 		
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalIndent = 5;
 		pageBook.setLayoutData(gd);
 		
 		this.strategyDetailsComposite = buildStrategyDetailsComposite(pageBook);

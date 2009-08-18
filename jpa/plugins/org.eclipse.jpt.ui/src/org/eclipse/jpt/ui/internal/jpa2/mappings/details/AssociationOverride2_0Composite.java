@@ -7,11 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.mappings.details;
+package org.eclipse.jpt.ui.internal.jpa2.mappings.details;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.details.AssociationOverrideComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.JoinTableJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -34,9 +36,8 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.2
  * @since 1.0
  */
-public class AssociationOverrideComposite extends FormPane<AssociationOverride>
+public class AssociationOverride2_0Composite extends AssociationOverrideComposite
 {
-
 	/**
 	 * Creates a new <code>AssociationOverrideComposite</code>.
 	 *
@@ -44,7 +45,7 @@ public class AssociationOverrideComposite extends FormPane<AssociationOverride>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public AssociationOverrideComposite(FormPane<?> parentPane, 
+	public AssociationOverride2_0Composite(FormPane<?> parentPane, 
 								PropertyValueModel<? extends AssociationOverride> subjectHolder,
 								Composite parent) {
 
@@ -60,25 +61,22 @@ public class AssociationOverrideComposite extends FormPane<AssociationOverride>
 		);
 		
 		addJoinColumnJoiningStrategyPane(groupPane);
+		addJoinTableJoiningStrategyPane(groupPane);
 	}
 
-	protected void addJoinColumnJoiningStrategyPane(Composite container) {
-		JoinColumnJoiningStrategyPane.
-			buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
-				this, 
-				buildRelationshipReferenceHolder(), 
-				container);		
+	protected void addJoinTableJoiningStrategyPane(Composite container) {
+		new JoinTableJoiningStrategyPane(this, buildRelationshipReferenceHolder(), container);		
 	}
-	
-	private PropertyValueModel<AssociationOverrideRelationshipReference> buildRelationshipReferenceHolder() {
-		return new TransformationPropertyValueModel<AssociationOverride, AssociationOverrideRelationshipReference>(getSubjectHolder()) {
+
+	private PropertyValueModel<AssociationOverrideRelationshipReference2_0> buildRelationshipReferenceHolder() {
+		return new TransformationPropertyValueModel<AssociationOverride, AssociationOverrideRelationshipReference2_0>(getSubjectHolder()) {
 			@Override
-			protected AssociationOverrideRelationshipReference transform_(AssociationOverride value) {
-				return value.getRelationshipReference();
+			protected AssociationOverrideRelationshipReference2_0 transform_(AssociationOverride value) {
+				return (AssociationOverrideRelationshipReference2_0) value.getRelationshipReference();
 			}
 		};
 	}
-
+	
 	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);

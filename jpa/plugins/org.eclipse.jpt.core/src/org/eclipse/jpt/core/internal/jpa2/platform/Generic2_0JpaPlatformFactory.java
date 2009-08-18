@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2.platform;
 
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
-import org.eclipse.jpt.core.JpaValidation;
+import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 
@@ -36,14 +36,17 @@ public class Generic2_0JpaPlatformFactory
 			new Generic2_0JpaFactory(), 
 			new GenericJpaAnnotationProvider(Generic2_0JpaAnnotationDefinitionProvider.instance()),
 			Generic2_0JpaPlatformProvider.instance(),
-			buildJpaValidation());
+			buildJpaPlatformVariation());
 	}
 	
-	protected JpaValidation buildJpaValidation() {
-		return new JpaValidation() {
+	protected JpaPlatformVariation buildJpaPlatformVariation() {
+		return new JpaPlatformVariation() {
 			//table_per_class inheritance support is optional in the 2.0 spec
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
 				return Supported.MAYBE;
+			}
+			public boolean isJoinTableOverridable() {
+				return true;
 			}
 		};
 	}

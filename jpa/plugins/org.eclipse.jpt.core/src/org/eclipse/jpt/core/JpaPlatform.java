@@ -168,7 +168,9 @@ public interface JpaPlatform
 	DatabaseFinder getDatabaseFinder();
 
 	
-	// ********** validation **********
-	
-	JpaValidation getJpaValidation();
+	// ********** platform variation **********
+	/**
+	 * Return a platform variation that is used to determine differences platforms and/or JPA specification versions
+	 */
+	JpaPlatformVariation getJpaVariation();
 }

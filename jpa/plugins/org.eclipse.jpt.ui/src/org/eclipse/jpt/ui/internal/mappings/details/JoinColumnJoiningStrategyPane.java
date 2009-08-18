@@ -13,7 +13,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipReference;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -39,26 +38,70 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OneToOneJoiningStrategyPane}
  * @see {@link ManyToOneJoiningStrategyPane}
  *
- * @version 2.1
+ * @version 3.0
  * @since 2.1
  */
 public class JoinColumnJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
 		<JoinColumnEnabledRelationshipReference, JoinColumnJoiningStrategy>
 {
-	public JoinColumnJoiningStrategyPane(
-			FormPane<? extends JoinColumnEnabledRelationshipReference> parentPane, 
-			Composite parent) {
-		super(parentPane, parent);
-	}
-	
-	public JoinColumnJoiningStrategyPane(PropertyValueModel<? extends JoinColumnEnabledRelationshipReference> subjectHolder,
-        Composite parent,
-        WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+	private final boolean includeOverrideCheckBox;
+
+	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
+		FormPane<? extends JoinColumnEnabledRelationshipReference> parentPane, 
+		Composite parent) {
+		return new JoinColumnJoiningStrategyPane(parentPane, parent, true);
 	}
 	
+	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
+		FormPane<? extends JoinColumnEnabledRelationshipReference> parentPane, 
+		Composite parent) {
+		return new JoinColumnJoiningStrategyPane(parentPane, parent, false);
+	}
+	
+	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
+		FormPane<?> parentPane,
+		PropertyValueModel<? extends JoinColumnEnabledRelationshipReference> subjectHolder,
+        Composite parent) {
+		return new JoinColumnJoiningStrategyPane(parentPane, subjectHolder, parent, true);
+	}
+	
+	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
+		FormPane<?> parentPane,
+		PropertyValueModel<? extends JoinColumnEnabledRelationshipReference> subjectHolder,
+        Composite parent) {
+		return new JoinColumnJoiningStrategyPane(parentPane, subjectHolder, parent, false);
+	}
+
+	private JoinColumnJoiningStrategyPane(
+			FormPane<? extends JoinColumnEnabledRelationshipReference> parentPane, 
+			Composite parent,
+	        boolean includeOverrideCheckBox) {
+		super(parentPane, parent);
+		this.includeOverrideCheckBox = includeOverrideCheckBox;
+		initializeLayout2(getControl());
+	}
+	
+	private JoinColumnJoiningStrategyPane(FormPane<?> parentPane,
+		PropertyValueModel<? extends JoinColumnEnabledRelationshipReference> subjectHolder,
+        Composite parent,
+        boolean includeOverrideCheckBox) {
+
+		super(parentPane, subjectHolder, parent);
+		this.includeOverrideCheckBox = includeOverrideCheckBox;
+		initializeLayout2(getControl());
+	}
+	
+	@Override
+	protected void initializeLayout(Composite container) {
+		//see initializeLayout2
+	}
+	
+	protected void initializeLayout2(Composite container) {
+		super.initializeLayout(container); 
+		//just call super, we are delaying the initializeLayout because of the includeOverrideCheckBox boolean
+	}
 	
 	@Override
 	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
@@ -101,6 +144,9 @@ public class JoinColumnJoiningStrategyPane
 	
 	@Override
 	protected Composite buildStrategyDetailsComposite(Composite parent) {
+		if (this.includeOverrideCheckBox) {
+			return new JoiningStrategyJoinColumnsWithOverrideOptionComposite(this, this.joiningStrategyHolder, parent).getControl();
+		}
 		return new JoiningStrategyJoinColumnsComposite(this, this.joiningStrategyHolder, parent).getControl();
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v1_1;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
-import org.eclipse.jpt.core.JpaValidation;
+import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
@@ -39,7 +39,7 @@ public class EclipseLink1_1JpaPlatformFactory
 			new EclipseLink1_1JpaFactory(), 
 			buildJpaAnnotationProvider(),
 			EclipseLink1_1JpaPlatformProvider.instance(), 
-			buildJpaValidation());
+			buildJpaPlatformVariation());
 	}
 	
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
@@ -48,10 +48,13 @@ public class EclipseLink1_1JpaPlatformFactory
 			EclipseLinkJpaAnnotationDefinitionProvider.instance());
 	}
 	
-	protected JpaValidation buildJpaValidation() {
-		return new JpaValidation() {
+	protected JpaPlatformVariation buildJpaPlatformVariation() {
+		return new JpaPlatformVariation() {
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
 				return Supported.YES;
+			}
+			public boolean isJoinTableOverridable() {
+				return false;
 			}
 		};
 	}

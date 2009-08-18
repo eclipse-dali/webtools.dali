@@ -77,63 +77,71 @@ public interface TypeMapping extends JpaContextNode {
 	boolean tableNameIsInvalid(String tableName);
 	
 	/**
-	 * Return an Iterator of attributes. The attributes must be BasicMappings or
-	 * IdMappings found in this type mapping
+	 * Return an Iterator of attributes that can be overridden by a 
+	 * sub type mapping. The attribute mapping type is used to determine if
+	 * the attribute is overridable.
 	 */
 	<T extends PersistentAttribute> Iterator<T> overridableAttributes();
 
 	/**
-	 * Return an Iterator of attributes names. The attributes must be
-	 * BasicMappings or IdMappings found in this type mapping
+	/**
+	 * Return an Iterator of attribute names that can be overridden by a 
+	 * sub type mapping.
+	 * @see
+	 * {@link TypeMapping#overridableAttributes()}
 	 */
 	Iterator<String> overridableAttributeNames();
 
 	/**
-	 * Return an Iterator of attributes. The attributes must be BasicMappings or
-	 * IdMappings found in any MappedSuperclass in the inheritance hierarchy.
-	 * See {@link TypeMapping#overridableAttributes()} and
+	 * Return an Iterator of all attributes that can be overridden in this
+	 * type mapping.  The attribute mapping type is used to determine if
+	 * the attribute is overridable.
+	 * 
+	 * See
+	 * {@link TypeMapping#overridableAttributes()} and
 	 * {@link PersistentType#inheritanceHierarchy()}
 	 */
 	Iterator<PersistentAttribute> allOverridableAttributes();
 
 	/**
-	 * Return an Iterator of attributes names. The attributes must be
-	 * BasicMappings or IdMappings found in any MappedSuperclass in the
-	 * inheritance hierarchy. See
-	 * {@link TypeMapping#overridableAttributeNames()} and
-	 * {@link PersistentType#inheritanceHierarchy()}
+	 * Return an Iterator of all attribute names that can be overridden in this
+	 * type mapping.
+	 * @see
+	 * {@link TypeMapping#allOverridableAttributes()}
 	 */
 	Iterator<String> allOverridableAttributeNames();
 
 	/**
-	 * Return an Iterator of associations that can be overriden. The
-	 * associations must be OneToOneMappings or ManyToOneMappings found in this
-	 * type mapping
+	 * Return an Iterator of associations that can be overridden by a 
+	 * sub type mapping. The platform and joining strategy are used to determine
+	 * if it is an overridable association.
 	 */
 	<T extends PersistentAttribute> Iterator<T> overridableAssociations();
 
 	/**
-	 * Return an Iterator of association names. The associations must be
-	 * OneToOneMappings or ManyToOneMappings found in any MappedSuperclass in
-	 * the inheritance hierarchy
+	 * Return an Iterator of association names that can be overridden by a 
+	 * sub type mapping.
+	 * @see
+	 * {@link TypeMapping#overridableAssociations()}
 	 */
 	Iterator<String> overridableAssociationNames();
 
 	/**
-	 * Return an Iterator of associations. The associations must be
-	 * OneToOneMappings or ManyToOneMappings found in any MappedSuperclass in
-	 * the inheritance hierarchy See
+	 * Return an Iterator of all associations that can be overridden in this
+	 * type mapping.  The platform and joining strategy are used to determine
+	 * if it is an overridable association.
+	 * 
+	 * See
 	 * {@link TypeMapping#overridableAssociations()} and
 	 * {@link PersistentType#inheritanceHierarchy()}
 	 */
 	Iterator<PersistentAttribute> allOverridableAssociations();
-
+	
 	/**
-	 * Return an Iterator of association names. The associations must be
-	 * OneToOneMappings or ManyToOneMappings found in any MappedSuperclass in
-	 * the inheritance hierarchy See
-	 * {@link TypeMapping#overridableAssociationNames()} and
-	 * {@link PersistentType#inheritanceHierarchy()}
+	 * Return an Iterator of all associations names that can be overridden in this
+	 * type mapping.
+	 * @see
+	 * {@link TypeMapping#allOverridableAssociations()}
 	 */
 	Iterator<String> allOverridableAssociationNames();
 

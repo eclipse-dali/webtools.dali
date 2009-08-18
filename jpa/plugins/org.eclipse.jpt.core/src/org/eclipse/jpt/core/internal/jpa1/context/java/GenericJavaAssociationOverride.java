@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipRefe
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -38,7 +37,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 	
 	protected JavaAssociationOverrideRelationshipReference buildRelationshipReference() {
-		return new GenericJavaAssociationOverrideRelationshipReference(this);
+		return getJpaFactory().buildJavaAssociationOverrideRelationshipReference(this);
 	}
 	
 	public JavaAssociationOverrideRelationshipReference getRelationshipReference() {

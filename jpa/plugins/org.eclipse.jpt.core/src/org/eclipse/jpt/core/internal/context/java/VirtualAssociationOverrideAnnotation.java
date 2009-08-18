@@ -24,22 +24,21 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 /**
  * javax.persistence.AssociationOverride
  */
-public final class VirtualAssociationOverrideAnnotation
+public abstract class VirtualAssociationOverrideAnnotation
 	extends VirtualOverrideAnnotation
 	implements AssociationOverrideAnnotation
 {
-	private JoiningStrategy joiningStrategy;
+	protected JoiningStrategy joiningStrategy;
 
 	private final Vector<JoinColumnAnnotation> joinColumns;
 	
-	public VirtualAssociationOverrideAnnotation(JavaResourcePersistentType parent, String name, JoiningStrategy joiningStrategy) {
+	protected VirtualAssociationOverrideAnnotation(JavaResourcePersistentType parent, String name, JoiningStrategy joiningStrategy) {
 		super(parent, name);
 		this.joiningStrategy = joiningStrategy;
-		//TODO need to handle both JoinColumnJoiningStrategy and JoinTableJoiningStrategy
 		this.joinColumns = this.buildJoinColumns();
 	}
 	
-	private Vector<JoinColumnAnnotation> buildJoinColumns() {
+	protected Vector<JoinColumnAnnotation> buildJoinColumns() {
 		if (this.joiningStrategy != null) {
 			Vector<JoinColumnAnnotation> result = new Vector<JoinColumnAnnotation>(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumnsSize());
 			for (JoinColumn joinColumn : CollectionTools.iterable(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumns())) {
@@ -90,7 +89,7 @@ public final class VirtualAssociationOverrideAnnotation
 
 	@Override
 	public void update(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
 		super.update(astRoot);
+		//Rebuilt every time so no need to implement update()
 	}
 }

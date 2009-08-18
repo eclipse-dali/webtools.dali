@@ -57,6 +57,9 @@ public class ManyToOneJoiningStrategyPane extends FormPane<ManyToOneRelationship
 			JptUiMappingsMessages.Joining_title
 		);
 		
-		new JoinColumnJoiningStrategyPane(this, groupPane);
+		JoinColumnJoiningStrategyPane.
+			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
+				this, 
+				groupPane);
 	}
 }

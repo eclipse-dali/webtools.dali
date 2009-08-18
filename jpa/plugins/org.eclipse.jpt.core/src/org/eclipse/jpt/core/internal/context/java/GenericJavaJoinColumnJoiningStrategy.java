@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -30,7 +29,6 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
 public class GenericJavaJoinColumnJoiningStrategy 
 	extends AbstractJavaJoinColumnJoiningStrategy
-	implements JavaJoinColumnJoiningStrategy
 {
 	
 	public GenericJavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {

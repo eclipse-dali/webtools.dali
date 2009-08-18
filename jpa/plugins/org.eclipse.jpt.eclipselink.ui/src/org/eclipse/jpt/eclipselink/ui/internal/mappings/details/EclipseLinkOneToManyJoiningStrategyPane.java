@@ -41,7 +41,10 @@ public class EclipseLinkOneToManyJoiningStrategyPane
 		
 		new MappedByJoiningStrategyPane(this, groupPane);
 		
-		new JoinColumnJoiningStrategyPane(this, groupPane);
+		JoinColumnJoiningStrategyPane.
+			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
+				this, 
+				groupPane);
 		
 		new JoinTableJoiningStrategyPane(this, groupPane);
 	}

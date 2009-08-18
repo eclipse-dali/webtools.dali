@@ -12,9 +12,11 @@ package org.eclipse.jpt.ui.internal.jpa2.java.details;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.java.details.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.java.details.JavaSecondaryTablesComposite;
+import org.eclipse.jpt.ui.internal.jpa2.mappings.details.Overrides2_0Composite;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EntityNameComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
@@ -78,5 +80,10 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 	@Override
 	protected void addInheritanceComposite(Composite container) {
 		new JavaInheritanceComposite(this, container);
+	}
+	
+	@Override
+	protected void addAttributeOverridesComposite(Composite container) {
+		new Overrides2_0Composite(this, container);
 	}
 }

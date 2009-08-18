@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
-import org.eclipse.jpt.core.JpaValidation;
+import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
@@ -37,13 +37,16 @@ public class TestJpaPlatformFactory
 			new TestJpaFactory(), 
 			new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()), 
 			TestJpaPlatformProvider.instance(),
-			buildJpaValidation());
+			buildJpaPlatformVariation());
 	}
 	
-	protected JpaValidation buildJpaValidation() {
-		return new JpaValidation() {
+	protected JpaPlatformVariation buildJpaPlatformVariation() {
+		return new JpaPlatformVariation() {
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
 				return Supported.MAYBE;
+			}
+			public boolean isJoinTableOverridable() {
+				return false;
 			}
 		};
 	}

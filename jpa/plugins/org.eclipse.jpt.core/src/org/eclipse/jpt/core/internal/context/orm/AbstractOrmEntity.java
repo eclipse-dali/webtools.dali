@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.JpaValidation.Supported;
+import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -2155,7 +2155,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected void validateInheritanceStrategy(List<IMessage> messages) {
-		Supported tablePerConcreteClassInheritanceIsSupported = getJpaValidation().getTablePerConcreteClassInheritanceIsSupported();
+		Supported tablePerConcreteClassInheritanceIsSupported = getJpaPlatformVariation().getTablePerConcreteClassInheritanceIsSupported();
 		if (tablePerConcreteClassInheritanceIsSupported == Supported.YES) {
 			return;
 		}

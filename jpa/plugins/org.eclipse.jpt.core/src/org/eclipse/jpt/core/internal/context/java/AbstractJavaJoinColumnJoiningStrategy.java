@@ -17,9 +17,9 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaJoinColumnJoiningStrategy 
 	extends AbstractJavaJpaContextNode
-	implements JoinColumnJoiningStrategy
+	implements JavaJoinColumnJoiningStrategy
 {
 	protected JavaJoinColumn defaultJoinColumn;
 	
@@ -41,7 +41,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	protected final JavaJoinColumn.Owner joinColumnOwner;
 	
 	
-	public AbstractJavaJoinColumnJoiningStrategy(JoinColumnEnabledRelationshipReference parent) {
+	protected AbstractJavaJoinColumnJoiningStrategy(JoinColumnEnabledRelationshipReference parent) {
 		super(parent);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}

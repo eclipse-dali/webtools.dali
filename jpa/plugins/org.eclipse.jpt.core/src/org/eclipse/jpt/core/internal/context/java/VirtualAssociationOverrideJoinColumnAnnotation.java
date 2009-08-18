@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.NullBaseColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -24,7 +24,7 @@ public final class VirtualAssociationOverrideJoinColumnAnnotation extends NullBa
 {
 	private JoinColumn joinColumn;
 
-	public VirtualAssociationOverrideJoinColumnAnnotation(AssociationOverrideAnnotation parent, JoinColumn joinColumn) {
+	public VirtualAssociationOverrideJoinColumnAnnotation(Annotation parent, JoinColumn joinColumn) {
 		super(parent);
 		this.joinColumn = joinColumn;
 	}
@@ -43,6 +43,11 @@ public final class VirtualAssociationOverrideJoinColumnAnnotation extends NullBa
 		return this.joinColumn.getSpecifiedName();
 	}
 
+	@Override
+	public void setName(String name) {
+		throw new UnsupportedOperationException();
+	}
+	
 	public String getReferencedColumnName() {
 		return this.joinColumn.getSpecifiedReferencedColumnName();
 	}
@@ -65,29 +70,58 @@ public final class VirtualAssociationOverrideJoinColumnAnnotation extends NullBa
 	}
 
 	@Override
+	public void setColumnDefinition(String columnDefinition) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public String getTable() {
 		return this.joinColumn.getSpecifiedTable();
 	}
 
+	@Override
+	public void setTable(String table) {
+		throw new UnsupportedOperationException();
+	}
+	
 	@Override
 	public Boolean getInsertable() {
 		return this.joinColumn.getSpecifiedInsertable();
 	}
 
 	@Override
+	public void setInsertable(Boolean insertable) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public Boolean getUpdatable() {
 		return this.joinColumn.getSpecifiedUpdatable();
 	}
 
+	@Override
+	public void setUpdatable(Boolean updatable) {
+		throw new UnsupportedOperationException();
+	}
+	
 	@Override
 	public Boolean getNullable() {
 		return this.joinColumn.getSpecifiedNullable();
 	}
 
 	@Override
+	public void setNullable(Boolean nullable) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public Boolean getUnique() {
 		return this.joinColumn.getSpecifiedUnique();
 	}
 
+	@Override
+	public void setUnique(Boolean unique) {
+		throw new UnsupportedOperationException();
+	}
 
 }

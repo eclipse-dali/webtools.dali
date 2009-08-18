@@ -72,6 +72,9 @@ public class OneToOneJoiningStrategyPane
 		
 		new PrimaryKeyJoinColumnJoiningStrategyPane(this, groupPane);
 		
-		new JoinColumnJoiningStrategyPane(this, groupPane);
+		JoinColumnJoiningStrategyPane.
+			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
+				this, 
+				groupPane);
 	}
 }

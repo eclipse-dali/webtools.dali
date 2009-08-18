@@ -26,13 +26,16 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericJavaAssociationOverrideRelationshipReference extends AbstractJavaJpaContextNode
+public abstract class AbstractJavaAssociationOverrideRelationshipReference extends AbstractJavaJpaContextNode
 	implements JavaAssociationOverrideRelationshipReference
 {
 
+	// cache the strategy for property change notification
+	protected JoiningStrategy cachedPredominantJoiningStrategy;
+
 	protected final JavaJoinColumnInAssociationOverrideJoiningStrategy joinColumnJoiningStrategy;
 
-	public GenericJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent) {
+	protected AbstractJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent) {
 		super(parent);
 		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();
 	}
@@ -49,6 +52,43 @@ public class GenericJavaAssociationOverrideRelationshipReference extends Abstrac
 	public JavaAssociationOverride getAssociationOverride() {
 		return getParent();
 	}
+	
+	public boolean isOverridableAssociation() {
+		return false;
+	}
+	
+	
+	// **************** predominant joining strategy ***************************
+	
+	public JoiningStrategy getPredominantJoiningStrategy() {
+		return this.cachedPredominantJoiningStrategy;
+	}
+	
+	protected void setPredominantJoiningStrategy(JoiningStrategy newJoiningStrategy) {
+		JoiningStrategy oldJoiningStrategy = this.cachedPredominantJoiningStrategy;
+		this.cachedPredominantJoiningStrategy = newJoiningStrategy;
+		firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, oldJoiningStrategy, newJoiningStrategy);
+	}
+
+	public void initialize(AssociationOverrideAnnotation associationOverride) {
+		initializeJoiningStrategies(associationOverride);
+		this.cachedPredominantJoiningStrategy = calculatePredominantJoiningStrategy();
+	}		
+	
+	protected void initializeJoiningStrategies(AssociationOverrideAnnotation associationOverride) {
+		this.joinColumnJoiningStrategy.initialize(associationOverride);		
+	}
+
+	public void update(AssociationOverrideAnnotation associationOverride) {
+		updateJoiningStrategies(associationOverride);
+		setPredominantJoiningStrategy(calculatePredominantJoiningStrategy());
+	}	
+		
+	protected void updateJoiningStrategies(AssociationOverrideAnnotation associationOverride) {
+		this.joinColumnJoiningStrategy.update(associationOverride);
+	}
+	
+	protected abstract JoiningStrategy calculatePredominantJoiningStrategy();
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -63,18 +103,6 @@ public class GenericJavaAssociationOverrideRelationshipReference extends Abstrac
 		return null;
 	}
 
-	public void initialize(AssociationOverrideAnnotation associationOverride) {
-		this.joinColumnJoiningStrategy.initialize(associationOverride);
-	}		
-
-	public void update(AssociationOverrideAnnotation associationOverride) {
-		this.joinColumnJoiningStrategy.update(associationOverride);
-	}
-	
-	public boolean isOverridableAssociation() {
-		return false;
-	}
-	
 	
 	// ********** validation **********
 
@@ -193,10 +221,6 @@ public class GenericJavaAssociationOverrideRelationshipReference extends Abstrac
 	
 	public boolean mayHaveDefaultJoinColumn() {
 		return false;
-	}
-
-	public JoiningStrategy getPredominantJoiningStrategy() {
-		return this.joinColumnJoiningStrategy;
 	}
 
 	public RelationshipMapping getRelationshipMapping() {

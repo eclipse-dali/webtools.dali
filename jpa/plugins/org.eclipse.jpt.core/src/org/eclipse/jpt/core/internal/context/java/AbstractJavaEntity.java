@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.JpaValidation.Supported;
+import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -1385,7 +1385,6 @@ public abstract class AbstractJavaEntity
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
 		this.updateSpecifiedAssociationOverrides();
-		this.updateVirtualAssociationOverrides();
 		this.updateIdClass();
 	}
 	
@@ -1394,6 +1393,11 @@ public abstract class AbstractJavaEntity
 		super.postUpdate();
 		postUpdateDiscriminatorColumn();
 		postUpdateDiscriminatorValue();
+		
+		//In postUpdate because the joiningStrategy is not initialized on relationship mappings.
+		//if we fix the issue that we do not initialize java mappings, but they instead get initialized
+		//during the first update, then we can probably move this.
+		updateVirtualAssociationOverrides(); 
 	}
 	
 	protected String getResourceName() {
@@ -1662,9 +1666,9 @@ public abstract class AbstractJavaEntity
 		return buildAssociationOverride(buildVirtualAssociationOverrideAnnotation(attribute));
 	}
 	
-	protected VirtualAssociationOverrideAnnotation buildVirtualAssociationOverrideAnnotation(PersistentAttribute attribute) {
+	protected AssociationOverrideAnnotation buildVirtualAssociationOverrideAnnotation(PersistentAttribute attribute) {
 		JoiningStrategy joiningStrategy = ((RelationshipMapping) attribute.getMapping()).getRelationshipReference().getPredominantJoiningStrategy();
-		return new VirtualAssociationOverrideAnnotation(this.javaResourcePersistentType, attribute.getName(), joiningStrategy);
+		return getJpaFactory().buildJavaVirtualAssociationOverrideAnnotation(this.javaResourcePersistentType, attribute.getName(), joiningStrategy);
 	}
 
 	protected void updateVirtualAssociationOverrides() {
@@ -1883,7 +1887,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void validateInheritanceStrategy(List<IMessage> messages, CompilationUnit astRoot) {
-		Supported tablePerConcreteClassInheritanceIsSupported = getJpaValidation().getTablePerConcreteClassInheritanceIsSupported();
+		Supported tablePerConcreteClassInheritanceIsSupported = getJpaPlatformVariation().getTablePerConcreteClassInheritanceIsSupported();
 		if (tablePerConcreteClassInheritanceIsSupported == Supported.YES) {
 			return;
 		}

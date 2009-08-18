@@ -21,6 +21,8 @@ public class Generic2_0JavaContextModelTests extends TestCase
 		suite.addTestSuite(Generic2_0JavaPersistentTypeTests.class);
 		suite.addTestSuite(Generic2_0JavaPersistentAttributeTests.class);
 		
+		suite.addTestSuite(Generic2_0JavaAssociationOverrideTests.class);
+		suite.addTestSuite(Generic2_0JavaEntityTests.class);
 		suite.addTestSuite(Generic2_0JavaSequenceGeneratorTests.class);
 		return suite;
 	}

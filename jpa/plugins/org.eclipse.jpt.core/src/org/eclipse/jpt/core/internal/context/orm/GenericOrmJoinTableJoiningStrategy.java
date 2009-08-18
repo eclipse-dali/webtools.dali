@@ -73,7 +73,7 @@ public class GenericOrmJoinTableJoiningStrategy
 	}
 	
 	public boolean isOverridableAssociation() {
-		return false;
+		return getJpaPlatformVariation().isJoinTableOverridable();
 	}
 	
 	

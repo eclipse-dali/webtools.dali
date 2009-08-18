@@ -9,21 +9,43 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-public interface JpaValidation
+/**
+ * A JpaPlatform contains a JpaPlatformVariation.  This is used for various jpa spec
+ * items that are either optional or only supported by certain version of the spec.
+ * Each platform implementation must determine if it supports these things.
+ */
+public interface JpaPlatformVariation
 {
 	/**
 	 * Return whether table-per-concrete-class is a supported
-	 * inheritance strategy in the jpa platform.
+	 * inheritance strategy in the JPA platform.
 	 * Supported.MAYBE means that it is in the JPA spec, but not portable
 	 * or might not be supported by a particular provider. 
 	 * @return
 	 */
 	Supported getTablePerConcreteClassInheritanceIsSupported();
 
+	/**
+	 * This is used to determine if a relationship mapping that uses a join table
+	 * can be overridden with an association override.
+	 */
+	boolean isJoinTableOverridable();
 	
+
 	public enum Supported {
-		YES, //fully supported by the platform
-		NO,  //not supported by the platform
-		MAYBE, //in the JPA spec, might not supported be supported by a particular provider
+		/**
+		 * fully supported by the platform
+		 */
+		YES,
+		
+		/**
+		 * not supported by the platform
+		 */
+		NO,
+		
+		/**
+		 * in the JPA spec, might not supported be supported by a particular provider
+		 */
+		MAYBE,
 	}
 }

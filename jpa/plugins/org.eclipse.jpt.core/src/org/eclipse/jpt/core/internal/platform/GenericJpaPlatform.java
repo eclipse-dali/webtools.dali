@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
@@ -22,31 +21,20 @@ import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.JpaValidation;
+import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -63,15 +51,15 @@ public class GenericJpaPlatform
 	
 	private final JpaPlatformProvider platformProvider;
 	
-	private final JpaValidation jpaValidation;
+	private final JpaPlatformVariation jpaVariation;
 	
 	
-	public GenericJpaPlatform(String id, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaValidation jpaValidation) {
+	public GenericJpaPlatform(String id, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
 		super();
 		this.id = id;
 		this.jpaFactory = jpaFactory;
 		this.annotationProvider = jpaAnnotationProvider;
-		this.jpaValidation = jpaValidation;
+		this.jpaVariation = jpaVariation;
 		this.platformProvider = platformProvider;
 	}
 	
@@ -249,7 +237,7 @@ public class GenericJpaPlatform
 	
 	// ********** validation **********
 	
-	public JpaValidation getJpaValidation() {
-		return this.jpaValidation;
+	public JpaPlatformVariation getJpaVariation() {
+		return this.jpaVariation;
 	}
 }
