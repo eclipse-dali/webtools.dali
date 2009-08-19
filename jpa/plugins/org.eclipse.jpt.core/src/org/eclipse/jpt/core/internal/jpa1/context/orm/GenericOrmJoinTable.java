@@ -118,7 +118,7 @@ public class GenericOrmJoinTable
 
 	@Override
 	protected String buildDefaultName() {
-		return this.getRelationshipMapping().getJoinTableDefaultName();
+		return this.getParent().getJoinTableDefaultName();
 	}
 
 	/**

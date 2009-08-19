@@ -29,6 +29,11 @@ public interface RelationshipReference extends JpaContextNode
 	RelationshipMapping getRelationshipMapping();
 
 	/**
+	 * Return the TypeMapping that owns this relationship reference
+	 */
+	TypeMapping getTypeMapping();
+	
+	/**
 	 * Return whether this is the owning side of the relationship.
 	 * @see {@link RelationshipMapping#isRelationshipOwner()}
 	 */

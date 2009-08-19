@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnInAssociationOverrideJoiningStrategy;
@@ -42,7 +43,10 @@ public class GenericOrmAssociationOverrideRelationshipReference extends Abstract
 		return getParent();
 	}
 
-
+	public TypeMapping getTypeMapping() {
+		return getAssociationOverride().getOwner().getTypeMapping();
+	}
+	
 	public void update(XmlAssociationOverride xao) {
 		this.joinColumnJoiningStrategy.update(xao);
 	}	

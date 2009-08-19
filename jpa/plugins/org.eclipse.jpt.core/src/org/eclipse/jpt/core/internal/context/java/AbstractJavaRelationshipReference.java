@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -32,7 +33,11 @@ public abstract class AbstractJavaRelationshipReference
 	public JavaRelationshipMapping getRelationshipMapping() {
 		return (JavaRelationshipMapping) getParent();
 	}
-		
+	
+	public TypeMapping getTypeMapping() {
+		return getRelationshipMapping().getTypeMapping();
+	}
+	
 	public boolean isOverridableAssociation() {
 		return getPredominantJoiningStrategy().isOverridableAssociation();
 	}

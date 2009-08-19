@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
@@ -216,15 +215,11 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 
 
-	// **************** RelationshipMapping impl *******************************
+	// **************** RelationshipMapping implementation *******************************
 
 	public Entity getEntity() {
 		TypeMapping typeMapping = this.getTypeMapping();
 		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
-	}
-
-	public String getJoinTableDefaultName() {
-		return MappingTools.buildJoinTableDefaultName(this);
 	}
 
 	

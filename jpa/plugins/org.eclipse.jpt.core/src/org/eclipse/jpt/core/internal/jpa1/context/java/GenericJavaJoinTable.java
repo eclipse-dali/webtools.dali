@@ -108,7 +108,7 @@ public class GenericJavaJoinTable
 
 	@Override
 	protected String buildDefaultName() {
-		return this.getRelationshipMapping().getJoinTableDefaultName();
+		return this.getParent().getJoinTableDefaultName();
 	}
 
 	@Override

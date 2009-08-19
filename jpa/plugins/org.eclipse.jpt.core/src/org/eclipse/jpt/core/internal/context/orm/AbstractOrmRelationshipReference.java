@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
@@ -54,6 +55,10 @@ public abstract class AbstractOrmRelationshipReference
 	
 	public OrmRelationshipMapping getRelationshipMapping() {
 		return (OrmRelationshipMapping) getParent();
+	}
+	
+	public TypeMapping getTypeMapping() {
+		return getRelationshipMapping().getTypeMapping();
 	}
 	
 	public boolean isOverridableAssociation() {

@@ -39,4 +39,9 @@ public interface JoinTableJoiningStrategy
 	 * join table applies, otherwise null.
 	 */
 	JoinTable getJoinTable();
+	
+	/**
+	 * Return the default name for the JoinTable in this context
+	 */
+	String getJoinTableDefaultName();
 }

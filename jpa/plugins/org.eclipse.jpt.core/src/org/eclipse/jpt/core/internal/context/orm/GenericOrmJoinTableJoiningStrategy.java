@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
@@ -51,6 +52,10 @@ public class GenericOrmJoinTableJoiningStrategy
 	
 	public OrmRelationshipMapping getRelationshipMapping() {
 		return this.getRelationshipReference().getRelationshipMapping();
+	}
+	
+	public String getJoinTableDefaultName() {
+		return MappingTools.buildJoinTableDefaultName(this.getRelationshipReference());
 	}
 	
 	public void addStrategy() {

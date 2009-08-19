@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -46,6 +47,10 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 		return this.getRelationshipReference().getRelationshipMapping();
 	}
 	
+	public String getJoinTableDefaultName() {
+		return MappingTools.buildJoinTableDefaultName(this.getRelationshipReference());
+	}
+
 	public void addStrategy() {
 		if (this.joinTable == null) {
 			JavaJoinTable oldJoinTable = this.joinTable;

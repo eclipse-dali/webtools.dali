@@ -18,6 +18,8 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
@@ -52,6 +54,28 @@ public class Generic2_0JavaAssociationOverrideTests extends Generic2_0ContextMod
 				sb.append("@OneToOne");
 				sb.append(CR);
 				sb.append("    private AnnotationTestTypeChild address;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestMappedSuperclassManyToMany() throws Exception {		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.MANY_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@MappedSuperclass");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ManyToMany");
+				sb.append(CR);
+				sb.append("    private java.util.Collection<AnnotationTestTypeChild> address;").append(CR);
 				sb.append(CR);
 				sb.append("    @Id");
 			}
@@ -500,5 +524,28 @@ public class Generic2_0JavaAssociationOverrideTests extends Generic2_0ContextMod
 		associationOverrideResource.getJoinTable().removeJoinColumn(0);
 		assertFalse(joiningStrategy.getJoinTable().specifiedJoinColumns().hasNext());
 	}	
+	
+	public void testDefaultJoinTableName() throws Exception {
+		createTestMappedSuperclassManyToMany();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		Entity entity = getJavaEntity();	
+		AssociationOverride javaAssociationOverride = entity.virtualAssociationOverrides().next();
+		AssociationOverrideRelationshipReference2_0 relationshipReference = (AssociationOverrideRelationshipReference2_0) javaAssociationOverride.getRelationshipReference();
+		JoinTable joinTable = relationshipReference.getJoinTableJoiningStrategy().getJoinTable();
+		
+		assertEquals("AnnotationTestTypeChild_AnnotationTestTypeChild", joinTable.getName());
+		
+		
+		getJavaEntity().getTable().setSpecifiedName("FOO");
+		assertEquals("FOO_FOO", joinTable.getName());
+		
+		PersistentType mappedSuperclass = getJavaEntity().getPersistentType().getParentPersistentType();
+		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) mappedSuperclass.getAttributeNamed("address").getMapping();
+		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("BAR");
 
+		assertEquals("BAR", joinTable.getName());
+	}	
 }

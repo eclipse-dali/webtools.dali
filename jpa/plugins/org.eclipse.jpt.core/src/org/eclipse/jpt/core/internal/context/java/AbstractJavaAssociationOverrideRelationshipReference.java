@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
@@ -57,6 +58,9 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 		return false;
 	}
 	
+	public TypeMapping getTypeMapping() {
+		return getAssociationOverride().getOwner().getTypeMapping();
+	}
 	
 	// **************** predominant joining strategy ***************************
 	

@@ -42,8 +42,6 @@ public interface RelationshipMapping extends AttributeMapping, Fetchable
 	 */
 	boolean isRelationshipOwner();
 
-	String getJoinTableDefaultName();
-
 
 	// **************** target entity **************************************
 	

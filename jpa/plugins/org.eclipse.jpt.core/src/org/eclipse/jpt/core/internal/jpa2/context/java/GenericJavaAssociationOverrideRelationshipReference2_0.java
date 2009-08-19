@@ -107,7 +107,7 @@ public class GenericJavaAssociationOverrideRelationshipReference2_0 extends Abst
 	}
 	
 	public boolean mayHaveDefaultJoinTable() {
-		return false;
+		return getAssociationOverride().isVirtual();
 	}
 
 }

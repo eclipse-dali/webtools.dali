@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
@@ -246,10 +245,6 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 			return (Entity) getTypeMapping();
 		}
 		return null;
-	}
-	
-	public String getJoinTableDefaultName() {
-		return MappingTools.buildJoinTableDefaultName(this);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.db.Table;
 
 /**
@@ -40,16 +41,16 @@ public class MappingTools {
 	 * As a result, we cannot honestly calculate the default name without a
 	 * database connection.
 	 */
-	public static String buildJoinTableDefaultName(RelationshipMapping relationshipMapping) {
-		if (relationshipMapping.getJpaProject().getDataSource().connectionProfileIsActive()) {
-			return buildDbJoinTableDefaultName(relationshipMapping);
+	public static String buildJoinTableDefaultName(RelationshipReference relationshipReference) {
+		if (relationshipReference.getJpaProject().getDataSource().connectionProfileIsActive()) {
+			return buildDbJoinTableDefaultName(relationshipReference);
 		}
 		// continue with a "best effort":
-		String owningTableName = relationshipMapping.getTypeMapping().getPrimaryTableName();
+		String owningTableName = relationshipReference.getTypeMapping().getPrimaryTableName();
 		if (owningTableName == null) {
 			return null;
 		}
-		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
+		Entity targetEntity = relationshipReference.getRelationshipMapping().getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return null;
 		}
@@ -63,12 +64,12 @@ public class MappingTools {
 	/**
 	 * Use the database to build a more accurate default name.
 	 */
-	protected static String buildDbJoinTableDefaultName(RelationshipMapping relationshipMapping) {
-		Table owningTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();
+	protected static String buildDbJoinTableDefaultName(RelationshipReference relationshipReference) {
+		Table owningTable = relationshipReference.getTypeMapping().getPrimaryDbTable();
 		if (owningTable == null) {
 			return null;
 		}
-		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
+		Entity targetEntity = relationshipReference.getRelationshipMapping().getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return null;
 		}
