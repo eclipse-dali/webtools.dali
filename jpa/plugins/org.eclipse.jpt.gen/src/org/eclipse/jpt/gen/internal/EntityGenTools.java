@@ -53,7 +53,7 @@ public class EntityGenTools {
 	 */
 	public static String convertToUniqueJavaStyleIdentifier(String identifier, boolean capitalizeFirstLetter, Collection<String> identifiers) {
 		String result = identifier;
-		if (StringTools.stringIsUppercase(result)) {
+		if (StringTools.stringIsUppercase(result) || StringTools.stringIsLowercase(result)) {
 			// leave mixed case identifiers alone?
 			result = StringTools.convertUnderscoresToCamelCase(result, capitalizeFirstLetter);
 		} else {
