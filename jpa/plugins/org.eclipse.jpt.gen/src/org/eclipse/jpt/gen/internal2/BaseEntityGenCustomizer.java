@@ -179,7 +179,8 @@ public class BaseEntityGenCustomizer extends ORMGenCustomizer
 		if (cascades == null) {
 			return ""; //$NON-NLS-1$
 		}
-		StringBuffer buffer = new StringBuffer('{');
+		StringBuffer buffer = new StringBuffer();
+		buffer.append( '{' );
 		for (int i = 0, n = cascades.size(); i < n; ++i) {
 			String cascade = cascades.get(i);
 			String enumStr;
