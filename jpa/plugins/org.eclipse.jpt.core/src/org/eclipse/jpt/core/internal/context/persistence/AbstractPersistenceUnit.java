@@ -60,7 +60,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * @see PersistenceUnit
+ * persistence-unit
  */
 public abstract class AbstractPersistenceUnit
 	extends AbstractXmlContextNode

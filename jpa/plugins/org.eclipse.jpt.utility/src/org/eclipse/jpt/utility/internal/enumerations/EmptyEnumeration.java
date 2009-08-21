@@ -16,6 +16,8 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
  * An <code>EmptyEnumeration</code> is just that.
+ * 
+ * @param <E> the type of elements returned by the enumeration
  */
 public final class EmptyEnumeration<E>
 	implements Enumeration<E>

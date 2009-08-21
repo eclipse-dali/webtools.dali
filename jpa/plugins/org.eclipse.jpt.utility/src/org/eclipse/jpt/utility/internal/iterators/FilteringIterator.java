@@ -15,23 +15,26 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>FilteringIterator</code> wraps another <code>Iterator</code>
- * and uses a <code>Filter</code> to determine which elements in the
- * nested iterator are to be returned by calls to <code>next()</code>.
+ * A <code>FilteringIterator</code> wraps another {@link Iterator}
+ * and uses a {@link Filter} to determine which elements in the
+ * nested iterator are to be returned by calls to {@link #next()}.
  * <p>
- * As an alternative to building a <code>Filter</code>, a subclass
+ * As an alternative to building a {@link Filter</code>, a subclass
  * of <code>FilteringIterator</code> can override the
- * <code>accept(Object)</code> method.
+ * {@link #accept(Object)} method.
  * <p>
  * One, possibly undesirable, side-effect of using this iterator is that
  * the nested iterator's <code>next()</code> method will be invoked
- * <em>before</em> the filtered iterator's <code>next()</code>
+ * <em>before</em> the filtered iterator's {@link #next()}
  * method is invoked. This is because the "next" element must be
  * checked for whether it is to be accepted before the filtered iterator
  * can determine whether it has a "next" element (i.e. that the
- * <code>hasNext()</code> method should return <code>true</code>).
+ * {@link #hasNext()} method should return <code>true</code>).
  * This also prevents a filtered iterator from supporting the optional
  * <code>remove()</code> method.
+ * 
+ * @param <E1> input: the type of elements to be filtered
+ * @param <E2> output: the type of elements returned by the iterable's iterator
  */
 public class FilteringIterator<E1, E2>
 	implements Iterator<E2>
@@ -46,8 +49,8 @@ public class FilteringIterator<E1, E2>
 	 * Construct an iterator with the specified
 	 * iterable and a disabled filter.
 	 * Use this constructor if you want to override the
-	 * <code>accept(Object)</code> method instead of building
-	 * a <code>Filter</code>.
+	 * {@link #accept(Object)} method instead of building
+	 * a {@link Filter}.
 	 */
 	public FilteringIterator(Iterable<? extends E1> iterable) {
 		this(iterable.iterator());
@@ -57,8 +60,8 @@ public class FilteringIterator<E1, E2>
 	 * Construct an iterator with the specified nested
 	 * iterator and a disabled filter.
 	 * Use this constructor if you want to override the
-	 * <code>accept(Object)</code> method instead of building
-	 * a <code>Filter</code>.
+	 * {@link #accept(Object)} method instead of building
+	 * a {@link Filter}.
 	 */
 	public FilteringIterator(Iterator<? extends E1> iterator) {
 		this(iterator, Filter.Disabled.<E1>instance());
@@ -134,12 +137,12 @@ public class FilteringIterator<E1, E2>
 	}
 
 	/**
-	 * Return whether the <code>FilteringIterator</code>
+	 * Return whether the {@link FilteringIterator}
 	 * should return the specified next element from a call to the
-	 * <code>next()</code> method.
+	 * {@link #next()} method.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Filter</code>.
+	 * alternative to building a {@link Filter}.
 	 */
 	protected boolean accept(E1 o) {
 		return this.filter.accept(o);

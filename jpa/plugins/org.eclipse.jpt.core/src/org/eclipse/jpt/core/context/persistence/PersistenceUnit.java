@@ -24,9 +24,10 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
 /**
- * Context model corresponding to the XML resource model XmlPersistenceUnit,
- * which corresponds to the 'persistence-unit' tag in the persistence.xml.
- * 
+ * Context model corresponding to the XML resource model {@link XmlPersistenceUnit},
+ * which corresponds to the <code>persistence-unit</code> element in the
+ * <code>persistence.xml</code> file.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

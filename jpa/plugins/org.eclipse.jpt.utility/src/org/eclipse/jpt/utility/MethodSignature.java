@@ -16,13 +16,13 @@ import java.lang.reflect.Method;
  * This interface describes a Java method signature; i.e. its "name"
  * and its "parameter types". The parameter types are referenced by name,
  * allowing us to reference classes that are not (or cannot be) loaded.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
+ * <p>
  * This interface is not intended to be implemented by clients.
  */
 public interface MethodSignature {
@@ -53,20 +53,20 @@ public interface MethodSignature {
 	boolean equals(MethodSignature other);
 
 	/**
-	 * Return a string representation of the method's signature:
-	 *     "foo(int, java.lang.String)"
+	 * Return a string representation of the method's signature:<p>
+	 * <code>"foo(int, java.lang.String)"</code>
 	 */
 	String getSignature();
 
 	/**
-	 * Append a string representation of the method's signature:
-	 *     "foo(int, java.lang.String)"
+	 * Append a string representation of the method's signature:<p>
+	 * <code>"foo(int, java.lang.String)"</code>
 	 */
 	void appendSignatureTo(StringBuilder sb);
 
 	/**
-	 * Print a string representation of the method's signature:
-	 *     "foo(int, java.lang.String)"
+	 * Print a string representation of the method's signature:<p>
+	 * <code>"foo(int, java.lang.String)"</code>
 	 */
 	void printSignatureOn(PrintWriter pw);
 

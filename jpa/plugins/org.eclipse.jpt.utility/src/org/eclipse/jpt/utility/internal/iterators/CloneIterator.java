@@ -18,16 +18,18 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * allowing for concurrent access to the original collection.
  * <p>
  * The original collection passed to the <code>CloneIterator</code>'s
- * constructor should be synchronized (e.g. java.util.Vector);
+ * constructor should be synchronized (e.g. {@link java.util.Vector});
  * otherwise you run the risk of a corrupted collection.
  * <p>
  * By default, a <code>CloneIterator</code> does not support the
- * <code>#remove()</code> operation; this is because it does not have
+ * {@link #remove()} operation; this is because it does not have
  * access to the original collection. But if the <code>CloneIterator</code>
- * is supplied with an <code>Remover</code> it will delegate the
- * <code>#remove()</code> operation to the <code>Remover</code>.
- * Alternatively, a subclass can override the <code>#remove(Object)</code>
+ * is supplied with an {@link Remover} it will delegate the
+ * {@link #remove()} operation to the {@link Remover}.
+ * Alternatively, a subclass can override the {@link #remove(Object)}
  * method.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class CloneIterator<E>
 	implements Iterator<E>
@@ -42,8 +44,8 @@ public class CloneIterator<E>
 
 	/**
 	 * Construct an iterator on a copy of the specified collection.
-	 * The <code>#remove()</code> method will not be supported,
-	 * unless a subclass overrides the <code>#remove(Object)</code>.
+	 * The {@link #remove()} method will not be supported,
+	 * unless a subclass overrides the {@link #remove(Object)}.
 	 */
 	public CloneIterator(Collection<? extends E> collection) {
 		this(collection, Remover.ReadOnly.<E>instance());
@@ -51,8 +53,8 @@ public class CloneIterator<E>
 
 	/**
 	 * Construct an iterator on a copy of the specified array.
-	 * The <code>#remove()</code> method will not be supported,
-	 * unless a subclass overrides the <code>#remove(Object)</code>.
+	 * The {@link #remove()} method will not be supported,
+	 * unless a subclass overrides the {@link #remove(Object)}.
 	 */
 	public CloneIterator(E[] array) {
 		this(array, Remover.ReadOnly.<E>instance());
@@ -114,10 +116,10 @@ public class CloneIterator<E>
 	// ********** internal methods **********
 
 	/**
-	 * The collection passed in during construction held Es,
+	 * The collection passed in during construction held elements of type <code>E</code>,
 	 * so this cast is not a problem. We need this cast because
 	 * all the elements of the original collection were copied into
-	 * an object array (Object[]).
+	 * an object array (<code>Object[]</code>).
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedNext() {
@@ -128,7 +130,7 @@ public class CloneIterator<E>
 	 * Remove the specified element from the original collection.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Remover</code>.
+	 * alternative to building a {@link Remover}.
 	 */
 	protected void remove(E e) {
 		this.remover.remove(e);
@@ -143,7 +145,7 @@ public class CloneIterator<E>
 	//********** member interface **********
 
 	/**
-	 * Used by <code>CloneIterator</code> to remove
+	 * Used by {@link CloneIterator} to remove
 	 * elements from the original collection; since the iterator
 	 * does not have direct access to the original collection.
 	 */

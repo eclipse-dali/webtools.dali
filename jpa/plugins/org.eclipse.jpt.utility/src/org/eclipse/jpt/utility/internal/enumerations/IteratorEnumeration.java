@@ -15,9 +15,11 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * An <code>IteratorEnumeration</code> wraps an
- * <code>Iterator</code> so that it can be treated like an
- * <code>Enumeration</code>.
+ * {@link Iterator} so that it can be treated like an
+ * {@link Enumeration}.
  * Hopefully we don't have much need for this....
+ * 
+ * @param <E> the type of elements returned by the enumeration
  */
 public class IteratorEnumeration<E>
 	implements Enumeration<E>

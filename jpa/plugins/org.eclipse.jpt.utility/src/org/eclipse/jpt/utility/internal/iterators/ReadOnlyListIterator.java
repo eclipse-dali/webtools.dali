@@ -15,10 +15,13 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * A <code>ReadOnlyListIterator</code> wraps another
- * <code>ListIterator</code> and removes support for:
- * 	#remove()
- * 	#set(Object)
- * 	#add(Object)
+ * {@link ListIterator} and removes support for:<ul>
+ * <li>{@link #remove()}
+ * 	<li>{@link #set(Object)}
+ * 	<li>{@link #add(Object)}
+ * </ul>
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class ReadOnlyListIterator<E>
 	implements ListIterator<E>

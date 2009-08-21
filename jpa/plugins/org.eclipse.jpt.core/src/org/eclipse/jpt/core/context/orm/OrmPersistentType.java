@@ -13,8 +13,11 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
 
 /**
+ * Context <code>orm.xml</code> persistent type.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,27 +25,17 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmPersistentType
-	extends PersistentType, PersistentType.Owner, XmlContextNode
+	extends PersistentType, PersistentType.Owner, XmlContextNode, StaticMetaModelGenerator
 {
-	/**
-	 * covariant override
-	 */
+	// ********** covariant overrides **********
+
 	EntityMappings getParent();
 
-	/**
-	 * "covariant" override
-	 */
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPersistentAttribute> attributes();
 	
-	/**
-	 * covariant override
-	 */
 	OrmPersistentAttribute getAttributeNamed(String attributeName);
 
-	/**
-	 * covariant override
-	 */
 	OrmTypeMapping getMapping();
 	
 	
@@ -135,7 +128,6 @@ public interface OrmPersistentType
 	/**
 	 * Return the Java persistent type that is referred to by this orm.xml persistent type.
 	 * If there is no underlying java persistent type, then null is returned.
-	 * @return
 	 */
 	JavaPersistentType getJavaPersistentType();
 		String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$

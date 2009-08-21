@@ -22,13 +22,14 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * <p>
  * To use, supply:<ul>
  * <li> either the root element of the tree or, if the tree has
- * multiple roots, an <code>Iterator</code> over the set of roots
- * <li> a <code>Midwife</code> that delivers the children
+ * multiple roots, an {@link Iterator} over the set of roots
+ * <li> a {@link Midwife} that delivers the children
  * of each child
  * (alternatively, subclass <code>TreeIterator</code>
- * and override the <code>children(Object)</code> method)
+ * and override the {@link #children(Object)} method)
  * </ul>
- * <p>
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class TreeIterator<E>
 	implements Iterator<E>
@@ -43,8 +44,8 @@ public class TreeIterator<E>
 	 * with the specified collection of roots
 	 * and a disabled midwife.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
-	 * a <code>Midwife</code>.
+	 * {@link #children(Object)} method instead of building
+	 * a {@link Midwife}.
 	 */
 	public TreeIterator(E... roots) {
 		this(new ArrayIterator<E>(roots));
@@ -55,8 +56,8 @@ public class TreeIterator<E>
 	 * with the specified collection of roots
 	 * and a disabled midwife.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
-	 * a <code>Midwife</code>.
+	 * {@link #children(Object)} method instead of building
+	 * a {@link Midwife}.
 	 */
 	public TreeIterator(Iterable<? extends E> roots) {
 		this(roots.iterator());
@@ -67,8 +68,8 @@ public class TreeIterator<E>
 	 * with the specified collection of roots
 	 * and a disabled midwife.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
-	 * a <code>Midwife</code>.
+	 * {@link #children(Object)} method instead of building
+	 * a {@link Midwife}.
 	 */
 	public TreeIterator(Iterator<? extends E> roots) {
 		this(roots, Midwife.Disabled.<E>instance());
@@ -78,8 +79,8 @@ public class TreeIterator<E>
 	 * Construct an iterator that returns the nodes of a tree
 	 * with the specified root and a disabled midwife.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
-	 * a <code>Midwife</code>.
+	 * {@link #children(Object)} method instead of building
+	 * a {@link Midwife}.
 	 */
 	public TreeIterator(E root) {
 		this(root, Midwife.Disabled.<E>instance());
@@ -164,7 +165,7 @@ public class TreeIterator<E>
 	 * Return the immediate children of the specified object.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Midwife</code>.
+	 * alternative to building a {@link Midwife}.
 	 */
 	protected Iterator<? extends E> children(E next) {
 		return this.midwife.children(next);
@@ -179,7 +180,7 @@ public class TreeIterator<E>
 	//********** inner classes **********
 
 	/**
-	 * Used by <code>TreeIterator</code> to retrieve
+	 * Used by {@link TreeIterator} to retrieve
 	 * the immediate children of a node in the tree.
 	 */
 	public interface Midwife<T> {
@@ -211,7 +212,10 @@ public class TreeIterator<E>
 			}
 		}
 
-		/** The midwife used when the #children(Object) method is overridden. */
+		/**
+		 * The midwife used when the {@link TreeIterator#children(Object)}
+		 * method is overridden.
+		 */
 		final class Disabled<S> implements Midwife<S> {
 			@SuppressWarnings("unchecked")
 			public static final Midwife INSTANCE = new Disabled();

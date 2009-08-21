@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>GraphIterator</code> is similar to a <code>TreeIterator</code>
+ * A <code>GraphIterator</code> is similar to a {@link TreeIterator}
  * except that it cannot be assumed that all nodes assume a strict tree
  * structure. For instance, in a tree, a node cannot be a descendent of
  * itself, but a graph may have a cyclical structure.
@@ -25,29 +25,30 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * A <code>GraphIterator</code> simplifies the traversal of a
  * graph of objects, where the objects' protocol(s) provides
  * a method for getting the next collection of nodes in the graph,
- * (or *neighbors*), but does not provide a method for getting *all* 
- * of the nodes in the graph.
+ * (or <em>neighbors</em>), but does not provide a method for
+ * getting <em>all</em> of the nodes in the graph.
  * (e.g. a neighbor can return his neighbors, and those neighbors
  * can return their neighbors, which might also include the original
  * neighbor, but you only want to visit the original neighbor once.)
  * <p>
  * If a neighbor has already been visited (determined by using 
- * <code>equals(Object)</code>), that neighbor is not visited again,
+ * {@link #equals(Object)}), that neighbor is not visited again,
  * nor are the neighbors of that object.
  * <p>
- * It is up to the user of this class to ensure a *complete* graph.
+ * It is up to the user of this class to ensure a <em>complete</em> graph.
  * <p>
  * To use, supply:<ul>
- * <li> either the initial node of the graph or an <code>Iterator</code>
+ * <li> either the initial node of the graph or an {@link Iterator}
  * over an initial collection of graph nodes
- * <li> a <code>MisterRogers</code> that tells who the neighbors are
+ * <li> a {@link MisterRogers] that tells who the neighbors are
  * of each node
  * (alternatively, subclass <code>GraphIterator</code>
- * and override the <code>neighbors(Object)</code> method)
+ * and override the {@link #neighbors(Object)} method)
  * </ul>
- * <p>
- * <code>remove()</code> is not supported. This method, if 
+ * {@link #remove()} is not supported. This behavior, if 
  * desired, must be implemented by the user of this class.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class GraphIterator<E>
 	implements Iterator<E>
@@ -66,10 +67,10 @@ public class GraphIterator<E>
 	/**
 	 * Construct an iterator that returns the nodes of a graph
 	 * with the specified collection of roots
-	 * and a disabled mister rogers.
+	 * and a disabled Mr. Rogers.
 	 * Use this constructor if you want to override the
-	 * <code>neighbors(Object)</code> method instead of building
-	 * a <code>MisterRogers</code>.
+	 * {@link #neighbors(Object)} method instead of building
+	 * a {@link MisterRogers}.
 	 */
 	public GraphIterator(E... roots) {
 		this(new ArrayIterator<E>(roots));
@@ -78,10 +79,10 @@ public class GraphIterator<E>
 	/**
 	 * Construct an iterator that returns the nodes of a graph
 	 * with the specified collection of roots
-	 * and a disabled mister rogers.
+	 * and a disabled Mr. Rogers.
 	 * Use this constructor if you want to override the
-	 * <code>neighbors(Object)</code> method instead of building
-	 * a <code>MisterRogers</code>.
+	 * {@link #neighbors(Object)} method instead of building
+	 * a {@link MisterRogers}.
 	 */
 	public GraphIterator(Iterable<? extends E> roots) {
 		this(roots.iterator());
@@ -90,10 +91,10 @@ public class GraphIterator<E>
 	/**
 	 * Construct an iterator that returns the nodes of a graph
 	 * with the specified collection of roots
-	 * and a disabled mister rogers.
+	 * and a disabled Mr. Rogers.
 	 * Use this constructor if you want to override the
-	 * <code>neighbors(Object)</code> method instead of building
-	 * a <code>MisterRogers</code>.
+	 * {@link #neighbors(Object)} method instead of building
+	 * a {@link MisterRogers}.
 	 */
 	public GraphIterator(Iterator<? extends E> roots) {
 		this(roots, MisterRogers.Disabled.<E>instance());
@@ -102,7 +103,7 @@ public class GraphIterator<E>
 	/**
 	 * Construct an iterator that returns the nodes of a graph
 	 * with the specified root
-	 * and a disabled mister rogers.
+	 * and a disabled Mr. Rogers.
 	 * Use this constructor if you want to override the
 	 * <code>neighbors(Object)</code> method instead of building
 	 * a <code>MisterRogers</code>.
@@ -113,7 +114,7 @@ public class GraphIterator<E>
 
 	/**
 	 * Construct an iterator that returns the nodes of a graph
-	 * with the specified root and mister rogers.
+	 * with the specified root and Mr. Rogers.
 	 */
 	public GraphIterator(E root, MisterRogers<E> misterRogers) {
 		this(new SingleElementIterator<E>(root), misterRogers);
@@ -121,7 +122,7 @@ public class GraphIterator<E>
 
 	/**
 	 * Construct an iterator that returns the nodes of a graph
-	 * with the specified collection of roots and mister rogers.
+	 * with the specified collection of roots and Mr. Rogers.
 	 */
 	public GraphIterator(E[] roots, MisterRogers<E> misterRogers) {
 		this(new ArrayIterator<E>(roots), misterRogers);
@@ -129,7 +130,7 @@ public class GraphIterator<E>
 
 	/**
 	 * Construct an iterator that returns the nodes of a graph
-	 * with the specified roots and mister rogers.
+	 * with the specified roots and Mr. Rogers.
 	 */
 	public GraphIterator(Iterable<? extends E> roots, MisterRogers<E> misterRogers) {
 		this(roots.iterator(), misterRogers);
@@ -137,7 +138,7 @@ public class GraphIterator<E>
 
 	/**
 	 * Construct an iterator that returns the nodes of a graph
-	 * with the specified roots and mister rogers.
+	 * with the specified roots and Mr. Rogers.
 	 */
 	public GraphIterator(Iterator<? extends E> roots, MisterRogers<E> misterRogers) {
 		super();
@@ -149,7 +150,7 @@ public class GraphIterator<E>
 	/**
 	 * Load next neighbor with the next entry from the current iterator.
 	 * If the current iterator has none, load the next iterator.
-	 * If there are no more, the 'done' flag is set.
+	 * If there are no more, the {@link done} flag is set.
 	 */
 	private void loadNextNeighbor() {
 		if (this.currentIterator == EmptyIterator.instance()) {
@@ -210,7 +211,7 @@ public class GraphIterator<E>
 	//********** inner classes **********
 	
 	/**
-	 * Used by <code>GraphIterator</code> to retrieve
+	 * Used by {@link GraphIterator} to retrieve
 	 * the immediate neighbors of a node in the graph.
 	 * "These are the people in your neighborhood..."
 	 */
@@ -243,7 +244,7 @@ public class GraphIterator<E>
 			}
 		}
 
-		/** The mister rogers used when the #neighbors(Object) method is overridden. */
+		/** The Mr. Rogers used when the {@link GraphIterator#neighbors(Object)} method is overridden. */
 		final class Disabled<S> implements MisterRogers<S> {
 			@SuppressWarnings("unchecked")
 			public static final MisterRogers INSTANCE = new Disabled();

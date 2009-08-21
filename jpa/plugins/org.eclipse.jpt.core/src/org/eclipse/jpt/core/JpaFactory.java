@@ -165,30 +165,31 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
- * Use JpaFactory to build any core (e.g. JpaProject) model object or any
- * java (e.g. JavaEntity), orm (e.g. EntityMappings), or 
- * persistence (e.g. PersistenceUnit) context model objects.
- * 
+ * Use a JPA factory to build any core (e.g. {@link JpaProject})
+ * model object or any Java (e.g. {@link JavaEntity}), ORM (e.g.
+ * {@link EntityMappings}), or persistence (e.g. {@link PersistenceUnit})
+ * context model objects.
+ * <p>
  * Assumes a base JPA project context structure 
  * corresponding to the JPA spec:
- * 
- * 	RootContent
- * 	 |- persistence.xml
- * 	     |- persistence unit(s)
- *           |- mapping file(s)  (e.g. orm.xml)
- *           |   |- persistent type mapping(s)  (e.g. Entity)
- *           |        |- persistent attribute mapping(s)  (e.g. Basic)
- *           |- persistent type mapping(s)
- *   
+ * <pre>
+ *     RootContext
+ *      |- persistence.xml
+ *          |- persistence unit(s)
+ *               |- mapping file(s)  (e.g. orm.xml)
+ *               |   |- persistent type mapping(s)  (e.g. Entity)
+ *               |       |- persistent attribute mapping(s)  (e.g. Basic)
+ *               |- persistent type mapping(s)
+ * </pre>
  *   ... and associated objects.
- *
- * @see org.eclipse.jpt.core.internal.platform.GenericJpaFactory
- * 
+ *<p> 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @see org.eclipse.jpt.core.internal.platform.GenericJpaFactory
  */
 public interface JpaFactory 
 {

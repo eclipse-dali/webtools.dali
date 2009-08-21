@@ -31,9 +31,9 @@ import org.eclipse.jpt.utility.model.event.TreeEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
- * This class is used by ReflectiveChangeListener when the requested listener
- * needs to implement multiple methods (i.e. CollectionChangeListener,
- * ListChangeListener, or TreeChangeListener).
+ * This class is used by {@link ReflectiveChangeListener} when the requested listener
+ * needs to implement multiple methods (i.e. {@link CollectionChangeListener},
+ * {@link ListChangeListener}, or {@link TreeChangeListener}).
  */
 class MultiMethodReflectiveChangeListener
 	extends ReflectiveChangeListener 

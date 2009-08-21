@@ -15,17 +15,19 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 
 /**
- * A <code>ChainIterable</code> provides a pluggable <code>Iterable</code>
+ * A <code>ChainIterable</code> provides a pluggable {@link Iterable}
  * that loops over a chain of arbitrarily linked objects. The chain
- * should be null-terminated (i.e. a call to the <code>nextLink(Object)</code>
+ * should be null-terminated (i.e. a call to the {@link #nextLink(Object)}
  * method should return <code>null</code> when it is passed the last
  * link of the chain).
- * To use, supply a starting link and supply a <code>Linker</code> or
+ * To use, supply a starting link and supply a {@link ChainIterator.Linker} or
  * subclass <code>ChainIterable</code> and override the
- * <code>nextLink(Object)</code> method.
+ * {@link #nextLink(Object)} method.
  * The starting link will be the first object returned by the iterable's iterator.
  * If the starting link is <code>null</code>, the iterable will be empty.
  * Note this iterable does not support <code>null</code> elements.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see ChainIterator
  */
@@ -40,8 +42,8 @@ public class ChainIterable<E>
 	 * Construct an iterable with the specified starting link
 	 * and a default linker that calls back to the iterable.
 	 * Use this constructor if you want to override the
-	 * <code>nextLink(Object)</code> method instead of building
-	 * a <code>Linker</code>.
+	 * {@link #nextLink(Object)} method instead of building
+	 * a {@link ChainIterator.Linker}.
 	 */
 	public ChainIterable(E startLink) {
 		super();
@@ -71,7 +73,7 @@ public class ChainIterable<E>
 	 * Return the next link in the chain; null if there are no more links.
 	 * <p>
 	 * This method can be overridden by a subclass as an alternative to
-	 * building a <code>ChainIterator.Linker</code>
+	 * building a {@link ChainIterator.Linker}.
 	 */
 	protected E nextLink(@SuppressWarnings("unused") E currentLink) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$

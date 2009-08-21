@@ -15,13 +15,16 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 
 /**
- * A <code>TransformationListIterator</code> wraps another <code>ListIterator</code>
+ * A <code>TransformationListIterator</code> wraps another {@link ListIterator}
  * and transforms its results for client consumption. To use, supply a 
- * <code>Transformer</code> or subclass <code>TransformationIterator</code>
- * and override the <code>transform(Object)</code> method.
- * 
- * The methods <code>set(Object)</code> and <code>add(Object)</code>
+ * {@link Transformer} or subclass <code>TransformationIterator</code>
+ * and override the {@link #transform(Object)} method.
+ * <p>
+ * The methods {@link #set(Object)} and {@link #add(Object)}
  * are left unsupported in this class.
+ * 
+ * @param <E1> input: the type of elements to be transformed
+ * @param <E2> output: the type of elements returned by the iterator
  */
 public class TransformationListIterator<E1, E2>
 	implements ListIterator<E2>
@@ -34,8 +37,8 @@ public class TransformationListIterator<E1, E2>
 	 * Construct an iterator with the specified list
 	 * and a disabled transformer.
 	 * Use this constructor if you want to override the
-	 * <code>transform(Object)</code> method instead of building
-	 * a <code>Transformer</code>.
+	 * {@link #transform(Object)} method instead of building
+	 * a {@link Transformer}.
 	 */
 	public TransformationListIterator(List<? extends E1> list) {
 		this(list.listIterator());
@@ -45,8 +48,8 @@ public class TransformationListIterator<E1, E2>
 	 * Construct an iterator with the specified nested listed iterator
 	 * and a disabled transformer.
 	 * Use this constructor if you want to override the
-	 * <code>transform(Object)</code> method instead of building
-	 * a <code>Transformer</code>.
+	 * {@link #transform(Object)} method instead of building
+	 * a {@link Transformer}.
 	 */
 	public TransformationListIterator(ListIterator<? extends E1> listIterator) {
 		this(listIterator, Transformer.Disabled.<E1, E2>instance());

@@ -20,14 +20,16 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * <p>
  * The original list passed to the <code>CloneListIterator</code>'s
  * constructor should be synchronized; otherwise you run the risk of
- * a corrupted list.
+ * a corrupted list (e.g. {@link java.util.Vector}.
  * <p>
  * By default, a <code>CloneListIterator</code> does not support the
  * modification operations; this is because it does not have
  * access to the original list. But if the <code>CloneListIterator</code>
- * is supplied with a <code>Mutator</code> it will delegate the
- * modification operations to the <code>Mutator</code>.
+ * is supplied with a {@link Mutator} it will delegate the
+ * modification operations to the {@link Mutator}.
  * Alternatively, a subclass can override the modification methods.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class CloneListIterator<E>
 	implements ListIterator<E>
@@ -162,10 +164,10 @@ public class CloneListIterator<E>
 	// ********** internal methods **********
 
 	/**
-	 * The list passed in during construction held Es,
+	 * The list passed in during construction held elements of type <code>E</code>,
 	 * so this cast is not a problem. We need this cast because
 	 * all the elements of the original collection were copied into
-	 * an object array (Object[]).
+	 * an object array (<code>Object[]</code>).
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedNext() {
@@ -173,10 +175,10 @@ public class CloneListIterator<E>
 	}
 
 	/**
-	 * The list passed in during construction held Es,
+	 * The list passed in during construction held elements of type <code>E</code>,
 	 * so this cast is not a problem. We need this cast because
 	 * all the elements of the original collection were copied into
-	 * an object array (Object[]).
+	 * an object array (<code>Object[]</code>).
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedPrevious() {
@@ -187,7 +189,7 @@ public class CloneListIterator<E>
 	 * Add the specified element to the original list.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Mutator</code>.
+	 * alternative to building a {@link Mutator}.
 	 */
 	protected void add(int index, E o) {
 		this.mutator.add(index, o);
@@ -197,7 +199,7 @@ public class CloneListIterator<E>
 	 * Remove the specified element from the original list.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Mutator</code>.
+	 * alternative to building a {@link Mutator}.
 	 */
 	protected void remove(int index) {
 		this.mutator.remove(index);
@@ -207,7 +209,7 @@ public class CloneListIterator<E>
 	 * Set the specified element in the original list.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Mutator</code>.
+	 * alternative to building a {@link Mutator}.
 	 */
 	protected void set(int index, E o) {
 		this.mutator.set(index, o);
@@ -225,7 +227,7 @@ public class CloneListIterator<E>
 	//********** member interface **********
 
 	/**
-	 * Used by <code>CloneListIterator</code> to remove
+	 * Used by {@link CloneListIterator} to remove
 	 * elements from the original list; since the list iterator
 	 * does not have direct access to the original list.
 	 */

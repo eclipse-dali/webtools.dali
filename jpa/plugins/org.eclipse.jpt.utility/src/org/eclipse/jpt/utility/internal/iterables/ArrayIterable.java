@@ -16,8 +16,10 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 /**
- * An <code>ArrayIterable</code> provides an <code>Iterable</code>
- * for an array of objects of type E.
+ * An <code>ArrayIterable</code> provides an {@link Iterable}
+ * for an array of objects of type <code>E</code>.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see ArrayIterator
  */

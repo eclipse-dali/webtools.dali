@@ -16,19 +16,22 @@ import java.util.NoSuchElementException;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>ResultSetIterator</code> wraps a <code>ResultSet</code>
+ * A <code>ResultSetIterator</code> wraps an SQL {@link ResultSet}
  * and transforms its rows for client consumption. Subclasses can override
- * <code>#buildNext(ResultSet)</code> to build the expected object from
+ * {@link #buildNext(ResultSet)} to build the expected object from
  * the current row of the result set.
  * <p>
  * To use, supply:<ul>
- * <li> a <code>ResultSet</code>
- * <li> an <code>Adapter</code> that converts a row in the <code>ResultSet</code>
+ * <li> a {@link ResultSet}
+ * <li> an {@link Adapter} that converts a row in the {@link ResultSet}
  * into the desired object
  * (alternatively, subclass <code>ResultSetIterator</code>
- * and override the <code>buildNext(ResultSet)</code> method)
+ * and override the {@link #buildNext(ResultSet)} method)
  * </ul>
- * <p>
+ * 
+ * @param <E> the type of elements returned by the iterator
+ * 
+ * @see java.sql.ResultSet
  */
 public class ResultSetIterator<E>
 	implements Iterator<E>
@@ -78,8 +81,8 @@ public class ResultSetIterator<E>
 
 	/**
 	 * By default, return the first object in the current row
-	 * of the result set. Any <code>SQLException</code>s will
-	 * be caught and wrapped in a <code>RuntimeException</code>.
+	 * of the result set. Any {@link SQLException}s will
+	 * be caught and wrapped in a {@link RuntimeException}.
 	 */
 	protected E buildNext(ResultSet rs) throws SQLException {
 		return this.adapter.buildNext(rs);
@@ -111,16 +114,16 @@ public class ResultSetIterator<E>
 	// ********** interface **********
 
 	/**
-	 * Used by <code>ResultSetIterator</code> to convert a
-	 * <code>ResultSet</code>'s current row into the next object
-	 * to be returned by the <code>Iterator</code>.
+	 * Used by {@link ResultSetIterator} to convert a
+	 * {@link ResultSet}'s current row into the next object
+	 * to be returned by the {@link Iterator}.
 	 */
 	public interface Adapter<T> {
 
 		/**
 		 * Return an object corresponding to the result set's
-		 * "current" row. Any <code>SQLException</code>s will
-		 * be caught and wrapped in a <code>RuntimeException</code>.
+		 * "current" row. Any {@link SQLException}s will
+		 * be caught and wrapped in a {@link RuntimeException}.
 		 * @see java.sql.ResultSet
 		 */
 		T buildNext(ResultSet rs) throws SQLException;

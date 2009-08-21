@@ -14,15 +14,16 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
- * 
- * 
+ * JPA <code>persistence.xml</code> file.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistenceXml extends XmlContextNode, JpaStructureNode
+public interface PersistenceXml
+	extends XmlContextNode, JpaStructureNode
 {
 	// **************** persistence *******************************************
 	
@@ -30,13 +31,13 @@ public interface PersistenceXml extends XmlContextNode, JpaStructureNode
 	 * String constant associated with changes to the persistence property
 	 */
 	public final static String PERSISTENCE_PROPERTY = "persistence"; //$NON-NLS-1$
-	
-	/** 
+
+	/**
 	 * Return the content represented by the root of the persistence.xml file.
 	 * This may be null.
 	 */
 	Persistence getPersistence();
-	
+
 	/**
 	 * Add a persistence node to the persistence.xml file and return the object 
 	 * representing it.
@@ -59,7 +60,8 @@ public interface PersistenceXml extends XmlContextNode, JpaStructureNode
 	
 	/**
 	 * Update the PersistenceXml context model object to match the JpaXmlResource 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * resource model object.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(JpaXmlResource resource);
 }

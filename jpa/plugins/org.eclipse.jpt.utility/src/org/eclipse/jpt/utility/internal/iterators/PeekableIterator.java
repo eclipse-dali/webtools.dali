@@ -14,19 +14,20 @@ import java.util.NoSuchElementException;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>PeekableIterator</code> wraps another <code>Iterator</code>
- * and allows a <code>peek()</code> at the next element to be 
- * returned by <code>next()</code>.
+ * A <code>PeekableIterator</code> wraps another {@link Iterator}
+ * and allows a {@link peek()} at the next element to be 
+ * returned by {@link #next()}.
  * <p>
  * One, possibly undesirable, side-effect of using this iterator is that
  * the nested iterator's <code>next()</code> method will be invoked
- * <em>before</em> the peekable iterator's <code>next()</code>
+ * <em>before</em> the peekable iterator's {@link #next()}
  * method is invoked. This is because the "next" element must be
- * pre-loaded for the <code>peek()</code> method.
+ * pre-loaded for the {@link #peek()} method.
  * This also prevents a peekable iterator from supporting the optional
- * <code>remove()</code> method.
+ * {@link #remove()} method.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
-
 public class PeekableIterator<E>
 	implements Iterator<E>
 {
@@ -69,7 +70,7 @@ public class PeekableIterator<E>
 
 	/**
 	 * Return the element that will be returned by the next call to the
-	 * <code>next()</code> method, without advancing past it.
+	 * {@link #next()} method, without advancing past it.
 	 */
 	public E peek() {
 		if (this.done) {
@@ -80,7 +81,7 @@ public class PeekableIterator<E>
 
 	/**
 	 * Because we need to pre-load the next element
-	 * to be returned, we cannot support the <code>remove()</code>
+	 * to be returned, we cannot support the {@link #remove()}
 	 * method.
 	 */
 	public void remove() {
@@ -89,7 +90,8 @@ public class PeekableIterator<E>
 
 	/**
 	 * Load next with the next entry from the nested
-	 * iterator. If there are none, next is set to <code>END</code>.
+	 * iterator. If there are none, {@link #next} is set to <code>null</code>
+	 * and {@link #done} is set to <code>true</code>.
 	 */
 	private void loadNext() {
 		if (this.iterator.hasNext()) {

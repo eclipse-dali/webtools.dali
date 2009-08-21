@@ -15,12 +15,15 @@ import org.eclipse.jpt.utility.internal.Transformer;
 
 
 /**
- * A <code>TransformationIterator</code> wraps another <code>Iterator</code>
+ * A <code>TransformationIterator</code> wraps another {@link Iterator}
  * and transforms its results for client consumption. To use, supply a 
- * <code>Transformer</code> or subclass <code>TransformationIterator</code>
- * and override the <code>transform(Object)</code> method.
- * Objects of type E1 are transformed into objects of type E2;
- * i.e. the iterator returns objects of type E2.
+ * {@link Transformer} or subclass <code>TransformationIterator</code>
+ * and override the {@link #transform(Object)} method.
+ * Objects of type <code>E1</code> are transformed into objects of type <code>E2</code>;
+ * i.e. the iterator returns objects of type <code>E2</code>.
+ * 
+ * @param <E1> input: the type of elements to be transformed
+ * @param <E2> output: the type of elements returned by the iterator
  */
 public class TransformationIterator<E1, E2>
 	implements Iterator<E2>
@@ -33,8 +36,8 @@ public class TransformationIterator<E1, E2>
 	 * Construct an iterator with the specified iterable
 	 * and a disabled transformer.
 	 * Use this constructor if you want to override the
-	 * <code>transform(Object)</code> method instead of building
-	 * a <code>Transformer</code>.
+	 * {@link #transform(Object)} method instead of building
+	 * a {@link Transformer}.
 	 */
 	public TransformationIterator(Iterable<? extends E1> iterable) {
 		this(iterable.iterator());
@@ -44,8 +47,8 @@ public class TransformationIterator<E1, E2>
 	 * Construct an iterator with the specified nested iterator
 	 * and a disabled transformer.
 	 * Use this constructor if you want to override the
-	 * <code>transform(Object)</code> method instead of building
-	 * a <code>Transformer</code>.
+	 * {@link #transform(Object)} method instead of building
+	 * a {@link Transformer}.
 	 */
 	public TransformationIterator(Iterator<? extends E1> iterator) {
 		this(iterator, Transformer.Disabled.<E1, E2>instance());

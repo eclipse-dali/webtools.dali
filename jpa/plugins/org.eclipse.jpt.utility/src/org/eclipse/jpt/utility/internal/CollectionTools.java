@@ -1700,10 +1700,11 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return a one-use Iterable for the Iterator given.
-	 * Throws an IllegalStateException if iterable() is called more than once.
+	 * Return a one-use {@link Iterable} for the specified {@link Iterator}.
+	 * Throw an {@link IllegalStateException} if {@link Iterable#iterator()}
+	 * is called more than once.
 	 * As such, this utility should only be used in one-use situations, such as
-	 * a "for" loop.
+	 * a foreach loop.
 	 */
 	public static <E> Iterable<E> iterable(Iterator<? extends E> iterator) {
 		return new SingleUseIterable<E>(iterator);
@@ -2591,14 +2592,22 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementsAtIndex(Object[] array, int index, int length)
 	 */
 	public static <E> E[] removeElementsAtIndex(E[] array, int index, int length) {
+		if (length == 0) {
+			return array;
+		}
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
 		E[] result = newArray(array, newLength);
 		if ((newLength == 0) && (index == 0)) {
 			return result;  // performance tweak
 		}
-		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, newLength - index);
+		if (index != 0) {
+			System.arraycopy(array, 0, result, 0, index);
+		}
+		int length2 = newLength - index;
+		if (length2 != 0) {
+			System.arraycopy(array, index + length, result, index, length2);
+		}
 		return result;
 	}
 
@@ -2608,14 +2617,22 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(char[] array, int index, int length)
 	 */
 	public static char[] removeElementsAtIndex(char[] array, int index, int length) {
+		if (length == 0) {
+			return array;
+		}
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
 		if ((newLength == 0) && (index == 0)) {
 			return EMPTY_CHAR_ARRAY;  // performance tweak
 		}
 		char[] result = new char[newLength];
-		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, newLength - index);
+		if (index != 0) {
+			System.arraycopy(array, 0, result, 0, index);
+		}
+		int length2 = newLength - index;
+		if (length2 != 0) {
+			System.arraycopy(array, index + length, result, index, length2);
+		}
 		return result;
 	}
 	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
@@ -2626,14 +2643,22 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(int[] array, int index, int length)
 	 */
 	public static int[] removeElementsAtIndex(int[] array, int index, int length) {
+		if (length == 0) {
+			return array;
+		}
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
 		if ((newLength == 0) && (index == 0)) {
 			return EMPTY_INT_ARRAY;  // performance tweak
 		}
 		int[] result = new int[newLength];
-		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, newLength - index);
+		if (index != 0) {
+			System.arraycopy(array, 0, result, 0, index);
+		}
+		int length2 = newLength - index;
+		if (length2 != 0) {
+			System.arraycopy(array, index + length, result, index, length2);
+		}
 		return result;
 	}
 	private static final int[] EMPTY_INT_ARRAY = new int[0];
@@ -2689,6 +2714,60 @@ public final class CollectionTools {
 			}
 		}
 		return changed;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the first element removed.
+	 * java.util.Arrays#removeFirst(Object[] array)
+	 */
+	public static <E> E[] removeFirst(E[] array) {
+		return removeElementAtIndex(array, 0);
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the first element removed.
+	 * java.util.Arrays#removeFirst(char[] array)
+	 */
+	public static char[] removeFirst(char[] array) {
+		return removeElementAtIndex(array, 0);
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the first element removed.
+	 * java.util.Arrays#removeFirst(int[] array)
+	 */
+	public static int[] removeFirst(int[] array) {
+		return removeElementAtIndex(array, 0);
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the last element removed.
+	 * java.util.Arrays#removeLast(Object[] array)
+	 */
+	public static <E> E[] removeLast(E[] array) {
+		return removeElementAtIndex(array, array.length - 1);
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the last element removed.
+	 * java.util.Arrays#removeLast(char[] array)
+	 */
+	public static char[] removeLast(char[] array) {
+		return removeElementAtIndex(array, array.length - 1);
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the last element removed.
+	 * java.util.Arrays#removeLast(int[] array)
+	 */
+	public static int[] removeLast(int[] array) {
+		return removeElementAtIndex(array, array.length - 1);
 	}
 
 	/**

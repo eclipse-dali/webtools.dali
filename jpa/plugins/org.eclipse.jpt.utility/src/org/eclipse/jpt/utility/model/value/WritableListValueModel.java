@@ -10,8 +10,8 @@
 package org.eclipse.jpt.utility.model.value;
 
 /**
- * Extend {@link CollectionValueModel} to allow the setting of the
- * collection's values.
+ * Extend {@link ListValueModel} to allow the setting of the
+ * lists's values.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

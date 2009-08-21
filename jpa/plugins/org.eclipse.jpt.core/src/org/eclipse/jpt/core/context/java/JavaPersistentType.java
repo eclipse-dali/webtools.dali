@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
  * Context Java persistent type.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,6 +26,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 public interface JavaPersistentType
 	extends PersistentType, JavaJpaContextNode
 {
+	// ********** covariant overrides **********
+
 	JavaTypeMapping getMapping();
 	
 	@SuppressWarnings("unchecked")
@@ -33,19 +35,22 @@ public interface JavaPersistentType
 	
 	JavaPersistentAttribute getAttributeNamed(String attributeName);
 
+
+	// ********** Java **********
+
 	/**
-	 * Resolve and return the attribute named <code>attributeName</code> if it
-	 * is distinct and exists within the context of this type
-	 */
-	PersistentAttribute resolveAttribute(String attributeName);
-	
-	/**
-	 * Return whether any attribute in this persistent type contains a mapping annotation
+	 * Return whether the persistent type contains an attribute with
+	 * a mapping annotation.
 	 */
 	boolean hasAnyAttributePersistenceAnnotations();
 
-	
+	/**
+	 * Return the Java resource persistent type.
+	 */
 	JavaResourcePersistentType getResourcePersistentType();
+
+
+	// ********** updating **********
 
 	/**
 	 * Synchronize the Java persistent type with the specified resource type.

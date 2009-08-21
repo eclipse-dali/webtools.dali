@@ -16,8 +16,10 @@ import java.util.NoSuchElementException;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * An <code>ArrayIterator</code> provides an <code>Iterator</code>
- * for an array of objects of type E.
+ * An <code>ArrayIterator</code> provides an {@link Iterator}
+ * for an array of objects of type <code>E</code>.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class ArrayIterator<E>
 	implements Iterator<E>

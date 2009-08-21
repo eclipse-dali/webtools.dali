@@ -14,8 +14,10 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>ReadOnlyIterator</code> wraps another <code>Iterator</code>
- * and removes support for #remove().
+ * A <code>ReadOnlyIterator</code> wraps another {@link Iterator}
+ * and removes support for {@link #remove()}.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class ReadOnlyIterator<E>
 	implements Iterator<E>

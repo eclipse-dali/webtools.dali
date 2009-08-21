@@ -15,20 +15,20 @@ import java.io.PrintWriter;
  * This interface describes a Java type; i.e. its "element type"
  * and its "array depth". The element type is referenced by name,
  * allowing us to reference classes that are not (or cannot be) loaded.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
+ * <p>
  * This interface is not intended to be implemented by clients.
  */
 public interface JavaType {
 
 	/**
 	 * Return the name of the type's "element type".
-	 * A member type will have one or more '$' characters in its name.
+	 * A member type will have one or more <code>'$'</code> characters in its name.
 	 */
 	String getElementTypeName();
 
@@ -44,29 +44,34 @@ public interface JavaType {
 	boolean isArray();
 
 	/**
-	 * Return whether the type is a "primitive" (e.g. 'int', 'float').
-	 * NB: void.class.isPrimitive() == true
+	 * Return whether the type is a "primitive" (e.g. <code>int</code>, <code>float</code>).
+	 * <p>
+	 * NB: <code>void.class.isPrimitive() == true</code>
 	 */
 	boolean isPrimitive();
 
 	/**
-	 * Return whether the type is a "primitive" (e.g. 'java.lang.Integer',
-	 * 'java.lang.Float').
-	 * NB: void.class.isPrimitive() == true
+	 * Return whether the type is a "primitive" (e.g. <code>java.lang.Integer</code>,
+	 * <code>java.lang.Float</code>).
+	 * <p>
+	 * NB: <code>void.class.isPrimitive() == true</code>
 	 */
 	boolean isPrimitiveWrapper();
 
 	/**
-	 * Return whether the type is a "variable primitive" (e.g. 'int', 'float',
-	 * but not 'void').
-	 * NB: variables cannot be declared 'void'
+	 * Return whether the type is a "variable primitive" (e.g. <code>int</code>, <code>float</code>,
+	 * but not <code>void</code>).
+	 * <p>
+	 * NB: variables cannot be declared <code>void</code>
 	 */
 	boolean isVariablePrimitive();
 
 	/**
 	 * Return whether the type is a "variable primitive" (e.g.
-	 * 'java.lang.Integer', 'java.lang.Float', but not 'java.lang.Void').
-	 * NB: variables cannot be declared 'void'
+	 * <code>java.lang.Integer</code>, <code>java.lang.Float</code>,
+	 * but not <code>java.lang.Void</code>).
+	 * <p>
+	 * NB: variables cannot be declared <code>void</code>
 	 */
 	boolean isVariablePrimitiveWrapper();
 
@@ -77,8 +82,9 @@ public interface JavaType {
 
 	/**
 	 * Return the version of the type's name that matches that
-	 * returned by java.lang.Class#getName()
-	 * (e.g. "[[J", "[Ljava.lang.Object;", "java.util.Map$Entry").
+	 * returned by {@link java.lang.Class#getName()}
+	 * (e.g. <code>"[[J"</code>, <code>"[Ljava.lang.Object;"</code>,
+	 * <code>"java.util.Map$Entry"</code>).
 	 */
 	String getJavaClassName();
 
@@ -103,23 +109,26 @@ public interface JavaType {
 	boolean equals(JavaType other);
 
 	/**
-	 * Return the version of the type's name that can be used in source code:
-	 *     "[[J" => "long[][]"
-	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
+	 * Return the version of the type's name that can be used in source code:<ul>
+	 * <li><code>"[[J"</code> => <code>"long[][]"</code>
+	 * <li><code>"java.util.Map$Entry"</code> => <code>"java.util.Map.Entry"</code>
+	 * </ul>
 	 */
 	String declaration();
 
 	/**
-	 * Append the version of the type's name that can be used in source code:
-	 *     "[[J" => "long[][]"
-	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
+	 * Append the version of the type's name that can be used in source code:<ul>
+	 * <li><code>"[[J"</code> => <code>"long[][]"</code>
+	 * <li><code>"java.util.Map$Entry"</code> => <code>"java.util.Map.Entry"</code>
+	 * </ul>
 	 */
 	void appendDeclarationTo(StringBuilder sb);
 
 	/**
-	 * Print the version of the type's name that can be used in source code:
-	 *     "[[J" => "long[][]"
-	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
+	 * Print the version of the type's name that can be used in source code:<ul>
+	 * <li><code>"[[J"</code> => <code>"long[][]"</code>
+	 * <li><code>"java.util.Map$Entry"</code> => <code>"java.util.Map.Entry"</code>
+	 * </ul>
 	 */
 	void printDeclarationOn(PrintWriter pw);
 

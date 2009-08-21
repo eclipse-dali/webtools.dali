@@ -10,21 +10,20 @@
 package org.eclipse.jpt.core;
 
 /**
- * This interface is to be implemented by a JPA vendor to build a JpaPlatform.
- * 
- * See the org.eclipse.jpt.core.jpaPlatforms extension point
- * 
+ * This interface is to be implemented by a JPA vendor to build a
+ * {@link JpaPlatform}.
+ * <p>
+ * See the <code>org.eclipse.jpt.core.jpaPlatforms</code> extension point.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaPlatformFactory
-{
-
+public interface JpaPlatformFactory {
 	/**
-	 * Build the JpaPlatform with the given id
+	 * Build the JPA platform with the specified ID.
 	 */
 	JpaPlatform buildJpaPlatform(String id);
 }

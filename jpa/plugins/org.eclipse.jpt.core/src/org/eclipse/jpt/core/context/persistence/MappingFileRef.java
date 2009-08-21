@@ -17,10 +17,11 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 
 /**
- * This is the context model corresponding to the 
- * persistence resource model XmlMappingFileRef,
- * which corresponds to the 'mapping-file' tag in the persistence.xml.
- * 
+ * Context model corresponding to the
+ * XML resource model {@link XmlMappingFileRef},
+ * which corresponds to the <code>mapping-file</code> element
+ * in the <code>persistence.xml</code> file.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

@@ -17,7 +17,9 @@ import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public abstract class AbstractJavaEmbeddable extends AbstractJavaTypeMapping implements JavaEmbeddable
+public abstract class AbstractJavaEmbeddable
+	extends AbstractJavaTypeMapping
+	implements JavaEmbeddable
 {
 	protected AbstractJavaEmbeddable(JavaPersistentType parent) {
 		super(parent);

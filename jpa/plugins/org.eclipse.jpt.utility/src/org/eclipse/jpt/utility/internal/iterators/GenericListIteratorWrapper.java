@@ -15,10 +15,12 @@ import java.util.ListIterator;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * Wrap a list iterator on elements of any sub-type of E, converting it into a
- * list iterator on elements of type E. This shouldn't be a problem since the
+ * Wrap a list iterator on elements of any sub-type of <code>E</code>, converting it into a
+ * list iterator on elements of type <code>E</code>. This shouldn't be a problem since the
  * resulting list iterator disables the methods that would put invalid elements
- * in the iterator's backing list (i.e. #set(E) and #add(E)).
+ * in the iterator's backing list (i.e. {@link #set(E)} and {@link #add(E)}).
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class GenericListIteratorWrapper<E>
 	implements ListIterator<E>

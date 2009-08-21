@@ -15,6 +15,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * An <code>EmptyListIterator</code> is just that.
+ * 
+ * @param <E> the type of elements (not) returned by the iterator
  */
 public final class EmptyListIterator<E>
 	implements ListIterator<E>

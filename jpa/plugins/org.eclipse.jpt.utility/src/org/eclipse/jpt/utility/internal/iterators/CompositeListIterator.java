@@ -18,8 +18,10 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * A <code>CompositeListIterator</code> wraps a list
- * of <code>ListIterator</code>s and makes them appear to be a single
- * <code>ListIterator</code>.
+ * of {@link ListIterator}s and makes them appear to be a single
+ * {@link ListIterator}.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class CompositeListIterator<E>
 	implements ListIterator<E>
@@ -29,7 +31,7 @@ public class CompositeListIterator<E>
 	private int nextIndex;
  	/**
  	 * true if "next" was last returned; false if "previous" was last returned;
- 	 * this determines the effect of remove(Object) on nextIndex
+ 	 * this determines the effect of {@link #remove(Object)} on {@link #nextIndex}
  	 */
 	private boolean nextReturned;
 	private ListIterator<E> lastIteratorToReturnElement;

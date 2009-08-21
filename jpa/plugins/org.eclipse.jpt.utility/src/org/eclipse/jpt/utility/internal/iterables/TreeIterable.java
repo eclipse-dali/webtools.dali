@@ -24,13 +24,13 @@ import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
  * <p>
  * To use, supply:<ul>
  * <li> either the root element of the tree or, if the tree has
- * multiple roots, an <code>Iterable</code> of the set of roots
- * <li> a <code>Midwife</code> that delivers the children
- * of each child
+ * multiple roots, an {@link Iterable} of the set of roots
+ * <li> a {@link TreeIterator.Midwife} that delivers the children of each child
  * (alternatively, subclass <code>TreeIterable</code>
- * and override the <code>children(Object)</code> method)
+ * and override the {@link #children(Object)} method)
  * </ul>
- * <p>
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see TreeIterator
  */
@@ -45,8 +45,8 @@ public class TreeIterable<E>
 	 * Construct an iterable containing the nodes of a tree with the specified root
 	 * and a default midwife that calls back to the iterable.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
-	 * a <code>TreeIterator.Midwife</code>.
+	 * {@link #children(Object)} method instead of building
+	 * a {@link TreeIterator.Midwife}.
 	 */
 	public TreeIterable(E root) {
 		this(new SingleElementIterable<E>(root));
@@ -64,8 +64,8 @@ public class TreeIterable<E>
 	 * Construct an iterable containing the nodes of a tree with the specified roots
 	 * and a default midwife that calls back to the iterable.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
-	 * a <code>TreeIterator.Midwife</code>.
+	 * {@link #children(Object)} method instead of building
+	 * a {@link TreeIterator.Midwife}.
 	 */
 	public TreeIterable(E... roots) {
 		this(Arrays.asList(roots));
@@ -83,8 +83,8 @@ public class TreeIterable<E>
 	 * Construct an iterable containing the nodes of a tree with the specified roots
 	 * and a default midwife that calls back to the iterable.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
-	 * a <code>TreeIterator.Midwife</code>.
+	 * {@link #children(Object)} method instead of building
+	 * a {@link TreeIterator.Midwife}.
 	 */
 	public TreeIterable(Iterable<? extends E> roots) {
 		super();
@@ -114,7 +114,7 @@ public class TreeIterable<E>
 	 * Return the immediate children of the specified object.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>TreeIterator.Midwife</code>.
+	 * alternative to building a {@link TreeIterator.Midwife}.
 	 */
 	protected Iterator<? extends E> children(@SuppressWarnings("unused") E next) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$

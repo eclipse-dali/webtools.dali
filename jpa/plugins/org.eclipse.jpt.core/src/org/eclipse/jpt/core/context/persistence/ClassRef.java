@@ -16,11 +16,12 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 
 /**
- * This is the context model corresponding to the persistence resource model
- * XmlJavaClassRef, which corresponds to the 'class' tag in the persistence.xml.
- * This is also used this for "implied" class refs; i.e. class refs that are not
- * explicitly listed in the persistence.xml.
- * 
+ * Context model corresponding to the XML resource model
+ * {@link XmlJavaClassRef}, which corresponds to the <code>class<code> element
+ * in the <code>persistence.xml</code> file.
+ * This is also used for "implied" class refs; i.e. class refs that are not
+ * explicitly listed in the <code>persistence.xml</code> file.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

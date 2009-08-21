@@ -15,8 +15,10 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 
 /**
- * A <code>ReadOnlyIterable</code> wraps another <code>Iterable</code>
- * and returns a read-only <code>Iterator</code>.
+ * A <code>ReadOnlyIterable</code> wraps another {@link Iterable}
+ * and returns a read-only {@link Iterator}.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see ReadOnlyIterator
  */

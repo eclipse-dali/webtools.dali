@@ -18,21 +18,23 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 /**
  * A <code>LiveCloneIterable</code> returns an iterator on a current copy of a
  * collection, allowing for concurrent access to the original collection. A
- * copy of the collection is created every time <code>#iterable()</code> is
+ * copy of the collection is created every time {@link #iterator()} is
  * called. As a result, the contents of the collection can be different with
- * each call to <code>#iterable()</code> (i.e. it is "live").
+ * each call to {@link #iterator()} (i.e. it is "live").
  * <p>
- * The original collection passed to the <code>LiveCloneIterabler</code>'s
- * constructor should be thread-safe (e.g. java.util.Vector);
+ * The original collection passed to the <code>LiveCloneIterable</code>'s
+ * constructor should be thread-safe (e.g. {@link java.util.Vector});
  * otherwise you run the risk of a corrupted collection.
  * <p>
  * By default, the iterator returned by a <code>LiveCloneIterable</code> does not
- * support the <code>#remove()</code> operation; this is because it does not
+ * support the {@link Iterator#remove()} operation; this is because it does not
  * have access to the original collection. But if the <code>LiveCloneIterable</code>
- * is supplied with an <code>CloneIterator.Remover</code> it will delegate the
- * iterator's <code>#remove()</code> operation to the <code>Remover</code>.
- * Alternatively, a subclass can override the iterable's <code>#remove(Object)</code>
+ * is supplied with an {@link CloneIterator.Remover} it will delegate the
+ * {@link Iterator#remove()} operation to the <code>Remover</code>.
+ * Alternatively, a subclass can override the iterable's {@link #remove(Object)}
  * method.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see CloneIterator
  * @see SnapshotCloneIterable
@@ -47,9 +49,9 @@ public class LiveCloneIterable<E>
 
 	/**
 	 * Construct a "live" iterable for the specified collection.
-	 * The <code>#remove()</code> method will not be supported
-	 * by the iterator returned by <code>#iterable()</code>
-	 * unless a subclass overrides them iterable's <code>#remove(Object)</code>
+	 * The {@link Iterator#remove()} operation will not be supported
+	 * by the iterator returned by {@link #iterator()}
+	 * unless a subclass overrides them iterable's {@link #remove(Object)}
 	 * method.
 	 */
 	public LiveCloneIterable(Collection<? extends E> collection) {

@@ -30,9 +30,11 @@ import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
- * some common Dali behavior:
- *   - containment hierarchy
- *   - update triggers
+ * Some common Dali behavior:<ul>
+ * <li>containment hierarchy
+ * <li>Eclipse adaptable
+ * <li>update triggers
+ * </ul>
  */
 public abstract class AbstractJpaNode
 	extends AbstractModel
@@ -48,7 +50,7 @@ public abstract class AbstractJpaNode
 		this.checkParent(parent);
 		this.parent = parent;
 	}
-	
+
 	protected void checkParent(JpaNode p) {
 		if (p == null) {
 			if (this.requiresParent()) {
@@ -82,9 +84,9 @@ public abstract class AbstractJpaNode
 		};
 	}
 
-	
+
 	// ********** IAdaptable implementation **********
-	
+
 	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		return Platform.getAdapterManager().getAdapter(this, adapter);
@@ -96,7 +98,7 @@ public abstract class AbstractJpaNode
 	public JpaNode getParent() {
 		return this.parent;
 	}
-	
+
 	public IResource getResource() {
 		return this.parent.getResource();
 	}
@@ -145,7 +147,7 @@ public abstract class AbstractJpaNode
 	}
 
 
-	// ********** CallbackChangeSupport.Source implementation **********
+	// ********** CallbackChangeSupport.Listener support **********
 
 	protected void aspectChanged(String aspectName) {
 		if (this.aspectTriggersUpdate(aspectName)) {

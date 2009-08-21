@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 
 /**
+ * JPA <code>orm.xml</code> file.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -39,7 +41,7 @@ public interface OrmXml
 	 */
 	public final static String ENTITY_MAPPINGS_PROPERTY = "entityMappings"; //$NON-NLS-1$
 
-	/** 
+	/**
 	 * Return the content represented by the root of the orm.xml file.
 	 * This may be null.
 	 */

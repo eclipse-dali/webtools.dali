@@ -12,7 +12,9 @@ package org.eclipse.jpt.utility.internal.iterables;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
 /**
- * Pull together remover state and behavior.
+ * Pull together remover state and behavior for subclasses.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see SnapshotCloneIterable
  * @see LiveCloneIterable
@@ -46,7 +48,7 @@ public abstract class CloneIterable<E>
 	 * Remove the specified element from the original collection.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>CloneIterator.Remover</code>.
+	 * alternative to building a {@link CloneIterator.Remover}.
 	 */
 	protected void remove(@SuppressWarnings("unused") E element) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$

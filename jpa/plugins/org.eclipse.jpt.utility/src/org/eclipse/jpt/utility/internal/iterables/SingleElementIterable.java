@@ -15,15 +15,17 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 
 /**
- * A <code>SingleElementIterable</code> returns an <code>Iterator</code>
+ * A <code>SingleElementIterable</code> returns an {@link Iterator}
  * that holds a single element
- * and returns it with the first call to <code>next()</code>, at
+ * and returns it with the first call to {@link Iterator#next()}, at
  * which point it will return <code>false</code> to any subsequent
- * call to <code>hasNext()</code>.
+ * call to {@link Iterator#hasNext()}.
  * <p>
  * A <code>SingleElementIterable</code> is equivalent to the
- * <code>Iterable</code> returned by:
- * 	<code>java.util.Collections.singleton(element)</code>
+ * {@link Iterable} returned by:
+ * 	{@link java.util.Collections#singleton(Object)}.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see SingleElementIterator
  */

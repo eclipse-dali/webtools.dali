@@ -16,9 +16,9 @@ import org.eclipse.jpt.utility.model.event.StateChangeEvent;
 /**
  * A generic "state change" event gets delivered whenever a model changes to 
  * such extent that it cannot be delineated all aspects of it that have changed. 
- * You can register a StateChangeListener with a source model so as to be notified 
+ * You can register a <code>StateChangeListener</code> with a source model so as to be notified 
  * of any such changes.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,7 +30,7 @@ public interface StateChangeListener extends EventListener {
 	/**
 	 * This method gets called when a model has changed in some general fashion.
 	 * 
-	 * @param event A StateChangeEvent describing the event source.
+	 * @param event An event describing the event source.
 	 */
 	void stateChanged(StateChangeEvent event);
 

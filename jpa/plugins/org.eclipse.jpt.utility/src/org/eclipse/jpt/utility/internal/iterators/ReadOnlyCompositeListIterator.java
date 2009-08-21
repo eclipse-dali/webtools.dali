@@ -18,10 +18,12 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * A <code>ReadOnlyCompositeListIterator</code> wraps a list
- * of <code>ListIterator</code>s and makes them appear to be a single
- * read-only <code>ListIterator</code>. A read-only composite list
+ * of {@link ListIterator}s and makes them appear to be a single
+ * read-only {@link ListIterator}. A read-only composite list
  * iterator is more flexible than a normal composite list iterator when it
  * comes to the element types of the nested iterators.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class ReadOnlyCompositeListIterator<E>
 	implements ListIterator<E>
@@ -171,7 +173,7 @@ public class ReadOnlyCompositeListIterator<E>
 	}
 
 	/**
-	 * Load nextIterator with the first iterator that <code>hasNext()</code>
+	 * Load {@link #nextIterator} with the first iterator that {@link #hasNext()}
 	 * or the final iterator if all the elements have already been retrieved.
 	 */
 	private void loadNextIterator() {
@@ -182,7 +184,7 @@ public class ReadOnlyCompositeListIterator<E>
 	}
 
 	/**
-	 * Load nextIterator with the first iterator that <code>hasPrevious()</code>
+	 * Load {@link #nextIterator} with the first iterator that {@link #hasPrevious()}
 	 * or the first iterator if all the elements have already been retrieved.
 	 */
 	private void loadPreviousIterator() {
@@ -193,7 +195,7 @@ public class ReadOnlyCompositeListIterator<E>
 	}
 
 	/**
-	 * If 'nextIterator' is null, load it with the first iterator.
+	 * If {@link #nextIterator} is null, load it with the first iterator.
 	 */
 	private void checkNextIterator() {
 		if (this.nextIterator == null) {

@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
@@ -23,23 +22,24 @@ import org.eclipse.jpt.db.DatabaseFinder;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
- * the core JPA model.  The core JPA model will provide functionality for JPA
- * spec annotations in java, persistence.xml and mapping (orm.xml) files.
- * The org.eclipse.jpt.core.generic extension supplies 
- * resource models for those file types.  As another vendor option you 
+ * the core JPA model. The core JPA model will provide functionality for JPA
+ * spec annotations in Java, <code>persistence.xml</code> and mapping
+ * (<code>orm.xml</code>) files.
+ * The <code>org.eclipse.jpt.core.generic</code> extension supplies 
+ * resource models for those file types. As another vendor option you 
  * will have to supply those resource models as well or different ones 
- * as necessary. In the extension point you actually provide a JpaPlatformFactory
- * class used to build the JpaPlatform.
- * 
- * See the org.eclipse.jpt.core.jpaPlatforms extension point
- * @see JpaPlatformFactory
- * @see JpaPlatformProvider
- * 
+ * as necessary. In the extension point you actually provide a
+ * {@link JpaPlatformFactory} that will build the JPA platform.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * <p>
+ * See the <code>org.eclipse.jpt.core.jpaPlatforms</code> extension point.
+ * @see JpaPlatformFactory
+ * @see JpaPlatformProvider
  */
 public interface JpaPlatform
 {

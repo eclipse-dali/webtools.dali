@@ -17,8 +17,10 @@ import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 /**
  * A <code>CompositeIterator</code> wraps a collection
- * of <code>Iterator</code>s and makes them appear to be a single
- * <code>Iterator</code>.
+ * of {@link Iterator}s and makes them appear to be a single
+ * {@link Iterator}.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class CompositeIterator<E>
 	implements Iterator<E>
@@ -135,7 +137,7 @@ public class CompositeIterator<E>
 	}
 
 	/**
-	 * Load currentIterator with the first iterator that <code>hasNext()</code>
+	 * Load {@link currentIterator} with the first iterator that {@link Iterator#hasNext()}
 	 * or the final iterator if all the elements have already been retrieved.
 	 */
 	private void loadCurrentIterator() {

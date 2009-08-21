@@ -12,10 +12,10 @@ package org.eclipse.jpt.utility.model.listener;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 
 /**
- * Convenience implementation of PropertyChangeListener.
+ * Convenience implementation of {@link PropertyChangeListener}.
  * This is probably of limited use, since there only a single method to implement;
  * maybe as a null implementation.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

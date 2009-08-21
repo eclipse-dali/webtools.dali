@@ -14,17 +14,19 @@ import java.util.NoSuchElementException;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>ChainIterator</code> provides a pluggable <code>Iterator</code>
+ * A <code>ChainIterator</code> provides a pluggable {@link Iterator}
  * that loops over a chain of arbitrarily linked objects. The chain
- * should be null-terminated (i.e. a call to the <code>nextLink(Object)</code>
+ * should be null-terminated (i.e. a call to the {@link #nextLink(Object)}
  * method should return <code>null</code> when it is passed the last
  * link of the chain).
- * To use, supply a starting link and supply a <code>Linker</code> or 
+ * To use, supply a starting link and supply a {@link Linker} or 
  * subclass <code>ChainIterator</code> and override the
- * <code>nextLink(Object)</code> method.
+ * {@link #nextLink(Object)} method.
  * The starting link will be the first object returned by the iterator.
  * If the starting link is <code>null</code>, the iterator will be empty.
  * Note this iterator does not support <code>null</code> elements.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class ChainIterator<E>
 	implements Iterator<E>
@@ -37,8 +39,8 @@ public class ChainIterator<E>
 	 * Construct an iterator with the specified starting link
 	 * and a disabled linker.
 	 * Use this constructor if you want to override the
-	 * <code>nextLink(Object)</code> method instead of building
-	 * a <code>Linker</code>.
+	 * {@link #nextLink(Object)} method instead of building
+	 * a {@link Linker}.
 	 */
 	public ChainIterator(E startLink) {
 		this(startLink, Linker.Disabled.<E>instance());
@@ -87,7 +89,7 @@ public class ChainIterator<E>
 	//********** member interface **********
 
 	/**
-	 * Used by <code>ChainIterator</code> to link
+	 * Used by {@link ChainIterator} to link
 	 * the elements in the chain.
 	 */
 	public interface Linker<T> {

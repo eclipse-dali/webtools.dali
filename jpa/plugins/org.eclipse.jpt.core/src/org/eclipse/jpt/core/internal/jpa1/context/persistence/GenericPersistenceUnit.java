@@ -13,10 +13,12 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
+/**
+ * generic persistence-unit
+ */
 public class GenericPersistenceUnit
 	extends AbstractPersistenceUnit
 {
-	
 	public GenericPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 	}

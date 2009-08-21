@@ -16,9 +16,11 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
- * A <code>CompositeIterable</code> wraps an <code>Iterable</code>
- * of <code>Iterable</code>s and makes them appear to be a single
- * <code>Iterable</code>.
+ * A <code>CompositeIterable</code> wraps an {@link Iterable}
+ * of {@link Iterable}s and makes them appear to be a single
+ * {@link Iterable}.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see CompositeIterator
  */

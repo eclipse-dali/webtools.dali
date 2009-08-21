@@ -15,9 +15,9 @@ import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
 
 /**
- * This class is used by ReflectiveChangeListener when the requested listener
- * need only implement a single method (i.e. StateChangeListener or
- * PropertyChangeListener).
+ * This class is used by {@link ReflectiveChangeListener} when the requested listener
+ * need only implement a single method (i.e. {@link StateChangeListener} or
+ * {@link PropertyChangeListener}).
  */
 class SingleMethodReflectiveChangeListener
 	extends ReflectiveChangeListener

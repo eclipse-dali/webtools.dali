@@ -20,10 +20,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * A JAR file identified by a persistence.xml 'jar-file' element.
+ * A JAR file identified by a <code>persistence.xml</code> <code>jar-file</code> element.
  * Holds persistent types corresponding to all the "persistable" types
  * discovered in the JAR.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

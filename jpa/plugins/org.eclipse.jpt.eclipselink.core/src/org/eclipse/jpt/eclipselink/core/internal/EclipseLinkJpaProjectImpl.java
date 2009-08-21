@@ -22,14 +22,10 @@ public class EclipseLinkJpaProjectImpl
 	extends AbstractJpaProject
 	implements EclipseLinkJpaProject
 {
-
-
-	// ********** constructor/initialization **********
-
 	public EclipseLinkJpaProjectImpl(JpaProject.Config config) throws CoreException {
 		super(config);
 	}
-	
+
 	public JpaXmlResource getDefaultEclipseLinkOrmXmlResource() {
 		return (JpaXmlResource) this.getResourceModel(
 				JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH,

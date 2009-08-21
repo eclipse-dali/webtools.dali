@@ -10,9 +10,12 @@
 package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
+ * JPA mapping file (typically <code>orm.xml</code>).
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -20,7 +23,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface MappingFile
-	extends XmlContextNode, JpaStructureNode
+	extends XmlContextNode, JpaStructureNode, StaticMetaModelGenerator
 {
 	/**
 	 * Return the underlying xml resource

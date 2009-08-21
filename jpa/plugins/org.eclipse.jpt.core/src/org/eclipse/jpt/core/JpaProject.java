@@ -36,11 +36,12 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * A JPA project is associated with an Eclipse project (and its corresponding
  * Java project). It holds the "resource" model that corresponds to the various
- * JPA-related resources (the persistence.xml file, its mapping files [orm.xml],
+ * JPA-related resources (the <code>persistence.xml</code> file, its mapping files
+ * [<code>orm.xml</code>],
  * and the Java source files). It also holds the "context" model that represents
  * the JPA metadata, as derived from spec-defined defaults, Java source code
  * annotations, and XML descriptors.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -140,12 +141,12 @@ public interface JpaProject
 	JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache();
 
 
-	// ********** xml resources **********
+	// ********** XML resources **********
 
 	/**
 	 * Return the XML resource model corresponding to the file
-	 * 'META-INF/persistence.xml' if that file has the persistence content type
-	 * (org.eclipse.jpt.core.content.persistence).
+	 * <code>META-INF/persistence.xml</code> if that file has the persistence content type
+	 * (<code>"org.eclipse.jpt.core.content.persistence"</code>).
 	 * 
 	 * @see JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH
 	 */
@@ -154,13 +155,15 @@ public interface JpaProject
 	/**
 	 * Return the XML resource model corresponding to the specified file
 	 * if that file has the mapping file content type
-	 * (org.eclipse.jpt.core.content.mappingFile)
+	 * (<code>"org.eclipse.jpt.core.content.mappingFile"</code>)
+	 * 
+	 * @see JptCorePlugin#MAPPING_FILE_CONTENT_TYPE
 	 */
 	JpaXmlResource getMappingFileXmlResource(String filePath);
 
 	/**
 	 * Return the XML resource model corresponding to the file
-	 * 'META-INF/orm.xml' if that file has the mapping file content type.
+	 * <code>META-INF/orm.xml</code> if that file has the mapping file content type.
 	 * 
 	 * @see JptCorePlugin#DEFAULT_ORM_XML_FILE_PATH
 	 */
@@ -221,9 +224,10 @@ public interface JpaProject
 	/**
 	 * The JPA project's state has changed, "update" those parts of the
 	 * JPA project that are dependent on other parts of the JPA project.
-	 * This is called when
-	 *     - (almost) any state in the JPA project changes
-	 *     - the JPA project's database connection is changed, opened, or closed
+	 * This is called when<ul>
+	 * <li>(almost) any state in the JPA project changes
+	 * <li>the JPA project's database connection is changed, opened, or closed
+	 * </ul>
 	 */
 	void update();
 
@@ -288,6 +292,10 @@ public interface JpaProject
 
 	// ********** utility **********
 
+	/**
+	 * Convert the specified file name to a file mapped to the appropriate
+	 * deployment location.
+	 */
 	IFile convertToPlatformFile(String fileName);
 
 
@@ -334,10 +342,11 @@ public interface JpaProject
 
 	/**
 	 * Return the JPA project's default schema; which can be one of the
-	 * following:
-	 *   - the user override schema
-	 *   - the default catalog's default schema
-	 *   - the database's default schema (if catalogs are not supported)
+	 * following:<ul>
+	 * <li>the user override schema
+	 * <li>the default catalog's default schema
+	 * <li>the database's default schema (if catalogs are not supported)
+	 * </ul>
 	 */
 	String getDefaultSchema();
 
@@ -407,7 +416,7 @@ public interface JpaProject
 
 	/** 
 	 * ID string used when discoversAnnotatedClasses property is changed.
-	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses"; //$NON-NLS-1$
 
@@ -442,17 +451,18 @@ public interface JpaProject
 	// ********** modifying shared documents **********
 
 	/**
-	 * Set a thread-specific implementation of the CommandExecutor
+	 * Set a thread-specific implementation of the {@link CommandExecutor}
 	 * interface that will be used to execute a command to modify a shared
 	 * document. If necessary, the command executor can be cleared by
 	 * setting it to null.
 	 * This allows background clients to modify documents that are
-	 * already present in the UI. See implementations of CommandExecutor.
+	 * already present in the UI. See implementations of {@link CommandExecutor}.
 	 */
 	void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor);
 
 	/**
-	 * Return the project-wide implementation of the CommandExecutor interface.
+	 * Return the project-wide implementation of the
+	 * {@link CommandExecutor} interface.
 	 */
 	CommandExecutor getModifySharedDocumentCommandExecutor();
 

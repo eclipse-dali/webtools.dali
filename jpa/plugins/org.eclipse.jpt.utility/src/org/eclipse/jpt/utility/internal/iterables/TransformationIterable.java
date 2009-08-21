@@ -16,12 +16,15 @@ import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
- * A <code>TransformationIterable</code> wraps another <code>Iterable</code>
+ * A <code>TransformationIterable</code> wraps another {@link Iterable}
  * and transforms its elements for client consumption. To use, supply a 
- * <code>Transformer</code> or subclass <code>TransformationIterable</code>
- * and override the <code>transform(Object)</code> method.
- * Objects of type E1 are transformed into objects of type E2;
- * i.e. the iterable's iterator returns objects of type E2.
+ * {@link Transformer} or subclass <code>TransformationIterable</code>
+ * and override the {@link #transform(Object)} method.
+ * Objects of type <code>E1</code> are transformed into objects of type <code>E2</code>;
+ * i.e. the iterable's iterator returns objects of type <code>E2</code>.
+ * 
+ * @param <E1> input: the type of elements to be transformed
+ * @param <E2> output: the type of elements returned by the iterable's iterator
  * 
  * @see TransformationIterator
  */
@@ -36,8 +39,8 @@ public class TransformationIterable<E1, E2>
 	 * Construct an iterable with the specified nested iterable
 	 * and a default transformer that calls back to the iterable.
 	 * Use this constructor if you want to override the
-	 * <code>transform(Object)</code> method instead of building
-	 * a <code>Transformer</code>.
+	 * {@link #transform(Object)} method instead of building
+	 * a {@link Transformer}.
 	 */
 	public TransformationIterable(Iterable<? extends E1> iterable) {
 		super();

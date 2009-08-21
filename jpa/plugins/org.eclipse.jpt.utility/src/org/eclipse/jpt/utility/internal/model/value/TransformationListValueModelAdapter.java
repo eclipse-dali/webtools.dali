@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * the contents of the wrapped {@link ListValueModel} and notifies its
  * listeners of any changes.
  * <p>
- * The {@link Ttransformer} can be changed at any time; allowing the same
+ * The {@link Transformer} can be changed at any time; allowing the same
  * adapter to be used with different transformations.
  * <p>
  * <b>NB:</b> Since we only listen to the wrapped list when we have

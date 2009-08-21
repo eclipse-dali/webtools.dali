@@ -66,6 +66,7 @@ public interface Stack<E> {
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
+			// replace this object with the singleton
 			return INSTANCE;
 		}
 	}

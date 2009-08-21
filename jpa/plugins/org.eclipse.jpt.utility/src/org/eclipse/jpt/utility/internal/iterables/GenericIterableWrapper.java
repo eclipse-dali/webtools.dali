@@ -14,9 +14,11 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * Wrap an iterable of elements of any sub-type of E, converting it into an
- * iterable of elements of type E. This shouldn't be a problem since there
+ * Wrap an iterable of elements of any sub-type of <code>E</code>, converting it into an
+ * iterable of elements of type <code>E</code>. This shouldn't be a problem since there
  * is no way to add invalid elements to the iterable.
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  */
 public class GenericIterableWrapper<E>
 	implements Iterable<E>

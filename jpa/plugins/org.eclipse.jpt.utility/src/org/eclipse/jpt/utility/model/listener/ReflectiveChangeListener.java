@@ -34,14 +34,14 @@ import org.eclipse.jpt.utility.model.event.TreeEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
- * This factory builds listeners that reflectively forward ChangeEvents.
+ * This factory builds listeners that reflectively forward change events.
  * If you are worried about having too many little classes that have to be
  * loaded and maintained by the class loader, you can use one of these.
  * Of course, this comes with the additional overhead of reflection....
  * Also note that the validity of the method name is not checked at compile
- * time, but at runtime; although we *do* check the method as soon as the
+ * time, but at runtime; although we <em>do</em> check the method as soon as the
  * listener is instantiated.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
