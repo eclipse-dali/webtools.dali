@@ -160,6 +160,22 @@ abstract class DTPSchemaContainerWrapper
 		return null;
 	}
 
+	/**
+	 * If we find a default schema, return its identifier;
+	 * otherwise, return the last identifier on the list of default identifiers.
+	 * (Some containers have multiple possible default names.)
+	 */
+	public synchronized String getDefaultSchemaIdentifier() {
+		DTPSchemaWrapper schema = this.getDefaultSchema();
+		return (schema != null) ? schema.getIdentifier() : this.getDefaultSchemaIdentifier_();
+	}
+
+	private String getDefaultSchemaIdentifier_() {
+		List<String> identifiers = this.getDatabase().getDefaultSchemaIdentifiers();
+		// assume 'identifiers' is non-empty (!)
+		return identifiers.get(identifiers.size() - 1);
+	}
+	
 
 	// ********** listening **********
 

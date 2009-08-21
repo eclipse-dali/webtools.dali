@@ -107,6 +107,14 @@ public interface Database
 	 * @see #supportsCatalogs()
 	 */
 	Catalog getDefaultCatalog();
+	
+	/**
+	 * Return the database's "default" catalog identifier.
+	 * The database may or may not have a catalog with a matching name.
+	 * @see #supportsCatalogs()
+	 * @see #getDefaultCatalog()
+	 */
+	String getDefaultCatalogIdentifier();
 
 
 	// ********** utility methods **********

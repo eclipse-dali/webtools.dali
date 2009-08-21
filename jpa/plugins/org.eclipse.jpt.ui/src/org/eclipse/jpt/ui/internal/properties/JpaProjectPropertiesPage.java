@@ -1210,11 +1210,7 @@ public class JpaProjectPropertiesPage
 		@Override
 		protected String buildValue_() {
 			Database db = this.subject.getDatabase();
-			if (db == null) {
-				return null;
-			}
-			Catalog catalog = db.getDefaultCatalog();
-			return (catalog == null) ? null : catalog.getIdentifier();
+			return (db == null) ? null : db.getDefaultCatalogIdentifier();
 		}
 	}
 
@@ -1399,13 +1395,8 @@ public class JpaProjectPropertiesPage
 
 		@Override
 		protected String buildValue_() {
-			Schema schema = this.getDefaultSchema();
-			return (schema == null) ? null : schema.getIdentifier();
-		}
-
-		private Schema getDefaultSchema() {
 			SchemaContainer sc = this.getSchemaContainer();
-			return (sc == null) ? null : sc.getDefaultSchema();
+			return (sc == null) ? null : sc.getDefaultSchemaIdentifier();
 		}
 
 		private SchemaContainer getSchemaContainer() {

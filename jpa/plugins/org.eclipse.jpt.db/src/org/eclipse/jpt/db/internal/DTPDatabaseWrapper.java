@@ -259,6 +259,23 @@ final class DTPDatabaseWrapper
 		}
 		return null;
 	}
+	
+	/**
+	 * If we find a default catalog, return its identifier;
+	 * otherwise, return the last identifier on the list of default identifiers.
+	 * (Some databases have multiple possible default names.)
+	 * Return null if the database does not support catalogs.
+	 */
+	public synchronized String getDefaultCatalogIdentifier() {
+		DTPCatalogWrapper catalog = this.getDefaultCatalog();
+		return (catalog != null) ? catalog.getIdentifier() : this.getDefaultCatalogIdentifier_();
+	}
+
+	private String getDefaultCatalogIdentifier_() {
+		List<String> identifiers = this.getDefaultCatalogIdentifiers();
+		return identifiers.isEmpty() ? null : identifiers.get(identifiers.size() - 1);
+	}
+
 
 	// ***** schemata
 

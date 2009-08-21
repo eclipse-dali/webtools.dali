@@ -275,23 +275,13 @@ public class JpaFacetDataModelProvider
 	}
 
 	private String getDefaultCatalogName() {
-		Catalog catalog = this.getDefaultCatalog();
-		return (catalog == null) ? null : catalog.getIdentifier();
-	}
-
-	private Catalog getDefaultCatalog() {
 		Database db = this.getDatabase();
-		return (db == null) ? null : db.getDefaultCatalog();
+		return (db == null) ? null : db.getDefaultCatalogIdentifier();
 	}
 
 	private String getDefaultSchemaName() {
-		Schema schema = this.getDefaultSchema();
-		return (schema == null) ? null : schema.getIdentifier();
-	}
-	
-	private Schema getDefaultSchema() {
 		SchemaContainer sc = this.getSchemaContainer();
-		return (sc == null) ? null : sc.getDefaultSchema();
+		return (sc == null) ? null : sc.getDefaultSchemaIdentifier();
 	}
 
 	private boolean runtimeSupportsEjb30() {

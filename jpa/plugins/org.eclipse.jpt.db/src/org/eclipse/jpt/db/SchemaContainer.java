@@ -63,5 +63,13 @@ public interface SchemaContainer
 	 * In most cases the default schema's name will match the user name.
 	 */
 	Schema getDefaultSchema();
+	
+	/**
+	 * Return the container's "default" schema identifier.
+	 * The container may or may not have a schema with a matching name.
+	 * @see #getDefaultSchema()
+	 */
+	String getDefaultSchemaIdentifier();
+
 
 }
