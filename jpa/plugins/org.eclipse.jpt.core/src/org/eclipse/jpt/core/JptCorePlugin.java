@@ -533,24 +533,33 @@ public class JptCorePlugin extends Plugin {
 	public void stop(BundleContext context) throws Exception {
 		try {
 			JpaModelManager.instance().stop();
-			if (parserTracker != null) {
-				parserTracker.close();
-				parserTracker = null;
+			if (this.parserTracker != null) {
+				this.parserTracker.close();
+				this.parserTracker = null;
 			}
 		} finally {
 			super.stop(context);
 		}
 	}
-	
-	public SAXParserFactory getSAXParserFactory() {
-		if (parserTracker == null) {
-			parserTracker = new ServiceTracker(getBundle().getBundleContext(), "javax.xml.parsers.SAXParserFactory", null);
-			
-			parserTracker.open();
+
+	public synchronized SAXParserFactory getSAXParserFactory() {
+		SAXParserFactory factory = (SAXParserFactory) this.getParserTracker().getService();
+		if (factory != null) {
+			factory.setNamespaceAware(true);
 		}
-		SAXParserFactory theFactory = (SAXParserFactory) parserTracker.getService();
-		if (theFactory != null)
-			theFactory.setNamespaceAware(true);
-		return theFactory;
+		return factory;
 	}
+
+	private ServiceTracker getParserTracker() {
+		if (this.parserTracker == null) {
+			this.parserTracker = this.buildParserTracker();
+			this.parserTracker.open();
+		}
+		return this.parserTracker;
+	}
+
+	private ServiceTracker buildParserTracker() {
+		return new ServiceTracker(this.getBundle().getBundleContext(), "javax.xml.parsers.SAXParserFactory", null); //$NON-NLS-1$
+	}
+
 }

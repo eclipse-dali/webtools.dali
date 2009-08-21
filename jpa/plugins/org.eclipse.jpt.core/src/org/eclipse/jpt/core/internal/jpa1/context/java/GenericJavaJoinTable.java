@@ -642,7 +642,7 @@ public class GenericJavaJoinTable
 			for (PersistentAttribute each : 
 					CollectionTools.iterable(
 						targetEntity.getPersistentType().allAttributes())) {
-				if (each.getMapping().isOwnedBy(getRelationshipMapping())) {
+				if (each.getMapping().isOwnedBy(this.getRelationshipMapping())) {
 					return each.getName();
 				}
 			}

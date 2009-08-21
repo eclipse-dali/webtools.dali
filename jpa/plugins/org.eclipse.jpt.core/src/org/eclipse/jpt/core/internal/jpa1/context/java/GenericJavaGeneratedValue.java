@@ -43,7 +43,7 @@ public class GenericJavaGeneratedValue
 	private String specifiedGenerator;
 
 	// always null?
-	private String defaultGenerator;
+	private String defaultGenerator = null;
 	
 
 	public GenericJavaGeneratedValue(JavaIdMapping parent) {

@@ -184,12 +184,10 @@ public abstract class AbstractJarFileRef
 	}
 	
 	private JavaResourcePackageFragmentRoot javaPackageRoot_specifically() {
-		IProject project = getJpaProject().getProject();
-		
 		for (IPath deploymentPath : resolveDeploymentJarFilePath(new Path(this.fileName))) {
-			IVirtualFile virtualJar = ComponentCore.createFile(project, deploymentPath);
+			IVirtualFile virtualJar = ComponentCore.createFile(this.getProject(), deploymentPath);
 			IFile realJar = virtualJar.getUnderlyingFile();
-			if (realJar.exists() && realJar.getProject().equals(project)) {
+			if (realJar.exists() && realJar.getProject().equals(this.getProject())) {
 				return getJpaProject().getJavaResourcePackageFragmentRoot(realJar.getProjectRelativePath().toString());
 			}
 		}
@@ -208,15 +206,49 @@ public abstract class AbstractJarFileRef
 		
 		return null;
 	}
-	
+
 	/**
 	 * Return an array of deployment paths that may correspond
 	 * to the given persistence.xml jar file entry
 	 */
-	protected abstract IPath[] resolveDeploymentJarFilePath(IPath jarFilePath);
+	protected IPath[] resolveDeploymentJarFilePath(IPath jarFilePath) {
+		IPath root = this.getJarDeploymentRootPath();
+		return this.projectHasWebFacet() ?
+				this.resolveDeploymentJarFilePathWeb(root, jarFilePath) :
+				this.resolveDeploymentJarFilePathNonWeb(root, jarFilePath);
+	}
+
+	protected IPath getJarDeploymentRootPath() {
+		return JptCorePlugin.getJarDeploymentRootPath(this.getProject());
+	}
+
+	protected boolean projectHasWebFacet() {
+		return JptCorePlugin.projectHasWebFacet(this.getProject());
+	}
+
+	protected IPath[] resolveDeploymentJarFilePathWeb(IPath root, IPath jarFilePath) {
+		return new IPath[] {
+				// first path entry assumes form "../lib/other.jar"
+				root.append(jarFilePath.removeFirstSegments(1)),
+				// second path entry assumes form of first, without ".." ("lib/other.jar")
+				root.append(jarFilePath)
+			};
+	}
+
+	protected IPath[] resolveDeploymentJarFilePathNonWeb(IPath root, IPath jarFilePath) {
+		return new IPath[] {
+				// assumes form "../lib/other.jar"
+				root.append(jarFilePath)
+			};
+	}
+
 
 	protected JarFile buildJarFile(JavaResourcePackageFragmentRoot jrpfr) {
 		return this.getJpaFactory().buildJarFile(this, jrpfr);
+	}
+
+	protected IProject getProject() {
+		return this.getJpaProject().getProject();
 	}
 	
 	
