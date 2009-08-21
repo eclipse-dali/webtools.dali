@@ -16,6 +16,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Counter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
@@ -122,7 +123,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	protected void engageItem(E item) {
-		// listen to an item only once
+		// listen to each item only once
 		Counter counter = this.counters.get(item);
 		if (counter == null) {
 			counter = new Counter();
@@ -157,7 +158,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	protected void disengageItem(E item) {
-		// stop listening to an item only once
+		// stop listening to each item only once
 		Counter counter = this.counters.get(item);
 		if (counter == null) {
 			// something is wrong if this happens...  ~bjv
@@ -263,44 +264,11 @@ public abstract class ItemAspectListValueModelAdapter<E>
 
 	/**
 	 * The specified item has a bound property that has changed.
-	 * Notify listeners of the change.
+	 * Notify listeners of the change. The listeners will have to determine
+	 * whether the item aspect change is significant.
 	 */
-	protected void itemAspectChanged(EventObject event) {
-		Object item = event.getSource();
-		int index = this.lastIdentityIndexOf(item);
-		while (index != -1) {
-			this.itemAspectChanged(index, item);
-			index = this.lastIdentityIndexOf(item, index);
-		}
-	}
-
-	/**
-	 * The specified item has a bound property that has changed.
-	 * Notify listeners of the change.
-	 */
-	protected void itemAspectChanged(int index, Object item) {
-		this.fireItemReplaced(LIST_VALUES, index, item, item);		// hmmm...
-	}
-
-	/**
-	 * Return the last index of the specified item, using object
-	 * identity instead of equality.
-	 */
-	protected int lastIdentityIndexOf(Object o) {
-		return this.lastIdentityIndexOf(o, this.listHolder.size());
-	}
-
-	/**
-	 * Return the last index of the specified item, starting just before the
-	 * the specified endpoint, and using object identity instead of equality.
-	 */
-	protected int lastIdentityIndexOf(Object o, int end) {
-		for (int i = end; i-- > 0; ) {
-			if (this.listHolder.get(i) == o) {
-				return i;
-			}
-		}
-		return -1;
+	protected void itemAspectChanged(@SuppressWarnings("unused") EventObject event) {
+		this.fireListChanged(LIST_VALUES, CollectionTools.list(this.listHolder, this.listHolder.size()));
 	}
 
 }
