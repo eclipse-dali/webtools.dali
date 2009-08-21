@@ -83,7 +83,7 @@ public class ShortCircuitAnnotationElementAdapter<T>
 			}
 		} else {
 			if (newValue == null) {  // object => null
-				this.adapter.setValue(newValue);
+				this.adapter.setValue(null);
 			} else {  // object => object
 				if (this.valuesAreEqual(oldValue, newValue)) {
 					// do nothing

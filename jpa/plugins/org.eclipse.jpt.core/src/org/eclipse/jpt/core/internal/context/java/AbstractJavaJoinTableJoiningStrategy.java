@@ -53,10 +53,9 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 
 	public void addStrategy() {
 		if (this.joinTable == null) {
-			JavaJoinTable oldJoinTable = this.joinTable;
 			this.joinTable = getJpaFactory().buildJavaJoinTable(this);
 			addAnnotation();
-			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, this.joinTable);
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, null, this.joinTable);
 		}
 	}
 	
@@ -65,7 +64,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 			JavaJoinTable oldJoinTable = this.joinTable;
 			this.joinTable = null;
 			removeAnnotation();
-			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, this.joinTable);
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, null);
 		}
 	}
 	

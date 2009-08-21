@@ -60,11 +60,10 @@ public class GenericOrmJoinTableJoiningStrategy
 	
 	public void addStrategy() {
 		if (this.joinTable == null) {
-			OrmJoinTable oldJoinTable = this.joinTable;
 			XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
 			this.joinTable = getJpaFactory().buildOrmJoinTable(this, resourceJoinTable);
 			this.resource.setJoinTable(resourceJoinTable);
-			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, this.joinTable);
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, null, this.joinTable);
 		}
 	}
 	
