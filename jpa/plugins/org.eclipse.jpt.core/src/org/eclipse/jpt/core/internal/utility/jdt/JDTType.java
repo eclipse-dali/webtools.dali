@@ -185,7 +185,7 @@ public class JDTType
 
 	// ********** JPT tools adapter **********
 
-	protected class JPTToolsAdapter implements JPTTools.TypeAdapter {
+	protected static class JPTToolsAdapter implements JPTTools.TypeAdapter {
 		private final ITypeBinding typeBinding;
 		protected JPTToolsAdapter(ITypeBinding typeBinding) {
 			super();

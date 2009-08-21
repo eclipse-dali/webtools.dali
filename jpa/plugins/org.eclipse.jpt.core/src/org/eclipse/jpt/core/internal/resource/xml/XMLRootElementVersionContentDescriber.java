@@ -90,20 +90,20 @@ public final class XMLRootElementVersionContentDescriber extends XMLContentDescr
 	/* (Intentionally not included in javadoc)
 	 * Simple value holder for root element name, its namespace and dtd.
 	 */
-	 private class QualifiedElement {
+	 static class QualifiedElement {
 		private String namespace;
 		private String element;
 		private String dtd;
 		private String version;
 		
-		public QualifiedElement(String namespace, String element, String dtd, String version) {
+		QualifiedElement(String namespace, String element, String dtd, String version) {
 			this.namespace = namespace;
 			this.element = element;
 			this.dtd = dtd;
 			this.version = version;
 		}
 
-		public QualifiedElement(String qualifiedElement) {
+		QualifiedElement(String qualifiedElement) {
 			// Extract namespace part
 			int openBrace = qualifiedElement.indexOf('{');
 			int closeBrace = qualifiedElement.indexOf('}');

@@ -339,7 +339,7 @@ public abstract class AbstractXmlResourceProvider
 	}
 	
 	
-	public class NotifyRunner implements ISafeRunnable 
+	public static class NotifyRunner implements ISafeRunnable 
 	{
 		private final JpaXmlResourceProviderEvent event;
 		

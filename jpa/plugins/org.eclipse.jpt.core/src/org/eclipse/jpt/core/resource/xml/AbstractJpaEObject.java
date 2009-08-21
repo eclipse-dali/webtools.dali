@@ -240,11 +240,11 @@ public abstract class AbstractJpaEObject
 
 	// ********** custom adapter list **********
 
-	protected class XmlEAdapterList<E extends Object & Adapter>
+	protected static class XmlEAdapterList<E extends Object & Adapter>
 		extends EAdapterList<E>
 	{
-		public XmlEAdapterList(Notifier notifier) {
-			super(notifier);
+		public XmlEAdapterList(AbstractJpaEObject jpaEObject) {
+			super(jpaEObject);
 		}
 
 		@Override
@@ -253,7 +253,7 @@ public abstract class AbstractJpaEObject
 			if (newObject instanceof EMF2DOMAdapter) {
 				Object n = ((EMF2DOMAdapter) newObject).getNode();
 				if (n instanceof IDOMNode) {
-					AbstractJpaEObject.this.node = (IDOMNode) n;
+					((AbstractJpaEObject) this.notifier).node = (IDOMNode) n;
 				}
 			}
 		}
@@ -261,8 +261,8 @@ public abstract class AbstractJpaEObject
 		@Override
 		protected void didRemove(int index, E oldObject) {
 			if ((oldObject instanceof EMF2DOMAdapter) &&
-					(((EMF2DOMAdapter) oldObject).getNode() == AbstractJpaEObject.this.node)) {
-				AbstractJpaEObject.this.node = null;
+					(((EMF2DOMAdapter) oldObject).getNode() == ((AbstractJpaEObject) this.notifier).node)) {
+				((AbstractJpaEObject) this.notifier).node = null;
 			}
 			super.didRemove(index, oldObject);
 		}
