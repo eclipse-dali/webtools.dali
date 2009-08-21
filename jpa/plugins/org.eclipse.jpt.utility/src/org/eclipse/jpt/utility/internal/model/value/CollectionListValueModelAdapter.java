@@ -123,44 +123,7 @@ public class CollectionListValueModelAdapter<E>
 	}
 
 
-	/**
-	 * Return the index of the specified item, using object
-	 * identity instead of equality.
-	 */
-	protected int lastIdentityIndexOf(Object o) {
-		return this.lastIdentityIndexOf(o, this.list.size());
-	}
-	
-	/**
-	 * Return the last index of the specified item, starting just before the
-	 * the specified endpoint, and using object identity instead of equality.
-	 */
-	protected int lastIdentityIndexOf(Object o, int end) {
-		for (int i = end; i-- > 0; ) {
-			if (this.list.get(i) == o) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-
 	// ********** behavior **********
-
-	protected void buildList() {
-		// if the new collection is empty, do nothing
-		int size = this.collectionHolder.size();
-		if (size != 0) {
-			this.buildList(size);
-		}
-	}
-
-	protected void buildList(int size) {
-		this.list.ensureCapacity(size);
-		for (E each : this.collectionHolder) {
-			this.list.add(each);
-		}
-	}
 
 	@Override
 	protected void engageModel() {
@@ -175,6 +138,21 @@ public class CollectionListValueModelAdapter<E>
 		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 		// clear out the list when we are not listening to the collection holder
 		this.list.clear();
+	}
+
+	protected void buildList() {
+		// if the new collection is empty, do nothing
+		int size = this.collectionHolder.size();
+		if (size != 0) {
+			this.buildList(size);
+		}
+	}
+
+	protected void buildList(int size) {
+		this.list.ensureCapacity(size);
+		for (E each : this.collectionHolder) {
+			this.list.add(each);
+		}
 	}
 
 	protected void itemsAdded(CollectionAddEvent event) {
@@ -192,11 +170,7 @@ public class CollectionListValueModelAdapter<E>
 	}
 
 	protected void itemsRemoved(CollectionRemoveEvent event) {
-		// we have to remove the items individually,
-		// since they are probably not in sequence
-		for (E item : this.getItems(event)) {
-			this.removeItemFromList(this.lastIdentityIndexOf(item), this.list, LIST_VALUES);
-		}
+		this.removeItemsFromList(this.getItems(event), this.list, LIST_VALUES);
 	}
 
 	// minimize scope of suppressed warnings

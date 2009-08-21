@@ -149,15 +149,7 @@ public class ListCollectionValueModelAdapter<E>
 	}
 
 	protected void itemsRemoved(ListRemoveEvent event) {
-		this.removeItems_(this.getItems(event));
-	}
-
-	protected void removeItems_(Iterable<E> removedItems) {
-		// we have to remove the items individually,
-		// since they are probably not in sequence
-		for (E removedItem : removedItems) {
-			this.removeItemFromCollection(removedItem, this.collection, VALUES);
-		}
+		this.removeItemsFromCollection(this.getItems(event), this.collection, VALUES);
 	}
 
 	// minimized scope of suppressed warnings
@@ -167,7 +159,7 @@ public class ListCollectionValueModelAdapter<E>
 	}
 
 	protected void itemsReplaced(ListReplaceEvent event) {
-		this.removeItems_(this.getOldItems(event));
+		this.removeItemsFromCollection(this.getOldItems(event), this.collection, VALUES);
 		this.addItemsToCollection(this.getNewItems(event), this.collection, VALUES);
 	}
 
@@ -219,13 +211,17 @@ public class ListCollectionValueModelAdapter<E>
 	}
 
 	protected void buildCollection() {
-		Iterator<? extends E> stream = this.listHolder.iterator();
 		// if the new list is empty, do nothing
-		if (stream.hasNext()) {
-			this.collection.ensureCapacity(this.listHolder.size());
-			while (stream.hasNext()) {
-				this.collection.add(stream.next());
-			}
+		int size = this.listHolder.size();
+		if (size != 0) {
+			this.buildCollection(size);
+		}
+	}
+
+	protected void buildCollection(int size) {
+		this.collection.ensureCapacity(size);
+		for (E each : this.listHolder) {
+			this.collection.add(each);
 		}
 	}
 
