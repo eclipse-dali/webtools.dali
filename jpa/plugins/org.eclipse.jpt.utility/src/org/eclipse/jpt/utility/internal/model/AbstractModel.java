@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -44,19 +43,19 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * with numerous convenience methods.
  */
 public abstract class AbstractModel
-	implements Model, Serializable
+	implements Model
 {
 	/**
 	 * Delegate state/property/collection/list/tree change support to this
 	 * helper object. The change support object is "lazily-initialized";
-	 * so it may be null. The method #getChangeSupport() will initialize this
+	 * so it may be null. The method {@link #getChangeSupport()} will initialize this
 	 * field if it is null.
 	 * 
 	 * NB: We instantiate this when we fire events, even when we do not have
-	 * any listeners (which would be implied if 'changeSupport' were null).
+	 * any listeners (which is be implied if this is null).
 	 * This allows the change support to have behavior tied to events even when
 	 * we have no listeners.
-	 * @see ChangeSupport#aspectChanged(String)
+	 * @see CallbackChangeSupport#aspectChanged(String)
 	 */
 	protected ChangeSupport changeSupport;
 
