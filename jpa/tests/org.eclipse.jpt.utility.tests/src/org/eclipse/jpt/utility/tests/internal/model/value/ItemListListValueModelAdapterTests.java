@@ -12,15 +12,18 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import javax.swing.Icon;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemListListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -147,7 +150,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 
 	public void testGet() throws Exception {
 		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
-		ListValueModel<Junk> listValueModel = new SortedListValueModelAdapter<Junk>(new ItemListListValueModelAdapter<Junk>(listHolder, Junk.STUFF_LIST));
+		ListValueModel<Junk> listValueModel = new SortedListValueModelWrapper<Junk>(new ItemListListValueModelAdapter<Junk>(listHolder, Junk.STUFF_LIST));
 		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(this.bar, listValueModel.get(0));

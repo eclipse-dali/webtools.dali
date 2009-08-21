@@ -16,7 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -24,9 +26,11 @@ import org.eclipse.jpt.utility.internal.model.value.ItemStateListValueModelAdapt
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class ItemStateListValueModelAdapterTests extends TestCase {
 	private Junk foo;
 	private Junk bar;
@@ -158,7 +162,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 
 	private void verifyListSort(Comparator<Junk> comparator) {
 		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
-		ListValueModel<Junk> listValueModel = new ItemStateListValueModelAdapter<Junk>(new SortedListValueModelAdapter<Junk>(listHolder, comparator));
+		ListValueModel<Junk> listValueModel = new ItemStateListValueModelAdapter<Junk>(new SortedListValueModelWrapper<Junk>(listHolder, comparator));
 		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
@@ -196,7 +200,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 		assertFalse(this.jaz.hasAnyStateChangeListeners());
 		assertFalse(this.jaz.hasAnyStateChangeListeners());
 
-		ListValueModel<Junk> listValueModel = new ItemStateListValueModelAdapter<Junk>(new SortedListValueModelAdapter<Junk>(listHolder));
+		ListValueModel<Junk> listValueModel = new ItemStateListValueModelAdapter<Junk>(new SortedListValueModelWrapper<Junk>(listHolder));
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyStateChangeListeners());
 		assertFalse(this.foo.hasAnyStateChangeListeners());
@@ -223,7 +227,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 
 	public void testGetSize() throws Exception {
 		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
-		ListValueModel<Junk> listValueModel = new ItemStateListValueModelAdapter<Junk>(new SortedListValueModelAdapter<Junk>(listHolder));
+		ListValueModel<Junk> listValueModel = new ItemStateListValueModelAdapter<Junk>(new SortedListValueModelWrapper<Junk>(listHolder));
 		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(6, listValueModel.size());
@@ -232,7 +236,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 
 	public void testGet() throws Exception {
 		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
-		ListValueModel<Junk> listValueModel = new SortedListValueModelAdapter<Junk>(new ItemStateListValueModelAdapter<Junk>(listHolder));
+		ListValueModel<Junk> listValueModel = new SortedListValueModelWrapper<Junk>(new ItemStateListValueModelAdapter<Junk>(listHolder));
 		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(this.bar, listValueModel.get(0));

@@ -16,20 +16,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import javax.swing.ListModel;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.model.value.CoordinatedList;
 
+@SuppressWarnings("nls")
 public class ListModelAdapterTests extends TestCase {
 
 	public ListModelAdapterTests(String name) {
@@ -186,7 +191,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	private void verifyListSort(Comparator<String> comparator) {
 		SimpleListValueModel<String> listHolder = this.buildListHolder();
-		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter<String>(listHolder, comparator));
+		ListModel listModel = this.buildListModel(new SortedListValueModelWrapper<String>(listHolder, comparator));
 		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
@@ -250,7 +255,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	public void testGetElementAt() throws Exception {
 		SimpleListValueModel<String> listHolder = this.buildListHolder();
-		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter<String>(listHolder));
+		ListModel listModel = this.buildListModel(new SortedListValueModelWrapper<String>(listHolder));
 		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		this.verifyHasListeners(listModel);
 		assertEquals("bar", listModel.getElementAt(0));

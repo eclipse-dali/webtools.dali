@@ -16,8 +16,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import javax.swing.Icon;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -25,6 +28,7 @@ import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAd
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -174,7 +178,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 
 	private void verifyListSort(Comparator<Junk> comparator) {
 		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
-		ListValueModel<Junk> listValueModel = new ItemPropertyListValueModelAdapter<Junk>(new SortedListValueModelAdapter<Junk>(listHolder, comparator), Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY);
+		ListValueModel<Junk> listValueModel = new ItemPropertyListValueModelAdapter<Junk>(new SortedListValueModelWrapper<Junk>(listHolder, comparator), Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY);
 		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
@@ -216,7 +220,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertFalse(this.jaz.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertFalse(this.jaz.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
 
-		ListValueModel<Junk> listValueModel = new ItemPropertyListValueModelAdapter<Junk>(new SortedListValueModelAdapter<Junk>(listHolder), Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY);
+		ListValueModel<Junk> listValueModel = new ItemPropertyListValueModelAdapter<Junk>(new SortedListValueModelWrapper<Junk>(listHolder), Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY);
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
@@ -243,7 +247,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 
 	public void testGetSize() throws Exception {
 		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
-		ListValueModel<Junk> listValueModel = new ItemPropertyListValueModelAdapter<Junk>(new SortedListValueModelAdapter<Junk>(listHolder), Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY);
+		ListValueModel<Junk> listValueModel = new ItemPropertyListValueModelAdapter<Junk>(new SortedListValueModelWrapper<Junk>(listHolder), Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY);
 		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(6, listValueModel.size());
@@ -252,7 +256,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 
 	public void testGet() throws Exception {
 		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
-		ListValueModel<Junk> listValueModel = new SortedListValueModelAdapter<Junk>(new ItemPropertyListValueModelAdapter<Junk>(listHolder, Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY));
+		ListValueModel<Junk> listValueModel = new SortedListValueModelWrapper<Junk>(new ItemPropertyListValueModelAdapter<Junk>(listHolder, Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY));
 		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(this.bar, listValueModel.get(0));

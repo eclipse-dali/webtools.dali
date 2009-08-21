@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -33,11 +34,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.WindowConstants;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -143,11 +145,11 @@ public class ListModelAdapterUITest {
 	}
 
 	private ListModel buildStandardSortedPrimitiveListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter()));
+		return new ListModelAdapter(new SortedListValueModelWrapper<String>(this.buildPrimitiveTaskListAdapter()));
 	}
 
 	private ListModel buildCustomSortedPrimitiveListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator()));
+		return new ListModelAdapter(new SortedListValueModelWrapper<String>(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator()));
 	}
 
 	private ListModel buildUnsortedDisplayableListModel() {
@@ -155,11 +157,11 @@ public class ListModelAdapterUITest {
 	}
 
 	private ListModel buildStandardSortedDisplayableListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter<Task>(this.buildDisplayableTaskListAdapter()));
+		return new ListModelAdapter(new SortedListValueModelWrapper<Task>(this.buildDisplayableTaskListAdapter()));
 	}
 
 	private ListModel buildCustomSortedDisplayableListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter<Task>(this.buildDisplayableTaskListAdapter(), this.buildCustomTaskObjectComparator()));
+		return new ListModelAdapter(new SortedListValueModelWrapper<Task>(this.buildDisplayableTaskListAdapter(), this.buildCustomTaskObjectComparator()));
 	}
 
 	private Component buildListPanel(String label, ListModel listModel) {

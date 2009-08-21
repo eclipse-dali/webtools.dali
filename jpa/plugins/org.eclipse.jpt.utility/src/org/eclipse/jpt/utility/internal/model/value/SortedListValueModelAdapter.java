@@ -36,6 +36,8 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
+ * 
+ * @see SortedListValueModelWrapper
  */
 public class SortedListValueModelAdapter<E>
 	extends CollectionListValueModelAdapter<E>
@@ -64,22 +66,6 @@ public class SortedListValueModelAdapter<E>
 	 */
 	public SortedListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder) {
 		this(collectionHolder, null);
-	}
-
-	/**
-	 * Wrap the specified list value model and sort its contents
-	 * using the specified comparator.
-	 */
-	public SortedListValueModelAdapter(ListValueModel<? extends E> listHolder, Comparator<E> comparator) {
-		this(new ListCollectionValueModelAdapter<E>(listHolder), comparator);
-	}
-
-	/**
-	 * Wrap the specified list value model and sort its contents
-	 * based on the elements' "natural ordering".
-	 */
-	public SortedListValueModelAdapter(ListValueModel<? extends E> listHolder) {
-		this(listHolder, null);
 	}
 
 

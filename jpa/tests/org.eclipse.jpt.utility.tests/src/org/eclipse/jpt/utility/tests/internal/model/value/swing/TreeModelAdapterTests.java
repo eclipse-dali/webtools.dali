@@ -15,12 +15,15 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+
 import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -33,7 +36,7 @@ import org.eclipse.jpt.utility.internal.model.value.NullListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.TreeModelAdapter;
@@ -606,7 +609,7 @@ public class TreeModelAdapterTests extends TestCase {
 		/** the list should be sorted */
 		@Override
 		protected ListValueModel<TreeNodeValueModel<Object>> buildChildrenModel(TestModel testModel) {
-			return new SortedListValueModelAdapter<TreeNodeValueModel<Object>>(this.buildDisplayStringAdapter(testModel));
+			return new SortedListValueModelWrapper<TreeNodeValueModel<Object>>(this.buildDisplayStringAdapter(testModel));
 		}
 		/** the display string (name) of each node can change */
 		protected ListValueModel<TreeNodeValueModel<Object>> buildDisplayStringAdapter(TestModel testModel) {

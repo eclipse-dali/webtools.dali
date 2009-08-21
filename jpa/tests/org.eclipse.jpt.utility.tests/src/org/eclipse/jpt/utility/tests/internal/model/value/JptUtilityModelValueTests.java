@@ -49,12 +49,13 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(PropertyListValueModelAdapterTests.class);
 		suite.addTestSuite(ReadOnlyWritablePropertyValueModelWrapperTests.class);
 		suite.addTestSuite(SetCollectionValueModelTests.class);
-		suite.addTestSuite(StaticCollectionValueModelTests.class);
-		suite.addTestSuite(StaticListValueModelTests.class);
 		suite.addTestSuite(SimpleCollectionValueModelTests.class);
 		suite.addTestSuite(SimpleListValueModelTests.class);
 		suite.addTestSuite(SimplePropertyValueModelTests.class);
 		suite.addTestSuite(SortedListValueModelAdapterTests.class);
+		suite.addTestSuite(SortedListValueModelWrapperTests.class);
+		suite.addTestSuite(StaticCollectionValueModelTests.class);
+		suite.addTestSuite(StaticListValueModelTests.class);
 		suite.addTestSuite(StaticValueModelTests.class);
 		suite.addTestSuite(TransformationListValueModelAdapterTests.class);
 		suite.addTestSuite(TransformationListValueModelAdapterTests.TransformerTests.class);

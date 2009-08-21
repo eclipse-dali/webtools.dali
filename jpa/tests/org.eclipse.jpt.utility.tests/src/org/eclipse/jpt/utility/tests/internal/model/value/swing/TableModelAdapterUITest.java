@@ -19,6 +19,7 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -45,6 +46,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.text.Document;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
@@ -52,7 +54,7 @@ import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAd
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ColumnAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ComboBoxModelAdapter;
@@ -86,6 +88,7 @@ import org.eclipse.jpt.utility.tests.internal.model.value.swing.TableModelAdapte
  * Note that the table model and row selection model share the same
  * list value model (the sorted people adapter)
  */
+@SuppressWarnings("nls")
 public class TableModelAdapterUITest {
 	private SimpleCollectionValueModel<Object> eyeColorsHolder;  // Object because it adapts to a combo-box
 	private WritablePropertyValueModel<Crowd> crowdHolder;
@@ -104,7 +107,7 @@ public class TableModelAdapterUITest {
 		super();
 	}
 
-	protected void exec(String[] args) throws Exception {
+	protected void exec(@SuppressWarnings("unused") String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		this.eyeColorsHolder = this. buildEyeColorCollectionHolder();
 		this.crowdHolder = this.buildCrowdHolder();
@@ -155,7 +158,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ListValueModel<Person> buildSortedPeopleAdapter() {
-		return new SortedListValueModelAdapter<Person>(this.buildPeopleNameAdapter());
+		return new SortedListValueModelWrapper<Person>(this.buildPeopleNameAdapter());
 	}
 
 	// the list will need to be re-sorted if a name changes
@@ -202,7 +205,7 @@ public class TableModelAdapterUITest {
 		};
 	}
 
-	void rowSelectionChanged(ListSelectionEvent e) {
+	void rowSelectionChanged(@SuppressWarnings("unused") ListSelectionEvent event) {
 		Person selection = (Person) this.rowSelectionModel.selectedValue();
 		this.selectedPersonHolder.setValue(selection);
 		boolean personSelected = (selection != null);

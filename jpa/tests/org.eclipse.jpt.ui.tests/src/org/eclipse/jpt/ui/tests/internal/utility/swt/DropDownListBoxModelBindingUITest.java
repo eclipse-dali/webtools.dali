@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -194,11 +194,11 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ListValueModel<String> buildStandardSortedPrimitiveListModel() {
-		return new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter());
+		return new SortedListValueModelWrapper<String>(this.buildPrimitiveTaskListAdapter());
 	}
 
 	private ListValueModel<String> buildCustomSortedPrimitiveListModel() {
-		return new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator());
+		return new SortedListValueModelWrapper<String>(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator());
 	}
 
 	private ListValueModel<Task> buildUnsortedObjectListModel() {
@@ -206,11 +206,11 @@ public class DropDownListBoxModelBindingUITest
 	}
 
 	private ListValueModel<Task> buildStandardSortedObjectListModel() {
-		return new SortedListValueModelAdapter<Task>(this.buildObjectTaskListAdapter());
+		return new SortedListValueModelWrapper<Task>(this.buildObjectTaskListAdapter());
 	}
 
 	private ListValueModel<Task> buildCustomSortedObjectListModel() {
-		return new SortedListValueModelAdapter<Task>(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
+		return new SortedListValueModelWrapper<Task>(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
 	}
 
 	private <E> void buildComboBoxPanel(Composite parent, String label, ListValueModel<E> model, WritablePropertyValueModel<E> selectedItemModel, boolean custom) {
