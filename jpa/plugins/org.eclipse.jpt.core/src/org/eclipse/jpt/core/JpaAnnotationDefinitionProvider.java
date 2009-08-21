@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 
 /**
@@ -22,34 +22,20 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.0
  * @since 2.2
  */
-public interface JpaAnnotationDefinitionProvider {
-
+public interface JpaAnnotationDefinitionProvider
+{
 	/**
-	 * Return a ListIterator of mapping annotation definitions which can 
+	 * Return a ListIterator of all annotation definitions which can 
 	 * be placed on a type
 	 */
-	ListIterator<AnnotationDefinition> typeMappingAnnotationDefinitions();
+	Iterator<AnnotationDefinition> typeAnnotationDefinitions();
 	
 	/**
-	 * Return a ListIterator of supporting annotation definitions which can 
-	 * be placed on a type.  These annotations are used in conjunction with the 
-	 * type mapping annotations
-	 */
-	ListIterator<AnnotationDefinition> typeSupportingAnnotationDefinitions();
-	
-	/**
-	 * Return a ListIterator of mapping annotation definitions which can 
+	 * Return a ListIterator of all annotation definitions which can 
 	 * be placed on an attribute
 	 */
-	ListIterator<AnnotationDefinition> attributeMappingAnnotationDefinitions();
-	
-	/**
-	 * Return a ListIterator of supporting annotation definitions which can 
-	 * be placed on a attribute.  These annotations are used in conjunction with the 
-	 * attribute mapping annotations
-	 */
-	ListIterator<AnnotationDefinition> attributeSupportingAnnotationDefinitions();
+	Iterator<AnnotationDefinition> attributeAnnotationDefinitions();
 }

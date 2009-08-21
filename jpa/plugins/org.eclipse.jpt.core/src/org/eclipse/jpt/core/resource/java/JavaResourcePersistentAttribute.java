@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.MethodSignature;
 
 /**
@@ -33,16 +32,16 @@ public interface JavaResourcePersistentAttribute
 	 * The Java resource persistent attribute's name does not change.
 	 */
 	String getName();
-
+	
 	/**
-	 * Return a null mapping annotation with the specified name.
+	 * Return a null annotation for the specified annotation name.
 	 * Return null if the specified annotation name is null.
 	 * The corresponding AnnotationDefinition must implement #buildNullAnnotation()
 	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember,
 	 * org.eclipse.jpt.core.utility.jdt.Member)}
 	 */
-	Annotation getNullMappingAnnotation(String annotationName);
-
+	Annotation getNullAnnotation(String annotationName);
+	
 	/**
 	 * Whether the Java resource persistent attribute is a field does not change.
 	 */
@@ -52,12 +51,6 @@ public interface JavaResourcePersistentAttribute
 	 * Whether the Java resource persistent attribute is a property does not change.
 	 */
 	boolean isProperty();
-
-	/**
-	 * Return whether the attribute has any mapping or non-mapping annotations
-	 * (of course only persistence-related annotations).
-	 */
-	boolean hasAnyPersistenceAnnotations();
 
 	/**
 	 * Return the access type explicitly specified by the javax.persistence.Access annotation.

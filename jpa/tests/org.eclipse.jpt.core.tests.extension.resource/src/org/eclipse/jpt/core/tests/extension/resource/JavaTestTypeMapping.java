@@ -32,7 +32,7 @@ public class JavaTestTypeMapping extends AbstractJavaTypeMapping
 		return TEST_TYPE_MAPPING_KEY;
 	}
 
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
 

@@ -60,13 +60,13 @@ public class JavaEclipseLinkConvert extends AbstractJavaJpaContextNode implement
 	}
 		
 	public void addToResourceModel() {
-		this.resourcePersistentAttribute.addSupportingAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.addAnnotation(getAnnotationName());
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourcePersistentAttribute.removeSupportingAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.removeAnnotation(getAnnotationName());
 		if (getConverter() != null) {
-			this.resourcePersistentAttribute.removeSupportingAnnotation(getConverter().getAnnotationName());
+			this.resourcePersistentAttribute.removeAnnotation(getConverter().getAnnotationName());
 		}
 	}
 
@@ -75,7 +75,7 @@ public class JavaEclipseLinkConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	protected EclipseLinkConvertAnnotation getResourceConvert() {
-		return (EclipseLinkConvertAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getAnnotationName());
+		return (EclipseLinkConvertAnnotation) this.resourcePersistentAttribute.getAnnotation(getAnnotationName());
 	}
 	
 	public String getConverterName() {
@@ -122,11 +122,11 @@ public class JavaEclipseLinkConvert extends AbstractJavaJpaContextNode implement
 		JavaEclipseLinkConverter newConverter = buildConverter(converterType);
 		this.converter = null;
 		if (oldConverter != null) {
-			this.resourcePersistentAttribute.removeSupportingAnnotation(oldConverter.getAnnotationName());
+			this.resourcePersistentAttribute.removeAnnotation(oldConverter.getAnnotationName());
 		}
 		this.converter = newConverter;
 		if (newConverter != null) {
-			this.resourcePersistentAttribute.addSupportingAnnotation(newConverter.getAnnotationName());
+			this.resourcePersistentAttribute.addAnnotation(newConverter.getAnnotationName());
 		}
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
@@ -205,16 +205,16 @@ public class JavaEclipseLinkConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkConverterAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.CUSTOM_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.TYPE_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.STRUCT_CONVERTER;
 		}
 		

@@ -34,7 +34,7 @@ public abstract class JavaEclipseLinkConverter extends AbstractJavaJpaContextNod
 	
 	
 	protected EclipseLinkNamedConverterAnnotation getAnnotation() {
-		return (EclipseLinkNamedConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
+		return (EclipseLinkNamedConverterAnnotation) this.resourcePersistentMember.getAnnotation(getAnnotationName());
 	}
 	
 	protected abstract String getAnnotationName();

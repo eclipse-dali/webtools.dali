@@ -40,7 +40,7 @@ public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestReadOnly();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		EclipseLinkReadOnlyAnnotation readOnly = (EclipseLinkReadOnlyAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.READ_ONLY);
+		EclipseLinkReadOnlyAnnotation readOnly = (EclipseLinkReadOnlyAnnotation) typeResource.getAnnotation(EclipseLinkJPA.READ_ONLY);
 		assertNotNull(readOnly);
 	}
 

@@ -81,19 +81,19 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
 		
 		customizer.setSpecifiedCustomizerClass(null);
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizerAnnotation);
 
 
 		customizer.setSpecifiedCustomizerClass("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 	}
 	
@@ -106,14 +106,14 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		
-		typeResource.removeSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		typeResource.removeAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.addSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.addAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation.setValue("FooBar");
@@ -127,7 +127,7 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = embeddable.getChangeTracking();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
 		
@@ -183,7 +183,7 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		
 		// remove annotation, text context
 		
-		typeResource.removeSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		typeResource.removeAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertNull(resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
@@ -198,7 +198,7 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = embeddable.getChangeTracking();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value
 		
@@ -237,13 +237,13 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		
 		contextChangeTracking.setSpecifiedType(null);
 		
-		assertNull(typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME));
 		assertNull(contextChangeTracking.getSpecifiedType());
 		
 		// change context to AUTO specifically (this time from no annotation), test resource
 		
 		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.AUTO);
-		resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());

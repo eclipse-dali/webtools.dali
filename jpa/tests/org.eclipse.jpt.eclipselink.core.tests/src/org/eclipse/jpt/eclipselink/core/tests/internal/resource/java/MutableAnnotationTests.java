@@ -57,13 +57,13 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		assertNotNull(attributeResource.getSupportingAnnotation(EclipseLinkJPA.MUTABLE));
+		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.MUTABLE));
 		
-		attributeResource.removeSupportingAnnotation(EclipseLinkJPA.MUTABLE);		
-		assertNull(attributeResource.getSupportingAnnotation(EclipseLinkJPA.MUTABLE));
+		attributeResource.removeAnnotation(EclipseLinkJPA.MUTABLE);		
+		assertNull(attributeResource.getAnnotation(EclipseLinkJPA.MUTABLE));
 		
-		attributeResource.addSupportingAnnotation(EclipseLinkJPA.MUTABLE);
-		assertNotNull(attributeResource.getSupportingAnnotation(EclipseLinkJPA.MUTABLE));
+		attributeResource.addAnnotation(EclipseLinkJPA.MUTABLE);
+		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.MUTABLE));
 	}
 
 	public void testGetValue() throws Exception {
@@ -71,7 +71,7 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.MUTABLE);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 	}
 
@@ -80,7 +80,7 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.MUTABLE);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 		
 		mutableAnnotation.setValue(Boolean.FALSE);
@@ -98,7 +98,7 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.MUTABLE);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 		
 		mutableAnnotation.setValue(null);

@@ -42,7 +42,7 @@ public class PrivateOwnedTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkPrivateOwnedAnnotation privateOwned = (EclipseLinkPrivateOwnedAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.PRIVATE_OWNED);
+		EclipseLinkPrivateOwnedAnnotation privateOwned = (EclipseLinkPrivateOwnedAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.PRIVATE_OWNED);
 		assertNotNull(privateOwned);
 	}
 

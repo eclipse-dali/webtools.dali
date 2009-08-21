@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.resource.java.NullJoinTableAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryJoinTableAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
-import org.eclipse.jpt.core.jpa2.resource.java.JPA;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
@@ -74,7 +74,7 @@ public final class BinaryAssociationOverride2_0Annotation
 	}
 
 	private IAnnotation getJdtJoinTable() {
-		return (IAnnotation) this.getJdtMemberValue(JPA.ASSOCIATION_OVERRIDE__JOIN_TABLE);
+		return (IAnnotation) this.getJdtMemberValue(JPA2_0.ASSOCIATION_OVERRIDE__JOIN_TABLE);
 	}
 
 	private void setJoinTable(JoinTableAnnotation column) {

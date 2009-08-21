@@ -10,114 +10,64 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
-/**
- * 
- */
 public abstract class AbstractJpaAnnotationDefintionProvider
 	implements JpaAnnotationDefinitionProvider
 {
-	/**
-	 * Ordered list of possible type mapping annotations. Ordered because this
-	 * is used to determine the mapping in the case where 2 mapping annotations exist
-	 */
-	private AnnotationDefinition[] typeMappingAnnotationDefinitions;
+	private AnnotationDefinition[] typeAnnotationDefinitions;
 	
-	private AnnotationDefinition[] typeSupportingAnnotationDefinitions;
+	private AnnotationDefinition[] attributeAnnotationDefinitions;
 	
-	/**
-	 * Ordered list of possible attribute mapping annotations. Ordered because this
-	 * is used to determine the mapping in the case where 2 mapping annotations exist
-	 */
-	private AnnotationDefinition[] attributeMappingAnnotationDefinitions;
-	
-	private AnnotationDefinition[] attributeSupportingAnnotationDefinitions;
 	
 	protected AbstractJpaAnnotationDefintionProvider() {
 		super();
 	}
 	
+	
 	// ********** type annotation definitions **********
-
-	public synchronized ListIterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
-		if (this.typeMappingAnnotationDefinitions == null) {
-			this.typeMappingAnnotationDefinitions = this.buildTypeMappingAnnotationDefinitions();
+	
+	public synchronized Iterator<AnnotationDefinition> typeAnnotationDefinitions() {
+		if (this.typeAnnotationDefinitions == null) {
+			this.typeAnnotationDefinitions = this.buildTypeAnnotationDefinitions();
 		}
-		return new ArrayListIterator<AnnotationDefinition>(this.typeMappingAnnotationDefinitions);
+		return new ArrayIterator<AnnotationDefinition>(this.typeAnnotationDefinitions);
 	}
 	
-	protected AnnotationDefinition[] buildTypeMappingAnnotationDefinitions() {
+	protected AnnotationDefinition[] buildTypeAnnotationDefinitions() {
 		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addTypeMappingAnnotationDefinitionsTo(definitions);
+		this.addTypeAnnotationDefinitionsTo(definitions);
 		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
 	
 	/**
-	 * Subclasses must override this to specify type mapping annotation definitions.
+	 * Subclasses must override this to specify type annotation definitions.
 	 */
-	protected abstract void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
+	protected abstract void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
 	
-	public synchronized ListIterator<AnnotationDefinition> typeSupportingAnnotationDefinitions() {
-		if (this.typeSupportingAnnotationDefinitions == null) {
-			this.typeSupportingAnnotationDefinitions = this.buildTypeSupportingAnnotationDefinitions();
-		}
-		return new ArrayListIterator<AnnotationDefinition>(this.typeSupportingAnnotationDefinitions);
-	}
 	
-	protected AnnotationDefinition[] buildTypeSupportingAnnotationDefinitions() {
-		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addTypeSupportingAnnotationDefinitionsTo(definitions);
-		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
-	}
-	
-	/**
-	 * Subclasses must override this to specify type supporting annotation definitions.
-	 */
-	protected abstract void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
-	
-
 	// ********** attribute annotation definitions **********
 
-	public synchronized ListIterator<AnnotationDefinition> attributeMappingAnnotationDefinitions() {
-		if (this.attributeMappingAnnotationDefinitions == null) {
-			this.attributeMappingAnnotationDefinitions = this.buildAttributeMappingAnnotationDefinitions();
+	public synchronized Iterator<AnnotationDefinition> attributeAnnotationDefinitions() {
+		if (this.attributeAnnotationDefinitions == null) {
+			this.attributeAnnotationDefinitions = this.buildAttributeAnnotationDefinitions();
 		}
-		return new ArrayListIterator<AnnotationDefinition>(this.attributeMappingAnnotationDefinitions);
+		return new ArrayListIterator<AnnotationDefinition>(this.attributeAnnotationDefinitions);
 	}
 	
-	protected AnnotationDefinition[] buildAttributeMappingAnnotationDefinitions() {
+	protected AnnotationDefinition[] buildAttributeAnnotationDefinitions() {
 		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addAttributeMappingAnnotationDefinitionsTo(definitions);
+		this.addAttributeAnnotationDefinitionsTo(definitions);
 		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
 	
 	/**
-	 * Subclasses must override this to specify  attribute mapping annotation definitions.
+	 * Subclasses must override this to specify attribute annotation definitions.
 	 */
-	protected abstract void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
-	
-	public synchronized ListIterator<AnnotationDefinition> attributeSupportingAnnotationDefinitions() {
-		if (this.attributeSupportingAnnotationDefinitions == null) {
-			this.attributeSupportingAnnotationDefinitions = this.buildAttributeSupportingAnnotationDefinitions();
-		}
-		return new ArrayListIterator<AnnotationDefinition>(this.attributeSupportingAnnotationDefinitions);
-	}
-	
-	protected AnnotationDefinition[] buildAttributeSupportingAnnotationDefinitions() {
-		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addAttributeSupportingAnnotationDefinitionsTo(definitions);
-		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
-	}
-	
-	/**
-	 * Subclasses must override this to specify attribute supporting annotation definitions.
-	 */
-	protected abstract void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
-	
+	protected abstract void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
 }

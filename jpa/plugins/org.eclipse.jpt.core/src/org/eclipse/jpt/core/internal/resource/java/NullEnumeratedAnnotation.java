@@ -31,8 +31,8 @@ public final class NullEnumeratedAnnotation
 	}
 
 	@Override
-	protected EnumeratedAnnotation addSupportingAnnotation() {
-		return (EnumeratedAnnotation) super.addSupportingAnnotation();
+	protected EnumeratedAnnotation addAnnotation() {
+		return (EnumeratedAnnotation) super.addAnnotation();
 	}
 
 	// ***** value
@@ -42,7 +42,7 @@ public final class NullEnumeratedAnnotation
 
 	public void setValue(EnumType value) {
 		if (value != null) {
-			this.addSupportingAnnotation().setValue(value);
+			this.addAnnotation().setValue(value);
 		}		
 	}
 

@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEntityProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaIdMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
@@ -35,6 +34,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappingFileDefinition
 import org.eclipse.jpt.core.internal.jpa2.Orm2_0ResourceModelProvider;
 import org.eclipse.jpt.core.internal.jpa2.Persistence2_0ResourceModelProvider;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericOrm2_0MappingFileDefinition;
+import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingProvider2_0;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 
 /**
@@ -111,7 +111,7 @@ public class Generic2_0JpaPlatformProvider
 		return new JavaAttributeMappingProvider[] {
 			JavaTransientMappingProvider.instance(),
 			//JavaElementCollectionMappingProvider.instance(),
-			JavaIdMappingProvider.instance(),
+			JavaIdMappingProvider2_0.instance(),
 			JavaVersionMappingProvider.instance(),
 			JavaBasicMappingProvider.instance(),
 			JavaEmbeddedMappingProvider.instance(),

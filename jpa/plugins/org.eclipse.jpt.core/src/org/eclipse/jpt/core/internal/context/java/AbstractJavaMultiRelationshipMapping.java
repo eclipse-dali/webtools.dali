@@ -70,15 +70,17 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	protected OrderByAnnotation getResourceOrderBy() {
-		return (OrderByAnnotation) getResourcePersistentAttribute().getSupportingAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		return (OrderByAnnotation) getResourcePersistentAttribute().
+				getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected OrderByAnnotation addResourceOrderBy() {
-		return (OrderByAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		return (OrderByAnnotation) getResourcePersistentAttribute().
+				addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeResourceOrderBy() {
-		getResourcePersistentAttribute().removeSupportingAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
 	public boolean isNoOrdering() {
@@ -165,11 +167,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 					this.getMapKeyResource().setName(newMapKey);
 				}
 				else {
-					getResourcePersistentAttribute().removeSupportingAnnotation(MapKeyAnnotation.ANNOTATION_NAME);				
+					getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);				
 				}
 			}
 			else if (newMapKey != null) {
-				getResourcePersistentAttribute().addSupportingAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+				getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 				getMapKeyResource().setName(newMapKey);
 			}
 		}
@@ -211,7 +213,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	protected MapKeyAnnotation getMapKeyResource() {
-		return (MapKeyAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		return (MapKeyAnnotation) this.resourcePersistentAttribute.
+			getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	public Iterator<String> candidateMapKeyNames() {

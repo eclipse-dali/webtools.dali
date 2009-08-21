@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -150,69 +149,53 @@ final class SourcePersistentAttribute
 
 
 	// ******** AbstractJavaResourcePersistentMember implementation ********
-
+	
 	@Override
-	Annotation buildMappingAnnotation(String mappingAnnotationName) {
-		return this.getAnnotationProvider().buildAttributeMappingAnnotation(this, this.member, mappingAnnotationName);
+	Iterator<String> validAnnotationNames() {
+		return this.getAnnotationProvider().attributeAnnotationNames();
 	}
-
+	
 	@Override
-	Annotation buildSupportingAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildAttributeSupportingAnnotation(this, this.member, annotationName);
+	Annotation buildAnnotation(String annotationName) {
+		return this.getAnnotationProvider().
+			buildAttributeAnnotation(this, this.member, annotationName);
 	}
-
+	
 	@Override
-	Annotation buildNullSupportingAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildNullAttributeSupportingAnnotation(this, annotationName);
+	Annotation buildNullAnnotation(String annotationName) {
+		return this.getAnnotationProvider().
+			buildNullAttributeAnnotation(this, annotationName);
 	}
-
-	public Annotation getNullMappingAnnotation(String annotationName) {
-		return (annotationName == null) ? null : this.buildNullMappingAnnotation(annotationName);
-	}
-
-	private Annotation buildNullMappingAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildNullAttributeMappingAnnotation(this, annotationName);
-	}
-
-	@Override
-	ListIterator<String> validMappingAnnotationNames() {
-		return this.getAnnotationProvider().attributeMappingAnnotationNames();
-	}
-
-	@Override
-	ListIterator<String> validSupportingAnnotationNames() {
-		return this.getAnnotationProvider().attributeSupportingAnnotationNames();
-	}
-
+	
 	public boolean isFor(MethodSignature signature, int occurrence) {
 		return ((MethodAttribute) this.member).matches(signature, occurrence);
 	}
-
-
+	
+	
 	// ******** JavaResourcePersistentAttribute implementation ********
-
+	
 	public String getName() {
 		return this.member.getAttributeName();
 	}
-
+	
+	public Annotation getNullAnnotation(String annotationName) {
+		return (annotationName == null) ? null : this.buildNullAnnotation(annotationName);
+	}
+	
 	public boolean isField() {
 		return this.member.isField();
 	}
-
+	
 	public boolean isProperty() {
 		return ! this.isField();
 	}
-
-	public boolean hasAnyPersistenceAnnotations() {
-		return (this.mappingAnnotationsSize() > 0)
-				|| (this.supportingAnnotationsSize() > 0);
-	}
-
+	
 	public AccessType getSpecifiedAccess() {
-		Access2_0Annotation accessAnnotation = (Access2_0Annotation) this.getSupportingAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		Access2_0Annotation accessAnnotation = 
+				(Access2_0Annotation) getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		return (accessAnnotation == null) ? null : accessAnnotation.getValue();
 	}
-
+	
 	public boolean typeIsSubTypeOf(String tn) {
 		if (this.typeName == null) {
 			return false;
@@ -221,15 +204,16 @@ final class SourcePersistentAttribute
 				|| this.typeInterfaceNames.contains(tn)
 				|| this.typeSuperclassNames.contains(tn);
 	}
-
+	
 	public boolean typeIsVariablePrimitive() {
 		return (this.typeName != null) && ClassTools.classNamedIsVariablePrimitive(this.typeName);
 	}
-
+	
 	private ITypeBinding getTypeBinding(CompilationUnit astRoot) {
 		return this.member.getTypeBinding(astRoot);
 	}
-
+	
+	
 	// ***** modifiers
 	public int getModifiers() {
 		return this.modifiers;

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceSequenceGeneratorAnnotation;
-import org.eclipse.jpt.core.jpa2.resource.java.JPA;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -26,11 +26,11 @@ public final class SourceSequenceGenerator2_0Annotation
 	extends SourceSequenceGeneratorAnnotation
 	implements SequenceGenerator2_0Annotation
 {
-	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__CATALOG);
+	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = buildAdapter(JPA2_0.SEQUENCE_GENERATOR__CATALOG);
 	private final AnnotationElementAdapter<String> catalogAdapter;
 	private String catalog;
 	
-	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__SCHEMA);
+	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = buildAdapter(JPA2_0.SEQUENCE_GENERATOR__SCHEMA);
 	private final AnnotationElementAdapter<String> schemaAdapter;
 	private String schema;
 

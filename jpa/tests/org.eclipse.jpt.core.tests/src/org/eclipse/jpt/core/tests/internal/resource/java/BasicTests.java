@@ -69,7 +69,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getAnnotation(JPA.BASIC);
 		assertNotNull(basic);
 	}
 
@@ -78,7 +78,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getAnnotation(JPA.BASIC);
 		assertEquals(Boolean.TRUE, basic.getOptional());
 	}
 
@@ -87,7 +87,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getAnnotation(JPA.BASIC);
 		assertEquals(Boolean.TRUE, basic.getOptional());
 		
 		basic.setOptional(Boolean.FALSE);
@@ -101,7 +101,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getAnnotation(JPA.BASIC);
 		assertEquals(Boolean.TRUE, basic.getOptional());
 		
 		basic.setOptional(null);
@@ -116,7 +116,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getAnnotation(JPA.BASIC);
 		assertEquals(FetchType.EAGER, basic.getFetch());
 	}
 
@@ -125,7 +125,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getAnnotation(JPA.BASIC);
 		assertEquals(FetchType.EAGER, basic.getFetch());
 		
 		basic.setFetch(FetchType.LAZY);
@@ -139,7 +139,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getAnnotation(JPA.BASIC);
 		assertEquals(FetchType.EAGER, basic.getFetch());
 		
 		basic.setFetch(null);

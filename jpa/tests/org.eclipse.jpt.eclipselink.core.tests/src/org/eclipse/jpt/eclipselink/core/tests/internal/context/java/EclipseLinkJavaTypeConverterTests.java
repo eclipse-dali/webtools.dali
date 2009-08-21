@@ -116,19 +116,19 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkContextModelTe
 			
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("bar", converterAnnotation.getName());
 
 		
 		converter.setName(null);
 		assertEquals(null, converter.getName());
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getName());
 
 
 		converter.setName("bar");
 		assertEquals("bar", converter.getName());
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("bar", converterAnnotation.getName());
 	}
 	
@@ -145,14 +145,14 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkContextModelTe
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setName("bar");
 		assertEquals("bar", converter.getName());
 		
-		attributeResource.removeSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+		attributeResource.removeAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
 		assertEquals(null, eclipseLinkConvert.getConverter());
 		
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.addSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.addAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertNotNull(eclipseLinkConvert.getConverter());
 		
 		converterAnnotation.setName("FOO");
@@ -186,19 +186,19 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkContextModelTe
 			
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getDataType());
 
 		
 		converter.setDataType(null);
 		assertEquals(null, converter.getDataType());
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getDataType());
 
 
 		converter.setDataType("Bar");
 		assertEquals("Bar", converter.getDataType());
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getDataType());
 	}
 	
@@ -215,14 +215,14 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkContextModelTe
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setDataType("Bar");
 		assertEquals("Bar", converter.getDataType());
 		
-		attributeResource.removeSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+		attributeResource.removeAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
 		assertEquals(null, eclipseLinkConvert.getConverter());
 		
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.addSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.addAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertNotNull(eclipseLinkConvert.getConverter());
 		
 		converterAnnotation.setDataType("FooBar");
@@ -256,19 +256,19 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkContextModelTe
 			
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getObjectType());
 
 		
 		converter.setObjectType(null);
 		assertEquals(null, converter.getObjectType());
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getObjectType());
 
 
 		converter.setObjectType("Bar");
 		assertEquals("Bar", converter.getObjectType());
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getObjectType());
 	}
 	
@@ -285,14 +285,14 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkContextModelTe
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+		EclipseLinkTypeConverterAnnotation converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setObjectType("Bar");
 		assertEquals("Bar", converter.getObjectType());
 		
-		attributeResource.removeSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
+		attributeResource.removeAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);
 		assertEquals(null, eclipseLinkConvert.getConverter());
 		
-		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.addSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkTypeConverterAnnotation) attributeResource.addAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME);		
 		assertNotNull(eclipseLinkConvert.getConverter());
 		
 		converterAnnotation.setObjectType("FooBar");

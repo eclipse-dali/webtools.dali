@@ -134,7 +134,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertNotNull(oneToOne);
 	}
 	
@@ -143,7 +143,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FetchType.EAGER, oneToOne.getFetch());
 	}
 
@@ -152,7 +152,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FetchType.EAGER, oneToOne.getFetch());
 		
 		oneToOne.setFetch(FetchType.LAZY);
@@ -166,7 +166,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FetchType.EAGER, oneToOne.getFetch());
 		
 		oneToOne.setFetch(null);
@@ -182,7 +182,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
 	}
 	
@@ -191,7 +191,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
 		
 		oneToOne.setTargetEntity("Foo");
@@ -204,7 +204,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
 		
 		oneToOne.setTargetEntity(null);
@@ -219,7 +219,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToOne.getFullyQualifiedTargetEntityClassName());
 		
 		oneToOne.setTargetEntity("Foo");
@@ -236,7 +236,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(Boolean.TRUE, oneToOne.getOptional());
 	}
 
@@ -245,7 +245,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(Boolean.TRUE, oneToOne.getOptional());
 		
 		oneToOne.setOptional(Boolean.FALSE);
@@ -259,7 +259,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(Boolean.TRUE, oneToOne.getOptional());
 		
 		oneToOne.setOptional(null);
@@ -274,7 +274,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals("foo", oneToOne.getMappedBy());
 	}
 
@@ -283,7 +283,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(null, oneToOne.getMappedBy());
 	}
 
@@ -292,7 +292,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertNull(oneToOne.getMappedBy());
 		oneToOne.setMappedBy("bar");
 		assertEquals("bar", oneToOne.getMappedBy());
@@ -305,7 +305,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertEquals("foo", oneToOne.getMappedBy());
 		
 		oneToOne.setMappedBy(null);
@@ -320,7 +320,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeAll());
 	
 		oneToOne.setCascadeAll(true);
@@ -334,7 +334,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeMerge());
 	
 		oneToOne.setCascadeMerge(true);
@@ -348,7 +348,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadePersist());
 	
 		oneToOne.setCascadePersist(true);
@@ -362,7 +362,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeRemove());
 	
 		oneToOne.setCascadeRemove(true);
@@ -376,7 +376,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeRefresh());
 	
 		oneToOne.setCascadeRefresh(true);
@@ -390,7 +390,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.isCascadeAll());
 		
 		oneToOne.setCascadeAll(true);
@@ -415,7 +415,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.isCascadeMerge());
 		
 		oneToOne.setCascadeMerge(false);//TODO should the resource model handle this and remove both MERGE 
@@ -433,7 +433,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
+		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.isCascadeMerge());
 		assertTrue(oneToOne.isCascadeRemove());
 		

@@ -43,7 +43,7 @@ public class VersionTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();
+		JavaResourceNode mappingAnnotation = attributeResource.getAnnotation(VersionAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof VersionAnnotation);
 	}
 }

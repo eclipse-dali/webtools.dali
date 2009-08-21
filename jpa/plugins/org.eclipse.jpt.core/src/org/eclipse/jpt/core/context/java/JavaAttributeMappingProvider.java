@@ -44,11 +44,11 @@ public interface JavaAttributeMappingProvider
 	 * Return whether this mapping provider should be used for the given {@link JavaPersistentAttribute} 
 	 * in the default (ignoring all mapping annotations) case.
 	 */
-	boolean defaultApplies(JavaPersistentAttribute persistentAttribute);
+	boolean testDefault(JavaPersistentAttribute persistentAttribute);
 	
 	/**
 	 * Return whether this mapping provider should be used for the given {@link JavaPersistentAttribute} 
 	 * in the specified (observing all mapping annotations) case.
 	 */
-	boolean specifiedApplies(JavaPersistentAttribute persistentAttribute);
+	boolean testSpecified(JavaPersistentAttribute persistentAttribute);
 }

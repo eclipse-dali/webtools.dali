@@ -14,9 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -36,7 +34,6 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.Counter;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
@@ -160,48 +157,40 @@ final class SourcePersistentType
 
 
 	// ********** AbstractJavaResourcePersistentMember implementation **********
-
+	
 	@Override
-	Annotation buildMappingAnnotation(String mappingAnnotationName) {
-		return this.getAnnotationProvider().buildTypeMappingAnnotation(this, this.member, mappingAnnotationName);
+	Iterator<String> validAnnotationNames() {
+		return this.getAnnotationProvider().typeAnnotationNames();
 	}
 	
 	@Override
-	Annotation buildSupportingAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildTypeSupportingAnnotation(this, this.member, annotationName);
+	Annotation buildAnnotation(String mappingAnnotationName) {
+		return this.getAnnotationProvider().
+				buildTypeAnnotation(this, this.member, mappingAnnotationName);
 	}
 	
 	@Override
-	Annotation buildNullSupportingAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildNullTypeSupportingAnnotation(this, annotationName);
-	}
-	
-	@Override
-	ListIterator<String> validMappingAnnotationNames() {
-		return this.getAnnotationProvider().typeMappingAnnotationNames();
-	}
-	
-	@Override
-	ListIterator<String> validSupportingAnnotationNames() {
-		return this.getAnnotationProvider().typeSupportingAnnotationNames();
+	Annotation buildNullAnnotation(String annotationName) {
+		return this.getAnnotationProvider().
+				buildNullTypeAnnotation(this, annotationName);
 	}
 	
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-
+		
 		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
-
+		
 		for (JavaResourcePersistentAttribute field : this.getFields()) {
 			field.resolveTypes(astRoot);
 		}
-
+		
 		// a new type can trigger a method parameter type to be a resolved,
 		// fully-qualified name, so we need to rebuild our list of methods:
 		//     "setFoo(Foo)" is not the same as "setFoo(com.bar.Foo)"
 		// and, vice-versa, a removed type can "unresolve" a parameter type
 		this.updateMethods(astRoot);
-
+		
 		for (JavaResourcePersistentAttribute method : this.getMethods()) {
 			method.resolveTypes(astRoot);
 		}
@@ -209,13 +198,13 @@ final class SourcePersistentType
 			type.resolveTypes(astRoot);
 		}
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
-
+	
+	
 	// ******** JavaResourcePersistentType implementation ********
 
 	// ***** name
@@ -311,9 +300,10 @@ final class SourcePersistentType
 	/**
 	 * check only persistable attributes
 	 */
-	public boolean hasAnyAttributePersistenceAnnotations() {
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistableAttributes(); stream.hasNext(); ) {
-			if (stream.next().hasAnyPersistenceAnnotations()) {
+	public boolean hasAnyAnnotatedAttributes() {
+		for (Iterator<JavaResourcePersistentAttribute> stream = 
+					this.persistableAttributes(); stream.hasNext(); ) {
+			if (stream.next().isAnnotated()) {
 				return true;
 			}
 		}

@@ -31,7 +31,7 @@ public class NullColumnAnnotation
 
 	@Override
 	protected ColumnAnnotation addAnnotation() {
-		return (ColumnAnnotation) this.addSupportingAnnotation();
+		return (ColumnAnnotation) super.addAnnotation();
 	}
 
 	// ***** length

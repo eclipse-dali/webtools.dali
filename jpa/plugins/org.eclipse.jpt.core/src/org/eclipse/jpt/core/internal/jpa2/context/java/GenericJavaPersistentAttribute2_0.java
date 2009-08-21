@@ -52,7 +52,9 @@ public class GenericJavaPersistentAttribute2_0
 	}
 
 	protected AccessType buildSpecifiedAccess() {
-		Access2_0Annotation accessAnnotation = (Access2_0Annotation) this.resourcePersistentAttribute.getSupportingAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		Access2_0Annotation accessAnnotation = 
+				(Access2_0Annotation) this.resourcePersistentAttribute.
+					getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		return accessAnnotation == null ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue());
 	}
 

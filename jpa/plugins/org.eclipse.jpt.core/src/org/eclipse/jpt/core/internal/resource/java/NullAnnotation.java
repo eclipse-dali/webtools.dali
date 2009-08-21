@@ -65,33 +65,23 @@ public abstract class NullAnnotation
 	}
 	
 	/**
-	 * Convenience method: Set the type or attribute's mapping annotation
+	 * Convenience method: Add the type or attribute's annotation
 	 * and return it.
 	 * Pre-condition: The annotation's parent must be a persistent member
 	 * (type or attribute).
 	 */
-	protected Annotation setMappingAnnotation() {
-		return this.getMember().setMappingAnnotation(this.getAnnotationName());
-	}
-
-	/**
-	 * Convenience method: Add to the type or attribute's list of "supporting"
-	 * annotations and return the newly created annotation.
-	 * Pre-condition: The annotation's parent must be a persistent member
-	 * (type or attribute).
-	 */
-	protected Annotation addSupportingAnnotation() {
-		return this.getMember().addSupportingAnnotation(this.getAnnotationName());
+	protected Annotation addAnnotation() {
+		return this.getMember().addAnnotation(this.getAnnotationName());
 	}
 	
 	/**
-	 * Convenience method: Add to the type or attribute's list of "supporting"
-	 * annotations and return the newly created annotation.
+	 * Convenience method: Add the type or attribute's annotation 
+	 * and return it.
 	 * Pre-condition: The annotation's parent must be a persistent member
 	 * (type or attribute).
 	 */
-	protected Annotation addSupportingAnnotation(JavaResourcePersistentMember.AnnotationInitializer initializer) {
-		return this.getMember().addSupportingAnnotation(this.getAnnotationName(), initializer);
+	protected Annotation addAnnotation(
+			JavaResourcePersistentMember.AnnotationInitializer initializer) {
+		return this.getMember().addAnnotation(this.getAnnotationName(), initializer);
 	}
-	
 }

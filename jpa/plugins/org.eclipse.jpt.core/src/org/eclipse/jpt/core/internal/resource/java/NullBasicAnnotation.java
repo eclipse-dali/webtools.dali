@@ -25,44 +25,48 @@ public final class NullBasicAnnotation
 	protected NullBasicAnnotation(JavaResourcePersistentAttribute parent) {
 		super(parent);
 	}
-
+	
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-
+	
 	@Override
-	protected BasicAnnotation setMappingAnnotation() {
-		return (BasicAnnotation) super.setMappingAnnotation();
+	protected BasicAnnotation addAnnotation() {
+		return (BasicAnnotation) super.addAnnotation();
 	}
-
+	
+	
 	// ***** fetch
+	
 	public FetchType getFetch() {
 		return null;
 	}
-
+	
 	public void setFetch(FetchType fetch) {
 		if (fetch != null) {
-			this.setMappingAnnotation().setFetch(fetch);
+			this.addAnnotation().setFetch(fetch);
 		}
 	}
-
+	
 	public TextRange getFetchTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
+	
+	
 	// ***** optional
+	
 	public Boolean getOptional() {
 		return null;
 	}
-
+	
 	public void setOptional(Boolean optional) {
 		if (optional != null) {
-			this.setMappingAnnotation().setOptional(optional);
+			this.addAnnotation().setOptional(optional);
 		}
 	}
-
+	
 	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

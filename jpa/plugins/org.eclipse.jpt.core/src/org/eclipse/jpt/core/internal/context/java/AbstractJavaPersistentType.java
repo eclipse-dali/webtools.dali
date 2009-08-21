@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
@@ -31,8 +30,8 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNode;
-import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -54,28 +53,34 @@ public abstract class AbstractJavaPersistentType
 	extends AbstractJavaJpaContextNode
 	implements JavaPersistentType
 {
+	protected JavaResourcePersistentType resourcePersistentType;
+	
+	protected PersistentType parentPersistentType;
+	
 	protected String name;
 	
-	protected JavaTypeMapping mapping;
-
-	protected final Vector<JavaPersistentAttribute> attributes = new Vector<JavaPersistentAttribute>();
-
-	protected PersistentType parentPersistentType;
-
-	protected JavaResourcePersistentType resourcePersistentType;
-
 	protected AccessType defaultAccess;
 
+	protected AccessType specifiedAccess;
+	
+	protected JavaTypeMapping mapping;
+	
+	protected final Vector<JavaPersistentAttribute> attributes = 
+			new Vector<JavaPersistentAttribute>();
+	
+	
 	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent);
 		this.initialize(jrpt);
 	}
 	
+	
 	@Override
 	public IResource getResource() {
 		return this.resourcePersistentType.getFile();
 	}
-
+	
+	
 	//****************** JpaStructureNode implementation *******************
 	
 	public String getId() {
@@ -85,6 +90,7 @@ public abstract class AbstractJavaPersistentType
 	public IContentType getContentType() {
 		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
 	}
+	
 	
 	//****************** PersistentType implementation *******************
 	
@@ -103,19 +109,8 @@ public abstract class AbstractJavaPersistentType
 		return getParent();
 	}
 	
-	public AccessType getAccess() {
-		return getSpecifiedAccess() != null ? getSpecifiedAccess() : getDefaultAccess();
-	}
-
-	public AccessType getDefaultAccess() {
-		return this.defaultAccess;
-	}
 	
-	protected void setDefaultAccess(AccessType newDefaultAccess) {
-		AccessType oldAccess = this.defaultAccess;
-		this.defaultAccess = newDefaultAccess;
-		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldAccess, newDefaultAccess);
-	}
+	// **************** name **************************************************
 	
 	public String getName() {
 		return this.name;
@@ -131,6 +126,75 @@ public abstract class AbstractJavaPersistentType
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
+	protected String buildName() {
+		return this.resourcePersistentType.getQualifiedName();
+	}
+	
+	
+	// **************** access ************************************************
+	
+	public AccessType getAccess() {
+		return getSpecifiedAccess() != null ? getSpecifiedAccess() : getDefaultAccess();
+	}
+
+	public AccessType getDefaultAccess() {
+		return this.defaultAccess;
+	}
+	
+	protected void setDefaultAccess(AccessType newDefaultAccess) {
+		AccessType oldAccess = this.defaultAccess;
+		this.defaultAccess = newDefaultAccess;
+		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldAccess, newDefaultAccess);
+	}
+	
+	public AccessType getSpecifiedAccess() {
+		return this.specifiedAccess;
+	}
+	
+	/**
+	 * Check the access "specified" by the java resource model.
+	 * 		Check java annotations first.
+	 * 		If still null check xml mapping specified access
+	 *		If still null then set to parentPersistentType access.
+	 * 		If still null check entity-mappings specified access setting if this persistent-type is listed in an orm.xml file
+	 * 		If still null check the persistence-unit default Access
+	 * 		Default to FIELD if all else fails.
+	 */
+	protected AccessType buildDefaultAccess() {
+		AccessType accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
+		if (accessType != null) {
+			return accessType;
+		}
+		accessType = this.getOwnerOverrideAccess();
+		if (accessType != null) {
+			return accessType;
+		}
+
+		if (this.parentPersistentType != null) {
+			accessType = this.parentPersistentType.getDefaultAccess();
+			if (accessType != null) {
+				return accessType;
+			}
+		}
+
+		accessType = this.getOwnerDefaultAccess();
+		if (accessType != null) {
+			return accessType;
+		}
+
+		// last ditch attempt to allow the user to annotate *something*
+		return AccessType.FIELD;
+	}
+	
+	/**
+	 * Build an access type based on annotations from the resource model.
+	 * (This is platform dependent)
+	 */
+	protected abstract AccessType buildSpecifiedAccess();
+	
+	
+	// **************** mapping ***********************************************
+	
 	public JavaTypeMapping getMapping() {
 		return this.mapping;
 	}
@@ -144,22 +208,13 @@ public abstract class AbstractJavaPersistentType
 			return;
 		}
 		JavaTypeMapping oldMapping = getMapping();
-		JavaTypeMapping newMapping = createJavaTypeMappingFromMappingKey(key);
-	
-		this.mapping = newMapping;	
-		this.resourcePersistentType.setMappingAnnotation(newMapping.getAnnotationName());
+		JavaTypeMapping newMapping = buildMappingFromMappingKey(key);
+		
+		this.mapping = newMapping;
+		this.resourcePersistentType.setPrimaryAnnotation(
+				newMapping.getAnnotationName(),
+				CollectionTools.array(newMapping.supportingAnnotationNames(), new String[0]));
 		firePropertyChanged(PersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
-	
-		if (oldMapping != null) {
-			Collection<String> annotationsToRemove = CollectionTools.collection(oldMapping.correspondingAnnotationNames());
-			if (getMapping() != null) {
-				CollectionTools.removeAll(annotationsToRemove, getMapping().correspondingAnnotationNames());
-			}
-			
-			for (String annotationName : annotationsToRemove) {
-				this.resourcePersistentType.removeSupportingAnnotation(annotationName);
-			}
-		}
 	}
 	
 	protected void setMapping(JavaTypeMapping newMapping) {
@@ -167,6 +222,30 @@ public abstract class AbstractJavaPersistentType
 		this.mapping = newMapping;	
 		firePropertyChanged(PersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
 	}
+	
+	protected JavaTypeMapping buildMapping() {
+		JavaTypeMappingProvider mappingProvider = 
+				getJpaPlatform().getJavaTypeMappingProvider(this);
+		return buildMapping(mappingProvider);
+	}
+	
+	protected JavaTypeMapping buildMapping(JavaTypeMappingProvider mappingProvider) {
+		JavaTypeMapping mapping = mappingProvider.buildMapping(this, getJpaFactory());
+		// mapping may be null
+		if (mapping != null) {
+			mapping.initialize(this.resourcePersistentType);
+		}
+		return mapping;
+	}
+	
+	protected JavaTypeMapping buildMappingFromMappingKey(String key) {
+		JavaTypeMappingProvider mappingProvider = getJpaPlatform().getJavaTypeMappingProvider(key);
+		JavaTypeMapping mapping = mappingProvider.buildMapping(this, getJpaFactory());
+		//no mapping.initialize(JavaResourcePersistentType) call here
+		//we do not yet have a mapping annotation so we can't call initialize
+		return mapping;
+	}
+	
 	
 	public boolean isMapped() {
 		return getMapping().isMapped();
@@ -350,27 +429,20 @@ public abstract class AbstractJavaPersistentType
 		firePropertyChanged(PersistentType.PARENT_PERSISTENT_TYPE_PROPERTY, oldParentPersistentType, newParentPersistentType);
 	}
 	
-	public boolean hasAnyAttributePersistenceAnnotations() {
-		return this.resourcePersistentType.hasAnyAttributePersistenceAnnotations();
+	public boolean hasAnyAnnotatedAttributes() {
+		return this.resourcePersistentType.hasAnyAnnotatedAttributes();
 	}
 	
-	// ******************** Updating **********************
+	// **************** initialization / updating *****************************
+	
 	protected void initialize(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
 		this.parentPersistentType = this.buildParentPersistentType();
 		this.name = this.buildName();
-		this.initializeAccess();
-		this.initializeMapping();
+		this.defaultAccess = buildDefaultAccess();
+		this.specifiedAccess = buildSpecifiedAccess();
+		this.mapping = buildMapping();
 		this.initializeAttributes();		
-	}
-	
-	protected void initializeAccess() {
-		this.defaultAccess = this.buildDefaultAccess();
-	}
-	
-	protected void initializeMapping() {
-		this.mapping = this.getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.getJavaMappingAnnotationName(), this);
-		this.mapping.initialize(this.resourcePersistentType);
 	}
 	
 	protected void initializeAttributes() {
@@ -412,69 +484,20 @@ public abstract class AbstractJavaPersistentType
 		
 	}
 	
-	/**
-	 * Check the access "specified" by the java resource model.
-	 * 		Check java annotations first.
-	 * 		If still null check xml mapping specified access
-	 *		If still null then set to parentPersistentType access.
-	 * 		If still null check entity-mappings specified access setting if this persistent-type is listed in an orm.xml file
-	 * 		If still null check the persistence-unit default Access
-	 * 		Default to FIELD if all else fails.
-	 */
-	protected AccessType buildDefaultAccess() {
-		AccessType accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
-		if (accessType != null) {
-			return accessType;
-		}
-		accessType = this.getOwnerOverrideAccess();
-		if (accessType != null) {
-			return accessType;
-		}
-
-		if (this.parentPersistentType != null) {
-			accessType = this.parentPersistentType.getDefaultAccess();
-			if (accessType != null) {
-				return accessType;
-			}
-		}
-
-		accessType = this.getOwnerDefaultAccess();
-		if (accessType != null) {
-			return accessType;
-		}
-
-		// last ditch attempt to allow the user to annotate *something*
-		return AccessType.FIELD;
-	}
-	
-	protected String buildName() {
-		return this.resourcePersistentType.getQualifiedName();
-	}
-	
 	protected void updateMapping() {
-		String javaMappingAnnotationName = this.getJavaMappingAnnotationName();
-		if (this.valuesAreEqual(this.getMapping().getAnnotationName(), javaMappingAnnotationName)) {
-			this.getMapping().update(this.resourcePersistentType);
-		} else {
-			this.setMapping(this.createJavaTypeMappingFromAnnotation(javaMappingAnnotationName));
+		// There will always be a mapping provider, even if it is a "null" mapping provider ...
+		JavaTypeMappingProvider mappingProvider = 
+				getJpaPlatform().getJavaTypeMappingProvider(this);
+		String mappingKey = mappingProvider.getKey();
+		if (this.mapping != null
+				&& valuesAreEqual(this.mapping.getKey(), mappingKey)) {
+			this.mapping.update(this.resourcePersistentType);
+		} 
+		else {
+			setMapping(buildMapping(mappingProvider));
 		}
 	}
 	
-	protected JavaTypeMapping createJavaTypeMappingFromMappingKey(String key) {
-		return getJpaPlatform().buildJavaTypeMappingFromMappingKey(key, this);
-	}
-	
-	protected JavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName) {
-		JavaTypeMapping typeMapping = getJpaPlatform().buildJavaTypeMappingFromAnnotation(annotationName, this);
-		typeMapping.initialize(this.resourcePersistentType);
-		return typeMapping;
-	}
-
-	protected String getJavaMappingAnnotationName() {
-		Annotation mappingAnnotation = this.resourcePersistentType.getMappingAnnotation();
-		return (mappingAnnotation == null) ? null :  mappingAnnotation.getAnnotationName();
-	}
-
 	protected void updateAttributes() {
 		HashBag<JavaPersistentAttribute> contextAttributesToRemove = CollectionTools.bag(this.attributes(), this.attributesSize());
 		ArrayList<JavaPersistentAttribute> contextAttributesToUpdate = new ArrayList<JavaPersistentAttribute>(this.attributesSize());

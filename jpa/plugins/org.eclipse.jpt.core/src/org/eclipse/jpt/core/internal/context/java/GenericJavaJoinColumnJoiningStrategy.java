@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class GenericJavaJoinColumnJoiningStrategy 
 	extends AbstractJavaJoinColumnJoiningStrategy
@@ -63,9 +63,10 @@ public class GenericJavaJoinColumnJoiningStrategy
 	}
 	
 	@Override
-	protected ListIterator<JoinColumnAnnotation> joinColumnAnnotations() {
-		return new TransformationListIterator<NestableAnnotation, JoinColumnAnnotation>(
-			this.getResourcePersistentAttribute().supportingAnnotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)) {
+	protected Iterator<JoinColumnAnnotation> joinColumnAnnotations() {
+		return new TransformationIterator<NestableAnnotation, JoinColumnAnnotation>(
+			this.getResourcePersistentAttribute().annotations(
+					JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)) {
 				@Override
 				protected JoinColumnAnnotation transform(NestableAnnotation next) {
 					return (JoinColumnAnnotation) next;
@@ -81,7 +82,7 @@ public class GenericJavaJoinColumnJoiningStrategy
 	@Override
 	protected JoinColumnAnnotation addAnnotation(int index) {
 		return (JoinColumnAnnotation) this.getResourcePersistentAttribute().
-			addSupportingAnnotation(
+			addAnnotation(
 				index, 
 				JoinColumnAnnotation.ANNOTATION_NAME, 
 				JoinColumnsAnnotation.ANNOTATION_NAME);
@@ -90,7 +91,7 @@ public class GenericJavaJoinColumnJoiningStrategy
 	@Override
 	protected void removeAnnotation(int index) {
 		this.getResourcePersistentAttribute().
-			removeSupportingAnnotation(
+			removeAnnotation(
 				index, 
 				JoinColumnAnnotation.ANNOTATION_NAME, 
 				JoinColumnsAnnotation.ANNOTATION_NAME);
@@ -99,7 +100,7 @@ public class GenericJavaJoinColumnJoiningStrategy
 	@Override
 	protected void moveAnnotation(int targetIndex, int sourceIndex) {
 		this.getResourcePersistentAttribute().
-			moveSupportingAnnotation(
+			moveAnnotation(
 				targetIndex, 
 				sourceIndex, 
 				JoinColumnsAnnotation.ANNOTATION_NAME);

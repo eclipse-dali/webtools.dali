@@ -31,7 +31,7 @@ public interface Access2_0Annotation
 	extends Annotation
 {
 	
-	String ANNOTATION_NAME = JPA.ACCESS;
+	String ANNOTATION_NAME = JPA2_0.ACCESS;
 	
 	/**
 	 * Corresponds to the 'value' element of the Access annotation.

@@ -39,5 +39,10 @@ public interface JavaTypeMappingProvider {
 	 * creation method instead of building a provider for the same key.
 	 */
 	public JavaTypeMapping buildMapping(JavaPersistentType type, JpaFactory factory);
-
+	
+	/**
+	 * Return whether this mapping provider should be used for the given {@link JavaPersistentType}, 
+	 * considering all annotations.
+	 */
+	boolean test(JavaPersistentType persistentType);
 }

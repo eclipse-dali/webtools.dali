@@ -43,7 +43,7 @@ public class TransientTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();
+		JavaResourceNode mappingAnnotation = attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof TransientAnnotation);
 	}
 

@@ -34,16 +34,15 @@ public interface JavaPersistentType
 	ListIterator<JavaPersistentAttribute> attributes();
 	
 	JavaPersistentAttribute getAttributeNamed(String attributeName);
-
-
+	
+	
 	// ********** Java **********
-
+	
 	/**
-	 * Return whether the persistent type contains an attribute with
-	 * a mapping annotation.
+	 * Return whether any attribute in this persistent type is annotated
 	 */
-	boolean hasAnyAttributePersistenceAnnotations();
-
+	boolean hasAnyAnnotatedAttributes();
+	
 	/**
 	 * Return the Java resource persistent type.
 	 */

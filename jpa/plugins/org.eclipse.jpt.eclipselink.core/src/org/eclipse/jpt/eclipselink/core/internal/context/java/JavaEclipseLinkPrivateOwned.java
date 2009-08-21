@@ -17,7 +17,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 
-public class JavaEclipseLinkPrivateOwned extends AbstractJavaJpaContextNode implements EclipseLinkPrivateOwned
+public class JavaEclipseLinkPrivateOwned
+	extends AbstractJavaJpaContextNode
+	implements EclipseLinkPrivateOwned
 {
 	protected boolean privateOwned;
 	
@@ -32,15 +34,15 @@ public class JavaEclipseLinkPrivateOwned extends AbstractJavaJpaContextNode impl
 	}
 	
 	protected EclipseLinkPrivateOwnedAnnotation getResourcePrivateOwned() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getPrivateOwnedAnnotationName());
+		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void addResourcePrivateOwned() {
-		this.resourcePersistentAttribute.addSupportingAnnotation(getPrivateOwnedAnnotationName());
+		this.resourcePersistentAttribute.addAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void removeResourcePrivateOwned() {
-		this.resourcePersistentAttribute.removeSupportingAnnotation(getPrivateOwnedAnnotationName());
+		this.resourcePersistentAttribute.removeAnnotation(getPrivateOwnedAnnotationName());
 	}
 
 	public boolean isPrivateOwned() {

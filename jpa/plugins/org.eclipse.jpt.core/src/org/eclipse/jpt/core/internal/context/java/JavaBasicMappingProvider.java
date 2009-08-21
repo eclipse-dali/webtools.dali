@@ -53,7 +53,7 @@ public class JavaBasicMappingProvider
 	}
 	
 	@Override
-	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
+	public boolean testDefault(JavaPersistentAttribute persistentAttribute) {
 		return persistentAttribute.typeIsBasic();
 	}
 }

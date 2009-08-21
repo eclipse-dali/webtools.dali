@@ -53,20 +53,20 @@ public class CustomizerAnnotationTests extends EclipseLinkJavaResourceModelTestC
 		ICompilationUnit cu = this.createTestCustomizer();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		assertNotNull(typeResource.getSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER));
+		assertNotNull(typeResource.getAnnotation(EclipseLinkJPA.CUSTOMIZER));
 		
-		typeResource.removeSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER);
-		assertNull(typeResource.getSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER));
+		typeResource.removeAnnotation(EclipseLinkJPA.CUSTOMIZER);
+		assertNull(typeResource.getAnnotation(EclipseLinkJPA.CUSTOMIZER));
 		
-		typeResource.addSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER);
-		assertNotNull(typeResource.getSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER));
+		typeResource.addAnnotation(EclipseLinkJPA.CUSTOMIZER);
+		assertNotNull(typeResource.getAnnotation(EclipseLinkJPA.CUSTOMIZER));
 	}
 
 	public void testGetConverterClass() throws Exception {
 		ICompilationUnit cu = this.createTestCustomizerWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		EclipseLinkCustomizerAnnotation converter = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER);
+		EclipseLinkCustomizerAnnotation converter = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CUSTOMIZER);
 		assertEquals("Foo", converter.getValue());
 	}
 
@@ -74,7 +74,7 @@ public class CustomizerAnnotationTests extends EclipseLinkJavaResourceModelTestC
 		ICompilationUnit cu = this.createTestCustomizerWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		EclipseLinkCustomizerAnnotation converter = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER);
+		EclipseLinkCustomizerAnnotation converter = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CUSTOMIZER);
 		assertEquals("Foo", converter.getValue());
 		
 		converter.setValue("Bar");
@@ -87,7 +87,7 @@ public class CustomizerAnnotationTests extends EclipseLinkJavaResourceModelTestC
 		ICompilationUnit cu = this.createTestCustomizerWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		EclipseLinkCustomizerAnnotation converter = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CUSTOMIZER);
+		EclipseLinkCustomizerAnnotation converter = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CUSTOMIZER);
 		assertEquals("Foo", converter.getValue());
 		
 		converter.setValue(null);

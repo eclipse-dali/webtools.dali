@@ -32,8 +32,8 @@ public class NullEclipseLinkJoinFetchAnnotation
 	}
 
 	@Override
-	protected EclipseLinkJoinFetchAnnotation addSupportingAnnotation() {
-		return (EclipseLinkJoinFetchAnnotation) super.addSupportingAnnotation();
+	protected EclipseLinkJoinFetchAnnotation addAnnotation() {
+		return (EclipseLinkJoinFetchAnnotation) super.addAnnotation();
 	}
 
 	// ***** value
@@ -43,7 +43,7 @@ public class NullEclipseLinkJoinFetchAnnotation
 
 	public void setValue(JoinFetchType value) {
 		if (value != null) {
-			this.addSupportingAnnotation().setValue(value);
+			this.addAnnotation().setValue(value);
 		}
 	}
 

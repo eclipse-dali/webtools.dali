@@ -30,5 +30,4 @@ public class NullAttributeOverrideColumnAnnotation
 	protected ColumnAnnotation addAnnotation() {
 		return this.getAttributeOverrideAnnotation().addColumn();
 	}
-
 }

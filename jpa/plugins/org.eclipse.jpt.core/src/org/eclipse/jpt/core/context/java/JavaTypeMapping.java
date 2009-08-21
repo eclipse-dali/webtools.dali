@@ -34,7 +34,7 @@ public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 	
 	String getAnnotationName();
 	
-	Iterator<String> correspondingAnnotationNames();
+	Iterator<String> supportingAnnotationNames();
 	
 	JavaPersistentType getPersistentType();
 	

@@ -43,7 +43,7 @@ public class IdTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();
+		JavaResourceNode mappingAnnotation = attributeResource.getAnnotation(IdAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof IdAnnotation);
 	}
 

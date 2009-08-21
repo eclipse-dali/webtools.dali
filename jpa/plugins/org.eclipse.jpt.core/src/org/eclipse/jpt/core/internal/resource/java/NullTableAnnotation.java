@@ -26,12 +26,12 @@ public final class NullTableAnnotation
 
 	@Override
 	protected TableAnnotation addAnnotation() {
-		return (TableAnnotation) addSupportingAnnotation();
+		return (TableAnnotation) super.addAnnotation();
 	}
 	
 	@Override
 	protected TableAnnotation addAnnotation(AnnotationInitializer initializer) {
-		return (TableAnnotation) addSupportingAnnotation(initializer);
+		return (TableAnnotation) super.addAnnotation(initializer);
 	}
 	
 	public String getAnnotationName() {

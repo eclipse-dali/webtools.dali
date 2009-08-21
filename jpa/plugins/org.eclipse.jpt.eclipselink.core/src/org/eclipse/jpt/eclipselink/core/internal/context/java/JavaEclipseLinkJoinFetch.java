@@ -37,15 +37,15 @@ public class JavaEclipseLinkJoinFetch
 	}
 	
 	protected EclipseLinkJoinFetchAnnotation getResourceJoinFetch() {
-		return (EclipseLinkJoinFetchAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getJoinFetchAnnotationName());
+		return (EclipseLinkJoinFetchAnnotation) this.resourcePersistentAttribute.getAnnotation(getJoinFetchAnnotationName());
 	}
 	
 	protected void addResourceJoinFetch() {
-		this.resourcePersistentAttribute.addSupportingAnnotation(getJoinFetchAnnotationName());
+		this.resourcePersistentAttribute.addAnnotation(getJoinFetchAnnotationName());
 	}
 	
 	protected void removeResourceJoinFetch() {
-		this.resourcePersistentAttribute.removeSupportingAnnotation(getJoinFetchAnnotationName());
+		this.resourcePersistentAttribute.removeAnnotation(getJoinFetchAnnotationName());
 	}
 	
 	public EclipseLinkJoinFetchType getValue() {

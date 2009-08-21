@@ -31,9 +31,12 @@ public abstract class NullNamedColumnAnnotation
 	public boolean isSpecified() {
 		return false;
 	}
-
-	protected abstract NamedColumnAnnotation addAnnotation();
-
+	
+	@Override
+	protected NamedColumnAnnotation addAnnotation() {
+		return (NamedColumnAnnotation) super.addAnnotation();
+	}
+	
 	// ***** name
 	public String getName() {
 		return null;

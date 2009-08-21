@@ -45,7 +45,7 @@ public class SequenceGenerator2_0Tests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = this.buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_CATALOG, sequenceGenerator.getCatalog());
 	}
 
@@ -54,7 +54,7 @@ public class SequenceGenerator2_0Tests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_CATALOG, sequenceGenerator.getCatalog());
 		
 		sequenceGenerator.setCatalog("foo");
@@ -75,7 +75,7 @@ public class SequenceGenerator2_0Tests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = this.buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_SCHEMA, sequenceGenerator.getSchema());
 	}
 
@@ -84,7 +84,7 @@ public class SequenceGenerator2_0Tests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = this.buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGenerator2_0Annotation sequenceGenerator = (SequenceGenerator2_0Annotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_SCHEMA, sequenceGenerator.getSchema());
 		
 		sequenceGenerator.setSchema("foo");

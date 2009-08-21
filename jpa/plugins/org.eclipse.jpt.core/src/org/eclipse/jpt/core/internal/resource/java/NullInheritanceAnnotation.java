@@ -31,8 +31,8 @@ public final class NullInheritanceAnnotation
 	}
 
 	@Override
-	protected InheritanceAnnotation addSupportingAnnotation() {
-		return (InheritanceAnnotation) super.addSupportingAnnotation();
+	protected InheritanceAnnotation addAnnotation() {
+		return (InheritanceAnnotation) super.addAnnotation();
 	}
 
 	// ***** strategy
@@ -42,7 +42,7 @@ public final class NullInheritanceAnnotation
 
 	public void setStrategy(InheritanceType strategy) {
 		if (strategy != null) {
-			this.addSupportingAnnotation().setStrategy(strategy);
+			this.addAnnotation().setStrategy(strategy);
 		}
 	}
 

@@ -21,9 +21,6 @@ import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
 public class GenericJavaTable
 	extends AbstractJavaTable
 	implements JavaTable
@@ -46,7 +43,8 @@ public class GenericJavaTable
 	@Override
 	protected TableAnnotation getAnnotation() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (TableAnnotation) this.resourcePersistentMember.getNonNullSupportingAnnotation(getAnnotationName());
+		return (TableAnnotation) this.resourcePersistentMember.
+				getNonNullAnnotation(getAnnotationName());
 	}
 
 	public boolean isResourceSpecified() {

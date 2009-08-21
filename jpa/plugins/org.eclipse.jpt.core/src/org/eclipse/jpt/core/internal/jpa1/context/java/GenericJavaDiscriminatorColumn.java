@@ -67,7 +67,8 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 
 	@Override
 	protected DiscriminatorColumnAnnotation getResourceColumn() {
-		return (DiscriminatorColumnAnnotation) this.persistenceResource.getNonNullSupportingAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+		return (DiscriminatorColumnAnnotation) this.persistenceResource.
+				getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 	
 	public boolean isResourceSpecified() {

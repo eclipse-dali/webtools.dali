@@ -27,7 +27,9 @@ public abstract class NullBaseColumnAnnotation
 	}
 
 	@Override
-	protected abstract BaseColumnAnnotation addAnnotation();
+	protected BaseColumnAnnotation addAnnotation() {
+		return (BaseColumnAnnotation) super.addAnnotation();
+	}
 
 	// ***** table
 	public String getTable() {

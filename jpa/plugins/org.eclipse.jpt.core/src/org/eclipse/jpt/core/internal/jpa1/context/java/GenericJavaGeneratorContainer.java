@@ -53,7 +53,9 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
 		}
 		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
-		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) this.javaResourcePersistentMember.addSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		TableGeneratorAnnotation tableGeneratorResource = 
+				(TableGeneratorAnnotation) this.javaResourcePersistentMember.
+					addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		this.tableGenerator.initialize(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
@@ -65,7 +67,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 		JavaTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
-		this.javaResourcePersistentMember.removeSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentMember.removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
 	}
 	
@@ -84,7 +86,9 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
 		}
 		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
-		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) this.javaResourcePersistentMember.addSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		SequenceGeneratorAnnotation sequenceGeneratorResource = 
+				(SequenceGeneratorAnnotation) this.javaResourcePersistentMember.
+					addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		this.sequenceGenerator.initialize(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
@@ -96,7 +100,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
-		this.javaResourcePersistentMember.removeSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentMember.removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator,null);
 	}
 	
@@ -161,7 +165,8 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	}
 	
 	protected TableGeneratorAnnotation getResourceTableGenerator() {
-		return (TableGeneratorAnnotation) this.javaResourcePersistentMember.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) this.javaResourcePersistentMember.
+				getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void updateSequenceGenerator() {
@@ -188,8 +193,10 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	}
 	
 	protected SequenceGeneratorAnnotation getResourceSequenceGenerator() {
-		return (SequenceGeneratorAnnotation) this.javaResourcePersistentMember.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) this.javaResourcePersistentMember.
+				getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
+	
 	
 	//******************** Code Completion *************************
 

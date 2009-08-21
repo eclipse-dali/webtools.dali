@@ -97,7 +97,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertNotNull(namedQuery);
 	}
 
@@ -105,7 +105,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
 	}
 
@@ -113,7 +113,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
 		
 		namedQuery.setName("foo");
@@ -131,7 +131,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 	}
 
@@ -139,7 +139,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 		
 		namedQuery.setQuery("foo");
@@ -157,7 +157,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithResultClass();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_RESULT_CLASS, namedQuery.getResultClass());
 	}
 
@@ -165,7 +165,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithResultClass();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_RESULT_CLASS, namedQuery.getResultClass());
 		
 		namedQuery.setResultClass("foo");
@@ -183,7 +183,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithResultClass();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertNotNull(namedQuery.getResultClass());
 		assertEquals("Result", namedQuery.getFullyQualifiedResultClassName());//bug 196200 changed this
 
@@ -197,7 +197,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithResultSetMapping();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_RESULT_SET_MAPPING, namedQuery.getResultSetMapping());
 	}
 
@@ -205,7 +205,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithResultSetMapping();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		assertEquals(QUERY_RESULT_SET_MAPPING, namedQuery.getResultSetMapping());
 		
 		namedQuery.setResultSetMapping("foo");
@@ -223,7 +223,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		
 		assertEquals(0, namedQuery.hintsSize());
 	}
@@ -232,7 +232,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		
 		namedQuery.addHint(0);
 		namedQuery.addHint(1);
@@ -244,7 +244,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		
 		assertEquals(2, namedQuery.hintsSize());
 	}
@@ -254,7 +254,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1);
@@ -270,7 +270,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
@@ -299,7 +299,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		
 		namedQuery.addHint(0).setName("BAZ");
 		
@@ -321,7 +321,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedNativeQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY);
+		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_NATIVE_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());

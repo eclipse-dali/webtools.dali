@@ -44,7 +44,7 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 		return MappedSuperclassAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.ID_CLASS,
 			JPA.EXCLUDE_DEFAULT_LISTENERS,
@@ -91,15 +91,16 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 	}
 
 	protected IdClassAnnotation getResourceIdClass() {
-		return (IdClassAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		return (IdClassAnnotation) this.javaResourcePersistentType.
+				getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addResourceIdClass() {
-		this.javaResourcePersistentType.addSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeResourceIdClass() {
-		this.javaResourcePersistentType.removeSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override

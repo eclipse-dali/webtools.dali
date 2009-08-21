@@ -58,14 +58,14 @@ public class NullSpecifiedJavaAttributeMappingProvider
 	/**
 	 * Obviously false
 	 */
-	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
+	public boolean testDefault(JavaPersistentAttribute persistentAttribute) {
 		return false;
 	}
 	
 	/**
 	 * This is typically the final test, so it should always apply
 	 */
-	public boolean specifiedApplies(JavaPersistentAttribute persistentAttribute) {
+	public boolean testSpecified(JavaPersistentAttribute persistentAttribute) {
 		return true;
 	}
 }

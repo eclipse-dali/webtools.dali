@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
-import org.eclipse.jpt.core.jpa2.resource.java.JPA;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
@@ -125,7 +125,7 @@ public final class SourceAssociationOverride2_0Annotation
 	}
 
 	static DeclarationAnnotationAdapter buildJoinTableAnnotationAdapter(DeclarationAnnotationAdapter associationOverrideAnnotationAdapter) {
-		return new NestedDeclarationAnnotationAdapter(associationOverrideAnnotationAdapter, JPA.ASSOCIATION_OVERRIDE__JOIN_TABLE, org.eclipse.jpt.core.resource.java.JPA.JOIN_TABLE);
+		return new NestedDeclarationAnnotationAdapter(associationOverrideAnnotationAdapter, JPA2_0.ASSOCIATION_OVERRIDE__JOIN_TABLE, org.eclipse.jpt.core.resource.java.JPA.JOIN_TABLE);
 	}
 
 	

@@ -23,14 +23,20 @@ public class GenericJavaPersistentType
 	}
 	
 	
-	//****************** PersistentType implementation *******************
+	// **************** access type *******************************************
+	
 	/**
-	 * GenericJavaPersistentType does not support specified access (no Access annotation in 1.0), so we return null
+	 * GenericJavaPersistentType does not support specified access (no Access annotation in 1.0), 
+	 * so we return null
 	 */
-	public AccessType getSpecifiedAccess() {
+	@Override
+	protected AccessType buildSpecifiedAccess() {
 		return null;
 	}
 	
+	/**
+	 * GenericJavaPersistentType does not support specified access (no Access annotation in 1.0)
+	 */
 	public void setSpecifiedAccess(AccessType specifiedAccess) {
 		throw new UnsupportedOperationException();
 	}

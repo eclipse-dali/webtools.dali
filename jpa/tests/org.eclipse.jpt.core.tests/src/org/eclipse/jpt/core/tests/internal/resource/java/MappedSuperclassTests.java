@@ -56,7 +56,7 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestMappedSuperclass();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
+		JavaResourceNode mappingAnnotation = typeResource.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof MappedSuperclassAnnotation);
 	}
 	
@@ -64,10 +64,10 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestMappedSuperclassAndEntity();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
+		JavaResourceNode mappingAnnotation = typeResource.getAnnotation(EntityAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof EntityAnnotation);
 		
-		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) typeResource.getMappingAnnotation(JPA.MAPPED_SUPERCLASS);
+		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) typeResource.getAnnotation(JPA.MAPPED_SUPERCLASS);
 		assertNotNull(mappedSuperclass);
 	}
 

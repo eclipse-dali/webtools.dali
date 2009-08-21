@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.jpa2.resource.java;
 
 /**
- * JPA Java-related stuff (annotations etc.)
+ * JPA 2.0 Java-related stuff (annotations etc.)
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,7 +19,7 @@ package org.eclipse.jpt.core.jpa2.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 @SuppressWarnings("nls")
-public interface JPA {
+public interface JPA2_0 {
 
 	// JPA package
 	String PACKAGE = "javax.persistence";

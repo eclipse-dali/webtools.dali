@@ -207,10 +207,9 @@ public abstract class AbstractRootContextNode
 						JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
 						new String[] {persistenceUnit.getName()},
 						jrcu.getFile(),
-						jrpt.getMappingAnnotation().getTextRange(jrcu.buildASTRoot())
+						jrpt.getTextRange(jrcu.buildASTRoot())
 					)
 				);
 		}
 	}
-
 }

@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
@@ -185,7 +184,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	
 	protected abstract void moveAnnotation(int targetIndex, int sourceIndex);
 	
-	protected abstract ListIterator<JoinColumnAnnotation> joinColumnAnnotations();
+	protected abstract Iterator<JoinColumnAnnotation> joinColumnAnnotations();
 	
 	protected abstract JoinColumnAnnotation buildNullJoinColumnAnnotation();
 	
@@ -198,7 +197,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	}
 	
 	protected void initializeSpecifiedJoinColumns() {
-		ListIterator<JoinColumnAnnotation> annotations = joinColumnAnnotations();
+		Iterator<JoinColumnAnnotation> annotations = joinColumnAnnotations();
 		while (annotations.hasNext()) {
 			this.specifiedJoinColumns.add(buildJoinColumn(annotations.next()));
 		}
@@ -218,7 +217,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	
 	protected void updateSpecifiedJoinColumns() {
 		ListIterator<JavaJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<JoinColumnAnnotation> resourceJoinColumns = joinColumnAnnotations();
+		Iterator<JoinColumnAnnotation> resourceJoinColumns = joinColumnAnnotations();
 		
 		while (joinColumns.hasNext()) {
 			JavaJoinColumn joinColumn = joinColumns.next();

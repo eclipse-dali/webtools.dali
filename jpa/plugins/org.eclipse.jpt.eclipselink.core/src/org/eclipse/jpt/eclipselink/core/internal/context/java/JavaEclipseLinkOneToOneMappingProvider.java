@@ -53,7 +53,7 @@ public class JavaEclipseLinkOneToOneMappingProvider
 	}
 	
 	@Override
-	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
+	public boolean testDefault(JavaPersistentAttribute persistentAttribute) {
 		String targetEntity = persistentAttribute.getSingleReferenceEntityTypeName();
 		return (targetEntity != null)
 				&& (persistentAttribute.getPersistenceUnit().getEntity(targetEntity) != null);

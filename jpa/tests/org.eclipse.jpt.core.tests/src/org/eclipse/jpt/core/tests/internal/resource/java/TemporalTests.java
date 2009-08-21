@@ -56,7 +56,7 @@ public class TemporalTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getSupportingAnnotation(JPA.TEMPORAL);
+		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(JPA.TEMPORAL);
 		assertNotNull(temporal);
 	}
 	
@@ -65,7 +65,7 @@ public class TemporalTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getSupportingAnnotation(JPA.TEMPORAL);
+		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(JPA.TEMPORAL);
 		assertEquals(TemporalType.DATE, temporal.getValue());
 	}
 	
@@ -74,7 +74,7 @@ public class TemporalTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getSupportingAnnotation(JPA.TEMPORAL);
+		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(JPA.TEMPORAL);
 
 		temporal.setValue(TemporalType.TIME);
 		

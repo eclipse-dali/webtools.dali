@@ -42,7 +42,7 @@ public class LobTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		LobAnnotation lob = (LobAnnotation) attributeResource.getSupportingAnnotation(JPA.LOB);
+		LobAnnotation lob = (LobAnnotation) attributeResource.getAnnotation(JPA.LOB);
 		assertNotNull(lob);
 	}
 

@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -27,94 +25,64 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface JavaResourcePersistentMember
 	extends JavaResourceNode
 {
-
-	// ********** mapping annotations **********
-
+	// ********** annotations **********
+	
 	/**
-	 * Return the member's mapping annotations.
+	 * String associated with changes to the "annotations" collection
+	 */
+	String ANNOTATIONS_COLLECTION = "annotations"; //$NON-NLS-1$
+	
+	/**
+	 * Return the member's annotations in the order that they appear.
 	 * Do not return duplicate annotations as this error is handled by the Java
 	 * compiler.
-	 * @see #supportingAnnotations()
 	 */
-	Iterator<Annotation> mappingAnnotations();
-		String MAPPING_ANNOTATIONS_COLLECTION = "mappingAnnotations"; //$NON-NLS-1$
-
+	Iterator<Annotation> annotations();
+	
 	/**
-	 * Return the number of mapping annotations.
+	 * Return the number of annotations.
 	 */
-	int mappingAnnotationsSize();
-
+	int annotationsSize();
+	
 	/**
-	 * Return the member's mapping annotation.
-	 */
-	Annotation getMappingAnnotation();
-
-	/**
-	 * Return the mapping annotation with the specified name.
+	 * Return the annotation with the specified name.
 	 * Return the first if there are duplicates in the source code.
 	 */
-	Annotation getMappingAnnotation(String annotationName);
-
+	Annotation getAnnotation(String annotationName);
+	
 	/**
-	 * Change the mapping annotation. Remove any other existing mapping
-	 * annotations. Do not remove any supporting (non-mapping) annotations.
+	 * Return the specified annotation.
+	 * Return the first if there are duplicates in the source code.
+	 * Do not return null, but a Null Object instead if no annotation
+	 * with the specified name exists in the source code.
 	 */
-	Annotation setMappingAnnotation(String annotationName);
-
-
-	// ********** supporting annotations **********
-
+	Annotation getNonNullAnnotation(String annotationName);
+	
 	/**
-	 * Return the member's supporting annotations.
-	 * Do not return duplicate annotations as this error is handled by the Java
-	 * compiler. Do not return any mapping annotations.
-	 * @see #mappingAnnotations()
-	 */
-	Iterator<Annotation> supportingAnnotations();
-		String SUPPORTING_ANNOTATIONS_COLLECTION = "supportingAnnotations"; //$NON-NLS-1$
-
-	/**
-	 * Return the number of supporting annotations.
-	 */
-	int supportingAnnotationsSize();
-
-	/**
-	 * Return the specified supporting nested annotations.
-	 * If both the nestable and container annotations are specified on the
+	 * Return the nestable annotations with the specified name in the order that
+	 * they appear.
+	 * If nestable and container annotations are both specified on the
 	 * member directly, return only the nestable annotations specified within
 	 * the container annotation.
 	 */
 	// TODO tie the singular and plural annotations together so we can generate
 	// a validation error when both are specified
-	ListIterator<NestableAnnotation> supportingAnnotations(String nestableAnnotationName, String containerAnnotationName);
-
+	Iterator<NestableAnnotation> annotations(
+			String nestableAnnotationName, String containerAnnotationName);
+	
 	/**
-	 * Return the specified supporting annotation.
-	 * Return the first if there are duplicates in the source code.
-	 */
-	Annotation getSupportingAnnotation(String annotationName);
-
-	/**
-	 * Return the specified supporting annotation.
-	 * Return the first if there are duplicates in the source code.
-	 * Do not return null, but a Null Object instead if no annotation
-	 * with the specified name exists in the source code.
-	 */
-	Annotation getNonNullSupportingAnnotation(String annotationName);
-
-	/**
-	 * Add a supporting annotation with the specified name.
+	 * Add an annotation with the specified name.
 	 * Return the newly-created annotation.
 	 */
-	Annotation addSupportingAnnotation(String annotationName);
-
+	Annotation addAnnotation(String annotationName);
+	
 	/**
-	 * Add a supporting annotation with the specified name.
+	 * Add an annotation with the specified name.
 	 * Initialize the newly-created annotation with the specified annotation initializer.
 	 * Return the annotation returned by the annotation initializer.
 	 */
-	Annotation addSupportingAnnotation(String annotationName, AnnotationInitializer annotationInitializer);
-
+	Annotation addAnnotation(String annotationName, AnnotationInitializer annotationInitializer);
+	
 	/**
 	 * Callback that allows clients to initialize an annotation added to the
 	 * member before the member fires a change event. The initializer should
@@ -127,14 +95,9 @@ public interface JavaResourcePersistentMember
 		 */
 		Annotation initializeAnnotation(Annotation supportingAnnotation);
 	}
-
+	
 	/**
-	 * Remove the specified supporting annotation.
-	 */
-	void removeSupportingAnnotation(String annotationName);
-
-	/**
-	 * Add a new supporting nestable annotation with the specified name.
+	 * Add a new nestable annotation with the specified name.
 	 * Create a new container annotation if necessary and add the nestable
 	 * annotation to it.
 	 * If both the nestable annotation and the container annotation already
@@ -145,22 +108,41 @@ public interface JavaResourcePersistentMember
 	 * the new one. If neither annotation exists, then create a new nestable
 	 * annotation.
 	 */
-	Annotation addSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
-
+	NestableAnnotation addAnnotation(
+			int index, String nestableAnnotationName, String containerAnnotationName);
+	
 	/**
-	 * Move the supporting nestable annotation found in the specified container
+	 * Move the nestable annotation found in the specified container
 	 * annotation at the specified source index to the specified target index.
 	 */
-	void moveSupportingAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName);
+	void moveAnnotation(
+			int targetIndex, int sourceIndex, String containerAnnotationName);
 	
 	/**
-	 * Remove the specified supporting nestable annotation.
+	 * Remove the specified annotation.
 	 */
-	void removeSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
+	void removeAnnotation(String annotationName);
 	
-
+	/**
+	 * Remove the specified nestable annotation from the container annotation at the specified
+	 * index.
+	 * If there is no container, assume the index is zero and this does the same as 
+	 * {@link #removeAnnotation(String)}
+	 */
+	void removeAnnotation(
+			int index, String nestableAnnotationName, String containerAnnotationName);
+	
+	/**
+	 * Sets the specified primary annotation as the first annotation, and removes all known 
+	 * annotations (i.e. does not remove non-persistence annotations) which are not included
+	 * in the supporting annotations.
+	 */
+	Annotation setPrimaryAnnotation(
+			String primaryAnnotationName, String[] supportingAnnotationNames);
+	
+	
 	// ********** queries **********
-
+	
 	/**
 	 * Return whether the underlying JDT member is persistable according to
 	 * the JPA spec.
@@ -169,29 +151,28 @@ public interface JavaResourcePersistentMember
 		String PERSISTABLE_PROPERTY = "persistable"; //$NON-NLS-1$
 		
 	/**
-	 * Return whether the underlying JDT member is currently annotated as being
-	 * persistent (equivalent to "is mapped").
+	 * Return whether the underlying JDT member is currently annotated with any recognized
+	 * annotations.
 	 */
-	boolean isPersisted();
-
+	boolean isAnnotated();
+	
 	/**
 	 * Return whether the Java resource persistent member is for the specified
 	 * member.
 	 */
 	boolean isFor(String memberName, int occurrence);
-
+	
 	/**
 	 * Return the text range for the member's name.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
 	
-
+	
 	// ********** behavior **********
-
+	
 	/**
 	 * Resolve type information that could be dependent on changes elsewhere
 	 * in the workspace.
 	 */
 	void resolveTypes(CompilationUnit astRoot);
-
 }

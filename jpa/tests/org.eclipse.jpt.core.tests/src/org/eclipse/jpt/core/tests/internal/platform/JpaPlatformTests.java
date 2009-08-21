@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -99,12 +100,17 @@ public class JpaPlatformTests extends ContextModelTestCase
 	public void testBuildJavaTypeMappingFromMappingKey() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-
-		JavaTypeMapping javaTypeMapping = getJpaProject().getJpaPlatform().buildJavaTypeMappingFromMappingKey(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY, getJavaPersistentType());
-		assertTrue(javaTypeMapping instanceof JavaTestTypeMapping);
 		
-		javaTypeMapping = jpaPlatform().buildJavaTypeMappingFromMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getJavaPersistentType());
-		assertTrue(javaTypeMapping instanceof TestJavaEntity);	
+		JavaTypeMappingProvider mappingProvider =
+			jpaPlatform().getJavaTypeMappingProvider(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY);
+		JavaTypeMapping mapping = 
+			mappingProvider.buildMapping(getJavaPersistentType(), jpaPlatform().getJpaFactory());
+		assertTrue(mapping instanceof JavaTestTypeMapping);
+		
+		mappingProvider = 
+			jpaPlatform().getJavaTypeMappingProvider(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		mapping = mappingProvider.buildMapping(getJavaPersistentType(), jpaPlatform().getJpaFactory());
+		assertTrue(mapping instanceof TestJavaEntity);	
 	}
 	
 	public void testBuildJavaAttributeMappingFromMappingKey() throws Exception {
@@ -123,5 +129,4 @@ public class JpaPlatformTests extends ContextModelTestCase
 					getJavaPersistentType().getAttributeNamed("name"), jpaPlatform().getJpaFactory());
 		assertTrue(mapping instanceof TestJavaBasicMapping);
 	}
-	
 }

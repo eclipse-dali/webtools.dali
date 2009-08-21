@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -63,7 +62,7 @@ final class BinaryPackageFragment
 			IType jdtType = jdtClassFile.getType();
 			if (BinaryPersistentType.typeIsPersistable(jdtType)) {
 				JavaResourceClassFile classFile = new BinaryClassFile(this, jdtClassFile, jdtType);
-				if (classFile.getPersistentType().isPersisted()) {  // we only hold annotated types
+				if (classFile.getPersistentType().isAnnotated()) {  // we only hold annotated types
 					result.add(classFile);
 				}
 			}

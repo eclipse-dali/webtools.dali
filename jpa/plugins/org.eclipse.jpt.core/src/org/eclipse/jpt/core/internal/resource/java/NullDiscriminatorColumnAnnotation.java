@@ -30,7 +30,7 @@ public final class NullDiscriminatorColumnAnnotation
 
 	@Override
 	protected DiscriminatorColumnAnnotation addAnnotation() {
-		return (DiscriminatorColumnAnnotation) this.addSupportingAnnotation();
+		return (DiscriminatorColumnAnnotation) super.addAnnotation();
 	}
 
 	// ***** discriminator type

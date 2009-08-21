@@ -33,7 +33,7 @@ public abstract class AbstractJavaEmbeddable
 		return EmbeddableAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
 	

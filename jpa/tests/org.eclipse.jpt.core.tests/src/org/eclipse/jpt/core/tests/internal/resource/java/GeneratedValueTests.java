@@ -70,7 +70,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
 		assertNotNull(generatedValue);
 	}
 
@@ -79,7 +79,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GENERATOR, generatedValue.getGenerator());
 	}
 
@@ -88,7 +88,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GENERATOR, generatedValue.getGenerator());
 		
 		generatedValue.setGenerator("foo");
@@ -108,7 +108,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GenerationType.SEQUENCE, generatedValue.getStrategy());
 	}
 
@@ -117,7 +117,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GenerationType.SEQUENCE, generatedValue.getStrategy());
 		
 		generatedValue.setStrategy(GenerationType.TABLE);

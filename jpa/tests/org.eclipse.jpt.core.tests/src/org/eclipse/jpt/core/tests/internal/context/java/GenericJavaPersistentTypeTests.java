@@ -558,8 +558,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNotNull(typeResource.getMappingAnnotation());
-		assertTrue(typeResource.getMappingAnnotation() instanceof EntityAnnotation);
+		assertNotNull(typeResource.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}
@@ -573,8 +572,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		getJavaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNotNull(typeResource.getMappingAnnotation());
-		assertTrue(typeResource.getMappingAnnotation() instanceof EmbeddableAnnotation);
+		assertNotNull(typeResource.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}
@@ -588,8 +586,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.getMappingAnnotation());
-		assertNull(typeResource.getMappingAnnotation(EntityAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}
@@ -601,7 +598,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.setMappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
+		typeResource.setPrimaryAnnotation(EmbeddableAnnotation.ANNOTATION_NAME, new String[0]);
 				
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}
@@ -613,7 +610,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.setMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
+		typeResource.setPrimaryAnnotation(EntityAnnotation.ANNOTATION_NAME, new String[0]);
 				
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}

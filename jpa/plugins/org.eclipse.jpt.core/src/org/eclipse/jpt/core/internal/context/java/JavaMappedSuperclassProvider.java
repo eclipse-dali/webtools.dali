@@ -15,29 +15,31 @@ import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 public class JavaMappedSuperclassProvider
-	implements JavaTypeMappingProvider
+	extends AbstractJavaTypeMappingProvider
 {
-
 	// singleton
-	private static final JavaMappedSuperclassProvider INSTANCE = new JavaMappedSuperclassProvider();
-
+	private static final JavaMappedSuperclassProvider INSTANCE = 
+			new JavaMappedSuperclassProvider();
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JavaTypeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaMappedSuperclassProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
@@ -45,14 +47,8 @@ public class JavaMappedSuperclassProvider
 	public String getAnnotationName() {
 		return MappedSuperclassAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public JavaMappedSuperclass buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return factory.buildJavaMappedSuperclass(parent);
 	}
-
-	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.getAnnotationName());
-	}
-
 }

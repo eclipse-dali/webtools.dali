@@ -12,30 +12,32 @@ package org.eclipse.jpt.core.tests.extension.resource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaTypeMappingProvider;
 
-/**
- * 
- */
 public class JavaTestTypeMappingProvider
-	implements JavaTypeMappingProvider
+	extends AbstractJavaTypeMappingProvider
 {
 	// singleton
-	private static final JavaTestTypeMappingProvider INSTANCE = new JavaTestTypeMappingProvider();
-
+	private static final JavaTestTypeMappingProvider INSTANCE = 
+			new JavaTestTypeMappingProvider();
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JavaTypeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaTestTypeMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY;
 	}
@@ -47,5 +49,4 @@ public class JavaTestTypeMappingProvider
 	public JavaTestTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return ((TestJpaFactory) factory).buildJavaTestTypeMapping(parent);
 	}
-
 }

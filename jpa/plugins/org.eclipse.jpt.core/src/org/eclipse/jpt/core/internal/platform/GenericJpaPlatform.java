@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ListIterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
@@ -19,15 +18,14 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformProvider;
+import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
@@ -132,37 +130,31 @@ public class GenericJpaPlatform
 
 
 	// ********** Java type mappings **********
-
-	public JavaTypeMapping buildJavaTypeMappingFromMappingKey(String key, JavaPersistentType type) {
-		return this.getJavaTypeMappingProviderForMappingKey(key).buildMapping(type, this.jpaFactory);
-	}
 	
-	protected JavaTypeMappingProvider getJavaTypeMappingProviderForMappingKey(String key) {
-		for (JavaTypeMappingProvider provider : CollectionTools.iterable(javaTypeMappingProviders())) {
-			if (Tools.valuesAreEqual(provider.getKey(), key)) {
+	public JavaTypeMappingProvider getJavaTypeMappingProvider(JavaPersistentType type) {
+		for (JavaTypeMappingProvider provider : 
+				CollectionTools.iterable(javaTypeMappingProviders())) {
+			if (provider.test(type)) {
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Illegal type mapping key: " + key); //$NON-NLS-1$
+		throw new IllegalStateException("There must be a mapping provider for all types"); //$NON-NLS-1$
 	}
-
+	
+	public JavaTypeMappingProvider getJavaTypeMappingProvider(String mappingKey) {
+		for (JavaTypeMappingProvider provider : 
+				CollectionTools.iterable(javaTypeMappingProviders())) {
+			if (Tools.valuesAreEqual(provider.getKey(), mappingKey)) {
+				return provider;
+			}
+		}
+		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
+	}
+	
 	protected ListIterator<JavaTypeMappingProvider> javaTypeMappingProviders() {
 		return this.platformProvider.javaTypeMappingProviders();
 	}
-
-	public JavaTypeMapping buildJavaTypeMappingFromAnnotation(String annotationName, JavaPersistentType type) {
-		return this.getJavaTypeMappingProviderForAnnotation(annotationName).buildMapping(type, this.jpaFactory);
-	}
-
-	protected JavaTypeMappingProvider getJavaTypeMappingProviderForAnnotation(String annotationName) {
-		for (JavaTypeMappingProvider provider : CollectionTools.iterable(javaTypeMappingProviders())) {
-			if (Tools.valuesAreEqual(provider.getAnnotationName(), annotationName)) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("Illegal annotation name: " + annotationName); //$NON-NLS-1$
-	}
-
+	
 	
 	// ********** Java attribute mappings **********
 	
@@ -170,7 +162,7 @@ public class GenericJpaPlatform
 			JavaPersistentAttribute attribute) {
 		for (JavaAttributeMappingProvider provider : 
 				CollectionTools.iterable(defaultJavaAttributeMappingProviders())) {
-			if (provider.defaultApplies(attribute)) {
+			if (provider.testDefault(attribute)) {
 				return provider;
 			}
 		}
@@ -185,7 +177,7 @@ public class GenericJpaPlatform
 			JavaPersistentAttribute attribute) {
 		for (JavaAttributeMappingProvider provider : 
 				CollectionTools.iterable(specifiedJavaAttributeMappingProviders())) {
-			if (provider.specifiedApplies(attribute)) {
+			if (provider.testSpecified(attribute)) {
 				return provider;
 			}
 		}

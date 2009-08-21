@@ -40,7 +40,7 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 		return false;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
 

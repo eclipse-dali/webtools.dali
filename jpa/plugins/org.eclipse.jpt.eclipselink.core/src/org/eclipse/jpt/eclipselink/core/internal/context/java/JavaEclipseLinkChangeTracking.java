@@ -45,15 +45,15 @@ public class JavaEclipseLinkChangeTracking extends AbstractJavaJpaContextNode im
 	}
 	
 	protected EclipseLinkChangeTrackingAnnotation getChangeTrackingAnnotation() {
-		return (EclipseLinkChangeTrackingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getChangeTrackingAnnotationName());
+		return (EclipseLinkChangeTrackingAnnotation) this.resourcePersistentType.getAnnotation(getChangeTrackingAnnotationName());
 	}
 	
 	protected void addChangeTrackingAnnotation() {
-		this.resourcePersistentType.addSupportingAnnotation(getChangeTrackingAnnotationName());
+		this.resourcePersistentType.addAnnotation(getChangeTrackingAnnotationName());
 	}
 	
 	protected void removeChangeTrackingAnnotation() {
-		this.resourcePersistentType.removeSupportingAnnotation(getChangeTrackingAnnotationName());
+		this.resourcePersistentType.removeAnnotation(getChangeTrackingAnnotationName());
 	}
 	
 	public EclipseLinkChangeTrackingType getType() {

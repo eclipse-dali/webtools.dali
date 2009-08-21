@@ -51,13 +51,13 @@ public class GenericJavaJoinTableJoiningStrategy
 	@Override
 	protected JoinTableAnnotation addAnnotation() {
 		return (JoinTableAnnotation) this.resourcePersistentAttribute.
-			addSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+				addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	@Override
 	protected void removeAnnotation() {
 		this.resourcePersistentAttribute.
-			removeSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+				removeAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	
@@ -80,9 +80,8 @@ public class GenericJavaJoinTableJoiningStrategy
 	}
 	
 	public JoinTableAnnotation getAnnotation() {
-		return 	(JoinTableAnnotation) 
-			this.resourcePersistentAttribute.getNonNullSupportingAnnotation(
-				JoinTableAnnotation.ANNOTATION_NAME);
+		return 	(JoinTableAnnotation) this.resourcePersistentAttribute.
+				getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	

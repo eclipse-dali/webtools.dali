@@ -55,7 +55,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestIdClass();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getSupportingAnnotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertNotNull(idClass);
 		assertNull(idClass.getValue());
 	}
@@ -64,7 +64,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestIdClassWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getSupportingAnnotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertEquals(ID_CLASS_VALUE, idClass.getValue());
 	}
 
@@ -72,7 +72,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestIdClassWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getSupportingAnnotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertEquals(ID_CLASS_VALUE, idClass.getValue());
 		
 		idClass.setValue("foo");
@@ -84,7 +84,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		
 		assertSourceDoesNotContain("@IdClass", cu);
 				
-		idClass = (IdClassAnnotation) typeResource.getSupportingAnnotation(JPA.ID_CLASS);
+		idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertNull(idClass);
 	}
 	
@@ -92,7 +92,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestIdClassWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 
-		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getSupportingAnnotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertNotNull(idClass.getValue());
 		assertEquals("MyClass", idClass.getFullyQualifiedClassName()); //bug 196200 changed this
 

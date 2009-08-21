@@ -124,7 +124,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	
 	protected PrimaryKeyJoinColumnAnnotation addAnnotation(int index) {
 		return (PrimaryKeyJoinColumnAnnotation) this.resourcePersistentAttribute.
-			addSupportingAnnotation(
+			addAnnotation(
 				index, 
 				PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
 				PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
@@ -132,7 +132,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	
 	protected void removeAnnotation(int index) {
 		this.resourcePersistentAttribute.
-			removeSupportingAnnotation(
+			removeAnnotation(
 				index, 
 				PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
 				PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
@@ -140,7 +140,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	
 	protected void moveAnnotation(int targetIndex, int sourceIndex) {
 		this.resourcePersistentAttribute.
-			moveSupportingAnnotation(
+			moveAnnotation(
 				targetIndex, 
 				sourceIndex, 
 				PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
@@ -169,8 +169,8 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	}
 	
 	protected void initializePrimaryKeyJoinColumns() {
-		ListIterator<NestableAnnotation> annotations = 
-			this.resourcePersistentAttribute.supportingAnnotations(
+		Iterator<NestableAnnotation> annotations = 
+			this.resourcePersistentAttribute.annotations(
 				PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
 				PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
@@ -190,8 +190,8 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	
 	protected void updatePrimaryKeyJoinColumns() {
 		ListIterator<JavaPrimaryKeyJoinColumn> joinColumns = primaryKeyJoinColumns();
-		ListIterator<NestableAnnotation> annotations = 
-			this.resourcePersistentAttribute.supportingAnnotations(
+		Iterator<NestableAnnotation> annotations = 
+			this.resourcePersistentAttribute.annotations(
 				PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
 				PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		

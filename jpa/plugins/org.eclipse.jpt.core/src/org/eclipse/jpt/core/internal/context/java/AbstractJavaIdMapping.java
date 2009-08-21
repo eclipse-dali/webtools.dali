@@ -79,7 +79,8 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	public ColumnAnnotation getResourceColumn() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().
+				getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	//************** JavaAttributeMapping implementation ***************
@@ -120,7 +121,9 @@ public abstract class AbstractJavaIdMapping
 			throw new IllegalStateException("gemeratedValue already exists"); //$NON-NLS-1$
 		}
 		this.generatedValue = getJpaFactory().buildJavaGeneratedValue(this);
-		GeneratedValueAnnotation generatedValueResource = (GeneratedValueAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+		GeneratedValueAnnotation generatedValueResource = 
+				(GeneratedValueAnnotation) getResourcePersistentAttribute().
+					addAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 		this.generatedValue.initialize(generatedValueResource);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
@@ -132,7 +135,7 @@ public abstract class AbstractJavaIdMapping
 		}
 		JavaGeneratedValue oldGeneratedValue = this.generatedValue;
 		this.generatedValue = null;
-		getResourcePersistentAttribute().removeSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, null);
 	}
 	
@@ -232,15 +235,18 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected TableGeneratorAnnotation getResourceTableGenerator() {
-		return (TableGeneratorAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) this.resourcePersistentAttribute.
+				getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected SequenceGeneratorAnnotation getResourceSequenceGenerator() {
-		return (SequenceGeneratorAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) this.resourcePersistentAttribute.
+				getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected GeneratedValueAnnotation getResourceGeneratedValue() {
-		return (GeneratedValueAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+		return (GeneratedValueAnnotation) this.resourcePersistentAttribute.
+				getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
@@ -251,7 +257,7 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		

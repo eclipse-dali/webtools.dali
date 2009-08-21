@@ -547,7 +547,7 @@ public abstract class AbstractOrmPersistentType
 	
 	protected boolean javaPersistentTypeHasSpecifiedAccess() {
 		return this.javaPersistentType.getSpecifiedAccess() != null || 
-				this.javaPersistentType.hasAnyAttributePersistenceAnnotations();
+				this.javaPersistentType.hasAnyAnnotatedAttributes();
 	}
 
 	protected JavaPersistentType buildJavaPersistentType() {

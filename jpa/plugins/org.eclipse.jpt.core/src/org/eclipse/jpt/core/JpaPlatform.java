@@ -15,7 +15,10 @@ import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullJavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
@@ -85,22 +88,21 @@ public interface JpaPlatform
 	// ********** Java type/attribute mappings **********
 	
 	/**
-	 * Build a Java type mapping for the specified key and persistent type.
-	 * Use identity when comparing keys; so clients must use the same key
-	 * constants as the providers.
-	 * Throw an IllegalArgumentException if the key is not supported by the
-	 * platform.
+	 * Return a {@link JavaTypeMappingProvider} that describes the interpretation of the type
+	 * as it exists, complete with annotations.
+	 * This may not be null (@see {@link NullJavaTypeMappingProvider},) else
+	 * an {@link IllegalStateException} is thrown.
+	 * 
+	 * @param type The persistent type to analyze
+	 * @return The mapping provider describing the annotated state of the type
 	 */
-	JavaTypeMapping buildJavaTypeMappingFromMappingKey(String key, JavaPersistentType type);
+	JavaTypeMappingProvider getJavaTypeMappingProvider(JavaPersistentType type);
 	
 	/**
-	 * Build a Java type mapping for the specified annotation and persistent
-	 * type. Use identity when comparing annotation names; so clients must
-	 * use the same name constants as the providers.
-	 * Throw an IllegalArgumentException if the mapping annotation is not
-	 * supported by the platform.
+	 * Return a {@link JavaTypeMappingProvider} for the given mapping key.
+	 * Throw an {@link IllegalArgumentException} if the key is not supported by the platform.
 	 */
-	JavaTypeMapping buildJavaTypeMappingFromAnnotation(String annotationName, JavaPersistentType type);
+	JavaTypeMappingProvider getJavaTypeMappingProvider(String mappingKey);
 	
 	/**
 	 * Return a {@link JavaAttributeMappingProvider} that describes the interpretation of the attribute
@@ -117,7 +119,8 @@ public interface JpaPlatform
 	 * Return a {@link JavaAttributeMappingProvider} that describes the interpretation of the attribute
 	 * as it exists, complete with annotations.  It is assumed that the attribute's default mapping
 	 * has already been determined.
-	 * This may be null.
+	 * This may not be null (@see {@link NullSpecifiedJavaAttributeMappingProvider},) else
+	 * an {@link IllegalStateException} is thrown.
 	 * 
 	 * @param attribute The persistent attribute to analyze
 	 * @return The mapping provider describing the annotated state of the attribute

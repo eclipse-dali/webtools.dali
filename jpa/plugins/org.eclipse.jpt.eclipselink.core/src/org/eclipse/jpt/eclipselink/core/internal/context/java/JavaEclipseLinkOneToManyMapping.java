@@ -71,15 +71,15 @@ public class JavaEclipseLinkOneToManyMapping
 	}
 	
 	protected EclipseLinkPrivateOwnedAnnotation getResourcePrivateOwned() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getPrivateOwnedAnnotationName());
+		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void addResourcePrivateOwned() {
-		this.resourcePersistentAttribute.addSupportingAnnotation(getPrivateOwnedAnnotationName());
+		this.resourcePersistentAttribute.addAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void removeResourcePrivateOwned() {
-		this.resourcePersistentAttribute.removeSupportingAnnotation(getPrivateOwnedAnnotationName());
+		this.resourcePersistentAttribute.removeAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	

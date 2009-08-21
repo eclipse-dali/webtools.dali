@@ -707,7 +707,7 @@ public abstract class AbstractJpaProject
 		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
-				return jrpType.isPersistable() && jrpType.isPersisted();  // i.e. the type is valid and has a type mapping annotation
+				return jrpType.isPersistable() && jrpType.isAnnotated();  // i.e. the type is valid and has a valid type annotation
 			}
 		};
 	}

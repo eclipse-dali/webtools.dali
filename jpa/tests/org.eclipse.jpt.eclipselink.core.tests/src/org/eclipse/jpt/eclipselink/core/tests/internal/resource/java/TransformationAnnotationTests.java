@@ -70,13 +70,13 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		assertNotNull(attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION));
+		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION));
 		
-		attributeResource.setMappingAnnotation(null);		
-		assertNull(attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION));
+		attributeResource.setPrimaryAnnotation(null, new String[0]);		
+		assertNull(attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION));
 		
-		attributeResource.setMappingAnnotation(EclipseLinkJPA.TRANSFORMATION);
-		assertNotNull(attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION));
+		attributeResource.setPrimaryAnnotation(EclipseLinkJPA.TRANSFORMATION, new String[0]);
+		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION));
 	}
 
 	public void testGetOptional() throws Exception {
@@ -84,7 +84,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION);
+		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
 	}
 
@@ -93,7 +93,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION);
+		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
 		
 		transformation.setOptional(Boolean.FALSE);
@@ -107,7 +107,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION);
+		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
 		
 		transformation.setOptional(null);
@@ -122,7 +122,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION);
+		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
 	}
 
@@ -131,7 +131,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION);
+		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
 		
 		transformation.setFetch(FetchType.LAZY);
@@ -145,7 +145,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getMappingAnnotation(EclipseLinkJPA.TRANSFORMATION);
+		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
 		
 		transformation.setFetch(null);

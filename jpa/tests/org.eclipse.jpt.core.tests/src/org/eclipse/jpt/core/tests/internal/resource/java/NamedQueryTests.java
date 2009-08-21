@@ -79,7 +79,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertNotNull(namedQuery);
 	}
 
@@ -87,7 +87,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
 	}
 
@@ -95,7 +95,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
 		
 		namedQuery.setName("foo");
@@ -113,7 +113,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 	}
 
@@ -121,7 +121,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 		
 		namedQuery.setQuery("foo");
@@ -139,7 +139,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
 		assertEquals(0, namedQuery.hintsSize());
 	}
@@ -148,7 +148,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
 		namedQuery.addHint(0);
 		namedQuery.addHint(1);
@@ -160,7 +160,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
 		assertEquals(2, namedQuery.hintsSize());
 		
@@ -173,7 +173,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQuery();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1);
@@ -190,7 +190,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
@@ -218,7 +218,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
@@ -239,7 +239,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());

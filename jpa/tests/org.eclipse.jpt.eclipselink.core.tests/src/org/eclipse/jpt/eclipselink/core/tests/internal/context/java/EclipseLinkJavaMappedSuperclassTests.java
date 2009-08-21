@@ -115,15 +115,15 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.getSupportingAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 
 		readOnly.setSpecifiedReadOnly(Boolean.TRUE);
-		assertNotNull(typeResource.getSupportingAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNotNull(typeResource.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 
 		readOnly.setSpecifiedReadOnly(null);
-		assertNull(typeResource.getSupportingAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 	}
 	
@@ -137,12 +137,12 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.removeSupportingAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
+		typeResource.removeAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(null, readOnly.getSpecifiedReadOnly());
 		assertEquals(false, readOnly.isDefaultReadOnly());
 		
-		typeResource.addSupportingAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
+		typeResource.addAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 	}
 
@@ -166,19 +166,19 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
 		
 		customizer.setSpecifiedCustomizerClass(null);
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizerAnnotation);
 
 
 		customizer.setSpecifiedCustomizerClass("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 	}
 	
@@ -191,14 +191,14 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		
-		typeResource.removeSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		typeResource.removeAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
-		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.addSupportingAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.addAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation.setValue("FooBar");
@@ -212,7 +212,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
 		
@@ -268,7 +268,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		
 		// remove annotation, text context
 		
-		typeResource.removeSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		typeResource.removeAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertNull(resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
@@ -283,7 +283,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		EclipseLinkChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value
 		
@@ -322,13 +322,13 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		
 		contextChangeTracking.setSpecifiedType(null);
 		
-		assertNull(typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME));
 		assertNull(contextChangeTracking.getSpecifiedType());
 		
 		// change context to AUTO specifically (this time from no annotation), test resource
 		
 		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.AUTO);
-		resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());

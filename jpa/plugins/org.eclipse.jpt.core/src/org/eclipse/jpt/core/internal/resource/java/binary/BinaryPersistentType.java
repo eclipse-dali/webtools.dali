@@ -11,9 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
@@ -103,31 +101,21 @@ final class BinaryPersistentType
 	// ********** BinaryPersistentMember implementation **********
 
 	@Override
-	Annotation buildMappingAnnotation(IAnnotation jdtAnnotation) {
-		return this.getAnnotationProvider().buildTypeMappingAnnotation(this, jdtAnnotation);
+	Annotation buildAnnotation(IAnnotation jdtAnnotation) {
+		return this.getAnnotationProvider().buildTypeAnnotation(this, jdtAnnotation);
 	}
 	
 	@Override
-	Annotation buildSupportingAnnotation(IAnnotation jdtAnnotation) {
-		return this.getAnnotationProvider().buildTypeSupportingAnnotation(this, jdtAnnotation);
+	Annotation buildNullAnnotation(String annotationName) {
+		return this.getAnnotationProvider().buildNullTypeAnnotation(this, annotationName);
 	}
 	
 	@Override
-	Annotation buildNullSupportingAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildNullTypeSupportingAnnotation(this, annotationName);
+	Iterator<String> validAnnotationNames() {
+		return this.getAnnotationProvider().typeAnnotationNames();
 	}
 	
-	@Override
-	ListIterator<String> validMappingAnnotationNames() {
-		return this.getAnnotationProvider().typeMappingAnnotationNames();
-	}
 	
-	@Override
-	ListIterator<String> validSupportingAnnotationNames() {
-		return this.getAnnotationProvider().typeSupportingAnnotationNames();
-	}
-
-
 	// ********** JavaResourcePersistentType implementation **********
 
 	// ***** name
@@ -218,13 +206,13 @@ final class BinaryPersistentType
 	private AccessType buildAccess() {
 		return JPTTools.buildAccess(this);
 	}
-
+	
 	/**
 	 * check only persistable attributes
 	 */
-	public boolean hasAnyAttributePersistenceAnnotations() {
+	public boolean hasAnyAnnotatedAttributes() {
 		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistableAttributes(); stream.hasNext(); ) {
-			if (stream.next().hasAnyPersistenceAnnotations()) {
+			if (stream.next().isAnnotated()) {
 				return true;
 			}
 		}

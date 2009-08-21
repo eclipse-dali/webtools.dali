@@ -78,8 +78,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -96,7 +96,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -112,8 +112,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 	
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(VersionAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -129,8 +129,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -146,8 +146,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -163,8 +163,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -180,8 +180,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -197,8 +197,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -214,8 +214,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -231,8 +231,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testTransientMapping() throws Exception {

@@ -21,7 +21,8 @@ public class NullJavaTypeMappingProvider
 	implements JavaTypeMappingProvider
 {
 	// singleton
-	private static final NullJavaTypeMappingProvider INSTANCE = new NullJavaTypeMappingProvider();
+	private static final NullJavaTypeMappingProvider INSTANCE = 
+			new NullJavaTypeMappingProvider();
 	
 	
 	/**
@@ -50,6 +51,13 @@ public class NullJavaTypeMappingProvider
 	
 	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return factory.buildJavaNullTypeMapping(parent);
+	}
+	
+	/**
+	 * This is typically the final test, so it should always apply
+	 */
+	public boolean test(JavaPersistentType persistentType) {
+		return true;
 	}
 	
 	@Override

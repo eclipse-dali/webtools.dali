@@ -40,7 +40,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	protected Annotation getResourceMappingAnnotation() {
-		return this.javaResourcePersistentType.getMappingAnnotation(getAnnotationName());
+		return this.javaResourcePersistentType.getAnnotation(getAnnotationName());
 	}
 
 	//***************** TypeMapping impl ***************************************

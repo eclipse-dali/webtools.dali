@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -308,7 +307,7 @@ public class JPTTools {
 		boolean hasPersistableFields = false;
 		for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableFields(); stream.hasNext(); ) {
 			hasPersistableFields = true;
-			if (stream.next().hasAnyPersistenceAnnotations()) {
+			if (stream.next().isAnnotated()) {
 				// any field is annotated => FIELD
 				return AccessType.FIELD;
 			}
@@ -317,7 +316,7 @@ public class JPTTools {
 		boolean hasPersistableProperties = false;
 		for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableProperties(); stream.hasNext(); ) {
 			hasPersistableProperties = true;
-			if (stream.next().hasAnyPersistenceAnnotations()) {
+			if (stream.next().isAnnotated()) {
 				// none of the fields are annotated and a getter is annotated => PROPERTY
 				return AccessType.PROPERTY;
 			}

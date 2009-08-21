@@ -43,7 +43,7 @@ public class EmbeddedTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();
+		JavaResourceNode mappingAnnotation = attributeResource.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof EmbeddedAnnotation);
 	}
 

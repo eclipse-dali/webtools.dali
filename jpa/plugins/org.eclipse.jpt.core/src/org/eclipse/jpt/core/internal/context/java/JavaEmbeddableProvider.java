@@ -15,29 +15,31 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 public class JavaEmbeddableProvider
-	implements JavaTypeMappingProvider
+	extends AbstractJavaTypeMappingProvider
 {
-
 	// singleton
-	private static final JavaEmbeddableProvider INSTANCE = new JavaEmbeddableProvider();
-
+	private static final JavaEmbeddableProvider INSTANCE = 
+			new JavaEmbeddableProvider();
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JavaTypeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaEmbeddableProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
@@ -49,10 +51,4 @@ public class JavaEmbeddableProvider
 	public JavaEmbeddable buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return factory.buildJavaEmbeddable(parent);
 	}
-
-	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.getAnnotationName());
-	}
-
 }

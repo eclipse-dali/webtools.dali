@@ -20,11 +20,11 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
@@ -126,11 +126,11 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
 		assertEquals(false, privateOwnable.isPrivateOwned());
 
 		privateOwnable.setPrivateOwned(true);
-		assertNotNull(attributeResource.getSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
@@ -146,11 +146,11 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
+		attributeResource.removeAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(false, privateOwnable.isPrivateOwned());
 		
-		attributeResource.addSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
+		attributeResource.addAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
@@ -163,7 +163,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
 		
@@ -193,7 +193,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		// remove annotation, text context
 		
-		attributeResource.removeSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		attributeResource.removeAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		assertNull(joinFetchAnnotation.getValue());
 		assertNull(contextJoinFetch.getValue());
@@ -208,7 +208,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value
 		
@@ -233,13 +233,13 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		contextJoinFetch.setValue(null);
 		
-		assertNull(attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME));
 		assertNull(contextJoinFetch.getValue());
 		
 		// change context to INNER specifically (this time from no annotation), test resource
 		
 		contextJoinFetch.setValue(EclipseLinkJoinFetchType.INNER);
-		joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
 		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
@@ -275,9 +275,10 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.LAZY, ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).getFetch());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertNotNull(annotation);
+		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.LAZY, annotation.getFetch());
 	}
 	
 	public void testDefaultOneToManySetTargetEntity() throws Exception {
@@ -297,9 +298,10 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals("Foo", ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).getTargetEntity());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertNotNull(annotation);
+		assertEquals("Foo", annotation.getTargetEntity());
 	}
 	
 	public void testDefaultOneToManySetMappedBy() throws Exception {
@@ -319,9 +321,10 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals("Foo", ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).getMappedBy());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertNotNull(annotation);
+		assertEquals("Foo", annotation.getMappedBy());
 	}
 	
 	public void testDefaultOneToManySetCascadeAll() throws Exception {
@@ -341,9 +344,10 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals(true, ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).isCascadeAll());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertNotNull(annotation);
+		assertEquals(true, annotation.isCascadeAll());
 	}
 	
 	public void testDefaultOneToManySetCascadeMerge() throws Exception {
@@ -363,9 +367,10 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals(true, ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).isCascadeMerge());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertNotNull(annotation);
+		assertEquals(true, annotation.isCascadeMerge());
 	}
 	
 	public void testDefaultOneToManySetCascadePersist() throws Exception {
@@ -385,9 +390,10 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals(true, ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).isCascadePersist());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertNotNull(annotation);
+		assertEquals(true, annotation.isCascadePersist());
 	}
 	
 	public void testDefaultOneToManySetCascadeRefresh() throws Exception {
@@ -407,9 +413,9 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals(true, ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).isCascadeRefresh());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertEquals(true, annotation.isCascadeRefresh());
 	}
 	
 	public void testDefaultOneToManySetCascadeRemove() throws Exception {
@@ -429,8 +435,9 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToManyAnnotation);
-		assertEquals(true, ((OneToManyAnnotation) attributeResource.getMappingAnnotation()).isCascadeRemove());
+		OneToManyAnnotation annotation = 
+				(OneToManyAnnotation) attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		assertNotNull(annotation);
+		assertEquals(true, annotation.isCascadeRemove());
 	}
 }

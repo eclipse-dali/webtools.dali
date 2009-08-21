@@ -54,7 +54,8 @@ public abstract class AbstractJavaVersionMapping
 	}
 		
 	public ColumnAnnotation getResourceColumn() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().
+				getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	//************** JavaAttributeMapping implementation ***************
@@ -153,7 +154,7 @@ public abstract class AbstractJavaVersionMapping
 	}
 	
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		return null;

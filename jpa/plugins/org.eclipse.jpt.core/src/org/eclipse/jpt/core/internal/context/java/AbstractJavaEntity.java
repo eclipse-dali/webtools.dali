@@ -87,7 +87,6 @@ public abstract class AbstractJavaEntity
 	extends AbstractJavaTypeMapping
 	implements JavaEntity
 {
-	
 	protected String specifiedName;
 
 	protected String defaultName;
@@ -238,14 +237,24 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void initializeSecondaryTables() {
-		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
-			this.specifiedSecondaryTables.add(buildSecondaryTable((SecondaryTableAnnotation) stream.next()));
+		for (Iterator<NestableAnnotation> stream = 
+				this.javaResourcePersistentType.annotations(
+					SecondaryTableAnnotation.ANNOTATION_NAME, 
+					SecondaryTablesAnnotation.ANNOTATION_NAME); 
+				stream.hasNext(); ) {
+			this.specifiedSecondaryTables.add(
+					buildSecondaryTable((SecondaryTableAnnotation) stream.next()));
 		}
 	}
 	
 	protected void initializePrimaryKeyJoinColumns() {
-		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
-			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) stream.next()));
+		for (Iterator<NestableAnnotation> stream = 
+				this.javaResourcePersistentType.annotations(
+					PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
+					PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME); 
+				stream.hasNext(); ) {
+			this.specifiedPrimaryKeyJoinColumns.add(
+					buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) stream.next()));
 		}
 	}
 	
@@ -259,10 +268,15 @@ public abstract class AbstractJavaEntity
 		}
 		this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumnAnnotation(this.javaResourcePersistentType));
 	}	
-
+	
 	protected void initializeSpecifiedAttributeOverrides() {
-		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
-			this.specifiedAttributeOverrides.add(buildAttributeOverride((AttributeOverrideAnnotation) stream.next()));
+		for (Iterator<NestableAnnotation> stream = 
+				this.javaResourcePersistentType.annotations(
+					AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME); 
+				stream.hasNext(); ) {
+			this.specifiedAttributeOverrides.add(
+				buildAttributeOverride((AttributeOverrideAnnotation) stream.next()));
 		}
 	}
 	
@@ -276,8 +290,13 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void initializeSpecifiedAssociationOverrides() {
-		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
-			this.specifiedAssociationOverrides.add(buildAssociationOverride((AssociationOverrideAnnotation) stream.next()));
+		for (Iterator<NestableAnnotation> stream = 
+				this.javaResourcePersistentType.annotations(
+					AssociationOverrideAnnotation.ANNOTATION_NAME, 
+					AssociationOverridesAnnotation.ANNOTATION_NAME); 
+				stream.hasNext(); ) {
+			this.specifiedAssociationOverrides.add(
+				buildAssociationOverride((AssociationOverrideAnnotation) stream.next()));
 		}
 	}
 	
@@ -295,13 +314,15 @@ public abstract class AbstractJavaEntity
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	protected InheritanceAnnotation getResourceInheritance() {
-		return (InheritanceAnnotation) this.javaResourcePersistentType.getNonNullSupportingAnnotation(InheritanceAnnotation.ANNOTATION_NAME);
+		return (InheritanceAnnotation) this.javaResourcePersistentType.
+				getNonNullAnnotation(InheritanceAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected DiscriminatorValueAnnotation getResourceDiscriminatorValue() {
-		return (DiscriminatorValueAnnotation) this.javaResourcePersistentType.getNonNullSupportingAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME);
+		return (DiscriminatorValueAnnotation) this.javaResourcePersistentType.
+				getNonNullAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME);
 	}
-
+	
 	protected void initializeIdClass() {
 		IdClassAnnotation resourceIdClass = getResourceIdClass();
 		if (resourceIdClass != null) {
@@ -375,7 +396,7 @@ public abstract class AbstractJavaEntity
 		return EntityAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.TABLE,
 			JPA.SECONDARY_TABLE,
@@ -457,7 +478,11 @@ public abstract class AbstractJavaEntity
 	public JavaSecondaryTable addSpecifiedSecondaryTable(int index) {
 		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		SecondaryTableAnnotation secondaryTableResource = 
+				(SecondaryTableAnnotation) this.javaResourcePersistentType.
+					addAnnotation(
+						index, SecondaryTableAnnotation.ANNOTATION_NAME, 
+						SecondaryTablesAnnotation.ANNOTATION_NAME);
 		secondaryTable.initialize(secondaryTableResource);
 		fireItemAdded(SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
@@ -481,7 +506,8 @@ public abstract class AbstractJavaEntity
 	
 	public void removeSpecifiedSecondaryTable(int index) {
 		JavaSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
-		this.javaResourcePersistentType.removeSupportingAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(
+				index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
@@ -491,7 +517,8 @@ public abstract class AbstractJavaEntity
 	
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedSecondaryTables, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveAnnotation(
+				targetIndex, sourceIndex, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -697,7 +724,11 @@ public abstract class AbstractJavaEntity
 		}
 		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = 
+				(PrimaryKeyJoinColumnAnnotation) this.javaResourcePersistentType.
+					addAnnotation(
+						index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
+						PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		primaryKeyJoinColumn.initialize(pkJoinColumnResource);
 		this.fireItemAdded(SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		if (oldDefaultPkJoinColumn != null) {
@@ -726,7 +757,9 @@ public abstract class AbstractJavaEntity
 			//in the UI because the change notifications end up in the wrong order.
 			this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumnAnnotation(this.javaResourcePersistentType));
 		}
-		this.javaResourcePersistentType.removeSupportingAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(
+				index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
+				PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 		if (this.defaultPrimaryKeyJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -739,7 +772,8 @@ public abstract class AbstractJavaEntity
 	}
 	
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
-		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveAnnotation(
+				targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
 	
@@ -771,7 +805,10 @@ public abstract class AbstractJavaEntity
 	protected JavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = 
+				(AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(
+					index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
 		attributeOverride.initialize(attributeOverrideResource);
 		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
@@ -804,7 +841,9 @@ public abstract class AbstractJavaEntity
 			}
 		}
 
-		this.javaResourcePersistentType.removeSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(
+				index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+				AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
@@ -818,7 +857,10 @@ public abstract class AbstractJavaEntity
 		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = 
+				(AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(
+					index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
 		newAttributeOverride.initialize(attributeOverrideResource);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
@@ -851,7 +893,8 @@ public abstract class AbstractJavaEntity
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveAnnotation(
+				targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -941,7 +984,10 @@ public abstract class AbstractJavaEntity
 	public JavaAssociationOverride addSpecifiedAssociationOverride(int index) {
 		JavaAssociationOverride associationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		AssociationOverrideAnnotation associationOverrideResource = 
+				(AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(
+					index, AssociationOverrideAnnotation.ANNOTATION_NAME, 
+					AssociationOverridesAnnotation.ANNOTATION_NAME);
 		associationOverride.initialize(associationOverrideResource);
 		this.fireItemAdded(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
@@ -965,7 +1011,8 @@ public abstract class AbstractJavaEntity
 	
 	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveAnnotation(
+				targetIndex, sourceIndex, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -996,7 +1043,9 @@ public abstract class AbstractJavaEntity
 			}
 		}
 
-		this.javaResourcePersistentType.removeSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(
+				index, AssociationOverrideAnnotation.ANNOTATION_NAME, 
+				AssociationOverridesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		
 		if (virtualAssociationOverride != null) {
@@ -1010,7 +1059,10 @@ public abstract class AbstractJavaEntity
 		JavaAssociationOverride newAssociationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
 		
-		AssociationOverrideAnnotation attributeOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		AssociationOverrideAnnotation attributeOverrideResource = 
+				(AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(
+					index, AssociationOverrideAnnotation.ANNOTATION_NAME, 
+					AssociationOverridesAnnotation.ANNOTATION_NAME);
 		newAssociationOverride.initialize(attributeOverrideResource);
 		
 		int virtualIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
@@ -1073,15 +1125,16 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected IdClassAnnotation getResourceIdClass() {
-		return (IdClassAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		return (IdClassAnnotation) this.javaResourcePersistentType.
+				getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addResourceIdClass() {
-		this.javaResourcePersistentType.addSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeResourceIdClass() {
-		this.javaResourcePersistentType.removeSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 
 	public Entity getParentEntity() {
@@ -1519,7 +1572,9 @@ public abstract class AbstractJavaEntity
 	
 	protected void updateSecondaryTables() {
 		ListIterator<JavaSecondaryTable> secondaryTables = specifiedSecondaryTables();
-		ListIterator<NestableAnnotation> resourceSecondaryTables = this.javaResourcePersistentType.supportingAnnotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> resourceSecondaryTables = 
+				this.javaResourcePersistentType.annotations(
+					SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		
 		while (secondaryTables.hasNext()) {
 			JavaSecondaryTable secondaryTable = secondaryTables.next();
@@ -1541,12 +1596,13 @@ public abstract class AbstractJavaEntity
 		secondaryTable.initialize(secondaryTableResource);
 		return secondaryTable;
 	}
-
-
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns() {
 		ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<NestableAnnotation> resourcePrimaryKeyJoinColumns = this.javaResourcePersistentType.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> resourcePrimaryKeyJoinColumns = 
+				this.javaResourcePersistentType.annotations(
+					PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, 
+					PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (primaryKeyJoinColumns.hasNext()) {
 			JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
@@ -1584,7 +1640,10 @@ public abstract class AbstractJavaEntity
 		
 	protected void updateSpecifiedAttributeOverrides() {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<NestableAnnotation> resourceAttributeOverrides = this.javaResourcePersistentType.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> resourceAttributeOverrides = 
+				this.javaResourcePersistentType.annotations(
+					AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (attributeOverrides.hasNext()) {
 			JavaAttributeOverride attributeOverride = attributeOverrides.next();
@@ -1640,7 +1699,10 @@ public abstract class AbstractJavaEntity
 
 	protected void updateSpecifiedAssociationOverrides() {
 		ListIterator<JavaAssociationOverride> associationOverrides = specifiedAssociationOverrides();
-		ListIterator<NestableAnnotation> resourceAssociationOverrides = this.javaResourcePersistentType.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> resourceAssociationOverrides = 
+				this.javaResourcePersistentType.annotations(
+					AssociationOverrideAnnotation.ANNOTATION_NAME, 
+					AssociationOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (associationOverrides.hasNext()) {
 			JavaAssociationOverride associationOverride = associationOverrides.next();

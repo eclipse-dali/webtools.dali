@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -33,7 +32,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -397,8 +395,8 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 	
 	protected JavaAttributeMapping buildDefaultMapping(JavaAttributeMappingProvider mappingProvider) {
-		Annotation annotation = 
-			this.resourcePersistentAttribute.getNullMappingAnnotation(mappingProvider.getAnnotationName());
+		Annotation annotation = this.resourcePersistentAttribute.
+				getNullAnnotation(mappingProvider.getAnnotationName());
 		JavaAttributeMapping mapping = mappingProvider.buildMapping(this, getJpaFactory());
 		mapping.initialize(annotation);
 		return mapping;
@@ -435,16 +433,13 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected JavaAttributeMapping buildSpecifiedMapping() {
 		JavaAttributeMappingProvider mappingProvider = 
-			getJpaPlatform().getSpecifiedJavaAttributeMappingProvider(this);
+				getJpaPlatform().getSpecifiedJavaAttributeMappingProvider(this);
 		return buildSpecifiedMapping(mappingProvider);
 	}
 	
 	protected JavaAttributeMapping buildSpecifiedMapping(JavaAttributeMappingProvider mappingProvider) {
-		if (mappingProvider == null) {
-			return null;
-		}
-		Annotation annotation =
-			this.resourcePersistentAttribute.getMappingAnnotation(mappingProvider.getAnnotationName());
+		Annotation annotation = this.resourcePersistentAttribute.
+				getAnnotation(mappingProvider.getAnnotationName());
 		JavaAttributeMapping mapping = mappingProvider.buildMapping(this, getJpaFactory());
 		// specified mappings may be null
 		if (mapping != null) {
@@ -465,24 +460,29 @@ public abstract class AbstractJavaPersistentAttribute
 	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
 	// since we don't know all the possible mapping types
 	public void setSpecifiedMappingKey(String key) {
-		if (this.valuesAreEqual(key, this.getSpecifiedMappingKey())) {
+		if (key == this.getSpecifiedMappingKey()) {
 			return;
 		}
 		JavaAttributeMapping oldMapping = this.specifiedMapping;
 		JavaAttributeMapping newMapping = this.buildMappingFromMappingKey(key);
-
+		
 		this.specifiedMapping = newMapping;
-		this.resourcePersistentAttribute.setMappingAnnotation((newMapping == null) ? null : newMapping.getAnnotationName());
-		this.firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, newMapping);
-
-		// remove "supporting annotations" that do not "support" to the new mapping
-		if (oldMapping != null) {
-			HashBag<String> annotationsToRemove = CollectionTools.collection(oldMapping.supportingAnnotationNames());
-			CollectionTools.removeAll(annotationsToRemove, this.supportingAnnotationNames());
-			for (String annotationName : annotationsToRemove) {
-				this.resourcePersistentAttribute.removeSupportingAnnotation(annotationName);
-			}
+		
+		String newAnnotation;
+		String[] newSupportingAnnotationNames;
+		if (newMapping != null) {
+			newAnnotation = newMapping.getAnnotationName();
+			newSupportingAnnotationNames = 
+					CollectionTools.array(newMapping.supportingAnnotationNames(), new String[0]);
 		}
+		else {
+			newAnnotation = null;
+			newSupportingAnnotationNames = 
+					CollectionTools.array(this.defaultMapping.supportingAnnotationNames(), new String[0]);
+		}
+		this.resourcePersistentAttribute.setPrimaryAnnotation(
+				newAnnotation, newSupportingAnnotationNames);
+		this.firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, newMapping);
 	}
 	
 	/**
@@ -518,12 +518,11 @@ public abstract class AbstractJavaPersistentAttribute
 	protected void updateDefaultMapping() {
 		// There will always be a mapping provider, even if it is a "null" mapping provider ...
 		JavaAttributeMappingProvider mappingProvider = 
-			getJpaPlatform().getDefaultJavaAttributeMappingProvider(this);
+				getJpaPlatform().getDefaultJavaAttributeMappingProvider(this);
 		String mappingKey = mappingProvider.getKey();
 		if (this.valuesAreEqual(this.defaultMapping.getKey(), mappingKey)) {
-			this.defaultMapping.update(
-				this.resourcePersistentAttribute.getNullMappingAnnotation(
-					mappingProvider.getAnnotationName()));
+			this.defaultMapping.update(this.resourcePersistentAttribute.
+					getNullAnnotation(mappingProvider.getAnnotationName()));
 		} 
 		else {
 			setDefaultMapping(buildDefaultMapping(mappingProvider));
@@ -531,15 +530,14 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected void updateSpecifiedMapping() {
-		// There may not be a mapping provider ...
+		// There will always be a mapping provider, even if it is a "null" mapping provider ...
 		JavaAttributeMappingProvider mappingProvider = 
-			getJpaPlatform().getSpecifiedJavaAttributeMappingProvider(this);
-		// ... so there may not be a mapping annotation name
-		String annotationName = (mappingProvider == null) ? null : mappingProvider.getAnnotationName();
+				getJpaPlatform().getSpecifiedJavaAttributeMappingProvider(this);
+		String mappingKey = mappingProvider.getKey();
 		if (this.specifiedMapping != null
-				&& this.specifiedMapping.getAnnotationName().equals(annotationName)) {
-			this.specifiedMapping.update(
-				this.resourcePersistentAttribute.getMappingAnnotation(annotationName));
+				&& this.specifiedMapping.getKey().equals(mappingKey)) {
+			this.specifiedMapping.update(this.resourcePersistentAttribute.
+					getAnnotation(mappingProvider.getAnnotationName()));
 		} 
 		else {
 			setSpecifiedMapping(buildSpecifiedMapping(mappingProvider));

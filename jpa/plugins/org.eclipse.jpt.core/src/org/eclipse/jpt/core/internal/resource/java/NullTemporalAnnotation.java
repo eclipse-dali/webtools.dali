@@ -31,8 +31,8 @@ public final class NullTemporalAnnotation
 	}
 
 	@Override
-	protected TemporalAnnotation addSupportingAnnotation() {
-		return (TemporalAnnotation) super.addSupportingAnnotation();
+	protected TemporalAnnotation addAnnotation() {
+		return (TemporalAnnotation) super.addAnnotation();
 	}
 
 
@@ -45,7 +45,7 @@ public final class NullTemporalAnnotation
 
 	public void setValue(TemporalType value) {
 		if (value != null) {
-			this.addSupportingAnnotation().setValue(value);
+			this.addAnnotation().setValue(value);
 		}
 	}
 

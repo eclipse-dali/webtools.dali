@@ -104,7 +104,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 			}
 		}
 
-		getResourcePersistentAttribute().removeSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
@@ -118,12 +118,15 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = 
+				(AttributeOverrideAnnotation) getResourcePersistentAttribute().addAnnotation(
+					index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
 		newAttributeOverride.initialize(attributeOverrideResource);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
 		this.virtualAttributeOverrides.remove(defaultIndex);
-
+		
 		newAttributeOverride.setName(oldAttributeOverride.getName());
 		newAttributeOverride.getColumn().setSpecifiedName(oldAttributeOverride.getColumn().getName());
 		
@@ -175,7 +178,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		getResourcePersistentAttribute().moveSupportingAnnotation(targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		getResourcePersistentAttribute().moveAnnotation(
+				targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -235,7 +239,10 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 	
 	protected void initializeAttributeOverrides() {
-		ListIterator<NestableAnnotation> annotations = this.resourcePersistentAttribute.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> annotations = 
+				this.resourcePersistentAttribute.annotations(
+					AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
@@ -264,7 +271,10 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 	protected void updateSpecifiedAttributeOverrides() {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<NestableAnnotation> resourceAttributeOverrides = this.resourcePersistentAttribute.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> resourceAttributeOverrides = 
+				this.resourcePersistentAttribute.annotations(
+					AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (attributeOverrides.hasNext()) {
 			JavaAttributeOverride attributeOverride = attributeOverrides.next();

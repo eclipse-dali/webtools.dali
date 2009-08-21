@@ -35,12 +35,12 @@ public class NullJoinTableAnnotation
 
 	@Override
 	protected JoinTableAnnotation addAnnotation() {
-		return (JoinTableAnnotation) this.addSupportingAnnotation();
+		return (JoinTableAnnotation) super.addAnnotation();
 	}
 
 	@Override
 	protected JoinColumnAnnotation addAnnotation(AnnotationInitializer initializer) {
-		return (JoinColumnAnnotation) this.addSupportingAnnotation(initializer);
+		return (JoinColumnAnnotation) super.addAnnotation(initializer);
 	}
 
 	// ***** join columns

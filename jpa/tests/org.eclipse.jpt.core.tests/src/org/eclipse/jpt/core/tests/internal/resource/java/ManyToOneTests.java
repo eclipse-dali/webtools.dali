@@ -121,7 +121,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertNotNull(manyToOne);
 	}
 	
@@ -130,7 +130,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(FetchType.EAGER, manyToOne.getFetch());
 	}
 
@@ -139,7 +139,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(FetchType.EAGER, manyToOne.getFetch());
 		
 		manyToOne.setFetch(FetchType.LAZY);
@@ -153,7 +153,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(FetchType.EAGER, manyToOne.getFetch());
 		
 		manyToOne.setFetch(null);
@@ -169,7 +169,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(TYPE_NAME, manyToOne.getTargetEntity());
 	}
 	
@@ -178,7 +178,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(TYPE_NAME, manyToOne.getTargetEntity());
 		
 		manyToOne.setTargetEntity("Foo");
@@ -191,7 +191,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(TYPE_NAME, manyToOne.getTargetEntity());
 		
 		manyToOne.setTargetEntity(null);
@@ -206,7 +206,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, manyToOne.getFullyQualifiedTargetEntityClassName());
 		
 		manyToOne.setTargetEntity("Foo");
@@ -223,7 +223,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(Boolean.TRUE, manyToOne.getOptional());
 	}
 
@@ -232,7 +232,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(Boolean.TRUE, manyToOne.getOptional());
 		
 		manyToOne.setOptional(Boolean.FALSE);
@@ -246,7 +246,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(Boolean.TRUE, manyToOne.getOptional());
 		
 		manyToOne.setOptional(null);
@@ -261,7 +261,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertFalse(manyToOne.isCascadeAll());
 	
 		manyToOne.setCascadeAll(true);
@@ -275,7 +275,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertFalse(manyToOne.isCascadeMerge());
 	
 		manyToOne.setCascadeMerge(true);
@@ -289,7 +289,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertFalse(manyToOne.isCascadePersist());
 	
 		manyToOne.setCascadePersist(true);
@@ -303,7 +303,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertFalse(manyToOne.isCascadeRemove());
 	
 		manyToOne.setCascadeRemove(true);
@@ -317,7 +317,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertFalse(manyToOne.isCascadeRefresh());
 	
 		manyToOne.setCascadeRefresh(true);
@@ -331,7 +331,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertTrue(manyToOne.isCascadeAll());
 		
 		manyToOne.setCascadeAll(true);
@@ -356,7 +356,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertTrue(manyToOne.isCascadeMerge());
 		
 		manyToOne.setCascadeMerge(false);//TODO should the resource model handle this and remove both MERGE 
@@ -374,7 +374,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_ONE);
+		ManyToOneAnnotation manyToOne = (ManyToOneAnnotation) attributeResource.getAnnotation(JPA.MANY_TO_ONE);
 		assertTrue(manyToOne.isCascadeMerge());
 		assertTrue(manyToOne.isCascadeRemove());
 		

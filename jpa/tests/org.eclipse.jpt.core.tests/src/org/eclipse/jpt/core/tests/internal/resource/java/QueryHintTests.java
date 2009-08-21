@@ -44,7 +44,7 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		QueryHintAnnotation queryHint = namedQuery.hints().next();
 		assertEquals(QUERY_HINT_NAME, queryHint.getName());
 	}
@@ -53,7 +53,7 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getSupportingAnnotation(JPA.NAMED_QUERY);
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		QueryHintAnnotation queryHint = namedQuery.hints().next();
 		assertEquals(QUERY_HINT_NAME, queryHint.getName());
 		

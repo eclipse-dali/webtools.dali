@@ -43,15 +43,15 @@ public class JavaEclipseLinkMutable extends AbstractJavaJpaContextNode implement
 	}
 	
 	protected EclipseLinkMutableAnnotation getResourceMutable() {
-		return (EclipseLinkMutableAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getMutableAnnotationName());
+		return (EclipseLinkMutableAnnotation) this.resourcePersistentAttribute.getAnnotation(getMutableAnnotationName());
 	}
 	
 	protected void addResourceMutable() {
-		this.resourcePersistentAttribute.addSupportingAnnotation(getMutableAnnotationName());
+		this.resourcePersistentAttribute.addAnnotation(getMutableAnnotationName());
 	}
 	
 	protected void removeResourceMutable() {
-		this.resourcePersistentAttribute.removeSupportingAnnotation(getMutableAnnotationName());
+		this.resourcePersistentAttribute.removeAnnotation(getMutableAnnotationName());
 	}
 
 	protected boolean calculateDefaultMutable() {

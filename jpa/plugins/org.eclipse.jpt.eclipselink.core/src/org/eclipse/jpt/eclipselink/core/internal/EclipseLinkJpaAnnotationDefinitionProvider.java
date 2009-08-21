@@ -40,29 +40,28 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 	extends AbstractJpaAnnotationDefintionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLinkJpaAnnotationDefinitionProvider();
-
+	private static final JpaAnnotationDefinitionProvider INSTANCE = 
+			new EclipseLinkJpaAnnotationDefinitionProvider();
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaAnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLinkJpaAnnotationDefinitionProvider() {
 		super();
 	}
 	
-	@Override
-	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		//none
-	}
 	
 	@Override
-	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(EclipseLinkCacheAnnotationDefinition.instance());
 		definitions.add(EclipseLinkChangeTrackingAnnotationDefinition.instance());
 		definitions.add(EclipseLinkConverterAnnotationDefinition.instance());
@@ -73,18 +72,11 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 		definitions.add(EclipseLinkStructConverterAnnotationDefinition.instance());		
 		definitions.add(EclipseLinkTypeConverterAnnotationDefinition.instance());		
 	}
-
-	// 245996 addresses how the attribute mapping annotations should be ordered
-	@Override
-	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(EclipseLinkBasicCollectionAnnotationDefinition.instance());
-		definitions.add(EclipseLinkBasicMapAnnotationDefinition.instance());
-		definitions.add(EclipseLinkTransformationAnnotationDefinition.instance());
-		definitions.add(EclipseLinkVariableOneToOneAnnotationDefinition.instance());
-	}
 	
 	@Override
-	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(EclipseLinkBasicCollectionAnnotationDefinition.instance());
+		definitions.add(EclipseLinkBasicMapAnnotationDefinition.instance());
 		definitions.add(EclipseLinkConvertAnnotationDefinition.instance());
 		definitions.add(EclipseLinkConverterAnnotationDefinition.instance());
 		definitions.add(EclipseLinkJoinFetchAnnotationDefinition.instance());
@@ -93,7 +85,9 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 		definitions.add(EclipseLinkPrivateOwnedAnnotationDefinition.instance());
 		definitions.add(EclipseLinkReadTransformerAnnotationDefinition.instance());		
 		definitions.add(EclipseLinkStructConverterAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkTransformationAnnotationDefinition.instance());
 		definitions.add(EclipseLinkTypeConverterAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkVariableOneToOneAnnotationDefinition.instance());
 		definitions.add(EclipseLinkWriteTransformerAnnotationDefinition.instance());		
 	}
 }

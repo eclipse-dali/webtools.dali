@@ -31,8 +31,8 @@ public final class NullDiscriminatorValueAnnotation
 	}
 
 	@Override
-	protected DiscriminatorValueAnnotation addSupportingAnnotation() {
-		return (DiscriminatorValueAnnotation) super.addSupportingAnnotation();
+	protected DiscriminatorValueAnnotation addAnnotation() {
+		return (DiscriminatorValueAnnotation) super.addAnnotation();
 	}
 	
 	// ***** value
@@ -42,7 +42,7 @@ public final class NullDiscriminatorValueAnnotation
 
 	public void setValue(String value) {
 		if (value != null) {
-			this.addSupportingAnnotation().setValue(value);
+			this.addAnnotation().setValue(value);
 		}
 	}
 

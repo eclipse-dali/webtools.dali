@@ -57,7 +57,7 @@ public interface JavaResourcePersistentType
 	 * Return whether the type has any attributes that have
 	 * JPA annotations on them.
 	 */
-	boolean hasAnyAttributePersistenceAnnotations();
+	boolean hasAnyAnnotatedAttributes();
 
 
 	// ********** types **********

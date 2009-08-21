@@ -15,32 +15,31 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
-import org.eclipse.jpt.utility.internal.StringTools;
 
-/**
- * 
- */
 public class JavaEntityProvider
-	implements JavaTypeMappingProvider
+	extends AbstractJavaTypeMappingProvider
 {
-
 	// singleton
-	private static final JavaEntityProvider INSTANCE = new JavaEntityProvider();
-
+	private static final JavaEntityProvider INSTANCE = 
+			new JavaEntityProvider();
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JavaTypeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaEntityProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
@@ -48,14 +47,8 @@ public class JavaEntityProvider
 	public String getAnnotationName() {
 		return EntityAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public JavaEntity buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return factory.buildJavaEntity(parent);
 	}
-
-	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.getAnnotationName());
-	}
-
 }

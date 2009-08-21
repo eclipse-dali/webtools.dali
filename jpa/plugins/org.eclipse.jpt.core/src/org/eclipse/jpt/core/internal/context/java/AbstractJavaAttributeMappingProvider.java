@@ -22,15 +22,15 @@ public abstract class AbstractJavaAttributeMappingProvider
 	/**
 	 * Default implementation.  Override if the mapping provider ever applies in the default case.
 	 */
-	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
+	public boolean testDefault(JavaPersistentAttribute persistentAttribute) {
 		return false;
 	}
 	
 	/**
 	 * Default implementation.  Override if the mapping provider needs to do more analysis.
 	 */
-	public boolean specifiedApplies(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getResourcePersistentAttribute().getMappingAnnotation(getAnnotationName()) 
+	public boolean testSpecified(JavaPersistentAttribute persistentAttribute) {
+		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(getAnnotationName()) 
 			!= null;
 	}
 }

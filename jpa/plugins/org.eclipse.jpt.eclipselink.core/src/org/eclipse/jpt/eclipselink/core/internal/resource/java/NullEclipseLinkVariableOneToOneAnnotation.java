@@ -29,8 +29,8 @@ public class NullEclipseLinkVariableOneToOneAnnotation
 	}
 	
 	@Override
-	protected EclipseLinkVariableOneToOneAnnotation setMappingAnnotation() {
-		return (EclipseLinkVariableOneToOneAnnotation) super.setMappingAnnotation();
+	protected EclipseLinkVariableOneToOneAnnotation addAnnotation() {
+		return (EclipseLinkVariableOneToOneAnnotation) super.addAnnotation();
 	}
 
 }

@@ -55,7 +55,7 @@ public class JavaEclipseLinkVariableOneToOneMappingProvider
 	}
 	
 	@Override
-	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
+	public boolean testDefault(JavaPersistentAttribute persistentAttribute) {
 		return ((JavaEclipseLinkPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
 	}
 

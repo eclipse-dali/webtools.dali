@@ -23,22 +23,23 @@ public class GenericJavaPersistentType2_0
 	extends AbstractJavaPersistentType
 	implements JavaPersistentType2_0
 {
-	protected AccessType specifiedAccess;
-	
 	public GenericJavaPersistentType2_0(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent, jrpt);
 	}
 	
+	
 	protected Access2_0Annotation getAccessAnnotation() {
-		return (Access2_0Annotation) this.resourcePersistentType.getNonNullSupportingAnnotation(getAccessAnnotationName());
+		return (Access2_0Annotation) this.resourcePersistentType.
+				getNonNullAnnotation(getAccessAnnotationName());
 	}
-
+	
 	protected String getAccessAnnotationName() {
 		return Access2_0Annotation.ANNOTATION_NAME;
 	}
 	
-	public AccessType getSpecifiedAccess() {
-		return this.specifiedAccess;
+	@Override
+	protected AccessType buildSpecifiedAccess() {
+		return this.getResourceAccess();
 	}
 	
 	public void setSpecifiedAccess(AccessType specifiedAccess) {
@@ -62,13 +63,7 @@ public class GenericJavaPersistentType2_0
 	}
 	
 	@Override
-	protected void initializeAccess() {
-		super.initializeAccess();
-		this.specifiedAccess = this.getResourceAccess();
-	}
-	
-	@Override
-	protected void updateAccess() {
+	public void updateAccess() {
 		super.updateAccess();
 		this.setSpecifiedAccess_(this.getResourceAccess());
 	}
@@ -76,9 +71,8 @@ public class GenericJavaPersistentType2_0
 	protected AccessType getResourceAccess() {
 		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
 	}
-
+	
 	public void synchronizeStaticMetaModel() {
 		// TODO
 	}
-
 }

@@ -66,7 +66,7 @@ public class JavaEclipseLinkVersionMapping
 	@Override
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
-		if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();

@@ -32,8 +32,8 @@ public class NullEclipseLinkTransformationAnnotation
 	}
 	
 	@Override
-	protected EclipseLinkTransformationAnnotation setMappingAnnotation() {
-		return (EclipseLinkTransformationAnnotation) super.setMappingAnnotation();
+	protected EclipseLinkTransformationAnnotation addAnnotation() {
+		return (EclipseLinkTransformationAnnotation) super.addAnnotation();
 	}
 
 	// ***** fetch
@@ -43,7 +43,7 @@ public class NullEclipseLinkTransformationAnnotation
 	
 	public void setFetch(FetchType fetch) {
 		if (fetch != null) {
-			this.setMappingAnnotation().setFetch(fetch);
+			this.addAnnotation().setFetch(fetch);
 		}				
 	}
 	
@@ -58,7 +58,7 @@ public class NullEclipseLinkTransformationAnnotation
 
 	public void setOptional(Boolean optional) {
 		if (optional != null) {
-			this.setMappingAnnotation().setOptional(optional);
+			this.addAnnotation().setOptional(optional);
 		}				
 	}
 

@@ -31,5 +31,4 @@ public class NullEclipseLinkWriteTransformerColumnAnnotation
 	protected ColumnAnnotation addAnnotation() {
 		return this.getWriteTransformerAnnotation().addColumn();
 	}
-
 }

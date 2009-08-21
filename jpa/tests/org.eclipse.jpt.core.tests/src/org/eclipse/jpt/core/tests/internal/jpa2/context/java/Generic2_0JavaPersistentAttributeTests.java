@@ -14,13 +14,27 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class Generic2_0JavaPersistentAttributeTests extends Generic2_0ContextModelTestCase
 {
-
+	private ICompilationUnit createTestEntityForDerivedId() throws Exception {
+		return createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.ONE_TO_ONE, JPA.MANY_TO_ONE);
+			}
+			
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+		});
+	}
+	
 	private ICompilationUnit createTestEntitySpecifiedAccessField() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -106,5 +120,33 @@ public class Generic2_0JavaPersistentAttributeTests extends Generic2_0ContextMod
 		assertEquals(AccessType.PROPERTY, idPersistentAttribute.getAccess());
 		assertEquals(AccessType.PROPERTY, idPersistentAttribute.getDefaultAccess());
 		assertEquals(null, idPersistentAttribute.getSpecifiedAccess());
+	}
+	
+	public void testDerivedIdMappingInitialization() throws Exception {
+		createTestEntityForDerivedId();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaPersistentAttribute id = getJavaPersistentType().getAttributeNamed("id");
+		assertEquals(id.getMappingKey(), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		
+		id.getResourcePersistentAttribute().addAnnotation(JPA.ID);
+		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		
+		id.getResourcePersistentAttribute().addAnnotation(JPA.ONE_TO_ONE);
+		assertEquals(id.getMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertNotNull(id.getResourcePersistentAttribute().getAnnotation(JPA.ID));
+		
+		id.getResourcePersistentAttribute().removeAnnotation(JPA.ONE_TO_ONE);
+		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		
+		id.getResourcePersistentAttribute().addAnnotation(JPA.MANY_TO_ONE);
+		assertEquals(id.getMappingKey(), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertNotNull(id.getResourcePersistentAttribute().getAnnotation(JPA.ID));
+		
+		id.getResourcePersistentAttribute().removeAnnotation(JPA.MANY_TO_ONE);
+		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		
+		id.getResourcePersistentAttribute().setPrimaryAnnotation(null, new String[0]);
+		assertEquals(id.getMappingKey(), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);	
 	}
 }

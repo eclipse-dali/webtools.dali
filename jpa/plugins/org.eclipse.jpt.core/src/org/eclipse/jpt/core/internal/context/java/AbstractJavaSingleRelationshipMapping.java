@@ -28,6 +28,11 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}
 	
 	
+	@Override
+	public boolean isOverridableAssociationMapping() {
+		return true;
+	}
+	
 	// **************** optional ***********************************************
 	
 	public boolean isOptional() {

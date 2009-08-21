@@ -33,8 +33,8 @@ public abstract class VirtualOverrideAnnotation
 	}
 
 	@Override
-	protected OverrideAnnotation addSupportingAnnotation() {
-		return (OverrideAnnotation) super.addSupportingAnnotation();
+	protected OverrideAnnotation addAnnotation() {
+		return (OverrideAnnotation) super.addAnnotation();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public abstract class VirtualOverrideAnnotation
 	
 	public void setName(String name) {
 		if (name != null) {
-			this.addSupportingAnnotation().setName(name);
+			this.addAnnotation().setName(name);
 		}		
 	}
 

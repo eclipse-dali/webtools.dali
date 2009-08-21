@@ -66,7 +66,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	}
 	
 	public ColumnAnnotation getResourceColumn() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 	
 	//************** AttributeMapping implementation ***************
@@ -236,13 +236,13 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	}
 	
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getSupportingAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.ENUMERATED_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.LOB_CONVERTER;
 		}
 		
