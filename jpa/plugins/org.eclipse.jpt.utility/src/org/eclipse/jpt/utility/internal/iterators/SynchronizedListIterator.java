@@ -17,61 +17,97 @@ import org.eclipse.jpt.utility.internal.StringTools;
 /**
  * Wrap a list iterator and synchronize all its methods so it can be safely shared
  * among multiple threads.
+ * 
+ * @param <E> the type of elements returned by the iterator
  */
 public class SynchronizedListIterator<E>
 	implements ListIterator<E>
 {
 	private final ListIterator<E> listIterator;
 
+	/** Object to synchronize on. */
+	private final Object mutex;
+
 
 	public SynchronizedListIterator(List<E> list) {
 		this(list.listIterator());
 	}
 
+	public SynchronizedListIterator(List<E> list, Object mutex) {
+		this(list.listIterator(), mutex);
+	}
+
 	public SynchronizedListIterator(ListIterator<E> listIterator) {
 		super();
 		this.listIterator = listIterator;
+		this.mutex = this;
+	}
+
+	public SynchronizedListIterator(ListIterator<E> listIterator, Object mutex) {
+		super();
+		this.listIterator = listIterator;
+		this.mutex = mutex;
 	}
 
 	public synchronized boolean hasNext() {
-		return this.listIterator.hasNext();
+		synchronized (this.mutex) {
+			return this.listIterator.hasNext();
+		}
 	}
 
 	public synchronized E next() {
-		return this.listIterator.next();
+		synchronized (this.mutex) {
+			return this.listIterator.next();
+		}
 	}
 
 	public synchronized int nextIndex() {
-		return this.listIterator.nextIndex();
+		synchronized (this.mutex) {
+			return this.listIterator.nextIndex();
+		}
 	}
 
 	public synchronized boolean hasPrevious() {
-		return this.listIterator.hasPrevious();
+		synchronized (this.mutex) {
+			return this.listIterator.hasPrevious();
+		}
 	}
 
 	public synchronized E previous() {
-		return this.listIterator.previous();
+		synchronized (this.mutex) {
+			return this.listIterator.previous();
+		}
 	}
 
 	public synchronized int previousIndex() {
-		return this.listIterator.previousIndex();
+		synchronized (this.mutex) {
+			return this.listIterator.previousIndex();
+		}
 	}
 
 	public synchronized void remove() {
-		this.listIterator.remove();
+		synchronized (this.mutex) {
+			this.listIterator.remove();
+		}
 	}
 
 	public synchronized void add(E e) {
-		this.listIterator.add(e);
+		synchronized (this.mutex) {
+			this.listIterator.add(e);
+		}
 	}
 
 	public synchronized void set(E e) {
-		this.listIterator.set(e);
+		synchronized (this.mutex) {
+			this.listIterator.set(e);
+		}
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.listIterator);
+		synchronized (this.mutex) {
+			return StringTools.buildToStringFor(this, this.listIterator);
+		}
 	}
 
 }
