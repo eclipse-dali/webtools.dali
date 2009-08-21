@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.platform;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.internal.jpa1.platform.GenericJpaFactory;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once

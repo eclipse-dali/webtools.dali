@@ -90,7 +90,9 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	
 	// ********** plug-in implementation **********	
 	
-	public JptEclipseLinkCorePlugin() {}
+	public JptEclipseLinkCorePlugin() {
+		super();
+	}
 		
 	@Override
 	public void start(BundleContext context) throws Exception {

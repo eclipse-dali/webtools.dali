@@ -13,13 +13,13 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class ImpliedMappingFileRef
+public class AbstractImpliedMappingFileRef
 	extends AbstractMappingFileRef
 {
 	
 	// ********** construction/initialization **********
 
-	public ImpliedMappingFileRef(PersistenceUnit parent, String resourceFileName) {
+	protected AbstractImpliedMappingFileRef(PersistenceUnit parent, String resourceFileName) {
 		super(parent, resourceFileName);
 	}
 		

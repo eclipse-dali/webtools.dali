@@ -11,27 +11,28 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXml;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaFactory;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
+/**
+ * JPA 1.0 <code>orm.xml</code>
+ */
 public class GenericOrmXml2_0
 	extends AbstractOrmXml
 {	
 	
-	public GenericOrmXml2_0(MappingFileRef parent, JpaXmlResource resource) {
+	public GenericOrmXml2_0(MappingFileRef2_0 parent, JpaXmlResource resource) {
 		super(parent, resource);
-		if (!resource.getContentType().isKindOf(JptCorePlugin.ORM2_0_XML_CONTENT_TYPE)) {
-			throw new IllegalArgumentException(resource + " does not have2.0  orm xml content type"); //$NON-NLS-1$
-		}
+		this.checkResource(resource);
 	}
 	
 	@Override
-	protected Generic2_0JpaFactory getJpaFactory() {
-		return (Generic2_0JpaFactory) super.getJpaFactory();
+	protected JpaFactory2_0 getJpaFactory() {
+		return (JpaFactory2_0) super.getJpaFactory();
 	}
 	
 	@Override
@@ -44,15 +45,18 @@ public class GenericOrmXml2_0
 		return getJpaFactory().buildEntityMappings2_0(this, (XmlEntityMappings) xmlEntityMappings);
 	}	
 	
+	protected void checkResource(JpaXmlResource resource) {
+		if ( ! resource.getContentType().isKindOf(JptCorePlugin.ORM2_0_XML_CONTENT_TYPE)) {
+			throw new IllegalArgumentException("resource does not contain 2.0 orm xml content type: " + resource); //$NON-NLS-1$
+		}
+	}
+	
 	// ********** updating **********
 	
 	@Override
 	public void update(JpaXmlResource resource) {
-		if (!resource.getContentType().isKindOf(JptCorePlugin.ORM2_0_XML_CONTENT_TYPE)) {
-			throw new IllegalArgumentException(resource + " does not have 2.0 orm xml content type"); //$NON-NLS-1$
-		}
+		this.checkResource(resource);
 		super.update(resource);
 	}
-
 
 }

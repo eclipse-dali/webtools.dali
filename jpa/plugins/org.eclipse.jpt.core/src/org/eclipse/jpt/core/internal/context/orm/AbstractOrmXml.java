@@ -94,6 +94,14 @@ public abstract class AbstractOrmXml
 		return (this.entityMappings == null) ? null : this.entityMappings.getPersistentType(fullyQualifiedTypeName);
 	}
 
+	/**
+	 * All orm.xml mapping files must be able to generate a static metamodel
+	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
+	 */
+	public void synchronizeStaticMetaModel() {
+		this.getEntityMappings().synchronizeStaticMetaModel();
+	}
+
 	
 	// ********** entity mappings **********
 	

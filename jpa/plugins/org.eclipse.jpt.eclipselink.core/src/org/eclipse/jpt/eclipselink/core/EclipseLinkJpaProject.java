@@ -13,13 +13,8 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
- * A JPA project is associated with an Eclipse project (and its corresponding
- * Java project). It holds the "resource" model that corresponds to the various
- * JPA-related resources (the persistence.xml file, its mapping files [orm.xml],
- * and the Java source files). It also holds the "context" model that represents
- * the JPA metadata, as derived from spec-defined defaults, Java source code
- * annotations, and XML descriptors.
- * 
+ * EclipseLink JPA project.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -32,10 +27,12 @@ public interface EclipseLinkJpaProject
 
 	/**
 	 * Return the resource model object that corresponds to the file
-	 * 'META-INF/eclipselink-orm.xml' if that file has the eclipselink ContentType
+	 * <code>META-INF/eclipselink-orm.xml</code> if that file has the
+	 * EclipseLink content type.
 	 * 
-	 * @see JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH
+	 * @see org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin#DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH
+	 * @see org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin#ECLIPSELINK_ORM_XML_CONTENT_TYPE
 	 */
 	JpaXmlResource getDefaultEclipseLinkOrmXmlResource();
-	
+
 }

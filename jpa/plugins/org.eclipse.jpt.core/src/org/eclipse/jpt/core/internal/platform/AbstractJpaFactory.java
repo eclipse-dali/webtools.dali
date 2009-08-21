@@ -136,7 +136,6 @@ import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToOne;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlTransient;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlVersion;
-import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaFile;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaProject;
@@ -233,6 +232,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistence
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnitProperty;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
+import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -283,10 +283,10 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * Central class that allows extenders to easily replace implementations of
  * various Dali interfaces.
  */
-public class GenericJpaFactory
+public abstract class AbstractJpaFactory
 	implements JpaFactory
 {
-	public GenericJpaFactory() {
+	protected AbstractJpaFactory() {
 		super();
 	}
 	
@@ -344,7 +344,7 @@ public class GenericJpaFactory
 	}
 	
 	public MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent) {
-		return new ImpliedMappingFileRef(parent,JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH );
+		return new ImpliedMappingFileRef(parent, JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH );
 	}
 	
 	public ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {

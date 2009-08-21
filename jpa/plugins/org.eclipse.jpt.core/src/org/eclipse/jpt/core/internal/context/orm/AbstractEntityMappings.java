@@ -541,6 +541,16 @@ public abstract class AbstractEntityMappings
 	public MappingFileDefinition getMappingFileDefinition() {
 		return getJpaPlatform().getMappingFileDefinition(getContentType());
 	}
+
+	/**
+	 * All orm.xml entity mappings must be able to generate a static metamodel
+	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
+	 */
+	public void synchronizeStaticMetaModel() {
+		for (OrmPersistentType opt : this.getPersistentTypes()) {
+			opt.synchronizeStaticMetaModel();
+		}
+	}
 	
 
 	// ********** initialization **********

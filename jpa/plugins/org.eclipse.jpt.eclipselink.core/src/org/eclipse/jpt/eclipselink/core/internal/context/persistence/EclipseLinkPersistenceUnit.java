@@ -18,7 +18,7 @@ import java.util.Set;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
+import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;

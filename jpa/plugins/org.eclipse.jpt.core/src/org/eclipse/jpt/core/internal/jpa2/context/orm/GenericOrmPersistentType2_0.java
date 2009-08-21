@@ -10,11 +10,12 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentType;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaFactory;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -22,7 +23,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
-public class GenericOrmPersistentType2_0 extends AbstractOrmPersistentType
+public class GenericOrmPersistentType2_0
+	extends AbstractOrmPersistentType
 {
 	
 	public GenericOrmPersistentType2_0(EntityMappings parent, XmlTypeMapping resourceMapping) {
@@ -30,8 +32,8 @@ public class GenericOrmPersistentType2_0 extends AbstractOrmPersistentType
 	}
 	
 	@Override
-	protected Generic2_0JpaFactory getJpaFactory() {
-		return (Generic2_0JpaFactory)  super.getJpaFactory();
+	protected JpaFactory2_0 getJpaFactory() {
+		return (JpaFactory2_0)  super.getJpaFactory();
 	}
 	
 	@Override
@@ -51,13 +53,13 @@ public class GenericOrmPersistentType2_0 extends AbstractOrmPersistentType
 	
 	@Override
 	protected Iterator<JavaResourcePersistentAttribute> javaPersistentAttributes(JavaResourcePersistentType resourcePersistentType) {
-		AccessType specifiedAccess = getSpecifiedAccess();
-		if (specifiedAccess == null && !getMapping().isMetadataComplete()) {
-			specifiedAccess = getJavaPersistentType().getSpecifiedAccess();
+		AccessType access = getSpecifiedAccess();
+		if (access == null && !getMapping().isMetadataComplete()) {
+			access = getJavaPersistentType().getSpecifiedAccess();
 		}
-		return specifiedAccess == null
+		return access == null
 			? super.javaPersistentAttributes(resourcePersistentType)
-			: resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(specifiedAccess));
+			: resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(access));
 	}
 
 }

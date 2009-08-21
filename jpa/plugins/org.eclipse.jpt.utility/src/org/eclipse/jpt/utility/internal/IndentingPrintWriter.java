@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 /**
- * Extend PrintWriter to automatically indent new lines.
+ * Extend {@link PrintWriter} to automatically indent new lines.
  */
 public class IndentingPrintWriter extends PrintWriter {
 
@@ -30,7 +30,7 @@ public class IndentingPrintWriter extends PrintWriter {
 	public IndentingPrintWriter(Writer out) {
 		this(out, DEFAULT_INDENT);
 	}
-	
+
 	/**
 	 * Construct a writer that indents with the specified string.
 	 */
@@ -40,7 +40,7 @@ public class IndentingPrintWriter extends PrintWriter {
 		this.indentLevel = 0;
 		this.needsIndent = true;
 	}
-	
+
 	/**
 	 * Set flag so following line is indented.
 	 */
@@ -51,9 +51,10 @@ public class IndentingPrintWriter extends PrintWriter {
 			this.needsIndent = true;
 		}
 	}
-	
+
 	/**
 	 * Print the appropriate indent.
+	 * Pre-condition: synchronized
 	 */
 	private void printIndent() {
 		if (this.needsIndent) {
@@ -63,7 +64,7 @@ public class IndentingPrintWriter extends PrintWriter {
 			}
 		}
 	}
-	
+
 	/**
 	 * Write a portion of an array of characters.
 	 */
@@ -74,7 +75,7 @@ public class IndentingPrintWriter extends PrintWriter {
 			super.write(buf, off, len);
 		}
 	}
-	
+
 	/**
 	 * Write a single character.
 	 */
@@ -85,7 +86,7 @@ public class IndentingPrintWriter extends PrintWriter {
 			super.write(c);
 		}
 	}
-	
+
 	/**
 	 * Write a portion of a string.
 	 */
@@ -96,21 +97,21 @@ public class IndentingPrintWriter extends PrintWriter {
 			super.write(s, off, len);
 		}
 	}
-	
+
 	/**
 	 * Bump the indent level.
 	 */
 	public void indent() {
 		this.incrementIndentLevel();
 	}
-	
+
 	/**
 	 * Decrement the indent level.
 	 */
 	public void undent() {
 		this.decrementIndentLevel();
 	}
-	
+
 	/**
 	 * Bump the indent level.
 	 */
@@ -119,7 +120,7 @@ public class IndentingPrintWriter extends PrintWriter {
 			this.indentLevel++;
 		}
 	}
-	
+
 	/**
 	 * Decrement the indent level.
 	 */
@@ -128,14 +129,16 @@ public class IndentingPrintWriter extends PrintWriter {
 			this.indentLevel--;
 		}
 	}
-	
+
 	/**
 	 * Return the current indent level.
 	 */
-	public int indentLevel() {
-		return this.indentLevel;
+	public int getIndentLevel() {
+		synchronized (this.lock) {
+			return this.indentLevel;
+		}
 	}
-	
+
 	/**
 	 * Allow the indent level to be set directly.
 	 */

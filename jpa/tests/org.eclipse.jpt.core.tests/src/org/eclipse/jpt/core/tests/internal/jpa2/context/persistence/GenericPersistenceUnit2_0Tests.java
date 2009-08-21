@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericPersistenceUnit2_0;
 import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaPlatformProvider;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -25,9 +25,9 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  */
 public abstract class GenericPersistenceUnit2_0Tests extends PersistenceUnitTestCase
 {
-	protected GenericPersistenceUnit2_0 subject;
+	protected PersistenceUnit2_0 subject;
 
-	protected PropertyValueModel<GenericPersistenceUnit2_0> subjectHolder;
+	protected PropertyValueModel<PersistenceUnit2_0> subjectHolder;
 
 	// ********** constructors **********
 	protected GenericPersistenceUnit2_0Tests(String name) {
@@ -38,7 +38,7 @@ public abstract class GenericPersistenceUnit2_0Tests extends PersistenceUnitTest
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject = this.getPersistenceUnit();
-		this.subjectHolder = new SimplePropertyValueModel<GenericPersistenceUnit2_0>(this.subject);
+		this.subjectHolder = new SimplePropertyValueModel<PersistenceUnit2_0>(this.subject);
 		this.populatePu();
 	}
 	
@@ -52,8 +52,8 @@ public abstract class GenericPersistenceUnit2_0Tests extends PersistenceUnitTest
 	}
 
 	@Override
-	protected GenericPersistenceUnit2_0 getPersistenceUnit() {
-		return (GenericPersistenceUnit2_0) super.getPersistenceUnit();
+	protected PersistenceUnit2_0 getPersistenceUnit() {
+		return (PersistenceUnit2_0) super.getPersistenceUnit();
 	}
 
 }

@@ -14,12 +14,15 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
+ * Context <code>orm.xml</code> entity mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,7 +30,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface EntityMappings 
-	extends MappingFileRoot, JpaStructureNode, PersistentType.Owner
+	extends MappingFileRoot, JpaStructureNode, PersistentType.Owner, StaticMetaModelGenerator
 {
 	XmlEntityMappings getXmlEntityMappings();
 	

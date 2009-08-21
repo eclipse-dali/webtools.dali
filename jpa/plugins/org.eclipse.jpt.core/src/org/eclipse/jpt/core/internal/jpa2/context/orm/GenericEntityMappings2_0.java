@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaFactory;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntityMappings;
@@ -50,13 +50,12 @@ public class GenericEntityMappings2_0
 	// **************** JpaNode impl *******************************************
 	
 	@Override
-	protected Generic2_0JpaFactory getJpaFactory() {
-		return (Generic2_0JpaFactory) super.getJpaFactory();
+	protected JpaFactory2_0 getJpaFactory() {
+		return (JpaFactory2_0) super.getJpaFactory();
 	}
 	
 	@Override
 	public GenericOrmXml2_0 getParent() {
 		return (GenericOrmXml2_0) super.getParent();
 	}	
-
 }

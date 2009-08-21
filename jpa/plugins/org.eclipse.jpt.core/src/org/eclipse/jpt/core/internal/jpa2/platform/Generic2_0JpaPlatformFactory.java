@@ -33,7 +33,7 @@ public class Generic2_0JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
-			new Generic2_0JpaFactory(), 
+			new GenericJpaFactory2_0(), 
 			new GenericJpaAnnotationProvider(Generic2_0JpaAnnotationDefinitionProvider.instance()),
 			Generic2_0JpaPlatformProvider.instance(),
 			buildJpaPlatformVariation());

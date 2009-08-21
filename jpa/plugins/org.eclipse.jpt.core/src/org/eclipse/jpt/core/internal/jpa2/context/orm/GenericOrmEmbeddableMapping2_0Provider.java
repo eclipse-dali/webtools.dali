@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaFactory;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
@@ -54,7 +54,7 @@ public class GenericOrmEmbeddableMapping2_0Provider
 	}
 
 	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).buildOrmEmbeddable2_0(parent, (XmlEmbeddable) resourceMapping);
+		return ((JpaFactory2_0) factory).buildOrmEmbeddable2_0(parent, (XmlEmbeddable) resourceMapping);
 	}
 
 }

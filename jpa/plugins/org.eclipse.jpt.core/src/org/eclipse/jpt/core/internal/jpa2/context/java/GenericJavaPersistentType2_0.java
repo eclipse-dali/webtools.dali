@@ -10,15 +10,18 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 public class GenericJavaPersistentType2_0
 	extends AbstractJavaPersistentType
+	implements JavaPersistentType2_0
 {
 	protected AccessType specifiedAccess;
 	
@@ -65,13 +68,17 @@ public class GenericJavaPersistentType2_0
 	}
 	
 	@Override
-	public void updateAccess() {
+	protected void updateAccess() {
 		super.updateAccess();
 		this.setSpecifiedAccess_(this.getResourceAccess());
 	}
 
 	protected AccessType getResourceAccess() {
 		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
+	}
+
+	public void synchronizeStaticMetaModel() {
+		// TODO
 	}
 
 }

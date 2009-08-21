@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -64,9 +65,9 @@ import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -175,7 +176,7 @@ public abstract class AbstractJpaProject
 
 	// ********** constructor/initialization **********
 
-	public AbstractJpaProject(JpaProject.Config config) throws CoreException {
+	protected AbstractJpaProject(JpaProject.Config config) throws CoreException {
 		super(null);  // JPA project is the root of the containment tree
 		if ((config.getProject() == null) || (config.getJpaPlatform() == null)) {
 			throw new NullPointerException();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,9 @@ import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaFactory;
 
-public class TestJpaFactory extends GenericJpaFactory
+public class TestJpaFactory extends AbstractJpaFactory
 {
 	@Override
 	public JavaEntity buildJavaEntity(JavaPersistentType parent) {

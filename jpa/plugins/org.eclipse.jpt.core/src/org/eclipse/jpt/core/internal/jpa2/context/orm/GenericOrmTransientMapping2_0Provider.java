@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaFactory;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -57,11 +57,11 @@ public class GenericOrmTransientMapping2_0Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).buildOrmTransientMapping2_0(parent, (XmlTransient) resourceMapping);
+		return ((JpaFactory2_0) factory).buildOrmTransientMapping2_0(parent, (XmlTransient) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).buildVirtualXmlTransient2_0(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
+		return ((JpaFactory2_0) factory).buildVirtualXmlTransient2_0(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
 	}
 
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmIdMapping;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaFactory;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlId;
 
 public class GenericOrmIdMapping2_0 extends AbstractOrmIdMapping<XmlId>
@@ -23,8 +23,8 @@ public class GenericOrmIdMapping2_0 extends AbstractOrmIdMapping<XmlId>
 	}
 
 	@Override
-	protected Generic2_0JpaFactory getJpaFactory() {
-		return (Generic2_0JpaFactory) super.getJpaFactory();
+	protected JpaFactory2_0 getJpaFactory() {
+		return (JpaFactory2_0) super.getJpaFactory();
 	}
 	
 	@Override
