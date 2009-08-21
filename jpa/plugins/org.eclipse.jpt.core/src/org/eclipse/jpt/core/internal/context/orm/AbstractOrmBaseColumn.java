@@ -67,7 +67,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	public void setSpecifiedTable(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
-		if (oldSpecifiedTable != newSpecifiedTable) {
+		if (this.valuesAreDifferent(oldSpecifiedTable, newSpecifiedTable)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setTable(newSpecifiedTable);						
 				if (this.getResourceColumn().isUnset()) {
@@ -113,7 +113,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	public void setSpecifiedUnique(Boolean newSpecifiedUnique) {
 		Boolean oldSpecifiedUnique = this.specifiedUnique;
 		this.specifiedUnique = newSpecifiedUnique;
-		if (oldSpecifiedUnique != newSpecifiedUnique) {
+		if (this.valuesAreDifferent(oldSpecifiedUnique, newSpecifiedUnique)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setUnique(newSpecifiedUnique);						
 				if (this.getResourceColumn().isUnset()) {
@@ -149,7 +149,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	public void setSpecifiedNullable(Boolean newSpecifiedNullable) {
 		Boolean oldSpecifiedNullable = this.specifiedNullable;
 		this.specifiedNullable = newSpecifiedNullable;
-		if (oldSpecifiedNullable != newSpecifiedNullable) {
+		if (this.valuesAreDifferent(oldSpecifiedNullable, newSpecifiedNullable)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setNullable(newSpecifiedNullable);						
 				if (this.getResourceColumn().isUnset()) {
@@ -185,7 +185,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	public void setSpecifiedInsertable(Boolean newSpecifiedInsertable) {
 		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
 		this.specifiedInsertable = newSpecifiedInsertable;
-		if (oldSpecifiedInsertable != newSpecifiedInsertable) {
+		if (this.valuesAreDifferent(oldSpecifiedInsertable, newSpecifiedInsertable)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setInsertable(newSpecifiedInsertable);						
 				if (this.getResourceColumn().isUnset()) {
@@ -221,7 +221,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	public void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable) {
 		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
 		this.specifiedUpdatable = newSpecifiedUpdatable;
-		if (oldSpecifiedUpdatable != newSpecifiedUpdatable) {
+		if (this.valuesAreDifferent(oldSpecifiedUpdatable, newSpecifiedUpdatable)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setUpdatable(newSpecifiedUpdatable);						
 				if (this.getResourceColumn().isUnset()) {

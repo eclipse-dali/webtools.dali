@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
@@ -1051,7 +1052,7 @@ public abstract class AbstractJavaEntity
 	public void setIdClass(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		if (newIdClass != oldIdClass) {
+		if (this.valuesAreDifferent(newIdClass, oldIdClass)) {
 			if (newIdClass != null) {
 				if (getResourceIdClass() == null) {
 					addResourceIdClass();

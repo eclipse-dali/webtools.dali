@@ -10,13 +10,14 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 
 
 public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlMultiRelationshipMapping>
@@ -61,7 +62,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	public void setMapKey(String newMapKey) {
 		String oldMapKey = this.mapKey;
 		this.mapKey = newMapKey;
-		if (oldMapKey != newMapKey) {
+		if (this.attributeValueHasChanged(oldMapKey, newMapKey)) {
 			if (this.getResourceMapKey() != null) {
 				this.getResourceMapKey().setName(newMapKey);						
 				if (this.getResourceMapKey().isUnset()) {

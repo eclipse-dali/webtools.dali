@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -109,7 +110,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	public void setSpecifiedLength(Integer newSpecifiedLength) {
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
-		if (oldSpecifiedLength != newSpecifiedLength) {
+		if (this.valuesAreDifferent(oldSpecifiedLength, newSpecifiedLength)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setLength(newSpecifiedLength);
 				if (this.getResourceColumn().isUnset()) {
@@ -156,13 +157,13 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		return getResourceColumn() != null;
 	}
 	
-	public void initialize(XmlEntity entity) {
-		this.entity = entity;
+	public void initialize(XmlEntity xmlEntity) {
+		this.entity = xmlEntity;
 		this.initialize(this.getResourceColumn());
 	}
 	
-	public void update(XmlEntity entity) {
-		this.entity = entity;
+	public void update(XmlEntity xmlEntity) {
+		this.entity = xmlEntity;
 		this.update(this.getResourceColumn());
 	}
 

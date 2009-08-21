@@ -13,9 +13,11 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 
-public class GenericJavaEmbeddable2_0 extends AbstractJavaEmbeddable
+public class GenericJavaEmbeddable2_0
+	extends AbstractJavaEmbeddable
 {
 	public GenericJavaEmbeddable2_0(JavaPersistentType parent) {
 		super(parent);
@@ -23,13 +25,19 @@ public class GenericJavaEmbeddable2_0 extends AbstractJavaEmbeddable
 	
 	@Override
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
-		return attributeMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY 
-			|| attributeMappingKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
+		return CollectionTools.contains(ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
 	}
+
+	public static final String[] ALLOWED_ATTRIBUTE_MAPPING_KEYS =
+		new String[] {
+			MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
+			MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
+		};
+
 }

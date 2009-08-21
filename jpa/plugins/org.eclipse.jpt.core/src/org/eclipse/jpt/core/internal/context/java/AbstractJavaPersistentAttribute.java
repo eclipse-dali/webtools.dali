@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -464,7 +465,7 @@ public abstract class AbstractJavaPersistentAttribute
 	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
 	// since we don't know all the possible mapping types
 	public void setSpecifiedMappingKey(String key) {
-		if (key == this.getSpecifiedMappingKey()) {
+		if (this.valuesAreEqual(key, this.getSpecifiedMappingKey())) {
 			return;
 		}
 		JavaAttributeMapping oldMapping = this.specifiedMapping;
@@ -519,7 +520,7 @@ public abstract class AbstractJavaPersistentAttribute
 		JavaAttributeMappingProvider mappingProvider = 
 			getJpaPlatform().getDefaultJavaAttributeMappingProvider(this);
 		String mappingKey = mappingProvider.getKey();
-		if (this.defaultMapping.getKey() == mappingKey) {
+		if (this.valuesAreEqual(this.defaultMapping.getKey(), mappingKey)) {
 			this.defaultMapping.update(
 				this.resourcePersistentAttribute.getNullMappingAnnotation(
 					mappingProvider.getAnnotationName()));

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ListIterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
@@ -35,6 +36,7 @@ import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Tools;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -137,7 +139,7 @@ public class GenericJpaPlatform
 	
 	protected JavaTypeMappingProvider getJavaTypeMappingProviderForMappingKey(String key) {
 		for (JavaTypeMappingProvider provider : CollectionTools.iterable(javaTypeMappingProviders())) {
-			if (provider.getKey() == key) {
+			if (Tools.valuesAreEqual(provider.getKey(), key)) {
 				return provider;
 			}
 		}
@@ -154,7 +156,7 @@ public class GenericJpaPlatform
 
 	protected JavaTypeMappingProvider getJavaTypeMappingProviderForAnnotation(String annotationName) {
 		for (JavaTypeMappingProvider provider : CollectionTools.iterable(javaTypeMappingProviders())) {
-			if (provider.getAnnotationName() == annotationName) {
+			if (Tools.valuesAreEqual(provider.getAnnotationName(), annotationName)) {
 				return provider;
 			}
 		}
@@ -196,7 +198,7 @@ public class GenericJpaPlatform
 	
 	public JavaAttributeMappingProvider getSpecifiedJavaAttributeMappingProvider(String mappingKey) {
 		for (JavaAttributeMappingProvider provider : CollectionTools.iterable(specifiedJavaAttributeMappingProviders())) {
-			if (provider.getKey() == mappingKey) {
+			if (Tools.valuesAreEqual(provider.getKey(), mappingKey)) {
 				return provider;
 			}
 		}

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -102,7 +103,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 	
 	public void setSpecifiedConverter(String converterType) {
-		if (getSpecifedConverterType() == converterType) {
+		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
 			return;
 		}
 		OrmConverter oldConverter = this.specifiedConverter;
@@ -211,7 +212,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		this.column.update(getResourceColumn());
 		this.generatorContainer.update();
 		this.updateGeneratedValue();
-		if (getResourceConverterType() == getSpecifedConverterType()) {
+		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
 			getSpecifiedConverter().update();
 		}
 		else {
@@ -237,7 +238,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
-		if (converterType == Converter.TEMPORAL_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		return null;

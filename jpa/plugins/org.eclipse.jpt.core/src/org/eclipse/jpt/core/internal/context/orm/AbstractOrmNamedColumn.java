@@ -66,7 +66,7 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn>  
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		if (oldSpecifiedName != newSpecifiedName) {
+		if (this.attributeValueHasChanged(oldSpecifiedName, newSpecifiedName)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setName(newSpecifiedName);						
 				if (this.getResourceColumn().isUnset()) {
@@ -104,7 +104,7 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn>  
 	public void setColumnDefinition(String newColumnDefinition) {
 		String oldColumnDefinition = this.columnDefinition;
 		this.columnDefinition = newColumnDefinition;
-		if (oldColumnDefinition != newColumnDefinition) {
+		if (this.attributeValueHasChanged(oldColumnDefinition, newColumnDefinition)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setColumnDefinition(newColumnDefinition);						
 				if (this.getResourceColumn().isUnset()) {

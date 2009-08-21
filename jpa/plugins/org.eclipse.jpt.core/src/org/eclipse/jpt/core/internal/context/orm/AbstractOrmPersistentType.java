@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -185,7 +186,7 @@ public abstract class AbstractOrmPersistentType
 	// ********** PersistentType implementation **********
 	
 	public void setMappingKey(String newMappingKey) {
-		if (this.getMappingKey() == newMappingKey) {
+		if (this.valuesAreEqual(this.getMappingKey(), newMappingKey)) {
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
@@ -297,7 +298,7 @@ public abstract class AbstractOrmPersistentType
 		if (!ormPersistentAttribute.isVirtual()) {
 			throw new IllegalStateException("Attribute is already specified"); //$NON-NLS-1$
 		}
-		if (mappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
+		if (this.valuesAreEqual(mappingKey, MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY)) {
 			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 		
@@ -599,7 +600,15 @@ public abstract class AbstractOrmPersistentType
 	protected AccessType getAccess(@SuppressWarnings("unused") OrmPersistentAttribute ormPersistentAttribute) {
 		return getAccess();
 	}
-	
+
+	/**
+	 * All orm.xml persistent types must be able to generate a static metamodel
+	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
+	 */
+	public void synchronizeStaticMetaModel() {
+		// TODO
+	}
+
 	protected class SpecifiedPersistentAttributeOwner implements OrmPersistentAttribute.Owner {
 		
 		private JavaPersistentAttribute cachedJavaPersistentAttribute;
@@ -835,7 +844,7 @@ public abstract class AbstractOrmPersistentType
 				for (OrmPersistentAttribute contextAttribute : contextAttributesToRemove) {
 					JavaPersistentAttribute javaPersistentAttribute = contextAttribute.getJavaPersistentAttribute();
 					if (javaPersistentAttribute.getResourcePersistentAttribute() == javaResourceAttribute) {
-						if (contextAttribute.getMappingKey() == javaAttributeMapping.getKey()) { 
+						if (this.valuesAreEqual(contextAttribute.getMappingKey(), javaAttributeMapping.getKey())) { 
 							//the mapping key would change if metaDataComplete flag changes, rebuild the orm attribute
 							moveVirtualPersistentAttribute_(resourceIndex, contextAttribute);
 							contextAttributesToRemove.remove(contextAttribute);

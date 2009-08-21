@@ -140,7 +140,7 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	public void setMappingKey(String key) {
-		if (key == getMapping().getKey()) {
+		if (this.valuesAreEqual(key, this.getMapping().getKey())) {
 			return;
 		}
 		JavaTypeMapping oldMapping = getMapping();
@@ -453,7 +453,7 @@ public abstract class AbstractJavaPersistentType
 	
 	protected void updateMapping() {
 		String javaMappingAnnotationName = this.getJavaMappingAnnotationName();
-		if (this.getMapping().getAnnotationName() == javaMappingAnnotationName) {
+		if (this.valuesAreEqual(this.getMapping().getAnnotationName(), javaMappingAnnotationName)) {
 			this.getMapping().update(this.resourcePersistentType);
 		} else {
 			this.setMapping(this.createJavaTypeMappingFromAnnotation(javaMappingAnnotationName));

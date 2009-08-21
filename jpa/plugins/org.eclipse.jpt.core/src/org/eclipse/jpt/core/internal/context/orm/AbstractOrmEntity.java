@@ -1104,7 +1104,7 @@ public abstract class AbstractOrmEntity
 	public void setIdClass(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		if (oldIdClass != newIdClass) {
+		if (this.attributeValueHasChanged(oldIdClass, newIdClass)) {
 			if (this.getResourceIdClass() != null) {
 				this.getResourceIdClass().setClassName(newIdClass);						
 				if (this.getResourceIdClass().isUnset()) {

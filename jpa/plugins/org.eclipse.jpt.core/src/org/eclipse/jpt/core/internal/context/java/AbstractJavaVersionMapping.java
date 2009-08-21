@@ -109,7 +109,7 @@ public abstract class AbstractJavaVersionMapping
 	}
 	
 	public void setSpecifiedConverter(String converterType) {
-		if (getSpecifedConverterType() == converterType) {
+		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
 			return;
 		}
 		JavaConverter oldConverter = this.specifiedConverter;
@@ -136,7 +136,7 @@ public abstract class AbstractJavaVersionMapping
 	protected void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
-		if (getResourceConverterType() == getSpecifedConverterType()) {
+		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
 			getSpecifiedConverter().update(this.resourcePersistentAttribute);
 		}
 		else {
@@ -146,7 +146,7 @@ public abstract class AbstractJavaVersionMapping
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
-		if (converterType == Converter.TEMPORAL_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
 		}
 		return null;

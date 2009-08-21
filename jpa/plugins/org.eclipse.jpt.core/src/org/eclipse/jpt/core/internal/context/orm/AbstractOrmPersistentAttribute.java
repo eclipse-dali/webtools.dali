@@ -104,7 +104,7 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 	}
 
 	public void setSpecifiedMappingKey(String newMappingKey) {
-		if (this.getMappingKey() == newMappingKey) {
+		if (this.valuesAreEqual(this.getMappingKey(), newMappingKey)) {
 			return;
 		}
 		OrmAttributeMapping oldMapping = this.attributeMapping;

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
@@ -170,7 +171,7 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	public void setSpecifiedConverter(String converterType) {
-		if (getSpecifedConverterType() == converterType) {
+		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
 			return;
 		}
 		JavaConverter oldConverter = this.specifiedConverter;
@@ -198,7 +199,7 @@ public abstract class AbstractJavaIdMapping
 		this.column.update(this.getResourceColumn());
 		this.generatorContainer.update(this.resourcePersistentAttribute);
 		this.updateGeneratedValue();
-		if (getResourceConverterType() == getSpecifedConverterType()) {
+		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
 			getSpecifiedConverter().update(this.resourcePersistentAttribute);
 		}
 		else {
@@ -243,7 +244,7 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
-		if (converterType == Converter.TEMPORAL_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
 		}
 		return null;

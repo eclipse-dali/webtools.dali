@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
@@ -66,7 +67,7 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	public void setIdClass(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		if (oldIdClass != newIdClass) {
+		if (this.attributeValueHasChanged(oldIdClass, newIdClass)) {
 			if (this.getResourceIdClass() != null) {
 				this.getResourceIdClass().setClassName(newIdClass);						
 				if (this.getResourceIdClass().isUnset()) {

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
@@ -158,7 +159,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	public void setMapKey(String newMapKey) {
 		String oldMapKey = this.mapKey;
 		this.mapKey = newMapKey;
-		if (oldMapKey != newMapKey) {
+		if (this.valuesAreDifferent(oldMapKey, newMapKey)) {
 			if (this.getMapKeyResource() != null) {
 				if (newMapKey != null) {
 					this.getMapKeyResource().setName(newMapKey);

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Converter;
@@ -127,7 +128,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	}
 	
 	public void setSpecifiedConverter(String converterType) {
-		if (getSpecifedConverterType() == converterType) {
+		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
 			return;
 		}
 		OrmConverter oldConverter = this.specifiedConverter;
@@ -195,7 +196,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.setSpecifiedOptional_(this.getResourceOptional());
 		this.column.update(this.getResourceColumn());
-		if (getResourceConverterType() == getSpecifedConverterType()) {
+		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
 			getSpecifiedConverter().update();
 		}
 		else {
@@ -212,13 +213,13 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	}
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
-		if (converterType == Converter.ENUMERATED_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
 			return getJpaFactory().buildOrmEnumeratedConverter(this, this.resourceAttributeMapping);
 		}
-		else if (converterType == Converter.TEMPORAL_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
-		else if (converterType == Converter.LOB_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.LOB_CONVERTER)) {
 			return getJpaFactory().buildOrmLobConverter(this, this.resourceAttributeMapping);
 		}
 		return null;

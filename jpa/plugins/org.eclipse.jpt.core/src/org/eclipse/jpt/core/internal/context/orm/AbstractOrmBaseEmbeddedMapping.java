@@ -238,8 +238,9 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	}
 
 	public AbstractJavaBaseEmbeddedMapping<?> getJavaEmbeddedMapping() {
-		if (this.getJavaPersistentAttribute() != null && this.getJavaPersistentAttribute().getMappingKey() == getKey()) {
-			return (AbstractJavaBaseEmbeddedMapping<?>) this.getJavaPersistentAttribute().getMapping();
+		JavaPersistentAttribute jpa = this.getJavaPersistentAttribute();
+		if ((jpa != null) && this.valuesAreEqual(jpa.getMappingKey(), this.getKey())) {
+			return (AbstractJavaBaseEmbeddedMapping<?>) jpa.getMapping();
 		}
 		return null;
 	}

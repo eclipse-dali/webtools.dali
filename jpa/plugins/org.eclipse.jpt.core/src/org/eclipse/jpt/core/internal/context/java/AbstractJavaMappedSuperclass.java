@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -69,7 +70,7 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 	public void setIdClass(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		if (newIdClass != oldIdClass) {
+		if (this.valuesAreDifferent(newIdClass, oldIdClass)) {
 			if (newIdClass != null) {
 				if (getResourceIdClass() == null) {
 					addResourceIdClass();

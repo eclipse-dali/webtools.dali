@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
-import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 
-public class GenericOrmEmbeddable2_0 extends AbstractOrmEmbeddable
+public class GenericOrmEmbeddable2_0
+	extends AbstractOrmEmbeddable
 {
 	public GenericOrmEmbeddable2_0(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
 		super(parent, resourceMapping);
@@ -24,13 +25,7 @@ public class GenericOrmEmbeddable2_0 extends AbstractOrmEmbeddable
 	
 	@Override
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
-		return attributeMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY 
-			|| attributeMappingKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY
-			|| attributeMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
+		return CollectionTools.contains(GenericJavaEmbeddable2_0.ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
 	}
+
 }

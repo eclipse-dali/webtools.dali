@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
@@ -176,7 +177,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	}
 	
 	public void setSpecifiedConverter(String converterType) {
-		if (getSpecifedConverterType() == converterType) {
+		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
 			return;
 		}
 		JavaConverter oldConverter = this.specifiedConverter;
@@ -202,7 +203,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	protected void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
-		if (getResourceConverterType() == getSpecifedConverterType()) {
+		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
 			getSpecifiedConverter().update(this.resourcePersistentAttribute);
 		}
 		else {
@@ -222,13 +223,13 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
-		if (converterType == Converter.ENUMERATED_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
 			return getJpaFactory().buildJavaEnumeratedConverter(this, this.resourcePersistentAttribute);
 		}
-		else if (converterType == Converter.TEMPORAL_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
 		}
-		else if (converterType == Converter.LOB_CONVERTER) {
+		if (this.valuesAreEqual(converterType, Converter.LOB_CONVERTER)) {
 			return getJpaFactory().buildJavaLobConverter(this, this.resourcePersistentAttribute);
 		}
 		return null;

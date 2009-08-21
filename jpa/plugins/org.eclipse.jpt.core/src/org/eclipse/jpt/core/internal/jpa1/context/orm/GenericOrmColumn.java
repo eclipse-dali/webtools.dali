@@ -54,7 +54,7 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 	public void setSpecifiedLength(Integer newSpecifiedLength) {
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
-		if (oldSpecifiedLength != newSpecifiedLength) {
+		if (this.valuesAreDifferent(oldSpecifiedLength, newSpecifiedLength)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setLength(newSpecifiedLength);
 				if (this.getResourceColumn().isUnset()) {
@@ -90,7 +90,7 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 	public void setSpecifiedPrecision(Integer newSpecifiedPrecision) {
 		Integer oldSpecifiedPrecision = this.specifiedPrecision;
 		this.specifiedPrecision = newSpecifiedPrecision;
-		if (oldSpecifiedPrecision != newSpecifiedPrecision) {
+		if (this.valuesAreDifferent(oldSpecifiedPrecision, newSpecifiedPrecision)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setPrecision(newSpecifiedPrecision);
 				if (this.getResourceColumn().isUnset()) {
@@ -126,7 +126,7 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 	public void setSpecifiedScale(Integer newSpecifiedScale) {
 		Integer oldSpecifiedScale = this.specifiedScale;
 		this.specifiedScale = newSpecifiedScale;
-		if (oldSpecifiedScale != newSpecifiedScale) {
+		if (this.valuesAreDifferent(oldSpecifiedScale, newSpecifiedScale)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setScale(newSpecifiedScale);
 				if (this.getResourceColumn().isUnset()) {
