@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.context;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;

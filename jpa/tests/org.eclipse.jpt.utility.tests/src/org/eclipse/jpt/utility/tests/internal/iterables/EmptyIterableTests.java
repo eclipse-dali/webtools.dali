@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.tests.internal.iterables;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.internal.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 
 @SuppressWarnings("nls")
 public class EmptyIterableTests extends TestCase {

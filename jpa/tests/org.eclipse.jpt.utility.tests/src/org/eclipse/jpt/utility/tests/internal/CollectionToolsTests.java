@@ -23,14 +23,16 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.EmptyIterable;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.Range;
 import org.eclipse.jpt.utility.internal.ReverseComparator;
 import org.eclipse.jpt.utility.internal.enumerations.EmptyEnumeration;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
@@ -3041,6 +3043,42 @@ public class CollectionToolsTests extends TestCase {
 		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
 		a = CollectionTools.removeElementsAtIndex(a, 0, 6);
 		assertEquals(0, a.length);
+	}
+
+	public void testRemoveFirstObjectArray() {
+		String[] a = new String[] { "A", "B", "A", "C", "A", "D" };
+		a = CollectionTools.removeFirst(a);
+		assertTrue(Arrays.equals(new String[] { "B", "A", "C", "A", "D" }, a));
+	}
+
+	public void testRemoveFirstCharArray() {
+		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
+		a = CollectionTools.removeFirst(a);
+		assertTrue(Arrays.equals(new char[] { 'B', 'A', 'C', 'A', 'D' }, a));
+	}
+
+	public void testRemoveFirstIntArray() {
+		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
+		a = CollectionTools.removeFirst(a);
+		assertTrue(Arrays.equals(new int[] { 6, 7, 33, 2, 11 }, a));
+	}
+
+	public void testRemoveLastObjectArray() {
+		String[] a = new String[] { "A", "B", "A", "C", "A", "D" };
+		a = CollectionTools.removeLast(a);
+		assertTrue(Arrays.equals(new String[] { "A", "B", "A", "C", "A" }, a));
+	}
+
+	public void testRemoveLastCharArray() {
+		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
+		a = CollectionTools.removeLast(a);
+		assertTrue(Arrays.equals(new char[] { 'A', 'B', 'A', 'C', 'A' }, a));
+	}
+
+	public void testRemoveLastIntArray() {
+		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
+		a = CollectionTools.removeLast(a);
+		assertTrue(Arrays.equals(new int[] { 8, 6, 7, 33, 2 }, a));
 	}
 
 	public void testReplaceAllObjectArrayObjectObject_Object() {
