@@ -21,4 +21,5 @@ Export-Package: org.eclipse.jpt.ui.tests;x-internal:=true,
  org.eclipse.jpt.ui.tests.internal.jface;x-internal:=true,
  org.eclipse.jpt.ui.tests.internal.platform;x-internal:=true,
  org.eclipse.jpt.ui.tests.internal.swt;x-internal:=true,
- org.eclipse.jpt.ui.tests.internal.util;x-internal:=true
+ org.eclipse.jpt.ui.tests.internal.util;x-internal:=true,
+ org.eclipse.jpt.ui.tests.internal.utility.swt;x-internal:=true

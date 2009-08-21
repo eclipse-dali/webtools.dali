@@ -26,7 +26,6 @@ Export-Package: org.eclipse.jpt.utility,
    org.eclipse.jpt.ui",
  org.eclipse.jpt.utility.internal.iterators;
   x-friends:="org.eclipse.jpt.core,
-   org.eclipse.jpt.core.tests.extension.resource,
    org.eclipse.jpt.db,
    org.eclipse.jpt.db.ui,
    org.eclipse.jpt.gen,
