@@ -157,7 +157,7 @@ public class PersistenceItemContentProviderFactory
 					}
 				};
 			ListValueModel<ClassRef> impliedClassCvm = 
-				new CollectionListValueModelAdapter(
+				new CollectionListValueModelAdapter<ClassRef>(
 					new CollectionAspectAdapter<PersistenceUnit, ClassRef>(
 							PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION,
 							getModel()) {
@@ -190,7 +190,7 @@ public class PersistenceItemContentProviderFactory
 			list.add(impliedClassCvm);
 			list.add(jarFileCvm);
 			
-			return new ListCollectionValueModelAdapter(
+			return new ListCollectionValueModelAdapter<JpaStructureNode>(
 				new CompositeListValueModel
 					<ListValueModel<? extends JpaStructureNode>, JpaStructureNode>
 						(list));
