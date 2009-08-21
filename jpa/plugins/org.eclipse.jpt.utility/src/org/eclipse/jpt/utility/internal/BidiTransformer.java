@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
+
 /**
  * Used by various "pluggable" classes to transform objects
  * in both directions.
@@ -26,7 +28,7 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 	T1 reverseTransform(T2 o);
 
 
-	final class Null<S1, S2> implements BidiTransformer<S1, S2> {
+	final class Null<S1, S2> implements BidiTransformer<S1, S2>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final BidiTransformer INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
@@ -51,9 +53,14 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 		public String toString() {
 			return "BidiTransformer.Null"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class Disabled<S1, S2> implements BidiTransformer<S1, S2> {
+	final class Disabled<S1, S2> implements BidiTransformer<S1, S2>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final BidiTransformer INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -75,6 +82,11 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 		@Override
 		public String toString() {
 			return "BidiTransformer.Disabled"; //$NON-NLS-1$
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
 		}
 	}
 

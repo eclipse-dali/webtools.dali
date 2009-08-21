@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
+
 /**
  * This interface defines a simple API for allowing "pluggable"
  * string matchers that can be configured with a pattern string
@@ -33,7 +35,7 @@ public interface StringMatcher {
 	boolean matches(String string);
 
 
-	final class Null implements StringMatcher {
+	final class Null implements StringMatcher, Serializable {
 		public static final StringMatcher INSTANCE = new Null();
 		public static StringMatcher instance() {
 			return INSTANCE;
@@ -52,6 +54,11 @@ public interface StringMatcher {
 		@Override
 		public String toString() {
 			return "StringMatcher.Null"; //$NON-NLS-1$
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility;
 
+import java.io.Serializable;
+
 /**
  * Simple interface for implementing the GOF Command design pattern,
- * and it doesn't carry the baggage of java.lang.Runnable.
- * 
+ * and it doesn't carry the baggage of {@link java.lang.Runnable}.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -31,7 +33,7 @@ public interface Command {
 	 * Singleton implementation of the command interface that will do nothing
 	 * when executed.
 	 */
-	final class Null implements Command {
+	final class Null implements Command, Serializable {
 		public static final Command INSTANCE = new Null();
 		public static Command instance() {
 			return INSTANCE;
@@ -47,13 +49,18 @@ public interface Command {
 		public String toString() {
 			return "Command.Null"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
 	/**
 	 * Singleton implementation of the command interface that will throw an
 	 * exception when executed.
 	 */
-	final class Disabled implements Command {
+	final class Disabled implements Command, Serializable {
 		public static final Command INSTANCE = new Disabled();
 		public static Command instance() {
 			return INSTANCE;
@@ -69,6 +76,11 @@ public interface Command {
 		@Override
 		public String toString() {
 			return "Command.Disabled"; //$NON-NLS-1$
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
 		}
 	}
 

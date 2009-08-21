@@ -25,7 +25,7 @@ public interface StringConverter<T> extends Serializable {
 	String convertToString(T o);
 
 
-	final class Default<S> implements StringConverter<S> {
+	final class Default<S> implements StringConverter<S>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final StringConverter INSTANCE = new Default();
 		@SuppressWarnings("unchecked")
@@ -44,9 +44,14 @@ public interface StringConverter<T> extends Serializable {
 		public String toString() {
 			return "StringConverter.Default"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class Disabled<S> implements StringConverter<S> {
+	final class Disabled<S> implements StringConverter<S>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final StringConverter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -64,6 +69,11 @@ public interface StringConverter<T> extends Serializable {
 		@Override
 		public String toString() {
 			return "StringConverter.Disabled"; //$NON-NLS-1$
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
 		}
 	}
 

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
+
 import org.eclipse.jpt.utility.Filter;
 
 /**
@@ -27,7 +29,7 @@ public interface BidiFilter<T> extends Filter<T> {
 	boolean reverseAccept(T o);
 
 
-	final class Null<S> implements BidiFilter<S> {
+	final class Null<S> implements BidiFilter<S>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final BidiFilter INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
@@ -50,9 +52,14 @@ public interface BidiFilter<T> extends Filter<T> {
 		public String toString() {
 			return "BidiFilter.Null"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class Opaque<S> implements BidiFilter<S> {
+	final class Opaque<S> implements BidiFilter<S>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final BidiFilter INSTANCE = new Opaque();
 		@SuppressWarnings("unchecked")
@@ -75,9 +82,14 @@ public interface BidiFilter<T> extends Filter<T> {
 		public String toString() {
 			return "BidiFilter.Opaque"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class Disabled<S> implements BidiFilter<S> {
+	final class Disabled<S> implements BidiFilter<S>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final BidiFilter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -99,6 +111,11 @@ public interface BidiFilter<T> extends Filter<T> {
 		@Override
 		public String toString() {
 			return "BidiFilter.Disabled"; //$NON-NLS-1$
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
 		}
 	}
 

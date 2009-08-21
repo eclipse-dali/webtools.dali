@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,21 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterables;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * An <code>EmptyIterable</code> is just that.
- * Maybe just a touch better-performing than java.util.Collections.EMPTY_SET
- * since we don't create a new Iterator every time #iterator() is called.
+ * Maybe just a touch better-performing than {@link java.util.Collections#EMPTY_SET}
+ * since we don't create a new {@link Iterator} every time {@link #iterator()} is called.
  * (Not sure why they do that....)
+ * 
+ * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see EmptyIterator
  */
 public final class EmptyIterable<E>
-	implements Iterable<E>
+	implements Iterable<E>, Serializable
 {
 	// singleton
 	@SuppressWarnings("unchecked")
@@ -50,7 +53,13 @@ public final class EmptyIterable<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ClassTools.toStringClassNameForObject(this);
+	}
+
+	private static final long serialVersionUID = 1L;
+	private Object readResolve() {
+		// replace this object with the singleton
+		return INSTANCE;
 	}
 
 }

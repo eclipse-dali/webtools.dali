@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -21,14 +22,10 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
  * add/remove elements to/from it but never changes. This is useful
  * for passing to methods that require a "collecting parameter" but the
  * client will ignore the resulting "collection".
- * 
- * NB: We return 'null' from the following methods (as opposed to throwing
- * an exception):
- *     get(int) : E
- *     remove(int) : E
- *     set(int, E) : E
  */
-public final class NullList<E> implements List<E> {
+public final class NullList<E>
+	implements List<E>, Serializable
+{
 
 	// singleton
 	@SuppressWarnings("unchecked")
@@ -145,6 +142,12 @@ public final class NullList<E> implements List<E> {
 	@Override
 	public String toString() {
 		return StringTools.buildToStringFor(this);
+	}
+
+	private static final long serialVersionUID = 1L;
+	private Object readResolve() {
+		// replace this object with the singleton
+		return INSTANCE;
 	}
 
 }

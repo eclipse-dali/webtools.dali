@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
+
 /**
  * Used by various "pluggable" classes to transform objects.
  * Transform an object of type T1 to an object of type T2.
@@ -23,7 +25,7 @@ public interface Transformer<T1, T2> {
 	T2 transform(T1 o);
 
 
-	final class Null<S1, S2> implements Transformer<S1, S2> {
+	final class Null<S1, S2> implements Transformer<S1, S2>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final Transformer INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
@@ -43,9 +45,14 @@ public interface Transformer<T1, T2> {
 		public String toString() {
 			return "Transformer.Null"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class Disabled<S1, S2> implements Transformer<S1, S2> {
+	final class Disabled<S1, S2> implements Transformer<S1, S2>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final Transformer INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -63,6 +70,11 @@ public interface Transformer<T1, T2> {
 		@Override
 		public String toString() {
 			return "Transformer.Disabled"; //$NON-NLS-1$
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
 		}
 	}
 

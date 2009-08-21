@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
+
 /**
  * Used by various "pluggable" classes to transform objects
  * into strings and vice versa.
@@ -27,7 +29,7 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 	T convertToObject(String s);
 
 
-	final class Default<S> implements BidiStringConverter<S> {
+	final class Default<S> implements BidiStringConverter<S>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final BidiStringConverter INSTANCE = new Default();
 		@SuppressWarnings("unchecked")
@@ -51,9 +53,14 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		public String toString() {
 			return "BidiStringConverter.Default"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class Disabled<S> implements BidiStringConverter<S> {
+	final class Disabled<S> implements BidiStringConverter<S>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final BidiStringConverter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -76,9 +83,14 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		public String toString() {
 			return "BidiStringConverter.Disabled"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class BooleanConverter implements BidiStringConverter<Boolean> {
+	final class BooleanConverter implements BidiStringConverter<Boolean>, Serializable {
 		public static final BidiStringConverter<Boolean> INSTANCE = new BooleanConverter();
 		public static BidiStringConverter<Boolean> instance() {
 			return INSTANCE;
@@ -99,9 +111,14 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		public String toString() {
 			return "BidiStringConverter.BooleanConverter"; //$NON-NLS-1$
 		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
 	}
 
-	final class IntegerConverter implements BidiStringConverter<Integer> {
+	final class IntegerConverter implements BidiStringConverter<Integer>, Serializable {
 		public static final BidiStringConverter<Integer> INSTANCE = new IntegerConverter();
 		public static BidiStringConverter<Integer> instance() {
 			return INSTANCE;
@@ -121,6 +138,11 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		@Override
 		public String toString() {
 			return "BidiStringConverter.IntegerConverter"; //$NON-NLS-1$
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
 		}
 	}
 
