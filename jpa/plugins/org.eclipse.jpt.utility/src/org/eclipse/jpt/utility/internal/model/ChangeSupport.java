@@ -77,7 +77,6 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * are also serializable while silently leaving behind listeners that are not.
  * 
  */
-// TODO use objects (IDs?) instead of strings to identify aspects?
 public class ChangeSupport
 	implements Serializable
 {
@@ -716,7 +715,7 @@ public class ChangeSupport
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new CollectionAddEvent(this.source, collectionName, Collections.singleton(addedItem));
+						event = new CollectionAddEvent(this.source, collectionName, addedItem);
 					}
 					listener.itemsAdded(event);
 				}
@@ -728,7 +727,7 @@ public class ChangeSupport
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new CollectionAddEvent(this.source, collectionName, Collections.singleton(addedItem));
+						event = new CollectionAddEvent(this.source, collectionName, addedItem);
 					}
 					changeListener.itemsAdded(event);
 				}
@@ -821,7 +820,7 @@ public class ChangeSupport
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new CollectionRemoveEvent(this.source, collectionName, Collections.singleton(removedItem));
+						event = new CollectionRemoveEvent(this.source, collectionName, removedItem);
 					}
 					listener.itemsRemoved(event);
 				}
@@ -833,7 +832,7 @@ public class ChangeSupport
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new CollectionRemoveEvent(this.source, collectionName, Collections.singleton(removedItem));
+						event = new CollectionRemoveEvent(this.source, collectionName, removedItem);
 					}
 					changeListener.itemsRemoved(event);
 				}
@@ -1376,7 +1375,7 @@ public class ChangeSupport
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListAddEvent(this.source, listName, index, Collections.singletonList(addedItem));
+						event = new ListAddEvent(this.source, listName, index, addedItem);
 					}
 					listener.itemsAdded(event);
 				}
@@ -1388,7 +1387,7 @@ public class ChangeSupport
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListAddEvent(this.source, listName, index, Collections.singletonList(addedItem));
+						event = new ListAddEvent(this.source, listName, index, addedItem);
 					}
 					changeListener.itemsAdded(event);
 				}
@@ -1481,7 +1480,7 @@ public class ChangeSupport
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListRemoveEvent(this.source, listName, index, Collections.singletonList(removedItem));
+						event = new ListRemoveEvent(this.source, listName, index, removedItem);
 					}
 					listener.itemsRemoved(event);
 				}
@@ -1493,7 +1492,7 @@ public class ChangeSupport
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListRemoveEvent(this.source, listName, index, Collections.singletonList(removedItem));
+						event = new ListRemoveEvent(this.source, listName, index, removedItem);
 					}
 					changeListener.itemsRemoved(event);
 				}
@@ -1505,13 +1504,9 @@ public class ChangeSupport
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireItemsReplaced(ListReplaceEvent event) {
-		if (event.getItemsSize() != 0) {
+		if ((event.getItemsSize() != 0) && this.elementsAreDifferent(event.getNewItems(), event.getOldItems())) {
 			this.fireItemsReplaced_(event);
 		}
-		// TODO check that the items are actually different... ?
-//		if (this.elementsAreEqual(event.items(), event.replacedItems())) {
-//			return;
-//		}
 	}
 
 	/**
@@ -1541,28 +1536,24 @@ public class ChangeSupport
 	/**
 	 * Report a bound list update to any registered listeners.
 	 */
-	public void fireItemsReplaced(String listName, int index, List<?> newItems, List<?> replacedItems) {
-//		this.fireItemsReplaced(new ListReplaceEvent(this.source, listName, index, newItems, replacedItems));
-		if ( ! newItems.isEmpty()) {
-			this.fireItemsReplaced_(listName, index, newItems, replacedItems);
+	public void fireItemsReplaced(String listName, int index, List<?> newItems, List<?> oldItems) {
+//		this.fireItemsReplaced(new ListReplaceEvent(this.source, listName, index, newItems, oldItems));
+		if (( ! newItems.isEmpty()) && this.elementsAreDifferent(newItems, oldItems)) {
+			this.fireItemsReplaced_(listName, index, newItems, oldItems);
 		}
-		// TODO check that the items are actually different... ?
-//		if (newItems.equals(replacedItems)) {
-//			return;
-//		}
 	}
 
 	/**
 	 * pre-condition: items were replaced
 	 */
-	protected void fireItemsReplaced_(String listName, int index, List<?> newItems, List<?> replacedItems) {
+	protected void fireItemsReplaced_(String listName, int index, List<?> newItems, List<?> oldItems) {
 		ListReplaceEvent event = null;
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListReplaceEvent(this.source, listName, index, newItems, replacedItems);
+						event = new ListReplaceEvent(this.source, listName, index, newItems, oldItems);
 					}
 					listener.itemsReplaced(event);
 				}
@@ -1574,7 +1565,7 @@ public class ChangeSupport
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListReplaceEvent(this.source, listName, index, newItems, replacedItems);
+						event = new ListReplaceEvent(this.source, listName, index, newItems, oldItems);
 					}
 					changeListener.itemsReplaced(event);
 				}
@@ -1585,26 +1576,24 @@ public class ChangeSupport
 	/**
 	 * Report a bound list update to any registered listeners.
 	 */
-	public void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
-//		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
-		this.fireItemReplaced_(listName, index, newItem, replacedItem);
-		// TODO check that the item is actually different... ?
-//		if (this.valuesAreEqual(newItem, replacedItem)) {
-//			return;
-//		}
+	public void fireItemReplaced(String listName, int index, Object newItem, Object oldItem) {
+//		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(oldItem));
+		if (this.valuesAreDifferent(newItem, oldItem)) {
+			this.fireItemReplaced_(listName, index, newItem, oldItem);
+		}
 	}
 
 	/**
 	 * pre-condition: items were replaced
 	 */
-	protected void fireItemReplaced_(String listName, int index, Object newItem, Object replacedItem) {
+	protected void fireItemReplaced_(String listName, int index, Object newItem, Object oldItem) {
 		ListReplaceEvent event = null;
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListReplaceEvent(this.source, listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
+						event = new ListReplaceEvent(this.source, listName, index, newItem, oldItem);
 					}
 					listener.itemsReplaced(event);
 				}
@@ -1616,7 +1605,7 @@ public class ChangeSupport
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
 					if (event == null) {
-						event = new ListReplaceEvent(this.source, listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
+						event = new ListReplaceEvent(this.source, listName, index, newItem, oldItem);
 					}
 					changeListener.itemsReplaced(event);
 				}
@@ -2162,11 +2151,9 @@ public class ChangeSupport
 	 * @see java.util.List#set(int, Object)
 	 */
 	public <E> E setItemInList(int index, E item, List<E> list, String listName) {
-		E replacedItem = list.set(index, item);
-		if (this.valuesAreDifferent(item, replacedItem)) {
-			this.fireItemReplaced(listName, index, item, replacedItem);
-		}
-		return replacedItem;
+		E oldItem = list.set(index, item);
+		this.fireItemReplaced(listName, index, item, oldItem);
+		return oldItem;
 	}
 
 	/**
@@ -2185,7 +2172,7 @@ public class ChangeSupport
 		int index = list.indexOf(oldItem);
 		if ((index != -1) && this.valuesAreDifferent(oldItem, newItem)) {
 			list.set(index, newItem);
-			this.fireItemReplaced(listName, index, newItem, oldItem);
+			this.fireItemReplaced_(listName, index, newItem, oldItem);
 		}
 		return index;
 	}
@@ -2221,15 +2208,13 @@ public class ChangeSupport
 	 */
 	protected <E> List<E> setItemsInList_(int index, List<? extends E> items, List<E> list, String listName) {
 		List<E> subList = list.subList(index, index + items.size());
-		List<E> replacedItems = new ArrayList<E>(subList);
+		List<E> oldItems = new ArrayList<E>(subList);
 		for (int i = 0; i < items.size(); i++) {
 			E newItem = items.get(i);
 			E oldItem = subList.set(i, newItem);
-			if (this.valuesAreDifferent(oldItem, newItem)) {
-				this.fireItemReplaced(listName, index + i, newItem, oldItem);
-			}
+			this.fireItemReplaced(listName, index + i, newItem, oldItem);
 		}
-		return replacedItems;
+		return oldItems;
 	}
 
 	/**
@@ -2326,9 +2311,9 @@ public class ChangeSupport
 		for (int i = 0; i < min; i++) {
 			E newItem = newList.get(i);
 			E oldItem = oldList.set(i, newItem);
-			if (this.valuesAreDifferent(oldItem, newItem)) {
+			if (this.valuesAreDifferent(newItem, oldItem)) {
 				changed = true;
-				this.fireItemReplaced(listName, i, newItem, oldItem);
+				this.fireItemReplaced_(listName, i, newItem, oldItem);
 			}
 		}
 
