@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.options;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetDatabase;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetServer;

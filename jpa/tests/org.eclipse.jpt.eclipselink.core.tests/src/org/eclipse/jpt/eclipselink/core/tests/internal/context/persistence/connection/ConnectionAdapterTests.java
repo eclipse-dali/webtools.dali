@@ -9,8 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.connection;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;

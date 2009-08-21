@@ -20,7 +20,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.JptDbPlugin;

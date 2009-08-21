@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.persistence.connection;
 
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;

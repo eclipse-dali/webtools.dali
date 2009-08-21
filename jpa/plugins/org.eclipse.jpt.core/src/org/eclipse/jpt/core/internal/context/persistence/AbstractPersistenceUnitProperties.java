@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 

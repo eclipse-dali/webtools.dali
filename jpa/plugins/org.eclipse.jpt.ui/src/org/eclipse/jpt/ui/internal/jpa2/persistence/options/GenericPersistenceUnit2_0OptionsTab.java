@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.persistence.options;
 
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;

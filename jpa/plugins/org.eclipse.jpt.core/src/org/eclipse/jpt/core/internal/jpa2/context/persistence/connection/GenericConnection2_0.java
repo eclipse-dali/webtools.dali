@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 
 /**
  *  GenericConnection2_0

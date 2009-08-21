@@ -17,9 +17,9 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericPersistenceUnit2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.JpaConnection2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
@@ -104,7 +104,7 @@ public class Generic2_0JpaUiFactory extends GenericJpaUiFactory
 		return new TransformationPropertyValueModel<PersistenceUnit, JpaConnection2_0>(subjectHolder) {
 			@Override
 			protected JpaConnection2_0 transform_(PersistenceUnit value) {
-				return ((GenericPersistenceUnit2_0) value).getConnection();
+				return ((PersistenceUnit2_0) value).getConnection();
 			}
 		};
 	}
@@ -114,7 +114,7 @@ public class Generic2_0JpaUiFactory extends GenericJpaUiFactory
 		return new TransformationPropertyValueModel<PersistenceUnit, JpaOptions2_0>(subjectHolder) {
 			@Override
 			protected JpaOptions2_0 transform_(PersistenceUnit value) {
-				return ((GenericPersistenceUnit2_0) value).getOptions();
+				return ((PersistenceUnit2_0) value).getOptions();
 			}
 		};
 	}

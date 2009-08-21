@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.sche
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;

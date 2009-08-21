@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.event.ListEvent;

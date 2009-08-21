@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.jpa2.persistence.connection;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.Pane;

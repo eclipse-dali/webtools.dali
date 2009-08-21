@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.logging;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logger;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.LoggingLevel;

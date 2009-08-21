@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.general;
 
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;

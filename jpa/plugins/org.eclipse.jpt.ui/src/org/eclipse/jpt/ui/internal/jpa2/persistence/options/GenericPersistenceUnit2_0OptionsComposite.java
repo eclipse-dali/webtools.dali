@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.persistence.options;
 
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.SWT;

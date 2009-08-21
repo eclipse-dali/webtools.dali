@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.caching;
 
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
