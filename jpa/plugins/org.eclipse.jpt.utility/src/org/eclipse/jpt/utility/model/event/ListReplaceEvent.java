@@ -47,6 +47,19 @@ public final class ListReplaceEvent extends ListEvent {
 	 *
 	 * @param source The object on which the event initially occurred.
 	 * @param listName The programmatic name of the list that was changed.
+	 * @param index The index at which the item in the list was replaced.
+	 * @param newItem The new item in the list.
+	 * @param oldItem The old item in the list that were replaced.
+	 */
+	public ListReplaceEvent(Model source, String listName, int index, Object newItem, Object oldItem) {
+		this(source, listName, index, new Object[] {newItem}, new Object[] {oldItem});
+	}
+
+	/**
+	 * Construct a new list replace event for a list of replaced items.
+	 *
+	 * @param source The object on which the event initially occurred.
+	 * @param listName The programmatic name of the list that was changed.
 	 * @param index The index at which the items in the list were replaced.
 	 * @param newItems The new items in the list.
 	 * @param oldItems The old items in the list that were replaced.

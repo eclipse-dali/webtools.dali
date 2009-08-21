@@ -3657,7 +3657,7 @@ public class ChangeSupportTests
 
 		// ***** collection
 		public void testFireItemsAddedCollectionEvent() {
-			this.fireItemsAdded(new CollectionAddEvent(this, COLLECTION_NAME, Collections.singleton(ADDED_OBJECT_VALUE)));
+			this.fireItemsAdded(new CollectionAddEvent(this, COLLECTION_NAME, ADDED_OBJECT_VALUE));
 		}
 
 		public void testFireItemsAddedCollectionEventNoChange() {
@@ -3677,7 +3677,7 @@ public class ChangeSupportTests
 		}
 
 		public void testFireItemsRemovedCollectionEvent() {
-			this.fireItemsRemoved(new CollectionRemoveEvent(this, COLLECTION_NAME, Collections.singleton(REMOVED_OBJECT_VALUE)));
+			this.fireItemsRemoved(new CollectionRemoveEvent(this, COLLECTION_NAME, REMOVED_OBJECT_VALUE));
 		}
 
 		public void testFireItemsRemovedCollectionEventNoChange() {
@@ -3851,7 +3851,7 @@ public class ChangeSupportTests
 
 		// ***** list
 		public void testFireItemsAddedListEvent() {
-			this.fireItemsAdded(new ListAddEvent(this, LIST_NAME, ADD_INDEX, Collections.singletonList(ADDED_OBJECT_VALUE)));
+			this.fireItemsAdded(new ListAddEvent(this, LIST_NAME, ADD_INDEX, ADDED_OBJECT_VALUE));
 		}
 
 		public void testFireItemsAddedListEventNoChange() {
@@ -3871,7 +3871,7 @@ public class ChangeSupportTests
 		}
 
 		public void testFireItemsRemovedListEvent() {
-			this.fireItemsRemoved(new ListRemoveEvent(this, LIST_NAME, REMOVE_INDEX, Collections.singletonList(REMOVED_OBJECT_VALUE)));
+			this.fireItemsRemoved(new ListRemoveEvent(this, LIST_NAME, REMOVE_INDEX, REMOVED_OBJECT_VALUE));
 		}
 
 		public void testFireItemsRemovedListEventNoChange() {
@@ -3891,7 +3891,7 @@ public class ChangeSupportTests
 		}
 
 		public void testFireItemsReplacedListEvent() {
-			this.fireItemsReplaced(new ListReplaceEvent(this, LIST_NAME, REPLACE_INDEX, Collections.singletonList(ADDED_OBJECT_VALUE), Collections.singletonList(REMOVED_OBJECT_VALUE)));
+			this.fireItemsReplaced(new ListReplaceEvent(this, LIST_NAME, REPLACE_INDEX, ADDED_OBJECT_VALUE, REMOVED_OBJECT_VALUE));
 		}
 
 		public void testFireItemsReplacedListEventNoChange() {

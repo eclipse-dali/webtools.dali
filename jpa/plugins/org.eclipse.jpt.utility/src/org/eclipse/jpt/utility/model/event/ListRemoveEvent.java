@@ -48,6 +48,18 @@ public final class ListRemoveEvent extends ListEvent {
 	 * @param source The object on which the event initially occurred.
 	 * @param collectionName The programmatic name of the list that was changed.
 	 * @param index The index at which the items were removed.
+	 * @param item The item removed from the list.
+	 */
+	public ListRemoveEvent(Model source, String listName, int index, Object item) {
+		this(source, listName, index, new Object[] {item});
+	}
+
+	/**
+	 * Construct a new list remove event.
+	 *
+	 * @param source The object on which the event initially occurred.
+	 * @param collectionName The programmatic name of the list that was changed.
+	 * @param index The index at which the items were removed.
 	 * @param items The items removed from the list.
 	 */
 	public ListRemoveEvent(Model source, String listName, int index, Collection<?> items) {

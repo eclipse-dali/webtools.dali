@@ -48,6 +48,18 @@ public final class ListAddEvent extends ListEvent {
 	 * @param source The object on which the event initially occurred.
 	 * @param listName The programmatic name of the list that was changed.
 	 * @param index The index at which the items were added.
+	 * @param item The item added to the list.
+	 */
+	public ListAddEvent(Model source, String listName, int index, Object item) {
+		this(source, listName, index, new Object[] {item});
+	}
+
+	/**
+	 * Construct a new list add event.
+	 *
+	 * @param source The object on which the event initially occurred.
+	 * @param listName The programmatic name of the list that was changed.
+	 * @param index The index at which the items were added.
 	 * @param items The items added to the list.
 	 */
 	public ListAddEvent(Model source, String listName, int index, List<?> items) {

@@ -56,6 +56,17 @@ public final class CollectionAddEvent extends CollectionEvent {
 	 *
 	 * @param source The object on which the event initially occurred.
 	 * @param collectionName The programmatic name of the collection that was changed.
+	 * @param item The item added to the collection.
+	 */
+	public CollectionAddEvent(Model source, String collectionName, Object item) {
+		this(source, collectionName, new Object[] {item});
+	}
+
+	/**
+	 * Construct a new collection add event.
+	 *
+	 * @param source The object on which the event initially occurred.
+	 * @param collectionName The programmatic name of the collection that was changed.
 	 * @param items The items added to the collection.
 	 */
 	public CollectionAddEvent(Model source, String collectionName, Collection<?> items) {
