@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,27 +10,17 @@
 package org.eclipse.jpt.core.internal.prefs;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
-import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Class used to initialize default preference values.
+ * See <code>org.eclipse.core.runtime.preferences</code> extension point.
  */
-public class JpaPreferenceInitializer extends AbstractPreferenceInitializer 
+public class JpaPreferenceInitializer
+	extends AbstractPreferenceInitializer 
 {
 	@Override
 	public void initializeDefaultPreferences() {
-		IEclipsePreferences node = new DefaultScope().getNode(JptCorePlugin.instance().getBundle().getSymbolicName());
-		
-		// default JPA platform
-		String defaultPlatformId = JpaPlatformRegistry.instance().getDefaultJpaPlatformId();
-		if (StringTools.stringIsEmpty(defaultPlatformId)) {
-			defaultPlatformId = GenericJpaPlatformProvider.ID;
-		}
-		node.put(JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, defaultPlatformId);
+		JptCorePlugin.initializeDefaultPreferences();
 	}
 }

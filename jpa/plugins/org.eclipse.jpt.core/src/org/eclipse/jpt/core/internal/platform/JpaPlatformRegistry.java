@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -22,9 +24,9 @@ import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -47,11 +49,11 @@ public class JpaPlatformRegistry {
 	}
 
 	private static final String EXTENSION_ID = "jpaPlatforms"; //$NON-NLS-1$
-	private static final String EL_PLATFORM = "jpaPlatform"; //$NON-NLS-1$	
-	private static final String AT_ID = "id"; //$NON-NLS-1$	
-	private static final String AT_LABEL = "label"; //$NON-NLS-1$	
-	private static final String AT_FACTORY_CLASS = "factoryClass"; //$NON-NLS-1$
-	private static final String AT_DEFAULT = "default"; //$NON-NLS-1$
+	private static final String PLATFORM_ELEMENT_NAME = "jpaPlatform"; //$NON-NLS-1$
+	private static final String ID_ATTRIBUTE_NAME = "id"; //$NON-NLS-1$
+	private static final String LABEL_ATTRIBUTE_NAME = "label"; //$NON-NLS-1$
+	private static final String FACTORY_CLASS_ATTRIBUTE_NAME = "factoryClass"; //$NON-NLS-1$
+	private static final String DEFAULT_ATTRIBUTE_NAME = "default"; //$NON-NLS-1$
 
 
 	// ********** constructor/initialization **********
@@ -63,12 +65,12 @@ public class JpaPlatformRegistry {
 		super();
 		this.jpaPlatformConfigurationElements = this.buildJpaPlatformConfigurationElements();
 	}
-	
-	
+
+
 	private HashMap<String, IConfigurationElement> buildJpaPlatformConfigurationElements() {
 		HashMap<String, IConfigurationElement> configElements = new HashMap<String, IConfigurationElement>();
-		for (Iterator<IConfigurationElement> stream = this.configElements(); stream.hasNext(); ) {
-			this.addConfigElementTo(stream.next(), configElements);
+		for (IConfigurationElement configElement : this.getConfigElements()) {
+			this.addConfigElementTo(configElement, configElements);
 		}
 		return configElements;
 	}
@@ -77,39 +79,38 @@ public class JpaPlatformRegistry {
 	 * Return the configuration elements from the Eclipse platform extension
 	 * registry.
 	 */
-	private Iterator<IConfigurationElement> configElements() {
-		return new CompositeIterator<IConfigurationElement>(
-				new TransformationIterator<IExtension, Iterator<IConfigurationElement>>(this.extensions()) {
+	private Iterable<IConfigurationElement> getConfigElements() {
+		return new CompositeIterable<IConfigurationElement>(
+				new TransformationIterable<IExtension, Iterable<IConfigurationElement>>(this.getExtensions()) {
 					@Override
-					protected Iterator<IConfigurationElement> transform(IExtension extension) {
-						return CollectionTools.iterator(extension.getConfigurationElements());
+					protected Iterable<IConfigurationElement> transform(IExtension extension) {
+						return CollectionTools.iterable(extension.getConfigurationElements());
 					}
 				}
 		);
 	}
 
-	private Iterator<IExtension> extensions() {
-		return CollectionTools.iterator(this.extensionPoint().getExtensions());
+	private Iterable<IExtension> getExtensions() {
+		return CollectionTools.iterable(this.getExtensionPoint().getExtensions());
 	}
 
-	private IExtensionPoint extensionPoint() {
+	private IExtensionPoint getExtensionPoint() {
 		return Platform.getExtensionRegistry().getExtensionPoint(JptCorePlugin.PLUGIN_ID, EXTENSION_ID);
 	}
 
 	private void addConfigElementTo(IConfigurationElement configElement, HashMap<String, IConfigurationElement> configElements) {
-		if ( ! configElement.getName().equals(EL_PLATFORM)) {
+		if ( ! configElement.getName().equals(PLATFORM_ELEMENT_NAME)) {
 			return;
 		}
 		if ( ! this.configElementIsValid(configElement)) {
 			return;
 		}
 
-		String id = configElement.getAttribute(AT_ID);
-		IConfigurationElement prev = configElements.get(id);
-		if (prev == null) {
-			configElements.put(id, configElement);
-		} else {
-			this.logDuplicatePlatform(prev, configElement);
+		String id = configElement.getAttribute(ID_ATTRIBUTE_NAME);
+		IConfigurationElement prev = configElements.put(id, configElement);
+		if (prev != null) {
+			configElements.put(id, prev);  // replace previous(?)
+			this.logDuplicatePlatform(prev, configElement, id);
 		}
 	}
 
@@ -118,16 +119,16 @@ public class JpaPlatformRegistry {
 	 */
 	private boolean configElementIsValid(IConfigurationElement configElement) {
 		boolean valid = true;
-		if (configElement.getAttribute(AT_ID) == null) {
-			this.logMissingAttribute(configElement, AT_ID);
+		if (configElement.getAttribute(ID_ATTRIBUTE_NAME) == null) {
+			this.logMissingAttribute(configElement, ID_ATTRIBUTE_NAME);
 			valid = false;
 		}
-		if (configElement.getAttribute(AT_LABEL) == null) {
-			logMissingAttribute(configElement, AT_LABEL);
+		if (configElement.getAttribute(LABEL_ATTRIBUTE_NAME) == null) {
+			this.logMissingAttribute(configElement, LABEL_ATTRIBUTE_NAME);
 			valid = false;
 		}
-		if (configElement.getAttribute(AT_FACTORY_CLASS) == null) {
-			logMissingAttribute(configElement, AT_FACTORY_CLASS);
+		if (configElement.getAttribute(FACTORY_CLASS_ATTRIBUTE_NAME) == null) {
+			this.logMissingAttribute(configElement, FACTORY_CLASS_ATTRIBUTE_NAME);
 			valid = false;
 		}
 		return valid;
@@ -143,36 +144,37 @@ public class JpaPlatformRegistry {
 	public Iterator<String> jpaPlatformIds() {
 		return new ReadOnlyIterator<String>(this.jpaPlatformConfigurationElements.keySet());
 	}
-	
+
 	/**
 	 * Return whether the platform id is registered
 	 */
 	public boolean containsPlatform(String platformId) {
 		return this.jpaPlatformConfigurationElements.containsKey(platformId);
 	}
-	
+
 	/**
 	 * Return the label for the JPA platform with the specified ID.
 	 * This does not activate the JPA platform's plug-in.
 	 */
 	public String getJpaPlatformLabel(String id) {
-		return this.jpaPlatformConfigurationElements.get(id).getAttribute(AT_LABEL);
+		return this.jpaPlatformConfigurationElements.get(id).getAttribute(LABEL_ATTRIBUTE_NAME);
 	}
-	
+
 	/**
 	 * Return the ID for a JPA platform registered as a default platform.
 	 * Returns null if there are no such registered platforms.
 	 * Returns the first platform ID if there are multiple such registered platforms.
 	 */
 	public String getDefaultJpaPlatformId() {
-		for (String platformId : this.jpaPlatformConfigurationElements.keySet()) {
-			if ("true".equals(this.jpaPlatformConfigurationElements.get(platformId).getAttribute(AT_DEFAULT))) {
-				return platformId;
+		for (Map.Entry<String, IConfigurationElement> entry: this.jpaPlatformConfigurationElements.entrySet()) {
+			String defaultFlag = entry.getValue().getAttribute(DEFAULT_ATTRIBUTE_NAME);
+			if ((defaultFlag != null) && defaultFlag.equals("true")) { //$NON-NLS-1$
+				return entry.getKey();
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return a new JPA platform for the specified ID.
 	 * NB: This should only be called when instantiating a JPA platform
@@ -189,7 +191,7 @@ public class JpaPlatformRegistry {
 		}
 		JpaPlatformFactory platformFactory;
 		try {
-			platformFactory = (JpaPlatformFactory) configElement.createExecutableExtension(AT_FACTORY_CLASS);
+			platformFactory = (JpaPlatformFactory) configElement.createExecutableExtension(FACTORY_CLASS_ATTRIBUTE_NAME);
 		} catch (CoreException ex) {
 			this.logFailedInstantiation(configElement, ex);
 			throw new IllegalArgumentException(id);
@@ -200,43 +202,35 @@ public class JpaPlatformRegistry {
 
 	// ********** errors **********
 
-	// TODO externalize strings
 	private void logMissingAttribute(IConfigurationElement configElement, String attributeName) {
-		String message = 
-			"An extension element \""
-			+ configElement.getName()
-			+ "\" in plugin \""
-			+ configElement.getContributor().getName()
-			+ "\" is missing a required attribute \""
-			+ attributeName
-			+ "\".";
-		JptCorePlugin.log(message);
+		this.log(JptCoreMessages.REGISTRY_MISSING_ATTRIBUTE,
+						configElement.getName(),
+						configElement.getContributor().getName(),
+						attributeName
+					);
 	}
 
-	// TODO externalize strings
-	private void logDuplicatePlatform(IConfigurationElement prevConfigElement, IConfigurationElement newConfigElement) {
-		String message =
-			"The plugins \""
-			+ prevConfigElement.getContributor().getName()
-			+ "\" and \""
-			+ newConfigElement.getContributor().getName()
-			+ "\" have registered a duplicate attribute \"id\" "
-			+ "for the extension element \"jpaPlatform\".";
-		JptCorePlugin.log(message);
+	private void logDuplicatePlatform(IConfigurationElement prevConfigElement, IConfigurationElement newConfigElement, String id) {
+		this.log(JptCoreMessages.REGISTRY_DUPLICATE,
+						prevConfigElement.getContributor().getName(),
+						newConfigElement.getContributor().getName(),
+						ID_ATTRIBUTE_NAME,
+						PLATFORM_ELEMENT_NAME,
+						id
+					);
 	}
 
-	// TODO externalize strings
 	private void logFailedInstantiation(IConfigurationElement configElement, CoreException ex) {
-		String message =
-			"Could not instantiate the factory class \""
-			+ configElement.getAttribute(AT_FACTORY_CLASS)
-			+ "\" for the extension element \""
-			+ configElement.getName()
-			+ "\" in the plugin \""
-			+ configElement.getContributor().getName()
-			+ "\".";
-		JptCorePlugin.log(message);
+		this.log(JptCoreMessages.REGISTRY_FAILED_INSTANTIATION,
+						configElement.getAttribute(FACTORY_CLASS_ATTRIBUTE_NAME),
+						configElement.getName(),
+						configElement.getContributor().getName()
+					);
 		JptCorePlugin.log(ex);
+	}
+
+	private void log(String msg, Object... bindings) {
+		JptCorePlugin.log(NLS.bind(msg, bindings));
 	}
 
 }

@@ -31,7 +31,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -73,11 +73,17 @@ public class JptCorePlugin extends Plugin {
 	public static final String FACET_ID = "jpt.jpa";  //$NON-NLS-1$
 
 	/**
-	 * The key for storing a JPA project's platform in the Eclipse
+	 * The key for storing a JPA project's platform ID in the Eclipse
 	 * project's preferences.
 	 */
-	public static final String JPA_PLATFORM = PLUGIN_ID_ + "platform";  //$NON-NLS-1$
-	
+	private static final String JPA_PLATFORM_PREF_KEY = PLUGIN_ID_ + "platform";  //$NON-NLS-1$
+
+	/**
+	 * The key for storing the default JPA platform ID in the workspace
+	 * preferences.
+	 */
+	private static final String DEFAULT_JPA_PLATFORM_PREF_KEY = "defaultJpaPlatform"; //$NON-NLS-1$
+
 	/**
 	 * The key for storing a JPA project's "discover" flag in the Eclipse
 	 * project's preferences.
@@ -90,7 +96,7 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final QualifiedName DATA_SOURCE_CONNECTION_PROFILE_NAME = 
 			new QualifiedName(PLUGIN_ID, "dataSource.connectionProfileName");  //$NON-NLS-1$
-	
+
 	/**
 	 * The key for storing a JPA project's user overridden default catalog name
 	 * in the Eclipse project's persistent properties.
@@ -104,7 +110,7 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final QualifiedName USER_OVERRIDE_DEFAULT_SCHEMA = 
 			new QualifiedName(PLUGIN_ID, "userOverrideDefaultSchemaName");  //$NON-NLS-1$
-	
+
 	/**
 	 * The identifier for the JPA validator
 	 * (value <code>"org.eclipse.jpt.core.jpaValidator"</code>).
@@ -120,22 +126,22 @@ public class JptCorePlugin extends Plugin {
 	 * The base content type for all persistence.xml files.
 	 */
 	public static final IContentType PERSISTENCE_FILE_CONTENT_TYPE = getJpaContentType("persistenceFile"); //$NON-NLS-1$
-	
+
 	/**
 	 * The content type for persistence.xml 1.0 (based on the persistence 1.0 schema) files.
 	 */
 	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
-	
+
 	/**
 	 * The content type for persistence.xml 2.0 (based on the persistence 2.0 schema) files.
 	 */
 	public static final IContentType PERSISTENCE2_0_XML_CONTENT_TYPE = getJpaContentType("persistence2_0"); //$NON-NLS-1$
-	
+
 	/**
 	 * The base content type for all mapping files.
 	 */
 	public static final IContentType MAPPING_FILE_CONTENT_TYPE = getJpaContentType("mappingFile"); //$NON-NLS-1$
-	
+
 	/**
 	 * The content type for orm.xml 1.0 (based on the orm 1.0 schema) mapping files.
 	 */
@@ -266,7 +272,7 @@ public class JptCorePlugin extends Plugin {
 	public static String getDefaultOrmXmlDeploymentURI(IProject project) {
 		return getDeploymentURI(project, DEFAULT_ORM_XML_FILE_PATH);
 	}
-	
+
 	/**
 	 * Return the mapping file (specified as "META-INF/<mappingFileName>")
 	 * deployment URI for the specified project.
@@ -274,7 +280,7 @@ public class JptCorePlugin extends Plugin {
 	public static String getOrmXmlDeploymentURI(IProject project, String mappingFileName) {
 		return getDeploymentURI(project, mappingFileName);
 	}
-	
+
 	/**
 	 * Tweak the specified deployment URI if the specified project
 	 * has a web facet.
@@ -285,7 +291,7 @@ public class JptCorePlugin extends Plugin {
 			:
 				defaultURI;
 	}
-	
+
 	/**
 	 * Return the deployment path to which jars are relatively specified for 
 	 * the given project
@@ -294,71 +300,94 @@ public class JptCorePlugin extends Plugin {
 	public static IPath getJarDeploymentRootPath(IProject project) {
 		return new Path(getJarDeploymentRootPathName(project));
 	}
-	
+
 	private static String getJarDeploymentRootPathName(IProject project) {
 		return projectHasWebFacet(project) ? ("/" + J2EEConstants.WEB_INF) : "/"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	public static IFile getPlatformFile(IProject project, String defaultURI) {
 		IPath deploymentPath = new Path(getDeploymentURI(project, defaultURI));
 		IVirtualFile vFile = ComponentCore.createFile(project, deploymentPath);
 		return vFile.getUnderlyingFile();
 
 	}
-	
+
 	public static JpaFile getJpaFile(IProject project, String defaultURI) {
 		IFile xmlFile = getPlatformFile(project, defaultURI);
 		return xmlFile.exists() ? getJpaFile(xmlFile) : null;
 	}
-	
+
+	public static void initializeDefaultPreferences() {
+		IEclipsePreferences node = getDefaultPreferences();
+
+		// default JPA platform
+		String defaultPlatformId = JpaPlatformRegistry.instance().getDefaultJpaPlatformId();
+		if (StringTools.stringIsEmpty(defaultPlatformId)) {
+			defaultPlatformId = GenericJpaPlatformProvider.ID;
+		}
+		node.put(DEFAULT_JPA_PLATFORM_PREF_KEY, defaultPlatformId);
+	}
+
 	/**
-	 * Return the default JPA preferences
+	 * Return the default Dali preferences
 	 * @see JpaPreferenceInitializer
 	 */
 	public static IEclipsePreferences getDefaultPreferences() {
-		IScopeContext context = new DefaultScope();
-		return context.getNode(PLUGIN_ID);
+		return getPreferences(new DefaultScope());
 	}
-	
+
 	/**
-	 * Return the JPA preferences for the current workspace instance.
+	 * Return the Dali preferences for the current workspace instance.
 	 */
 	public static IEclipsePreferences getWorkspacePreferences() {
-		IScopeContext context = new InstanceScope();
-		return context.getNode(PLUGIN_ID);
+		return getPreferences(new InstanceScope());
 	}
-	
+
 	/**
-	 * Return the JPA preferences for the specified Eclipse project.
+	 * Return the Dali preferences for the specified Eclipse project.
 	 */
 	public static IEclipsePreferences getProjectPreferences(IProject project) {
-		IScopeContext context = new ProjectScope(project);
+		return getPreferences(new ProjectScope(project));
+	}
+
+	/**
+	 * Return the Dali preferences for the specified context.
+	 */
+	private static IEclipsePreferences getPreferences(IScopeContext context) {
 		return context.getNode(PLUGIN_ID);
 	}
-	
+
 	/**
-	 * Return the default JPA platform ID for creating new JPA projects
+	 * Return the default JPA Platform ID for new JPA projects.
 	 */
 	public static String getDefaultJpaPlatformId() {
-		String platformId = 
-			Platform.getPreferencesService().get(
-				JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatformProvider.ID,
-				new Preferences[] {getWorkspacePreferences(), getDefaultPreferences()});
-		if (! JpaPlatformRegistry.instance().containsPlatform(platformId)) {
-			platformId = 
-				Platform.getPreferencesService().get(
-					JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatformProvider.ID,
-					new Preferences[] {getDefaultPreferences()});
+		String platformId = getDefaultJpaPlatformId(getWorkspacePreferences(), getDefaultPreferences());
+		if (jpaPlatformIdIsValid(platformId)) {
+			return platformId;
 		}
-		return platformId;
+		// if the platform ID stored in the workspace prefs is invalid, look in the default prefs
+		platformId = getDefaultJpaPlatformId(getDefaultPreferences());
+		if (jpaPlatformIdIsValid(platformId)) {
+			return platformId;
+		}
+		// if the platform ID stored in the default prefs is invalid, use the Generic platform ID
+		return GenericJpaPlatformProvider.ID;
 	}
-	
+
+	private static String getDefaultJpaPlatformId(Preferences... nodes) {
+		return Platform.getPreferencesService().get(DEFAULT_JPA_PLATFORM_PREF_KEY, GenericJpaPlatformProvider.ID, nodes);
+	}
+
+	private static boolean jpaPlatformIdIsValid(String platformId) {
+		return JpaPlatformRegistry.instance().containsPlatform(platformId);
+	}
+
 	/**
 	 * Set the default JPA platform ID for creating new JPA projects
 	 */
 	public static void setDefaultJpaPlatformId(String platformId) {
 		IEclipsePreferences prefs = getWorkspacePreferences();
-		prefs.put(JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, platformId);
+		prefs.put(DEFAULT_JPA_PLATFORM_PREF_KEY, platformId);
 		flush(prefs);
 	}
 
@@ -368,12 +397,12 @@ public class JptCorePlugin extends Plugin {
 	public static JpaPlatform getJpaPlatform(IProject project) {
 		return JpaPlatformRegistry.instance().getJpaPlatform(project);
 	}
-	
+
 	/**
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static String getJpaPlatformId(IProject project) {
-		return getProjectPreferences(project).get(JPA_PLATFORM, GenericJpaPlatformProvider.ID);
+		return getProjectPreferences(project).get(JPA_PLATFORM_PREF_KEY, GenericJpaPlatformProvider.ID);
 	}
 
 	/**
@@ -381,10 +410,18 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static void setJpaPlatformId(IProject project, String jpaPlatformId) {
 		IEclipsePreferences prefs = getProjectPreferences(project);
-		prefs.put(JPA_PLATFORM, jpaPlatformId);
+		prefs.put(JPA_PLATFORM_PREF_KEY, jpaPlatformId);
 		flush(prefs);
 	}
-	
+
+	/**
+	 * Return the preferences key used to look up an Eclipse project's
+	 * JPA platform ID.
+	 */
+	public static String getJpaPlatformIdPrefKey() {
+		return JPA_PLATFORM_PREF_KEY;
+	}
+
 	/**
 	 * Return the JPA "discover" flag associated with the specified
 	 * Eclipse project.
@@ -476,7 +513,7 @@ public class JptCorePlugin extends Plugin {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Set the default schema (identifier) associated with the specified Eclipse project.
 	 * @see JpaProject#setUserOverrideDefaultSchema(String)

@@ -866,7 +866,7 @@ public class JpaProjectPropertiesPage
 		private IPreferenceChangeListener buildPreferenceChangeListener() {
 			return new IPreferenceChangeListener() {
 				public void preferenceChange(PreferenceChangeEvent event) {
-					if (event.getKey().equals(JptCorePlugin.JPA_PLATFORM)) {
+					if (event.getKey().equals(JptCorePlugin.getJpaPlatformIdPrefKey())) {
 						JpaProjectModel.this.platformChanged();
 					}
 				}
