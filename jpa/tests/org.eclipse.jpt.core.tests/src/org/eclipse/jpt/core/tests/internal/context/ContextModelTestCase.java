@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.java.JavaEntity;
@@ -63,6 +64,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void tearDown() throws Exception {
 		this.persistenceXmlResource = null;
 		this.ormXmlResource = null;
+		JptCorePlugin.getWorkspacePreferences().clear();
 		super.tearDown();
 	}
 	
