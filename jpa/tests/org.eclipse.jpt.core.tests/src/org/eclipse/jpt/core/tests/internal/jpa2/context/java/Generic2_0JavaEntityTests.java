@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -32,13 +33,12 @@ import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class Generic2_0JavaEntityTests extends ContextModelTestCase
+public class Generic2_0JavaEntityTests extends Generic2_0ContextModelTestCase
 {
 	private static final String ENTITY_NAME = "entityName";
 	private static final String TABLE_NAME = "MY_TABLE";
