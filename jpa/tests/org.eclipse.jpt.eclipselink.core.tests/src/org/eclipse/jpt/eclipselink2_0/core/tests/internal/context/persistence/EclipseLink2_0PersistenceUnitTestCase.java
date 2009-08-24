@@ -23,14 +23,14 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 /**
  *  EclipseLink2_0PersistenceUnitTestCase
  */
-public abstract class EclipseLinkPersistenceUnit2_0TestCase extends PersistenceUnitTestCase
+public abstract class EclipseLink2_0PersistenceUnitTestCase extends PersistenceUnitTestCase
 {
 	protected EclipseLinkPersistenceUnit2_0 subject;
 
 	protected PropertyValueModel<EclipseLinkPersistenceUnit2_0> subjectHolder;
 
 	// ********** constructors **********
-	protected EclipseLinkPersistenceUnit2_0TestCase(String name) {
+	protected EclipseLink2_0PersistenceUnitTestCase(String name) {
 		super(name);
 	}
 

@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 /**
  *  EclipseLinkOptions2_0Tests
  */
-public class EclipseLinkOptions2_0Tests extends EclipseLinkPersistenceUnit2_0TestCase
+public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTestCase
 {
 	private Options2_0 options;
 
@@ -41,7 +41,7 @@ public class EclipseLinkOptions2_0Tests extends EclipseLinkPersistenceUnit2_0Tes
 	public static final String VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2 = "test_2_pre-remove_group";
 
 	// ********** constructors **********
-	public EclipseLinkOptions2_0Tests(String name) {
+	public EclipseLink2_0OptionsTests(String name) {
 		super(name);
 	}
 
