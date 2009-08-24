@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation;
+package org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 

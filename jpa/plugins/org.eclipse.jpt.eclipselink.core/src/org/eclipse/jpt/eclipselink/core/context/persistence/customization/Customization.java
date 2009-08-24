@@ -7,12 +7,13 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization;
+package org.eclipse.jpt.eclipselink.core.context.persistence.customization;
 
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 
 /**
  *  Customization

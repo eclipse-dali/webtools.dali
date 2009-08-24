@@ -11,6 +11,9 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging;
 
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logger;
+import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
+import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 
 /**

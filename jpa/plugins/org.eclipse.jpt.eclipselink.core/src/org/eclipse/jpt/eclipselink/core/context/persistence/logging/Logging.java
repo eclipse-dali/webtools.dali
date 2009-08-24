@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging;
+package org.eclipse.jpt.eclipselink.core.context.persistence.logging;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;

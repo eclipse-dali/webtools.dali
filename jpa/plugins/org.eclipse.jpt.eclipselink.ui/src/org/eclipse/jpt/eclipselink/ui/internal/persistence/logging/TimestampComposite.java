@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.logging;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
+import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;

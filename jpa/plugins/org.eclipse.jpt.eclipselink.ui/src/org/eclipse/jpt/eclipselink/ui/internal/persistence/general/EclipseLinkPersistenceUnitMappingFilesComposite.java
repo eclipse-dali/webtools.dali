@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.general;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitMappingFilesComposite;

@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.options;
+package org.eclipse.jpt.eclipselink.core.context.persistence.options;
 
 /**
  *  TargetDatabase

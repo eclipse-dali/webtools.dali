@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;

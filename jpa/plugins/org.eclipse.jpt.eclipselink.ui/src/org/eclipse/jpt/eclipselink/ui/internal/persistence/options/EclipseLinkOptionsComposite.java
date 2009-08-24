@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.options;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.SWT;
@@ -19,12 +19,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * EclipseLinkOptionsComposite
  */
-public class EclipseLinkOptionsComposite
-	extends FormPane<Options>
+public class EclipseLinkOptionsComposite<T extends Options> extends FormPane<T>
 {
 	public EclipseLinkOptionsComposite(
-					FormPane<Options> subjectHolder, 
+					FormPane<T> subjectHolder, 
 					Composite container) {
+
 		super(subjectHolder, container, false);
 	}
 
@@ -57,7 +57,7 @@ public class EclipseLinkOptionsComposite
 		return;
 	}
 	
-	private void initializeMiscellaneousPane(Composite container) {	
+	protected Composite initializeMiscellaneousPane(Composite container) {	
 		
 		this.updateGridData(container);
 		this.updateGridData(container.getParent());
@@ -70,6 +70,8 @@ public class EclipseLinkOptionsComposite
 		this.updateGridData(composite.getParent());
 
 		new TemporalMutableComposite(this, composite);
+		
+		return composite;
 	}
 
 	private void updateGridData(Composite container) {

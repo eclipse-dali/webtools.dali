@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.options;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -25,16 +25,16 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * PersistenceXmlOptionsTab
  */
-public class PersistenceXmlOptionsTab
-	extends FormPane<Options>
+public class PersistenceXmlOptionsTab<T extends Options>
+	extends FormPane<T>
 	implements JpaPageComposite
 {
 	// ********** constructors/initialization **********
 	public PersistenceXmlOptionsTab(
-				PropertyValueModel<Options> subjectHolder, 
+				PropertyValueModel<T> subjectHolder, 
 				Composite parent, 
 				WidgetFactory widgetFactory) {
-		
+
 		super(subjectHolder, parent, widgetFactory);
 	}
 

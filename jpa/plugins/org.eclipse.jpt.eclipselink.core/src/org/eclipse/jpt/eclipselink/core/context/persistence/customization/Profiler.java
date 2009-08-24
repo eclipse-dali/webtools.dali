@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization;
+package org.eclipse.jpt.eclipselink.core.context.persistence.customization;
 
 /**
  *  Profiler

@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customizat
 
 import java.io.Serializable;
 
+import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 

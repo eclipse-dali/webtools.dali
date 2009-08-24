@@ -13,8 +13,9 @@ import com.ibm.icu.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetServer;
+
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.TargetServer;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;

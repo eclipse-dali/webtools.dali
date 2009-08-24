@@ -10,12 +10,13 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.DdlGenerationType;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;

@@ -7,18 +7,18 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching;
+package org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation;
 
 /**
- *  FlushClearCache
+ *  OutputMode
  */
-public enum FlushClearCache {
-	drop,
-	drop_invalidate,
-	merge; 
+public enum OutputMode {
+	both, 
+	sql_script, 
+	database;
 
 	// EclipseLink value string
-	public static final String DROP = "Drop";
-	public static final String DROP_INVALIDATE = "DropInvalidate";
-	public static final String MERGE = "Merge";
+	public static final String BOTH = "both";
+	public static final String DATABASE = "database";
+	public static final String SQL_SCRIPT = "sql-script";
 }

@@ -13,11 +13,11 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Profiler;
+import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Profiler;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;

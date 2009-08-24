@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.general;
 import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 
 /**

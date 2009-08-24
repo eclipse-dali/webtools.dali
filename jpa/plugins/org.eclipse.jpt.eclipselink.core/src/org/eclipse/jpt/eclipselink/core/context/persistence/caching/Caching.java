@@ -7,11 +7,12 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching;
+package org.eclipse.jpt.eclipselink.core.context.persistence.caching;
 
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 
 /**
  *  Caching

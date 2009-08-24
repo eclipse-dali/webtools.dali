@@ -10,7 +10,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.caching;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+
+import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;

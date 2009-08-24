@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.widgets.Pane;

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FolderChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;

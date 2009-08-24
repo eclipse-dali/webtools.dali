@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.options;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;

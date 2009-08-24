@@ -11,9 +11,9 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.opti
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetDatabase;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetServer;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.TargetDatabase;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.TargetServer;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 

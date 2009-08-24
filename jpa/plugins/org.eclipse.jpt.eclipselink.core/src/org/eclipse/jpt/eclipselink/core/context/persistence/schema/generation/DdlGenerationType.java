@@ -7,18 +7,18 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization;
+package org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation;
 
 /**
- *  Weaving
+ *  DdlGenerationType
  */
-public enum Weaving {
-	true_,
-	false_, 
-	static_;
-
+public enum DdlGenerationType {
+	none, 
+	create_tables, 
+	drop_and_create_tables;
+	
 	// EclipseLink value string
-	public static final String TRUE_ = "true";
-	public static final String FALSE_ = "false";
-	public static final String STATIC_ = "static";
+	public static final String NONE = "none";
+	public static final String CREATE_TABLES = "create-tables";
+	public static final String DROP_AND_CREATE_TABLES = "drop-and-create-tables";
 }

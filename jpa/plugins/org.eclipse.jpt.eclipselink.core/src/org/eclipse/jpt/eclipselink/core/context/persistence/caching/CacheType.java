@@ -7,18 +7,24 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation;
+package org.eclipse.jpt.eclipselink.core.context.persistence.caching;
 
 /**
- *  OutputMode
+ *  CacheType
  */
-public enum OutputMode {
-	both, 
-	sql_script, 
-	database;
+public enum CacheType {
+	soft_weak, 
+	hard_weak, 
+	weak,
+	soft,
+	full,
+	none; 
 
 	// EclipseLink value string
-	public static final String BOTH = "both";
-	public static final String DATABASE = "database";
-	public static final String SQL_SCRIPT = "sql-script";
+	public static final String FULL = "Full";
+	public static final String HARD_WEAK = "HardWeak";
+	public static final String NONE = "NONE";
+	public static final String SOFT = "Soft";
+	public static final String SOFT_WEAK = "SoftWeak";
+	public static final String WEAK = "Weak";
 }

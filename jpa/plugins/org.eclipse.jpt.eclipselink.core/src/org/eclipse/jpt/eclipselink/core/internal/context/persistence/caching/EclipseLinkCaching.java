@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.context.persistence.caching.CacheType;
+import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.context.persistence.caching.FlushClearCache;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 

@@ -11,6 +11,9 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.gen
 
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.DdlGenerationType;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 
 /**

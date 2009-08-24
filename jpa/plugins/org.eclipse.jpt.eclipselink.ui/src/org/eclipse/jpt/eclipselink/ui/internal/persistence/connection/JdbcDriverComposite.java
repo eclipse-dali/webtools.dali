@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;

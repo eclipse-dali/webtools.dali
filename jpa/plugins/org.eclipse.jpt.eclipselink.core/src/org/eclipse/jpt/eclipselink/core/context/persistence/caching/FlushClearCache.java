@@ -7,24 +7,18 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching;
+package org.eclipse.jpt.eclipselink.core.context.persistence.caching;
 
 /**
- *  CacheType
+ *  FlushClearCache
  */
-public enum CacheType {
-	soft_weak, 
-	hard_weak, 
-	weak,
-	soft,
-	full,
-	none; 
+public enum FlushClearCache {
+	drop,
+	drop_invalidate,
+	merge; 
 
 	// EclipseLink value string
-	public static final String FULL = "Full";
-	public static final String HARD_WEAK = "HardWeak";
-	public static final String NONE = "NONE";
-	public static final String SOFT = "Soft";
-	public static final String SOFT_WEAK = "SoftWeak";
-	public static final String WEAK = "Weak";
+	public static final String DROP = "Drop";
+	public static final String DROP_INVALIDATE = "DropInvalidate";
+	public static final String MERGE = "Merge";
 }

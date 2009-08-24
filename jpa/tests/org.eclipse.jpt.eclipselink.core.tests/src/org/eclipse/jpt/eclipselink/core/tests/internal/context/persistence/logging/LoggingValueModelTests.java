@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.logging;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
+import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
