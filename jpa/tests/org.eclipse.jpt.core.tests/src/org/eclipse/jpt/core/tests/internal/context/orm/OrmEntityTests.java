@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
@@ -1825,6 +1826,29 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.getTable().setSpecifiedName("BAR");
 		assertEquals("foo", attributeOverride.getColumn().getDefaultName());
 		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
+	}
+	
+	public void testAttributeOverrideColumnDefaultsNoJavaAnnotations() throws Exception {
+		createTestType();
+		createTestSubTypeUnmapped();
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();	
+		OrmAttributeOverride attributeOverride = entity.virtualAttributeOverrides().next();
+		((OrmPersistentAttribute) persistentType.getParentPersistentType().getAttributeNamed("id")).makeSpecified();
+		BasicMapping basicMapping = (BasicMapping) persistentType.getParentPersistentType().getAttributeNamed("id").getSpecifiedMapping();
+		basicMapping.getColumn().setSpecifiedName("MY_COLUMN");
+		basicMapping.getColumn().setSpecifiedTable("BAR");
+		
+		assertEquals("MY_COLUMN", attributeOverride.getColumn().getDefaultName());
+		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
+
+	
+		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		attributeOverride = entity.virtualAttributeOverrides().next();
+		assertEquals("MY_COLUMN", attributeOverride.getColumn().getName());
+		assertEquals("BAR", attributeOverride.getColumn().getTable());
 	}
 	
 	public void testOverridableAttributes() throws Exception {

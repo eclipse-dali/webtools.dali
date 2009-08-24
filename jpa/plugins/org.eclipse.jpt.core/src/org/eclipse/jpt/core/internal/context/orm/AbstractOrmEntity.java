@@ -1521,7 +1521,7 @@ public abstract class AbstractOrmEntity
 		XmlColumn xmlColumn;
 		if (javaAttributeOverride == null) {
 			ColumnMapping columnMapping = (ColumnMapping) persistentAttribute.getMapping();
-			xmlColumn = new VirtualXmlColumn(this, columnMapping.getColumn());		
+			xmlColumn = new VirtualXmlAttributeOverrideColumn(columnMapping.getColumn());
 		}
 		else {
 			xmlColumn = new VirtualXmlColumn(this, javaAttributeOverride.getColumn());
