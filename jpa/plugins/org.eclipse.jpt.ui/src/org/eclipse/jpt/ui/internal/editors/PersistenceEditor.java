@@ -416,7 +416,6 @@ public class PersistenceEditor extends FormEditor
 
 			if (helpID != null) {
 				Action helpAction = new HelpAction(helpID);
-
 				ScrolledForm form = getManagedForm().getForm();
 				IToolBarManager manager = form.getToolBarManager();
 				manager.add(helpAction);
@@ -438,7 +437,7 @@ public class PersistenceEditor extends FormEditor
 			public void run() {
 				BusyIndicator.showWhile(getManagedForm().getForm().getDisplay(), new Runnable() {
 					public void run() {
-						PlatformUI.getWorkbench().getHelpSystem().displayHelpResource(helpID);
+						PlatformUI.getWorkbench().getHelpSystem().displayHelp(helpID);
 					}
 				});
 			}
