@@ -22,21 +22,21 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFile
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.context.persistence.general.GeneralProperties;
+import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -56,7 +56,7 @@ public class EclipseLinkPersistenceUnit
 	private Customization customization;
 	private Caching caching;
 	private Logging logging;
-	private Options options;
+	protected Options options;
 	private SchemaGeneration schemaGeneration;
 
 	/* global converter definitions, defined elsewhere in model */
@@ -71,13 +71,13 @@ public class EclipseLinkPersistenceUnit
 	protected void initializeProperties() {
 		super.initializeProperties();
 
-		this.generalProperties = new EclipseLinkGeneralProperties(this);
-		this.connection = new EclipseLinkConnection(this);
-		this.customization = new EclipseLinkCustomization(this);
-		this.caching = new EclipseLinkCaching(this);
-		this.logging = new EclipseLinkLogging(this);
-		this.options = new EclipseLinkOptions(this);
-		this.schemaGeneration = new EclipseLinkSchemaGeneration(this);
+		this.generalProperties = this.buildEclipseLinkGeneralProperties();
+		this.connection = this.buildEclipseLinkConnection();
+		this.customization = this.buildEclipseLinkCustomization();
+		this.caching = this.buildEclipseLinkCaching();
+		this.logging = this.buildEclipseLinkLogging();
+		this.options = this.buildEclipseLinkOptions();
+		this.schemaGeneration = this.buildEclipseLinkSchemaGeneration();
 	}
 
 	@Override
@@ -163,6 +163,37 @@ public class EclipseLinkPersistenceUnit
 		firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
 	}
 
+
+	// **************** factory methods *********************************************
+	
+	protected EclipseLinkGeneralProperties buildEclipseLinkGeneralProperties() {
+		return new EclipseLinkGeneralProperties(this);
+	}
+	
+	protected EclipseLinkConnection buildEclipseLinkConnection() {
+		return new EclipseLinkConnection(this);
+	}
+	
+	protected EclipseLinkCustomization buildEclipseLinkCustomization() {
+		return new EclipseLinkCustomization(this);
+	}
+	
+	protected EclipseLinkCaching buildEclipseLinkCaching() {
+		return new EclipseLinkCaching(this);
+	}
+	
+	protected EclipseLinkLogging buildEclipseLinkLogging() {
+		return new EclipseLinkLogging(this);
+	}
+	
+	protected EclipseLinkOptions buildEclipseLinkOptions() {
+		return new EclipseLinkOptions(this);
+	}
+	
+	protected EclipseLinkSchemaGeneration buildEclipseLinkSchemaGeneration() {
+		return new EclipseLinkSchemaGeneration(this);
+	}
+	
 
 	// **************** properties *********************************************
 

@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
@@ -22,14 +23,14 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
+import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
+import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.JavaEclipseLinkEmbeddableComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.JavaEclipseLinkMappedSuperclassComposite;
@@ -94,10 +95,8 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			this.buildLoggingHolder(eclipseLinkPersistenceUnitHolder);
 		pages.add(new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory));
 
-		PropertyValueModel<Options> optionsHolder = 
-			this.buildOptionsHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlOptionsTab(optionsHolder, parent, widgetFactory));
-		
+		pages.add(this.buildOptionsTab(subjectHolder, parent, widgetFactory));
+
 		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
 			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
 		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
@@ -105,6 +104,15 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
 		
 		return pages.listIterator();
+	}
+	
+	protected PersistenceXmlOptionsTab buildOptionsTab(
+				PropertyValueModel<PersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Options> optionsHolder = this.buildOptionsHolder(subjectHolder);
+
+		return new PersistenceXmlOptionsTab(optionsHolder, parent, widgetFactory);
 	}
 	
 	private PropertyValueModel<EclipseLinkPersistenceUnit> buildEclipseLinkPersistenceUnitHolder(
@@ -158,11 +166,12 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 	}
 	
 	private PropertyValueModel<Options> buildOptionsHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Options>(subjectHolder) {
+				PropertyValueModel<PersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Options>(subjectHolder) {
 			@Override
-			protected Options transform_(EclipseLinkPersistenceUnit value) {
-				return value.getOptions();
+			protected Options transform_(PersistenceUnit value) {
+
+				return ((EclipseLinkPersistenceUnit)value).getOptions();
 			}
 		};
 	}
