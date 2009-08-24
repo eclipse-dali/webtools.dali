@@ -438,7 +438,7 @@ public class PersistenceEditor extends FormEditor
 			public void run() {
 				BusyIndicator.showWhile(getManagedForm().getForm().getDisplay(), new Runnable() {
 					public void run() {
-						PlatformUI.getWorkbench().getHelpSystem().displayHelpResource(helpID);
+						PlatformUI.getWorkbench().getHelpSystem().displayHelp(helpID);
 					}
 				});
 			}
