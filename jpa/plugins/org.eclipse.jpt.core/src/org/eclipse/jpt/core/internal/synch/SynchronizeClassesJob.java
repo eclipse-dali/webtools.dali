@@ -15,6 +15,10 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -28,6 +32,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * Synchronizes the lists of persistent classes in a persistence unit and a 
@@ -85,7 +90,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 					
 					monitor.worked(25);
 			
-					for (Iterator<String> stream = jpaProject.annotatedClassNames(); stream.hasNext(); ) {
+					for (Iterator<String> stream = annotatedClassNames(jpaProject, '$'); stream.hasNext(); ) {
 						String fullyQualifiedTypeName = stream.next();
 						if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
 							XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
@@ -103,6 +108,28 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		return Status.OK_STATUS;
 	}
 	
+	protected Iterator<String> annotatedClassNames(final JpaProject jpaProject, final char enclosingTypeSeparator) {
+		return new TransformationIterator<String, String>(jpaProject.annotatedClassNames()) {
+			@Override
+			protected String transform(String fullyQualifiedName) {
+				IType jdtType = SynchronizeClassesJob.this.findType(jpaProject, fullyQualifiedName);
+				return jdtType.getFullyQualifiedName(enclosingTypeSeparator);
+			}
+		};
+	}
+	
+	protected IType findType(JpaProject jpaProject, String typeName) {
+		try {
+			return getJavaProject(jpaProject).findType(typeName);
+		} catch (JavaModelException ex) {
+			return null;  // ignore exception?
+		}
+	}
+
+	public IJavaProject getJavaProject(JpaProject jpaProject) {
+		return JavaCore.create(jpaProject.getProject());
+	}
+
 	boolean mappingFileContains(JpaProject jpaProject, String fullyQualifiedTypeName) {
 		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
 		if (persistenceXml == null) {
