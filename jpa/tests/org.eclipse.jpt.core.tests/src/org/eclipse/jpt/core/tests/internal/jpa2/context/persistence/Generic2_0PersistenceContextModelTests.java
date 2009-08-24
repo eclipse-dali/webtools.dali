@@ -20,8 +20,8 @@ public class Generic2_0PersistenceContextModelTests extends TestCase
 {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(GenericConnection2_0Tests.class.getName());
-		suite.addTestSuite(GenericOptions2_0Tests.class);
+		TestSuite suite = new TestSuite(Generic2_0ConnectionTests.class.getName());
+		suite.addTestSuite(Generic2_0OptionsTests.class);
 		return suite;
 	}
 

@@ -23,14 +23,14 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 /**
  *  GenericPersistenceUnit2_0Tests
  */
-public abstract class GenericPersistenceUnit2_0Tests extends PersistenceUnitTestCase
+public abstract class Generic2_0PersistenceUnitTests extends PersistenceUnitTestCase
 {
 	protected PersistenceUnit2_0 subject;
 
 	protected PropertyValueModel<PersistenceUnit2_0> subjectHolder;
 
 	// ********** constructors **********
-	protected GenericPersistenceUnit2_0Tests(String name) {
+	protected Generic2_0PersistenceUnitTests(String name) {
 		super(name);
 	}
 

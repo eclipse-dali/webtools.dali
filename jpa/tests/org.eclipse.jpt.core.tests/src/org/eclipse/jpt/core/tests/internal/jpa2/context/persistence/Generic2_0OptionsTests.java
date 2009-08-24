@@ -17,7 +17,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
  *  GenericOptions2_0Tests
  */
 @SuppressWarnings("nls")
-public class GenericOptions2_0Tests extends GenericPersistenceUnit2_0Tests
+public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 {
 	private JpaOptions2_0 options;
 
@@ -42,7 +42,7 @@ public class GenericOptions2_0Tests extends GenericPersistenceUnit2_0Tests
 	public static final String VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE_2 = "test_2_pre-remove_group";
 
 	// ********** constructors **********
-	public GenericOptions2_0Tests(String name) {
+	public Generic2_0OptionsTests(String name) {
 		super(name);
 	}
 

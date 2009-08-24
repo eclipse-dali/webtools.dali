@@ -17,7 +17,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
  *  GenericConnection2_0Tests
  */
 @SuppressWarnings("nls")
-public class GenericConnection2_0Tests extends GenericPersistenceUnit2_0Tests
+public class Generic2_0ConnectionTests extends Generic2_0PersistenceUnitTests
 {
 	private JpaConnection2_0 connection;
 
@@ -38,7 +38,7 @@ public class GenericConnection2_0Tests extends GenericPersistenceUnit2_0Tests
 	public static final String PASSWORD_TEST_VALUE_2 = "test_2";
 
 	// ********** constructors **********
-	public GenericConnection2_0Tests(String name) {
+	public Generic2_0ConnectionTests(String name) {
 		super(name);
 	}
 
