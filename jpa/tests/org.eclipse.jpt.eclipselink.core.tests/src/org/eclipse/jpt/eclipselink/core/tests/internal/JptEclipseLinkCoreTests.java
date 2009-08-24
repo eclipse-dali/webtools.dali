@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.JptEclipseLinkCoreContextModelTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.resource.JptEclipselinkCoreResourceModelTests;
 import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.JptEclipseLink1_1CoreContextModelTests;
+import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.JptEclipseLink2_0CoreContextModelTests;
 
 /**
  * decentralize test creation code
@@ -37,6 +38,7 @@ public class JptEclipseLinkCoreTests
 			suite.addTest(JptEclipselinkCoreResourceModelTests.suite());
 			suite.addTest(JptEclipseLinkCoreContextModelTests.suite());
 			suite.addTest(JptEclipseLink1_1CoreContextModelTests.suite());
+			suite.addTest(JptEclipseLink2_0CoreContextModelTests.suite());
 		}
 		else {
 			suite.addTest(TestSuite.warning(buildMissingJarErrorMessage()));
