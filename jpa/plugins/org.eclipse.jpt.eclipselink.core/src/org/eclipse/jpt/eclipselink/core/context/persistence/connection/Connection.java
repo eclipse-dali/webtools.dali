@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- *******************************************************************************/
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+*******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.persistence.connection;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
  */
 public interface Connection extends PersistenceUnitProperties
 {
-
 	Boolean getDefaultNativeSql();
 	Boolean getNativeSql();
 	void setNativeSql(Boolean newNativeSql);
@@ -32,7 +31,7 @@ public interface Connection extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_BATCH_WRITING = "eclipselink.jdbc.batch-writing"; //$NON-NLS-1$
 		static final BatchWriting DEFAULT_BATCH_WRITING = BatchWriting.none;
-		
+
 	Boolean getDefaultCacheStatements();
 	Boolean getCacheStatements();
 	void setCacheStatements(Boolean newCacheStatements);
@@ -40,7 +39,7 @@ public interface Connection extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_CACHE_STATEMENTS = "eclipselink.jdbc.cache-statements"; //$NON-NLS-1$
 		static final Boolean DEFAULT_CACHE_STATEMENTS = Boolean.FALSE;
-		
+
 	Integer getDefaultCacheStatementsSize();
 	Integer getCacheStatementsSize();
 	void setCacheStatementsSize(Integer newCacheStatementsSize);
@@ -48,37 +47,41 @@ public interface Connection extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_CACHE_STATEMENTS_SIZE = "eclipselink.jdbc.cache-statements.size"; //$NON-NLS-1$
 		static final Integer DEFAULT_CACHE_STATEMENTS_SIZE = Integer.valueOf(50);
-		
+
 	String getDefaultDriver();
 	String getDriver();
 	void setDriver(String newDriver);
 		static final String DRIVER_PROPERTY = "driver"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_DRIVER = "eclipselink.jdbc.driver"; //$NON-NLS-1$
+		static final String ECLIPSELINK2_0_DRIVER = "javax.persistence.jdbc.driver"; //$NON-NLS-1$
 		static final String DEFAULT_DRIVER = ""; //$NON-NLS-1$
-		
+
 	String getDefaultUrl();
 	String getUrl();
 	void setUrl(String newUrl);
 		static final String URL_PROPERTY = "url"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_URL = "eclipselink.jdbc.url"; //$NON-NLS-1$
+		static final String ECLIPSELINK2_0_URL = "javax.persistence.jdbc.url"; //$NON-NLS-1$
 		static final String DEFAULT_URL = ""; //$NON-NLS-1$
-		
+
 	String getDefaultUser();
 	String getUser();
 	void setUser(String newUser);
 		static final String USER_PROPERTY = "user"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_USER = "eclipselink.jdbc.user"; //$NON-NLS-1$
+		static final String ECLIPSELINK2_0_USER = "javax.persistence.jdbc.user"; //$NON-NLS-1$
 		static final String DEFAULT_USER = ""; //$NON-NLS-1$
-		
+
 	String getDefaultPassword();
 	String getPassword();
 	void setPassword(String newPassword);
 		static final String PASSWORD_PROPERTY = "password"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_PASSWORD = "eclipselink.jdbc.password"; //$NON-NLS-1$
+		static final String ECLIPSELINK2_0_PASSWORD = "javax.persistence.jdbc.password"; //$NON-NLS-1$
 		static final String DEFAULT_PASSWORD = ""; //$NON-NLS-1$
 
 	Boolean getDefaultBindParameters();
@@ -88,7 +91,7 @@ public interface Connection extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_BIND_PARAMETERS = "eclipselink.jdbc.bind-parameters"; //$NON-NLS-1$
 		static final Boolean DEFAULT_BIND_PARAMETERS = Boolean.TRUE;
-		
+
 	Boolean getDefaultReadConnectionsShared();
 	Boolean getReadConnectionsShared();
 	void setReadConnectionsShared(Boolean newReadConnectionsShared);

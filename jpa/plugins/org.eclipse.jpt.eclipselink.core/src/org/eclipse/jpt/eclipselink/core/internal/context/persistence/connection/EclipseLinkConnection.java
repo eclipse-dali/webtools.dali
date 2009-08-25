@@ -1,16 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- *******************************************************************************/
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+*******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection;
 
 import java.util.Map;
-
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
@@ -51,7 +50,6 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	 */
 	@Override
 	protected void initializeProperties() {
-		// TOREVIEW - handle incorrect String in persistence.xml
 		this.batchWriting = 
 			this.getEnumValue(ECLIPSELINK_BATCH_WRITING, BatchWriting.values());
 		this.nativeSql = 
@@ -61,13 +59,13 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.cacheStatementsSize = 
 			this.getIntegerValue(ECLIPSELINK_CACHE_STATEMENTS_SIZE);
 		this.driver = 
-			this.getStringValue(ECLIPSELINK_DRIVER);
+			this.getStringValue(ECLIPSELINK2_0_DRIVER);
 		this.url = 
-			this.getStringValue(ECLIPSELINK_URL);
+			this.getStringValue(ECLIPSELINK2_0_URL);
 		this.user = 
-			this.getStringValue(ECLIPSELINK_USER);
+			this.getStringValue(ECLIPSELINK2_0_USER);
 		this.password = 
-			this.getStringValue(ECLIPSELINK_PASSWORD);
+			this.getStringValue(ECLIPSELINK2_0_PASSWORD);
 		this.bindParameters = 
 			this.getBooleanValue(ECLIPSELINK_BIND_PARAMETERS);
 		this.readConnectionsShared = 
@@ -82,6 +80,34 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 			this.getIntegerValue(ECLIPSELINK_WRITE_CONNECTIONS_MAX);
 		
 	}
+	
+	@Override
+	protected void postInitializeProperties() {
+		super.postInitializeProperties();
+
+		// Initialize Properties from legacy properties names if not initialized.
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_DRIVER)) {
+			if(this.driver == null) {
+				this.driver = this.getStringValue(ECLIPSELINK_DRIVER);
+			}
+		}
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_URL)) {
+			if(this.url == null) {
+				this.url = this.getStringValue(ECLIPSELINK_URL);
+			}
+		}
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_USER)) {
+			if(this.user == null) {
+				this.user = this.getStringValue(ECLIPSELINK_USER);
+			}
+		}
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_PASSWORD)) {
+			if(this.password == null) {
+				this.password = this.getStringValue(ECLIPSELINK_PASSWORD);
+			}
+		}
+	}
+	
 
 	// ********** behavior **********
 	
@@ -95,16 +121,16 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		else if (propertyName.equals(ECLIPSELINK_CACHE_STATEMENTS)) {
 			this.cacheStatementsChanged(newValue);
 		}
-		else if (propertyName.equals(ECLIPSELINK_DRIVER)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_DRIVER)) {
 			this.driverChanged(newValue);
 		}
-		else if (propertyName.equals(ECLIPSELINK_URL)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_URL)) {
 			this.urlChanged(newValue);
 		}
-		else if (propertyName.equals(ECLIPSELINK_USER)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_USER)) {
 			this.userChanged(newValue);
 		}
-		else if (propertyName.equals(ECLIPSELINK_PASSWORD)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_PASSWORD)) {
 			this.passwordChanged(newValue);
 		}
 		else if (propertyName.equals(ECLIPSELINK_BIND_PARAMETERS)) {
@@ -140,16 +166,16 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		else if (propertyName.equals(ECLIPSELINK_CACHE_STATEMENTS)) {
 			this.cacheStatementsChanged(null);
 		}
-		else if (propertyName.equals(ECLIPSELINK_DRIVER)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_DRIVER)) {
 			this.driverChanged(null);
 		}
-		else if (propertyName.equals(ECLIPSELINK_URL)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_URL)) {
 			this.urlChanged(null);
 		}
-		else if (propertyName.equals(ECLIPSELINK_USER)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_USER)) {
 			this.userChanged(null);
 		}
-		else if (propertyName.equals(ECLIPSELINK_PASSWORD)) {
+		else if (propertyName.equals(ECLIPSELINK2_0_PASSWORD)) {
 			this.passwordChanged(null);
 		}
 		else if (propertyName.equals(ECLIPSELINK_BIND_PARAMETERS)) {
@@ -195,16 +221,16 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 			ECLIPSELINK_CACHE_STATEMENTS_SIZE,
 			CACHE_STATEMENTS_SIZE_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK_DRIVER,
+			ECLIPSELINK2_0_DRIVER,
 			DRIVER_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK_URL,
+			ECLIPSELINK2_0_URL,
 			URL_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK_USER,
+			ECLIPSELINK2_0_USER,
 			USER_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK_PASSWORD,
+			ECLIPSELINK2_0_PASSWORD,
 			PASSWORD_PROPERTY);
 		propertyNames.put(
 			ECLIPSELINK_BIND_PARAMETERS,
@@ -225,6 +251,28 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 			ECLIPSELINK_WRITE_CONNECTIONS_MAX,
 			WRITE_CONNECTIONS_MAX_PROPERTY);
 	}
+	
+	/**
+	 * Migrate properties names to EclipseLink 2.0 names.
+	 */
+	private void migrateProperties() {
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_DRIVER)) {
+			this.getPersistenceUnit().removeProperty(ECLIPSELINK_DRIVER);
+			this.getPersistenceUnit().setProperty(ECLIPSELINK2_0_DRIVER, this.driver);
+		}
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_URL)) {
+			this.getPersistenceUnit().removeProperty(ECLIPSELINK_URL);
+			this.getPersistenceUnit().setProperty(ECLIPSELINK2_0_URL, this.url);
+		}
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_USER)) {
+			this.getPersistenceUnit().removeProperty(ECLIPSELINK_USER);
+			this.getPersistenceUnit().setProperty(ECLIPSELINK2_0_USER, this.user);
+		}
+		if(this.persistenceUnitKeyExists(ECLIPSELINK_PASSWORD)) {
+			this.getPersistenceUnit().removeProperty(ECLIPSELINK_PASSWORD);
+			this.getPersistenceUnit().setProperty(ECLIPSELINK2_0_PASSWORD, this.password);
+		}
+	}
 
 	// ********** NativeSql **********
 	public Boolean getNativeSql() {
@@ -232,6 +280,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setNativeSql(Boolean newNativeSql) {
+		this.migrateProperties();
+
 		Boolean old = this.nativeSql;
 		this.nativeSql = newNativeSql;
 		this.putProperty(NATIVE_SQL_PROPERTY, newNativeSql);
@@ -257,6 +307,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 	
 	public void setBatchWriting(BatchWriting newBatchWriting) {
+		this.migrateProperties();
+
 		BatchWriting old = this.batchWriting;
 		this.batchWriting = newBatchWriting;
 		this.putProperty(BATCH_WRITING_PROPERTY, newBatchWriting);
@@ -280,6 +332,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setCacheStatements(Boolean newCacheStatements) {
+		this.migrateProperties();
+
 		Boolean old = this.cacheStatements;
 		this.cacheStatements = newCacheStatements;
 		this.putProperty(CACHE_STATEMENTS_PROPERTY, newCacheStatements);
@@ -304,6 +358,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setCacheStatementsSize(Integer newCacheStatementsSize) {
+		this.migrateProperties();
+
 		Integer old = this.cacheStatementsSize;
 		this.cacheStatementsSize = newCacheStatementsSize;
 		this.putProperty(CACHE_STATEMENTS_SIZE_PROPERTY, newCacheStatementsSize);
@@ -328,6 +384,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setDriver(String newDriver) {
+		this.migrateProperties();
+
 		String old = this.driver;
 		this.driver = newDriver;
 		this.putProperty(DRIVER_PROPERTY, newDriver);
@@ -350,6 +408,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setUrl(String newUrl) {
+		this.migrateProperties();
+
 		String old = this.url;
 		this.url = newUrl;
 		this.putProperty(URL_PROPERTY, newUrl);
@@ -372,6 +432,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setUser(String newUser) {
+		this.migrateProperties();
+
 		String old = this.user;
 		this.user = newUser;
 		this.putProperty(USER_PROPERTY, newUser);
@@ -394,6 +456,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setPassword(String newPassword) {
+		this.migrateProperties();
+
 		String old = this.password;
 		this.password = newPassword;
 		this.putProperty(PASSWORD_PROPERTY, newPassword);
@@ -416,6 +480,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setBindParameters(Boolean newBindParameters) {
+		this.migrateProperties();
+
 		Boolean old = this.bindParameters;
 		this.bindParameters = newBindParameters;
 		this.putProperty(BIND_PARAMETERS_PROPERTY, newBindParameters);
@@ -440,6 +506,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setReadConnectionsShared(Boolean newReadConnectionsShared) {
+		this.migrateProperties();
+
 		Boolean old = this.readConnectionsShared;
 		this.readConnectionsShared = newReadConnectionsShared;
 		this.putProperty(READ_CONNECTIONS_SHARED_PROPERTY, newReadConnectionsShared);
@@ -464,6 +532,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setReadConnectionsMin(Integer newReadConnectionsMin) {
+		this.migrateProperties();
+
 		Integer old = this.readConnectionsMin;
 		this.readConnectionsMin = newReadConnectionsMin;
 		this.putProperty(READ_CONNECTIONS_MIN_PROPERTY, newReadConnectionsMin);
@@ -488,6 +558,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setReadConnectionsMax(Integer newReadConnectionsMax) {
+		this.migrateProperties();
+
 		Integer old = this.readConnectionsMax;
 		this.readConnectionsMax = newReadConnectionsMax;
 		this.putProperty(READ_CONNECTIONS_MAX_PROPERTY, newReadConnectionsMax);
@@ -512,6 +584,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setWriteConnectionsMin(Integer newWriteConnectionsMin) {
+		this.migrateProperties();
+
 		Integer old = this.writeConnectionsMin;
 		this.writeConnectionsMin = newWriteConnectionsMin;
 		this.putProperty(WRITE_CONNECTIONS_MIN_PROPERTY, newWriteConnectionsMin);
@@ -536,6 +610,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setWriteConnectionsMax(Integer newWriteConnectionsMax) {
+		this.migrateProperties();
+
 		Integer old = this.writeConnectionsMax;
 		this.writeConnectionsMax = newWriteConnectionsMax;
 		this.putProperty(WRITE_CONNECTIONS_MAX_PROPERTY, newWriteConnectionsMax);
