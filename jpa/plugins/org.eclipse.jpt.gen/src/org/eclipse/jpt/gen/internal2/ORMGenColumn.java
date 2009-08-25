@@ -151,6 +151,10 @@ public class ORMGenColumn
 		if( type.startsWith(JAVA_LANG_PACKAGE) ) {
 			type = type.substring( JAVA_LANG_PACKAGE.length() );
 		}
+		if( type.equals("java.sql.Date")){
+			type = "java.util.Date";
+		}
+			
 		return type;
 	}
 	
