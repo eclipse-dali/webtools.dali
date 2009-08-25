@@ -30,15 +30,23 @@
 #foreach ($column in $role.referrerColumns)
 #set ($referencedColumn = $role.getReferencedColumn(${column.name}))
 ##$referencedColumn is the column in the join table
-			#joinColumn($referencedColumn $column),
+			#joinColumn($referencedColumn $column)
+#if ($velocityCount < $role.referrerColumns.size() )
+,
+#end			
 #end
+
 			}
 		, inverseJoinColumns={
 #foreach ($column in $role.referencedColumns)
 #set ($referencedColumn = $role.getReferrerColumn(${column.name}))
 ##$referencedColumn is the column in the join table
-			#joinColumn($referencedColumn $column),
+			#joinColumn($referencedColumn $column)
+#if ($velocityCount < $role.referencedColumns.size() )
+,
+#end			
 #end
+
 			}
 		)
 #else
