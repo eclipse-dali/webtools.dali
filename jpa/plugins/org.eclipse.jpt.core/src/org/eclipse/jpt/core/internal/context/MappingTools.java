@@ -50,7 +50,11 @@ public class MappingTools {
 		if (owningTableName == null) {
 			return null;
 		}
-		Entity targetEntity = relationshipReference.getRelationshipMapping().getResolvedTargetEntity();
+		RelationshipMapping relationshipMapping = relationshipReference.getRelationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return null;
 		}
