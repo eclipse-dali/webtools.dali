@@ -138,6 +138,17 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		};
 	}
 	
+	/**
+	 * Verify if the property exists in the pesistence.xml
+	 */
+	protected boolean propertyExists(String puPropertyName) {
+		return this.getPersistenceUnit().getProperty(puPropertyName) != null;
+	}
+
+	protected boolean propertyValueEquals(String puPropertyName, String propertyValue) {
+		return this.getPersistenceUnit().getProperty(puPropertyName).getValue().equals(propertyValue);
+	}
+	
 	// ****** verify PersistenceUnit properties *******
 	/**
 	 * Performs three value tests:<br>
@@ -149,7 +160,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertEquals(expectedValue, subjectValue);
 		assertEquals(expectedValue, aa.getValue());
 		if (expectedValue != null) {
-			assertEquals(expectedValue.toString(), this.getPersistenceUnit().getProperty(persistenceXmlKey).getValue());
+			assertTrue("PersistenceUnit property value not equals", this.propertyValueEquals(persistenceXmlKey, expectedValue.toString()));
 		}
 	}
 
@@ -163,7 +174,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertEquals(expectedValue, subjectValue);
 		assertEquals(expectedValue, aa.getValue());
 		if (expectedValue != null) {
-			assertEquals(this.getPropertyStringValueOf(expectedValue), this.getPersistenceUnit().getProperty(puKey).getValue());
+			assertTrue("PersistenceUnit property value not equals", this.propertyValueEquals(puKey, this.getPropertyStringValueOf(expectedValue)));
 		}
 	}
 
@@ -195,7 +206,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(puKey);
 		assertTrue("model.itemIsProperty() is false: ", getModel().itemIsProperty(property));
 
-		assertEquals("PersistenceUnit not populated - populatedPu()", this.getPropertyStringValueOf(expectedValue), property.getValue());
+		assertTrue("PersistenceUnit not populated - populatedPu()", this.propertyValueEquals(puKey, this.getPropertyStringValueOf(expectedValue)));
 		String propertyName = this.getModel().propertyIdOf(property);
 		Object modelValue = this.getProperty(propertyName);
 		assertEquals(
@@ -238,7 +249,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
-		assertNotNull("persistenceUnit.properties doesn't contains: " + puKey, this.getPersistenceUnit().getProperty(puKey));
+		this.verifyPuHasProperty(puKey,  "persistenceUnit.properties doesn't contains: ");
 		this.getPersistenceUnit().removeProperty(puKey);
 		assertNull(this.getPersistenceUnit().getProperty(puKey));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
@@ -330,11 +341,11 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	}
 
 	protected void verifyPuHasProperty(String puPropertyName, String msg) {
-		assertNotNull(msg + " - " + puPropertyName, this.getPersistenceUnit().getProperty(puPropertyName));
+		assertTrue(msg + " - " + puPropertyName, this.propertyExists(puPropertyName));
 	}
 
 	protected void verifyPuHasNotProperty(String puPropertyName, String msg) {
-		assertNull(msg + " - " + puPropertyName, this.getPersistenceUnit().getProperty(puPropertyName));
+		assertFalse(msg + " - " + puPropertyName, this.propertyExists(puPropertyName));
 	}
 
 }
