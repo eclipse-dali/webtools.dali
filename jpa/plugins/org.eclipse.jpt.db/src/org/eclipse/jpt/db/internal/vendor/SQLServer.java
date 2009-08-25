@@ -54,6 +54,17 @@ class SQLServer
 	}
 
 	/**
+	 * SQL Server will use the user-requested database; if that database is not
+	 * found, it will default to 'master'.
+	 */
+	@Override
+	void addDefaultCatalogIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
+		identifiers.add(database.getName());
+		identifiers.add(MASTER_CATALOG_IDENTIFIER);
+	}
+	private static final String MASTER_CATALOG_IDENTIFIER = "master";  //$NON-NLS-1$
+
+	/**
 	 * The default schema on SQL Server for any database (catalog) is 'dbo'.
 	 */
 	@Override

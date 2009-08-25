@@ -217,7 +217,8 @@ class TablesSelectorWizardPage extends WizardPage{
 					doStatusUpdate();
 					return;
 				}
-				jpaProject.setUserOverrideDefaultSchema(schema.getName());
+				// store the *identifier* in the JPA project, since it gets put in Java annotations
+				jpaProject.setUserOverrideDefaultSchema(schema.getIdentifier());
 				setSchema( schema );
 				updateTablesSelector(schema);
 				doStatusUpdate();

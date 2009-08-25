@@ -394,6 +394,8 @@ public class JpaFacetDataModelProvider
 		}
 		else if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
 			this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, this.getDefaultSchemaName());
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
 		}
 		else if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);

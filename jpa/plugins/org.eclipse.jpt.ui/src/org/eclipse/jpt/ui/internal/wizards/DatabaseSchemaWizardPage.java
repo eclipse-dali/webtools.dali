@@ -240,6 +240,10 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 			return DatabaseSchemaWizardPage.this.jpaProject.getDefaultDbSchema();
 		}
 
+		private SchemaContainer getDefaultSchemaContainer() {
+			return DatabaseSchemaWizardPage.this.jpaProject.getDefaultDbSchemaContainer();
+		}
+
 		/**
 		 * called at start-up and when the selected connection profile changes
 		 */
@@ -278,7 +282,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 		}
 
 		private Iterator<String> getSchemata() {
-			SchemaContainer sc = DatabaseSchemaWizardPage.this.jpaProject.getDefaultDbSchemaContainer();
+			SchemaContainer sc = this.getDefaultSchemaContainer();
 			return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
 		}
 
@@ -286,7 +290,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 
 		void selectedSchemaChanged() {
 			Schema old = this.selectedSchema;
-			this.selectedSchema = this.getJpaProjectConnectionProfile().getDatabase().getSchemaForIdentifier(this.schemaComboBox.getText());
+			this.selectedSchema = this.getDefaultSchemaContainer().getSchemaNamed(this.schemaComboBox.getText());
 			if (this.selectedSchema != old) {
 				DatabaseSchemaWizardPage.this.fireSchemaChanged(this.selectedSchema);
 			}
