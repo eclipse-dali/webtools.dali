@@ -45,7 +45,6 @@ public class Jpt2_0UiMessages
 	
 	public static String TransactionTypeComposite_transactionTypeLabel;
 
-	public static String TransactionTypeComposite_default;
 	public static String TransactionTypeComposite_jta;
 	public static String TransactionTypeComposite_resource_local;
 	
