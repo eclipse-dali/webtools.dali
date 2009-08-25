@@ -58,6 +58,17 @@ class Sybase
 	}
 
 	/**
+	 * Sybase will use the user-requested database; if that database is not
+	 * found, it will default to 'master'.
+	 */
+	@Override
+	void addDefaultCatalogIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
+		identifiers.add(database.getName());
+		identifiers.add(MASTER_CATALOG_IDENTIFIER);
+	}
+	private static final String MASTER_CATALOG_IDENTIFIER = "master";  //$NON-NLS-1$
+
+	/**
 	 * The typical default schema on Sybase for any database (catalog) is
 	 * 'dbo'.
 	 * 

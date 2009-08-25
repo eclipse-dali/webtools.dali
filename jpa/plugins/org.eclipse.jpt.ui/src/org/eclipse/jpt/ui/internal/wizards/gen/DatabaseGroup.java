@@ -25,9 +25,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.ImageRepository;
@@ -165,13 +165,8 @@ public class DatabaseGroup
 	 * called at start-up and when the selected connection profile changes
 	 */
 	private Schema getDefaultSchema() {
-		try{
 		return (this.selectedConnectionProfile == this.getJpaProjectConnectionProfile()) ?
 						jpaProject.getDefaultDbSchema()	: null;
-		}catch(Exception e ){
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	/**
@@ -219,12 +214,9 @@ public class DatabaseGroup
 	}
 
 	private Iterator<String> schemaNames() {
-		if (this.selectedConnectionProfile == null) {
-			return EmptyIterator.instance();
-		}
-		Database db = this.selectedConnectionProfile.getDatabase();
+		SchemaContainer sc = this.jpaProject.getDefaultDbSchemaContainer();
 		// use schema *names* since the combo-box is read-only
-		return (db != null) ? db.sortedSchemaNames() : EmptyIterator.<String>instance();
+		return (sc != null) ? sc.sortedSchemaNames() : EmptyIterator.<String>instance();
 	}
 
 	/**
@@ -273,7 +265,7 @@ public class DatabaseGroup
 
 	void selectedSchemaChanged() {
 		Schema old = this.selectedSchema;
-		this.selectedSchema = this.selectedConnectionProfile.getDatabase().getSchemaNamed(this.schemaComboBox.getText());
+		this.selectedSchema = this.jpaProject.getDefaultDbSchemaContainer().getSchemaNamed(this.schemaComboBox.getText());
 		if (this.selectedSchema != old) {
 			fireSchemaChanged(this.selectedSchema);
 		}

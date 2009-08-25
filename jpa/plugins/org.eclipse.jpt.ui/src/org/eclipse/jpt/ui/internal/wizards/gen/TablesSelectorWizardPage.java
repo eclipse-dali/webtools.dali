@@ -205,21 +205,19 @@ class TablesSelectorWizardPage extends WizardPage{
 		 */
 		class DatabasePageListener implements DatabaseGroup.Listener {
 			public void selectedConnectionProfileChanged(ConnectionProfile connectionProfile) {
-				// ignore
 				jpaProject.getDataSource().setConnectionProfileName(connectionProfile.getName());
 				JptCorePlugin.setConnectionProfileName(jpaProject.getProject(), connectionProfile.getName());
-				
 			}
 			@SuppressWarnings("unchecked")
 			public void selectedSchemaChanged(Schema schema) {
-				if( schema==null ){
+				if (schema==null) {
 					updateTablesListViewer(Collections.EMPTY_LIST );
-					doStatusUpdate();
-					return;
+				} else {
+					// store the *identifier* in the JPA project, since it gets put in Java annotations
+					jpaProject.setUserOverrideDefaultSchema(schema.getIdentifier());
+					setSchema( schema );
+					updateTablesSelector(schema);
 				}
-				jpaProject.setUserOverrideDefaultSchema(schema.getName());
-				setSchema( schema );
-				updateTablesSelector(schema);
 				doStatusUpdate();
 			}
 		}
