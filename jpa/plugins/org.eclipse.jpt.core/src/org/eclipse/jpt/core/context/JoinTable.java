@@ -25,6 +25,7 @@ public interface JoinTable
 {
 	RelationshipMapping getRelationshipMapping();
 
+	JoinTableJoiningStrategy getParent();
 
 	// ********** join columns **********
 

@@ -60,5 +60,11 @@ public interface RelationshipReference extends JpaContextNode
 	 * Return whether the mapping can be overridden with an association override
 	 */
 	boolean isOverridableAssociation();
+	
+	/**
+	 * Return whether the parent of this relationship reference is virtual
+	 * @return
+	 */
+	boolean isParentVirtual();
 
 }

@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
@@ -268,10 +269,8 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 		};
 	}
 	
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.listPane.enableWidgets(enabled);
+	protected void installJoinColumnsPaneEnabler(PropertyValueModel<Boolean> joinColumnsPaneEnablerHolder) {
+		new PaneEnabler(joinColumnsPaneEnablerHolder, this.listPane);
 	}
 	
 	public void setSelectedJoinColumn(JoinColumn joinColumn) {

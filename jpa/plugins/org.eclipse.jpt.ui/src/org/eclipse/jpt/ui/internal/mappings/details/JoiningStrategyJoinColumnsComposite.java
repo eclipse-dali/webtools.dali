@@ -16,6 +16,11 @@ import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.utility.internal.model.value.ValueListAdapter;
+import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -54,6 +59,7 @@ public class JoiningStrategyJoinColumnsComposite
 	@Override
 	protected void initializeLayout(Composite container) {		
 		this.joinColumnsComposite = new JoinColumnsComposite<JoinColumnJoiningStrategy>(this, container, buildJoinColumnsProvider());
+		this.joinColumnsComposite.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
 	}
 	
 	private JoinColumnsEditor<JoinColumnJoiningStrategy> buildJoinColumnsProvider() {
@@ -146,5 +152,85 @@ public class JoiningStrategyJoinColumnsComposite
 	
 	private void updateJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
+	}
+	
+	protected CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean> buildJoinColumnsPaneEnabledHolder() {
+		return new CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean>(
+			new ValueListAdapter<JoinColumnJoiningStrategy>(
+				new ReadOnlyWritablePropertyValueModelWrapper<JoinColumnJoiningStrategy>(getSubjectHolder()), 
+				JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST)) {
+			
+			@Override
+			protected Boolean transform(JoinColumnJoiningStrategy value) {
+				if (value == null) {
+					return Boolean.FALSE;
+				}
+				return super.transform(value);
+			}
+			
+			@Override
+			protected Boolean transform_(JoinColumnJoiningStrategy value) {
+				boolean virtual = value.getRelationshipReference().getRelationshipMapping().getPersistentAttribute().isVirtual();
+				return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
+			}
+		};
+
+	}
+	
+	
+	private class JoinColumnPaneEnablerHolder 
+		extends CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean>
+	{
+		private StateChangeListener stateChangeListener;
+		
+		
+		public JoinColumnPaneEnablerHolder() {
+			super(
+				new ValueListAdapter<JoinColumnJoiningStrategy>(
+					new ReadOnlyWritablePropertyValueModelWrapper<JoinColumnJoiningStrategy>(getSubjectHolder()), 
+					JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST));
+			this.stateChangeListener = buildStateChangeListener();
+		}
+		
+		
+		private StateChangeListener buildStateChangeListener() {
+			return new StateChangeListener() {
+				public void stateChanged(StateChangeEvent event) {
+					valueStateChanged(event);
+				}
+			};
+		}
+		
+		private void valueStateChanged(StateChangeEvent event) {
+			Object oldValue = this.cachedValue;
+			Object newValue = transformNew(this.valueHolder.getValue());
+			firePropertyChanged(VALUE, oldValue, newValue);
+		}
+		
+		@Override
+		protected Boolean transform(JoinColumnJoiningStrategy value) {
+			if (value == null) {
+				return Boolean.FALSE;
+			}
+			return super.transform(value);
+		}
+		
+		@Override
+		protected Boolean transform_(JoinColumnJoiningStrategy value) {
+			boolean virtual = value.getRelationshipReference().isParentVirtual();
+			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
+		}
+		
+		@Override
+		protected void engageModel() {
+			super.engageModel();
+			this.valueHolder.addStateChangeListener(this.stateChangeListener);
+		}
+		
+		@Override
+		protected void disengageModel() {
+			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
+			super.disengageModel();
+		}
 	}
 }

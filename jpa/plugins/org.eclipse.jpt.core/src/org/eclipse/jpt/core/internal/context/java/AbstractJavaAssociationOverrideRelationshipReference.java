@@ -62,6 +62,10 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 		return getAssociationOverride().getOwner().getTypeMapping();
 	}
 	
+	public boolean isParentVirtual() {
+		return getAssociationOverride().isVirtual();
+	}
+	
 	// **************** predominant joining strategy ***************************
 	
 	public JoiningStrategy getPredominantJoiningStrategy() {

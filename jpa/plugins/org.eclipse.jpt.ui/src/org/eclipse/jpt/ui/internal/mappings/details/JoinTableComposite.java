@@ -23,7 +23,6 @@ import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.JoinColumnsEditor;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
@@ -163,10 +162,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			null
 		);
 
-//		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(
-//			buildOverrideDefaultSelectionListener()
-//		);
-
 		this.joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,
 			joinColumnGroupPane,
@@ -189,10 +184,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			null
 		);
 
-//		this.overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(
-//			buildOverrideDefaultInverseSelectionListener()
-//		);
-
 		this.inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,
 			inverseJoinColumnGroupPane,
@@ -203,11 +194,11 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	}
 
 	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		new PaneEnabler(new InverseJoinColumnPaneEnablerHolder(), pane);
+		pane.installJoinColumnsPaneEnabler(new InverseJoinColumnPaneEnablerHolder());
 	}
 
 	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		new PaneEnabler(new JoinColumnPaneEnablerHolder(), pane);
+		pane.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
 	}
 
 	private void addInverseJoinColumn(JoinTable joinTable) {
@@ -697,7 +688,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		
 		@Override
 		protected Boolean transform_(JoinTable value) {
-			boolean virtual = value.getRelationshipMapping().getPersistentAttribute().isVirtual();
+			boolean virtual = value.getParent().getRelationshipReference().isParentVirtual();
 			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
 		}
 		
@@ -754,7 +745,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		
 		@Override
 		protected Boolean transform_(JoinTable value) {
-			boolean virtual = value.getRelationshipMapping().getPersistentAttribute().isVirtual();
+			boolean virtual = value.getParent().getRelationshipReference().isParentVirtual();
 			return Boolean.valueOf(! virtual && value.specifiedInverseJoinColumnsSize() > 0);
 		}
 		

@@ -42,6 +42,9 @@ public abstract class AbstractJavaRelationshipReference
 		return getPredominantJoiningStrategy().isOverridableAssociation();
 	}
 
+	public boolean isParentVirtual() {
+		return getRelationshipMapping().getPersistentAttribute().isVirtual();
+	}
 	
 	// **************** predominant joining strategy ***************************
 	

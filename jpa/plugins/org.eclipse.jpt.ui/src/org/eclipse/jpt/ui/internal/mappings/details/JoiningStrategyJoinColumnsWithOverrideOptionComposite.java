@@ -14,15 +14,9 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
-import org.eclipse.jpt.utility.internal.model.value.ValueListAdapter;
-import org.eclipse.jpt.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -73,8 +67,6 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		);
 		
 		this.joiningStrategyComposite = new JoiningStrategyJoinColumnsComposite(this, getSubjectHolder(), container);
-		
-		new PaneEnabler(new JoinColumnPaneEnablerHolder(), this.joiningStrategyComposite);
 	}
 
 	private void setSelectedJoinColumn(JoinColumn joinColumn) {
@@ -153,63 +145,6 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 			finally {
 				setPopulating(false);
 			}
-		}
-	}
-	
-	
-	private class JoinColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean>
-	{
-		private StateChangeListener stateChangeListener;
-		
-		
-		public JoinColumnPaneEnablerHolder() {
-			super(
-				new ValueListAdapter<JoinColumnJoiningStrategy>(
-					new ReadOnlyWritablePropertyValueModelWrapper<JoinColumnJoiningStrategy>(getSubjectHolder()), 
-					JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST));
-			this.stateChangeListener = buildStateChangeListener();
-		}
-		
-		
-		private StateChangeListener buildStateChangeListener() {
-			return new StateChangeListener() {
-				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged(event);
-				}
-			};
-		}
-		
-		private void valueStateChanged(StateChangeEvent event) {
-			Object oldValue = this.cachedValue;
-			Object newValue = transformNew(this.valueHolder.getValue());
-			firePropertyChanged(VALUE, oldValue, newValue);
-		}
-		
-		@Override
-		protected Boolean transform(JoinColumnJoiningStrategy value) {
-			if (value == null) {
-				return Boolean.FALSE;
-			}
-			return super.transform(value);
-		}
-		
-		@Override
-		protected Boolean transform_(JoinColumnJoiningStrategy value) {
-			boolean virtual = value.getRelationshipReference().getRelationshipMapping().getPersistentAttribute().isVirtual();
-			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
-		}
-		
-		@Override
-		protected void engageModel() {
-			super.engageModel();
-			this.valueHolder.addStateChangeListener(this.stateChangeListener);
-		}
-		
-		@Override
-		protected void disengageModel() {
-			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
-			super.disengageModel();
 		}
 	}
 }

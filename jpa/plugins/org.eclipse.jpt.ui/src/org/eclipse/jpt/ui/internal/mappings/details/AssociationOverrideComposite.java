@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Group;
  *
  * @see AssociationOverride
  * @see OverridesComposite - The parent container
- * @see JoinColumnsComposite
+ * @see JoinColumnJoiningStrategyPane
  *
  * @version 2.2
  * @since 1.0
@@ -77,12 +77,6 @@ public class AssociationOverrideComposite extends FormPane<AssociationOverride>
 				return value.getRelationshipReference();
 			}
 		};
-	}
-
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-//		this.joinColumnsComposite.enableWidgets(enabled);
 	}
 
 }

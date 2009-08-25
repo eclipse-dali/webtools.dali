@@ -55,6 +55,10 @@ public class GenericOrmAssociationOverrideRelationshipReference extends Abstract
 		return false;
 	}
 	
+	public boolean isParentVirtual() {
+		return getAssociationOverride().isVirtual();
+	}
+	
 	
 	// **************** join columns *******************************************
 	
