@@ -43,6 +43,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		
 		this.initializePropertyNames();
 		this.initializeProperties();
+		this.postInitializeProperties();
 	}
 
 	protected void initializePropertyNames() {
@@ -54,6 +55,13 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	 * Initializes properties with values from the persistence unit.
 	 */
 	protected abstract void initializeProperties();
+
+	/**
+     * Does all post treatment in this method after the properties are initialized
+	 */
+	protected void postInitializeProperties() {
+		// do nothing by default
+	}
 
 	// ********** behavior **********
 	public PersistenceUnit getPersistenceUnit() {
@@ -119,7 +127,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	 *            property value
 	 */
 	protected void putProperty(String key, Object value) {
-		putProperty(key, value, false);
+		this.putProperty(key, value, false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -151,6 +159,13 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		String persistenceUnitKey = this.persistenceUnitKeyOf(key);
 		
 		this.getPersistenceUnit().removeProperty(persistenceUnitKey, value);
+	}
+
+	/**
+	 * Returns true when the given key exits in the PersistenceXml.
+	 */
+	protected boolean persistenceUnitKeyExists(String persistenceUnitKey) {
+		return (this.getStringValue(persistenceUnitKey) != null);
 	}
 	
 	// ****** get/set String convenience methods *******
