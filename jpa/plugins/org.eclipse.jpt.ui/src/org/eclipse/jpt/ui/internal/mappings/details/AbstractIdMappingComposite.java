@@ -52,9 +52,9 @@ import org.eclipse.swt.widgets.Composite;
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see TemporalTypeComposite
- * @see GenerationComposite
+ * @see IdMappingGenerationComposite
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 public abstract class AbstractIdMappingComposite<T extends IdMapping>

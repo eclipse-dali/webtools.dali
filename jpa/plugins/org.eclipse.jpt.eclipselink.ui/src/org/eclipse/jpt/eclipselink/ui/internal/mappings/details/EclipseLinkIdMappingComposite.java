@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.GenerationComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.IdMappingGenerationComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TemporalTypeComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -60,9 +60,9 @@ import org.eclipse.swt.widgets.Composite;
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see TemporalTypeComposite
- * @see GenerationComposite
+ * @see IdMappingGenerationComposite
  *
- * @version 2.1
+ * @version 2.2
  * @since 2.1
  */
 public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
@@ -97,7 +97,7 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		initializeTypePane(container);
 
 		// Generation pane
-		new GenerationComposite(this, container);
+		new IdMappingGenerationComposite(this, container);
 	}
 	
 	protected void initializeGeneralPane(Composite container) {

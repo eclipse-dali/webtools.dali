@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,15 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.SequenceGenerator;
+import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.ui.internal.mappings.details.SequenceGeneratorComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.TableGeneratorComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -70,14 +75,14 @@ import org.eclipse.ui.part.PageBook;
  * @see OrmSequenceGeneratorComposite
  * @see OrmTableGeneratorComposite
  *
- * @version 2.0
+ * @version 2.2
  * @since 2.0
  */
-public class OrmGeneratorsComposite extends Pane<EntityMappings>
+public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 {
 	private WritablePropertyValueModel<OrmGenerator> generatorHolder;
-	private OrmSequenceGeneratorComposite sequenceGeneratorPane;
-	private OrmTableGeneratorComposite tableGeneratorPane;
+	private SequenceGeneratorComposite sequenceGeneratorPane;
+	private TableGeneratorComposite tableGeneratorPane;
 	private AddRemoveListPane<EntityMappings> listPane;
 
 	/**
@@ -86,7 +91,7 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmGeneratorsComposite(Pane<? extends EntityMappings> parentPane,
+	public EntityMappingsGeneratorsComposite(Pane<? extends EntityMappings> parentPane,
 	                              Composite parent) {
 
 		super(parentPane, parent, false);
@@ -170,7 +175,7 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 						index = CollectionTools.indexOf(getSubject().tableGenerators(), generator);
 					}
 
-					name = NLS.bind(JptUiOrmMessages.OrmGeneratorsComposite_displayString, index);
+					name = NLS.bind(JptUiOrmMessages.OrmGeneratorsComposite_displayString, Integer.valueOf(index));
 				}
 
 				return name;
@@ -189,7 +194,7 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		return new TransformationPropertyValueModel<EntityMappings, Boolean>(getSubjectHolder()) {
 			@Override
 			protected Boolean transform(EntityMappings value) {
-				return (value != null);
+				return Boolean.valueOf(value != null);
 			}
 		};
 	}
@@ -203,19 +208,19 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 				}
 
 				if (generator instanceof OrmSequenceGenerator) {
-					return sequenceGeneratorPane.getControl();
+					return EntityMappingsGeneratorsComposite.this.sequenceGeneratorPane.getControl();
 				}
 
-				return tableGeneratorPane.getControl();
+				return EntityMappingsGeneratorsComposite.this.tableGeneratorPane.getControl();
 			}
 		};
 	}
 
-	private PropertyValueModel<OrmSequenceGenerator> buildSequenceGeneratorHolder() {
-		return new TransformationPropertyValueModel<OrmGenerator, OrmSequenceGenerator>(this.generatorHolder) {
+	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
+		return new TransformationPropertyValueModel<OrmGenerator, SequenceGenerator>(this.generatorHolder) {
 			@Override
-			protected OrmSequenceGenerator transform_(OrmGenerator value) {
-				return (value instanceof OrmSequenceGenerator) ? (OrmSequenceGenerator) value : null;
+			protected SequenceGenerator transform_(OrmGenerator value) {
+				return (value instanceof SequenceGenerator) ? (SequenceGenerator) value : null;
 			}
 		};
 	}
@@ -237,11 +242,11 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		};
 	}
 
-	private PropertyValueModel<OrmTableGenerator> buildTableGeneratorHolder() {
-		return new TransformationPropertyValueModel<OrmGenerator, OrmTableGenerator>(generatorHolder) {
+	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
+		return new TransformationPropertyValueModel<OrmGenerator, TableGenerator>(this.generatorHolder) {
 			@Override
-			protected OrmTableGenerator transform_(OrmGenerator value) {
-				return (value instanceof OrmTableGenerator) ? (OrmTableGenerator) value : null;
+			protected TableGenerator transform_(OrmGenerator value) {
+				return (value instanceof TableGenerator) ? (TableGenerator) value : null;
 			}
 		};
 	}
@@ -283,26 +288,28 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		installPaneEnabler();
 
 		// Property pane
-		PropertyValueModel<OrmSequenceGenerator> sequenceGeneratorHolder =
+		PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder =
 			buildSequenceGeneratorHolder();
-		PropertyValueModel<OrmTableGenerator> tableGeneratorHolder =
+		PropertyValueModel<TableGenerator> tableGeneratorHolder =
 			buildTableGeneratorHolder();
 
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Sequence Generator property pane
-		this.sequenceGeneratorPane = new OrmSequenceGeneratorComposite(
+		this.sequenceGeneratorPane = new SequenceGeneratorComposite(
 			this,
 			sequenceGeneratorHolder,
-			pageBook
+			pageBook,
+			buildSequenceGeneratorBuilder()
 		);
 
 		// Table Generator property pane
-		this.tableGeneratorPane = new OrmTableGeneratorComposite(
+		this.tableGeneratorPane = new TableGeneratorComposite(
 			this,
 			tableGeneratorHolder,
-			pageBook
+			pageBook,
+			buildTableGeneratorBuilder()
 		);
 
 		addAlignRight(this.sequenceGeneratorPane);
@@ -331,5 +338,22 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 
 	private void installPaneSwitcher(PageBook pageBook) {
 		new ControlSwitcher(this.generatorHolder, buildPaneTransformer(), pageBook);
+	}	
+
+	private GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder() {
+		return new GeneratorBuilder<SequenceGenerator>() {
+			public SequenceGenerator addGenerator() {
+				throw new UnsupportedOperationException("The sequence generator will never be null so we do not need to implement this"); //$NON-NLS-1$
+			}
+		};
 	}
+
+	private GeneratorBuilder<TableGenerator> buildTableGeneratorBuilder() {
+		return new GeneratorBuilder<TableGenerator>() {
+			public TableGenerator addGenerator() {
+				throw new UnsupportedOperationException("The table generator will never be null so we do not need to implement this"); //$NON-NLS-1$
+			}
+		};
+	}
+
 }

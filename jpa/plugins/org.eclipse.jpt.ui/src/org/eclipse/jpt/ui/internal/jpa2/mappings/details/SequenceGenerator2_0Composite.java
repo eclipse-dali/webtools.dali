@@ -7,12 +7,12 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.ui.internal.jpa2.java.details;
+package org.eclipse.jpt.ui.internal.jpa2.mappings.details;
 
 import java.util.Collection;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.GeneratorContainer;
+import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -21,28 +21,21 @@ import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.SequenceGeneratorComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  JavaSequenceGenerator2_0Composite
  */
-public class JavaSequenceGenerator2_0Composite extends SequenceGeneratorComposite
+public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 {
 
-	public JavaSequenceGenerator2_0Composite(
-			Pane<? extends GeneratorContainer> parentPane, 
-			Composite parent) {
-		super(parentPane, parent);
-	}
-	
-	public JavaSequenceGenerator2_0Composite(
-		Pane<?> parentPane, 
-		PropertyValueModel<? extends GeneratorContainer> subjectHolder,
-		Composite parent) {
+	public SequenceGenerator2_0Composite(Pane<?> parentPane,
+		PropertyValueModel<SequenceGenerator> subjectHolder,
+		Composite parent,
+		GeneratorBuilder<SequenceGenerator> builder) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent, builder);
 	}
 
 	@Override
@@ -84,18 +77,9 @@ public class JavaSequenceGenerator2_0Composite extends SequenceGeneratorComposit
 		this.addInitialValueCombo(container);
 	}
 
-	private PropertyValueModel<SequenceGenerator2_0> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorContainer, SequenceGenerator2_0>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
-			@Override
-			protected SequenceGenerator2_0 buildValue_() {
-				return (SequenceGenerator2_0) this.subject.getSequenceGenerator();
-			}
-		};
-	}
+	private SchemaCombo<SequenceGenerator> addSchemaCombo(Composite container) {
 
-	private SchemaCombo<SequenceGenerator2_0> addSchemaCombo(Composite container) {
-
-		return new SchemaCombo<SequenceGenerator2_0>(this, buildSequenceGeneratorHolder(), container) {
+		return new SchemaCombo<SequenceGenerator>(this, getSubjectHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -119,7 +103,7 @@ public class JavaSequenceGenerator2_0Composite extends SequenceGeneratorComposit
 
 			@Override
 			protected String getDefaultValue() {
-				return getSubject().getDefaultSchema();
+				return ((SequenceGenerator2_0) getSubject()).getDefaultSchema();
 			}
 
 			@Override
@@ -132,27 +116,26 @@ public class JavaSequenceGenerator2_0Composite extends SequenceGeneratorComposit
 			 */
 			@Override
 			protected JpaProject getJpaProject() {
-				return JavaSequenceGenerator2_0Composite.this.getJpaProject();
+				return SequenceGenerator2_0Composite.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				((SequenceGenerator2_0) JavaSequenceGenerator2_0Composite.this.retrieveGenerator(
-					JavaSequenceGenerator2_0Composite.this.getSubject())).setSpecifiedSchema(value);
+				((SequenceGenerator2_0) SequenceGenerator2_0Composite.this.retrieveGenerator()).setSpecifiedSchema(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return getSubject().getSpecifiedSchema();
+				return ((SequenceGenerator2_0) getSubject()).getSpecifiedSchema();
 			}
 
 			@Override
 			protected SchemaContainer getDbSchemaContainer() {
-				SequenceGenerator2_0 tg = this.getSubject();
+				SequenceGenerator2_0 tg = (SequenceGenerator2_0) this.getSubject();
 				if (tg != null) {
 					return tg.getDbSchemaContainer();
 				}
-				return JavaSequenceGenerator2_0Composite.this.getSubject().getContextDefaultDbSchemaContainer();
+				return SequenceGenerator2_0Composite.this.getSubject().getContextDefaultDbSchemaContainer();
 			}
 			
 			@Override
@@ -163,9 +146,9 @@ public class JavaSequenceGenerator2_0Composite extends SequenceGeneratorComposit
 		};
 	}
 
-	private CatalogCombo<SequenceGenerator2_0> addCatalogCombo(Composite container) {
+	private CatalogCombo<SequenceGenerator> addCatalogCombo(Composite container) {
 
-		return new CatalogCombo<SequenceGenerator2_0>(this, buildSequenceGeneratorHolder(), container) {
+		return new CatalogCombo<SequenceGenerator>(this, getSubjectHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -176,7 +159,7 @@ public class JavaSequenceGenerator2_0Composite extends SequenceGeneratorComposit
 
 			@Override
 			protected String getDefaultValue() {
-				return getSubject().getDefaultCatalog();
+				return ((SequenceGenerator2_0) getSubject()).getDefaultCatalog();
 			}
 
 			@Override
@@ -189,18 +172,17 @@ public class JavaSequenceGenerator2_0Composite extends SequenceGeneratorComposit
 			 */
 			@Override
 			protected JpaProject getJpaProject() {
-				return JavaSequenceGenerator2_0Composite.this.getJpaProject();
+				return SequenceGenerator2_0Composite.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				((SequenceGenerator2_0) JavaSequenceGenerator2_0Composite.this.retrieveGenerator(
-					JavaSequenceGenerator2_0Composite.this.getSubject())).setSpecifiedCatalog(value);
+				((SequenceGenerator2_0) SequenceGenerator2_0Composite.this.retrieveGenerator()).setSpecifiedCatalog(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return getSubject().getSpecifiedCatalog();
+				return ((SequenceGenerator2_0) getSubject()).getSpecifiedCatalog();
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMes
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.orm.details.OrmGeneratorsComposite;
+import org.eclipse.jpt.ui.internal.orm.details.EntityMappingsGeneratorsComposite;
 import org.eclipse.jpt.ui.internal.orm.details.OrmPackageChooser;
 import org.eclipse.jpt.ui.internal.orm.details.OrmQueriesComposite;
 import org.eclipse.jpt.ui.internal.orm.details.PersistenceUnitMetadataComposite;
@@ -69,13 +69,13 @@ import org.eclipse.swt.widgets.Composite;
  * @see EclipseLinkEntityMappingsDetailsPage - The parent container
  * @see CatalogCombo
  * @see EnumFormComboViewer
- * @see OrmGeneratorsComposite
+ * @see EntityMappingsGeneratorsComposite
  * @see OrmPackageChooser
  * @see OrmQueriesComposite
  * @see PersistenceUnitMetadataComposite
  * @see SchemaCombo
  *
- * @version 2.1
+ * @version 2.2
  * @since 2.1
  */
 public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsPage
@@ -131,7 +131,7 @@ public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.int
 		);
 
 		// Generators pane
-		new OrmGeneratorsComposite(
+		new EntityMappingsGeneratorsComposite(
 			this,
 			container
 		);

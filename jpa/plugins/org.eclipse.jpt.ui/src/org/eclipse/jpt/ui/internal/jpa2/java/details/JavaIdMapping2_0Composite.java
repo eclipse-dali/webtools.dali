@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.jpa2.java.details;
 
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.jpa2.mappings.details.IdMappingGeneration2_0Composite;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -44,7 +45,7 @@ public class JavaIdMapping2_0Composite extends AbstractIdMappingComposite<IdMapp
 		initializeTypePane(container);
 
 		// Generation pane
-		new Generation2_0Composite(this, addSubPane(container, 10));
+		new IdMappingGeneration2_0Composite(this, addSubPane(container, 10));
 	}
 
 }

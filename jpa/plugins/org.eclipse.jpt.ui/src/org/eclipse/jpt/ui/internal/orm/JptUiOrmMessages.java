@@ -38,15 +38,6 @@ public class JptUiOrmMessages {
 	public static String OrmJavaAttributeChooser_javaAttribute;
 	public static String OrmJavaClassChooser_javaClass;
 	public static String OrmQueriesComposite_groupBox;
-	public static String OrmSequenceGeneratorComposite_name;
-	public static String OrmSequenceGeneratorComposite_sequence;
-	public static String OrmTableGeneratorComposite_default;
-	public static String OrmTableGeneratorComposite_name;
-	public static String OrmTableGeneratorComposite_pkColumn;
-	public static String OrmTableGeneratorComposite_pkColumnValue;
-	public static String OrmTableGeneratorComposite_table;
-	public static String OrmTableGeneratorComposite_tableGenerator;
-	public static String OrmTableGeneratorComposite_valueColumn;
 	public static String PersistenceUnitMetadataComposite_access;
 	public static String PersistenceUnitMetadataComposite_cascadePersistCheckBox;
 	public static String PersistenceUnitMetadataComposite_catalog;

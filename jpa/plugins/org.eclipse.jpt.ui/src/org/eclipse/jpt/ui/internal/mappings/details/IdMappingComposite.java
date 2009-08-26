@@ -39,9 +39,9 @@ import org.eclipse.swt.widgets.Composite;
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see TemporalTypeComposite
- * @see GenerationComposite
+ * @see IdMappingGenerationComposite
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 public class IdMappingComposite extends AbstractIdMappingComposite<IdMapping>
@@ -69,7 +69,7 @@ public class IdMappingComposite extends AbstractIdMappingComposite<IdMapping>
 		initializeTypePane(container);
 
 		// Generation pane
-		new GenerationComposite(this, addSubPane(container, 10));
+		new IdMappingGenerationComposite(this, addSubPane(container, 10));
 	}
 
 }

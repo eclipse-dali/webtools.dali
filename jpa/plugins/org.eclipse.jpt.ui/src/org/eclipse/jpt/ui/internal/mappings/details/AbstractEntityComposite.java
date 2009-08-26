@@ -82,7 +82,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see IdClassComposite
  * @see OverridesComposite
  * @see TableComposite
- * @see GeneratorsComposite
+ * @see GenerationComposite
  *
  * TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
  *
@@ -187,7 +187,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 	}
 	
 	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
-		new GeneratorsComposite(this, generatorContainerHolder, container);
+		new GenerationComposite(this, generatorContainerHolder, container);
 	}
 	
 	private PropertyValueModel<GeneratorContainer> buildGeneratorContainer() {

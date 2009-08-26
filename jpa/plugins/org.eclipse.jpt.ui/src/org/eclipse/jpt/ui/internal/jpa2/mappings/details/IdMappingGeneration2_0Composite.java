@@ -7,37 +7,42 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.ui.internal.jpa2.java.details;
+package org.eclipse.jpt.ui.internal.jpa2.mappings.details;
 
-import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.IdMapping;
-import org.eclipse.jpt.ui.internal.mappings.details.GenerationComposite;
+import org.eclipse.jpt.core.context.SequenceGenerator;
+import org.eclipse.jpt.ui.internal.mappings.details.IdMappingGenerationComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.SequenceGeneratorComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *  Generation2_0Composite
+ *  IdMappingGeneration2_0Composite
  */
-public class Generation2_0Composite extends GenerationComposite
+public class IdMappingGeneration2_0Composite extends IdMappingGenerationComposite
 {
 
-	public Generation2_0Composite(FormPane<? extends IdMapping> parentPane, Composite parent) {
+	public IdMappingGeneration2_0Composite(FormPane<? extends IdMapping> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 
 	@Override
 	protected SequenceGeneratorComposite buildSequenceGeneratorComposite(
-			Composite container, 
-			PropertyValueModel<GeneratorContainer> generatorHolder, 
-			int topMargin,
-			int leftMargin) {
+		Composite container, 
+		PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder,
+		GeneratorBuilder<SequenceGenerator> sequenceGeneratorBuilder,
+		int topMargin,
+		int leftMargin) {
 
-		return new JavaSequenceGenerator2_0Composite(
+		return new SequenceGenerator2_0Composite(
 			this,
-			generatorHolder,
-			this.addSubPane(container, topMargin, leftMargin)
+			sequenceGeneratorHolder,
+			this.addSubPane(container, topMargin, leftMargin),
+			sequenceGeneratorBuilder
 		);
 	}
+	
+	
 }

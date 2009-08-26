@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,9 +49,9 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see IdMapping
  * @see GeneratedValue
- * @see GenerationComposite - The parent container
+ * @see IdMappingGenerationComposite - The parent container
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 @SuppressWarnings("nls")
@@ -273,9 +273,9 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 	protected void initialize() {
 		super.initialize();
 
-		generatedValuePropertyChangeListener = buildGeneratedValuePropertyChangeListener();
-		generatorNamePropertyChangeListener  = buildGeneratorNamePropertyChangeListener();
-		generatorsListChangeListener = buildGeneratorsListChangeListener();
+		this.generatedValuePropertyChangeListener = buildGeneratedValuePropertyChangeListener();
+		this.generatorNamePropertyChangeListener  = buildGeneratorNamePropertyChangeListener();
+		this.generatorsListChangeListener = buildGeneratorsListChangeListener();
 	}
 
 	@Override
@@ -290,14 +290,14 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 		);
 
 		// Generator Name widgets
-		generatorNameCombo = addLabeledEditableCCombo(
+		this.generatorNameCombo = addLabeledEditableCCombo(
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_generatorName,
 			buildGeneratorNameModifyListener(),
 			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 
-		generatorNameCombo.add(JptUiMappingsMessages.DefaultEmpty);
+		this.generatorNameCombo.add(JptUiMappingsMessages.DefaultEmpty);
 	}
 
 	private void populateGeneratorChoices() {

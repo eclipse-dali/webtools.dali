@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -28,63 +27,51 @@ import org.eclipse.swt.widgets.Composite;
  * @see SequenceGeneratorComposite - A sub-pane
  * @see TalbeGeneratorComposite - A sub-pane
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
-public abstract class GeneratorComposite<T extends Generator> extends Pane<GeneratorContainer>
+public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 {
-	private PropertyValueModel<Generator> generatorHolder;
 
-	protected GeneratorComposite(
-		Pane<? extends GeneratorContainer> parentPane,
-		Composite parent) {
+	protected GeneratorBuilder<T> generatorBuilder;
 
-		super(parentPane, parent, false);
-	}
-	
-	protected GeneratorComposite(
-		Pane<?> parentPane, 
-		PropertyValueModel<? extends GeneratorContainer> subjectHolder,
-		Composite parent) {
+	protected GeneratorComposite(Pane<?> parentPane,
+        PropertyValueModel<T> subjectHolder,
+        Composite parent,
+        GeneratorBuilder<T> generatorBuilder) {
 
-			super(parentPane, subjectHolder, parent, false);
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.generatorHolder = buildGeneratorHolder();
-		
-	}
-	private PropertyValueModel<Generator> buildGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorContainer, Generator>(getSubjectHolder(), getPropertyName()) {
-			@Override
-			protected Generator buildValue_() {
-				return GeneratorComposite.this.getGenerator(this.subject);
-			}
-		};
+		super(parentPane, subjectHolder, parent, false);
+		this.generatorBuilder = generatorBuilder;
 	}
 
 	/**
-	 * Retrieves without creating the <code>Generator</code> from the subject.
-	 *
-	 * @param subject The subject used to retrieve the generator
-	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
-	 * exists
+	 * Creates a new Generator.  This makes it possible for the user
+	 * to set values on a Generator before the model object has been created.
+	 * Allows them not to first have to check the check box to enable the panel.
 	 */
-	protected abstract T getGenerator(GeneratorContainer subject);
-
+	protected final T buildGenerator() {
+		return this.generatorBuilder.addGenerator();
+	}
 
 	/**
-	 * Creates the new <code>IGenerator</code>.
+	 * Retrieves the <code>Generator</code> and if it is <code>null</code>, then
+	 * create it.
 	 *
 	 * @param subject The subject used to retrieve the generator
-	 * @return The newly created <code>IGenerator</code>
+	 * @return The <code>Generator</code> which should never be <code>null</code>
 	 */
-	protected abstract T buildGenerator(GeneratorContainer subject);
+	protected final T retrieveGenerator() {
+		T generator = getSubject();
+
+		if (generator == null) {
+			generator = this.buildGenerator();
+		}
+
+		return generator;
+	}
 
 	protected final WritablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapter<Generator, String>(this.generatorHolder, Generator.NAME_PROPERTY) {
+		return new PropertyAspectAdapter<Generator, String>(getSubjectHolder(), Generator.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -99,7 +86,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 				if (value.length() == 0) {
 					return;
 				}
-				retrieveGenerator(getSubject()).setName(value);
+				retrieveGenerator().setName(value);
 			}
 
 			@Override
@@ -112,18 +99,8 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 		};
 	}
 
-	/**
-	 * Retrieves without creating the <code>Generator</code> from the subject.
-	 *
-	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
-	 * exists
-	 */
-	protected final T getGenerator() {
-		return (this.getSubject() == null) ? null : this.getGenerator(this.getSubject());
-	}
-
 	protected void addAllocationSizeCombo(Composite container) {
-		new IntegerCombo<Generator>(this, this.generatorHolder, container) {
+		new IntegerCombo<Generator>(this, getSubjectHolder(), container) {
 			
 			@Override
 			protected String getLabelText() {
@@ -155,7 +132,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 
 					@Override
 					public void setValue(Integer value) {
-						retrieveGenerator(GeneratorComposite.this.getSubject()).setSpecifiedAllocationSize(value);
+						retrieveGenerator().setSpecifiedAllocationSize(value);
 					}
 				};
 			}
@@ -163,7 +140,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	}
 	
 	protected void addInitialValueCombo(Composite container) {
-		new IntegerCombo<Generator>(this, this.generatorHolder, container) {
+		new IntegerCombo<Generator>(this, getSubjectHolder(), container) {
 			
 			@Override
 			protected String getLabelText() {
@@ -195,7 +172,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 
 					@Override
 					public void setValue(Integer value) {
-						retrieveGenerator(GeneratorComposite.this.getSubject()).setSpecifiedInitialValue(value);
+						retrieveGenerator().setSpecifiedInitialValue(value);
 					}
 				};
 			}
@@ -219,21 +196,11 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	 */
 	protected abstract String getPropertyName();
 
-	/**
-	 * Retrieves the <code>Generator</code> and if it is <code>null</code>, then
-	 * create it.
-	 *
-	 * @param subject The subject used to retrieve the generator
-	 * @return The <code>Generator</code> which should never be <code>null</code>
-	 */
-	protected final T retrieveGenerator(GeneratorContainer subject) {
-		T generator = this.getGenerator(subject);
 
-		if (generator == null) {
-			generator = this.buildGenerator(subject);
-		}
-
-		return generator;
+	public interface GeneratorBuilder<T> {
+		/**
+		 * Add a generator to the model and return it
+		 */
+		T addGenerator();
 	}
-
 }
