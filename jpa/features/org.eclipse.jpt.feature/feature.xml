@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.feature"
       label="%featureName"
-      version="2.2.0.qualifier"
+      version="2.2.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jpt.branding">
 
@@ -99,14 +99,14 @@
          install-size="0"
          version="2.0.8.qualifier"
          unpack="false"/>
-         
+
    <plugin
          id="org.jdom"
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"
-         unpack="false"/>         
-         
+         unpack="false"/>
+
    <plugin
          id="org.apache.velocity"
          download-size="0"

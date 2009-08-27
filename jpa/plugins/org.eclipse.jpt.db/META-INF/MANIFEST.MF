@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.db
-Bundle-Version: 1.2.100.qualifier
+Bundle-Version: 1.2.101.qualifier
 Bundle-Activator: org.eclipse.jpt.db.JptDbPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
