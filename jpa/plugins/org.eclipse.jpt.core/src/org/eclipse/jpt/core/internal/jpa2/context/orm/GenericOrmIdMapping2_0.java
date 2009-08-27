@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmIdMapping;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
@@ -27,8 +26,4 @@ public class GenericOrmIdMapping2_0 extends AbstractOrmIdMapping<XmlId>
 		return (JpaFactory2_0) super.getJpaFactory();
 	}
 	
-	@Override
-	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return getJpaFactory().buildOrmGeneratorContainer2_0(this, this.resourceAttributeMapping);
-	}
 }

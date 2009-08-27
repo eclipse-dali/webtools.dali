@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
@@ -63,7 +62,6 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -119,8 +117,6 @@ public interface JpaFactory2_0
 	OrmVersionMapping buildOrmVersionMapping2_0(OrmPersistentAttribute parent, XmlVersion resourceMapping);
 
 	OrmAttributeMapping buildOrmNullAttributeMapping2_0(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
-
-	OrmGeneratorContainer buildOrmGeneratorContainer2_0(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer);
 
 	OrmSequenceGenerator2_0 buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
 
