@@ -139,7 +139,7 @@ public abstract class AbstractJavaEntity
 	
 	protected AbstractJavaEntity(JavaPersistentType parent) {
 		super(parent);
-		this.table = getJpaFactory().buildJavaTable(this);
+		this.table = this.getJpaFactory().buildJavaTable(this);
 		this.discriminatorColumn = buildJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<JavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
@@ -147,8 +147,12 @@ public abstract class AbstractJavaEntity
 		this.virtualAttributeOverrides = new ArrayList<JavaAttributeOverride>();
 		this.specifiedAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<JavaAssociationOverride>();
-		this.queryContainer = getJpaFactory().buildJavaQueryContainer(this);
-		this.generatorContainer = getJpaFactory().buildJavaGeneratorContainer(this);
+		this.queryContainer = this.getJpaFactory().buildJavaQueryContainer(this);
+		this.generatorContainer = this.buildGeneratorContainer();
+	}
+
+	private JavaGeneratorContainer buildGeneratorContainer() {
+		return this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 	
 	protected JavaBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
@@ -156,7 +160,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected JavaDiscriminatorColumn buildJavaDiscriminatorColumn() {
-		return getJpaFactory().buildJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
+		return this.getJpaFactory().buildJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
 	protected JavaDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {

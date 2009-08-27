@@ -57,9 +57,9 @@ public abstract class AbstractJavaIdMapping
 	
 	protected AbstractJavaIdMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.column = getJpaFactory().buildJavaColumn(this, this);
-		this.defaultConverter = getJpaFactory().buildJavaNullConverter(this);
-		this.generatorContainer = getJpaFactory().buildJavaGeneratorContainer(this);
+		this.column = this.getJpaFactory().buildJavaColumn(this, this);
+		this.defaultConverter = this.getJpaFactory().buildJavaNullConverter(this);
+		this.generatorContainer = this.buildGeneratorContainer();
 	}
 
 	@Override
@@ -70,17 +70,21 @@ public abstract class AbstractJavaIdMapping
 		this.initializeGeneratedValue();
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
-	
+
 	protected void initializeGeneratedValue() {
-		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue();
+		GeneratedValueAnnotation resourceGeneratedValue = this.getResourceGeneratedValue();
 		if (resourceGeneratedValue != null) {
-			this.generatedValue = buildGeneratedValue(resourceGeneratedValue);
+			this.generatedValue = this.buildGeneratedValue(resourceGeneratedValue);
 		}
 	}
-	
+
 	public ColumnAnnotation getResourceColumn() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().
+		return (ColumnAnnotation) this.getResourcePersistentAttribute().
 				getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+	}
+
+	private JavaGeneratorContainer buildGeneratorContainer() {
+		return this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 
 	//************** JavaAttributeMapping implementation ***************
