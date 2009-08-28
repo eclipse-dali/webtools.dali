@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -185,7 +184,7 @@ public abstract class AbstractRootContextNode
 		}
 
 		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
-		HashBag<String> annotatedClassNames = CollectionTools.bag(this.jpaProject.annotatedClassNames());
+		HashBag<String> annotatedClassNames = CollectionTools.bag(this.jpaProject.annotatedJavaSourceClassNames());
 		HashBag<String> orphans = annotatedClassNames.clone();
 		for (String annotatedClassName : annotatedClassNames) {
 			if (persistenceUnit.specifiesPersistentType(annotatedClassName)) {
@@ -201,15 +200,28 @@ public abstract class AbstractRootContextNode
 		for (String orphan : orphans) {
 			JavaResourcePersistentType jrpt = this.jpaProject.getJavaResourcePersistentType(orphan);
 			JavaResourceCompilationUnit jrcu = jrpt.getJavaResourceCompilationUnit();
+			if (jrpt.isMapped()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
-						new String[] {persistenceUnit.getName()},
+						JpaValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
+						new String[] {jrpt.getName()},
 						jrcu.getFile(),
-						jrpt.getTextRange(jrcu.buildASTRoot())
+						jrpt.getNameTextRange(jrcu.buildASTRoot())
 					)
 				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
+						new String[] {jrpt.getName()},
+						jrcu.getFile(),
+						jrpt.getNameTextRange(jrcu.buildASTRoot())
+					)
+				);
+			}
 		}
 	}
 }

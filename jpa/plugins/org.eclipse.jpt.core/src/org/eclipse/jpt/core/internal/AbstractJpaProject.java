@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -684,30 +683,61 @@ public abstract class AbstractJpaProject
 
 
 	// ********** annotated Java source classes **********
-
-	public Iterator<String> annotatedClassNames() {
-		return this.getAnnotatedClassNames().iterator();
+	
+	public Iterator<String> annotatedJavaSourceClassNames() {
+		return getAnnotatedJavaSourceClassNames().iterator();
+	}
+	
+	protected Iterable<String> getAnnotatedJavaSourceClassNames() {
+		return new TransformationIterable<JavaResourcePersistentType, String>(
+				getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
+			@Override
+			protected String transform(JavaResourcePersistentType jrpType) {
+				return jrpType.getQualifiedName();
+			};
+		};
+	}
+	
+	/**
+	 * return only those valid annotated Java resource persistent types that are part of the 
+	 * JPA project, ignoring those in JARs referenced in persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 */
+	protected Iterable<JavaResourcePersistentType> getInternalAnnotatedSourceJavaResourcePersistentTypes() {
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(
+				getInternalSourceJavaResourcePersistentTypes()) {
+			@Override
+			protected boolean accept(JavaResourcePersistentType jrpType) {
+				return jrpType.isPersistable() && jrpType.isAnnotated();  // i.e. the type is valid and has a valid type annotation
+			}
+		};
+	}
+	
+	public Iterator<String> mappedJavaSourceClassNames() {
+		return this.getMappedJavaSourceClassNames().iterator();
 	}
 
-	protected Iterable<String> getAnnotatedClassNames() {
-		return new TransformationIterable<JavaResourcePersistentType, String>(this.getPersistedInternalSourceJavaResourcePersistentTypes()) {
+	protected Iterable<String> getMappedJavaSourceClassNames() {
+		return new TransformationIterable<JavaResourcePersistentType, String>(
+				getInternalMappedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected String transform(JavaResourcePersistentType jrpType) {
 				return jrpType.getQualifiedName();
 			}
 		};
 	}
-
+	
 	/**
-	 * return only those valid "persisted" Java resource persistent types that are
-	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 * return only those valid "mapped" (i.e. annotated with @Entity, @Embeddable, etc.) Java 
+	 * resource persistent types that are part of the JPA project, ignoring those in JARs 
+	 * referenced in persistence.xml
 	 */
-	protected Iterable<JavaResourcePersistentType> getPersistedInternalSourceJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
+	protected Iterable<JavaResourcePersistentType> getInternalMappedSourceJavaResourcePersistentTypes() {
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(
+				getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
-				return jrpType.isPersistable() && jrpType.isAnnotated();  // i.e. the type is valid and has a valid type annotation
+				return jrpType.isMapped();  // i.e. the type is already persistable and annotated
 			}
 		};
 	}

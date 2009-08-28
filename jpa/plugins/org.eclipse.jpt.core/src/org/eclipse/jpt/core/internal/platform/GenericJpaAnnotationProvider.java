@@ -92,6 +92,23 @@ public class GenericJpaAnnotationProvider
 			});
 	}
 	
+	public Iterator<String> typeMappingAnnotationNames() {
+		return new CompositeIterator<String>(
+				annotationNames(typeMappingAnnotationDefinitions()));
+	}
+	
+	protected Iterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
+		return new CompositeIterator<AnnotationDefinition> ( 
+			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(
+					this.annotationDefinitionProviders()) {
+				@Override
+				protected Iterator<AnnotationDefinition> transform(
+						JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+					return annotationDefinitionProvider.typeMappingAnnotationDefinitions();
+				}
+			});
+	}
+	
 	public Annotation buildTypeAnnotation(
 			JavaResourcePersistentType parent, Type type, String annotationName) {
 		return this.getTypeAnnotationDefinition(annotationName).buildAnnotation(parent, type);

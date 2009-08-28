@@ -106,6 +106,13 @@ public class GenericJpaAnnotationDefinitionProvider
 	}
 	
 	@Override
+	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(EmbeddableAnnotationDefinition.instance());
+		definitions.add(EntityAnnotationDefinition.instance());
+		definitions.add(MappedSuperclassAnnotationDefinition.instance());
+	}
+	
+	@Override
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(AssociationOverrideAnnotationDefinition.instance());
 		definitions.add(AssociationOverridesAnnotationDefinition.instance());

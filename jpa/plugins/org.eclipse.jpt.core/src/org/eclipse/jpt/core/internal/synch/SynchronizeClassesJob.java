@@ -84,7 +84,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 					
 					monitor.worked(25);
 			
-					for (Iterator<String> stream = annotatedClassNames(jpaProject, '$'); stream.hasNext(); ) {
+					for (Iterator<String> stream = mappedClassNames(jpaProject, '$'); stream.hasNext(); ) {
 						String fullyQualifiedTypeName = stream.next();
 						if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
 							XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
@@ -102,8 +102,8 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		return Status.OK_STATUS;
 	}
 	
-	protected Iterator<String> annotatedClassNames(final JpaProject jpaProject, final char enclosingTypeSeparator) {
-		return new TransformationIterator<String, String>(jpaProject.annotatedClassNames()) {
+	protected Iterator<String> mappedClassNames(final JpaProject jpaProject, final char enclosingTypeSeparator) {
+		return new TransformationIterator<String, String>(jpaProject.mappedJavaSourceClassNames()) {
 			@Override
 			protected String transform(String fullyQualifiedName) {
 				IType jdtType = SynchronizeClassesJob.this.findType(jpaProject, fullyQualifiedName);

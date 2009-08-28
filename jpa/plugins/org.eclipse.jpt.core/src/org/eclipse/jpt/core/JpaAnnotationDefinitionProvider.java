@@ -28,14 +28,19 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 public interface JpaAnnotationDefinitionProvider
 {
 	/**
-	 * Return a ListIterator of all annotation definitions which can 
-	 * be placed on a type
+	 * Return all annotation definitions which can appear on a type
 	 */
 	Iterator<AnnotationDefinition> typeAnnotationDefinitions();
 	
 	/**
-	 * Return a ListIterator of all annotation definitions which can 
-	 * be placed on an attribute
+	 * Return all annotation definitions which can appear on a type and are used to determine
+	 * whether and how the type is persisted (how it is "mapped").
+	 * This should be a subset of {@link #typeAnnotationDefinitions()}.
+	 */
+	Iterator<AnnotationDefinition> typeMappingAnnotationDefinitions();
+	
+	/**
+	 * Return all annotation definitions which can appear on an attribute
 	 */
 	Iterator<AnnotationDefinition> attributeAnnotationDefinitions();
 }

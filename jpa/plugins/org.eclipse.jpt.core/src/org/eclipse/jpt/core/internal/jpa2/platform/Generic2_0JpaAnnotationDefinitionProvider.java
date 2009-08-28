@@ -113,6 +113,13 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	}
 	
 	@Override
+	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(EmbeddableAnnotationDefinition.instance());
+		definitions.add(EntityAnnotationDefinition.instance());
+		definitions.add(MappedSuperclassAnnotationDefinition.instance());
+	}
+	
+	@Override
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(Access2_0AnnotationDefinition.instance());
 		definitions.add(AssociationOverride2_0AnnotationDefinition.instance());

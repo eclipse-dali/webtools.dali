@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
@@ -176,7 +175,13 @@ public interface JpaProject
 	 * Return the names of the JPA project's annotated Java classes
 	 * (ignoring classes in JARs referenced in the persistence.xml).
 	 */
-	Iterator<String> annotatedClassNames();
+	Iterator<String> annotatedJavaSourceClassNames();
+	
+	/**
+	 * Return the names of the JPA project's mapped (i.e. annotated with @Entity, etc.) Java 
+	 * classes (ignoring classes in JARs referenced in the persistence.xml).
+	 */
+	Iterator<String> mappedJavaSourceClassNames();
 
 	/**
 	 * Return the Java resource persistent type for the specified type.

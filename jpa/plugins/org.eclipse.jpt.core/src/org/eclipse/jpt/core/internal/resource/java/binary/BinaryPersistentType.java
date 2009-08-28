@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.MethodSignature;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -205,6 +206,17 @@ final class BinaryPersistentType
 
 	private AccessType buildAccess() {
 		return JPTTools.buildAccess(this);
+	}
+	
+	public boolean isMapped() {
+		for (Annotation each : CollectionTools.iterable(annotations())) {
+			if (CollectionTools.contains(
+					getAnnotationProvider().typeMappingAnnotationNames(), 
+					each.getAnnotationName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

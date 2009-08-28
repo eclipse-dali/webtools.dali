@@ -46,6 +46,13 @@ public interface JpaAnnotationProvider
 	Iterator<String> typeAnnotationNames();
 	
 	/**
+	 * Return the names of the annotations that can appear on a type and are used to 
+	 * determine whether and how the type is persisted (how it is "mapped").
+	 * This should be a subset of {@link #typeAnnotationNames()}.
+	 */
+	Iterator<String> typeMappingAnnotationNames();
+	
+	/**
 	 * Build a type annotation with the specified name.
 	 * Throw an IllegalArgumentException if the specified name is unsupported.
 	 * @see #typeAnnotationNames()

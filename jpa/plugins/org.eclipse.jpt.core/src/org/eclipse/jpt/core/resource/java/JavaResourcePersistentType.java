@@ -52,7 +52,13 @@ public interface JavaResourcePersistentType
 	 */
 	AccessType getAccess();
 		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
-
+	
+	/**
+	 * Return whether the type is annotated with any annotations that determine whether and 
+	 * how the type is persisted
+	 */
+	boolean isMapped();
+	
 	/**
 	 * Return whether the type has any attributes that have
 	 * JPA annotations on them.

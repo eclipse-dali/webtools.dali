@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
@@ -43,7 +44,7 @@ public class EclipseLink2_0JpaPlatformFactory
 
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
 		return new GenericJpaAnnotationProvider(
-			GenericJpaAnnotationDefinitionProvider.instance(),
+			Generic2_0JpaAnnotationDefinitionProvider.instance(),
 			EclipseLinkJpaAnnotationDefinitionProvider.instance());
 	}
 

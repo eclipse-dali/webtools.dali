@@ -22,6 +22,8 @@ public abstract class AbstractJpaAnnotationDefintionProvider
 {
 	private AnnotationDefinition[] typeAnnotationDefinitions;
 	
+	private AnnotationDefinition[] typeMappingAnnotationDefinitions;
+	
 	private AnnotationDefinition[] attributeAnnotationDefinitions;
 	
 	
@@ -48,7 +50,29 @@ public abstract class AbstractJpaAnnotationDefintionProvider
 	/**
 	 * Subclasses must override this to specify type annotation definitions.
 	 */
-	protected abstract void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
+	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		// no op
+	}
+	
+	public synchronized Iterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
+		if (this.typeMappingAnnotationDefinitions == null) {
+			this.typeMappingAnnotationDefinitions = this.buildTypeMappingAnnotationDefinitions();
+		}
+		return new ArrayIterator<AnnotationDefinition>(this.typeMappingAnnotationDefinitions);
+	}
+	
+	protected AnnotationDefinition[] buildTypeMappingAnnotationDefinitions() {
+		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+		this.addTypeMappingAnnotationDefinitionsTo(definitions);
+		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
+	}
+	
+	/**
+	 * Subclasses must override this to specify type mapping annotation definitions.
+	 */
+	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		// no op
+	}
 	
 	
 	// ********** attribute annotation definitions **********
@@ -69,5 +93,7 @@ public abstract class AbstractJpaAnnotationDefintionProvider
 	/**
 	 * Subclasses must override this to specify attribute annotation definitions.
 	 */
-	protected abstract void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions);
+	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		// no op
+	}
 }

@@ -874,6 +874,35 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 	}
 	
+	public void testIsAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntity();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertTrue(persistentType.isAnnotated());
+		
+		persistentType.removeAnnotation(JPA.ENTITY);
+		assertFalse(persistentType.isAnnotated());
+		
+		persistentType.addAnnotation(JPA.TABLE);
+		assertTrue(persistentType.isAnnotated());
+	}
+	
+	public void testIsMapped() throws Exception {
+		ICompilationUnit cu = createTestEntity();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertTrue(persistentType.isMapped());
+		
+		persistentType.removeAnnotation(JPA.ENTITY);
+		assertFalse(persistentType.isMapped());
+		
+		persistentType.addAnnotation(JPA.TABLE);
+		assertFalse(persistentType.isMapped());
+		
+		persistentType.addAnnotation(JPA.EMBEDDABLE);
+		assertTrue(persistentType.isMapped());
+	}
+	
 	//more detailed tests in JPTToolsTests
 	public void testIsPersistable() throws Exception {
 		ICompilationUnit cu = createTestEntity();

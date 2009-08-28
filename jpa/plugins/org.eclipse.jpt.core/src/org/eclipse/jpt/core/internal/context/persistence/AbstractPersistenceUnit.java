@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -192,7 +191,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void initializeImpliedClassRefs_() {
-		for (Iterator<String> stream = this.getJpaProject().annotatedClassNames(); stream.hasNext(); ) {
+		for (Iterator<String> stream = this.getJpaProject().mappedJavaSourceClassNames(); stream.hasNext(); ) {
 			String typeName = stream.next();
 			if ( ! this.specifiesPersistentType(typeName)) {
 				this.impliedClassRefs.add(this.buildClassRef(typeName));
@@ -1105,13 +1104,13 @@ public abstract class AbstractPersistenceUnit
 		HashBag<ClassRef> impliedRefsToRemove = CollectionTools.bag(this.impliedClassRefs(), this.impliedClassRefsSize());
 		ArrayList<ClassRef> impliedRefsToUpdate = new ArrayList<ClassRef>(this.impliedClassRefsSize());
 
-		for (Iterator<String> annotatedClassNames = this.getJpaProject().annotatedClassNames(); annotatedClassNames.hasNext(); ) {
-			String annotatedClassName = annotatedClassNames.next();
-			if ( ! this.specifiesPersistentType(annotatedClassName)) {
+		for (Iterator<String> mappedClassNames = this.getJpaProject().mappedJavaSourceClassNames(); mappedClassNames.hasNext(); ) {
+			String mappedClassName = mappedClassNames.next();
+			if ( ! this.specifiesPersistentType(mappedClassName)) {
 				boolean match = false;
 				for (Iterator<ClassRef> classRefs = impliedRefsToRemove.iterator(); classRefs.hasNext(); ) {
 					ClassRef classRef = classRefs.next();
-					if (annotatedClassName.equals(classRef.getClassName())) {
+					if (mappedClassName.equals(classRef.getClassName())) {
 						classRefs.remove();
 						impliedRefsToUpdate.add(classRef);
 						match = true;
@@ -1119,7 +1118,7 @@ public abstract class AbstractPersistenceUnit
 					}
 				}
 				if ( ! match) {
-					this.addImpliedClassRef(annotatedClassName);
+					this.addImpliedClassRef(mappedClassName);
 				}
 			}
 		}
