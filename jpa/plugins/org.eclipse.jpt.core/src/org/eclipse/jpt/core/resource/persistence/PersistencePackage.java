@@ -517,20 +517,14 @@ public class PersistencePackage extends EPackageImpl
 		XMLTypePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
-		Orm2_0Package theOrm2_0Package = (Orm2_0Package)(EPackage.Registry.INSTANCE.getEPackage(Orm2_0Package.eNS_URI) instanceof Orm2_0Package ? EPackage.Registry.INSTANCE.getEPackage(Orm2_0Package.eNS_URI) : Orm2_0Package.eINSTANCE);
-		Persistence2_0Package thePersistence2_0Package = (Persistence2_0Package)(EPackage.Registry.INSTANCE.getEPackage(Persistence2_0Package.eNS_URI) instanceof Persistence2_0Package ? EPackage.Registry.INSTANCE.getEPackage(Persistence2_0Package.eNS_URI) : Persistence2_0Package.eINSTANCE);
 		OrmPackage theOrmPackage = (OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		thePersistencePackage.createPackageContents();
-		theOrm2_0Package.createPackageContents();
-		thePersistence2_0Package.createPackageContents();
 		theOrmPackage.createPackageContents();
 
 		// Initialize created meta-data
 		thePersistencePackage.initializePackageContents();
-		theOrm2_0Package.initializePackageContents();
-		thePersistence2_0Package.initializePackageContents();
 		theOrmPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
