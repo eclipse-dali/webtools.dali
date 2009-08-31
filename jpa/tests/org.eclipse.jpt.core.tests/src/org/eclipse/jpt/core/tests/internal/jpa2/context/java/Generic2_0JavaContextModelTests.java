@@ -18,12 +18,13 @@ public class Generic2_0JavaContextModelTests extends TestCase
 {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(Generic2_0JavaContextModelTests.class.getName());
-		suite.addTestSuite(Generic2_0JavaPersistentTypeTests.class);
-		suite.addTestSuite(Generic2_0JavaPersistentAttributeTests.class);
-		
-		suite.addTestSuite(Generic2_0JavaAssociationOverrideTests.class);
-		suite.addTestSuite(Generic2_0JavaEntityTests.class);
-		suite.addTestSuite(Generic2_0JavaSequenceGeneratorTests.class);
+		suite.addTestSuite(GenericJavaAssociationOverride2_0Tests.class);
+		suite.addTestSuite(GenericJavaEntity2_0Tests.class);
+		suite.addTestSuite(GenericJavaManyToOneMapping2_0Tests.class);
+		suite.addTestSuite(GenericJavaOneToOneMapping2_0Tests.class);
+		suite.addTestSuite(GenericJavaPersistentAttribute2_0Tests.class);
+		suite.addTestSuite(GenericJavaPersistentType2_0Tests.class);
+		suite.addTestSuite(GenericJavaSequenceGenerator2_0Tests.class);
 		return suite;
 	}
 
