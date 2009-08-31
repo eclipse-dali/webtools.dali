@@ -173,7 +173,9 @@ public abstract class DelegatingContentAndLabelProvider
 				}
 			}
 		};
-		viewer.getControl().getDisplay().asyncExec(runnable);
+		if (!viewerIsDisposed()) {
+			this.viewer.getControl().getDisplay().asyncExec(runnable);
+		}
 	}
 	
 	// open up visibility a bit for inner classes
@@ -193,6 +195,13 @@ public abstract class DelegatingContentAndLabelProvider
 				}
 			}
 		};
-		viewer.getControl().getDisplay().asyncExec(runnable);
+		if (!viewerIsDisposed()) {
+			this.viewer.getControl().getDisplay().asyncExec(runnable);
+		}
 	}
+	
+	protected boolean viewerIsDisposed() {
+		return this.viewer.getControl().isDisposed();
+	}
+
 }
