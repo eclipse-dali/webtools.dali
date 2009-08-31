@@ -11,101 +11,116 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericOrmJoinTableJoiningStrategy 
-	extends AbstractOrmJoinTableJoiningStrategy
+public abstract class AbstractOrmJoinTableJoiningStrategy 
+	extends AbstractXmlContextNode
+	implements OrmJoinTableJoiningStrategy
 {
-	protected XmlJoinTableMapping resource;
+	protected OrmJoinTable joinTable;
 	
 	
-	public GenericOrmJoinTableJoiningStrategy(
-			OrmJoinTableEnabledRelationshipReference parent,
-			XmlJoinTableMapping resource) {
+	protected AbstractOrmJoinTableJoiningStrategy(
+			JoinTableEnabledRelationshipReference parent) {
 		super(parent);
-		this.resource = resource;
-		this.initialize();
-	}
+	}	
 	
+	public void initializeFrom(JoinTableJoiningStrategy oldStrategy) {
+		JoinTable oldJoinTable = (oldStrategy.getJoinTable());
+		if (oldJoinTable != null) {
+			this.addStrategy();
+			this.getJoinTable().setSpecifiedCatalog(oldJoinTable.getSpecifiedCatalog());
+			this.getJoinTable().setSpecifiedSchema(oldJoinTable.getSpecifiedSchema());
+			this.getJoinTable().setSpecifiedName(oldJoinTable.getSpecifiedName());
+		}
+	}	
 	
 	@Override
-	public OrmJoinTableEnabledRelationshipReference getParent() {
-		return (OrmJoinTableEnabledRelationshipReference) super.getParent();
+	public JoinTableEnabledRelationshipReference getParent() {
+		return (JoinTableEnabledRelationshipReference) super.getParent();
 	}
 	
-	@Override
-	public OrmJoinTableEnabledRelationshipReference getRelationshipReference() {
+	public JoinTableEnabledRelationshipReference getRelationshipReference() {
 		return this.getParent();
 	}
 	
-	@Override
-	public OrmRelationshipMapping getRelationshipMapping() {
+	public RelationshipMapping getRelationshipMapping() {
 		return this.getRelationshipReference().getRelationshipMapping();
 	}
+	
+	public String getJoinTableDefaultName() {
+		return MappingTools.buildJoinTableDefaultName(this.getRelationshipReference());
+	}
+	
+	public void addStrategy() {
+		if (this.joinTable == null) {
+			XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
+			this.joinTable = getJpaFactory().buildOrmJoinTable(this, resourceJoinTable);
+			setResourceJoinTable(resourceJoinTable);
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, null, this.joinTable);
+		}
+	}
+	
+	public void removeStrategy() {
+		if (this.joinTable != null) {
+			OrmJoinTable oldJoinTable = this.joinTable;
+			this.joinTable = null;
+			removeResourceJoinTable();
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, null);
+		}
+	}
+	
+	protected abstract void setResourceJoinTable(XmlJoinTable resourceJoinTable);
 
-	@Override
-	protected void setResourceJoinTable(XmlJoinTable resourceJoinTable) {
-		this.resource.setJoinTable(resourceJoinTable);
-	}
-	
-	public boolean isOverridableAssociation() {
-		return getJpaPlatformVariation().isJoinTableOverridable();
-	}
-	
 	
 	// **************** join table *********************************************
 	
-	@Override
 	public OrmJoinTable getJoinTable() {
 		return this.joinTable;
 	}
 	
-	@Override
 	public OrmJoinTable addJoinTable() {
 		addStrategy();
 		return this.joinTable;
 	}
 	
-	@Override
 	protected void setJoinTable_(OrmJoinTable newJoinTable) {
 		OrmJoinTable oldJoinTable = this.joinTable;
 		this.joinTable = newJoinTable;
 		this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, newJoinTable);
 	}
 	
-	@Override
 	public XmlJoinTable addResourceJoinTable() {
 		XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
-		this.resource.setJoinTable(resourceJoinTable);
+		setResourceJoinTable(resourceJoinTable);
 		return resourceJoinTable;
 	}
 	
-	public void removeResourceJoinTable() {
-		this.resource.setJoinTable(null);
-	}
-	
-	@Override
 	protected boolean mayHaveJoinTable() {
 		return getResourceJoinTable() != null 
 			|| getRelationshipReference().mayHaveDefaultJoinTable();
 	}
 	
-	public XmlJoinTable getResourceJoinTable() {
-		return this.resource.getJoinTable();
-	}
-	
 	
 	// **************** resource -> context ************************************
 	
-	@Override
+	protected void initialize() {
+		if (mayHaveJoinTable()) {
+			this.joinTable = getJpaFactory().buildOrmJoinTable(this, getResourceJoinTable());
+		}
+	}
+	
 	public void update() {
 		if (mayHaveJoinTable()) {
 			if (this.joinTable == null) {
@@ -130,9 +145,5 @@ public class GenericOrmJoinTableJoiningStrategy
 		if (this.joinTable != null && getRelationshipMapping().shouldValidateAgainstDatabase()) {
 			this.joinTable.validate(messages, reporter);
 		}
-	}
-	
-	public TextRange getValidationTextRange() {
-		return getRelationshipReference().getValidationTextRange();
 	}
 }

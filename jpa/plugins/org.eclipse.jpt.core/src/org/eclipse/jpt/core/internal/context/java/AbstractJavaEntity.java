@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -1072,12 +1071,7 @@ public abstract class AbstractJavaEntity
 		int virtualIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
 		this.virtualAssociationOverrides.remove(virtualIndex);
 
-		newAssociationOverride.setName(oldAssociationOverride.getName());
-		for (JoinColumn joinColumn : CollectionTools.iterable(oldAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumns())) {
-			JoinColumn newJoinColumn = newAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(newAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumnsSize());
-			newJoinColumn.setSpecifiedName(joinColumn.getName());
-			newJoinColumn.setSpecifiedReferencedColumnName(joinColumn.getReferencedColumnName());			
-		}
+		newAssociationOverride.initializeFrom(oldAssociationOverride);
 		
 		this.fireItemRemoved(VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualIndex, oldAssociationOverride);
 		this.fireItemAdded(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		

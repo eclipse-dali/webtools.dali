@@ -11,20 +11,20 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class VirtualXmlUniqueConstraint extends XmlUniqueConstraint
 {	
-	protected JavaUniqueConstraint javaUniqueConstraint;
+	protected UniqueConstraint uniqueConstraint;
 
 	protected boolean metadataComplete;
 
-	protected VirtualXmlUniqueConstraint(JavaUniqueConstraint javaUniqueConstraint, boolean metadataComplete) {
+	protected VirtualXmlUniqueConstraint(UniqueConstraint uniqueConstraint, boolean metadataComplete) {
 		super();
-		this.javaUniqueConstraint = javaUniqueConstraint;
+		this.uniqueConstraint = uniqueConstraint;
 		this.metadataComplete = metadataComplete;
 	}
 
@@ -32,7 +32,7 @@ public class VirtualXmlUniqueConstraint extends XmlUniqueConstraint
 	public EList<String> getColumnNames() {
 		EList<String> columnNames = new EDataTypeEList<String>(String.class, this, OrmPackage.XML_UNIQUE_CONSTRAINT__COLUMN_NAMES);
 
-		for (String columnName : CollectionTools.iterable(this.javaUniqueConstraint.columnNames())) {
+		for (String columnName : CollectionTools.iterable(this.uniqueConstraint.columnNames())) {
 			columnNames.add(columnName);
 		}
 		return columnNames;

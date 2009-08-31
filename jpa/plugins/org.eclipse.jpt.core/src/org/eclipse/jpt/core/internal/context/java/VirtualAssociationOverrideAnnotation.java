@@ -39,7 +39,7 @@ public abstract class VirtualAssociationOverrideAnnotation
 	}
 	
 	protected Vector<JoinColumnAnnotation> buildJoinColumns() {
-		if (this.joiningStrategy != null) {
+		if (this.joiningStrategy instanceof JoinColumnJoiningStrategy) {
 			Vector<JoinColumnAnnotation> result = new Vector<JoinColumnAnnotation>(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumnsSize());
 			for (JoinColumn joinColumn : CollectionTools.iterable(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumns())) {
 				result.add(new VirtualAssociationOverrideJoinColumnAnnotation(this, joinColumn));

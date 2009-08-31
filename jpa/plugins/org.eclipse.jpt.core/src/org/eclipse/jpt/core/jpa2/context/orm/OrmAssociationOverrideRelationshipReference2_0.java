@@ -8,7 +8,16 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.context;
+package org.eclipse.jpt.core.jpa2.context.orm;
+
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
 /**
  * An <code>AssociationOverrideRelationshipReference</code> is a type of 
@@ -21,15 +30,18 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @see AssociationOverride
+ * @see RelationshipMapping
  */
-public interface AssociationOverrideRelationshipReference 
+public interface OrmAssociationOverrideRelationshipReference2_0 
 	extends 
-		RelationshipReference,
-		JoinColumnEnabledRelationshipReference
+		OrmAssociationOverrideRelationshipReference,
+		AssociationOverrideRelationshipReference2_0, 
+		XmlContextNode
 {
-	AssociationOverride getAssociationOverride();
+	OrmAssociationOverride getAssociationOverride();
 	
-	void initializeFrom(AssociationOverrideRelationshipReference oldAssociationOverride);
+	OrmJoinTableInAssociationOverrideJoiningStrategy2_0 getJoinTableJoiningStrategy();
 
+	void update(XmlAssociationOverride xao);
+	
 }

@@ -24,11 +24,12 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -992,8 +993,8 @@ public abstract class AbstractOrmEntity
 	
 	protected OrmAssociationOverride setAssociationOverrideSpecified(OrmAssociationOverride oldAssociationOverride) {
 		int index = specifiedAssociationOverridesSize();
-		XmlAssociationOverride xmlAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
-		OrmAssociationOverride newAssociationOverride = getJpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner(), xmlAssociationOverride);
+		XmlAssociationOverride xmlAssociationOverride = buildResourceAssociationOverride();
+		OrmAssociationOverride newAssociationOverride = buildAssociationOverride(xmlAssociationOverride);
 		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
 		
 		this.resourceTypeMapping.getAssociationOverrides().add(xmlAssociationOverride);
@@ -1001,12 +1002,7 @@ public abstract class AbstractOrmEntity
 		int defaultIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
 		this.virtualAssociationOverrides.remove(defaultIndex);
 
-		newAssociationOverride.setName(oldAssociationOverride.getName());
-		for (JoinColumn joinColumn : CollectionTools.iterable(oldAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumns())) {
-			JoinColumn newJoinColumn = newAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(newAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumnsSize());
-			newJoinColumn.setSpecifiedName(joinColumn.getName());
-			newJoinColumn.setSpecifiedReferencedColumnName(joinColumn.getReferencedColumnName());
-		}
+		newAssociationOverride.initializeFrom(oldAssociationOverride);
 		
 		this.fireItemRemoved(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, defaultIndex, oldAssociationOverride);
 		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		
@@ -1547,15 +1543,19 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(PersistentAttribute persistentAttribute, JavaAssociationOverride javaAssociationOverride) {
-//		XmlColumn xmlColumn;
-//		if (javaAssociationOverride == null) {
-//			RelationshipMapping relationshipMapping = (RelationshipMapping) persistentAttribute.getMapping();
-//			xmlColumn = new VirtualXmlColumn(this, columnMapping.getColumn());		
-//		}
-//		else {
-//			xmlColumn = new VirtualXmlColumn(this, javaAssociationOverride.getColumn());
-//		}
-		return new VirtualXmlAssociationOverride(persistentAttribute.getName(), this, javaAssociationOverride);
+		RelationshipReference relationshipReference;
+		if (javaAssociationOverride == null || javaAssociationOverride.isVirtual()) {
+			RelationshipMapping relationshipMapping = (RelationshipMapping) persistentAttribute.getMapping();
+			relationshipReference = relationshipMapping.getRelationshipReference();
+		}
+		else {
+			relationshipReference = javaAssociationOverride.getRelationshipReference();
+		}
+		return buildVirtualXmlAssociationOverride(persistentAttribute.getName(), relationshipReference.getPredominantJoiningStrategy());
+	}
+	
+	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, JoiningStrategy joiningStrategy) {
+		return new VirtualXmlAssociationOverride(name, this, joiningStrategy);		
 	}
 
 	protected void initializeSpecifiedAssociationOverrides() {
@@ -1966,10 +1966,14 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmAssociationOverride buildAssociationOverride(XmlAssociationOverride associationOverride) {
-		return getJpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner(), associationOverride);
+		return getJpaFactory().buildOrmAssociationOverride(this, buildAssociationOverrideOwner(), associationOverride);
 	}
 
-	protected AssociationOverride.Owner createAssociationOverrideOwner() {
+	protected XmlAssociationOverride buildResourceAssociationOverride() {
+		return OrmFactory.eINSTANCE.createXmlAssociationOverride();
+	}
+	
+	protected AssociationOverride.Owner buildAssociationOverrideOwner() {
 		return new AssociationOverrideOwner();
 	}
 	

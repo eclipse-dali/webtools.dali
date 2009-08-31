@@ -12,7 +12,9 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
@@ -65,6 +67,16 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 			this.joinTable = null;
 			removeAnnotation();
 			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, null);
+		}
+	}
+			
+	public void initializeFrom(JoinTableJoiningStrategy oldStrategy) {
+		JoinTable oldJoinTable = (oldStrategy.getJoinTable());
+		if (oldJoinTable != null) {
+			this.addStrategy();
+			this.getJoinTable().setSpecifiedCatalog(oldJoinTable.getSpecifiedCatalog());
+			this.getJoinTable().setSpecifiedSchema(oldJoinTable.getSpecifiedSchema());
+			this.getJoinTable().setSpecifiedName(oldJoinTable.getSpecifiedName());
 		}
 	}
 	

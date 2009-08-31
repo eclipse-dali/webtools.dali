@@ -40,9 +40,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 @SuppressWarnings("nls")
 public class Generic2_0JavaEntityTests extends Generic2_0ContextModelTestCase
 {
-	private static final String ENTITY_NAME = "entityName";
-	private static final String TABLE_NAME = "MY_TABLE";
-	private static final String DISCRIMINATOR_VALUE = "MY_DISCRIMINATOR_VALUE";
 	protected static final String SUB_TYPE_NAME = "AnnotationTestTypeChild";
 	protected static final String FULLY_QUALIFIED_SUB_TYPE_NAME = PACKAGE_NAME + "." + SUB_TYPE_NAME;
 	
@@ -60,41 +57,6 @@ public class Generic2_0JavaEntityTests extends Generic2_0ContextModelTestCase
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
-			}
-		});
-	}
-	
-	private void createTestAbstractEntity() throws Exception {
-		SourceWriter sourceWriter = new SourceWriter() {
-			public void appendSourceTo(StringBuilder sb) {
-				sb.append(CR);
-					sb.append("import ");
-					sb.append(JPA.ENTITY);
-					sb.append(";");
-					sb.append(CR);
-				sb.append("@Entity");
-				sb.append(CR);
-				sb.append("public abstract class ").append(TYPE_NAME).append(" ");
-				sb.append("{}").append(CR);
-			}
-		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
-	}
-
-	private ICompilationUnit createTestEntityAnnotationOnProperty() throws Exception {	
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity");
-			}
-			
-			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
-				sb.append("@Id");
 			}
 		});
 	}
@@ -173,33 +135,6 @@ public class Generic2_0JavaEntityTests extends Generic2_0ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithName() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity(name=\"" + ENTITY_NAME + "\")");
-			}
-		});
-	}
-	
-	private ICompilationUnit createTestEntityWithTable() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-				sb.append("@Table(name=\"" + TABLE_NAME + "\")");
-			}
-		});
-	}
-
 	private void createTestSubType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -216,77 +151,6 @@ public class Generic2_0JavaEntityTests extends Generic2_0ContextModelTestCase
 			}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
-	}
-
-	private ICompilationUnit createTestEntityWithInheritance() throws Exception {	
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
-			}
-		});
-	}
-	
-	private ICompilationUnit createTestEntityWithDiscriminatorValue() throws Exception {	
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.DISCRIMINATOR_VALUE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-				sb.append("@DiscriminatorValue(value=\"" + DISCRIMINATOR_VALUE + "\")");
-			}
-		});
-	}
-	
-	private ICompilationUnit createTestEntityWithSecondaryTable() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-				sb.append("@SecondaryTable(name=\"foo\")");
-			}
-		});
-	}
-
-	private ICompilationUnit createTestEntityWithSecondaryTables() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-				sb.append("@SecondaryTables({@SecondaryTable(name=\"foo\"), @SecondaryTable(name=\"bar\")})");
-			}
-		});
-	}
-
-	private ICompilationUnit createAbstractTestEntity() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
-				sb.append("abstract");
-			}
-		});
 	}
 
 	public void testAttributeMappingKeyAllowed() throws Exception {

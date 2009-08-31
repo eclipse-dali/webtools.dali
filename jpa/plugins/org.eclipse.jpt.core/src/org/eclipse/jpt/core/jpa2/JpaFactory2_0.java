@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.jpa2;
 
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
@@ -45,7 +47,9 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericEntityMappings2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
+import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
@@ -119,6 +123,10 @@ public interface JpaFactory2_0
 	OrmAttributeMapping buildOrmNullAttributeMapping2_0(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 
 	OrmSequenceGenerator2_0 buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
+
+	OrmAssociationOverride buildOrmAssociationOverride2_0(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
+
+	OrmAssociationOverrideRelationshipReference2_0 buildOrmAssociationOverrideRelationshipReference2_0(OrmAssociationOverride parent, XmlAssociationOverride associationOverride);
 
 	XmlBasic buildVirtualXmlBasic2_0(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping);
 

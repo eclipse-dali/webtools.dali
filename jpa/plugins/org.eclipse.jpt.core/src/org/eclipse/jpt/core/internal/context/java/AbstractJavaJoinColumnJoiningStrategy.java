@@ -16,6 +16,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
@@ -46,6 +47,14 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	}
 	
 	protected abstract JavaJoinColumn.Owner buildJoinColumnOwner();
+	
+	public void initializeFrom(JoinColumnJoiningStrategy oldStrategy) {
+		for (JoinColumn joinColumn : CollectionTools.iterable(oldStrategy.joinColumns())) {
+			JoinColumn newJoinColumn = this.addSpecifiedJoinColumn(this.specifiedJoinColumnsSize());
+			newJoinColumn.setSpecifiedName(joinColumn.getName());
+			newJoinColumn.setSpecifiedReferencedColumnName(joinColumn.getReferencedColumnName());			
+		}
+	}
 
 	@Override
 	public JoinColumnEnabledRelationshipReference getParent() {

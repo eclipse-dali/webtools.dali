@@ -28,11 +28,11 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class Generic2_0OrmPersistentAttributeTests
+public class GenericOrmPersistentAttribute2_0Tests
 	extends Generic2_0OrmContextModelTestCase
 {
 
-	public Generic2_0OrmPersistentAttributeTests(String name) {
+	public GenericOrmPersistentAttribute2_0Tests(String name) {
 		super(name);
 	}
 

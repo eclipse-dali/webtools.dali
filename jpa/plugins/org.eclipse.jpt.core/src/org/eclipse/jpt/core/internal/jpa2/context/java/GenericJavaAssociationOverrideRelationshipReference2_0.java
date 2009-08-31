@@ -12,9 +12,11 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaJoinTableInAssociationOverrideJoiningStrategy2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
@@ -29,12 +31,18 @@ public class GenericJavaAssociationOverrideRelationshipReference2_0 extends Abst
 
 	protected final JavaJoinTableInAssociationOverrideJoiningStrategy2_0 joinTableJoiningStrategy;
 
-	// cache the strategy for property change notification
-	protected JoiningStrategy cachedPredominantJoiningStrategy;
-
 	public GenericJavaAssociationOverrideRelationshipReference2_0(JavaAssociationOverride parent) {
 		super(parent);
 		this.joinTableJoiningStrategy = buildJoinTableJoiningStrategy();
+	}
+	
+	public void initializeFrom(AssociationOverrideRelationshipReference oldAssociationOverride) {
+		if (oldAssociationOverride.getJoinColumnJoiningStrategy().hasSpecifiedJoinColumns()) {
+			getJoinColumnJoiningStrategy().initializeFrom(oldAssociationOverride.getJoinColumnJoiningStrategy());
+		}
+		else {
+			getJoinTableJoiningStrategy().initializeFrom(((AssociationOverrideRelationshipReference2_0) oldAssociationOverride).getJoinTableJoiningStrategy());
+		}
 	}
 	
 	protected JavaJoinTableInAssociationOverrideJoiningStrategy2_0 buildJoinTableJoiningStrategy() {
@@ -110,4 +118,9 @@ public class GenericJavaAssociationOverrideRelationshipReference2_0 extends Abst
 		return getAssociationOverride().isVirtual();
 	}
 
+	@Override
+	public void setJoinColumnJoiningStrategy() {
+		super.setJoinColumnJoiningStrategy();
+		this.joinTableJoiningStrategy.removeStrategy();
+	}
 }

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.platform;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
@@ -70,7 +72,10 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericEntityMappings2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverride2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddable2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEntity2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
@@ -98,12 +103,14 @@ import org.eclipse.jpt.core.internal.platform.AbstractJpaFactory;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.ClassRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
+import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
@@ -165,8 +172,8 @@ public class GenericJpaFactory2_0
 		return buildOrmXml2_0((MappingFileRef2_0) parent, resource);
 	}
 	
-	protected GenericOrmXml2_0 buildOrmXml2_0(MappingFileRef parent, JpaXmlResource resource) {
-		return new GenericOrmXml2_0((MappingFileRef2_0) parent, resource);
+	protected GenericOrmXml2_0 buildOrmXml2_0(MappingFileRef2_0 parent, JpaXmlResource resource) {
+		return new GenericOrmXml2_0(parent, resource);
 	}
 
 	
@@ -275,7 +282,7 @@ public class GenericJpaFactory2_0
 	}
 
 	public OrmEntity buildOrmEntity2_0(OrmPersistentType parent, XmlEntity resourceMapping) {
-		return buildOrmEntity(parent, resourceMapping);
+		return new GenericOrmEntity2_0(parent, resourceMapping);
 	}
 
 	public OrmMappedSuperclass buildOrmMappedSuperclass2_0(OrmPersistentType parent, XmlMappedSuperclass resourceMapping) {
@@ -332,6 +339,14 @@ public class GenericJpaFactory2_0
 
 	public OrmSequenceGenerator2_0 buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
 		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
+	}
+	
+	public OrmAssociationOverride buildOrmAssociationOverride2_0(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride) {
+		return new GenericOrmAssociationOverride2_0(parent, owner, associationOverride);
+	}
+	
+	public OrmAssociationOverrideRelationshipReference2_0 buildOrmAssociationOverrideRelationshipReference2_0(OrmAssociationOverride parent, XmlAssociationOverride associationOverride) {
+		return new GenericOrmAssociationOverrideRelationshipReference2_0(parent, associationOverride);
 	}
 	
 	public XmlBasic buildVirtualXmlBasic2_0(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {

@@ -21,11 +21,11 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class Generic2_0OrmPersistentTypeTests
+public class GenericOrmPersistentType2_0Tests
 	extends Generic2_0OrmContextModelTestCase
 {	
 
-	public Generic2_0OrmPersistentTypeTests(String name) {
+	public GenericOrmPersistentType2_0Tests(String name) {
 		super(name);
 	}
 

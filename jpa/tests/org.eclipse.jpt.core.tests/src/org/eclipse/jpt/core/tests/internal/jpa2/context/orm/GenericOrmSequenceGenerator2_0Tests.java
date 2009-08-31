@@ -15,11 +15,11 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
 /**
  *  Generic2_0OrmSequenceGenerator2_0Tests
  */
-public class Generic2_0OrmSequenceGeneratorTests
+public class GenericOrmSequenceGenerator2_0Tests
 	extends Generic2_0OrmContextModelTestCase
 {
 
-	public Generic2_0OrmSequenceGeneratorTests(String name) {
+	public GenericOrmSequenceGenerator2_0Tests(String name) {
 		super(name);
 	}
 	

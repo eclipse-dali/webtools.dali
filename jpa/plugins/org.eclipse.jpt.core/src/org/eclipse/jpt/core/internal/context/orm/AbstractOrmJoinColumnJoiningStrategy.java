@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
@@ -53,6 +54,14 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.initializeSpecifiedJoinColumns();
 		this.initializeDefaultJoinColumn();
+	}
+	
+	public void initializeFrom(JoinColumnJoiningStrategy oldStrategy) {
+		for (JoinColumn joinColumn : CollectionTools.iterable(oldStrategy.joinColumns())) {
+			JoinColumn newJoinColumn = this.addSpecifiedJoinColumn(this.specifiedJoinColumnsSize());
+			newJoinColumn.setSpecifiedName(joinColumn.getName());
+			newJoinColumn.setSpecifiedReferencedColumnName(joinColumn.getReferencedColumnName());			
+		}
 	}
 	
 	protected abstract OrmJoinColumn.Owner buildJoinColumnOwner();

@@ -21,7 +21,7 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.0
  * @since 2.1
  * 
  * @see {@link RelationshipMapping}
@@ -30,6 +30,9 @@ import java.util.ListIterator;
 public interface JoinColumnJoiningStrategy
 	extends JoiningStrategy
 {
+	
+	void initializeFrom(JoinColumnJoiningStrategy oldStrategy);
+	
 	/**
 	 * Return the TypeMapping that this join column is contained in.
 	 */

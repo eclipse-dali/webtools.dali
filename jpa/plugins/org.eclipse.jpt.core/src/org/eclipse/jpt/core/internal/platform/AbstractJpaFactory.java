@@ -75,6 +75,7 @@ import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
@@ -184,6 +185,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmBasicMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmCascade;
@@ -420,6 +422,10 @@ public abstract class AbstractJpaFactory
 	
 	public OrmAssociationOverride buildOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
 		return new GenericOrmAssociationOverride(parent, owner, xmlAssociationOverride);
+	}
+	
+	public OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent, XmlAssociationOverride associationOverride) {
+		return new GenericOrmAssociationOverrideRelationshipReference(parent, associationOverride);
 	}
 	
 	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner) {

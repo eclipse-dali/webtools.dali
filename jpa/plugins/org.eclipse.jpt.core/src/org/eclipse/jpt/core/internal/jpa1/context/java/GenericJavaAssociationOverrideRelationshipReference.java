@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAssociationOverrideRelationshipReference;
-import org.eclipse.jpt.utility.Filter;
 
 public class GenericJavaAssociationOverrideRelationshipReference extends AbstractJavaAssociationOverrideRelationshipReference
 {
@@ -22,18 +20,11 @@ public class GenericJavaAssociationOverrideRelationshipReference extends Abstrac
 	public GenericJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent) {
 		super(parent);
 	}
-
-	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
+	
+	public void initializeFrom(AssociationOverrideRelationshipReference oldAssociationOverride) {
+		if (oldAssociationOverride.getJoinColumnJoiningStrategy().hasSpecifiedJoinColumns()) {
+			getJoinColumnJoiningStrategy().initializeFrom(oldAssociationOverride.getJoinColumnJoiningStrategy());
 		}
-		result = this.joinColumnJoiningStrategy.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		return null;
 	}
 
 	@Override

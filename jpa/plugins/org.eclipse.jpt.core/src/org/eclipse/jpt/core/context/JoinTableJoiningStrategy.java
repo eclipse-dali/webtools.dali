@@ -19,7 +19,7 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.0
  * @since 2.1
  * 
  * @see {@link RelationshipMapping}
@@ -28,6 +28,9 @@ package org.eclipse.jpt.core.context;
 public interface JoinTableJoiningStrategy 
 	extends JoiningStrategy
 {
+		
+	void initializeFrom(JoinTableJoiningStrategy oldStrategy);
+	
 	/**
 	 * Change notification identifier for "joinTable" property
 	 */

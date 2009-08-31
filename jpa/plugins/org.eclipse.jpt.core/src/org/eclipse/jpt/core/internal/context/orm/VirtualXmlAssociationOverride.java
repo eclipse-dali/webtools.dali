@@ -12,7 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -23,15 +24,14 @@ public class VirtualXmlAssociationOverride extends XmlAssociationOverride
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaAssociationOverride javaAssociationOverride;
-	//TODO need to support with and without a javaAssociationoverride, the java type might not be annotated.
+	protected final JoiningStrategy joiningStrategy;
 	
 
-	protected VirtualXmlAssociationOverride(String name, OrmTypeMapping ormTypeMapping, JavaAssociationOverride javaAssociationOverride) {
+	public VirtualXmlAssociationOverride(String name, OrmTypeMapping ormTypeMapping, JoiningStrategy joiningStrategy) {
 		super();
 		this.name = name;
 		this.ormTypeMapping = ormTypeMapping;
-		this.javaAssociationOverride = javaAssociationOverride;
+		this.joiningStrategy = joiningStrategy;
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -47,13 +47,12 @@ public class VirtualXmlAssociationOverride extends XmlAssociationOverride
 	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS);
-		if (this.javaAssociationOverride == null) {
-			return joinColumns; //TODO need to handle building these without the javaAssociationOverride
-		}
-		for (JoinColumn joinColumn : 
-				CollectionTools.iterable(this.javaAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumns())) {
-			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
-			joinColumns.add(xmlJoinColumn);
+		if (this.joiningStrategy instanceof JoinColumnJoiningStrategy) {
+			for (JoinColumn joinColumn : 
+					CollectionTools.iterable(((JoinColumnJoiningStrategy) this.joiningStrategy).joinColumns())) {
+				XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
+				joinColumns.add(xmlJoinColumn);
+			}
 		}
 		return joinColumns;
 	}

@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
-import java.util.Vector;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.internal.context.java.VirtualAssociationOverrideAnnotation;
@@ -34,14 +32,6 @@ public final class VirtualAssociationOverride2_0Annotation
 	public VirtualAssociationOverride2_0Annotation(JavaResourcePersistentType parent, String name, JoiningStrategy joiningStrategy) {
 		super(parent, name, joiningStrategy);
 		this.joinTable = this.buildJoinTable();
-	}
-	
-	@Override
-	protected Vector<JoinColumnAnnotation> buildJoinColumns() {
-		if (this.joiningStrategy instanceof JoinColumnJoiningStrategy) {
-			return super.buildJoinColumns();
-		}
-		return new Vector<JoinColumnAnnotation>();
 	}
 	
 	protected JoinTableAnnotation buildJoinTable() {

@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJoinTable;
-import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -27,13 +27,13 @@ public class VirtualXmlJoinTable
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected JavaJoinTable javaJoinTable;	
+	protected JoinTable joinTable;	
 	
 	
-	protected VirtualXmlJoinTable(OrmTypeMapping ormTypeMapping, JavaJoinTable javaJoinTable) {
+	public VirtualXmlJoinTable(OrmTypeMapping ormTypeMapping, JoinTable joinTable) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
-		this.javaJoinTable = javaJoinTable;
+		this.joinTable = joinTable;
 	}
 	
 	
@@ -44,9 +44,9 @@ public class VirtualXmlJoinTable
 	@Override
 	public String getName() {
 		if (this.isOrmMetadataComplete()) {
-			return this.javaJoinTable.getDefaultName();
+			return this.joinTable.getDefaultName();
 		}
-		return this.javaJoinTable.getName();		
+		return this.joinTable.getName();		
 	}
 	
 	@Override
@@ -57,9 +57,9 @@ public class VirtualXmlJoinTable
 	@Override
 	public String getCatalog() {
 		if (this.isOrmMetadataComplete()) {
-			return this.javaJoinTable.getDefaultCatalog();
+			return this.joinTable.getDefaultCatalog();
 		}
-		return this.javaJoinTable.getCatalog();
+		return this.joinTable.getCatalog();
 	}
 	
 	@Override
@@ -70,9 +70,9 @@ public class VirtualXmlJoinTable
 	@Override
 	public String getSchema() {
 		if (this.isOrmMetadataComplete()) {
-			return this.javaJoinTable.getDefaultSchema();
+			return this.joinTable.getDefaultSchema();
 		}
-		return this.javaJoinTable.getSchema();
+		return this.joinTable.getSchema();
 	}
 	
 	@Override
@@ -84,10 +84,10 @@ public class VirtualXmlJoinTable
 	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
-		if (this.javaJoinTable == null) {
+		if (this.joinTable == null) {
 			return joinColumns;
 		}
-		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaJoinTable.specifiedJoinColumns())) {
+		for (JoinColumn joinColumn : CollectionTools.iterable(this.joinTable.specifiedJoinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, isOrmMetadataComplete());
 			joinColumns.add(xmlJoinColumn);
 		}
@@ -98,10 +98,10 @@ public class VirtualXmlJoinTable
 	@Override
 	public EList<XmlJoinColumn> getInverseJoinColumns() {
 		EList<XmlJoinColumn> inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS);
-		if (this.javaJoinTable == null) {
+		if (this.joinTable == null) {
 			return inverseJoinColumns;
 		}
-		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaJoinTable.specifiedInverseJoinColumns())) {
+		for (JoinColumn joinColumn : CollectionTools.iterable(this.joinTable.specifiedInverseJoinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, isOrmMetadataComplete());
 			inverseJoinColumns.add(xmlJoinColumn);
 		}
@@ -112,7 +112,7 @@ public class VirtualXmlJoinTable
 	@Override
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_JOIN_TABLE__UNIQUE_CONSTRAINTS);
-		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.javaJoinTable.uniqueConstraints())) {
+		for (UniqueConstraint uniqueConstraint : CollectionTools.iterable(this.joinTable.uniqueConstraints())) {
 			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, isOrmMetadataComplete());
 			xmlUniqueConstraints.add(xmlUniqueConstraint);
 		}

@@ -36,6 +36,11 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		this.relationshipReference = buildRelationshipReference();
 	}
 	
+	public void initializeFrom(AssociationOverride oldAssociationOverride) {
+		this.setName(oldAssociationOverride.getName());
+		this.relationshipReference.initializeFrom(oldAssociationOverride.getRelationshipReference());
+	}
+	
 	protected JavaAssociationOverrideRelationshipReference buildRelationshipReference() {
 		return getJpaFactory().buildJavaAssociationOverrideRelationshipReference(this);
 	}
