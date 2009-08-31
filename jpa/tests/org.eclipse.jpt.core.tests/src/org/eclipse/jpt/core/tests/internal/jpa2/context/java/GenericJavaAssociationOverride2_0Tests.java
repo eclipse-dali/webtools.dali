@@ -33,7 +33,7 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class Generic2_0JavaAssociationOverrideTests extends Generic2_0ContextModelTestCase
+public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextModelTestCase
 {
 	private static final String ASSOCIATION_OVERRIDE_NAME = "MY_ASSOCIATION_OVERRIDE_NAME";
 
@@ -116,7 +116,7 @@ public class Generic2_0JavaAssociationOverrideTests extends Generic2_0ContextMod
 
 
 		
-	public Generic2_0JavaAssociationOverrideTests(String name) {
+	public GenericJavaAssociationOverride2_0Tests(String name) {
 		super(name);
 	}
 	

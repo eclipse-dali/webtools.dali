@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class Generic2_0JavaPersistentAttributeTests extends Generic2_0ContextModelTestCase
+public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextModelTestCase
 {
 	private ICompilationUnit createTestEntityForDerivedId() throws Exception {
 		return createTestType(new DefaultAnnotationWriter() {
@@ -86,7 +86,7 @@ public class Generic2_0JavaPersistentAttributeTests extends Generic2_0ContextMod
 	}
 
 		
-	public Generic2_0JavaPersistentAttributeTests(String name) {
+	public GenericJavaPersistentAttribute2_0Tests(String name) {
 		super(name);
 	}
 	

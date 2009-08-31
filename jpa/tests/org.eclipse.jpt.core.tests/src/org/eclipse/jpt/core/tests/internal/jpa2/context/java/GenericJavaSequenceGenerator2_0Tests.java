@@ -29,14 +29,14 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 /**
- *  Generic2_0JavaSequenceGeneratorTests
+ *  GenericJavaSequenceGenerator2_0Tests
  */
 @SuppressWarnings("nls")
-public class Generic2_0JavaSequenceGeneratorTests extends Generic2_0ContextModelTestCase
+public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModelTestCase
 {
 	private static final String SEQUENCE_GENERATOR_NAME = "TEST_SEQUENCE_GENERATOR";
 
-	public Generic2_0JavaSequenceGeneratorTests(String name) {
+	public GenericJavaSequenceGenerator2_0Tests(String name) {
 		super(name);
 	}
 	

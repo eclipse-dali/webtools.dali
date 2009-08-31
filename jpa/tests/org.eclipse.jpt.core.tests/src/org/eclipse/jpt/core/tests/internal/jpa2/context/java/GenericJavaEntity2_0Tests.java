@@ -38,13 +38,13 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class Generic2_0JavaEntityTests extends Generic2_0ContextModelTestCase
+public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 {
 	protected static final String SUB_TYPE_NAME = "AnnotationTestTypeChild";
 	protected static final String FULLY_QUALIFIED_SUB_TYPE_NAME = PACKAGE_NAME + "." + SUB_TYPE_NAME;
 	
 	
-	public Generic2_0JavaEntityTests(String name) {
+	public GenericJavaEntity2_0Tests(String name) {
 		super(name);
 	}
 
