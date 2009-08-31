@@ -181,7 +181,6 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlManyToMany"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlTransient"/>
     <genClasses ecoreClass="orm.ecore#//XmlAssociationOverride">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAssociationOverride/joinColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAssociationOverride/name"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAttributeOverride">
