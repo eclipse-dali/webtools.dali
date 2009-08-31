@@ -14,12 +14,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
-
 import org.eclipse.jpt.core.jpa2.resource.persistence.Persistence2_0Package;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.persistence.PersistencePackage;
@@ -1609,6 +1605,34 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_VERSION_FEATURE_COUNT = OrmPackage.XML_VERSION_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId <em>Xml Derived Id</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlDerivedId()
+	 * @generated
+	 */
+	public static final int XML_DERIVED_ID = 14;
+
+	/**
+	 * The feature id for the '<em><b>Derived Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_DERIVED_ID__DERIVED_ID = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Derived Id</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_DERIVED_ID_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1616,7 +1640,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlManyToOne()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE = 14;
+	public static final int XML_MANY_TO_ONE = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1691,13 +1715,22 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__ACCESS = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Derived Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE__DERIVED_ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -1706,7 +1739,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE__ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 2;
+	public static final int XML_MANY_TO_ONE__ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Many To One</em>' class.
@@ -1715,7 +1748,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 3;
+	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -1725,7 +1758,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlOneToMany()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY = 15;
+	public static final int XML_ONE_TO_MANY = 16;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1906,7 +1939,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlOneToOne()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE = 16;
+	public static final int XML_ONE_TO_ONE = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1999,13 +2032,22 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__ACCESS = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Derived Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__DERIVED_ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__ORPHAN_REMOVAL = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_ONE__ORPHAN_REMOVAL = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
@@ -2014,7 +2056,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 2;
+	public static final int XML_ONE_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -2023,7 +2065,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 3;
+	public static final int XML_ONE_TO_ONE__ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To One</em>' class.
@@ -2032,7 +2074,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 4;
+	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
@@ -2042,7 +2084,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlManyToMany()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY = 17;
+	public static final int XML_MANY_TO_MANY = 18;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2205,7 +2247,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlTransient()
 	 * @generated
 	 */
-	public static final int XML_TRANSIENT = 18;
+	public static final int XML_TRANSIENT = 19;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2242,7 +2284,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlAssociationOverride()
 	 * @generated
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE = 19;
+	public static final int XML_ASSOCIATION_OVERRIDE = 20;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -2297,7 +2339,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlAttributeOverride()
 	 * @generated
 	 */
-	public static final int XML_ATTRIBUTE_OVERRIDE = 20;
+	public static final int XML_ATTRIBUTE_OVERRIDE = 21;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -2343,7 +2385,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getEntityListeners()
 	 * @generated
 	 */
-	public static final int ENTITY_LISTENERS = 21;
+	public static final int ENTITY_LISTENERS = 22;
 
 	/**
 	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference list.
@@ -2371,7 +2413,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getEntityListener()
 	 * @generated
 	 */
-	public static final int ENTITY_LISTENER = 22;
+	public static final int ENTITY_LISTENER = 23;
 
 	/**
 	 * The feature id for the '<em><b>Pre Persist</b></em>' containment reference.
@@ -2471,7 +2513,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlQuery()
 	 * @generated
 	 */
-	public static final int XML_QUERY = 23;
+	public static final int XML_QUERY = 24;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2526,7 +2568,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlNamedNativeQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_NATIVE_QUERY = 24;
+	public static final int XML_NAMED_NATIVE_QUERY = 25;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2599,7 +2641,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlNamedQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_QUERY = 25;
+	public static final int XML_NAMED_QUERY = 26;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2663,7 +2705,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlGenerator()
 	 * @generated
 	 */
-	public static final int XML_GENERATOR = 26;
+	public static final int XML_GENERATOR = 27;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2718,7 +2760,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlSequenceGenerator()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR = 27;
+	public static final int XML_SEQUENCE_GENERATOR = 28;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2800,7 +2842,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 28;
+	public static final int XML_TABLE_GENERATOR = 29;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2918,7 +2960,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 29;
+	public static final int SQL_RESULT_SET_MAPPING = 30;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2973,7 +3015,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getEventMethod()
 	 * @generated
 	 */
-	public static final int EVENT_METHOD = 30;
+	public static final int EVENT_METHOD = 31;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3010,7 +3052,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getPostLoad()
 	 * @generated
 	 */
-	public static final int POST_LOAD = 31;
+	public static final int POST_LOAD = 32;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3047,7 +3089,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getPostPersist()
 	 * @generated
 	 */
-	public static final int POST_PERSIST = 32;
+	public static final int POST_PERSIST = 33;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3084,7 +3126,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getPostRemove()
 	 * @generated
 	 */
-	public static final int POST_REMOVE = 33;
+	public static final int POST_REMOVE = 34;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3121,7 +3163,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getPostUpdate()
 	 * @generated
 	 */
-	public static final int POST_UPDATE = 34;
+	public static final int POST_UPDATE = 35;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3158,7 +3200,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getPrePersist()
 	 * @generated
 	 */
-	public static final int PRE_PERSIST = 35;
+	public static final int PRE_PERSIST = 36;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3195,7 +3237,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getPreRemove()
 	 * @generated
 	 */
-	public static final int PRE_REMOVE = 36;
+	public static final int PRE_REMOVE = 37;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3232,7 +3274,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getPreUpdate()
 	 * @generated
 	 */
-	public static final int PRE_UPDATE = 37;
+	public static final int PRE_UPDATE = 38;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3269,7 +3311,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlQueryHint()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT = 38;
+	public static final int XML_QUERY_HINT = 39;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3315,7 +3357,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlCollectionTable()
 	 * @generated
 	 */
-	public static final int XML_COLLECTION_TABLE = 39;
+	public static final int XML_COLLECTION_TABLE = 40;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3379,7 +3421,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlOrderColumn()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN = 40;
+	public static final int XML_ORDER_COLUMN = 41;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3452,7 +3494,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlMapKeyColumn()
 	 * @generated
 	 */
-	public static final int XML_MAP_KEY_COLUMN = 41;
+	public static final int XML_MAP_KEY_COLUMN = 42;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3561,7 +3603,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlMapKeyJoinColumn()
 	 * @generated
 	 */
-	public static final int XML_MAP_KEY_JOIN_COLUMN = 42;
+	public static final int XML_MAP_KEY_JOIN_COLUMN = 43;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3652,7 +3694,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlMapKeyClass()
 	 * @generated
 	 */
-	public static final int XML_MAP_KEY_CLASS = 43;
+	public static final int XML_MAP_KEY_CLASS = 44;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -3680,7 +3722,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlUniqueConstraint()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT = 44;
+	public static final int XML_UNIQUE_CONSTRAINT = 45;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -3717,7 +3759,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getLockModeType()
 	 * @generated
 	 */
-	public static final int LOCK_MODE_TYPE = 45;
+	public static final int LOCK_MODE_TYPE = 46;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3816,6 +3858,13 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlVersionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlDerivedIdEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4090,25 +4139,20 @@ public class Orm2_0Package extends EPackageImpl
 		isInited = true;
 
 		// Initialize simple dependencies
-		EcorePackage.eINSTANCE.eClass();
+		OrmPackage.eINSTANCE.eClass();
+		PersistencePackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		Persistence2_0Package thePersistence2_0Package = (Persistence2_0Package)(EPackage.Registry.INSTANCE.getEPackage(Persistence2_0Package.eNS_URI) instanceof Persistence2_0Package ? EPackage.Registry.INSTANCE.getEPackage(Persistence2_0Package.eNS_URI) : Persistence2_0Package.eINSTANCE);
-		OrmPackage theOrmPackage = (OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
-		PersistencePackage thePersistencePackage = (PersistencePackage)(EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) instanceof PersistencePackage ? EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) : PersistencePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theOrm2_0Package.createPackageContents();
 		thePersistence2_0Package.createPackageContents();
-		theOrmPackage.createPackageContents();
-		thePersistencePackage.createPackageContents();
 
 		// Initialize created meta-data
 		theOrm2_0Package.initializePackageContents();
 		thePersistence2_0Package.initializePackageContents();
-		theOrmPackage.initializePackageContents();
-		thePersistencePackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theOrm2_0Package.freeze();
@@ -4659,6 +4703,35 @@ public class Orm2_0Package extends EPackageImpl
 	{
 		return xmlVersionEClass;
 	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId <em>Xml Derived Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Derived Id</em>'.
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId
+	 * @generated
+	 */
+	public EClass getXmlDerivedId()
+	{
+		return xmlDerivedIdEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId#getDerivedId <em>Derived Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Derived Id</em>'.
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId#getDerivedId()
+	 * @see #getXmlDerivedId()
+	 * @generated
+	 */
+	public EAttribute getXmlDerivedId_DerivedId()
+	{
+		return (EAttribute)xmlDerivedIdEClass.getEStructuralFeatures().get(0);
+	}
+
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne <em>Xml Many To One</em>}'.
@@ -5715,6 +5788,9 @@ public class Orm2_0Package extends EPackageImpl
 
 		xmlVersionEClass = createEClass(XML_VERSION);
 
+		xmlDerivedIdEClass = createEClass(XML_DERIVED_ID);
+		createEAttribute(xmlDerivedIdEClass, XML_DERIVED_ID__DERIVED_ID);
+
 		xmlManyToOneEClass = createEClass(XML_MANY_TO_ONE);
 		createEAttribute(xmlManyToOneEClass, XML_MANY_TO_ONE__MAPPED_BY_ID);
 		createEAttribute(xmlManyToOneEClass, XML_MANY_TO_ONE__ID);
@@ -5876,10 +5952,12 @@ public class Orm2_0Package extends EPackageImpl
 		xmlVersionEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlManyToOneEClass.getESuperTypes().add(theOrmPackage.getXmlManyToOne());
 		xmlManyToOneEClass.getESuperTypes().add(this.getXmlAttributeMapping());
+		xmlManyToOneEClass.getESuperTypes().add(this.getXmlDerivedId());
 		xmlOneToManyEClass.getESuperTypes().add(theOrmPackage.getXmlOneToMany());
 		xmlOneToManyEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlOneToOneEClass.getESuperTypes().add(theOrmPackage.getXmlOneToOne());
 		xmlOneToOneEClass.getESuperTypes().add(this.getXmlAttributeMapping());
+		xmlOneToOneEClass.getESuperTypes().add(this.getXmlDerivedId());
 		xmlManyToManyEClass.getESuperTypes().add(theOrmPackage.getXmlManyToMany());
 		xmlManyToManyEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlTransientEClass.getESuperTypes().add(theOrmPackage.getXmlTransient());
@@ -5974,6 +6052,9 @@ public class Orm2_0Package extends EPackageImpl
 		initEClass(xmlBasicEClass, XmlBasic.class, "XmlBasic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlVersionEClass, XmlVersion.class, "XmlVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlDerivedIdEClass, XmlDerivedId.class, "XmlDerivedId", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlDerivedId_DerivedId(), theXMLTypePackage.getBooleanObject(), "derivedId", null, 0, 1, XmlDerivedId.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToOneEClass, XmlManyToOne.class, "XmlManyToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlManyToOne_MappedById(), theXMLTypePackage.getString(), "mappedById", null, 0, 1, XmlManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6443,6 +6524,24 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_VERSION = eINSTANCE.getXmlVersion();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId <em>Xml Derived Id</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId
+		 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlDerivedId()
+		 * @generated
+		 */
+		public static final EClass XML_DERIVED_ID = eINSTANCE.getXmlDerivedId();
+
+		/**
+		 * The meta object literal for the '<em><b>Derived Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_DERIVED_ID__DERIVED_ID = eINSTANCE.getXmlDerivedId_DerivedId();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.

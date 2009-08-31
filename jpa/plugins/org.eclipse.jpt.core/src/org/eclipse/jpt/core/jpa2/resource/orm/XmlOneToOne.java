@@ -40,7 +40,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne implements XmlAttributeMapping
+public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne implements XmlAttributeMapping, XmlDerivedId
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -57,6 +57,26 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	 * @ordered
 	 */
 	protected AccessType access = ACCESS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDerivedId() <em>Derived Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDerivedId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean DERIVED_ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDerivedId() <em>Derived Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDerivedId()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean derivedId = DERIVED_ID_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isOrphanRemoval() <em>Orphan Removal</em>}' attribute.
@@ -178,6 +198,41 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Derived Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Derived Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Derived Id</em>' attribute.
+	 * @see #setDerivedId(Boolean)
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlDerivedId_DerivedId()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getDerivedId()
+	{
+		return derivedId;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne#getDerivedId <em>Derived Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Derived Id</em>' attribute.
+	 * @see #getDerivedId()
+	 * @generated
+	 */
+	public void setDerivedId(Boolean newDerivedId)
+	{
+		Boolean oldDerivedId = derivedId;
+		derivedId = newDerivedId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_ONE_TO_ONE__DERIVED_ID, oldDerivedId, derivedId));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Orphan Removal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -294,6 +349,8 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		{
 			case Orm2_0Package.XML_ONE_TO_ONE__ACCESS:
 				return getAccess();
+			case Orm2_0Package.XML_ONE_TO_ONE__DERIVED_ID:
+				return getDerivedId();
 			case Orm2_0Package.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				return isOrphanRemoval();
 			case Orm2_0Package.XML_ONE_TO_ONE__MAPPED_BY_ID:
@@ -316,6 +373,9 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		{
 			case Orm2_0Package.XML_ONE_TO_ONE__ACCESS:
 				setAccess((AccessType)newValue);
+				return;
+			case Orm2_0Package.XML_ONE_TO_ONE__DERIVED_ID:
+				setDerivedId((Boolean)newValue);
 				return;
 			case Orm2_0Package.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				setOrphanRemoval((Boolean)newValue);
@@ -343,6 +403,9 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 			case Orm2_0Package.XML_ONE_TO_ONE__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
+			case Orm2_0Package.XML_ONE_TO_ONE__DERIVED_ID:
+				setDerivedId(DERIVED_ID_EDEFAULT);
+				return;
 			case Orm2_0Package.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
 				return;
@@ -368,6 +431,8 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		{
 			case Orm2_0Package.XML_ONE_TO_ONE__ACCESS:
 				return access != ACCESS_EDEFAULT;
+			case Orm2_0Package.XML_ONE_TO_ONE__DERIVED_ID:
+				return DERIVED_ID_EDEFAULT == null ? derivedId != null : !DERIVED_ID_EDEFAULT.equals(derivedId);
 			case Orm2_0Package.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
 				return orphanRemoval != ORPHAN_REMOVAL_EDEFAULT;
 			case Orm2_0Package.XML_ONE_TO_ONE__MAPPED_BY_ID:
@@ -401,6 +466,14 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlDerivedId.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case Orm2_0Package.XML_ONE_TO_ONE__DERIVED_ID: return Orm2_0Package.XML_DERIVED_ID__DERIVED_ID;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -427,6 +500,14 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlDerivedId.class)
+		{
+			switch (baseFeatureID)
+			{
+				case Orm2_0Package.XML_DERIVED_ID__DERIVED_ID: return Orm2_0Package.XML_ONE_TO_ONE__DERIVED_ID;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -443,6 +524,8 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (access: ");
 		result.append(access);
+		result.append(", derivedId: ");
+		result.append(derivedId);
 		result.append(", orphanRemoval: ");
 		result.append(orphanRemoval);
 		result.append(", mappedById: ");
