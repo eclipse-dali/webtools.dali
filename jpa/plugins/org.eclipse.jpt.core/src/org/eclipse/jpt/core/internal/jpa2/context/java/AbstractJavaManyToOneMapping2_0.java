@@ -13,7 +13,6 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaManyToOneMapping;
-import org.eclipse.jpt.core.jpa2.context.DerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -43,7 +42,7 @@ public abstract class AbstractJavaManyToOneMapping2_0
 				JPA.ID);
 	}
 	
-	public DerivedId2_0 getDerivedId() {
+	public JavaDerivedId2_0 getDerivedId() {
 		return this.derivedId;
 	}
 	
