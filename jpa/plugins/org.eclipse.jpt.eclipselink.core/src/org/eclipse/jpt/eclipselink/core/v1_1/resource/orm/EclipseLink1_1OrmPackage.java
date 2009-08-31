@@ -2995,18 +2995,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		isInited = true;
 
 		// Initialize simple dependencies
-		OrmPackage.eINSTANCE.eClass();
-
-		// Obtain or create and register interdependencies
-		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) instanceof EclipseLinkOrmPackage ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) : EclipseLinkOrmPackage.eINSTANCE);
+		EclipseLinkOrmPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theEclipseLink1_1OrmPackage.createPackageContents();
-		theEclipseLinkOrmPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLink1_1OrmPackage.initializePackageContents();
-		theEclipseLinkOrmPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLink1_1OrmPackage.freeze();
