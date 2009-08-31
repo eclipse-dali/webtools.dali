@@ -56,7 +56,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
-	private OrmGeneratorContainer buildGeneratorContainer() {
+	protected OrmGeneratorContainer buildGeneratorContainer() {
 		return getJpaFactory().buildOrmGeneratorContainer(this, this.resourceAttributeMapping);
 	}
 	

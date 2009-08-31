@@ -246,11 +246,11 @@ public abstract class AbstractOrmEntity
 		};
 	}
 
-	private OrmGeneratorContainer buildGeneratorContainer() {
+	protected OrmGeneratorContainer buildGeneratorContainer() {
 		return getJpaFactory().buildOrmGeneratorContainer(this, this.resourceTypeMapping);
 	}
 
-	private OrmQueryContainer buildQueryContainer() {
+	protected OrmQueryContainer buildQueryContainer() {
 		return getJpaFactory().buildOrmQueryContainer(this, this.resourceTypeMapping);
 	}
 	
