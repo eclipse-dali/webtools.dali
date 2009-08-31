@@ -44,7 +44,7 @@ public class GenericEntityMappings2_0
 	
 	@Override
 	protected OrmSequenceGenerator2_0 buildSequenceGenerator(org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
-		return getJpaFactory().buildOrmSequenceGenerator2_0(this, (XmlSequenceGenerator) resourceSequenceGenerator);
+		return (OrmSequenceGenerator2_0) getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 	
 	// **************** JpaNode impl *******************************************

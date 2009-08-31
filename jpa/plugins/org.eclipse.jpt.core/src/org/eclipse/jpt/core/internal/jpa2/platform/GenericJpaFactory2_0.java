@@ -44,6 +44,7 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
@@ -52,6 +53,7 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
@@ -62,6 +64,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.jpa2.GenericJpaProject2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.GenericOrmGeneratorContainer2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericRootContextNode2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
@@ -76,6 +79,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverr
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEntity2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmIdMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
@@ -104,7 +108,6 @@ import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.ClassRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
@@ -130,6 +133,7 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
@@ -246,7 +250,7 @@ public class GenericJpaFactory2_0
 	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		return new GenericJavaOneToOneMapping2_0(parent);
 	}
-	
+
 	@Override
 	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
 		return new GenericJavaSequenceGenerator2_0(parent);
@@ -304,9 +308,10 @@ public class GenericJpaFactory2_0
 	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping2_0(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping) {
 		return buildOrmEmbeddedIdMapping(parent, resourceMapping);
 	}
-	
-	public OrmIdMapping buildOrmIdMapping2_0(OrmPersistentAttribute parent, XmlId resourceMapping) {
-		return buildOrmIdMapping(parent, resourceMapping);
+
+	@Override
+	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlId resourceMapping) {
+		return new GenericOrmIdMapping2_0(parent, (XmlId)resourceMapping);
 	}
 	
 	public OrmManyToManyMapping buildOrmManyToManyMapping2_0(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
@@ -337,8 +342,13 @@ public class GenericJpaFactory2_0
 		return buildOrmNullAttributeMapping(parent, resourceMapping);
 	}
 
-	public OrmSequenceGenerator2_0 buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
-		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
+	public OrmGeneratorContainer buildOrmGeneratorContainer2_0(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer) {
+		return new GenericOrmGeneratorContainer2_0(parent, resourceGeneratorContainer);
+	}
+	
+	@Override
+	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
+		return new GenericOrmSequenceGenerator2_0(parent, (XmlSequenceGenerator)resourceSequenceGenerator);
 	}
 	
 	public OrmAssociationOverride buildOrmAssociationOverride2_0(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride) {

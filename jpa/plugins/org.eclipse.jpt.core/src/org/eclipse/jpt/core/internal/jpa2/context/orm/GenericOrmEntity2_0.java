@@ -46,5 +46,10 @@ public class GenericOrmEntity2_0
 	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, JoiningStrategy joiningStrategy) {
 		return new VirtualXmlAssociationOverride2_0(name, this, joiningStrategy);		
 	}
+	
+	@Override
+	protected OrmGeneratorContainer buildGeneratorContainer() {
+		return getJpaFactory().buildOrmGeneratorContainer2_0(this, this.resourceTypeMapping);
+	}
 
 }
