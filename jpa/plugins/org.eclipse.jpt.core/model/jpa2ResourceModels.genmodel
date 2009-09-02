@@ -32,8 +32,10 @@
     <genClasses ecoreClass="orm2.ecore#//XmlEntity">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlEntity/cacheable"/>
     </genClasses>
-    <genClasses ecoreClass="orm2.ecore#//XmlMappedSuperclass"/>
     <genClasses ecoreClass="orm2.ecore#//XmlEmbeddable"/>
+    <genClasses ecoreClass="orm2.ecore#//XmlMappedSuperclass">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlMappedSuperclass/cacheable"/>
+    </genClasses>
     <genClasses ecoreClass="orm2.ecore#//Attributes">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//Attributes/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//Attributes/elementCollections"/>
@@ -52,9 +54,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlElementCollection/mapKeyColumn"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlElementCollection/mapKeyJoinColumns"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlElementCollection/column"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlElementCollection/temporal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlElementCollection/enumerated"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlElementCollection/lob"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlElementCollection/attributeOverrides"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlElementCollection/associationOverrides"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlElementCollection/collectionTable"/>
@@ -142,10 +141,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlCollectionTable/joinColumns"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlOrderColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlOrderColumn/insertable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlOrderColumn/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlOrderColumn/insertable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlOrderColumn/updatable"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2.ecore#//XmlOrderColumn/table"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlMapKeyColumn"/>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlMapKeyJoinColumn"/>

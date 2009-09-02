@@ -95,11 +95,6 @@ public class EclipseLink1_1JpaFactory
 	
 	// **************** Context Nodes ******************************************
 	
-	@Override
-	public MappingFile buildEclipseLinkMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return this.buildEclipseLinkOrmXml(parent, resource);
-	}
-	
 	public MappingFile buildEclipseLink1_1MappingFile(MappingFileRef parent, JpaXmlResource resource) {
 		return this.buildEclipseLink1_1OrmXml(parent, resource);
 	}

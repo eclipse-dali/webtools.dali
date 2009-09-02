@@ -67,7 +67,7 @@ public class XmlEmbedded extends AbstractXmlEmbedded
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getAbstractXmlEmbedded_AttributeOverrides())
+			buildAttributeOverrideTranslator()
 		};
 	}
 	

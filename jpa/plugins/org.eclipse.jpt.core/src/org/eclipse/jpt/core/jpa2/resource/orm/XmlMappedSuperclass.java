@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.resource.orm;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -19,6 +21,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * A representation of the model object '<em><b>Xml Mapped Superclass</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlMappedSuperclass#getCacheable <em>Cacheable</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlMappedSuperclass()
  * @model kind="class"
@@ -26,6 +34,25 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass
 {
+	/**
+	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CACHEABLE_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cacheable = CACHEABLE_EDEFAULT;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -47,6 +74,124 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		return Orm2_0Package.Literals.XML_MAPPED_SUPERCLASS;
 	}
 	
+	/**
+	 * Returns the value of the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cacheable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cacheable</em>' attribute.
+	 * @see #setCacheable(Boolean)
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlMappedSuperclass_Cacheable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCacheable()
+	{
+		return cacheable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlMappedSuperclass#getCacheable <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cacheable</em>' attribute.
+	 * @see #getCacheable()
+	 * @generated
+	 */
+	public void setCacheable(Boolean newCacheable)
+	{
+		Boolean oldCacheable = cacheable;
+		cacheable = newCacheable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_MAPPED_SUPERCLASS__CACHEABLE, oldCacheable, cacheable));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType)
+	{
+		switch (featureID)
+		{
+			case Orm2_0Package.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return getCacheable();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue)
+	{
+		switch (featureID)
+		{
+			case Orm2_0Package.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID)
+	{
+		switch (featureID)
+		{
+			case Orm2_0Package.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable(CACHEABLE_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID)
+	{
+		switch (featureID)
+		{
+			case Orm2_0Package.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (cacheable: ");
+		result.append(cacheable);
+		result.append(')');
+		return result.toString();
+	}
+
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -61,6 +206,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		return new Translator[] {
 			buildClassTranslator(),
 			buildAccessTranslator(),
+			buildCacheableTranslator(),
 			buildMetadataCompleteTranslator(),
 			buildDescriptionTranslator(),
 			buildIdClassTranslator(),
@@ -76,6 +222,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			PostLoad.buildTranslator(),
 			Attributes.buildTranslator()
 		};
+	}
+	
+	protected static Translator buildCacheableTranslator() {
+		return new Translator(JPA.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlMappedSuperclass_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlMappedSuperclass

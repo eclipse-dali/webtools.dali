@@ -11,10 +11,19 @@
   <foreignModel>eclipselink_orm1_1.ecore</foreignModel>
   <genPackages prefix="EclipseLink1_1Orm" basePackage="org.eclipse.jpt.eclipselink.core.v1_1.resource"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm1_1.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm1_1.ecore#//IdValidation">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm1_1.ecore#//IdValidation/NULL"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm1_1.ecore#//IdValidation/ZERO"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm1_1.ecore#//IdValidation/NONE"/>
+    </genEnums>
     <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlEntityMappings"/>
-    <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlEntity"/>
+    <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlEntity">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm1_1.ecore#//XmlEntity/primaryKey"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlEmbeddable"/>
-    <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlMappedSuperclass"/>
+    <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlMappedSuperclass">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm1_1.ecore#//XmlMappedSuperclass/primaryKey"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm1_1.ecore#//Attributes"/>
     <genClasses image="false" ecoreClass="eclipselink_orm1_1.ecore#//XmlAttributeMapping"/>
     <genClasses image="false" ecoreClass="eclipselink_orm1_1.ecore#//XmlId"/>
@@ -33,5 +42,9 @@
     <genClasses image="false" ecoreClass="eclipselink_orm1_1.ecore#//XmlTransformation"/>
     <genClasses image="false" ecoreClass="eclipselink_orm1_1.ecore#//XmlVariableOneToOne"/>
     <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlTransient"/>
+    <genClasses ecoreClass="eclipselink_orm1_1.ecore#//XmlPrimaryKey">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm1_1.ecore#//XmlPrimaryKey/validation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm1_1.ecore#//XmlPrimaryKey/columns"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -84,8 +84,8 @@ public class Orm2_0Factory extends EFactoryImpl
 			case Orm2_0Package.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
 			case Orm2_0Package.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
 			case Orm2_0Package.XML_ENTITY: return (EObject)createXmlEntity();
-			case Orm2_0Package.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case Orm2_0Package.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
+			case Orm2_0Package.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case Orm2_0Package.ATTRIBUTES: return (EObject)createAttributes();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION: return (EObject)createXmlElementCollection();
 			case Orm2_0Package.XML_ID: return (EObject)createXmlId();

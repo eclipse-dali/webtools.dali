@@ -39,7 +39,6 @@ public interface JPA {
 	String CASCADE_REMOVE = "cascade-remove";	
 	String CATALOG = "catalog";
 	String CLASS = "class";
-	String COLLECTION_TABLE = "collection-table";
 	String COLUMN = "column";
 	String COLUMN_DEFINITION= "column-definition";
 	String COLUMN_NAME = "column-name";
@@ -48,7 +47,6 @@ public interface JPA {
 	String DISCRIMINATOR_COLUMN = "discriminator-column";
 	String DISCRIMINATOR_TYPE = "discriminator-type";
 	String DISCRIMINATOR_VALUE = "discriminator-value";
-	String ELEMENT_COLLECTION = "element-collection";
 	String EMBEDDABLE = "embeddable";
 	String EMBEDDED = "embedded";
 	String EMBEDDED_ID = "embedded-id";
@@ -81,26 +79,18 @@ public interface JPA {
 	String MANY_TO_MANY = "many-to-many";
 	String MANY_TO_ONE = "many-to-one";
 	String MAP_KEY = "map-key";
-	String MAP_KEY_ATTRIBUTE_OVERRIDE = "map-key-attribute-override";
-	String MAP_KEY_CLASS = "map-key-class";
-	String MAP_KEY_COLUMN = "map-key-column";
-	String MAP_KEY_JOIN_COLUMN = "map-key-join-column";
 	String MAPPED_BY = "mapped-by";
-	String MAPPED_BY_ID = "mapped-by-id";
 	String MAPPED_SUPERCLASS = "mapped-superclass";
 	String METADATA_COMPLETE = "metadata-complete";
 	String METHOD_NAME = "method-name";
 	String NAME = "name";
 	String NAMED_NATIVE_QUERY = "named-native-query";
 	String NAMED_QUERY = "named-query";
-		String NAMED_QUERY__LOCK_MODE = "lock-mode";
 	String NULLABLE = "nullable";
 	String ONE_TO_MANY = "one-to-many";
 	String ONE_TO_ONE = "one-to-one";
 	String OPTIONAL = "optional";
 	String ORDER_BY = "order-by";
-	String ORDER_COLUMN = "order-column";
-	String ORPHAN_REMOVAL = "orphan-removal";
 	String PACKAGE = "package";
 	String PERSISTENCE_UNIT_DEFAULTS = "persistence-unit-defaults";
 	String PERSISTENCE_UNIT_METADATA = "persistence-unit-metadata";
@@ -128,7 +118,6 @@ public interface JPA {
 	String STRATEGY = "strategy";
 	String TABLE = "table";
 	String TABLE_GENERATOR = "table-generator";
-	String TARGET_CLASS = "target-class";
 	String TARGET_ENTITY = "target-entity";
 	String TEMPORAL = "temporal";
 	String TRANSIENT = "transient";
@@ -144,7 +133,22 @@ public interface JPA {
 	// JPA 2.0 specific elements
 	
 	String CACHEABLE = "cacheable";
+	String COLLECTION_TABLE = "collection-table";
 	String DELIMITIED_IDENTIFIERS = "delimited-identifiers";
+	String ELEMENT_COLLECTION = "element-collection";
+	String MAP_KEY_ATTRIBUTE_OVERRIDE = "map-key-attribute-override";
+	String MAP_KEY_CLASS = "map-key-class";
+	String MAP_KEY_COLUMN = "map-key-column";
+	String MAP_KEY_CONVERT = "map-key-convert";
+	String MAP_KEY_ENUMERATED = "map-key-enumerated";
+	String MAP_KEY_JOIN_COLUMN = "map-key-join-column";
+	String MAPPED_BY_ID = "mapped-by-id";
+	String NAMED_QUERY__LOCK_MODE = "lock-mode";
+	String ORDER_COLUMN = "order-column";
+	String ORPHAN_REMOVAL = "orphan-removal";
+	String TARGET_CLASS = "target-class";
+	String MAP_KEY_TEMPORAL = "map-key-temporal";
+	String VALIDATION_MODE = "validation-mode";
 
 
 }

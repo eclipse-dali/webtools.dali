@@ -26,7 +26,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#isCacheable <em>Cacheable</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#getCacheable <em>Cacheable</em>}</li>
  * </ul>
  * </p>
  *
@@ -37,23 +37,23 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity
 {
 	/**
-	 * The default value of the '{@link #isCacheable() <em>Cacheable</em>}' attribute.
+	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isCacheable()
+	 * @see #getCacheable()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean CACHEABLE_EDEFAULT = false;
+	protected static final Boolean CACHEABLE_EDEFAULT = null;
 	/**
-	 * The cached value of the '{@link #isCacheable() <em>Cacheable</em>}' attribute.
+	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isCacheable()
+	 * @see #getCacheable()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean cacheable = CACHEABLE_EDEFAULT;
+	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -84,27 +84,27 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cacheable</em>' attribute.
-	 * @see #setCacheable(boolean)
+	 * @see #setCacheable(Boolean)
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlEntity_Cacheable()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isCacheable()
+	public Boolean getCacheable()
 	{
 		return cacheable;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#isCacheable <em>Cacheable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#getCacheable <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Cacheable</em>' attribute.
-	 * @see #isCacheable()
+	 * @see #getCacheable()
 	 * @generated
 	 */
-	public void setCacheable(boolean newCacheable)
+	public void setCacheable(Boolean newCacheable)
 	{
-		boolean oldCacheable = cacheable;
+		Boolean oldCacheable = cacheable;
 		cacheable = newCacheable;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_ENTITY__CACHEABLE, oldCacheable, cacheable));
@@ -121,7 +121,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity
 		switch (featureID)
 		{
 			case Orm2_0Package.XML_ENTITY__CACHEABLE:
-				return isCacheable();
+				return getCacheable();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -171,7 +171,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity
 		switch (featureID)
 		{
 			case Orm2_0Package.XML_ENTITY__CACHEABLE:
-				return cacheable != CACHEABLE_EDEFAULT;
+				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
 		}
 		return super.eIsSet(featureID);
 	}

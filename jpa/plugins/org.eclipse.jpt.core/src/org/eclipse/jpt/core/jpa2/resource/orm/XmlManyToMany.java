@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -778,7 +777,7 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			XmlMapKeyClass.buildTranslator(JPA.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyClass()),		
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
-			org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride.buildTranslator(JPA.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyAttributeOverrides()),		
+			XmlAttributeOverride.buildTranslator(JPA.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyAttributeOverrides()),		
 			XmlColumn.buildTranslator(JPA.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyColumn()),		
 			XmlJoinColumn.buildTranslator(JPA.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyJoinColumns()),		
 			buildJoinTableTranslator(),
@@ -797,6 +796,5 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	protected static Translator buildMapKeyEnumeratedTranslator() {
 		return new Translator(JPA.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyEnumerated());
 	}
-	
 
 } // XmlManyToMany

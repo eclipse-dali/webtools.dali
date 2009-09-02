@@ -842,14 +842,14 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 			buildMappedByTranslator(),
 			buildOrphanRemovalTranslator(),
 			buildOrderByTranslator(),
-			XmlOrderColumn.buildTranslator(JPA.ORDER_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_OrderColumn()),		
+			buildOrderColumnTranslator(),		
 			buildMapKeyTranslator(),
-			XmlMapKeyClass.buildTranslator(JPA.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyClass()),		
+			buildMapKeyClassTranslator(),		
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
-			org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride.buildTranslator(JPA.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyAttributeOverrides()),		
-			XmlColumn.buildTranslator(JPA.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyColumn()),		
-			XmlJoinColumn.buildTranslator(JPA.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyJoinColumns()),		
+			buildMapKeyAttributeOverrideTranslator(),		
+			buildMapKeyColumnTranslator(),		
+			buildMapKeyJoinColumnTranslator(),		
 			buildJoinTableTranslator(),
 			buildJoinColumnTranslator(),
 			buildCascadeTranslator()
@@ -864,12 +864,32 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 		return new Translator(JPA.ORPHAN_REMOVAL, Orm2_0Package.eINSTANCE.getXmlOneToMany_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
 	}
 	
+	protected static Translator buildOrderColumnTranslator() {
+		return XmlOrderColumn.buildTranslator(JPA.ORDER_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_OrderColumn());
+	}
+	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA.TEMPORAL, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyTemporal());
+		return new Translator(JPA.MAP_KEY_TEMPORAL, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyEnumerated());
+		return new Translator(JPA.MAP_KEY_ENUMERATED, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyEnumerated());
+	}
+	
+	protected static Translator buildMapKeyClassTranslator() {
+		return XmlMapKeyClass.buildTranslator(JPA.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyClass());
 	}
 
+	protected static Translator buildMapKeyAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyAttributeOverrides());
+	}
+
+	protected static Translator buildMapKeyColumnTranslator() {
+		return XmlColumn.buildTranslator(JPA.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyColumn());
+	}
+
+	protected static Translator buildMapKeyJoinColumnTranslator() {
+		return XmlJoinColumn.buildTranslator(JPA.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyJoinColumns());
+	}
+	
 } // XmlOneToMany

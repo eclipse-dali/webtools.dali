@@ -657,7 +657,71 @@ public class Orm2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlMappedSuperclass()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS = 4;
+	public static final int XML_MAPPED_SUPERCLASS = 5;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlEmbeddable()
+	 * @generated
+	 */
+	public static final int XML_EMBEDDABLE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__ACCESS = OrmPackage.XML_EMBEDDABLE__ACCESS;
+
+	/**
+	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__CLASS_NAME = OrmPackage.XML_EMBEDDABLE__CLASS_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__METADATA_COMPLETE = OrmPackage.XML_EMBEDDABLE__METADATA_COMPLETE;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__DESCRIPTION = OrmPackage.XML_EMBEDDABLE__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__ATTRIBUTES = OrmPackage.XML_EMBEDDABLE__ATTRIBUTES;
+
+	/**
+	 * The number of structural features of the '<em>Xml Embeddable</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -804,77 +868,22 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS = OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS;
 
 	/**
+	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__CACHEABLE = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlEmbeddable()
-	 * @generated
-	 */
-	public static final int XML_EMBEDDABLE = 5;
-
-	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__ACCESS = OrmPackage.XML_EMBEDDABLE__ACCESS;
-
-	/**
-	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__CLASS_NAME = OrmPackage.XML_EMBEDDABLE__CLASS_NAME;
-
-	/**
-	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__METADATA_COMPLETE = OrmPackage.XML_EMBEDDABLE__METADATA_COMPLETE;
-
-	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__DESCRIPTION = OrmPackage.XML_EMBEDDABLE__DESCRIPTION;
-
-	/**
-	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__ATTRIBUTES = OrmPackage.XML_EMBEDDABLE__ATTRIBUTES;
-
-	/**
-	 * The number of structural features of the '<em>Xml Embeddable</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 0;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.Attributes <em>Attributes</em>}' class.
@@ -1069,112 +1078,13 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION__ACCESS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
+	 * The feature id for the '<em><b>Lob</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__TARGET_CLASS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__FETCH = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__ORDER_BY = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__ORDER_COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CLASS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
-
-	/**
-	 * The feature id for the '<em><b>Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+	public static final int XML_ELEMENT_COLLECTION__LOB = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
@@ -1183,7 +1093,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__TEMPORAL = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
+	public static final int XML_ELEMENT_COLLECTION__TEMPORAL = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Enumerated</b></em>' attribute.
@@ -1192,16 +1102,115 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__ENUMERATED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 14;
+	public static final int XML_ELEMENT_COLLECTION__ENUMERATED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Lob</b></em>' attribute.
+	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__LOB = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 15;
+	public static final int XML_ELEMENT_COLLECTION__TARGET_CLASS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__FETCH = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__ORDER_BY = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__ORDER_COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CLASS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -3424,22 +3433,22 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ORDER_COLUMN__NAME = OrmPackage.ABSTRACT_XML_NAMED_COLUMN__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Insertable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ORDER_COLUMN__INSERTABLE = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Nullable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ORDER_COLUMN__NULLABLE = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 1;
+	public static final int XML_ORDER_COLUMN__NULLABLE = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Insertable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ORDER_COLUMN__INSERTABLE = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Updatable</b></em>' attribute.
@@ -3451,22 +3460,13 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ORDER_COLUMN__UPDATABLE = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Table</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ORDER_COLUMN__TABLE = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 3;
-
-	/**
 	 * The number of structural features of the '<em>Xml Order Column</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ORDER_COLUMN_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 4;
+	public static final int XML_ORDER_COLUMN_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyColumn <em>Xml Map Key Column</em>}' class.
@@ -4243,11 +4243,11 @@ public class Orm2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#isCacheable <em>Cacheable</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#getCacheable <em>Cacheable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Cacheable</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#isCacheable()
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity#getCacheable()
 	 * @see #getXmlEntity()
 	 * @generated
 	 */
@@ -4268,6 +4268,21 @@ public class Orm2_0Package extends EPackageImpl
 	public EClass getXmlMappedSuperclass()
 	{
 		return xmlMappedSuperclassEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlMappedSuperclass#getCacheable <em>Cacheable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Cacheable</em>'.
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlMappedSuperclass#getCacheable()
+	 * @see #getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public EAttribute getXmlMappedSuperclass_Cacheable()
+	{
+		return (EAttribute)xmlMappedSuperclassEClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -4523,48 +4538,6 @@ public class Orm2_0Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getTemporal <em>Temporal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Temporal</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getTemporal()
-	 * @see #getXmlElementCollection()
-	 * @generated
-	 */
-	public EAttribute getXmlElementCollection_Temporal()
-	{
-		return (EAttribute)xmlElementCollectionEClass.getEStructuralFeatures().get(12);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getEnumerated <em>Enumerated</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Enumerated</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getEnumerated()
-	 * @see #getXmlElementCollection()
-	 * @generated
-	 */
-	public EAttribute getXmlElementCollection_Enumerated()
-	{
-		return (EAttribute)xmlElementCollectionEClass.getEStructuralFeatures().get(13);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#isLob <em>Lob</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Lob</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#isLob()
-	 * @see #getXmlElementCollection()
-	 * @generated
-	 */
-	public EAttribute getXmlElementCollection_Lob()
-	{
-		return (EAttribute)xmlElementCollectionEClass.getEStructuralFeatures().get(14);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getAttributeOverrides <em>Attribute Overrides</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4575,7 +4548,7 @@ public class Orm2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_AttributeOverrides()
 	{
-		return (EReference)xmlElementCollectionEClass.getEStructuralFeatures().get(15);
+		return (EReference)xmlElementCollectionEClass.getEStructuralFeatures().get(12);
 	}
 
 	/**
@@ -4589,7 +4562,7 @@ public class Orm2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_AssociationOverrides()
 	{
-		return (EReference)xmlElementCollectionEClass.getEStructuralFeatures().get(16);
+		return (EReference)xmlElementCollectionEClass.getEStructuralFeatures().get(13);
 	}
 
 	/**
@@ -4603,7 +4576,7 @@ public class Orm2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_CollectionTable()
 	{
-		return (EReference)xmlElementCollectionEClass.getEStructuralFeatures().get(17);
+		return (EReference)xmlElementCollectionEClass.getEStructuralFeatures().get(14);
 	}
 
 
@@ -5516,7 +5489,7 @@ public class Orm2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlOrderColumn_Insertable()
 	{
-		return (EAttribute)xmlOrderColumnEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlOrderColumnEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5530,7 +5503,7 @@ public class Orm2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlOrderColumn_Nullable()
 	{
-		return (EAttribute)xmlOrderColumnEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)xmlOrderColumnEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5545,20 +5518,6 @@ public class Orm2_0Package extends EPackageImpl
 	public EAttribute getXmlOrderColumn_Updatable()
 	{
 		return (EAttribute)xmlOrderColumnEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getTable <em>Table</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Table</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getTable()
-	 * @see #getXmlOrderColumn()
-	 * @generated
-	 */
-	public EAttribute getXmlOrderColumn_Table()
-	{
-		return (EAttribute)xmlOrderColumnEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -5701,9 +5660,10 @@ public class Orm2_0Package extends EPackageImpl
 		xmlEntityEClass = createEClass(XML_ENTITY);
 		createEAttribute(xmlEntityEClass, XML_ENTITY__CACHEABLE);
 
-		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
-
 		xmlEmbeddableEClass = createEClass(XML_EMBEDDABLE);
+
+		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
+		createEAttribute(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__CACHEABLE);
 
 		attributesEClass = createEClass(ATTRIBUTES);
 		createEAttribute(attributesEClass, ATTRIBUTES__DESCRIPTION);
@@ -5724,9 +5684,6 @@ public class Orm2_0Package extends EPackageImpl
 		createEReference(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN);
 		createEReference(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS);
 		createEReference(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__COLUMN);
-		createEAttribute(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__TEMPORAL);
-		createEAttribute(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__ENUMERATED);
-		createEAttribute(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__LOB);
 		createEReference(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES);
 		createEReference(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES);
 		createEReference(xmlElementCollectionEClass, XML_ELEMENT_COLLECTION__COLLECTION_TABLE);
@@ -5829,10 +5786,9 @@ public class Orm2_0Package extends EPackageImpl
 		createEReference(xmlCollectionTableEClass, XML_COLLECTION_TABLE__JOIN_COLUMNS);
 
 		xmlOrderColumnEClass = createEClass(XML_ORDER_COLUMN);
-		createEAttribute(xmlOrderColumnEClass, XML_ORDER_COLUMN__INSERTABLE);
 		createEAttribute(xmlOrderColumnEClass, XML_ORDER_COLUMN__NULLABLE);
+		createEAttribute(xmlOrderColumnEClass, XML_ORDER_COLUMN__INSERTABLE);
 		createEAttribute(xmlOrderColumnEClass, XML_ORDER_COLUMN__UPDATABLE);
-		createEAttribute(xmlOrderColumnEClass, XML_ORDER_COLUMN__TABLE);
 
 		xmlMapKeyColumnEClass = createEClass(XML_MAP_KEY_COLUMN);
 
@@ -5885,13 +5841,14 @@ public class Orm2_0Package extends EPackageImpl
 		xmlPersistenceUnitMetadataEClass.getESuperTypes().add(theOrmPackage.getXmlPersistenceUnitMetadata());
 		xmlPersistenceUnitDefaultsEClass.getESuperTypes().add(theOrmPackage.getXmlPersistenceUnitDefaults());
 		xmlEntityEClass.getESuperTypes().add(theOrmPackage.getXmlEntity());
-		xmlMappedSuperclassEClass.getESuperTypes().add(theOrmPackage.getXmlMappedSuperclass());
 		xmlEmbeddableEClass.getESuperTypes().add(theOrmPackage.getXmlEmbeddable());
+		xmlMappedSuperclassEClass.getESuperTypes().add(theOrmPackage.getXmlMappedSuperclass());
 		attributesEClass.getESuperTypes().add(theOrmPackage.getAttributes());
 		xmlAttributeMappingEClass.getESuperTypes().add(theOrmPackage.getXmlAttributeMapping());
 		xmlAttributeMappingEClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
 		xmlElementCollectionEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
 		xmlElementCollectionEClass.getESuperTypes().add(this.getXmlAttributeMapping());
+		xmlElementCollectionEClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
 		xmlIdEClass.getESuperTypes().add(theOrmPackage.getXmlId());
 		xmlIdEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlEmbeddedIdEClass.getESuperTypes().add(theOrmPackage.getXmlEmbeddedId());
@@ -5962,11 +5919,12 @@ public class Orm2_0Package extends EPackageImpl
 		initEAttribute(getXmlPersistenceUnitDefaults_DelimitedIdentifiers(), theXMLTypePackage.getBoolean(), "delimitedIdentifiers", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlEntity_Cacheable(), theXMLTypePackage.getBoolean(), "cacheable", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlEntity_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbeddableEClass, XmlEmbeddable.class, "XmlEmbeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlMappedSuperclass_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAttributes_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -5987,9 +5945,6 @@ public class Orm2_0Package extends EPackageImpl
 		initEReference(getXmlElementCollection_MapKeyColumn(), this.getXmlMapKeyColumn(), null, "mapKeyColumn", null, 0, 1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_MapKeyJoinColumns(), this.getXmlMapKeyJoinColumn(), null, "mapKeyJoinColumns", null, 0, -1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_Column(), theOrmPackage.getXmlColumn(), null, "column", null, 0, 1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlElementCollection_Temporal(), theOrmPackage.getTemporalType(), "temporal", null, 0, 1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlElementCollection_Enumerated(), theOrmPackage.getEnumType(), "enumerated", null, 0, 1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlElementCollection_Lob(), theXMLTypePackage.getBoolean(), "lob", null, 0, 1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_AttributeOverrides(), theOrmPackage.getXmlAttributeOverride(), null, "attributeOverrides", null, 0, -1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_AssociationOverrides(), theOrmPackage.getXmlAssociationOverride(), null, "associationOverrides", null, 0, -1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_CollectionTable(), this.getXmlCollectionTable(), null, "collectionTable", null, 0, 1, XmlElementCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6092,10 +6047,9 @@ public class Orm2_0Package extends EPackageImpl
 		initEReference(getXmlCollectionTable_JoinColumns(), theOrmPackage.getXmlJoinColumn(), null, "joinColumns", null, 0, -1, XmlCollectionTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOrderColumnEClass, XmlOrderColumn.class, "XmlOrderColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlOrderColumn_Insertable(), theXMLTypePackage.getBooleanObject(), "insertable", null, 0, 1, XmlOrderColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlOrderColumn_Nullable(), theXMLTypePackage.getBooleanObject(), "nullable", null, 0, 1, XmlOrderColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlOrderColumn_Insertable(), theXMLTypePackage.getBooleanObject(), "insertable", null, 0, 1, XmlOrderColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlOrderColumn_Updatable(), theXMLTypePackage.getBooleanObject(), "updatable", null, 0, 1, XmlOrderColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlOrderColumn_Table(), theXMLTypePackage.getString(), "table", null, 0, 1, XmlOrderColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMapKeyColumnEClass, XmlMapKeyColumn.class, "XmlMapKeyColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -6216,6 +6170,14 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS = eINSTANCE.getXmlMappedSuperclass();
+
+		/**
+		 * The meta object literal for the '<em><b>Cacheable</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MAPPED_SUPERCLASS__CACHEABLE = eINSTANCE.getXmlMappedSuperclass_Cacheable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
@@ -6368,30 +6330,6 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_ELEMENT_COLLECTION__COLUMN = eINSTANCE.getXmlElementCollection_Column();
-
-		/**
-		 * The meta object literal for the '<em><b>Temporal</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ELEMENT_COLLECTION__TEMPORAL = eINSTANCE.getXmlElementCollection_Temporal();
-
-		/**
-		 * The meta object literal for the '<em><b>Enumerated</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ELEMENT_COLLECTION__ENUMERATED = eINSTANCE.getXmlElementCollection_Enumerated();
-
-		/**
-		 * The meta object literal for the '<em><b>Lob</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ELEMENT_COLLECTION__LOB = eINSTANCE.getXmlElementCollection_Lob();
 
 		/**
 		 * The meta object literal for the '<em><b>Attribute Overrides</b></em>' containment reference list feature.
@@ -7034,14 +6972,6 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ORDER_COLUMN__UPDATABLE = eINSTANCE.getXmlOrderColumn_Updatable();
-
-		/**
-		 * The meta object literal for the '<em><b>Table</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ORDER_COLUMN__TABLE = eINSTANCE.getXmlOrderColumn_Table();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyColumn <em>Xml Map Key Column</em>}' class.

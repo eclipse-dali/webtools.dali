@@ -6,16 +6,15 @@
  * 
  * Contributors:
  *     Oracle - initial API and implementation
- ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.v1_1.resource.orm;
+ *******************************************************************************/
+package org.eclipse.jpt.eclipselink.core.v2_0.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -23,28 +22,32 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * A representation of the model object '<em><b>Xml Entity</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntity#getPrimaryKey <em>Primary Key</em>}</li>
- * </ul>
- * </p>
  *
- * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage#getXmlEntity()
+ * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlEntity()
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity
+public class XmlEntity extends org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntity
 {
 	/**
-	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
+	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPrimaryKey()
+	 * @see #getCacheable()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlPrimaryKey primaryKey;
+	protected static final Boolean CACHEABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -64,83 +67,42 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 	@Override
 	protected EClass eStaticClass()
 	{
-		return EclipseLink1_1OrmPackage.Literals.XML_ENTITY;
+		return EclipseLink2_0OrmPackage.Literals.XML_ENTITY;
 	}
-	
+
 	/**
-	 * Returns the value of the '<em><b>Primary Key</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Primary Key</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Cacheable</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Primary Key</em>' containment reference.
-	 * @see #setPrimaryKey(XmlPrimaryKey)
-	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage#getXmlEntity_PrimaryKey()
-	 * @model containment="true"
+	 * @return the value of the '<em>Cacheable</em>' attribute.
+	 * @see #setCacheable(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlEntity_Cacheable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public XmlPrimaryKey getPrimaryKey()
+	public Boolean getCacheable()
 	{
-		return primaryKey;
+		return cacheable;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlEntity#getCacheable <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cacheable</em>' attribute.
+	 * @see #getCacheable()
 	 * @generated
 	 */
-	public NotificationChain basicSetPrimaryKey(XmlPrimaryKey newPrimaryKey, NotificationChain msgs)
+	public void setCacheable(Boolean newCacheable)
 	{
-		XmlPrimaryKey oldPrimaryKey = primaryKey;
-		primaryKey = newPrimaryKey;
+		Boolean oldCacheable = cacheable;
+		cacheable = newCacheable;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY, oldPrimaryKey, newPrimaryKey);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntity#getPrimaryKey <em>Primary Key</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Primary Key</em>' containment reference.
-	 * @see #getPrimaryKey()
-	 * @generated
-	 */
-	public void setPrimaryKey(XmlPrimaryKey newPrimaryKey)
-	{
-		if (newPrimaryKey != primaryKey)
-		{
-			NotificationChain msgs = null;
-			if (primaryKey != null)
-				msgs = ((InternalEObject)primaryKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY, null, msgs);
-			if (newPrimaryKey != null)
-				msgs = ((InternalEObject)newPrimaryKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY, null, msgs);
-			msgs = basicSetPrimaryKey(newPrimaryKey, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY, newPrimaryKey, newPrimaryKey));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
-	{
-		switch (featureID)
-		{
-			case EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY:
-				return basicSetPrimaryKey(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_ENTITY__CACHEABLE, oldCacheable, cacheable));
 	}
 
 	/**
@@ -153,8 +115,8 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY:
-				return getPrimaryKey();
+			case EclipseLink2_0OrmPackage.XML_ENTITY__CACHEABLE:
+				return getCacheable();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -164,13 +126,14 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY:
-				setPrimaryKey((XmlPrimaryKey)newValue);
+			case EclipseLink2_0OrmPackage.XML_ENTITY__CACHEABLE:
+				setCacheable((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -186,8 +149,8 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY:
-				setPrimaryKey((XmlPrimaryKey)null);
+			case EclipseLink2_0OrmPackage.XML_ENTITY__CACHEABLE:
+				setCacheable(CACHEABLE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -203,19 +166,73 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_ENTITY__PRIMARY_KEY:
-				return primaryKey != null;
+			case EclipseLink2_0OrmPackage.XML_ENTITY__CACHEABLE:
+				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
 		}
 		return super.eIsSet(featureID);
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLink2_0OrmPackage.XML_ENTITY__CACHEABLE: return Orm2_0Package.XML_ENTITY__CACHEABLE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity.class)
+		{
+			switch (baseFeatureID)
+			{
+				case Orm2_0Package.XML_ENTITY__CACHEABLE: return EclipseLink2_0OrmPackage.XML_ENTITY__CACHEABLE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (cacheable: ");
+		result.append(cacheable);
+		result.append(')');
+		return result.toString();
+	}
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature, 
-			EclipseLink1_1OrmPackage.eINSTANCE.getXmlEntity(), 
+			EclipseLink2_0OrmPackage.eINSTANCE.getXmlEntity(), 
 			buildTranslatorChildren());
 	}
 
@@ -224,6 +241,7 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 			buildNameTranslator(),
 			buildClassTranslator(),
 			buildAccessTranslator(),
+			buildCacheableTranslator(),
 			buildMetadataCompleteTranslator(),
 			buildReadOnlyTranslator(),
 			buildExistenceCheckingTranslator(),
@@ -271,8 +289,8 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 		};
 	}
 	
-	protected static Translator buildPrimaryKeyTranslator() {
-		return XmlPrimaryKey.buildTranslator(JPA.PRIMARY_KEY, EclipseLink1_1OrmPackage.eINSTANCE.getXmlEntity_PrimaryKey());
+	protected static Translator buildCacheableTranslator() {
+		return new Translator(JPA.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlEntity_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlEntity

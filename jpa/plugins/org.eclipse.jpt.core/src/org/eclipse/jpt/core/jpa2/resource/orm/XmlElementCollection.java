@@ -40,7 +40,9 @@ import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -63,9 +65,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getMapKeyColumn <em>Map Key Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getMapKeyJoinColumns <em>Map Key Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getColumn <em>Column</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getTemporal <em>Temporal</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getEnumerated <em>Enumerated</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#isLob <em>Lob</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getAttributeOverrides <em>Attribute Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getAssociationOverrides <em>Association Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlElementCollection#getCollectionTable <em>Collection Table</em>}</li>
@@ -76,7 +75,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlElementCollection extends AbstractXmlAttributeMapping implements XmlAttributeMapping
+public class XmlElementCollection extends AbstractXmlAttributeMapping implements XmlAttributeMapping, XmlConvertibleMapping
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -93,6 +92,58 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @ordered
 	 */
 	protected AccessType access = ACCESS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isLob()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean LOB_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isLob() <em>Lob</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isLob()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean lob = LOB_EDEFAULT;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final TemporalType TEMPORAL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTemporal()
+	 * @generated
+	 * @ordered
+	 */
+	protected TemporalType temporal = TEMPORAL_EDEFAULT;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final EnumType ENUMERATED_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEnumerated()
+	 * @generated
+	 * @ordered
+	 */
+	protected EnumType enumerated = ENUMERATED_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getTargetClass() <em>Target Class</em>}' attribute.
@@ -251,58 +302,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @ordered
 	 */
 	protected XmlColumn column;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final TemporalType TEMPORAL_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTemporal()
-	 * @generated
-	 * @ordered
-	 */
-	protected TemporalType temporal = TEMPORAL_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final EnumType ENUMERATED_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEnumerated()
-	 * @generated
-	 * @ordered
-	 */
-	protected EnumType enumerated = ENUMERATED_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isLob()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean LOB_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isLob() <em>Lob</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isLob()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean lob = LOB_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
@@ -935,7 +934,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @return the value of the '<em>Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
 	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlElementCollection_Temporal()
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlConvertibleMapping_Temporal()
 	 * @model
 	 * @generated
 	 */
@@ -973,7 +972,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @return the value of the '<em>Enumerated</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.EnumType
 	 * @see #setEnumerated(EnumType)
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlElementCollection_Enumerated()
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlConvertibleMapping_Enumerated()
 	 * @model
 	 * @generated
 	 */
@@ -1009,7 +1008,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Lob</em>' attribute.
 	 * @see #setLob(boolean)
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlElementCollection_Lob()
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlConvertibleMapping_Lob()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -1186,6 +1185,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		{
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ACCESS:
 				return getAccess();
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
+				return isLob();
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
+				return getTemporal();
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
+				return getEnumerated();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return getTargetClass();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__FETCH:
@@ -1210,12 +1215,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getMapKeyJoinColumns();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__COLUMN:
 				return getColumn();
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
-				return getTemporal();
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
-				return getEnumerated();
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
-				return isLob();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
 				return getAttributeOverrides();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
@@ -1239,6 +1238,15 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		{
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ACCESS:
 				setAccess((AccessType)newValue);
+				return;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
+				setLob((Boolean)newValue);
+				return;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
+				setTemporal((TemporalType)newValue);
+				return;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
+				setEnumerated((EnumType)newValue);
 				return;
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass((String)newValue);
@@ -1278,15 +1286,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
-				setTemporal((TemporalType)newValue);
-				return;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
-				setEnumerated((EnumType)newValue);
-				return;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
-				setLob((Boolean)newValue);
-				return;
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
@@ -1314,6 +1313,15 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		{
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
+				return;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
+				setLob(LOB_EDEFAULT);
+				return;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
+				setTemporal(TEMPORAL_EDEFAULT);
+				return;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
+				setEnumerated(ENUMERATED_EDEFAULT);
 				return;
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
@@ -1351,15 +1359,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
-				setTemporal(TEMPORAL_EDEFAULT);
-				return;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
-				setEnumerated(ENUMERATED_EDEFAULT);
-				return;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
-				setLob(LOB_EDEFAULT);
-				return;
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				return;
@@ -1385,6 +1384,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		{
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ACCESS:
 				return access != ACCESS_EDEFAULT;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
+				return lob != LOB_EDEFAULT;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
+				return temporal != TEMPORAL_EDEFAULT;
+			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
+				return enumerated != ENUMERATED_EDEFAULT;
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__FETCH:
@@ -1409,12 +1414,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return mapKeyJoinColumns != null && !mapKeyJoinColumns.isEmpty();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__COLUMN:
 				return column != null;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL:
-				return temporal != TEMPORAL_EDEFAULT;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED:
-				return enumerated != ENUMERATED_EDEFAULT;
-			case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB:
-				return lob != LOB_EDEFAULT;
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 			case Orm2_0Package.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
@@ -1448,6 +1447,16 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConvertibleMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case Orm2_0Package.XML_ELEMENT_COLLECTION__LOB: return OrmPackage.XML_CONVERTIBLE_MAPPING__LOB;
+				case Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL: return OrmPackage.XML_CONVERTIBLE_MAPPING__TEMPORAL;
+				case Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED: return OrmPackage.XML_CONVERTIBLE_MAPPING__ENUMERATED;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1474,6 +1483,16 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConvertibleMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_CONVERTIBLE_MAPPING__LOB: return Orm2_0Package.XML_ELEMENT_COLLECTION__LOB;
+				case OrmPackage.XML_CONVERTIBLE_MAPPING__TEMPORAL: return Orm2_0Package.XML_ELEMENT_COLLECTION__TEMPORAL;
+				case OrmPackage.XML_CONVERTIBLE_MAPPING__ENUMERATED: return Orm2_0Package.XML_ELEMENT_COLLECTION__ENUMERATED;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1490,6 +1509,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (access: ");
 		result.append(access);
+		result.append(", lob: ");
+		result.append(lob);
+		result.append(", temporal: ");
+		result.append(temporal);
+		result.append(", enumerated: ");
+		result.append(enumerated);
 		result.append(", targetClass: ");
 		result.append(targetClass);
 		result.append(", fetch: ");
@@ -1500,18 +1525,24 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		result.append(mapKeyTemporal);
 		result.append(", mapKeyEnumerated: ");
 		result.append(mapKeyEnumerated);
-		result.append(", temporal: ");
-		result.append(temporal);
-		result.append(", enumerated: ");
-		result.append(enumerated);
-		result.append(", lob: ");
-		result.append(lob);
 		result.append(')');
 		return result.toString();
 	}
 
 	public String getMappingKey() {
 		return MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	public TextRange getEnumeratedTextRange() {
+		return getAttributeTextRange(JPA.ENUMERATED);
+	}
+	
+	public TextRange getLobTextRange() {
+		return getAttributeTextRange(JPA.LOB);
+	}
+	
+	public TextRange getTemporalTextRange() {
+		return getAttributeTextRange(JPA.TEMPORAL);
 	}
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -1564,15 +1595,15 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildLobTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.LOB, Orm2_0Package.eINSTANCE.getXmlElementCollection_Lob());
+		return new EmptyTagBooleanTranslator(JPA.LOB, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Lob());
 	}
 	
 	protected static Translator buildTemporalTranslator() {
-		return new Translator(JPA.TEMPORAL, Orm2_0Package.eINSTANCE.getXmlElementCollection_Temporal());
+		return new Translator(JPA.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
 	}
 	
 	protected static Translator buildEnumeratedTranslator() {
-		return new Translator(JPA.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlElementCollection_Enumerated());
+		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
 	}
 	
 	protected static Translator buildMapKeyTranslator() {

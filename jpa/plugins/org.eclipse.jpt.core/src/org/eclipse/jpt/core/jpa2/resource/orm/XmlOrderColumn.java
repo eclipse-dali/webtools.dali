@@ -29,10 +29,9 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getInsertable <em>Insertable</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getNullable <em>Nullable</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getInsertable <em>Insertable</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getUpdatable <em>Updatable</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getTable <em>Table</em>}</li>
  * </ul>
  * </p>
  *
@@ -42,26 +41,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class XmlOrderColumn extends AbstractXmlNamedColumn
 {
-	/**
-	 * The default value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInsertable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean INSERTABLE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInsertable()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean insertable = INSERTABLE_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getNullable() <em>Nullable</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -83,6 +62,26 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	protected Boolean nullable = NULLABLE_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInsertable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean INSERTABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInsertable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean insertable = INSERTABLE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getUpdatable() <em>Updatable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -101,26 +100,6 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	 * @ordered
 	 */
 	protected Boolean updatable = UPDATABLE_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String TABLE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getTable() <em>Table</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTable()
-	 * @generated
-	 * @ordered
-	 */
-	protected String table = TABLE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -249,41 +228,6 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Table</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Table</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Table</em>' attribute.
-	 * @see #setTable(String)
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlOrderColumn_Table()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getTable()
-	{
-		return table;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn#getTable <em>Table</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Table</em>' attribute.
-	 * @see #getTable()
-	 * @generated
-	 */
-	public void setTable(String newTable)
-	{
-		String oldTable = table;
-		table = newTable;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_ORDER_COLUMN__TABLE, oldTable, table));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -293,14 +237,12 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
-				return getInsertable();
 			case Orm2_0Package.XML_ORDER_COLUMN__NULLABLE:
 				return getNullable();
+			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
+				return getInsertable();
 			case Orm2_0Package.XML_ORDER_COLUMN__UPDATABLE:
 				return getUpdatable();
-			case Orm2_0Package.XML_ORDER_COLUMN__TABLE:
-				return getTable();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -315,17 +257,14 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
-				setInsertable((Boolean)newValue);
-				return;
 			case Orm2_0Package.XML_ORDER_COLUMN__NULLABLE:
 				setNullable((Boolean)newValue);
 				return;
+			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
+				setInsertable((Boolean)newValue);
+				return;
 			case Orm2_0Package.XML_ORDER_COLUMN__UPDATABLE:
 				setUpdatable((Boolean)newValue);
-				return;
-			case Orm2_0Package.XML_ORDER_COLUMN__TABLE:
-				setTable((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -341,17 +280,14 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
-				setInsertable(INSERTABLE_EDEFAULT);
-				return;
 			case Orm2_0Package.XML_ORDER_COLUMN__NULLABLE:
 				setNullable(NULLABLE_EDEFAULT);
 				return;
+			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
+				setInsertable(INSERTABLE_EDEFAULT);
+				return;
 			case Orm2_0Package.XML_ORDER_COLUMN__UPDATABLE:
 				setUpdatable(UPDATABLE_EDEFAULT);
-				return;
-			case Orm2_0Package.XML_ORDER_COLUMN__TABLE:
-				setTable(TABLE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -367,14 +303,12 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
-				return INSERTABLE_EDEFAULT == null ? insertable != null : !INSERTABLE_EDEFAULT.equals(insertable);
 			case Orm2_0Package.XML_ORDER_COLUMN__NULLABLE:
 				return NULLABLE_EDEFAULT == null ? nullable != null : !NULLABLE_EDEFAULT.equals(nullable);
+			case Orm2_0Package.XML_ORDER_COLUMN__INSERTABLE:
+				return INSERTABLE_EDEFAULT == null ? insertable != null : !INSERTABLE_EDEFAULT.equals(insertable);
 			case Orm2_0Package.XML_ORDER_COLUMN__UPDATABLE:
 				return UPDATABLE_EDEFAULT == null ? updatable != null : !UPDATABLE_EDEFAULT.equals(updatable);
-			case Orm2_0Package.XML_ORDER_COLUMN__TABLE:
-				return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -390,14 +324,12 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (insertable: ");
-		result.append(insertable);
-		result.append(", nullable: ");
+		result.append(" (nullable: ");
 		result.append(nullable);
+		result.append(", insertable: ");
+		result.append(insertable);
 		result.append(", updatable: ");
 		result.append(updatable);
-		result.append(", table: ");
-		result.append(table);
 		result.append(')');
 		return result.toString();
 	}
@@ -419,8 +351,7 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 			buildNullableTranslator(),
 			buildInsertableTranslator(),
 			buildUpdatableTranslator(),
-			buildColumnDefinitionTranslator(),
-			buildTableTranslator(),
+			buildColumnDefinitionTranslator()
 		};
 	}
 		
@@ -434,10 +365,6 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	
 	protected static Translator buildUpdatableTranslator() {
 		return new BooleanTranslator(JPA.UPDATABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Updatable(), Translator.DOM_ATTRIBUTE);
-	}
-	
-	protected static Translator buildTableTranslator() {
-		return new Translator(JPA.TABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Table(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlOrderColumn

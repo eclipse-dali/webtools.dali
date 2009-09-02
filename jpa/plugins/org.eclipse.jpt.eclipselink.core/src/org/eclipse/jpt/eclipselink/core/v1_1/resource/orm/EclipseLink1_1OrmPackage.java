@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.v1_1.resource.orm;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.EReference;
@@ -692,13 +694,22 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS = EclipseLinkOrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS;
 
 	/**
+	 * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__PRIMARY_KEY = EclipseLinkOrmPackage.XML_ENTITY_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ENTITY_FEATURE_COUNT + 0;
+	public static final int XML_ENTITY_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
@@ -1153,13 +1164,22 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS;
 
 	/**
+	 * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__PRIMARY_KEY = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 0;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.Attributes <em>Attributes</em>}' class.
@@ -2807,6 +2827,53 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_TRANSIENT_FEATURE_COUNT = EclipseLinkOrmPackage.XML_TRANSIENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey <em>Xml Primary Key</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage#getXmlPrimaryKey()
+	 * @generated
+	 */
+	public static final int XML_PRIMARY_KEY = 20;
+
+	/**
+	 * The feature id for the '<em><b>Validation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PRIMARY_KEY__VALIDATION = 0;
+
+	/**
+	 * The feature id for the '<em><b>Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PRIMARY_KEY__COLUMNS = 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml Primary Key</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PRIMARY_KEY_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.IdValidation <em>Id Validation</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.IdValidation
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage#getIdValidation()
+	 * @generated
+	 */
+	public static final int ID_VALIDATION = 21;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2947,6 +3014,20 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	private EClass xmlTransientEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlPrimaryKeyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum idValidationEEnum = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -3042,6 +3123,21 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntity#getPrimaryKey <em>Primary Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Primary Key</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntity#getPrimaryKey()
+	 * @see #getXmlEntity()
+	 * @generated
+	 */
+	public EReference getXmlEntity_PrimaryKey()
+	{
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3066,6 +3162,21 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public EClass getXmlMappedSuperclass()
 	{
 		return xmlMappedSuperclassEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlMappedSuperclass#getPrimaryKey <em>Primary Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Primary Key</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlMappedSuperclass#getPrimaryKey()
+	 * @see #getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public EReference getXmlMappedSuperclass_PrimaryKey()
+	{
+		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -3296,6 +3407,64 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey <em>Xml Primary Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Primary Key</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey
+	 * @generated
+	 */
+	public EClass getXmlPrimaryKey()
+	{
+		return xmlPrimaryKeyEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey#getValidation <em>Validation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Validation</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey#getValidation()
+	 * @see #getXmlPrimaryKey()
+	 * @generated
+	 */
+	public EAttribute getXmlPrimaryKey_Validation()
+	{
+		return (EAttribute)xmlPrimaryKeyEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey#getColumns <em>Columns</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Columns</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey#getColumns()
+	 * @see #getXmlPrimaryKey()
+	 * @generated
+	 */
+	public EReference getXmlPrimaryKey_Columns()
+	{
+		return (EReference)xmlPrimaryKeyEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.IdValidation <em>Id Validation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Id Validation</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.IdValidation
+	 * @generated
+	 */
+	public EEnum getIdValidation()
+	{
+		return idValidationEEnum;
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3330,10 +3499,12 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		xmlEntityMappingsEClass = createEClass(XML_ENTITY_MAPPINGS);
 
 		xmlEntityEClass = createEClass(XML_ENTITY);
+		createEReference(xmlEntityEClass, XML_ENTITY__PRIMARY_KEY);
 
 		xmlEmbeddableEClass = createEClass(XML_EMBEDDABLE);
 
 		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
+		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__PRIMARY_KEY);
 
 		attributesEClass = createEClass(ATTRIBUTES);
 
@@ -3367,6 +3538,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		xmlVariableOneToOneEClass = createEClass(XML_VARIABLE_ONE_TO_ONE);
 
 		xmlTransientEClass = createEClass(XML_TRANSIENT);
+
+		xmlPrimaryKeyEClass = createEClass(XML_PRIMARY_KEY);
+		createEAttribute(xmlPrimaryKeyEClass, XML_PRIMARY_KEY__VALIDATION);
+		createEReference(xmlPrimaryKeyEClass, XML_PRIMARY_KEY__COLUMNS);
+
+		// Create enums
+		idValidationEEnum = createEEnum(ID_VALIDATION);
 	}
 
 	/**
@@ -3443,10 +3621,12 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		initEClass(xmlEntityMappingsEClass, XmlEntityMappings.class, "XmlEntityMappings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEntity_PrimaryKey(), this.getXmlPrimaryKey(), null, "primaryKey", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbeddableEClass, XmlEmbeddable.class, "XmlEmbeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMappedSuperclass_PrimaryKey(), this.getXmlPrimaryKey(), null, "primaryKey", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3480,6 +3660,16 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		initEClass(xmlVariableOneToOneEClass, XmlVariableOneToOne.class, "XmlVariableOneToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlTransientEClass, XmlTransient.class, "XmlTransient", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlPrimaryKeyEClass, XmlPrimaryKey.class, "XmlPrimaryKey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlPrimaryKey_Validation(), this.getIdValidation(), "validation", null, 0, 1, XmlPrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPrimaryKey_Columns(), theOrmPackage.getXmlColumn(), null, "columns", null, 0, -1, XmlPrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(idValidationEEnum, IdValidation.class, "IdValidation");
+		addEEnumLiteral(idValidationEEnum, IdValidation.NULL);
+		addEEnumLiteral(idValidationEEnum, IdValidation.ZERO);
+		addEEnumLiteral(idValidationEEnum, IdValidation.NONE);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -3520,6 +3710,14 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		public static final EClass XML_ENTITY = eINSTANCE.getXmlEntity();
 
 		/**
+		 * The meta object literal for the '<em><b>Primary Key</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY__PRIMARY_KEY = eINSTANCE.getXmlEntity_PrimaryKey();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3538,6 +3736,14 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS = eINSTANCE.getXmlMappedSuperclass();
+
+		/**
+		 * The meta object literal for the '<em><b>Primary Key</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAPPED_SUPERCLASS__PRIMARY_KEY = eINSTANCE.getXmlMappedSuperclass_PrimaryKey();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.Attributes <em>Attributes</em>}' class.
@@ -3706,6 +3912,42 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_TRANSIENT = eINSTANCE.getXmlTransient();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey <em>Xml Primary Key</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey
+		 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage#getXmlPrimaryKey()
+		 * @generated
+		 */
+		public static final EClass XML_PRIMARY_KEY = eINSTANCE.getXmlPrimaryKey();
+
+		/**
+		 * The meta object literal for the '<em><b>Validation</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_PRIMARY_KEY__VALIDATION = eINSTANCE.getXmlPrimaryKey_Validation();
+
+		/**
+		 * The meta object literal for the '<em><b>Columns</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_PRIMARY_KEY__COLUMNS = eINSTANCE.getXmlPrimaryKey_Columns();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.IdValidation <em>Id Validation</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.IdValidation
+		 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage#getIdValidation()
+		 * @generated
+		 */
+		public static final EEnum ID_VALIDATION = eINSTANCE.getIdValidation();
 
 	}
 

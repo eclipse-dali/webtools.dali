@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved. This
+ * Copyright (c) 2009 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.v1_1.resource.orm;
+package org.eclipse.jpt.eclipselink.core.v2_0.resource.orm;
 
 @SuppressWarnings("nls")
 public interface JPA
@@ -230,9 +230,32 @@ public interface JPA
 		
 	String VARIABLE_ONE_TO_ONE = "variable-one-to-one";  //$NON-NLS-1$
 
+	
 	// ********** EclipseLink 1.1 strings ***********
+	
 	String PRIMARY_KEY = "primary-key";  //$NON-NLS-1$
-	String PRIMARY_KEY__VALIDATION = "validation";  //$NON-NLS-1$
-	String PRIMARY_KEY__COLUMN = "column";  //$NON-NLS-1$
+
+	
+	// JPA 2.0 specific elements
+	
+	String CACHEABLE = "cacheable";
+	String COLLECTION_TABLE = "collection-table";
+	String DELIMITIED_IDENTIFIERS = "delimited-identifiers";
+	String ELEMENT_COLLECTION = "element-collection";
+	String MAP_KEY_ATTRIBUTE_OVERRIDE = "map-key-attribute-override";
+	String MAP_KEY_CLASS = "map-key-class";
+	String MAP_KEY_COLUMN = "map-key-column";
+	String MAP_KEY_ENUMERATED = "map-key-enumerated";
+	String MAP_KEY_JOIN_COLUMN = "map-key-join-column";
+	String MAPPED_BY_ID = "mapped-by-id";
+	String NAMED_QUERY__LOCK_MODE = "lock-mode";
+	String ORDER_COLUMN = "order-column";
+	String ORPHAN_REMOVAL = "orphan-removal";
+	String TARGET_CLASS = "target-class";
+	String MAP_KEY_TEMPORAL = "map-key-temporal";
+	
+	// ********** EclipseLink 2.0 strings ***********
+	String MAP_KEY_ASSOCIATION_OVERRIDE = "map-key-association-override";
+	String MAP_KEY_CONVERT = "map-key-convert";
 
 }

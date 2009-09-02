@@ -7,15 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.v1_1.resource.orm;
+package org.eclipse.jpt.eclipselink.core.v2_0.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -23,10 +21,10 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage
+ * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage
  * @generated
  */
-public class EclipseLink1_1OrmFactory extends EFactoryImpl
+public class EclipseLink2_0OrmFactory extends EFactoryImpl
 {
 	/**
 	 * The singleton instance of the factory.
@@ -34,7 +32,7 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final EclipseLink1_1OrmFactory eINSTANCE = init();
+	public static final EclipseLink2_0OrmFactory eINSTANCE = init();
 
 	/**
 	 * Creates the default factory implementation.
@@ -42,21 +40,21 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static EclipseLink1_1OrmFactory init()
+	public static EclipseLink2_0OrmFactory init()
 	{
 		try
 		{
-			EclipseLink1_1OrmFactory theEclipseLink1_1OrmFactory = (EclipseLink1_1OrmFactory)EPackage.Registry.INSTANCE.getEFactory("jpt.eclipselink1_1.orm.xmi"); 
-			if (theEclipseLink1_1OrmFactory != null)
+			EclipseLink2_0OrmFactory theEclipseLink2_0OrmFactory = (EclipseLink2_0OrmFactory)EPackage.Registry.INSTANCE.getEFactory("jpt.eclipselink2_0.orm.xmi"); 
+			if (theEclipseLink2_0OrmFactory != null)
 			{
-				return theEclipseLink1_1OrmFactory;
+				return theEclipseLink2_0OrmFactory;
 			}
 		}
 		catch (Exception exception)
 		{
 			EcorePlugin.INSTANCE.log(exception);
 		}
-		return new EclipseLink1_1OrmFactory();
+		return new EclipseLink2_0OrmFactory();
 	}
 
 	/**
@@ -65,7 +63,7 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EclipseLink1_1OrmFactory()
+	public EclipseLink2_0OrmFactory()
 	{
 		super();
 	}
@@ -80,26 +78,19 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
-			case EclipseLink1_1OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
-			case EclipseLink1_1OrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
-			case EclipseLink1_1OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
-			case EclipseLink1_1OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
-			case EclipseLink1_1OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
-			case EclipseLink1_1OrmPackage.XML_ID: return (EObject)createXmlId();
-			case EclipseLink1_1OrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
-			case EclipseLink1_1OrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
-			case EclipseLink1_1OrmPackage.XML_BASIC: return (EObject)createXmlBasic();
-			case EclipseLink1_1OrmPackage.XML_VERSION: return (EObject)createXmlVersion();
-			case EclipseLink1_1OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
-			case EclipseLink1_1OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
-			case EclipseLink1_1OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
-			case EclipseLink1_1OrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
-			case EclipseLink1_1OrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
-			case EclipseLink1_1OrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
-			case EclipseLink1_1OrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
-			case EclipseLink1_1OrmPackage.XML_VARIABLE_ONE_TO_ONE: return (EObject)createXmlVariableOneToOne();
-			case EclipseLink1_1OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
-			case EclipseLink1_1OrmPackage.XML_PRIMARY_KEY: return (EObject)createXmlPrimaryKey();
+			case EclipseLink2_0OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
+			case EclipseLink2_0OrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
+			case EclipseLink2_0OrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
+			case EclipseLink2_0OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
+			case EclipseLink2_0OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
+			case EclipseLink2_0OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
+			case EclipseLink2_0OrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
+			case EclipseLink2_0OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
+			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
+			case EclipseLink2_0OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
+			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case EclipseLink2_0OrmPackage.XML_ELEMENT_COLLECTION: return (EObject)createXmlElementCollection();
+			case EclipseLink2_0OrmPackage.XML_ORDER_COLUMN: return (EObject)createXmlOrderColumn();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -115,8 +106,8 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case EclipseLink1_1OrmPackage.ID_VALIDATION:
-				return createIdValidationFromString(eDataType, initialValue);
+			case EclipseLink2_0OrmPackage.ORDER_COLUMN_VALIDATION_MODE:
+				return createOrderColumnValidationModeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -132,8 +123,8 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case EclipseLink1_1OrmPackage.ID_VALIDATION:
-				return convertIdValidationToString(eDataType, instanceValue);
+			case EclipseLink2_0OrmPackage.ORDER_COLUMN_VALIDATION_MODE:
+				return convertOrderColumnValidationModeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -148,6 +139,17 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	{
 		XmlEntityMappings xmlEntityMappings = new XmlEntityMappings();
 		return xmlEntityMappings;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPersistenceUnitMetadata createXmlPersistenceUnitMetadata()
+	{
+		XmlPersistenceUnitMetadata xmlPersistenceUnitMetadata = new XmlPersistenceUnitMetadata();
+		return xmlPersistenceUnitMetadata;
 	}
 
 	/**
@@ -199,54 +201,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlId createXmlId()
-	{
-		XmlId xmlId = new XmlId();
-		return xmlId;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEmbeddedId createXmlEmbeddedId()
-	{
-		XmlEmbeddedId xmlEmbeddedId = new XmlEmbeddedId();
-		return xmlEmbeddedId;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public XmlEmbedded createXmlEmbedded()
 	{
 		XmlEmbedded xmlEmbedded = new XmlEmbedded();
 		return xmlEmbedded;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlBasic createXmlBasic()
-	{
-		XmlBasic xmlBasic = new XmlBasic();
-		return xmlBasic;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlVersion createXmlVersion()
-	{
-		XmlVersion xmlVersion = new XmlVersion();
-		return xmlVersion;
 	}
 
 	/**
@@ -298,10 +256,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlBasicCollection createXmlBasicCollection()
+	public XmlElementCollection createXmlElementCollection()
 	{
-		XmlBasicCollection xmlBasicCollection = new XmlBasicCollection();
-		return xmlBasicCollection;
+		XmlElementCollection xmlElementCollection = new XmlElementCollection();
+		return xmlElementCollection;
 	}
 
 	/**
@@ -309,10 +267,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlBasicMap createXmlBasicMap()
+	public XmlOrderColumn createXmlOrderColumn()
 	{
-		XmlBasicMap xmlBasicMap = new XmlBasicMap();
-		return xmlBasicMap;
+		XmlOrderColumn xmlOrderColumn = new XmlOrderColumn();
+		return xmlOrderColumn;
 	}
 
 	/**
@@ -320,53 +278,9 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTransformation createXmlTransformation()
+	public OrderColumnValidationMode createOrderColumnValidationModeFromString(EDataType eDataType, String initialValue)
 	{
-		XmlTransformation xmlTransformation = new XmlTransformation();
-		return xmlTransformation;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlVariableOneToOne createXmlVariableOneToOne()
-	{
-		XmlVariableOneToOne xmlVariableOneToOne = new XmlVariableOneToOne();
-		return xmlVariableOneToOne;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlTransient createXmlTransient()
-	{
-		XmlTransient xmlTransient = new XmlTransient();
-		return xmlTransient;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlPrimaryKey createXmlPrimaryKey()
-	{
-		XmlPrimaryKey xmlPrimaryKey = new XmlPrimaryKey();
-		return xmlPrimaryKey;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public IdValidation createIdValidationFromString(EDataType eDataType, String initialValue)
-	{
-		IdValidation result = IdValidation.get(initialValue);
+		OrderColumnValidationMode result = OrderColumnValidationMode.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -376,7 +290,7 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertIdValidationToString(EDataType eDataType, Object instanceValue)
+	public String convertOrderColumnValidationModeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}
@@ -386,9 +300,9 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EclipseLink1_1OrmPackage getEclipseLink1_1OrmPackage()
+	public EclipseLink2_0OrmPackage getEclipseLink2_0OrmPackage()
 	{
-		return (EclipseLink1_1OrmPackage)getEPackage();
+		return (EclipseLink2_0OrmPackage)getEPackage();
 	}
 
 	/**
@@ -398,9 +312,9 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * @generated
 	 */
 	@Deprecated
-	public static EclipseLink1_1OrmPackage getPackage()
+	public static EclipseLink2_0OrmPackage getPackage()
 	{
-		return EclipseLink1_1OrmPackage.eINSTANCE;
+		return EclipseLink2_0OrmPackage.eINSTANCE;
 	}
 
-} //EclipseLink1_1OrmFactory
+} //EclipseLink2_0OrmFactory
