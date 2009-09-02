@@ -19,9 +19,7 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -48,6 +46,8 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericEntityMappings2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
@@ -142,11 +142,15 @@ public interface JpaFactory2_0
 
 	XmlManyToMany buildVirtualXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping);
 
-	XmlManyToOne buildVirtualXmlManyToOne2_0(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping);
+	XmlManyToOne buildVirtualXmlManyToOne2_0(
+			OrmTypeMapping ormTypeMapping, 
+			JavaManyToOneMapping2_0 javaManyToOneMapping);
 
 	XmlOneToMany buildVirtualXmlOneToMany2_0(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping);
 
-	XmlOneToOne buildVirtualXmlOneToOne2_0(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping);
+	XmlOneToOne buildVirtualXmlOneToOne2_0(
+			OrmTypeMapping ormTypeMapping, 
+			JavaOneToOneMapping2_0 javaOneToOneMapping);
 
 	XmlTransient buildVirtualXmlTransient2_0(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping);
 

@@ -14,12 +14,12 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -56,12 +56,22 @@ public class GenericOrmManyToOneMapping2_0Provider
 		return Orm2_0Factory.eINSTANCE.createXmlManyToOne();
 	}
 
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildOrmManyToOneMapping2_0(parent, (XmlManyToOne) resourceMapping);
+	public OrmAttributeMapping buildMapping(
+			OrmPersistentAttribute parent, 
+			XmlAttributeMapping resourceMapping, 
+			JpaFactory factory) {
+		
+		return ((JpaFactory2_0) factory).buildOrmManyToOneMapping2_0(
+			parent, (XmlManyToOne) resourceMapping);
 	}
 
-	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildVirtualXmlManyToOne2_0(ormTypeMapping, (JavaManyToOneMapping) javaAttributeMapping);
+	public XmlAttributeMapping buildVirtualResourceMapping(
+			OrmTypeMapping ormTypeMapping, 
+			JavaAttributeMapping javaAttributeMapping, 
+			JpaFactory factory) {
+		
+		return ((JpaFactory2_0) factory).buildVirtualXmlManyToOne2_0(
+			ormTypeMapping, 
+			(JavaManyToOneMapping2_0) javaAttributeMapping);
 	}
-
 }

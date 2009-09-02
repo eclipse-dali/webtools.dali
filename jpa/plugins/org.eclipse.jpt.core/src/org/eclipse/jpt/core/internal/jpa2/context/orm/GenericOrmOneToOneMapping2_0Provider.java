@@ -14,12 +14,12 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -56,12 +56,21 @@ public class GenericOrmOneToOneMapping2_0Provider
 		return Orm2_0Factory.eINSTANCE.createXmlOneToOne();
 	}
 
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildOrmOneToOneMapping2_0(parent, (XmlOneToOne) resourceMapping);
+	public OrmAttributeMapping buildMapping(
+			OrmPersistentAttribute parent, 
+			XmlAttributeMapping resourceMapping, 
+			JpaFactory factory) {
+		
+		return ((JpaFactory2_0) factory).buildOrmOneToOneMapping2_0(
+			parent, (XmlOneToOne) resourceMapping);
 	}
-
-	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildVirtualXmlOneToOne2_0(ormTypeMapping, (JavaOneToOneMapping) javaAttributeMapping);
+	
+	public XmlAttributeMapping buildVirtualResourceMapping(
+			OrmTypeMapping ormTypeMapping, 
+			JavaAttributeMapping javaAttributeMapping, 
+			JpaFactory factory) {
+		
+		return ((JpaFactory2_0) factory).buildVirtualXmlOneToOne2_0(
+			ormTypeMapping, (JavaOneToOneMapping2_0) javaAttributeMapping);
 	}
-
 }

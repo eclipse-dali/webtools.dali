@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToOne;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
@@ -22,20 +22,19 @@ import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
-/**
- * VirtualBasic is an implementation of Basic used when there is 
- * no tag in the orm.xml and an underlying javaBasicMapping exists.
- */
 public class VirtualXmlOneToOne2_0 extends XmlOneToOne
-{
-		
+{		
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaOneToOneMapping javaAttributeMapping;
-
+	protected final JavaOneToOneMapping2_0 javaAttributeMapping;
+	
 	protected final VirtualXmlOneToOne virtualXmlOneToOne;
+	
+	
+	public VirtualXmlOneToOne2_0(
+			OrmTypeMapping ormTypeMapping, 
+			JavaOneToOneMapping2_0 javaOneToOneMapping) {
 		
-	public VirtualXmlOneToOne2_0(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToOneMapping;
@@ -153,6 +152,20 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 	
 	@Override
 	public void setAccess(AccessType value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	@Override
+	public Boolean getId() {
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
+		boolean javaIdValue = this.javaAttributeMapping.getDerivedId().getValue();
+		return (javaIdValue) ? Boolean.TRUE : null;
+	}
+	
+	@Override
+	public void setId(Boolean newId) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

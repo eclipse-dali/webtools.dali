@@ -108,6 +108,8 @@ import org.eclipse.jpt.core.internal.platform.AbstractJpaFactory;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.ClassRef2_0;
@@ -302,14 +304,9 @@ public class GenericJpaFactory2_0
 	public OrmBasicMapping buildOrmBasicMapping2_0(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
 		return this.buildOrmBasicMapping(parent, resourceMapping);
 	}
-
-	@Override
-	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlId resourceMapping) {
-		return new GenericOrmIdMapping2_0(parent, (XmlId)resourceMapping);
-	}
 	
 	public OrmIdMapping buildOrmIdMapping2_0(OrmPersistentAttribute parent, XmlId resourceMapping) {
-		return this.buildOrmIdMapping(parent, resourceMapping);
+		return new GenericOrmIdMapping2_0(parent, resourceMapping);
 	}
 	
 	public OrmEmbeddedMapping buildOrmEmbeddedMapping2_0(OrmPersistentAttribute parent, XmlEmbedded resourceMapping) {
@@ -384,7 +381,10 @@ public class GenericJpaFactory2_0
 		return new VirtualXmlManyToMany2_0(ormTypeMapping, javaManyToManyMapping);
 	}
 	
-	public XmlManyToOne buildVirtualXmlManyToOne2_0(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
+	public XmlManyToOne buildVirtualXmlManyToOne2_0(
+			OrmTypeMapping ormTypeMapping, 
+			JavaManyToOneMapping2_0 javaManyToOneMapping) {
+		
 		return new VirtualXmlManyToOne2_0(ormTypeMapping, javaManyToOneMapping);
 	}
 	
@@ -392,7 +392,10 @@ public class GenericJpaFactory2_0
 		return new VirtualXmlOneToMany2_0(ormTypeMapping, javaOneToManyMapping);
 	}
 	
-	public XmlOneToOne buildVirtualXmlOneToOne2_0(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
+	public XmlOneToOne buildVirtualXmlOneToOne2_0(
+			OrmTypeMapping ormTypeMapping, 
+			JavaOneToOneMapping2_0 javaOneToOneMapping) {
+		
 		return new VirtualXmlOneToOne2_0(ormTypeMapping, javaOneToOneMapping);
 	}
 	
