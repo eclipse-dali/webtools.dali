@@ -13,12 +13,10 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToOneMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 
-
-public class GenericOrmManyToOneMapping extends AbstractOrmManyToOneMapping<XmlManyToOne>
+public class GenericOrmManyToOneMapping 
+	extends AbstractOrmManyToOneMapping<XmlManyToOne>
 {
-	
 	public GenericOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
 		super(parent, resourceMapping);
 	}
-	
 }
