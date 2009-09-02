@@ -12,8 +12,10 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -491,10 +493,25 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		return customizer;
 	} 
 	Collection<Table> getPossibleTables() {
+		Collection<Table> tables = new ArrayList<Table>();
 		if ( this.tablesSelectorPage != null) {
-			return this.tablesSelectorPage.getTables();
+			tables = this.tablesSelectorPage.getTables();
 		}
-		return ( this.projectDefaultSchemaExists()) ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
+		tables = this.projectDefaultSchemaExists() ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
+		//return only tables that have columns - this filters out synonyms where they are not
+		//fully supported and potentially other problematic table types - see bug 269057
+		return filterEmptyTables(tables);
+	}
+	
+	private Collection<Table> filterEmptyTables(Collection<Table> tables){
+		Collection<Table> nonEmptyTables = new ArrayList<Table>();
+		for (Iterator<Table> stream = tables.iterator(); stream.hasNext();){
+			Table candidateTable = stream.next();
+			if (candidateTable.columnsSize() > 0){
+				nonEmptyTables.add(candidateTable);
+			}
+		}
+		return nonEmptyTables;
 	}
 	
 	public ConnectionProfile getProjectConnectionProfile() {

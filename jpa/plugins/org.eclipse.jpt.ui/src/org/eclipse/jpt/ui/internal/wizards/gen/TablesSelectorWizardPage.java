@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -247,8 +248,8 @@ class TablesSelectorWizardPage extends WizardPage{
 		doStatusUpdate();
 	}
 
-	private void initTablesSelectionControl(Collection<Table> possibleTables) {
-		this.tableTable.setInput(possibleTables);
+	private void initTablesSelectionControl(Collection<Table> nonEmptyTables) {
+		this.tableTable.setInput(nonEmptyTables);
 	}
 
 	private void createTablesSelectionControl(Composite parent, int columns) {
@@ -484,7 +485,8 @@ class TablesSelectorWizardPage extends WizardPage{
 		this.jpaProject.setUserOverrideDefaultSchema( schema.getName());
 		JptCorePlugin.setUserOverrideDefaultSchemaName(jpaProject.getProject(), schema.getName());
 		
-		updateTablesListViewer( CollectionTools.collection(schema.tables()));
+		//update the listViewer with non empty tables (filtering out unsupported schemas)
+		updateTablesListViewer(filterEmptyTables(schema.tables()));
 
 		//Create the ORMGenCustomizer
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) getWizard();
@@ -494,9 +496,19 @@ class TablesSelectorWizardPage extends WizardPage{
 			restoreWizardState();
 		}
         doStatusUpdate();
-
 	}
 
+	private Collection<Table> filterEmptyTables(Iterator<Table> tables){
+		Collection<Table> nonEmptyTables = new ArrayList<Table>();
+		while (tables.hasNext()){
+			Table candidateTable = tables.next();
+			if (candidateTable.columnsSize() > 0){
+				nonEmptyTables.add(candidateTable);
+			}
+		}
+		return nonEmptyTables;
+	}
+	
 	private boolean restoreWizardState(){
 		boolean pageComplete = false;
 		List<String> preSelectedTableNames = this.customizer.getTableNames();
