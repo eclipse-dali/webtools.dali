@@ -41,7 +41,6 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
@@ -50,6 +49,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericEntityMappings2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
@@ -64,11 +64,11 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
@@ -104,11 +104,11 @@ public interface JpaFactory2_0
 
 	OrmBasicMapping buildOrmBasicMapping2_0(OrmPersistentAttribute parent, XmlBasic resourceMapping);
 
+	OrmIdMapping buildOrmIdMapping2_0(OrmPersistentAttribute parent, XmlId resourceMapping);
+
 	OrmEmbeddedMapping buildOrmEmbeddedMapping2_0(OrmPersistentAttribute parent, XmlEmbedded resourceMapping);
 
 	OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping2_0(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping);
-	
-	OrmIdMapping buildOrmIdMapping2_0(OrmPersistentAttribute parent, XmlId resourceMapping);
 
 	OrmManyToManyMapping buildOrmManyToManyMapping2_0(OrmPersistentAttribute parent, XmlManyToMany resourceMapping);
 
@@ -125,8 +125,8 @@ public interface JpaFactory2_0
 	OrmAttributeMapping buildOrmNullAttributeMapping2_0(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 
 	OrmGeneratorContainer buildOrmGeneratorContainer2_0(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer);
-	
-	OrmSequenceGenerator buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
+
+	OrmSequenceGenerator2_0 buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
 
 	OrmAssociationOverride buildOrmAssociationOverride2_0(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
 
