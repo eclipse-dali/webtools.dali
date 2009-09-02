@@ -1615,13 +1615,13 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_DERIVED_ID = 14;
 
 	/**
-	 * The feature id for the '<em><b>Derived Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DERIVED_ID__DERIVED_ID = 0;
+	public static final int XML_DERIVED_ID__ID = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Derived Id</em>' class.
@@ -1715,13 +1715,13 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__ACCESS = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Derived Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE__DERIVED_ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_ONE__ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
@@ -1733,22 +1733,13 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_ONE__ID = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 3;
-
-	/**
 	 * The number of structural features of the '<em>Xml Many To One</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 4;
+	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -2032,13 +2023,13 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__ACCESS = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Derived Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__DERIVED_ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_ONE__ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
@@ -2059,22 +2050,13 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_ONE__ID = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 4;
-
-	/**
 	 * The number of structural features of the '<em>Xml One To One</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 5;
+	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
@@ -4719,15 +4701,15 @@ public class Orm2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId#getDerivedId <em>Derived Id</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId#getId <em>Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Derived Id</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId#getDerivedId()
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId#getId()
 	 * @see #getXmlDerivedId()
 	 * @generated
 	 */
-	public EAttribute getXmlDerivedId_DerivedId()
+	public EAttribute getXmlDerivedId_Id()
 	{
 		return (EAttribute)xmlDerivedIdEClass.getEStructuralFeatures().get(0);
 	}
@@ -4758,20 +4740,6 @@ public class Orm2_0Package extends EPackageImpl
 	public EAttribute getXmlManyToOne_MappedById()
 	{
 		return (EAttribute)xmlManyToOneEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne#isId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne#isId()
-	 * @see #getXmlManyToOne()
-	 * @generated
-	 */
-	public EAttribute getXmlManyToOne_Id()
-	{
-		return (EAttribute)xmlManyToOneEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -4938,20 +4906,6 @@ public class Orm2_0Package extends EPackageImpl
 	public EAttribute getXmlOneToOne_MappedById()
 	{
 		return (EAttribute)xmlOneToOneEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne#isId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne#isId()
-	 * @see #getXmlOneToOne()
-	 * @generated
-	 */
-	public EAttribute getXmlOneToOne_Id()
-	{
-		return (EAttribute)xmlOneToOneEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -5789,11 +5743,10 @@ public class Orm2_0Package extends EPackageImpl
 		xmlVersionEClass = createEClass(XML_VERSION);
 
 		xmlDerivedIdEClass = createEClass(XML_DERIVED_ID);
-		createEAttribute(xmlDerivedIdEClass, XML_DERIVED_ID__DERIVED_ID);
+		createEAttribute(xmlDerivedIdEClass, XML_DERIVED_ID__ID);
 
 		xmlManyToOneEClass = createEClass(XML_MANY_TO_ONE);
 		createEAttribute(xmlManyToOneEClass, XML_MANY_TO_ONE__MAPPED_BY_ID);
-		createEAttribute(xmlManyToOneEClass, XML_MANY_TO_ONE__ID);
 
 		xmlOneToManyEClass = createEClass(XML_ONE_TO_MANY);
 		createEReference(xmlOneToManyEClass, XML_ONE_TO_MANY__ORDER_COLUMN);
@@ -5808,7 +5761,6 @@ public class Orm2_0Package extends EPackageImpl
 		xmlOneToOneEClass = createEClass(XML_ONE_TO_ONE);
 		createEAttribute(xmlOneToOneEClass, XML_ONE_TO_ONE__ORPHAN_REMOVAL);
 		createEAttribute(xmlOneToOneEClass, XML_ONE_TO_ONE__MAPPED_BY_ID);
-		createEAttribute(xmlOneToOneEClass, XML_ONE_TO_ONE__ID);
 
 		xmlManyToManyEClass = createEClass(XML_MANY_TO_MANY);
 		createEReference(xmlManyToManyEClass, XML_MANY_TO_MANY__ORDER_COLUMN);
@@ -6054,11 +6006,10 @@ public class Orm2_0Package extends EPackageImpl
 		initEClass(xmlVersionEClass, XmlVersion.class, "XmlVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlDerivedIdEClass, XmlDerivedId.class, "XmlDerivedId", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlDerivedId_DerivedId(), theXMLTypePackage.getBooleanObject(), "derivedId", null, 0, 1, XmlDerivedId.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlDerivedId_Id(), theXMLTypePackage.getBooleanObject(), "id", null, 0, 1, XmlDerivedId.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToOneEClass, XmlManyToOne.class, "XmlManyToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlManyToOne_MappedById(), theXMLTypePackage.getString(), "mappedById", null, 0, 1, XmlManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlManyToOne_Id(), theXMLTypePackage.getBoolean(), "id", null, 0, 1, XmlManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToManyEClass, XmlOneToMany.class, "XmlOneToMany", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlOneToMany_OrderColumn(), this.getXmlOrderColumn(), null, "orderColumn", null, 0, 1, XmlOneToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6073,7 +6024,6 @@ public class Orm2_0Package extends EPackageImpl
 		initEClass(xmlOneToOneEClass, XmlOneToOne.class, "XmlOneToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOneToOne_OrphanRemoval(), theXMLTypePackage.getBoolean(), "orphanRemoval", null, 0, 1, XmlOneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlOneToOne_MappedById(), theXMLTypePackage.getString(), "mappedById", null, 0, 1, XmlOneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlOneToOne_Id(), theXMLTypePackage.getBoolean(), "id", null, 0, 1, XmlOneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToManyEClass, XmlManyToMany.class, "XmlManyToMany", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlManyToMany_OrderColumn(), this.getXmlOrderColumn(), null, "orderColumn", null, 0, 1, XmlManyToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6536,12 +6486,12 @@ public class Orm2_0Package extends EPackageImpl
 		public static final EClass XML_DERIVED_ID = eINSTANCE.getXmlDerivedId();
 
 		/**
-		 * The meta object literal for the '<em><b>Derived Id</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_DERIVED_ID__DERIVED_ID = eINSTANCE.getXmlDerivedId_DerivedId();
+		public static final EAttribute XML_DERIVED_ID__ID = eINSTANCE.getXmlDerivedId_Id();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
@@ -6560,14 +6510,6 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_MANY_TO_ONE__MAPPED_BY_ID = eINSTANCE.getXmlManyToOne_MappedById();
-
-		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_MANY_TO_ONE__ID = eINSTANCE.getXmlManyToOne_Id();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -6668,14 +6610,6 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ONE_TO_ONE__MAPPED_BY_ID = eINSTANCE.getXmlOneToOne_MappedById();
-
-		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ONE_TO_ONE__ID = eINSTANCE.getXmlOneToOne_Id();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.

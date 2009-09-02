@@ -10,16 +10,14 @@
 package org.eclipse.jpt.core.jpa2.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -31,7 +29,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne#getMappedById <em>Mapped By Id</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne#isId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -58,24 +55,24 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	protected AccessType access = ACCESS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getDerivedId() <em>Derived Id</em>}' attribute.
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getDerivedId()
+	 * @see #getId()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Boolean DERIVED_ID_EDEFAULT = null;
+	protected static final Boolean ID_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getDerivedId() <em>Derived Id</em>}' attribute.
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getDerivedId()
+	 * @see #getId()
 	 * @generated
 	 * @ordered
 	 */
-	protected Boolean derivedId = DERIVED_ID_EDEFAULT;
+	protected Boolean id = ID_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMappedById() <em>Mapped By Id</em>}' attribute.
@@ -96,26 +93,6 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	 * @ordered
 	 */
 	protected String mappedById = MAPPED_BY_ID_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean ID_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isId()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -177,38 +154,38 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Derived Id</b></em>' attribute.
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Derived Id</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Derived Id</em>' attribute.
-	 * @see #setDerivedId(Boolean)
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlDerivedId_DerivedId()
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(Boolean)
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlDerivedId_Id()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public Boolean getDerivedId()
+	public Boolean getId()
 	{
-		return derivedId;
+		return id;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne#getDerivedId <em>Derived Id</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne#getId <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Derived Id</em>' attribute.
-	 * @see #getDerivedId()
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
 	 * @generated
 	 */
-	public void setDerivedId(Boolean newDerivedId)
+	public void setId(Boolean newId)
 	{
-		Boolean oldDerivedId = derivedId;
-		derivedId = newDerivedId;
+		Boolean oldId = id;
+		id = newId;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_MANY_TO_ONE__DERIVED_ID, oldDerivedId, derivedId));
+			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_MANY_TO_ONE__ID, oldId, id));
 	}
 
 	/**
@@ -247,41 +224,6 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Id</em>' attribute.
-	 * @see #setId(boolean)
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlManyToOne_Id()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	public boolean isId()
-	{
-		return id;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne#isId <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Id</em>' attribute.
-	 * @see #isId()
-	 * @generated
-	 */
-	public void setId(boolean newId)
-	{
-		boolean oldId = id;
-		id = newId;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_MANY_TO_ONE__ID, oldId, id));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -293,12 +235,10 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 		{
 			case Orm2_0Package.XML_MANY_TO_ONE__ACCESS:
 				return getAccess();
-			case Orm2_0Package.XML_MANY_TO_ONE__DERIVED_ID:
-				return getDerivedId();
+			case Orm2_0Package.XML_MANY_TO_ONE__ID:
+				return getId();
 			case Orm2_0Package.XML_MANY_TO_ONE__MAPPED_BY_ID:
 				return getMappedById();
-			case Orm2_0Package.XML_MANY_TO_ONE__ID:
-				return isId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -316,14 +256,11 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 			case Orm2_0Package.XML_MANY_TO_ONE__ACCESS:
 				setAccess((AccessType)newValue);
 				return;
-			case Orm2_0Package.XML_MANY_TO_ONE__DERIVED_ID:
-				setDerivedId((Boolean)newValue);
+			case Orm2_0Package.XML_MANY_TO_ONE__ID:
+				setId((Boolean)newValue);
 				return;
 			case Orm2_0Package.XML_MANY_TO_ONE__MAPPED_BY_ID:
 				setMappedById((String)newValue);
-				return;
-			case Orm2_0Package.XML_MANY_TO_ONE__ID:
-				setId((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -342,14 +279,11 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 			case Orm2_0Package.XML_MANY_TO_ONE__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
-			case Orm2_0Package.XML_MANY_TO_ONE__DERIVED_ID:
-				setDerivedId(DERIVED_ID_EDEFAULT);
+			case Orm2_0Package.XML_MANY_TO_ONE__ID:
+				setId(ID_EDEFAULT);
 				return;
 			case Orm2_0Package.XML_MANY_TO_ONE__MAPPED_BY_ID:
 				setMappedById(MAPPED_BY_ID_EDEFAULT);
-				return;
-			case Orm2_0Package.XML_MANY_TO_ONE__ID:
-				setId(ID_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -367,12 +301,10 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 		{
 			case Orm2_0Package.XML_MANY_TO_ONE__ACCESS:
 				return access != ACCESS_EDEFAULT;
-			case Orm2_0Package.XML_MANY_TO_ONE__DERIVED_ID:
-				return DERIVED_ID_EDEFAULT == null ? derivedId != null : !DERIVED_ID_EDEFAULT.equals(derivedId);
+			case Orm2_0Package.XML_MANY_TO_ONE__ID:
+				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 			case Orm2_0Package.XML_MANY_TO_ONE__MAPPED_BY_ID:
 				return MAPPED_BY_ID_EDEFAULT == null ? mappedById != null : !MAPPED_BY_ID_EDEFAULT.equals(mappedById);
-			case Orm2_0Package.XML_MANY_TO_ONE__ID:
-				return id != ID_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -404,7 +336,7 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 		{
 			switch (derivedFeatureID)
 			{
-				case Orm2_0Package.XML_MANY_TO_ONE__DERIVED_ID: return Orm2_0Package.XML_DERIVED_ID__DERIVED_ID;
+				case Orm2_0Package.XML_MANY_TO_ONE__ID: return Orm2_0Package.XML_DERIVED_ID__ID;
 				default: return -1;
 			}
 		}
@@ -438,7 +370,7 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 		{
 			switch (baseFeatureID)
 			{
-				case Orm2_0Package.XML_DERIVED_ID__DERIVED_ID: return Orm2_0Package.XML_MANY_TO_ONE__DERIVED_ID;
+				case Orm2_0Package.XML_DERIVED_ID__ID: return Orm2_0Package.XML_MANY_TO_ONE__ID;
 				default: return -1;
 			}
 		}
@@ -458,15 +390,18 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (access: ");
 		result.append(access);
-		result.append(", derivedId: ");
-		result.append(derivedId);
-		result.append(", mappedById: ");
-		result.append(mappedById);
 		result.append(", id: ");
 		result.append(id);
+		result.append(", mappedById: ");
+		result.append(mappedById);
 		result.append(')');
 		return result.toString();
 	}
+	
+	public TextRange getDerivedIdTextRange() {
+		return getAttributeTextRange(JPA.ID);
+	}
+	
 	
 	// ********** translators **********
 
@@ -502,7 +437,7 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	}
 
 	protected static Translator buildIdTranslator() {
-		return new Translator(JPA.ID, Orm2_0Package.eINSTANCE.getXmlManyToOne_Id(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.ID, Orm2_0Package.eINSTANCE.getXmlDerivedId_Id(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlManyToOne
