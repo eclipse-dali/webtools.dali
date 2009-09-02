@@ -18,6 +18,9 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.0
+ * @since 3.0
  */
 public interface SingleRelationshipMapping2_0
 	extends SingleRelationshipMapping
