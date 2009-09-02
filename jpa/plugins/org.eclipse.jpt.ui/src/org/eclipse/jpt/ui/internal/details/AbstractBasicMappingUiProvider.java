@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -29,11 +28,11 @@ public abstract class AbstractBasicMappingUiProvider<T extends BasicMapping>
 	}
 	
 	public String getLabel() {
-		return JptUiMappingsMessages.BasicMappingUiProvider_label;
+		return JptUiDetailsMessages.BasicMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.BasicMappingUiProvider_linkLabel;
+		return JptUiDetailsMessages.BasicMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

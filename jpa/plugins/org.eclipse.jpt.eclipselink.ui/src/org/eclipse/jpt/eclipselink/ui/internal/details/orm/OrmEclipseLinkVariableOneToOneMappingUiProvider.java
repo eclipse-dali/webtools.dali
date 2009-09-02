@@ -1,0 +1,56 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
+
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.widgets.Composite;
+
+public class OrmEclipseLinkVariableOneToOneMappingUiProvider extends EclipseLinkVariableOneToOneMappingUiProvider<EclipseLinkVariableOneToOneMapping>
+{
+	// singleton
+	private static final OrmEclipseLinkVariableOneToOneMappingUiProvider INSTANCE = 
+		new OrmEclipseLinkVariableOneToOneMappingUiProvider();
+	
+	/**
+	 * Return the singleton.
+	 */
+	public static AttributeMappingUiProvider<EclipseLinkVariableOneToOneMapping> instance() {
+		return INSTANCE;
+	}
+	
+	
+	/**
+	 * Ensure single instance.
+	 */
+	private OrmEclipseLinkVariableOneToOneMappingUiProvider() {
+		super();
+	}
+	
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+	}
+	
+	public JpaComposite buildAttributeMappingComposite(
+			JpaUiFactory factory,
+			PropertyValueModel<EclipseLinkVariableOneToOneMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EclipseLinkVariableOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+}

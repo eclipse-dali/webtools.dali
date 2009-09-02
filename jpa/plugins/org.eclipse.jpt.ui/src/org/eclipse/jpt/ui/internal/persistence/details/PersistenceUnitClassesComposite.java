@@ -32,7 +32,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -180,7 +180,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
 					return NLS.bind(JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault, defaultStringValue);
 				}
 				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;

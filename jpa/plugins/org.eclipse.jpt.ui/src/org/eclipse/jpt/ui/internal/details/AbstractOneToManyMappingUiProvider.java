@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class AbstractOneToManyMappingUiProvider<T extends OneToManyMapping>
@@ -28,11 +27,11 @@ public abstract class AbstractOneToManyMappingUiProvider<T extends OneToManyMapp
 	}
 	
 	public String getLabel() {
-		return JptUiMappingsMessages.OneToManyMappingUiProvider_label;
+		return JptUiDetailsMessages.OneToManyMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.OneToManyMappingUiProvider_linkLabel;
+		return JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

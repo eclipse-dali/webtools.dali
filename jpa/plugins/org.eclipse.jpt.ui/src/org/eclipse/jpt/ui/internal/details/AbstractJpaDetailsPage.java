@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;

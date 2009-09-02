@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal;
 
 import java.util.HashMap;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;

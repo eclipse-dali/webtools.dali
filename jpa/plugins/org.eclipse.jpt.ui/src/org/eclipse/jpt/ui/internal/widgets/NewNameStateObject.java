@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.Collection;
 import java.util.List;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -75,10 +75,10 @@ final class NewNameStateObject extends AbstractNode
 	private void addNameProblems(List<Problem> currentProblems) {
 
 		if (StringTools.stringIsEmpty(name)) {
-			currentProblems.add(buildProblem(JptUiMappingsMessages.NewNameStateObject_nameMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiDetailsMessages.NewNameStateObject_nameMustBeSpecified));
 		}
 		else if (names.contains(name.trim())) {
-			currentProblems.add(buildProblem(JptUiMappingsMessages.NewNameStateObject_nameAlreadyExists));
+			currentProblems.add(buildProblem(JptUiDetailsMessages.NewNameStateObject_nameAlreadyExists));
 		}
 	}
 

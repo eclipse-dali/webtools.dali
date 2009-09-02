@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class AbstractTransientMappingUiProvider<T extends TransientMapping>
@@ -28,11 +27,11 @@ public abstract class AbstractTransientMappingUiProvider<T extends TransientMapp
 	}
 	
 	public String getLabel() {
-		return JptUiMappingsMessages.TransientMappingUiProvider_label;
+		return JptUiDetailsMessages.TransientMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.TransientMappingUiProvider_linkLabel;
+		return JptUiDetailsMessages.TransientMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

@@ -19,7 +19,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
-import org.eclipse.jpt.ui.internal.mappings.details.PersistentTypeMapAsComposite;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;

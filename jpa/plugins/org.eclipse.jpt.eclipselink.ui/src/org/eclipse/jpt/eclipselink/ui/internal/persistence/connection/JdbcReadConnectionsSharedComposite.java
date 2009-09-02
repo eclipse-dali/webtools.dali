@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -72,7 +72,7 @@ public class JdbcReadConnectionsSharedComposite extends Pane<Connection>
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSharedLabelDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSharedLabel;

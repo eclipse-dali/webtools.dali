@@ -11,11 +11,12 @@ package org.eclipse.jpt.ui.internal.jpa2;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
@@ -25,11 +26,13 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
-import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaEmbeddable2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaEntity2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaIdMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.java.details.JavaMappedSuperclass2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.orm.details.OrmEntity2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEmbeddable2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEntity2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaIdMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaManyToOneMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaMappedSuperclass2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaOneToOneMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.connection.GenericPersistenceUnit2_0ConnectionTab;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.options.GenericPersistenceUnit2_0OptionsTab;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
@@ -80,13 +83,30 @@ public class Generic2_0JpaUiFactory extends GenericJpaUiFactory
 	}
 	
 	@Override
+	public JpaComposite createJavaManyToOneMappingComposite(
+			PropertyValueModel<JavaManyToOneMapping> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		return new JavaManyToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createJavaOneToOneMappingComposite(
+			PropertyValueModel<JavaOneToOneMapping> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		return new JavaOneToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
 	public JpaComposite createOrmEntityComposite(
 			PropertyValueModel<OrmEntity> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new OrmEntity2_0Composite(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	// **************** persistence unit composites ****************************
 	@Override
 	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -112,7 +112,7 @@ public abstract class IntegerCombo<T extends Model>
 	
 	private String getDefaultValueString(Integer defaultValue) {
 		return NLS.bind(
-				JptUiMappingsMessages.DefaultWithOneParam,
+				JptUiDetailsMessages.DefaultWithOneParam,
 				defaultValue
 			);
 	}

@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -701,18 +700,18 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button addCheckBox(Composite parent,
-	                                     String buttonText,
-	                                     WritablePropertyValueModel<Boolean> booleanHolder,
-	                                     String helpId) {
-
+	protected final Button addCheckBox(
+			Composite parent,
+	        String buttonText,
+	        WritablePropertyValueModel<Boolean> booleanHolder,
+	        String helpId) {
+		
 		return this.addToggleButton(
 			parent,
 			buttonText,
 			booleanHolder,
 			helpId,
-			SWT.CHECK
-		);
+			SWT.CHECK);
 	}
 	
 	/**
@@ -3252,14 +3251,15 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Button addUnmanagedToggleButton(Composite parent,
-	                                 String buttonText,
-	                                 WritablePropertyValueModel<Boolean> booleanHolder,
-	                                 String helpId,
-	                                 int toggleButtonType) {
-
+	private Button addUnmanagedToggleButton(
+			Composite parent,
+	        String buttonText,
+	        WritablePropertyValueModel<Boolean> booleanHolder,
+	        String helpId,
+	        int toggleButtonType) {
+		
 		Button button;
-
+		
 		if (toggleButtonType == SWT.PUSH) {
 			button = this.widgetFactory.createPushButton(parent, buttonText);
 		}
@@ -3272,14 +3272,14 @@ public abstract class Pane<T extends Model>
 		else {
 			button = this.widgetFactory.createButton(parent, buttonText);
 		}
-
+		
 		button.setLayoutData(new GridData());
 		SWTTools.bind(booleanHolder, button);
-
+		
 		if (helpId != null) {
 			getHelpSystem().setHelp(button, helpId);
 		}
-
+		
 		return button;
 	}
 	
@@ -3295,12 +3295,19 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Button addToggleButton(Composite parent,
-	                                 String buttonText,
-	                                 WritablePropertyValueModel<Boolean> booleanHolder,
-	                                 String helpId,
-	                                 int toggleButtonType) {
-		Button button = addUnmanagedToggleButton(parent, buttonText, booleanHolder, helpId, toggleButtonType);
+	private Button addToggleButton(
+			Composite parent,
+	        String buttonText,
+	        WritablePropertyValueModel<Boolean> booleanHolder,
+	        String helpId,
+	        int toggleButtonType) {
+		
+		Button button = addUnmanagedToggleButton(
+				parent, 
+				buttonText, 
+				booleanHolder, 
+				helpId, 
+				toggleButtonType);
 		this.manageWidget(button);
 		return button;
 	}

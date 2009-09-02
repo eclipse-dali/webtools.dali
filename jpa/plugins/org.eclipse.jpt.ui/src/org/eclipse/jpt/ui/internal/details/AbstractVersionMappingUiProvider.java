@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class AbstractVersionMappingUiProvider<T extends VersionMapping>
@@ -28,11 +27,11 @@ public abstract class AbstractVersionMappingUiProvider<T extends VersionMapping>
 	}
 	
 	public String getLabel() {
-		return JptUiMappingsMessages.VersionMappingUiProvider_label;
+		return JptUiDetailsMessages.VersionMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.VersionMappingUiProvider_linkLabel;
+		return JptUiDetailsMessages.VersionMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

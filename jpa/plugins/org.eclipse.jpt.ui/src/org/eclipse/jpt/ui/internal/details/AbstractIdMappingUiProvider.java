@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -29,11 +28,11 @@ public abstract class AbstractIdMappingUiProvider<T extends IdMapping>
 	}
 	
 	public String getLabel() {
-		return JptUiMappingsMessages.IdMappingUiProvider_label;
+		return JptUiDetailsMessages.IdMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.IdMappingUiProvider_linkLabel;
+		return JptUiDetailsMessages.IdMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

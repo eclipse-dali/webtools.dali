@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class AbstractEmbeddableUiProvider<T extends Embeddable> 
@@ -28,11 +27,11 @@ public abstract class AbstractEmbeddableUiProvider<T extends Embeddable>
 	}
 	
 	public String getLabel() {
-		return JptUiMappingsMessages.EmbeddableUiProvider_label;
+		return JptUiDetailsMessages.EmbeddableUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.EmbeddableUiProvider_linkLabel;
+		return JptUiDetailsMessages.EmbeddableUiProvider_linkLabel;
 	}
 	
 	public Image getImage() {

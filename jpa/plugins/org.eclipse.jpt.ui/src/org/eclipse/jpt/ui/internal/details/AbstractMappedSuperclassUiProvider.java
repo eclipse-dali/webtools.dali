@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class AbstractMappedSuperclassUiProvider<T extends MappedSuperclass>
@@ -28,11 +27,11 @@ public abstract class AbstractMappedSuperclassUiProvider<T extends MappedSupercl
 	}
 	
 	public String getLabel() {
-		return JptUiMappingsMessages.MappedSuperclassUiProvider_label;
+		return JptUiDetailsMessages.MappedSuperclassUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.MappedSuperclassUiProvider_linkLabel;
+		return JptUiDetailsMessages.MappedSuperclassUiProvider_linkLabel;
 	}
 	
 	public Image getImage() {
