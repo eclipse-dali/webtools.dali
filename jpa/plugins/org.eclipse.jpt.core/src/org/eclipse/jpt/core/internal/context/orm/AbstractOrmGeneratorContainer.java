@@ -115,10 +115,6 @@ public abstract class AbstractOrmGeneratorContainer extends AbstractXmlContextNo
 	protected abstract XmlSequenceGenerator buildResourceSequenceGenerator();
 
 	protected abstract OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator);
-//	
-//	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
-//		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
-//	}
 
 	protected void initializeTableGenerator() {
 		if (this.resourceGeneratorContainer.getTableGenerator() != null) {
@@ -128,10 +124,6 @@ public abstract class AbstractOrmGeneratorContainer extends AbstractXmlContextNo
 	protected abstract XmlTableGenerator buildResourceTableGenerator();
 	
 	protected abstract OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator);
-//	
-//	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
-//		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
-//	}
 	
 	public void update() {
 		this.updateSequenceGenerator();
