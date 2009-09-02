@@ -11,11 +11,9 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 
 public class GenericJavaOneToOneMapping2_0
 	extends AbstractJavaOneToOneMapping2_0
-	implements OneToOneMapping2_0
 {
 	public GenericJavaOneToOneMapping2_0(JavaPersistentAttribute parent) {
 		super(parent);

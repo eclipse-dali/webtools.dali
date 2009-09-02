@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -18,7 +19,10 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.0
+ * @since 3.0
  */
 public interface JavaOneToOneMapping2_0
-	extends JavaOneToOneMapping, JavaSingleRelationshipMapping2_0
+	extends JavaOneToOneMapping, OneToOneMapping2_0, JavaSingleRelationshipMapping2_0
 {}

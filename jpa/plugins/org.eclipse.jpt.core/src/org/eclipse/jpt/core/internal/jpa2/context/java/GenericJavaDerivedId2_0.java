@@ -23,7 +23,7 @@ public class GenericJavaDerivedId2_0
 	extends AbstractJavaJpaContextNode
 	implements JavaDerivedId2_0
 {
-	protected boolean derivedId;
+	protected boolean value;
 	
 	
 	public GenericJavaDerivedId2_0(JavaSingleRelationshipMapping2_0 parent) {
@@ -40,30 +40,30 @@ public class GenericJavaDerivedId2_0
 		return getParent().getPersistentAttribute().getResourcePersistentAttribute();
 	}
 	
-	public boolean isDerivedId() {
-		return this.derivedId;
+	public boolean getValue() {
+		return this.value;
 	}
 	
-	public void setDerivedId(boolean newDerivedId) {
-		if (this.derivedId == newDerivedId) {
+	public void setValue(boolean newValue) {
+		if (this.value == newValue) {
 			return;
 		}
-		boolean oldDerivedId = this.derivedId;
-		this.derivedId = newDerivedId;
+		boolean oldValue = this.value;
+		this.value = newValue;
 		
-		if (newDerivedId) {
+		if (newValue) {
 			addIdAnnotation();
 		}
 		else {
 			removeIdAnnotation();
 		}
-		firePropertyChanged(DERIVED_ID_PROPERTY, oldDerivedId, newDerivedId);
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	protected void setDerivedId_(boolean newDerivedId) {
-		boolean oldDerivedId = this.derivedId;
-		this.derivedId = newDerivedId;
-		firePropertyChanged(DERIVED_ID_PROPERTY, oldDerivedId, newDerivedId);
+	protected void setValue_(boolean newValue) {
+		boolean oldValue = this.value;
+		this.value = newValue;
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
 	protected boolean getResourceDerivedId() {
@@ -83,11 +83,11 @@ public class GenericJavaDerivedId2_0
 	}
 	
 	public void initialize() {
-		this.derivedId = getResourceDerivedId();
+		this.value = getResourceDerivedId();
 	}
 	
 	public void update() {
-		this.setDerivedId_(getResourceDerivedId());
+		this.setValue_(getResourceDerivedId());
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

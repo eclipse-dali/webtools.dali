@@ -64,15 +64,15 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertTrue(contextMapping.getDerivedId().isDerivedId());
+		assertTrue(contextMapping.getDerivedId().getValue());
 		
 		resourceAttribute.removeAnnotation(JPA.ID);
 		assertNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertFalse(contextMapping.getDerivedId().isDerivedId());
+		assertFalse(contextMapping.getDerivedId().getValue());
 		
 		resourceAttribute.addAnnotation(JPA.ID);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertTrue(contextMapping.getDerivedId().isDerivedId());
+		assertTrue(contextMapping.getDerivedId().getValue());
 	}
 	
 	public void testSetDerivedId() throws Exception {
@@ -86,15 +86,15 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertTrue(contextMapping.getDerivedId().isDerivedId());
+		assertTrue(contextMapping.getDerivedId().getValue());
 		
-		contextMapping.getDerivedId().setDerivedId(false);
+		contextMapping.getDerivedId().setValue(false);
 		assertNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertFalse(contextMapping.getDerivedId().isDerivedId());
+		assertFalse(contextMapping.getDerivedId().getValue());
 		
-		contextMapping.getDerivedId().setDerivedId(true);
+		contextMapping.getDerivedId().setValue(true);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertTrue(contextMapping.getDerivedId().isDerivedId());
+		assertTrue(contextMapping.getDerivedId().getValue());
 	}
 	
 	public void testMorphMapping() throws Exception {
@@ -107,11 +107,11 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertTrue(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().isDerivedId());
+		assertTrue(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertTrue(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().isDerivedId());
+		assertTrue(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
@@ -119,7 +119,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
-		assertTrue(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().isDerivedId());
+		assertTrue(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertNull(resourceAttribute.getAnnotation(JPA.ID));

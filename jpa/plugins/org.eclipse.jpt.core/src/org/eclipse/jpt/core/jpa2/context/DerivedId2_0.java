@@ -26,17 +26,17 @@ public interface DerivedId2_0
 	extends JpaContextNode
 {
 	/**
-	 * String associated with changes to the derived id property of this object
+	 * String associated with changes to the value property of this object
 	 */
-	public static final String DERIVED_ID_PROPERTY = "derivedId"; //$NON-NLS-1$
+	public static final String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
 	/**
 	 * Return whether this object uses a derived id
 	 */
-	boolean isDerivedId();
+	boolean getValue();
 	
 	/**
 	 * Set whether this object uses a derived id
 	 */
-	void setDerivedId(boolean newValue);
+	void setValue(boolean newValue);
 }
