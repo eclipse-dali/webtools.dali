@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.options.EclipseLinkOptions2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 
@@ -30,7 +29,7 @@ public class EclipseLinkPersistenceUnit2_0
 	// **************** factory methods *********************************************
 
 	@Override
-	protected EclipseLinkOptions buildEclipseLinkOptions() {
+	protected Options2_0 buildEclipseLinkOptions() {
 		return new EclipseLinkOptions2_0(this);
 	}
 

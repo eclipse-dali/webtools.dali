@@ -166,31 +166,31 @@ public class EclipseLinkPersistenceUnit
 
 	// **************** factory methods *********************************************
 	
-	protected EclipseLinkGeneralProperties buildEclipseLinkGeneralProperties() {
+	protected GeneralProperties buildEclipseLinkGeneralProperties() {
 		return new EclipseLinkGeneralProperties(this);
 	}
 	
-	protected EclipseLinkConnection buildEclipseLinkConnection() {
+	protected Connection buildEclipseLinkConnection() {
 		return new EclipseLinkConnection(this);
 	}
 	
-	protected EclipseLinkCustomization buildEclipseLinkCustomization() {
+	protected Customization buildEclipseLinkCustomization() {
 		return new EclipseLinkCustomization(this);
 	}
 	
-	protected EclipseLinkCaching buildEclipseLinkCaching() {
+	protected Caching buildEclipseLinkCaching() {
 		return new EclipseLinkCaching(this);
 	}
 	
-	protected EclipseLinkLogging buildEclipseLinkLogging() {
+	protected Logging buildEclipseLinkLogging() {
 		return new EclipseLinkLogging(this);
 	}
 	
-	protected EclipseLinkOptions buildEclipseLinkOptions() {
+	protected Options buildEclipseLinkOptions() {
 		return new EclipseLinkOptions(this);
 	}
 	
-	protected EclipseLinkSchemaGeneration buildEclipseLinkSchemaGeneration() {
+	protected SchemaGeneration buildEclipseLinkSchemaGeneration() {
 		return new EclipseLinkSchemaGeneration(this);
 	}
 	
