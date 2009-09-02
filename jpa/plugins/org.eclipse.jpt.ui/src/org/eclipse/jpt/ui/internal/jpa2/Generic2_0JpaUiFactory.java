@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
@@ -32,7 +31,6 @@ import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaIdMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaManyToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaMappedSuperclass2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaOneToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.connection.GenericPersistenceUnit2_0ConnectionTab;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.options.GenericPersistenceUnit2_0OptionsTab;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
@@ -96,14 +94,6 @@ public class Generic2_0JpaUiFactory extends GenericJpaUiFactory
 			Composite parent, 
 			WidgetFactory widgetFactory) {
 		return new JavaOneToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createOrmEntityComposite(
-			PropertyValueModel<OrmEntity> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new OrmEntity2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	
