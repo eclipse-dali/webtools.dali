@@ -89,37 +89,41 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		initializeTableGeneratorPane(container);
-		initializeSequenceGeneratorPane(container);
+		this.initializeTableGeneratorPane(container);
+		this.initializeSequenceGeneratorPane(container);
 	}
 
 	private void initializeSequenceGeneratorPane(Composite container) {
 
 		// Sequence Generator sub-section
-		container = addCollapsableSubSection(
-			addSubPane(container, 10),
+		container = this.addCollapsableSubSection(
+			this.addSubPane(container, 10),
 			JptUiMappingsMessages.GeneratorsComposite_sequenceGeneratorSection,
 			this.sequenceGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = addCheckBox(
-			addSubPane(container, 5),
+			this.addSubPane(container, 5),
 			JptUiMappingsMessages.GeneratorsComposite_sequenceGeneratorCheckBox,
-			buildSequenceGeneratorBooleanHolder(),
+			this.buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
 
 		// Sequence Generator pane
+		this.addSequenceGeneratorComposite(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16);
+	}
+	
+	protected void addSequenceGeneratorComposite(Composite container, int topMargin, int leftMargin) {
 		new SequenceGeneratorComposite(
 			this,
-			buildSequenceGeneratorHolder(),
-			addSubPane(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16),
-			buildSequenceGeneratorBuilder()
+			this.buildSequenceGeneratorHolder(),
+			this.addSubPane(container, topMargin, leftMargin),
+			this.buildSequenceGeneratorBuilder()
 		);
 	}
 
-	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
+	protected PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
 		return new PropertyAspectAdapter<GeneratorContainer, SequenceGenerator>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
@@ -128,7 +132,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		};
 	}
 
-	private GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder() {
+	protected GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder() {
 		return new GeneratorBuilder<SequenceGenerator>() {
 			public SequenceGenerator addGenerator() {
 				return getSubject().addSequenceGenerator();
@@ -166,9 +170,9 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		);
 
 		Button tableGeneratorCheckBox = addCheckBox(
-			addSubPane(container, 5),
+			this.addSubPane(container, 5),
 			JptUiMappingsMessages.GeneratorsComposite_tableGeneratorCheckBox,
-			buildTableGeneratorBooleanHolder(),
+			this.buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 
@@ -176,9 +180,9 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		// Table Generator pane
 		new TableGeneratorComposite(
 			this,
-			buildTableGeneratorHolder(),
-			addSubPane(container, 0, tableGeneratorCheckBox.getBorderWidth() + 16),
-			buildTableGeneratorBuilder()
+			this.buildTableGeneratorHolder(),
+			this.addSubPane(container, 0, tableGeneratorCheckBox.getBorderWidth() + 16),
+			this.buildTableGeneratorBuilder()
 		);
 	}
 

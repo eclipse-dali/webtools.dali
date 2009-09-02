@@ -46,12 +46,12 @@ public class OrmEntity2_0UiProvider
 		super();
 	}
 	
-	
 	public JpaComposite buildPersistentTypeMappingComposite(
 			JpaUiFactory factory, 
 			PropertyValueModel<OrmEntity> subjectHolder, 
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new OrmEntity2_0Composite(subjectHolder, parent, widgetFactory);
+
+		return factory.createOrmEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 }

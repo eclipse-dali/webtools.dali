@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
+import org.eclipse.jpt.core.jpa2.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 public class GenericOrmIdMapping2_0Provider
@@ -56,7 +57,7 @@ public class GenericOrmIdMapping2_0Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildOrmIdMapping(parent, (org.eclipse.jpt.core.resource.orm.XmlId) resourceMapping);
+		return ((JpaFactory2_0) factory).buildOrmIdMapping2_0(parent, (XmlId) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {

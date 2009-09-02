@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.orm.details;
 
+import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
+import org.eclipse.jpt.ui.internal.jpa2.mappings.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.mappings.details.Overrides2_0Composite;
 import org.eclipse.jpt.ui.internal.orm.details.AbstractOrmEntityComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -43,5 +46,10 @@ public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
 	protected void addAttributeOverridesComposite(Composite container) {
 		new Overrides2_0Composite(this, container);
 	}
-	
+
+	@Override
+	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
+		new Generation2_0Composite(this, generatorContainerHolder, container);
+	}
+
 }
