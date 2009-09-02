@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
@@ -40,6 +41,7 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
@@ -66,6 +68,7 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
@@ -104,6 +107,8 @@ public interface JpaFactory2_0
 	OrmEmbeddedMapping buildOrmEmbeddedMapping2_0(OrmPersistentAttribute parent, XmlEmbedded resourceMapping);
 
 	OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping2_0(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping);
+	
+	OrmIdMapping buildOrmIdMapping2_0(OrmPersistentAttribute parent, XmlId resourceMapping);
 
 	OrmManyToManyMapping buildOrmManyToManyMapping2_0(OrmPersistentAttribute parent, XmlManyToMany resourceMapping);
 
@@ -120,6 +125,8 @@ public interface JpaFactory2_0
 	OrmAttributeMapping buildOrmNullAttributeMapping2_0(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 
 	OrmGeneratorContainer buildOrmGeneratorContainer2_0(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer);
+	
+	OrmSequenceGenerator buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
 
 	OrmAssociationOverride buildOrmAssociationOverride2_0(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
 
