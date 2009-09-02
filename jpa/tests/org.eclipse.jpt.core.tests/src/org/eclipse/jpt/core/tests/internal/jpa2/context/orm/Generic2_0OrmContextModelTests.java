@@ -16,13 +16,14 @@ import junit.framework.TestSuite;
 
 public class Generic2_0OrmContextModelTests extends TestCase
 {
-
 	public static Test suite() {
 		TestSuite suite = new TestSuite(Generic2_0OrmContextModelTests.class.getName());
-		suite.addTestSuite(GenericOrmPersistentType2_0Tests.class);
-		suite.addTestSuite(GenericOrmPersistentAttribute2_0Tests.class);
-		suite.addTestSuite(GenericOrmEntity2_0Tests.class);
 		suite.addTestSuite(GenericOrmAssociationOverride2_0Tests.class);
+		suite.addTestSuite(GenericOrmEntity2_0Tests.class);
+		suite.addTestSuite(GenericOrmManyToOneMapping2_0Tests.class);
+		suite.addTestSuite(GenericOrmOneToOneMapping2_0Tests.class);
+		suite.addTestSuite(GenericOrmPersistentAttribute2_0Tests.class);
+		suite.addTestSuite(GenericOrmPersistentType2_0Tests.class);
 		suite.addTestSuite(GenericOrmSequenceGenerator2_0Tests.class);
 		return suite;
 	}
