@@ -31,6 +31,7 @@ public class JptUtilityIteratorsTests {
 		suite.addTestSuite(EmptyListIteratorTests.class);
 		suite.addTestSuite(EnumerationIteratorTests.class);
 		suite.addTestSuite(FilteringIteratorTests.class);
+		suite.addTestSuite(GenericIteratorWrapperTests.class);
 		suite.addTestSuite(GraphIteratorTests.class);
 		suite.addTestSuite(PeekableIteratorTests.class);
 		suite.addTestSuite(ReadOnlyCompositeListIteratorTests.class);
