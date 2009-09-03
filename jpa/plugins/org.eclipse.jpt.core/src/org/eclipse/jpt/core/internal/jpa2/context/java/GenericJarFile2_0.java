@@ -24,9 +24,9 @@ public class GenericJarFile2_0
 		super(parent, jarResourcePackageFragmentRoot);
 	}
 
-	public void synchronizeStaticMetaModel() {
+	public void synchronizeStaticMetamodel() {
 		for (JavaPersistentType jpt : this.getJavaPersistentTypes()) {
-			((JavaPersistentType2_0) jpt).synchronizeStaticMetaModel();
+			((JavaPersistentType2_0) jpt).synchronizeStaticMetamodel();
 		}
 	}
 }

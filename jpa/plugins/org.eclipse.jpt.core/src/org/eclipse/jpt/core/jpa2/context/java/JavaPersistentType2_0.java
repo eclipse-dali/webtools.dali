@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 
 /**
  * JPA 2.0 context Java persistent type.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaPersistentType2_0
-	extends JavaPersistentType, StaticMetaModelGenerator
+	extends JavaPersistentType, StaticMetamodelGenerator
 {
 	// nothing yet...
 }

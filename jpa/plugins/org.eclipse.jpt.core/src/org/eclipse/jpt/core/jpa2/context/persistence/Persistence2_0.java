@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 
 /**
  * The <code>persistence</code> element in the JPA 2.0 <code>persistence.xml</code> file.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Persistence2_0
-	extends Persistence, StaticMetaModelGenerator
+	extends Persistence, StaticMetamodelGenerator
 {
 	/**
 	 * Covariant override.

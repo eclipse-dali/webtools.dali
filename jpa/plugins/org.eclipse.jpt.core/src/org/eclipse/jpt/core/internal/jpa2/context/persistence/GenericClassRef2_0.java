@@ -27,10 +27,10 @@ public class GenericClassRef2_0
 		super(parent, className);
 	}
 
-	public void synchronizeStaticMetaModel() {
+	public void synchronizeStaticMetamodel() {
 		JavaPersistentType2_0 jpt = (JavaPersistentType2_0) this.getJavaPersistentType();
 		if (jpt != null) {
-			jpt.synchronizeStaticMetaModel();
+			jpt.synchronizeStaticMetamodel();
 		}
 	}
 

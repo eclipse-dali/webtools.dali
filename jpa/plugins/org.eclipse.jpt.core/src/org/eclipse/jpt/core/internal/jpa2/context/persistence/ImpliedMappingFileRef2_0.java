@@ -21,8 +21,8 @@ public class ImpliedMappingFileRef2_0
 		super(parent, resourceFileName);
 	}
 
-	public void synchronizeStaticMetaModel() {
-		this.getMappingFile().synchronizeStaticMetaModel();
+	public void synchronizeStaticMetamodel() {
+		this.getMappingFile().synchronizeStaticMetamodel();
 	}
 
 }

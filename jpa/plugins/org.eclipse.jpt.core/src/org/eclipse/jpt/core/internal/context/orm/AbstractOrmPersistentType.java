@@ -38,6 +38,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
@@ -605,8 +606,9 @@ public abstract class AbstractOrmPersistentType
 	 * All orm.xml persistent types must be able to generate a static metamodel
 	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
 	 */
-	public void synchronizeStaticMetaModel() {
-		// TODO
+	public void synchronizeStaticMetamodel() {
+		// if we get here, it's safe to assume the JPA project is 2.0
+		((JpaProject2_0) this.getJpaProject()).synchronizeStaticMetamodel(this);
 	}
 
 	protected class SpecifiedPersistentAttributeOwner implements OrmPersistentAttribute.Owner {

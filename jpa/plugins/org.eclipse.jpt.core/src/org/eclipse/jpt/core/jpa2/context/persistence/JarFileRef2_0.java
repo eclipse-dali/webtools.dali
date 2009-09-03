@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JarFileRef2_0
-	extends JarFileRef, StaticMetaModelGenerator
+	extends JarFileRef, StaticMetamodelGenerator
 {
 	JarFile2_0 getJarFile();
 }

@@ -31,10 +31,10 @@ public class GenericJarFileRef2_0
 		return (JarFile2_0) super.getJarFile();
 	}
 
-	public void synchronizeStaticMetaModel() {
+	public void synchronizeStaticMetamodel() {
 		JarFile2_0 jf = this.getJarFile();
 		if (jf != null) {
-			jf.synchronizeStaticMetaModel();
+			jf.synchronizeStaticMetamodel();
 		}
 	}
 }

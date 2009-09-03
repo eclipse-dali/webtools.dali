@@ -63,6 +63,8 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.jpa2.GenericJpaProject2_0;
+import org.eclipse.jpt.core.internal.jpa2.GenericPersistentTypeStaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.GenericStaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericOrmGeneratorContainer2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericRootContextNode2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
@@ -107,6 +109,8 @@ import org.eclipse.jpt.core.internal.jpa2.context.persistence.ImpliedMappingFile
 import org.eclipse.jpt.core.internal.platform.AbstractJpaFactory;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
@@ -166,6 +170,14 @@ public class GenericJpaFactory2_0
 	@Override
 	public JpaProject2_0 buildJpaProject(JpaProject.Config config) throws CoreException {
 		return new GenericJpaProject2_0(config);
+	}
+
+	public StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject) {
+		return new GenericStaticMetamodelSynchronizer(jpaProject);
+	}
+	
+	public PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
+		return new GenericPersistentTypeStaticMetamodelSynchronizer(staticMetamodelSynchronizer, persistentType);
 	}
 	
 	

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.jpa2;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
@@ -86,7 +87,16 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 public interface JpaFactory2_0
 	extends JpaFactory
 {
+	// ********** Core Model **********
+
 	MappingFile buildMappingFile2_0(MappingFileRef parent, JpaXmlResource resource);
+
+	StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject);
+
+	PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType);
+
+
+	// ********** Generic 2.0-specific ORM Context Model **********
 
 	EntityMappings buildEntityMappings2_0(GenericOrmXml2_0 parent, XmlEntityMappings xmlEntityMappings);
 

@@ -98,8 +98,8 @@ public abstract class AbstractOrmXml
 	 * All orm.xml mapping files must be able to generate a static metamodel
 	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
 	 */
-	public void synchronizeStaticMetaModel() {
-		this.getEntityMappings().synchronizeStaticMetaModel();
+	public void synchronizeStaticMetamodel() {
+		this.getEntityMappings().synchronizeStaticMetamodel();
 	}
 
 	

@@ -13,7 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 
 /**
  * Context <code>orm.xml</code> persistent type.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmPersistentType
-	extends PersistentType, PersistentType.Owner, XmlContextNode, StaticMetaModelGenerator
+	extends PersistentType, PersistentType.Owner, XmlContextNode, StaticMetamodelGenerator
 {
 	// ********** covariant overrides **********
 

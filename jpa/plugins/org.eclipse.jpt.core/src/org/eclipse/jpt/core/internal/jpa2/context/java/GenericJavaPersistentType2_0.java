@@ -14,6 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -27,6 +28,13 @@ public class GenericJavaPersistentType2_0
 		super(parent, jrpt);
 	}
 	
+	/**
+	 * covariant override
+	 */
+	@Override
+	public JpaProject2_0 getJpaProject() {
+		return (JpaProject2_0) super.getJpaProject();
+	}
 	
 	protected Access2_0Annotation getAccessAnnotation() {
 		return (Access2_0Annotation) this.resourcePersistentType.
@@ -72,7 +80,8 @@ public class GenericJavaPersistentType2_0
 		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
 	}
 	
-	public void synchronizeStaticMetaModel() {
-		// TODO
+	public void synchronizeStaticMetamodel() {
+		this.getJpaProject().synchronizeStaticMetamodel(this);
 	}
+
 }

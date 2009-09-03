@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JarFile;
-import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 
 public interface JarFile2_0
-	extends JarFile, StaticMetaModelGenerator
+	extends JarFile, StaticMetamodelGenerator
 {
 	// nothing yet...
 }

@@ -41,9 +41,9 @@ public class GenericPersistence2_0
 		return (PersistenceUnit2_0) super.addPersistenceUnit(index);
 	}
 
-	public void synchronizeStaticMetaModel() {
+	public void synchronizeStaticMetamodel() {
 		for (Iterator<PersistenceUnit> stream = this.persistenceUnits(); stream.hasNext(); ) {
-			((PersistenceUnit2_0) stream.next()).synchronizeStaticMetaModel();
+			((PersistenceUnit2_0) stream.next()).synchronizeStaticMetamodel();
 		}
 	}
 

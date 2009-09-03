@@ -7,13 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.persistence;
+package org.eclipse.jpt.core.jpa2;
 
-import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
+import org.eclipse.jpt.core.context.PersistentType;
 
 /**
- * JPA 2.0 <code>class<code>
+ * JPA 2.0 Static Metamodel.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,8 +20,10 @@ import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ClassRef2_0
-	extends ClassRef, StaticMetamodelGenerator
-{
-	// nothing yet...
+public interface StaticMetamodelSynchronizer {
+
+	void synchronize(PersistentType persistentType);
+
+	JpaProject2_0 getJpaProject();
+
 }

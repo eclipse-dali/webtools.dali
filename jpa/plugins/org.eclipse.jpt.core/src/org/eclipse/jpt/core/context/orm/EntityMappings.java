@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface EntityMappings 
-	extends MappingFileRoot, JpaStructureNode, PersistentType.Owner, StaticMetaModelGenerator
+	extends MappingFileRoot, JpaStructureNode, PersistentType.Owner, StaticMetamodelGenerator
 {
 	XmlEntityMappings getXmlEntityMappings();
 	

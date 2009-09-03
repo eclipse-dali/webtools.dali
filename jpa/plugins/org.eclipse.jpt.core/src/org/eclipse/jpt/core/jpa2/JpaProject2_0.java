@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.jpa2;
 
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
 
 /**
@@ -22,12 +23,20 @@ import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaProject2_0
-	extends JpaProject, StaticMetaModelGenerator
+	extends JpaProject, StaticMetamodelGenerator
 {
 
 	/**
 	 * Covariant override.
 	 */
 	public JpaRootContextNode2_0 getRootContextNode();
+
+
+	// ********** Static Metamodel **********
+
+	/**
+	 * 
+	 */
+	void synchronizeStaticMetamodel(PersistentType persistentType);
 
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.jpa2;
 
 /**
- * JPA 2.0 Static Metamodel Generator.
+ * JPA 2.0 Static Metamodel.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -18,11 +18,8 @@ package org.eclipse.jpt.core.jpa2;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface StaticMetaModelGenerator {
+public interface PersistentTypeStaticMetamodelSynchronizer {
 
-	/**
-	 * Synchronize the JPA "Static Metamodel Classes" with the context model.
-	 */
-	void synchronizeStaticMetaModel();
+	void synchronize();
 
 }

@@ -74,15 +74,15 @@ public class GenericPersistenceUnit2_0
 
 	// ********** JPA 2.0 Static Metamodel **********
 
-	public void synchronizeStaticMetaModel() {
+	public void synchronizeStaticMetamodel() {
 		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			((MappingFileRef2_0) stream.next()).synchronizeStaticMetaModel();
+			((MappingFileRef2_0) stream.next()).synchronizeStaticMetamodel();
 		}
 		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			((ClassRef2_0) stream.next()).synchronizeStaticMetaModel();
+			((ClassRef2_0) stream.next()).synchronizeStaticMetamodel();
 		}
 		for (Iterator<JarFileRef> stream = this.jarFileRefs(); stream.hasNext(); ) {
-			((JarFileRef2_0) stream.next()).synchronizeStaticMetaModel();
+			((JarFileRef2_0) stream.next()).synchronizeStaticMetamodel();
 		}
 	}
 

@@ -22,8 +22,8 @@ public class GenericMappingFileRef2_0
 		super(parent, xmlMappingFileRef);
 	}
 
-	public void synchronizeStaticMetaModel() {
-		this.getMappingFile().synchronizeStaticMetaModel();
+	public void synchronizeStaticMetamodel() {
+		this.getMappingFile().synchronizeStaticMetamodel();
 	}
 
 }

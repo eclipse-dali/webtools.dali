@@ -33,10 +33,10 @@ public class GenericPersistenceXml2_0
 		return (Persistence2_0) super.getPersistence();
 	}
 
-	public void synchronizeStaticMetaModel() {
+	public void synchronizeStaticMetamodel() {
 		Persistence2_0 p = this.getPersistence();
 		if (p != null) {
-			p.synchronizeStaticMetaModel();
+			p.synchronizeStaticMetamodel();
 		}
 	}
 

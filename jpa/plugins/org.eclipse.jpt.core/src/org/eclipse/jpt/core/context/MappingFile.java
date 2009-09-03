@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.jpa2.StaticMetaModelGenerator;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface MappingFile
-	extends XmlContextNode, JpaStructureNode, StaticMetaModelGenerator
+	extends XmlContextNode, JpaStructureNode, StaticMetamodelGenerator
 {
 	/**
 	 * Return the underlying xml resource

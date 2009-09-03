@@ -27,10 +27,10 @@ public class GenericRootContextNode2_0
 		return (PersistenceXml2_0) super.getPersistenceXml();
 	}
 
-	public void synchronizeStaticMetaModel() {
+	public void synchronizeStaticMetamodel() {
 		PersistenceXml2_0 p_xml = this.getPersistenceXml();
 		if (p_xml != null) {
-			p_xml.synchronizeStaticMetaModel();
+			p_xml.synchronizeStaticMetamodel();
 		}
 	}
 
