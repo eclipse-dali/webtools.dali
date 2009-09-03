@@ -11,8 +11,8 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import org.eclipse.jpt.utility.tests.internal.enumerations.JptUtilityEnumerationsTests;
-import org.eclipse.jpt.utility.tests.internal.iterables.EmptyIterableTests;
 import org.eclipse.jpt.utility.tests.internal.iterables.JptUtilityIterablesTests;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
@@ -32,16 +32,18 @@ public class JptUtilityTests {
 		suite.addTest(JptUtilityModelTests.suite());
 		suite.addTest(JptUtilityNodeTests.suite());
 
+		suite.addTestSuite(ArrayToolsTests.class);
+		suite.addTestSuite(AsynchronousSynchronizerTests.class);
 		suite.addTestSuite(BitToolsTests.class);
 		suite.addTestSuite(BooleanHolderTests.class);
+		suite.addTestSuite(BooleanToolsTests.class);
 		suite.addTestSuite(ClasspathTests.class);
 		suite.addTestSuite(ClassToolsTests.class);
 		suite.addTestSuite(CollectionToolsTests.class);
 		suite.addTestSuite(CommandExecutorTests.class);
 		suite.addTestSuite(CommandTests.class);
 		suite.addTestSuite(CounterTests.class);
-		suite.addTestSuite(EmptyIterableTests.class);
-//		suite.addTestSuite(ExceptionHandlerTests.class);
+		suite.addTestSuite(ExceptionHandlerTests.class);
 		suite.addTestSuite(FileToolsTests.class);
 		suite.addTestSuite(FilterTests.class);
 		suite.addTestSuite(HashBagTests.class);
@@ -60,8 +62,8 @@ public class JptUtilityTests {
 		suite.addTestSuite(SynchronizedBooleanTests.class);
 		suite.addTestSuite(SynchronizedObjectTests.class);
 		suite.addTestSuite(SynchronizedStackTests.class);
-//		suite.addTestSuite(SynchronizerTests.class);
-//		suite.addTestSuite(SynchronousSynchronizerTests.class);
+		suite.addTestSuite(SynchronizerTests.class);
+		suite.addTestSuite(SynchronousSynchronizerTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
 		return suite;
