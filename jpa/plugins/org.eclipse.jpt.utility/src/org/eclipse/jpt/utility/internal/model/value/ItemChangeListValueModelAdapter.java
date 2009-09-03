@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.model.listener.CommandChangeListener;
+import org.eclipse.jpt.utility.model.listener.SimpleChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
@@ -40,7 +40,7 @@ public class ItemChangeListValueModelAdapter<E>
 	// ********** initialization **********
 
 	protected ChangeListener buildItemChangeListener() {
-		return new CommandChangeListener() {
+		return new SimpleChangeListener() {
 			@Override
 			protected void modelChanged(ChangeEvent event) {
 				ItemChangeListValueModelAdapter.this.itemAspectChanged(event);

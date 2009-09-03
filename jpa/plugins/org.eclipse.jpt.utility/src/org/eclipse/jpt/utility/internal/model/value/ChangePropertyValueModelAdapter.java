@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.model.listener.CommandChangeListener;
+import org.eclipse.jpt.utility.model.listener.SimpleChangeListener;
 
 /**
  * This abstract class provides the infrastructure needed to wrap
@@ -53,7 +53,7 @@ public abstract class ChangePropertyValueModelAdapter<T>
 	}
 
 	protected ChangeListener buildChangeListener() {
-		return new CommandChangeListener() {
+		return new SimpleChangeListener() {
 			@Override
 			protected void modelChanged(ChangeEvent event) {
 				ChangePropertyValueModelAdapter.this.modelChanged(event);
