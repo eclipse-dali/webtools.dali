@@ -23,11 +23,14 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -83,7 +86,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlTransient;
 
 public class EclipseLink1_1JpaFactory
@@ -180,6 +186,18 @@ public class EclipseLink1_1JpaFactory
 		return new OrmEclipseLinkPersistentAttribute1_1(parent, owner, resourceMapping);
 	}
 	
+	public OrmEntity buildOrmEclipseLinkEntity1_1(OrmPersistentType ormPersistentType, XmlEntity resourceEntity) {
+		return buildOrmEclipseLinkEntity(ormPersistentType, resourceEntity);
+	}
+	
+	public OrmEmbeddable buildOrmEclipseLinkEmbeddable1_1(OrmPersistentType ormPersistentType, XmlEmbeddable resourceEmbeddable) {
+		return buildOrmEclipseLinkEmbeddable(ormPersistentType, resourceEmbeddable);
+	}
+	
+	public OrmMappedSuperclass buildOrmEclipseLinkMappedSuperclass1_1(OrmPersistentType ormPersistentType, XmlMappedSuperclass resourceMappedSuperclass) {
+		return buildOrmEclipseLinkMappedSuperclass(ormPersistentType, resourceMappedSuperclass);
+	}
+
 	public OrmBasicMapping buildOrmEclipseLinkBasicMapping1_1(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
 		return buildOrmEclipseLinkBasicMapping(parent, resourceMapping);
 	}

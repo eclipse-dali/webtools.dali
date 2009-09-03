@@ -1364,7 +1364,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 
 	protected static Translator buildOptimisticLockingTranslator() {
-		return XmlOptimisticLocking.buildTranslator(JPA.OPTIMISTIC_LOCKING, EclipseLinkOrmPackage.eINSTANCE.getXmlEntity_OptimisticLocking());
+		return XmlOptimisticLocking.buildTranslator(JPA.OPTIMISTIC_LOCKING, EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass_OptimisticLocking());
 	}
 
 	protected static Translator buildCacheTranslator() {
