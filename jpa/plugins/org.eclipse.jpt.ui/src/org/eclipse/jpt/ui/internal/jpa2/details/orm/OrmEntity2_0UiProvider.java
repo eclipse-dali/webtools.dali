@@ -52,6 +52,6 @@ public class OrmEntity2_0UiProvider
 			Composite parent, 
 			WidgetFactory widgetFactory) {
 
-		return factory.createOrmEntityComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEntity2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

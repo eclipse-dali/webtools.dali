@@ -17,7 +17,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityUiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -52,6 +51,6 @@ public class OrmEntityUiProvider
 			PropertyValueModel<OrmEntity> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEntity2_0Composite(subjectHolder, parent, widgetFactory);
+		return factory.createOrmEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 }
