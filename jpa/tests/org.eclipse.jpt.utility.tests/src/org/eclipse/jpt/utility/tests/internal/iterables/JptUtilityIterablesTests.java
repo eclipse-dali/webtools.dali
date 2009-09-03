@@ -25,6 +25,7 @@ public class JptUtilityIterablesTests {
 		suite.addTestSuite(CompositeIterableTests.class);
 		suite.addTestSuite(EmptyIterableTests.class);
 		suite.addTestSuite(FilteringIterableTests.class);
+		suite.addTestSuite(GenericIterableWrapperTests.class);
 		suite.addTestSuite(GraphIterableTests.class);
 		suite.addTestSuite(LiveCloneIterableTests.class);
 		suite.addTestSuite(ReadOnlyIterableTests.class);
