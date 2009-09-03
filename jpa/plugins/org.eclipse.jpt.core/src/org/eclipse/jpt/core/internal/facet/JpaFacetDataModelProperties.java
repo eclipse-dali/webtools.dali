@@ -11,76 +11,76 @@ package org.eclipse.jpt.core.internal.facet;
 
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProperties;
 
-public interface JpaFacetDataModelProperties extends IDataModelProperties
+@SuppressWarnings("nls")
+public interface JpaFacetDataModelProperties
+	extends IDataModelProperties
 {
+	String PREFIX = "JpaFacetDataModelProperties";
+	String PREFIX_ = PREFIX + '.';
+
 	/**
 	 * Internal, type IRuntime, identifies runtime associated with project
 	 * Used only in conjunction with validation of other properties, because this information
 	 * is otherwise inaccessible to this data model
 	 */
-	public static final String RUNTIME = "JpaFacetDataModelProperties.RUNTIME";
+	String RUNTIME = PREFIX_ + "RUNTIME";
 	
 	/**
 	 * Required, type String, identifies Jpa Platform
 	 */
-	public static final String PLATFORM_ID = "JpaFacetDataModelProperties.PLATFORM_ID";
+	String PLATFORM_ID = PREFIX_ + "PLATFORM_ID";
 	
 	/**
 	 * Required, type LibraryInstallDelegate, the library install delegate used to configure JPA provider library
 	 */
-    public static final String LIBRARY_PROVIDER_DELEGATE = "JpaFacetDataModelProperties.LIBRARY_PROVIDER_DELEGATE"; //$NON-NLS-1$    
+    String LIBRARY_PROVIDER_DELEGATE = PREFIX_ + "LIBRARY_PROVIDER_DELEGATE";
 	
     /**
 	 * Not required, type String, identifies database connection
 	 */
-	public static final String CONNECTION = "JpaFacetDataModelProperties.CONNECTION";
+	String CONNECTION = PREFIX_ + "CONNECTION";
 	
 	/**
 	 * Required, type Boolean, identifies whether database connection is active
 	 */
-	public static final String CONNECTION_ACTIVE = "JpaFacetDataModelProperties.CONNECTION_ACTIVE";
+	String CONNECTION_ACTIVE = PREFIX_ + "CONNECTION_ACTIVE";
 	
 	/**
 	 * Required, type Boolean, identifies if the user wishes to add the database driver jars to the classpath
 	 */
-	public static final String USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH = 
-		"JpaFacetDataModelProperties.USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH";
+	String USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH = PREFIX_ + "USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH";
 
 	/**
 	 * Not required, type String, identifies the database driver library added to the classpath
 	 */
-	public static final String DB_DRIVER_NAME = "JpaFacetDataModelProperties.DB_DRIVER_NAME";
+	String DB_DRIVER_NAME = PREFIX_ + "DB_DRIVER_NAME";
 
 	/**
 	 * Required, type Boolean, identifies if the user wishes to override default Catalog name
 	 */
-	public static final String USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG = 
-		"JpaFacetDataModelProperties.USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG";
+	String USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG = PREFIX_ + "USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG";
 	
 	/**
 	 * Not required, type String, identifies the user overridden default Catalog name
 	 */
-	public static final String USER_OVERRIDE_DEFAULT_CATALOG = 
-		"JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_CATALOG";
+	String USER_OVERRIDE_DEFAULT_CATALOG = PREFIX_ + "USER_OVERRIDE_DEFAULT_CATALOG";
 
 	/**
 	 * Required, type Boolean, identifies if the user wishes to override default schema name
 	 */
-	public static final String USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA = 
-		"JpaFacetDataModelProperties.USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA";
+	String USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA = PREFIX_ + "USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA";
 	
 	/**
 	 * Not required, type String, identifies the user overridden default schema name
 	 */
-	public static final String USER_OVERRIDE_DEFAULT_SCHEMA = 
-		"JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_SCHEMA";
+	String USER_OVERRIDE_DEFAULT_SCHEMA = PREFIX_ + "USER_OVERRIDE_DEFAULT_SCHEMA";
 	
 	/**
 	 * Required, type boolean, opposite of LIST_ANNOTATED_CLASSES, identifies 
 	 * whether all annotated classes are to be automatically included as part of 
 	 * all persistence units
 	 */
-	public static final String DISCOVER_ANNOTATED_CLASSES = "JpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES";
+	String DISCOVER_ANNOTATED_CLASSES = PREFIX_ + "DISCOVER_ANNOTATED_CLASSES";
 	
 	/**
 	 * Required, type boolean, opposite of DISCOVER_ANNOTATED_CLASSES, identifies
@@ -90,10 +90,10 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	 * the wizard - there must be a unique property for each radio button. Stupid
 	 * but true)
 	 */
-	public static final String LIST_ANNOTATED_CLASSES = "JpaFacetDataModelProperties.LIST_ANNOTATED_CLASSES";
+	String LIST_ANNOTATED_CLASSES = PREFIX_ + "LIST_ANNOTATED_CLASSES";
 	
 	/**
 	 * Required, type boolean, details whether orm.xml should be created
 	 */
-	public static final String CREATE_ORM_XML = "JpaFacetDataModelProperties.CREATE_ORM_XML";
+	String CREATE_ORM_XML = PREFIX_ + "CREATE_ORM_XML";
 }

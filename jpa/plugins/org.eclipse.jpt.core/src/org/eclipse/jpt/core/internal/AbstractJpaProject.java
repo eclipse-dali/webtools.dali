@@ -323,6 +323,10 @@ public abstract class AbstractJpaProject
 		return this.dataSource.getConnectionProfile();
 	}
 
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
+	 * catalog), then the database probably does not support catalogs.
+	 */
 	public Catalog getDefaultDbCatalog() {
 		String catalog = this.getDefaultCatalog();
 		return (catalog == null) ? null : this.getDbCatalog(catalog);
@@ -339,7 +343,7 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * If we don't have a catalog (i.e. we don't even have a *default* catalog),
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em> catalog),
 	 * then the database probably does not support catalogs; and we need to
 	 * get the schema directly from the database.
 	 */
@@ -694,7 +698,7 @@ public abstract class AbstractJpaProject
 			@Override
 			protected String transform(JavaResourcePersistentType jrpType) {
 				return jrpType.getQualifiedName();
-			};
+			}
 		};
 	}
 	
@@ -1328,7 +1332,7 @@ public abstract class AbstractJpaProject
 	 */
 	public IStatus update(IProgressMonitor monitor) {
 		try {
-			this.rootContextNode.update(monitor);
+			this.update_(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {
@@ -1342,6 +1346,10 @@ public abstract class AbstractJpaProject
 		}
 		this.rootContextNode.postUpdate();
 		return Status.OK_STATUS;
+	}
+
+	protected void update_(IProgressMonitor monitor) {
+		this.rootContextNode.update(monitor);
 	}
 
 }

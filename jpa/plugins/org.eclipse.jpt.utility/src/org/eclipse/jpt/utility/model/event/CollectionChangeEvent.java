@@ -17,7 +17,9 @@ import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "collection change" event gets delivered whenever a model changes a "bound"
- * or "constrained" collection. A <code>CollectionChangeEvent</code> is sent as an
+ * or "constrained" collection in a manner that is not easily characterized by
+ * the other collection events.
+ * A <code>CollectionChangeEvent</code> is sent as an
  * argument to the {@link org.eclipse.jpt.utility.model.listener.CollectionChangeListener}.
  * A <code>CollectionChangeEvent</code> is accompanied by the collection name and
  * the current state of the collection.

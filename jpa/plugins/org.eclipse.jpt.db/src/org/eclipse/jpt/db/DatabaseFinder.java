@@ -67,7 +67,7 @@ public interface DatabaseFinder {
 		}
 		@Override
 		public String toString() {
-			return "DatabaseFinder.Default"; //$NON-NLS-1$
+			return "DatabaseFinder.Simple"; //$NON-NLS-1$
 		}
 	}
 

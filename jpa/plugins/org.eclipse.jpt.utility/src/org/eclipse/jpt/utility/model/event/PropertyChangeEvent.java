@@ -15,6 +15,8 @@ import org.eclipse.jpt.utility.model.Model;
  * A "property change" event gets delivered whenever a model changes a "bound"
  * or "constrained" property. A <code>PropertyChangeEvent</code> is sent as an
  * argument to the {@link org.eclipse.jpt.utility.model.listener.PropertyChangeListener}.
+ * A <code>PropertyChangeEvent</code> is accompanied by the old and new values
+ * of the property.
  * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching

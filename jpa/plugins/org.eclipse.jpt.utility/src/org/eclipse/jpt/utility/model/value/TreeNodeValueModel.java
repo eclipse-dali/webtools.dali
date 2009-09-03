@@ -27,6 +27,8 @@ package org.eclipse.jpt.utility.model.value;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
+ * @param <T> the type of values held by the model
+ * 
  * @see org.eclipse.jpt.utility.internal.model.value.AbstractTreeNodeValueModel
  */
 public interface TreeNodeValueModel<T>

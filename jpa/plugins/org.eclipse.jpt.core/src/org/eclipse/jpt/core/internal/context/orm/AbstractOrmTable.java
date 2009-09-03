@@ -397,7 +397,7 @@ public abstract class AbstractOrmTable
 	}
 
 	/**
-	 * If we don't have a catalog (i.e. we don't even have a *default* catalog),
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em> catalog),
 	 * then the database probably does not support catalogs; and we need to
 	 * get the schema directly from the database.
 	 */
@@ -406,12 +406,13 @@ public abstract class AbstractOrmTable
 		return (catalog != null) ? this.getDbCatalog(catalog) : this.getDatabase();
 	}
 
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
+	 * catalog), then the database probably does not support catalogs.
+	 */
 	public Catalog getDbCatalog() {
 		String catalog = this.getCatalog();
-		if (catalog == null) {
-			return null;  // not even a default catalog (i.e. database probably does not support catalogs)
-		}
-		return this.getDbCatalog(catalog);
+		return (catalog == null) ? null : this.getDbCatalog(catalog);
 	}
 
 	public boolean isResolved() {
@@ -422,12 +423,13 @@ public abstract class AbstractOrmTable
 		return this.getDbSchema() != null;
 	}
 
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
+	 * catalog), then the database probably does not support catalogs.
+	 */
 	public boolean hasResolvedCatalog() {
 		String catalog = this.getCatalog();
-		if (catalog == null) {
-			return true;  // not even a default catalog (i.e. database probably does not support catalogs)
-		}
-		return this.getDbCatalog(catalog) != null;
+		return (catalog == null) || (this.getDbCatalog(catalog) != null);
 	}
 
 

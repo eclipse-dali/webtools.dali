@@ -63,7 +63,7 @@ public abstract class AbstractJpaContextNode
 	}
 
 	/**
-	 * If we don't have a catalog (i.e. we don't even have a *default* catalog),
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em> catalog),
 	 * then the database probably does not support catalogs; and we need to
 	 * get the schema directly from the database.
 	 */
@@ -77,12 +77,13 @@ public abstract class AbstractJpaContextNode
 		return (mfr != null) ? mfr.getSchema() : this.getPersistenceUnit().getDefaultSchema();
 	}
 
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
+	 * catalog), then the database probably does not support catalogs.
+	 */
 	public Catalog getContextDefaultDbCatalog() {
 		String catalog = this.getContextDefaultCatalog();
-		if (catalog == null) {
-			return null;  // not even a default catalog (i.e. database probably does not support catalogs)
-		}
-		return this.getDbCatalog(catalog);
+		return (catalog == null) ? null : this.getDbCatalog(catalog);
 	}
 
 	protected String getContextDefaultCatalog() {
@@ -91,5 +92,6 @@ public abstract class AbstractJpaContextNode
 	}
 	
 	public void postUpdate() {
+		// do nothing
 	}
 }

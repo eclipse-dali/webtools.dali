@@ -17,7 +17,9 @@ import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "list change" event gets delivered whenever a model changes a "bound"
- * or "constrained" list. A <code>ListChangeEvent</code> is sent as an
+ * or "constrained" list in a manner that is not easily characterized by
+ * the other list events.
+ * A <code>ListChangeEvent</code> is sent as an
  * argument to the {@link org.eclipse.jpt.utility.model.listener.ListChangeListener}.
  * A <code>ListChangeEvent</code> is accompanied by the list name and
  * the current state of the list.

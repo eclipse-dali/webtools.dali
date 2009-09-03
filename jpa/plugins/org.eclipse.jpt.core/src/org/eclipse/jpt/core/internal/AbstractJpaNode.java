@@ -139,7 +139,8 @@ public abstract class AbstractJpaNode
 	}
 
 	/**
-	 * pre-condition: specified catalog name is not null
+	 * Pre-condition: specified catalog <em>identifier</em> is not null.
+	 * NB: Do not use the catalog <em>name</em>.
 	 */
 	protected Catalog getDbCatalog(String catalog) {
 		Database database = this.getDatabase();

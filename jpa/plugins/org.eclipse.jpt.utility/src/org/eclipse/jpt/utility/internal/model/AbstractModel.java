@@ -41,6 +41,8 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 /**
  * Reasonable implementation of the {@link Model} protocol
  * with numerous convenience methods.
+ * 
+ * @see ChangeSupport
  */
 public abstract class AbstractModel
 	implements Model
@@ -190,7 +192,7 @@ public abstract class AbstractModel
 	}
 
 	/**
-	 * implied 'null' old value
+	 * implied <code>null</code> "old" value
 	 */
 	protected final void firePropertyChanged(String propertyName, Object newValue) {
 		this.firePropertyChanged(propertyName, null, newValue);
@@ -605,11 +607,11 @@ public abstract class AbstractModel
 	// ********** convenience methods **********
 
 	/**
-	 * Return whether the values are equal, with the appropriate null checks.
+	 * Return whether the specified values are equal, with the appropriate <code>null</code> checks.
 	 * Convenience method for checking whether an attribute value has changed.
-	 * 
-	 * DO NOT use this to determine whether to fire a change notification,
-	 * ChangeSupport already does that.
+	 * <p>
+	 * <em>Do not</em> use this to determine whether to fire a change notification,
+	 * {@link ChangeSupport} already does that.
 	 */
 	protected final boolean valuesAreEqual(Object value1, Object value2) {
 		return this.getChangeSupport().valuesAreEqual(value1, value2);
@@ -620,12 +622,12 @@ public abstract class AbstractModel
 
 
 	/**
-	 * Return whether the values are different, with the appropriate null checks.
+	 * Return whether the specified values are different, with the appropriate <code>null</code> checks.
 	 * Convenience method for checking whether an attribute value has changed.
-	 * 
-	 * DO NOT use this to determine whether to fire a change notification,
-	 * ChangeSupport already does that.
-	 * 
+	 * <p>
+	 * <em>Do not</em> use this to determine whether to fire a change notification,
+	 * {@link ChangeSupport} already does that.
+	 * <p>
 	 * For example, after firing the change notification, you can use this method
 	 * to decide if some other, related, piece of state needs to be synchronized
 	 * with the state that just changed.
@@ -653,7 +655,7 @@ public abstract class AbstractModel
 	}
 
 	/**
-	 * "ClassName[00F3EE42](add'l info)"
+	 * e.g. <code>"ClassName[00F3EE42](add'l info)"</code>
 	 */
 	@Override
 	public String toString() {
@@ -671,8 +673,8 @@ public abstract class AbstractModel
 	}
 
 	/**
-	 * make this public so one model can call a nested model's
-	 * #toString(StringBuilder)
+	 * This method is public so one model can call a nested model's
+	 * <code>#toString(StringBuilder)</code>.
 	 */
 	public void toString(@SuppressWarnings("unused") StringBuilder sb) {
 		// subclasses should override this to do something a bit more helpful

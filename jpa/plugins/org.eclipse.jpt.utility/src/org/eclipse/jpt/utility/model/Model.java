@@ -32,6 +32,7 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * @see CollectionChangeListener
  * @see ListChangeListener
  * @see TreeChangeListener
+ * @see org.eclipse.jpt.utility.internal.model.AbstractModel
  */
 // TODO use objects (IDs?) instead of strings to identify aspects?
 public interface Model {

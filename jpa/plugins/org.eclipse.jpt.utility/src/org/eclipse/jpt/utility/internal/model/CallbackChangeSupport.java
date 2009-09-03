@@ -38,8 +38,8 @@ import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
  * event is generated. This allows the listeners to delegate to the change
  * support object verification that an aspect as actually changed. This is
  * useful for simple things like setting dirty flags, blanket validation, and
- * blanket sychronization; i.e. things that might be interested in the *name*
- * of the aspect that changed but not so much *how* the aspect changed.
+ * blanket sychronization; i.e. things that might be interested in the <em>name</em>
+ * of the aspect that changed but not so much <em>how</em> the aspect changed.
  */
 public class CallbackChangeSupport
 	extends ChangeSupport

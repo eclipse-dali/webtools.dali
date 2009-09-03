@@ -243,7 +243,6 @@ public interface JpaProject
 	IStatus update(IProgressMonitor monitor);
 
 
-	// TODO abstract out to utility
 	/**
 	 * Define a strategy that can be used to "update" a JPA project whenever
 	 * something changes.
@@ -372,20 +371,20 @@ public interface JpaProject
 	String USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY = "userOverrideDefaultCatalog"; //$NON-NLS-1$
 
 	/**
-	 * Return the name of the catalog to be used as a default for the JPA
-	 * project instead of the one that is associated by default with the
-	 * connection profile.
-	 * @return The catalog name. May be null (implies that the connection profile
-	 *   default catalog should be used).
+	 * Return the <em>identifier</em> of the catalog to be used as a default
+	 * for the JPA project instead of the one that is associated by default
+	 * with the connection profile.
+	 * @return The catalog identifier. May be null (implying the connection profile
+	 * default catalog should be used).
 	 */
 	String getUserOverrideDefaultCatalog();
 
 	/**
-	 * Set the name of the catalog to be used as a default for the project
-	 * instead of the one that is associated by default with the connection profile.
-	 * @parameter catalog The default catalog name to use instead of
-	 *   the default catalog of the connection profile. May be null (implies that
-	 *   the connection profile default catalog should be used).
+	 * Set the <em>identifier</em> of the catalog to be used as a default
+	 * for the JPA project instead of the one that is associated by default
+	 * with the connection profile.
+	 * @parameter catalog The catalog identifier. May be null (implying the connection profile
+	 * default catalog should be used).
 	 */
 	void setUserOverrideDefaultCatalog(String catalog);
 
@@ -394,25 +393,25 @@ public interface JpaProject
 
 	/** 
 	 * ID string used when the JPA project's user override default schema changes.
-	 * ID string used when userOverrideDefaultSchema property is changed.
 	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	String USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY = "userOverrideDefaultSchema"; //$NON-NLS-1$
 
 	/**
-	 * Return the name of the schema to be used as a default for the project
-	 * instead of the one that is associated by default with the connection profile.
-	 * @return The schema name. May be null (implies that the connection profile
-	 *   default schema should be used).
+	 * Return the <em>identifier</em> of the schema to be used as a default
+	 * for the JPA project instead of the one that is associated by default
+	 * with the connection profile.
+	 * @return The schema identifier. May be null (implying the connection profile
+	 * default schema should be used).
 	 */
 	String getUserOverrideDefaultSchema();
 
 	/**
-	 * Set the name of the schema to be used as a default for the project
-	 * instead of the one that is associated by default with the connection profile.
-	 * @parameter schema The default schema name to use instead of
-	 *   the default schema of the connection profile. May be null (implies that
-	 *   the connection profile default schema should be used).
+	 * Set the <em>identifier</em> of the schema to be used as a default
+	 * for the JPA project instead of the one that is associated by default
+	 * with the connection profile.
+	 * @parameter schema The schema identifier. May be null (implying the connection profile
+	 * default schema should be used).
 	 */
 	void setUserOverrideDefaultSchema(String schema);
 

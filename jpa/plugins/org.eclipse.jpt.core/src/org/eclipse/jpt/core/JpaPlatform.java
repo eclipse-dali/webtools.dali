@@ -16,9 +16,6 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullJavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
@@ -176,4 +173,5 @@ public interface JpaPlatform
 	 * Return a platform variation that is used to determine differences platforms and/or JPA specification versions
 	 */
 	JpaPlatformVariation getJpaVariation();
+
 }
