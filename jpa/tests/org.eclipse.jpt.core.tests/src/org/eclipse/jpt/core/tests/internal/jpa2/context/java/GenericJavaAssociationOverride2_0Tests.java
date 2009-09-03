@@ -542,7 +542,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		getJavaEntity().getTable().setSpecifiedName("FOO");
 		assertEquals("FOO_FOO", joinTable.getName());
 		
-		PersistentType mappedSuperclass = getJavaEntity().getPersistentType().getParentPersistentType();
+		PersistentType mappedSuperclass = getJavaEntity().getPersistentType().getSuperPersistentType();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) mappedSuperclass.getAttributeNamed("address").getMapping();
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("BAR");
 

@@ -57,7 +57,7 @@ public abstract class AbstractJavaPersistentType
 {
 	protected JavaResourcePersistentType resourcePersistentType;
 	
-	protected PersistentType parentPersistentType;
+	protected PersistentType superPersistentType;
 	
 	protected String name;
 	
@@ -103,12 +103,6 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public PersistentType.Owner getParent() {
 		return (PersistentType.Owner) super.getParent();
-	}
-	
-	//convenience since getParent is overloaded, confusing if this means containment parent
-	//or inheritance parentPersistentType
-	protected PersistentType.Owner getOwner() {
-		return getParent();
 	}
 	
 	
@@ -157,7 +151,7 @@ public abstract class AbstractJavaPersistentType
 	 * Check the access "specified" by the java resource model.
 	 * 		Check java annotations first.
 	 * 		If still null check xml mapping specified access
-	 *		If still null then set to parentPersistentType access.
+	 *		If still null then set to superPersistentType access.
 	 * 		If still null check entity-mappings specified access setting if this persistent-type is listed in an orm.xml file
 	 * 		If still null check the persistence-unit default Access
 	 * 		Default to FIELD if all else fails.
@@ -172,8 +166,8 @@ public abstract class AbstractJavaPersistentType
 			return accessType;
 		}
 
-		if (this.parentPersistentType != null) {
-			accessType = this.parentPersistentType.getDefaultAccess();
+		if (this.superPersistentType != null) {
+			accessType = this.superPersistentType.getDefaultAccess();
 			if (accessType != null) {
 				return accessType;
 			}
@@ -216,13 +210,13 @@ public abstract class AbstractJavaPersistentType
 		this.resourcePersistentType.setPrimaryAnnotation(
 				newMapping.getAnnotationName(),
 				ArrayTools.array(newMapping.supportingAnnotationNames(), new String[0]));
-		firePropertyChanged(PersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
+		firePropertyChanged(MAPPING_PROPERTY, oldMapping, newMapping);
 	}
 	
 	protected void setMapping(JavaTypeMapping newMapping) {
 		JavaTypeMapping oldMapping = this.mapping;
 		this.mapping = newMapping;	
-		firePropertyChanged(PersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
+		firePropertyChanged(MAPPING_PROPERTY, oldMapping, newMapping);
 	}
 	
 	protected JavaTypeMapping buildMapping() {
@@ -254,11 +248,11 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public AccessType getOwnerOverrideAccess() {
-		return this.getOwner().getOverridePersistentTypeAccess();
+		return this.getParent().getOverridePersistentTypeAccess();
 	}
 
 	public AccessType getOwnerDefaultAccess() {
-		return this.getOwner().getDefaultPersistentTypeAccess();
+		return this.getParent().getDefaultPersistentTypeAccess();
 	}
 
 	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
@@ -281,7 +275,7 @@ public abstract class AbstractJavaPersistentType
 			JavaPersistentAttribute attribute = stream.next();
 			return (stream.hasNext()) ? null /*more than one*/: attribute;
 		}
-		return (this.parentPersistentType == null) ? null : this.parentPersistentType.resolveAttribute(attributeName);
+		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
 	}
 	
 	public ListIterator<JavaPersistentAttribute> attributes() {
@@ -401,34 +395,31 @@ public abstract class AbstractJavaPersistentType
 	
 	
 	public Iterator<PersistentType> inheritanceHierarchy() {
-		return inheritanceHierarchyOf(this);
+		return this.inheritanceHierarchyOf(this);
 	}
 
 	public Iterator<PersistentType> ancestors() {
-		return inheritanceHierarchyOf(this.parentPersistentType);
+		return this.inheritanceHierarchyOf(this.superPersistentType);
 	}
 
-	protected static Iterator<PersistentType> inheritanceHierarchyOf(PersistentType persistentType) {
+	protected Iterator<PersistentType> inheritanceHierarchyOf(PersistentType start) {
 		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator<PersistentType>(persistentType) {
+		return new ChainIterator<PersistentType>(start) {
 			@Override
-			protected PersistentType nextLink(PersistentType pt) {
-				return pt.getParentPersistentType();
+			protected PersistentType nextLink(PersistentType persistentType) {
+				return persistentType.getSuperPersistentType();
 			}
 		};
 	}
 
-	public PersistentType getParentPersistentType() {
-		return this.parentPersistentType;
+	public PersistentType getSuperPersistentType() {
+		return this.superPersistentType;
 	}
 
-	public void setParentPersistentType(PersistentType newParentPersistentType) {
-		if (attributeValueHasNotChanged(this.parentPersistentType, newParentPersistentType)) {
-			return;
-		}
-		PersistentType oldParentPersistentType = this.parentPersistentType;
-		this.parentPersistentType = newParentPersistentType;
-		firePropertyChanged(PersistentType.PARENT_PERSISTENT_TYPE_PROPERTY, oldParentPersistentType, newParentPersistentType);
+	protected void setSuperPersistentType(PersistentType superPersistentType) {
+		PersistentType old = this.superPersistentType;
+		this.superPersistentType = superPersistentType;
+		this.firePropertyChanged(SUPER_PERSISTENT_TYPE_PROPERTY, old, superPersistentType);
 	}
 	
 	public boolean hasAnyAnnotatedAttributes() {
@@ -439,7 +430,7 @@ public abstract class AbstractJavaPersistentType
 	
 	protected void initialize(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		this.parentPersistentType = this.buildParentPersistentType();
+		this.superPersistentType = this.buildSuperPersistentType();
 		this.name = this.buildName();
 		this.defaultAccess = buildDefaultAccess();
 		this.specifiedAccess = buildSpecifiedAccess();
@@ -470,7 +461,7 @@ public abstract class AbstractJavaPersistentType
 			// the JPA file can be null if the resource type is "external"
 			jpaFile.addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
 		}
-		this.setParentPersistentType(this.buildParentPersistentType());
+		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setName(this.buildName());	
 		this.updateAccess();
 		this.updateMapping();
@@ -537,31 +528,31 @@ public abstract class AbstractJavaPersistentType
 		return getJpaFactory().buildJavaPersistentAttribute(this, jrpa);
 	}
 
-	protected PersistentType buildParentPersistentType() {
+	protected PersistentType buildSuperPersistentType() {
 		HashSet<JavaResourcePersistentType> visited = new HashSet<JavaResourcePersistentType>();
 		visited.add(this.resourcePersistentType);
-		PersistentType parent = this.getParent(this.resourcePersistentType.getSuperclassQualifiedName(), visited);
-		if (parent == null) {
+		PersistentType spt = this.getSuperPersistentType(this.resourcePersistentType.getSuperclassQualifiedName(), visited);
+		if (spt == null) {
 			return null;
 		}
-		if (CollectionTools.contains(parent.inheritanceHierarchy(), this)) {
+		if (CollectionTools.contains(spt.inheritanceHierarchy(), this)) {
 			return null;  // short-circuit in this case, we have circular inheritance
 		}
-		return parent.isMapped() ? parent : parent.getParentPersistentType();
+		return spt.isMapped() ? spt : spt.getSuperPersistentType();
 	}
 
 	/**
 	 * The JPA spec allows non-persistent types in a persistent type's
 	 * inheritance hierarchy. We check for a persistent type with the
 	 * specified name in the persistence unit. If it is not found we use
-	 * resource persistent type and look for *its* parent type.
+	 * resource persistent type and look for *its* super type.
 	 * 
 	 * The 'visited' collection is used to detect a cycle in the *resource* type
 	 * inheritance hierarchy and prevent the resulting stack overflow.
 	 * Any cycles in the *context* type inheritance hierarchy are handled in
-	 * #buildParentPersistentType().
+	 * #buildSuperPersistentType().
 	 */
-	protected PersistentType getParent(String typeName, Collection<JavaResourcePersistentType> visited) {
+	protected PersistentType getSuperPersistentType(String typeName, Collection<JavaResourcePersistentType> visited) {
 		if (typeName == null) {
 			return null;
 		}
@@ -570,8 +561,8 @@ public abstract class AbstractJavaPersistentType
 			return null;
 		}
 		visited.add(resourceType);
-		PersistentType parent = this.getPersistentType(typeName);
-		return (parent != null) ? parent : this.getParent(resourceType.getSuperclassQualifiedName(), visited);  // recurse
+		PersistentType spt = this.getPersistentType(typeName);
+		return (spt != null) ? spt : this.getSuperPersistentType(resourceType.getSuperclassQualifiedName(), visited);  // recurse
 	}
 
 	protected PersistentType getPersistentType(String fullyQualifiedTypeName) {

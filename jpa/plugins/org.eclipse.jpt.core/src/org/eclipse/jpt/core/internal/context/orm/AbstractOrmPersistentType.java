@@ -71,7 +71,7 @@ public abstract class AbstractOrmPersistentType
 
 	protected OrmTypeMapping typeMapping;
 	
-	protected PersistentType parentPersistentType;
+	protected PersistentType superPersistentType;
 	
 	protected JavaPersistentType javaPersistentType;
 
@@ -84,7 +84,7 @@ public abstract class AbstractOrmPersistentType
 		this.specifiedAccess = this.getResourceAccess();
 		this.defaultAccess = this.buildDefaultAccess();
 		this.javaPersistentType = this.buildJavaPersistentType();
-		this.parentPersistentType = this.buildParentPersistentType();	
+		this.superPersistentType = this.buildSuperPersistentType();	
 		this.initializePersistentAttributes();
 	}
 
@@ -153,9 +153,8 @@ public abstract class AbstractOrmPersistentType
 			return this.getSpecifiedAccess();
 		}
 
-		PersistentType ppt = this.getParentPersistentType();
-		if (ppt instanceof OrmPersistentType) {
-			AccessType accessType = ((OrmPersistentType) ppt).getSpecifiedAccess();
+		if (this.superPersistentType instanceof OrmPersistentType) {
+			AccessType accessType = ((OrmPersistentType) this.superPersistentType).getSpecifiedAccess();
 			if (accessType != null) {
 				return accessType;
 			}
@@ -173,9 +172,8 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	public AccessType getDefaultPersistentTypeAccess() {
-		PersistentType ppt = this.getParentPersistentType();
-		if (ppt instanceof OrmPersistentType) {
-			AccessType accessType = ((OrmPersistentType) ppt).getDefaultAccess();
+		if (this.superPersistentType instanceof OrmPersistentType) {
+			AccessType accessType = ((OrmPersistentType) this.superPersistentType).getDefaultAccess();
 			if (accessType != null) {
 				return accessType;
 			}
@@ -200,36 +198,31 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	public Iterator<PersistentType> inheritanceHierarchy() {
-		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator<PersistentType>(this) {
-			@Override
-			protected PersistentType nextLink(PersistentType pt) {
-				return pt.getParentPersistentType();
-			}
-		};
+		return this.inheritanceHierarchyOf(this);
 	}
 
 	public Iterator<PersistentType> ancestors() {
+		return this.inheritanceHierarchyOf(this.superPersistentType);
+	}
+
+	protected Iterator<PersistentType> inheritanceHierarchyOf(PersistentType start) {
 		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator<PersistentType>(this.getParentPersistentType()) {
+		return new ChainIterator<PersistentType>(start) {
 			@Override
-			protected PersistentType nextLink(PersistentType pt) {
-				return pt.getParentPersistentType();
+			protected PersistentType nextLink(PersistentType persistentType) {
+				return persistentType.getSuperPersistentType();
 			}
 		};
 	}
 
-	public PersistentType getParentPersistentType() {
-		return this.parentPersistentType;
+	public PersistentType getSuperPersistentType() {
+		return this.superPersistentType;
 	}
 	
-	public void setParentPersistentType(PersistentType newParentPersistentType) {
-		if (attributeValueHasNotChanged(this.parentPersistentType, newParentPersistentType)) {
-			return;
-		}
-		PersistentType oldParentPersistentType = this.parentPersistentType;
-		this.parentPersistentType = newParentPersistentType;
-		firePropertyChanged(PersistentType.PARENT_PERSISTENT_TYPE_PROPERTY, oldParentPersistentType, newParentPersistentType);
+	protected void setSuperPersistentType(PersistentType superPersistentType) {
+		PersistentType old = this.superPersistentType;
+		this.superPersistentType = superPersistentType;
+		this.firePropertyChanged(SUPER_PERSISTENT_TYPE_PROPERTY, old, superPersistentType);
 	}
 	
 	public AccessType getDefaultAccess() {
@@ -423,15 +416,15 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	protected void addVirtualPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
-		addItemToList(ormPersistentAttribute, this.virtualPersistentAttributes, OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST);
+		addItemToList(ormPersistentAttribute, this.virtualPersistentAttributes, VIRTUAL_ATTRIBUTES_LIST);
 	}
 
 	protected void removeVirtualPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
-		removeItemFromList(ormPersistentAttribute, this.virtualPersistentAttributes, OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST);
+		removeItemFromList(ormPersistentAttribute, this.virtualPersistentAttributes, VIRTUAL_ATTRIBUTES_LIST);
 	}
 	
 	protected void moveVirtualPersistentAttribute_(int index, OrmPersistentAttribute attribute) {
-		moveItemInList(index, this.virtualPersistentAttributes.indexOf(attribute), this.virtualPersistentAttributes, OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST);
+		moveItemInList(index, this.virtualPersistentAttributes.indexOf(attribute), this.virtualPersistentAttributes, VIRTUAL_ATTRIBUTES_LIST);
 	}
 
 	public boolean containsVirtualPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
@@ -537,8 +530,8 @@ public abstract class AbstractOrmPersistentType
 				if (javaPersistentTypeHasSpecifiedAccess()) {
 					return this.javaPersistentType.getAccess();
 				}
-				if (getParentPersistentType() != null) {
-					return getParentPersistentType().getAccess();
+				if (this.superPersistentType != null) {
+					return this.superPersistentType.getAccess();
 				}
 			}
 		}
@@ -745,8 +738,8 @@ public abstract class AbstractOrmPersistentType
 				resourcePersistentType.persistableFields();
 	}
 
-	protected PersistentType buildParentPersistentType() {
-		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getParentPersistentType();
+	protected PersistentType buildSuperPersistentType() {
+		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getSuperPersistentType();
 	}
 
 	public void update() {
@@ -754,7 +747,7 @@ public abstract class AbstractOrmPersistentType
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.getMapping().update();
 		this.updateJavaPersistentType();
-		this.updateParentPersistentType();
+		this.updateSuperPersistentType();
 		this.updatePersistentAttributes();
 	}
 	
@@ -771,13 +764,13 @@ public abstract class AbstractOrmPersistentType
 		}		
 	}
 	
-	protected void updateParentPersistentType() {
-		PersistentType ppt = this.buildParentPersistentType();
+	protected void updateSuperPersistentType() {
+		PersistentType spt = this.buildSuperPersistentType();
 		// check for circular inheritance
-		if ((ppt == null) || CollectionTools.contains(ppt.inheritanceHierarchy(), this)) {
-			this.setParentPersistentType(null);
+		if ((spt == null) || CollectionTools.contains(spt.inheritanceHierarchy(), this)) {
+			this.setSuperPersistentType(null);
 		} else {
-			this.setParentPersistentType(ppt);
+			this.setSuperPersistentType(spt);
 		}
 	}
 	
@@ -901,12 +894,7 @@ public abstract class AbstractOrmPersistentType
 			OrmPersistentAttribute attribute = attributes.next();
 			return attributes.hasNext() ? null /* more than one */: attribute;
 		}
-		else if (getParentPersistentType() != null) {
-			return getParentPersistentType().resolveAttribute(attributeName);
-		}
-		else {
-			return null;
-		}
+		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
 	}
 
 	@Override

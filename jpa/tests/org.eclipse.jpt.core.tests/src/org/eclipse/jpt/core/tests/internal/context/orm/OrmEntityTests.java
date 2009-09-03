@@ -684,10 +684,10 @@ public class OrmEntityTests extends ContextModelTestCase
 		createTestEntityDefaultFieldAccess();
 		createTestSubType();
 	
-		OrmPersistentType parentPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentType childPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-		OrmEntity parentXmlEntity = (OrmEntity) parentPersistentType.getMapping();
-		OrmEntity childXmlEntity = (OrmEntity) childPersistentType.getMapping();
+		OrmPersistentType superPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType subPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmEntity parentXmlEntity = (OrmEntity) superPersistentType.getMapping();
+		OrmEntity childXmlEntity = (OrmEntity) subPersistentType.getMapping();
 		
 		assertEquals(parentXmlEntity, childXmlEntity.getParentEntity());
 		assertEquals(InheritanceType.SINGLE_TABLE, childXmlEntity.getDefaultInheritanceStrategy());
@@ -900,10 +900,10 @@ public class OrmEntityTests extends ContextModelTestCase
 		createTestEntityFieldAccess();
 		createTestSubType();
 	
-		OrmPersistentType parentPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentType childPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-		OrmEntity parentOrmEntity = (OrmEntity) parentPersistentType.getMapping();
-		OrmEntity childOrmEntity = (OrmEntity) childPersistentType.getMapping();
+		OrmPersistentType superPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType subPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmEntity parentOrmEntity = (OrmEntity) superPersistentType.getMapping();
+		OrmEntity childOrmEntity = (OrmEntity) subPersistentType.getMapping();
 		JavaEntity javaEntity = childOrmEntity.getJavaEntity();
 		
 		JavaSecondaryTable javaSecondaryTableFoo = javaEntity.addSpecifiedSecondaryTable(0);
@@ -1836,8 +1836,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();	
 		OrmAttributeOverride attributeOverride = entity.virtualAttributeOverrides().next();
-		((OrmPersistentAttribute) persistentType.getParentPersistentType().getAttributeNamed("id")).makeSpecified();
-		BasicMapping basicMapping = (BasicMapping) persistentType.getParentPersistentType().getAttributeNamed("id").getSpecifiedMapping();
+		((OrmPersistentAttribute) persistentType.getSuperPersistentType().getAttributeNamed("id")).makeSpecified();
+		BasicMapping basicMapping = (BasicMapping) persistentType.getSuperPersistentType().getAttributeNamed("id").getSpecifiedMapping();
 		basicMapping.getColumn().setSpecifiedName("MY_COLUMN");
 		basicMapping.getColumn().setSpecifiedTable("BAR");
 		
@@ -2631,14 +2631,14 @@ public class OrmEntityTests extends ContextModelTestCase
 	public void testGetPrimaryKeyColumnNameWithAttributeOverride() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
-		OrmPersistentType parentPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentType childPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-		OrmEntity childXmlEntity = (OrmEntity) childPersistentType.getMapping();
+		OrmPersistentType superPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType subPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmEntity childXmlEntity = (OrmEntity) subPersistentType.getMapping();
 		
-		parentPersistentType.getAttributeNamed("id").makeSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		superPersistentType.getAttributeNamed("id").makeSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("id", childXmlEntity.getPrimaryKeyColumnName());
 		
-		((OrmIdMapping) parentPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
+		((OrmIdMapping) superPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
 		assertEquals("MY_ID", childXmlEntity.getPrimaryKeyColumnName());
 
 		//TODO once bug 228718 is fixed

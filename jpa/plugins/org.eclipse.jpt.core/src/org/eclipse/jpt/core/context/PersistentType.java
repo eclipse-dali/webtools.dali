@@ -109,7 +109,7 @@ public interface PersistentType
 	// ********** inheritance **********
 
 	/**
-	 * Return the "parent" {@link PersistentType} from the "persistence"
+	 * Return the "super" {@link PersistentType} from the "persistence"
 	 * inheritance hierarchy.
 	 * If the Java inheritance parent is not a {@link PersistentType}, then continue
 	 * up the hierarchy (the JPA spec allows non-persistent types to be part of the hierarchy.)
@@ -125,12 +125,12 @@ public interface PersistentType
 	 * &#64;Entity
 	 * public class Cat extends Animal {}
 	 * </pre>
-	 * The "parent" persistent type of the <code>Cat</code> persistent type is
-	 * the <code>Model</code> persistent type. The "parent" persistent type can
+	 * The "super" persistent type of the <code>Cat</code> persistent type is
+	 * the <code>Model</code> persistent type. The "super" persistent type can
 	 * be either a Java annotated class or declared in the XML files.
 	 */
-	PersistentType getParentPersistentType();
-		String PARENT_PERSISTENT_TYPE_PROPERTY = "parentPersistentType"; //$NON-NLS-1$
+	PersistentType getSuperPersistentType();
+		String SUPER_PERSISTENT_TYPE_PROPERTY = "superPersistentType"; //$NON-NLS-1$
 
 	/**
 	 * Return the persistent type's "persistence" inheritance hierarchy,

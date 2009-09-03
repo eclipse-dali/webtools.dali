@@ -475,7 +475,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, getJavaPersistentType().getAccess());
 	}
 
-	public void testAccessAnnotationsOnParent() throws Exception {
+	public void testAccessAnnotationsOnSuper() throws Exception {
 		createTestEntityAnnotationOnProperty();
 		createTestSubType();
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
@@ -485,30 +485,30 @@ public class JavaEntityTests extends ContextModelTestCase
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 			
 		JavaPersistentType childPersistentType = getJavaPersistentType();
-		PersistentType parentPersistentType = childPersistentType.getParentPersistentType();
+		PersistentType superPersistentType = childPersistentType.getSuperPersistentType();
 		
-		assertEquals(AccessType.PROPERTY, parentPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, superPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, childPersistentType.getAccess());		
 		
-		((IdMapping) parentPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("FOO");
+		((IdMapping) superPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("FOO");
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		typeResource.persistableProperties().next().removeAnnotation(JPA.ID);
 		//no mapping(Id) annotation, but still a Column annotation, so access should still be property
-		assertEquals(AccessType.PROPERTY, parentPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, superPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, childPersistentType.getAccess());
 
-		((BasicMapping) parentPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName(null);
-		assertEquals(AccessType.FIELD, parentPersistentType.getAccess());
+		((BasicMapping) superPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName(null);
+		assertEquals(AccessType.FIELD, superPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, childPersistentType.getAccess());
 		
 		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, parentPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, superPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, childPersistentType.getAccess());
 		
 		getEntityMappings().setSpecifiedAccess(AccessType.FIELD);
 		//still accessType of PROPERTY because the java class is not specified in this orm.xml
-		assertEquals(AccessType.PROPERTY, parentPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, superPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, childPersistentType.getAccess());
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);

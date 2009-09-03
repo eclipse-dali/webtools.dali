@@ -508,7 +508,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0OrmContextM
 		ormEntity.getTable().setSpecifiedName("FOO");
 		assertEquals("FOO_FOO", joinTable.getName());
 		
-		PersistentType mappedSuperclass = ormPersistentType.getParentPersistentType();
+		PersistentType mappedSuperclass = ormPersistentType.getSuperPersistentType();
 		((OrmPersistentAttribute)  mappedSuperclass.getAttributeNamed("address")).makeSpecified();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) mappedSuperclass.getAttributeNamed("address").getMapping();
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("BAR");

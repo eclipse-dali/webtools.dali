@@ -433,7 +433,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
-	public void testParentPersistentType() throws Exception {
+	public void testSuperPersistentType() throws Exception {
 		createTestEntityAnnotatedMethod();
 		createTestSubTypeWithFieldAnnotation();
 		
@@ -447,26 +447,26 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		classRef = classRefs.next();
 		JavaPersistentType childJavaPersistentType = classRef.getJavaPersistentType();
 		
-		assertEquals(rootJavaPersistentType, childJavaPersistentType.getParentPersistentType());
-		assertNull(rootJavaPersistentType.getParentPersistentType());
+		assertEquals(rootJavaPersistentType, childJavaPersistentType.getSuperPersistentType());
+		assertNull(rootJavaPersistentType.getSuperPersistentType());
 	}
 	
-	public void testParentPersistentType2() throws Exception {
+	public void testSuperPersistentType2() throws Exception {
 		createTestEntityAnnotatedMethod();
 		createTestSubTypeWithFieldAnnotation();
 		
-		//parent is not added to the persistenceUnit, but it should still be found
-		//as the parentPersistentType because of impliedClassRefs and changes for bug 190317
+		//super is not added to the persistenceUnit, but it should still be found
+		//as the superPersistentType because of impliedClassRefs and changes for bug 190317
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		JavaPersistentType javaPersistentType = classRefs.next().getJavaPersistentType();
 		
-		assertNotNull(javaPersistentType.getParentPersistentType());
+		assertNotNull(javaPersistentType.getSuperPersistentType());
 	}	
 	
 	//Entity extends Non-Entity extends Entity 
-	public void testParentPersistentType3() throws Exception {
+	public void testSuperPersistentType3() throws Exception {
 		createTestEntityAnnotatedMethod();
 		createTestSubTypeNonPersistent();
 		createTestSubTypePersistentExtendsNonPersistent();
@@ -481,8 +481,8 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		classRef = classRefs.next();
 		JavaPersistentType childJavaPersistentType = classRef.getJavaPersistentType();
 		
-		assertEquals(rootJavaPersistentType, childJavaPersistentType.getParentPersistentType());
-		assertNull(rootJavaPersistentType.getParentPersistentType());
+		assertEquals(rootJavaPersistentType, childJavaPersistentType.getSuperPersistentType());
+		assertNull(rootJavaPersistentType.getSuperPersistentType());
 	}
 	
 	public void testInheritanceHierarchy() throws Exception {
@@ -707,7 +707,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		assertFalse(attributes.hasNext());
 	}
 
-	public void testParentPersistentTypeGeneric() throws Exception {
+	public void testSuperPersistentTypeGeneric() throws Exception {
 		createTestGenericEntity();
 		createTestGenericMappedSuperclass();
 		
@@ -716,9 +716,9 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		
 		JavaPersistentType javaPersistentType = getJavaPersistentType();
 		assertEquals("test.Entity1", javaPersistentType.getName());
-		assertNotNull(javaPersistentType.getParentPersistentType());
+		assertNotNull(javaPersistentType.getSuperPersistentType());
 		
-		assertEquals("test.Entity2", javaPersistentType.getParentPersistentType().getName());
+		assertEquals("test.Entity2", javaPersistentType.getSuperPersistentType().getName());
 	}
 
 	private void createTestGenericEntity() throws Exception {
