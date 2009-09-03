@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
 import org.eclipse.jpt.core.context.IdMapping;
@@ -19,7 +20,7 @@ import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
@@ -359,7 +360,7 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 	}
 
 	private String[] sortedUniqueGeneratorNames() {
-		return CollectionTools.sort(this.getSubject().getPersistenceUnit().uniqueGeneratorNames());
+		return ArrayTools.sort(this.getSubject().getPersistenceUnit().uniqueGeneratorNames());
 	}
 
 }

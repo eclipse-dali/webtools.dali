@@ -68,6 +68,7 @@ import org.eclipse.jpt.core.resource.java.SecondaryTablesAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -364,7 +365,7 @@ public abstract class AbstractJavaEntity
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		// the JPA platform searches database objects for us
 		return this.getDataSource().selectDatabaseObjectForIdentifier(
-						CollectionTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
+						ArrayTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
 						tableName
 					);
 	}

@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
  * javax.persistence.ManyToMany
@@ -85,11 +85,11 @@ abstract class SourceRelationshipMappingAnnotation
 
 	private void initializeCascadeTypes(CompilationUnit astRoot) {
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astRoot));
-		this.cascadeAll = CollectionTools.contains(cascadeTypes, CascadeType.ALL);
-		this.cascadeMerge = CollectionTools.contains(cascadeTypes, CascadeType.MERGE);
-		this.cascadePersist = CollectionTools.contains(cascadeTypes, CascadeType.PERSIST);
-		this.cascadeRefresh = CollectionTools.contains(cascadeTypes, CascadeType.REFRESH);
-		this.cascadeRemove = CollectionTools.contains(cascadeTypes, CascadeType.REMOVE);
+		this.cascadeAll = ArrayTools.contains(cascadeTypes, CascadeType.ALL);
+		this.cascadeMerge = ArrayTools.contains(cascadeTypes, CascadeType.MERGE);
+		this.cascadePersist = ArrayTools.contains(cascadeTypes, CascadeType.PERSIST);
+		this.cascadeRefresh = ArrayTools.contains(cascadeTypes, CascadeType.REFRESH);
+		this.cascadeRemove = ArrayTools.contains(cascadeTypes, CascadeType.REMOVE);
 	}
 
 	public void update(CompilationUnit astRoot) {
@@ -101,11 +101,11 @@ abstract class SourceRelationshipMappingAnnotation
 
 	private void updateCascade(CompilationUnit astRoot) {
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astRoot));
-		this.setCascadeAll(CollectionTools.contains(cascadeTypes, CascadeType.ALL));
-		this.setCascadeMerge(CollectionTools.contains(cascadeTypes, CascadeType.MERGE));
-		this.setCascadePersist(CollectionTools.contains(cascadeTypes, CascadeType.PERSIST));
-		this.setCascadeRefresh(CollectionTools.contains(cascadeTypes, CascadeType.REFRESH));
-		this.setCascadeRemove(CollectionTools.contains(cascadeTypes, CascadeType.REMOVE));
+		this.setCascadeAll(ArrayTools.contains(cascadeTypes, CascadeType.ALL));
+		this.setCascadeMerge(ArrayTools.contains(cascadeTypes, CascadeType.MERGE));
+		this.setCascadePersist(ArrayTools.contains(cascadeTypes, CascadeType.PERSIST));
+		this.setCascadeRefresh(ArrayTools.contains(cascadeTypes, CascadeType.REFRESH));
+		this.setCascadeRemove(ArrayTools.contains(cascadeTypes, CascadeType.REMOVE));
 	}
 
 	@Override
@@ -196,14 +196,14 @@ abstract class SourceRelationshipMappingAnnotation
 		String[] javaValues = this.cascadeAdapter.getValue();
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValues(javaValues);
 
-		boolean present = CollectionTools.contains(cascadeTypes, cascadeType);
+		boolean present = ArrayTools.contains(cascadeTypes, cascadeType);
 		if (set) {
 			if ( ! present) {
-				this.setCascadeTypes(CollectionTools.add(cascadeTypes, cascadeType));
+				this.setCascadeTypes(ArrayTools.add(cascadeTypes, cascadeType));
 			}
 		} else {
 			if (present) {
-				this.setCascadeTypes(CollectionTools.remove(cascadeTypes, cascadeType));
+				this.setCascadeTypes(ArrayTools.remove(cascadeTypes, cascadeType));
 			}
 		}
 	}

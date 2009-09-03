@@ -12,7 +12,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 
 public class GenericOrmEmbeddable
@@ -24,7 +24,7 @@ public class GenericOrmEmbeddable
 
 	@Override
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
-		return CollectionTools.contains(GenericJavaEmbeddable.ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
+		return ArrayTools.contains(GenericJavaEmbeddable.ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
 	}
 
 }

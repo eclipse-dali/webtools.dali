@@ -10,9 +10,10 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -251,7 +253,7 @@ public class EclipseLinkConvertComposite extends FormPane<EclipseLinkConvert>
 		{
 			@Override
 			protected ListIterator<String> listIterator_() {
-				return CollectionTools.listIterator(CollectionTools.sort(this.subject.uniqueConverterNames()));
+				return CollectionTools.listIterator(ArrayTools.sort(this.subject.uniqueConverterNames()));
 			}
 		};
 	}

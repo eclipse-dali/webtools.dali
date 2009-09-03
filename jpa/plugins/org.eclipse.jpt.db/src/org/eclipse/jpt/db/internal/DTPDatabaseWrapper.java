@@ -20,7 +20,7 @@ import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.DatabaseObject;
 import org.eclipse.jpt.db.internal.vendor.Vendor;
 import org.eclipse.jpt.db.internal.vendor.VendorRepository;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -200,7 +200,7 @@ final class DTPDatabaseWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPCatalogWrapper(this, dtpCatalogs.get(i));
 		}
-		return CollectionTools.sort(result, this.buildCatalogComparator());
+		return ArrayTools.sort(result, this.buildCatalogComparator());
 	}
 
 	private Comparator<Catalog> buildCatalogComparator() {

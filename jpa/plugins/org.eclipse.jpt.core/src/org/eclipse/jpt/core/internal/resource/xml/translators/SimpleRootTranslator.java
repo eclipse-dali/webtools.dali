@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.xml.translators;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.common.internal.emf.resource.RootTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -58,7 +58,7 @@ public class SimpleRootTranslator
 	 * Return the translator for method chaining.
 	 */
 	public SimpleRootTranslator addChild(Translator translator) {
-		this.children = CollectionTools.add(this.getChildren_(), translator);
+		this.children = ArrayTools.add(this.getChildren_(), translator);
 		return this;
 	}
 
@@ -67,7 +67,7 @@ public class SimpleRootTranslator
 	 * Return the translator for method chaining.
 	 */
 	public SimpleRootTranslator addChildren(Translator[] translators) {
-		this.children = CollectionTools.addAll(this.getChildren_(), translators);
+		this.children = ArrayTools.addAll(this.getChildren_(), translators);
 		return this;
 	}
 
@@ -76,7 +76,7 @@ public class SimpleRootTranslator
 	 * Return the translator for method chaining.
 	 */
 	public SimpleRootTranslator removeChild(Translator translator) {
-		this.children = CollectionTools.remove(this.children, translator);
+		this.children = ArrayTools.remove(this.children, translator);
 		return this;
 	}
 
@@ -85,7 +85,7 @@ public class SimpleRootTranslator
 	 * Return the translator for method chaining.
 	 */
 	public SimpleRootTranslator removeChildren(Translator[] translators) {
-		this.children = CollectionTools.removeAll(this.children, translators);
+		this.children = ArrayTools.removeAll(this.children, (Object[]) translators);
 		return this;
 	}
 

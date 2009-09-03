@@ -28,6 +28,7 @@ import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
@@ -453,7 +454,7 @@ public class JpaFacetDataModelProvider
 		for (int i = 0; i < descriptors.length; i++) {
 			descriptors[i] = this.buildPlatformIdDescriptor(platformIDs.get(i));
 		}
-		return CollectionTools.sort(descriptors, this.buildDescriptorComparator());
+		return ArrayTools.sort(descriptors, this.buildDescriptorComparator());
 	}
 
 	/**

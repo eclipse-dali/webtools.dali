@@ -249,7 +249,7 @@ public class SimpleStringMatcher<T>
 				continue;
 			}
 			// escape regex meta-chars
-			if (CollectionTools.contains(REG_EX_META_CHARS, c)) {
+			if (ArrayTools.contains(REG_EX_META_CHARS, c)) {
 				sb.append('\\');
 			}
 			sb.append(c);

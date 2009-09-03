@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 
 public class GenericJavaEmbeddable
@@ -25,7 +25,7 @@ public class GenericJavaEmbeddable
 	@Override
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		//generic only allows basic and transient within an Embeddable
-		return CollectionTools.contains(ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
+		return ArrayTools.contains(ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
 	}
 
 	public static final String[] ALLOWED_ATTRIBUTE_MAPPING_KEYS =

@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
  * This builds and holds a "Java" project.
@@ -59,7 +59,7 @@ public class TestJavaProject extends TestFacetedProject {
 	}
 
 	private void addClasspathEntry(IClasspathEntry entry) throws JavaModelException {
-		this.javaProject.setRawClasspath(CollectionTools.add(this.javaProject.getRawClasspath(), entry), null);
+		this.javaProject.setRawClasspath(ArrayTools.add(this.javaProject.getRawClasspath(), entry), null);
 	}
 	
 

@@ -306,7 +306,7 @@ public final class NameTools {
 		if (JAVA_RESERVED_WORDS_SET.contains(new String(string))) {
 			// a reserved word is a valid identifier, we just need to tweak it a bit
 			checkCharIsJavaIdentifierPart(c);
-			return convertToJavaIdentifier(CollectionTools.add(string, c), c);
+			return convertToJavaIdentifier(ArrayTools.add(string, c), c);
 		}
 		convertToJavaIdentifier_(string, c);
 		return string;

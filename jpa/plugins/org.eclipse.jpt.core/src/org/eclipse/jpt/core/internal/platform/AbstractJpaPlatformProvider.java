@@ -10,15 +10,16 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullJavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullJavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingProvider;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
 /**
@@ -85,7 +86,7 @@ public abstract class AbstractJpaPlatformProvider
 	 * mapping provider (@see {@link NullJavaTypeMappingProvider}.)
 	 */
 	protected JavaTypeMappingProvider[] buildJavaTypeMappingProviders() {
-		return CollectionTools.add(
+		return ArrayTools.add(
 			buildNonNullJavaTypeMappingProviders(), 
 			NullJavaTypeMappingProvider.instance());
 	}
@@ -122,7 +123,7 @@ public abstract class AbstractJpaPlatformProvider
 	 * mapping provider (@see {@link NullDefaultJavaAttributeMappingProvider}.)
 	 */
 	protected JavaAttributeMappingProvider[] buildDefaultJavaAttributeMappingProviders() {
-		return CollectionTools.add(
+		return ArrayTools.add(
 			buildNonNullDefaultJavaAttributeMappingProviders(), 
 			NullDefaultJavaAttributeMappingProvider.instance());
 	}
@@ -157,7 +158,7 @@ public abstract class AbstractJpaPlatformProvider
 	 * mapping provider (@see {@link NullSpecifiedJavaAttributeMappingProvider}.)
 	 */
 	protected JavaAttributeMappingProvider[] buildSpecifiedJavaAttributeMappingProviders() {
-		return CollectionTools.add(
+		return ArrayTools.add(
 			buildNonNullSpecifiedJavaAttributeMappingProviders(), 
 			NullSpecifiedJavaAttributeMappingProvider.instance());
 	}

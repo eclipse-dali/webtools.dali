@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.utility.swt;
 import java.util.ArrayList;
 
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
@@ -232,9 +232,9 @@ final class ListWidgetModelBinding<E> {
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
 		// make a copy of the affected items...
-		String[] subArray = CollectionTools.subArray(this.listWidget.getItems(), loStart, hiStart + len);
+		String[] subArray = ArrayTools.subArray(this.listWidget.getItems(), loStart, hiStart + len);
 		// ...move them around...
-		subArray = CollectionTools.move(subArray, target - loStart, source - loStart, len);
+		subArray = ArrayTools.move(subArray, target - loStart, source - loStart, len);
 		// ...and then put them back
 		int i = loStart;
 		for (String item : subArray) {

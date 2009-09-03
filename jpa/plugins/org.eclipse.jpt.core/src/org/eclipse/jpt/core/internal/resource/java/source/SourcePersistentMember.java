@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -299,10 +301,10 @@ abstract class SourcePersistentMember<E extends Member>
 		Annotation newPrimaryAnnotation = null;
 		String[] annotationNamesToKeep = supportingAnnotationNames;
 		if (primaryAnnotationName != null) {
-			annotationNamesToKeep = CollectionTools.add(supportingAnnotationNames, primaryAnnotationName);
+			annotationNamesToKeep = ArrayTools.add(supportingAnnotationNames, primaryAnnotationName);
 		}
 		for (Annotation existingAnnotation : getAnnotations()) {
-			if (! CollectionTools.contains(annotationNamesToKeep, existingAnnotation.getAnnotationName())) {
+			if (! ArrayTools.contains(annotationNamesToKeep, existingAnnotation.getAnnotationName())) {
 				this.annotations.remove(existingAnnotation);
 				existingAnnotation.removeAnnotation();
 			}

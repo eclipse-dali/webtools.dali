@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.operations;
 
 import java.util.Iterator;
 import java.util.Set;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -31,6 +32,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -125,7 +127,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
 		if (propertyName.equals(PROJECT_NAME)) {
-			return CollectionTools.array(
+			return ArrayTools.array(
 				new TransformationIterator<IProject, DataModelPropertyDescriptor>(jpaIProjects()) {
 					@Override
 					protected DataModelPropertyDescriptor transform(IProject next) {
@@ -142,7 +144,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 			return accessTypes;
 		}
 		else if (propertyName.equals(PERSISTENCE_UNIT)) {
-			return CollectionTools.array(
+			return ArrayTools.array(
 				new TransformationIterator<String, DataModelPropertyDescriptor>(new CompositeIterator<String>(null, persistenceUnitNames())) {
 					@Override
 					protected DataModelPropertyDescriptor transform(String next) {

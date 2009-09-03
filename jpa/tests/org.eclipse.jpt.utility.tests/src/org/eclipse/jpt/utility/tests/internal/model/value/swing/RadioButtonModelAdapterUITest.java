@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -24,7 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.WindowConstants;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -36,6 +38,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * Play around with a set of radio buttons.
  */
+@SuppressWarnings("nls")
 public class RadioButtonModelAdapterUITest {
 
 	private TestModel testModel;
@@ -46,14 +49,14 @@ public class RadioButtonModelAdapterUITest {
 	private ButtonModel blueButtonModel;
 
 	public static void main(String[] args) throws Exception {
-		new RadioButtonModelAdapterUITest().exec(args);
+		new RadioButtonModelAdapterUITest().exec();
 	}
 
 	private RadioButtonModelAdapterUITest() {
 		super();
 	}
 
-	private void exec(String[] args) throws Exception {
+	private void exec() throws Exception {
 		this.testModel = new TestModel();
 		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.colorHolder = this.buildColorHolder(this.testModelHolder);
@@ -241,7 +244,7 @@ public class RadioButtonModelAdapterUITest {
 			return this.color;
 		}
 		public void setColor(String color) {
-			if ( ! CollectionTools.contains(VALID_COLORS, color)) {
+			if ( ! ArrayTools.contains(VALID_COLORS, color)) {
 				throw new IllegalArgumentException(color);
 			}
 			Object old = this.color;

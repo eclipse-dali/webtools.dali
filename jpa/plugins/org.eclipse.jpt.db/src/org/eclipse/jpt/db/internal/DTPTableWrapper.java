@@ -18,7 +18,7 @@ import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -98,7 +98,7 @@ final class DTPTableWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPColumnWrapper(this, dtpColumns.get(i));
 		}
-		return CollectionTools.sort(result, this.buildColumnComparator());
+		return ArrayTools.sort(result, this.buildColumnComparator());
 	}
 
 	private Comparator<Column> buildColumnComparator() {
@@ -209,7 +209,7 @@ final class DTPTableWrapper
 	}
 
 	boolean primaryKeyColumnsContains(Column column) {
-		return CollectionTools.contains(this.getPrimaryKeyColumns(), column);
+		return ArrayTools.contains(this.getPrimaryKeyColumns(), column);
 	}
 
 	// ***** foreignKeys

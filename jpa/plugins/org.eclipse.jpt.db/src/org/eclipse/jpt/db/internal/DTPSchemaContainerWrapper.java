@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -122,7 +122,7 @@ abstract class DTPSchemaContainerWrapper
 		for (int i = result.length; i-- > 0; ) {
 			result[i] = new DTPSchemaWrapper(this, dtpSchemata.get(i));
 		}
-		return CollectionTools.sort(result, this.buildSchemaComparator());
+		return ArrayTools.sort(result, this.buildSchemaComparator());
 	}
 
 	private Comparator<Schema> buildSchemaComparator() {

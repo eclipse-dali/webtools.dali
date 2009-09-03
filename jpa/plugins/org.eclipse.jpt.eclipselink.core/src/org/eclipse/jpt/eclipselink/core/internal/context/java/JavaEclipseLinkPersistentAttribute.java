@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
  * EclipseLink Java persistent attribute
@@ -61,11 +61,11 @@ public class JavaEclipseLinkPersistentAttribute
 	}
 
 	protected boolean interfaceIsInvalidForVariableOneToOne(String interfaceName) {
-		return CollectionTools.contains(INVALID_VARIABLE_ONE_TO_ONE_INTERFACE_NAMES, interfaceName);
+		return ArrayTools.contains(INVALID_VARIABLE_ONE_TO_ONE_INTERFACE_NAMES, interfaceName);
 	}
 
 	// TODO we could probably add more interfaces to this list...
 	private static final String[] INVALID_VARIABLE_ONE_TO_ONE_INTERFACE_NAMES =
-		CollectionTools.add(CONTAINER_TYPE_NAMES, "org.eclipse.persistence.indirection.ValueHolderInterface"); //$NON-NLS-1$
+		ArrayTools.add(CONTAINER_TYPE_NAMES, "org.eclipse.persistence.indirection.ValueHolderInterface"); //$NON-NLS-1$
 
 }

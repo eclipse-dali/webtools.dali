@@ -13,7 +13,7 @@ import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
@@ -204,7 +204,7 @@ public class StructuredContentProviderAdapter
 	 * Synchronize the list viewer.
 	 */
 	protected void itemsRemoved(ListRemoveEvent e) {
-		this.listViewer.remove(CollectionTools.array(e.getItems(), e.getItemsSize()));
+		this.listViewer.remove(ArrayTools.array(e.getItems(), e.getItemsSize()));
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class StructuredContentProviderAdapter
 	 * Synchronize the list viewer.
 	 */
 	protected void itemsReplaced(ListReplaceEvent e) {
-		this.listViewer.remove(CollectionTools.array(e.getOldItems(), e.getItemsSize()));
+		this.listViewer.remove(ArrayTools.array(e.getOldItems(), e.getItemsSize()));
 		int i = e.getIndex();
 		for (Object item : e.getNewItems()) {
 			this.listViewer.insert(item, i++);

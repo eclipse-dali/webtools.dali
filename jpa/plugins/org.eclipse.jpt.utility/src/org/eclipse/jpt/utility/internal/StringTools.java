@@ -584,7 +584,7 @@ public final class StringTools {
 	 * the difference between the specified string and specified length.
 	 */
 	private static void fill_(int stringLength, int length, char c, Writer writer) {
-		writeStringOn(CollectionTools.fill(new char[length - stringLength], c), writer);
+		writeStringOn(ArrayTools.fill(new char[length - stringLength], c), writer);
 	}
 
 	/*
@@ -616,7 +616,7 @@ public final class StringTools {
 	 * the difference between the specified string and specified length.
 	 */
 	private static void fill_(int stringLength, int length, char c, StringBuffer sb) {
-		sb.append(CollectionTools.fill(new char[length - stringLength], c));
+		sb.append(ArrayTools.fill(new char[length - stringLength], c));
 	}
 
 	/*
@@ -648,7 +648,7 @@ public final class StringTools {
 	 * the difference between the specified string and specified length.
 	 */
 	private static void fill_(int stringLength, int length, char c, StringBuilder sb) {
-		sb.append(CollectionTools.fill(new char[length - stringLength], c));
+		sb.append(ArrayTools.fill(new char[length - stringLength], c));
 	}
 
 	/*
@@ -2143,7 +2143,7 @@ public final class StringTools {
 	 * String#removeFirstOccurrence(char)
 	 */
 	public static char[] removeFirstOccurrence(char[] string, char c) {
-		int index = CollectionTools.indexOf(string, c);
+		int index = ArrayTools.indexOf(string, c);
 		if (index == -1) {
 			// character not found
 			return string;
@@ -2170,7 +2170,7 @@ public final class StringTools {
 	 * String#removeFirstOccurrenceOn(char, Writer)
 	 */
 	public static void removeFirstOccurrenceOn(char[] string, char c, Writer writer) {
-		int index = CollectionTools.indexOf(string, c);
+		int index = ArrayTools.indexOf(string, c);
 		if (index == -1) {
 			writeStringOn(string, writer);
 		} else {
@@ -2199,7 +2199,7 @@ public final class StringTools {
 	 * String#removeFirstOccurrenceOn(char, StringBuffer)
 	 */
 	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuffer sb) {
-		int index = CollectionTools.indexOf(string, c);
+		int index = ArrayTools.indexOf(string, c);
 		if (index == -1) {
 			sb.append(string);
 		} else {
@@ -2228,7 +2228,7 @@ public final class StringTools {
 	 * String#removeFirstOccurrenceOn(char, StringBuilder)
 	 */
 	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuilder sb) {
-		int index = CollectionTools.indexOf(string, c);
+		int index = ArrayTools.indexOf(string, c);
 		if (index == -1) {
 			sb.append(string);
 		} else {
@@ -2309,7 +2309,7 @@ public final class StringTools {
 	 * String#removeAllOccurrences(char)
 	 */
 	public static char[] removeAllOccurrences(char[] string, char c) {
-		int first = CollectionTools.indexOf(string, c);
+		int first = ArrayTools.indexOf(string, c);
 		return (first == -1) ? string : removeAllOccurrences_(string, c, first);
 	}
 
@@ -2329,7 +2329,7 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, Writer)
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, Writer writer) {
-		int first = CollectionTools.indexOf(string, c);
+		int first = ArrayTools.indexOf(string, c);
 		if (first == -1) {
 			writeStringOn(string, writer);
 		} else {
@@ -2358,7 +2358,7 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, StringBuffer)
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, StringBuffer sb) {
-		int first = CollectionTools.indexOf(string, c);
+		int first = ArrayTools.indexOf(string, c);
 		if (first == -1) {
 			sb.append(string);
 		} else {
@@ -2387,7 +2387,7 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, StringBuilder)
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, StringBuilder sb) {
-		int first = CollectionTools.indexOf(string, c);
+		int first = ArrayTools.indexOf(string, c);
 		if (first == -1) {
 			sb.append(string);
 		} else {

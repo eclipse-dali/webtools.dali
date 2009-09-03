@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
@@ -213,7 +215,7 @@ public abstract class AbstractJavaPersistentType
 		this.mapping = newMapping;
 		this.resourcePersistentType.setPrimaryAnnotation(
 				newMapping.getAnnotationName(),
-				CollectionTools.array(newMapping.supportingAnnotationNames(), new String[0]));
+				ArrayTools.array(newMapping.supportingAnnotationNames(), new String[0]));
 		firePropertyChanged(PersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
 	}
 	
@@ -230,20 +232,20 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected JavaTypeMapping buildMapping(JavaTypeMappingProvider mappingProvider) {
-		JavaTypeMapping mapping = mappingProvider.buildMapping(this, getJpaFactory());
+		JavaTypeMapping jtMapping = mappingProvider.buildMapping(this, getJpaFactory());
 		// mapping may be null
-		if (mapping != null) {
-			mapping.initialize(this.resourcePersistentType);
+		if (jtMapping != null) {
+			jtMapping.initialize(this.resourcePersistentType);
 		}
-		return mapping;
+		return jtMapping;
 	}
 	
 	protected JavaTypeMapping buildMappingFromMappingKey(String key) {
 		JavaTypeMappingProvider mappingProvider = getJpaPlatform().getJavaTypeMappingProvider(key);
-		JavaTypeMapping mapping = mappingProvider.buildMapping(this, getJpaFactory());
+		JavaTypeMapping jtMapping = mappingProvider.buildMapping(this, getJpaFactory());
 		//no mapping.initialize(JavaResourcePersistentType) call here
 		//we do not yet have a mapping annotation so we can't call initialize
-		return mapping;
+		return jtMapping;
 	}
 	
 	

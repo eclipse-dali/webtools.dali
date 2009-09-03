@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.jpt.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
@@ -161,13 +161,13 @@ final class ListBoxSelectionBinding<E>
 		int[] deselect = new int[listSize - selectedItemsSize];
 		i = 0;
 		for (int j = 0; j < listSize; j++) {
-			if ( ! CollectionTools.contains(select, j)) {
+			if ( ! ArrayTools.contains(select, j)) {
 				deselect[i++] = j;
 			}
 		}
 
-		int[] old = CollectionTools.sort(this.listBox.getSelectionIndices());
-		select = CollectionTools.sort(select);
+		int[] old = ArrayTools.sort(this.listBox.getSelectionIndices());
+		select = ArrayTools.sort(select);
 		if ( ! Arrays.equals(select, old)) {
 			this.listBox.deselect(deselect);
 			this.listBox.select(select);

@@ -38,10 +38,10 @@ public final class XMLStringEncoder {
 			throw new NullPointerException();
 		}
 		// the ampersand must be included since it is the escape character
-		if (CollectionTools.contains(chars, '&')) {
+		if (ArrayTools.contains(chars, '&')) {
 			this.chars = chars;
 		} else {
-			this.chars = CollectionTools.add(chars, '&');
+			this.chars = ArrayTools.add(chars, '&');
 		}
 		this.maxChar = this.calculateMaxInvalidFileNameChar();
 	}
@@ -112,7 +112,7 @@ public final class XMLStringEncoder {
 	 * to be converted to XML character references.
 	 */
 	private boolean charIsToBeEncoded(char c) {
-		return (c <= this.maxChar) && CollectionTools.contains(this.chars, c);
+		return (c <= this.maxChar) && ArrayTools.contains(this.chars, c);
 	}
 
 	/**

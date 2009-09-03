@@ -13,6 +13,7 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -133,7 +134,7 @@ public abstract class AspectListValueModelAdapter<S, E>
 	 * @see #toArray()
 	 */
 	protected Object[] toArray_() {
-		return CollectionTools.array(this.listIterator(), this.size());
+		return ArrayTools.array(this.listIterator(), this.size());
 	}
 
 

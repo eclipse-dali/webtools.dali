@@ -18,6 +18,7 @@ import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.ListenerList;
@@ -66,16 +67,18 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * <p>
  * <b>NB2:</b> This class will check to see if, during the firing of events, a listener
  * on the original, cloned, list of listeners has been removed from the master
- * list of listeners *before* it is notified. If the listener has been removed
- * "concurrently" it will *not* be notified.
+ * list of listeners <em>before</em> it is notified. If the listener has been removed
+ * "concurrently" it will <em>not</em> be notified.
  * <p>
- * <b>NB3:</b> Any listener that is added during the firing of events will *not* be
+ * <b>NB3:</b> Any listener that is added during the firing of events will <em>not</em> be
  * also notified. This is a bit inconsistent with NB2, but seems reasonable
  * since any added listener should already be in synch with the model.
  * <p>
  * <b>NB4:</b> This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.
  * 
+ * @see Model
+ * @see AbstractModel
  */
 public class ChangeSupport
 	implements Serializable
@@ -115,7 +118,7 @@ public class ChangeSupport
 	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, String aspectName, L listener) {
 		ListenerList<L> aspectListenerList = this.getListenerList(listenerClass, aspectName);
 		if (aspectListenerList == null) {
-			this.aspectListenerListPairs = CollectionTools.add(this.aspectListenerListPairs, new SimpleAspectListenerListPair<L>(listenerClass, aspectName, listener));
+			this.aspectListenerListPairs = ArrayTools.add(this.aspectListenerListPairs, new SimpleAspectListenerListPair<L>(listenerClass, aspectName, listener));
 		} else {
 			aspectListenerList.add(listener);
 		}
@@ -128,7 +131,7 @@ public class ChangeSupport
 	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, L listener) {
 		ListenerList<L> listenerList = this.getListenerList(listenerClass);
 		if (listenerList == null) {
-			this.aspectListenerListPairs = CollectionTools.add(this.aspectListenerListPairs, new NullAspectListenerListPair<L>(listenerClass, listener));
+			this.aspectListenerListPairs = ArrayTools.add(this.aspectListenerListPairs, new NullAspectListenerListPair<L>(listenerClass, listener));
 		} else {
 			listenerList.add(listener);
 		}
@@ -284,7 +287,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasChangeListener(ChangeListener listener) {
-		return CollectionTools.contains(this.getChangeListeners(), listener);
+		return ArrayTools.contains(this.getChangeListeners(), listener);
 	}
 
 
@@ -323,7 +326,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasStateChangeListener(StateChangeListener listener) {
-		return CollectionTools.contains(this.getStateChangeListeners(), listener);
+		return ArrayTools.contains(this.getStateChangeListeners(), listener);
 	}
 
 	/**
@@ -419,7 +422,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		return CollectionTools.contains(this.getPropertyChangeListeners(propertyName), listener);
+		return ArrayTools.contains(this.getPropertyChangeListeners(propertyName), listener);
 	}
 
 	/**
@@ -627,7 +630,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		return CollectionTools.contains(this.getCollectionChangeListeners(collectionName), listener);
+		return ArrayTools.contains(this.getCollectionChangeListeners(collectionName), listener);
 	}
 
 	/**
@@ -1287,7 +1290,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasListChangeListener(String listName, ListChangeListener listener) {
-		return CollectionTools.contains(this.getListChangeListeners(listName), listener);
+		return ArrayTools.contains(this.getListChangeListeners(listName), listener);
 	}
 
 	/**
@@ -2369,7 +2372,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasTreeChangeListener(String treeName, TreeChangeListener listener) {
-		return CollectionTools.contains(this.getTreeChangeListeners(treeName), listener);
+		return ArrayTools.contains(this.getTreeChangeListeners(treeName), listener);
 	}
 
 	/**
@@ -2619,7 +2622,7 @@ public class ChangeSupport
 	 * in the same order.
 	 */
 	public boolean elementsAreEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return Tools.elementsAreEqual(iterable1, iterable2);
+		return CollectionTools.elementsAreEqual(iterable1, iterable2);
 	}
 
 	/**
@@ -2627,7 +2630,7 @@ public class ChangeSupport
 	 * in the same order.
 	 */
 	public boolean elementsAreDifferent(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return Tools.elementsAreDifferent(iterable1, iterable2);
+		return CollectionTools.elementsAreDifferent(iterable1, iterable2);
 	}
 
 

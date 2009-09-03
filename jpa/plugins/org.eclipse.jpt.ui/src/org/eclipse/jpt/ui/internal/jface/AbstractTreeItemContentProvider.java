@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.jface;
 import java.util.Iterator;
 
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -160,7 +160,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	}
 	
 	public Object[] getChildren() {
-		return CollectionTools.array(this.childrenModel());
+		return ArrayTools.array(this.childrenModel());
 	}
 	
 	/**

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
  * Corresponds to the JPA enum
@@ -54,7 +54,7 @@ public enum CascadeType {
 			return EMPTY_CASCADE_TYPE_ARRAY;
 		}
 		//nulls will exist if there is a typo in one of the enums
-		javaAnnotationValues = CollectionTools.removeAllOccurrences(javaAnnotationValues, null);
+		javaAnnotationValues = ArrayTools.removeAllOccurrences(javaAnnotationValues, null);
 		int len = javaAnnotationValues.length;
 		CascadeType[] cascadeTypes = new CascadeType[len];
 		for (int i = 0; i < len; i++) {

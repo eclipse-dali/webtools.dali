@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
  * javax.persistence.ManyToMany
@@ -43,11 +43,11 @@ abstract class BinaryRelationshipMappingAnnotation
 		this.fetch = this.buildFetch();
 
 		CascadeType[] cascadeTypes = this.buildCascadeTypes();
-		this.cascadeAll = CollectionTools.contains(cascadeTypes, CascadeType.ALL);
-		this.cascadeMerge = CollectionTools.contains(cascadeTypes, CascadeType.MERGE);
-		this.cascadePersist = CollectionTools.contains(cascadeTypes, CascadeType.PERSIST);
-		this.cascadeRefresh = CollectionTools.contains(cascadeTypes, CascadeType.REFRESH);
-		this.cascadeRemove = CollectionTools.contains(cascadeTypes, CascadeType.REMOVE);
+		this.cascadeAll = ArrayTools.contains(cascadeTypes, CascadeType.ALL);
+		this.cascadeMerge = ArrayTools.contains(cascadeTypes, CascadeType.MERGE);
+		this.cascadePersist = ArrayTools.contains(cascadeTypes, CascadeType.PERSIST);
+		this.cascadeRefresh = ArrayTools.contains(cascadeTypes, CascadeType.REFRESH);
+		this.cascadeRemove = ArrayTools.contains(cascadeTypes, CascadeType.REMOVE);
 	}
 
 	@Override
@@ -57,11 +57,11 @@ abstract class BinaryRelationshipMappingAnnotation
 		this.setFetch_(this.buildFetch());
 
 		CascadeType[] cascadeTypes = this.buildCascadeTypes();
-		this.setCascadeAll_(CollectionTools.contains(cascadeTypes, CascadeType.ALL));
-		this.setCascadeMerge_(CollectionTools.contains(cascadeTypes, CascadeType.MERGE));
-		this.setCascadePersist_(CollectionTools.contains(cascadeTypes, CascadeType.PERSIST));
-		this.setCascadeRefresh_(CollectionTools.contains(cascadeTypes, CascadeType.REFRESH));
-		this.setCascadeRemove_(CollectionTools.contains(cascadeTypes, CascadeType.REMOVE));
+		this.setCascadeAll_(ArrayTools.contains(cascadeTypes, CascadeType.ALL));
+		this.setCascadeMerge_(ArrayTools.contains(cascadeTypes, CascadeType.MERGE));
+		this.setCascadePersist_(ArrayTools.contains(cascadeTypes, CascadeType.PERSIST));
+		this.setCascadeRefresh_(ArrayTools.contains(cascadeTypes, CascadeType.REFRESH));
+		this.setCascadeRemove_(ArrayTools.contains(cascadeTypes, CascadeType.REMOVE));
 	}
 
 

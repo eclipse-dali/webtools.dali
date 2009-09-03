@@ -12,6 +12,7 @@
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
 import java.io.File;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -31,7 +32,7 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage;
 import org.eclipse.swt.SWT;
@@ -89,7 +90,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	
 	@Override
 	protected String[] getValidationPropertyNames() {
-		return CollectionTools.addAll(
+		return ArrayTools.addAll(
 				super.getValidationPropertyNames(), 
 				new String[] {IEntityDataModelProperties.XML_NAME, IEntityDataModelProperties.XML_SUPPORT});
 	}

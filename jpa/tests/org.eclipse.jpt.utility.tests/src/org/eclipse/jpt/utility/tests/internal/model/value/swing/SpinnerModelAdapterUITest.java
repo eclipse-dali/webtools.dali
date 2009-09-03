@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -26,7 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.WindowConstants;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -39,6 +41,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * Play around with a set of spinners.
  */
+@SuppressWarnings("nls")
 public class SpinnerModelAdapterUITest {
 
 	private TestModel testModel;
@@ -55,14 +58,14 @@ public class SpinnerModelAdapterUITest {
 
 
 	public static void main(String[] args) throws Exception {
-		new SpinnerModelAdapterUITest().exec(args);
+		new SpinnerModelAdapterUITest().exec();
 	}
 
 	private SpinnerModelAdapterUITest() {
 		super();
 	}
 
-	private void exec(String[] args) throws Exception {
+	private void exec() throws Exception {
 		this.testModel = new TestModel();
 		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 
@@ -260,7 +263,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 
-	private static class TestModel extends AbstractModel {
+	static class TestModel extends AbstractModel {
 		private Calendar birthCal = Calendar.getInstance();
 			// "virtual" properties
 			public static final String BIRTH_DATE_PROPERTY = "birthDate";
@@ -274,7 +277,7 @@ public class SpinnerModelAdapterUITest {
 			public static final String[] VALID_EYE_COLORS = {"blue", "brown", "green", "hazel", "pink"};
 			public static final String DEFAULT_EYE_COLOR = VALID_EYE_COLORS[3];
 	
-		public TestModel() {
+		TestModel() {
 			this(DEFAULT_BIRTH_DATE, DEFAULT_EYE_COLOR);
 		}
 		public TestModel(Date birthDate, String eyeColor) {
@@ -325,7 +328,7 @@ public class SpinnerModelAdapterUITest {
 			return this.eyeColor;
 		}
 		public void setEyeColor(String eyeColor) {
-			if ( ! CollectionTools.contains(VALID_EYE_COLORS, eyeColor)) {
+			if ( ! ArrayTools.contains(VALID_EYE_COLORS, eyeColor)) {
 				throw new IllegalArgumentException(eyeColor);
 			}
 			Object old = this.eyeColor;

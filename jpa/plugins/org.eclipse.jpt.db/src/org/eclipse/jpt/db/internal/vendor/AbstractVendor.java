@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.datatools.modelbase.sql.schema.Catalog;
 import org.eclipse.datatools.modelbase.sql.schema.Database;
 import org.eclipse.datatools.modelbase.sql.schema.Schema;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -288,7 +288,7 @@ abstract class AbstractVendor
 	 * static convenience method - array null check
 	 */
 	static boolean arrayContains(char[] array, char c) {
-		return (array != null) && CollectionTools.contains(array, c);
+		return (array != null) && ArrayTools.contains(array, c);
 	}
 
 }

@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -567,7 +568,7 @@ public final class FileTools {
 		int len = filename.length();
 		for (int i = 0; i < len; i++) {
 			char filenameChar = filename.charAt(i);
-			if (CollectionTools.contains(INVALID_FILENAME_CHARACTERS, filenameChar)) {
+			if (ArrayTools.contains(INVALID_FILENAME_CHARACTERS, filenameChar)) {
 				return false;
 			}
 		}
@@ -583,7 +584,7 @@ public final class FileTools {
 		StringBuilder sb = new StringBuilder(len);
 		for (int i = 0; i < len; i++) {
 			char filenameChar = filename.charAt(i);
-			if (CollectionTools.contains(INVALID_FILENAME_CHARACTERS, filenameChar)) {
+			if (ArrayTools.contains(INVALID_FILENAME_CHARACTERS, filenameChar)) {
 				sb.append(replacementChar);
 			} else {
 				sb.append(filenameChar);
@@ -607,7 +608,7 @@ public final class FileTools {
 	 */
 	public static boolean fileNameIsReserved(String fileName) {
 		if (executingOnWindows()) {
-			return CollectionTools.contains(WINDOWS_RESERVED_FILE_NAMES, fileName.toLowerCase());
+			return ArrayTools.contains(WINDOWS_RESERVED_FILE_NAMES, fileName.toLowerCase());
 		}
 		return false;	// Unix does not have any "reserved" file names (I think...)
 	}

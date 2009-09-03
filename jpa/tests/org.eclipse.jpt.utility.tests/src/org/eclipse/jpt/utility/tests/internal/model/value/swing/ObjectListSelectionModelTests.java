@@ -13,11 +13,14 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class ObjectListSelectionModelTests extends TestCase {
 	private DefaultListModel listModel;
 	private ObjectListSelectionModel selectionModel;
@@ -68,8 +71,8 @@ public class ObjectListSelectionModelTests extends TestCase {
 		this.selectionModel.setSelectionInterval(0, 0);
 		this.selectionModel.addSelectionInterval(2, 2);
 		assertEquals(2, this.selectionModel.selectedValues().length);
-		assertTrue(CollectionTools.contains(this.selectionModel.selectedValues(), "foo"));
-		assertTrue(CollectionTools.contains(this.selectionModel.selectedValues(), "baz"));
+		assertTrue(ArrayTools.contains(this.selectionModel.selectedValues(), "foo"));
+		assertTrue(ArrayTools.contains(this.selectionModel.selectedValues(), "baz"));
 	}
 
 	public void testSetSelectedValue() {

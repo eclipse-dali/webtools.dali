@@ -53,6 +53,7 @@ import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.BooleanTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -77,8 +78,8 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationWritableProper
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.model.listener.CommandChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.SimpleChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -694,7 +695,7 @@ public class JpaProjectPropertiesPage
 	// ********** validation **********
 
 	private ChangeListener buildValidationListener() {
-		return new CommandChangeListener() {
+		return new SimpleChangeListener() {
 			@Override
 			protected void modelChanged() {
 				JpaProjectPropertiesPage.this.validate();
@@ -737,7 +738,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	private Model[] buildReverseValidationModels() {
-		return CollectionTools.reverse(this.buildValidationModels());
+		return ArrayTools.reverse(this.buildValidationModels());
 	}
 
 	private static final Integer ERROR_STATUS = Integer.valueOf(IStatus.ERROR);

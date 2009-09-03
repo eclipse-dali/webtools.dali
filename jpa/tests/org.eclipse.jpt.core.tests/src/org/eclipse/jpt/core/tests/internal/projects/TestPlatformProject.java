@@ -14,7 +14,8 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * This builds and holds a "general" Eclipse project.
@@ -24,7 +25,7 @@ public class TestPlatformProject {
 	private final IProject project;
 
 	/** carriage return */
-	public static final String CR = System.getProperty("line.separator");
+	public static final String CR = StringTools.CR;
 
 	
 	// ********** builders **********
@@ -65,13 +66,13 @@ public class TestPlatformProject {
 
 	public void addProjectNature(String natureID) throws CoreException {
 		IProjectDescription description = this.project.getDescription();
-		description.setNatureIds(CollectionTools.add(description.getNatureIds(), natureID));
+		description.setNatureIds(ArrayTools.add(description.getNatureIds(), natureID));
 		this.project.setDescription(description, null);
 	}
 
 	public void removeProjectNature(String natureID) throws CoreException {
 		IProjectDescription description = this.project.getDescription();
-		description.setNatureIds(CollectionTools.removeAllOccurrences(description.getNatureIds(), natureID));
+		description.setNatureIds(ArrayTools.removeAllOccurrences(description.getNatureIds(), natureID));
 		this.project.setDescription(description, null);
 	}
 

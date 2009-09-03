@@ -5,7 +5,7 @@ import java.util.EventListener;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 
 @SuppressWarnings("nls")
@@ -26,8 +26,8 @@ public class ListenerListTests extends TestCase {
 		listenerList.add(listener2);
 		listeners = listenerList.getListeners();
 		assertEquals(2, listeners.length);
-		assertTrue(CollectionTools.contains(listeners, listener1));
-		assertTrue(CollectionTools.contains(listeners, listener2));
+		assertTrue(ArrayTools.contains(listeners, listener1));
+		assertTrue(ArrayTools.contains(listeners, listener2));
 	}
 
 	public void testSize() throws Exception {
@@ -85,15 +85,15 @@ public class ListenerListTests extends TestCase {
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);
 		listenerList.add(listener2);
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertTrue(ArrayTools.contains(listenerList.getListeners(), listener1));
+		assertTrue(ArrayTools.contains(listenerList.getListeners(), listener2));
 
 		listenerList.remove(listener1);
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(ArrayTools.contains(listenerList.getListeners(), listener1));
+		assertTrue(ArrayTools.contains(listenerList.getListeners(), listener2));
 
 		listenerList.remove(listener2);
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(ArrayTools.contains(listenerList.getListeners(), listener2));
 	}
 
 	public void testRemove_null() throws Exception {
@@ -130,12 +130,12 @@ public class ListenerListTests extends TestCase {
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);
 		listenerList.add(listener2);
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertTrue(ArrayTools.contains(listenerList.getListeners(), listener1));
+		assertTrue(ArrayTools.contains(listenerList.getListeners(), listener2));
 
 		listenerList.clear();
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(ArrayTools.contains(listenerList.getListeners(), listener1));
+		assertFalse(ArrayTools.contains(listenerList.getListeners(), listener2));
 	}
 
 //TODO - This test doesn't pass in the Eclipse build environment (Linux) for some reason

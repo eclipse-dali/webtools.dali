@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
@@ -94,7 +94,7 @@ public class JpaFacetInstallDelegate
 
 		// if the classpathEntry is already there, do nothing
 		IClasspathEntry[] classpath = javaProject.getRawClasspath();
-		if (CollectionTools.contains(classpath, classpathEntry)) {
+		if (ArrayTools.contains(classpath, classpathEntry)) {
 			return;
 		}
 

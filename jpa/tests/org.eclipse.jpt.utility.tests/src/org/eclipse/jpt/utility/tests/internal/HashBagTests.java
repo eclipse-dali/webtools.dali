@@ -14,9 +14,11 @@ import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import junit.framework.TestCase;
+
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.Bag;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 
 @SuppressWarnings("nls")
@@ -503,11 +505,11 @@ public class HashBagTests extends TestCase {
 	public void testToArray() {
 		Object[] a = this.bag.toArray();
 		assertEquals(11, a.length);
-		assertTrue(CollectionTools.contains(a, null));
-		assertTrue(CollectionTools.contains(a, "one"));
-		assertTrue(CollectionTools.contains(a, "two"));
-		assertTrue(CollectionTools.contains(a, "three"));
-		assertTrue(CollectionTools.contains(a, "four"));
+		assertTrue(ArrayTools.contains(a, null));
+		assertTrue(ArrayTools.contains(a, "one"));
+		assertTrue(ArrayTools.contains(a, "two"));
+		assertTrue(ArrayTools.contains(a, "three"));
+		assertTrue(ArrayTools.contains(a, "four"));
 	}
 
 	public void testToArrayObjectArray() {
@@ -516,11 +518,11 @@ public class HashBagTests extends TestCase {
 		String[] b = this.bag.toArray(a);
 		assertEquals(a, b);
 		assertEquals(12, a.length);
-		assertTrue(CollectionTools.contains(a, null));
-		assertTrue(CollectionTools.contains(a, "one"));
-		assertTrue(CollectionTools.contains(a, "two"));
-		assertTrue(CollectionTools.contains(a, "three"));
-		assertTrue(CollectionTools.contains(a, "four"));
+		assertTrue(ArrayTools.contains(a, null));
+		assertTrue(ArrayTools.contains(a, "one"));
+		assertTrue(ArrayTools.contains(a, "two"));
+		assertTrue(ArrayTools.contains(a, "three"));
+		assertTrue(ArrayTools.contains(a, "four"));
 		assertTrue(a[11] == null);
 	}
 

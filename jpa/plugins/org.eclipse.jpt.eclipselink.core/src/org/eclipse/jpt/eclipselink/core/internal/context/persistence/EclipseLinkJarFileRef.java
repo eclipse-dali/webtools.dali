@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 public class EclipseLinkJarFileRef 
 	extends AbstractJarFileRef
@@ -25,7 +25,7 @@ public class EclipseLinkJarFileRef
 	@Override
 	protected IPath[] resolveDeploymentJarFilePathWeb(IPath root, IPath jarFilePath) {
 		IPath[] genericPath = super.resolveDeploymentJarFilePathWeb(root, jarFilePath);
-		return CollectionTools.removeLast(genericPath);
+		return ArrayTools.removeLast(genericPath);
 	}
 
 }

@@ -39,6 +39,15 @@ public class ArrayIterator<E>
 	/**
 	 * Construct an iterator for the specified array,
 	 * starting at the specified start index and continuing for
+	 * the rest of the array.
+	 */
+	public ArrayIterator(E[] array, int start) {
+		this(array, start, array.length - start);
+	}
+
+	/**
+	 * Construct an iterator for the specified array,
+	 * starting at the specified start index and continuing for
 	 * the specified length.
 	 */
 	public ArrayIterator(E[] array, int start, int length) {

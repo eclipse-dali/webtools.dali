@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -134,7 +135,7 @@ final class DTPForeignKeyWrapper
 								this.getBaseTable().getColumn(refColumns.get(i))
 						);
 		}
-		return CollectionTools.sort(result, this.buildColumnPairComparator());
+		return ArrayTools.sort(result, this.buildColumnPairComparator());
 	}
 
 	private Comparator<ColumnPair> buildColumnPairComparator() {

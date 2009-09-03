@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
 import junit.framework.TestCase;
+
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.Classpath;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class ClasspathTests extends TestCase {
 	private static final String JAVA_HOME = System.getProperty("java.home");
@@ -204,20 +206,20 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testJREClassNames() {
-		assertTrue("Vector is missing from JRE class names", CollectionTools.contains(Classpath.bootClasspath().classNames(), java.util.Vector.class.getName()));
-		assertTrue("File is missing from JRE class names", CollectionTools.contains(Classpath.bootClasspath().classNames(), java.io.File.class.getName()));
+		assertTrue("Vector is missing from JRE class names", ArrayTools.contains(Classpath.bootClasspath().classNames(), java.util.Vector.class.getName()));
+		assertTrue("File is missing from JRE class names", ArrayTools.contains(Classpath.bootClasspath().classNames(), java.io.File.class.getName()));
 	}
 
 	public void testJavaExtensionDirectoryNames() {
 		char sep = File.separatorChar;
 		String stdExtDirName = JAVA_HOME + sep + "lib" + sep + "ext";
-		assertTrue("standard extension dir name missing: " + stdExtDirName, CollectionTools.contains(Classpath.javaExtensionDirectoryNames(), stdExtDirName));
+		assertTrue("standard extension dir name missing: " + stdExtDirName, ArrayTools.contains(Classpath.javaExtensionDirectoryNames(), stdExtDirName));
 	}
 
 	public void testJavaExtensionDirectories() {
 		char sep = File.separatorChar;
 		File stdExtDir = new File(JAVA_HOME + sep + "lib" + sep + "ext");
-		assertTrue("standard extension dir missing: " + stdExtDir.getParent(), CollectionTools.contains(Classpath.javaExtensionDirectories(), stdExtDir));
+		assertTrue("standard extension dir missing: " + stdExtDir.getParent(), ArrayTools.contains(Classpath.javaExtensionDirectories(), stdExtDir));
 	}
 
 	//Commented out due to incompatibility with IBM JDK (used in Eclipse WTP Build)
@@ -245,7 +247,7 @@ public class ClasspathTests extends TestCase {
 	//		if (jdk.startsWith("1.4") || jdk.startsWith("1.5")) {
 	//			String className = "sun.net.spi.nameservice.dns.DNSNameService";
 	//			assertTrue("jdk 1.4.x standard extension class missing: " + className,
-	//					CollectionTools.contains(Classpath.javaExtensionClasspath().classNames(), className));
+	//					ArrayTools.contains(Classpath.javaExtensionClasspath().classNames(), className));
 	//		} else {
 	//			fail("we need to update this test for the current jdk");
 	//		}
@@ -258,7 +260,7 @@ public class ClasspathTests extends TestCase {
 		// when the tests are executed as an ANT task, they are run under
 		// an ANT class loader and the "Java" classpath does not include this class
 		if (cl.getClass().getName().startsWith("sun.misc")) {
-			assertTrue("class missing: " + className, CollectionTools.contains(Classpath.javaClasspath().classNames(), className));
+			assertTrue("class missing: " + className, ArrayTools.contains(Classpath.javaClasspath().classNames(), className));
 		}
 	}
 
@@ -269,7 +271,7 @@ public class ClasspathTests extends TestCase {
 		String result = path;
 		result = result.replace('\\', File.separatorChar);
 		result = result.replace(';', File.pathSeparatorChar);
-		if (!CollectionTools.contains(File.listRoots(), new File("C:\\"))) {
+		if (!ArrayTools.contains(File.listRoots(), new File("C:\\"))) {
 			result = result.replaceAll("C:", "");
 		}
 		return result;
@@ -280,7 +282,7 @@ public class ClasspathTests extends TestCase {
 	 */
 	private String morphURL(String url) {
 		String result = url;
-		if (!CollectionTools.contains(File.listRoots(), new File("C:\\"))) {
+		if (!ArrayTools.contains(File.listRoots(), new File("C:\\"))) {
 			result = result.replaceAll("/C:", "");
 		}
 		return result;

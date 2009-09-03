@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -89,7 +89,7 @@ final class DTPSchemaWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPTableWrapper(this, dtpTables.get(i));
 		}
-		return CollectionTools.sort(result, this.buildTableComparator());
+		return ArrayTools.sort(result, this.buildTableComparator());
 	}
 
 	private Comparator<Table> buildTableComparator() {
@@ -174,7 +174,7 @@ final class DTPSchemaWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPSequenceWrapper(this, dtpSequences.get(i));
 		}
-		return CollectionTools.sort(result, this.buildSequenceComparator());
+		return ArrayTools.sort(result, this.buildSequenceComparator());
 	}
 
 	private Comparator<Sequence> buildSequenceComparator() {

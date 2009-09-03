@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.menus;
 
-import com.ibm.icu.text.Collator;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -24,6 +24,7 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.jface.ImageImageDescriptor;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -34,6 +35,8 @@ import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.menus.IWorkbenchContribution;
 import org.eclipse.ui.services.IServiceLocator;
+
+import com.ibm.icu.text.Collator;
 
 /**
  * This menu contribution is responsible to populate the Map As menu with the
@@ -82,7 +85,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 		JpaStructureNode node = (JpaStructureNode) currentSelection.getFirstElement();
 		
 		return 
-			CollectionTools.array(
+			ArrayTools.array(
 				new TransformationIterator<MappingUiProvider<?>, IContributionItem>(mappingUiProviders(node)) {
 					@Override
 					protected IContributionItem transform(MappingUiProvider<?> next) {

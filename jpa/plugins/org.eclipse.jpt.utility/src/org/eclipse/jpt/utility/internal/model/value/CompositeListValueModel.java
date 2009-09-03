@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -220,7 +221,7 @@ public class CompositeListValueModel<E1, E2>
 	}
 
 	public Object[] toArray() {
-		return CollectionTools.array(this.listIterator(), this.size);
+		return ArrayTools.array(this.listIterator(), this.size);
 	}
 
 

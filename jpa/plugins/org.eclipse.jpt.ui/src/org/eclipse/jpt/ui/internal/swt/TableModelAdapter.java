@@ -20,7 +20,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jpt.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
@@ -418,7 +418,7 @@ public class TableModelAdapter<E> {
 
 		// Move the items so they can retrieved in the right order when
 		// re-creating the TableItems
-		CollectionTools.move(
+		ArrayTools.move(
 			items,
 			targetIndex - lowStartIndex,
 			sourceIndex - lowStartIndex,

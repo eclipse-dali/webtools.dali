@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -30,8 +31,8 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -239,7 +240,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 *     java.lang.Character
 	 */
 	protected boolean elementTypeIsValidForBasicArray(String elementTypeName) {
-		return CollectionTools.contains(VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES, elementTypeName);
+		return ArrayTools.contains(VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES, elementTypeName);
 	}
 
 	protected static final String[] VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES = {
@@ -254,7 +255,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 * that can default to a Basic mapping.
 	 */
 	protected boolean typeIsOtherValidBasicType(String typeName) {
-		return CollectionTools.contains(OTHER_VALID_BASIC_TYPE_NAMES, typeName);
+		return ArrayTools.contains(OTHER_VALID_BASIC_TYPE_NAMES, typeName);
 	}
 
 	protected static final String[] OTHER_VALID_BASIC_TYPE_NAMES = {
@@ -318,7 +319,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 * types allowed by the JPA spec
 	 */
 	protected boolean typeIsCollection(String typeName) {
-		return CollectionTools.contains(COLLECTION_TYPE_NAMES, typeName);
+		return ArrayTools.contains(COLLECTION_TYPE_NAMES, typeName);
 	}
 	protected static final String[] COLLECTION_TYPE_NAMES = {
 		java.util.Collection.class.getName(),
@@ -331,7 +332,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 * types allowed by the JPA spec
 	 */
 	protected boolean typeIsMap(String typeName) {
-		return CollectionTools.contains(MAP_TYPE_NAMES, typeName);
+		return ArrayTools.contains(MAP_TYPE_NAMES, typeName);
 	}
 	protected static final String[] MAP_TYPE_NAMES = {
 		java.util.Map.class.getName()
@@ -342,9 +343,9 @@ public abstract class AbstractJavaPersistentAttribute
 	 * types allowed by the JPA spec
 	 */
 	protected boolean typeIsContainer(String typeName) {
-		return CollectionTools.contains(CONTAINER_TYPE_NAMES, typeName);
+		return ArrayTools.contains(CONTAINER_TYPE_NAMES, typeName);
 	}
-	protected static final String[] CONTAINER_TYPE_NAMES = CollectionTools.concatenate(
+	protected static final String[] CONTAINER_TYPE_NAMES = ArrayTools.concatenate(
 		COLLECTION_TYPE_NAMES,
 		MAP_TYPE_NAMES
 	);
@@ -473,12 +474,12 @@ public abstract class AbstractJavaPersistentAttribute
 		if (newMapping != null) {
 			newAnnotation = newMapping.getAnnotationName();
 			newSupportingAnnotationNames = 
-					CollectionTools.array(newMapping.supportingAnnotationNames(), new String[0]);
+					ArrayTools.array(newMapping.supportingAnnotationNames(), new String[0]);
 		}
 		else {
 			newAnnotation = null;
 			newSupportingAnnotationNames = 
-					CollectionTools.array(this.defaultMapping.supportingAnnotationNames(), new String[0]);
+					ArrayTools.array(this.defaultMapping.supportingAnnotationNames(), new String[0]);
 		}
 		this.resourcePersistentAttribute.setPrimaryAnnotation(
 				newAnnotation, newSupportingAnnotationNames);

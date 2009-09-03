@@ -84,10 +84,10 @@ public class ListenerList<L extends EventListener>
 		if (listener == null) {
 			throw new NullPointerException();
 		}
-		if (CollectionTools.contains(this.listeners, listener)) {
+		if (ArrayTools.contains(this.listeners, listener)) {
 			throw new IllegalArgumentException("duplicate listener: " + listener); //$NON-NLS-1$
 		}
-		this.listeners = CollectionTools.add(this.listeners, listener);
+		this.listeners = ArrayTools.add(this.listeners, listener);
 	}
 
 	/**
@@ -98,18 +98,18 @@ public class ListenerList<L extends EventListener>
 		if (listener == null) {
 			throw new NullPointerException();
 		}
-		int index = CollectionTools.indexOf(this.listeners, listener);
+		int index = ArrayTools.indexOf(this.listeners, listener);
 		if (index == -1) {
 			throw new IllegalArgumentException("unregistered listener: " + listener); //$NON-NLS-1$
 		}
-		this.listeners = CollectionTools.removeElementAtIndex(this.listeners, index);
+		this.listeners = ArrayTools.removeElementAtIndex(this.listeners, index);
 	}
 
 	/**
 	 * Clear the listener list.
 	 */
 	public synchronized void clear() {
-		this.listeners = CollectionTools.clear(this.listeners);
+		this.listeners = ArrayTools.clear(this.listeners);
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class ListenerList<L extends EventListener>
 		this.listeners = this.buildListenerArray(listenerClass, 0);
 		Object o;
 		while ((o = s.readObject()) != null) {
-			this.listeners = CollectionTools.add(this.listeners, (L) o);
+			this.listeners = ArrayTools.add(this.listeners, (L) o);
 		}
 	}
 

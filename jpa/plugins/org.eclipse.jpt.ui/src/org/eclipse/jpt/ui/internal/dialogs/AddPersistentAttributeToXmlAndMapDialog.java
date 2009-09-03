@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.dialogs;
 
-import com.ibm.icu.text.Collator;
 import java.util.Comparator;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.StatusDialog;
@@ -27,6 +27,7 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -37,6 +38,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.ibm.icu.text.Collator;
 
 public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 {
@@ -80,7 +83,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public void dispose() {}
 
 				public Object[] getElements(Object inputElement) {
-					return CollectionTools.array(
+					return ArrayTools.array(
 						CollectionTools.sort(
 							((JpaPlatformUi) inputElement).attributeMappingUiProviders(unmappedPersistentAttribute.getContentType()),
 							getProvidersComparator()));

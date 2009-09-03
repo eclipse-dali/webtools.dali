@@ -15,7 +15,7 @@ import java.util.EventObject;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -357,9 +357,9 @@ public abstract class AbstractComboModelAdapter<E> {
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
 		// make a copy of the affected items...
-		String[] subArray = CollectionTools.subArray(this.comboHolder.getItems(), loStart, hiStart + len - loStart);
+		String[] subArray = ArrayTools.subArray(this.comboHolder.getItems(), loStart, hiStart + len - loStart);
 		// ...move them around...
-		subArray = CollectionTools.move(subArray, target - loStart, source - loStart, len);
+		subArray = ArrayTools.move(subArray, target - loStart, source - loStart, len);
 		// ...and then put them back
 		for (int index = 0; index < subArray.length; index++) {
 			this.comboHolder.setItem(loStart + index, subArray[index]);
