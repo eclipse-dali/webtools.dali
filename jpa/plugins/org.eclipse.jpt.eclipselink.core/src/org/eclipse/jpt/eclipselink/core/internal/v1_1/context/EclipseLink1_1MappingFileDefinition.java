@@ -19,18 +19,18 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.platform.AbstractMappingFileDefinition;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkEmbeddableProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkEntityProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkMappedSuperclassProvider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkBasicCollectionMapping1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkBasicMapMapping1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkBasicMapping1_1Provider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkEmbeddable1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkEmbeddedIdMapping1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkEmbeddedMapping1_1Provider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkEntity1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkIdMapping1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkManyToManyMapping1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkManyToOneMapping1_1Provider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkMappedSuperclass1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkNullAttributeMapping1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkOneToManyMapping1_1Provider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.OrmEclipseLinkOneToOneMapping1_1Provider;
@@ -78,11 +78,10 @@ public class EclipseLink1_1MappingFileDefinition
 	protected OrmTypeMappingProvider[] buildOrmTypeMappingProviders() {
 		// order should not matter here, but we'll use the same order as for java
 		// @see {@link EclipseLink1_1JpaPlatformProvider}
-		// NOTE: no new type mapping providers from eclipselink 1.0 to 1.1
 		return new OrmTypeMappingProvider[] {
-			OrmEclipseLinkEntityProvider.instance(),
-			OrmEclipseLinkEmbeddableProvider.instance(),
-			OrmEclipseLinkMappedSuperclassProvider.instance()};
+			OrmEclipseLinkEntity1_1Provider.instance(),
+			OrmEclipseLinkEmbeddable1_1Provider.instance(),
+			OrmEclipseLinkMappedSuperclass1_1Provider.instance()};
 	}
 	
 	
