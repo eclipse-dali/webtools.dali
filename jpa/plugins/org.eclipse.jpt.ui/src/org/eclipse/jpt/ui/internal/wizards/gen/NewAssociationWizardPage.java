@@ -13,7 +13,7 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 import java.util.HashMap;
 
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
+import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 

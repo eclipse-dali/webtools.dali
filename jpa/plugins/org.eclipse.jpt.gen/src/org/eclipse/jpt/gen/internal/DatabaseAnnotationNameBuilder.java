@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal2;
+package org.eclipse.jpt.gen.internal;
 
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;

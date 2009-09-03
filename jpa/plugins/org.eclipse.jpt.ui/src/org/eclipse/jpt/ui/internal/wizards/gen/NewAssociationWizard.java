@@ -18,8 +18,8 @@ import java.util.TreeMap;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.gen.internal2.Association;
-import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
+import org.eclipse.jpt.gen.internal.Association;
+import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 
 
 public class NewAssociationWizard extends Wizard {	

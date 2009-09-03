@@ -10,8 +10,8 @@
 
 package org.eclipse.jpt.ui.internal.wizards.gen;
 
-import org.eclipse.jpt.gen.internal2.Association;
-import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
+import org.eclipse.jpt.gen.internal.Association;
+import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;

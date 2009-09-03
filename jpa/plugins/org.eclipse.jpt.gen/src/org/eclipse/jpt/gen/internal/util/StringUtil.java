@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal2.util;
+package org.eclipse.jpt.gen.internal.util;
 
 import java.beans.Introspector;
 import java.util.ArrayList;

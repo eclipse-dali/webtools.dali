@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal2;
+package org.eclipse.jpt.gen.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -27,9 +27,10 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal2.util.DTPUtil;
-import org.eclipse.jpt.gen.internal2.util.FileUtil;
-import org.eclipse.jpt.gen.internal2.util.StringUtil;
+import org.eclipse.jpt.gen.internal.util.DTPUtil;
+import org.eclipse.jpt.gen.internal.util.FileUtil;
+import org.eclipse.jpt.gen.internal.util.ForeignKeyInfo;
+import org.eclipse.jpt.gen.internal.util.StringUtil;
 
 /**
  * Contains the information used to customize the database schema to ORM entity 

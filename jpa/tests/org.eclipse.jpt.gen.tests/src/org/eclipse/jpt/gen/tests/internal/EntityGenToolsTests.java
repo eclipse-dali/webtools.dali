@@ -11,7 +11,7 @@ package org.eclipse.jpt.gen.tests.internal;
 
 import java.util.HashSet;
 
-import org.eclipse.jpt.gen.internal.EntityGenTools;
+import org.eclipse.jpt.gen.internal.old.EntityGenTools;
 
 import junit.framework.TestCase;
 

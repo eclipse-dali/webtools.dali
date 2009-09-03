@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal2.util;
+package org.eclipse.jpt.gen.internal.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +18,6 @@ import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.db.ForeignKey.ColumnPair;
-import org.eclipse.jpt.gen.internal2.ForeignKeyInfo;
 
 /**
  * Collection of utility methods to access DTP and other jpt.db APIs 

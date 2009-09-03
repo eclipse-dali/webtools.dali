@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal2;
+package org.eclipse.jpt.gen.internal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal.EntityGenTools;
-import org.eclipse.jpt.gen.internal2.util.DTPUtil;
-import org.eclipse.jpt.gen.internal2.util.StringUtil;
+import org.eclipse.jpt.gen.internal.old.EntityGenTools;
+import org.eclipse.jpt.gen.internal.util.DTPUtil;
+import org.eclipse.jpt.gen.internal.util.StringUtil;
 import org.eclipse.jpt.utility.JavaType;
 
 /**

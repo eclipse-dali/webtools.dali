@@ -7,12 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal2;
+package org.eclipse.jpt.gen.internal;
 
 import java.util.List;
 
 import org.eclipse.jpt.db.ForeignKey;
-import org.eclipse.jpt.gen.internal2.util.StringUtil;
+import org.eclipse.jpt.gen.internal.util.StringUtil;
 
 /**
  * Represents an ORM association.

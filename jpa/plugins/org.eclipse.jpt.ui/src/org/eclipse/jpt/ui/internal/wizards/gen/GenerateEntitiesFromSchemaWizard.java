@@ -44,10 +44,10 @@ import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal2.BaseEntityGenCustomizer;
-import org.eclipse.jpt.gen.internal2.DatabaseAnnotationNameBuilder;
-import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
-import org.eclipse.jpt.gen.internal2.PackageGenerator2;
+import org.eclipse.jpt.gen.internal.BaseEntityGenCustomizer;
+import org.eclipse.jpt.gen.internal.DatabaseAnnotationNameBuilder;
+import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
+import org.eclipse.jpt.gen.internal.PackageGenerator2;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -265,7 +265,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
     
     // ********** overwrite confirmer **********
 
-	static class OverwriteConfirmer implements org.eclipse.jpt.gen.internal2.OverwriteConfirmer {
+	static class OverwriteConfirmer implements org.eclipse.jpt.gen.internal.OverwriteConfirmer {
 		private boolean overwriteAll = false;
 		private boolean skipAll = false;
 

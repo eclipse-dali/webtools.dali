@@ -40,7 +40,7 @@ import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
+import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal;
+package org.eclipse.jpt.gen.internal.old;
 
 import java.io.PrintWriter;
 import java.io.Serializable;

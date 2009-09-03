@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal2;
+package org.eclipse.jpt.gen.internal.util;
 
 import java.util.List;
 

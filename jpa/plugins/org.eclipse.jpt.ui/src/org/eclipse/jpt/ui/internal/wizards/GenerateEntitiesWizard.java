@@ -24,8 +24,8 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal.EntityGenerator;
-import org.eclipse.jpt.gen.internal.PackageGenerator;
+import org.eclipse.jpt.gen.internal.old.EntityGenerator;
+import org.eclipse.jpt.gen.internal.old.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 

@@ -8,7 +8,7 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 
-package org.eclipse.jpt.gen.internal2;
+package org.eclipse.jpt.gen.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -39,9 +39,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.gen.internal2.util.CompilationUnitModifier;
-import org.eclipse.jpt.gen.internal2.util.FileUtil;
-import org.eclipse.jpt.gen.internal2.util.UrlUtil;
+import org.eclipse.jpt.gen.internal.util.CompilationUnitModifier;
+import org.eclipse.jpt.gen.internal.util.FileUtil;
+import org.eclipse.jpt.gen.internal.util.UrlUtil;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 

@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.gen.internal2.ORMGenTable;
+import org.eclipse.jpt.gen.internal.ORMGenTable;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

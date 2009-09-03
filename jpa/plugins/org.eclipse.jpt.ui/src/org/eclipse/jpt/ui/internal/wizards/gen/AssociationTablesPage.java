@@ -15,8 +15,8 @@ import static org.eclipse.jpt.ui.internal.wizards.gen.SWTUtil.createLabel;
 import static org.eclipse.jpt.ui.internal.wizards.gen.SWTUtil.createText;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jpt.gen.internal2.Association;
-import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
+import org.eclipse.jpt.gen.internal.Association;
+import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
