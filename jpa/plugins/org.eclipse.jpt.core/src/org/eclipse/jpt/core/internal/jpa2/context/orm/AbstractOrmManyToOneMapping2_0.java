@@ -43,6 +43,11 @@ public abstract class AbstractOrmManyToOneMapping2_0<T extends XmlManyToOne>
 	}
 	
 	@Override
+	public boolean isIdMapping() {
+		return this.derivedId.getValue();
+	}
+	
+	@Override
 	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
 		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
 		getDerivedId().setValue(((OrmSingleRelationshipMapping2_0) oldMapping).getDerivedId().getValue());
@@ -57,6 +62,6 @@ public abstract class AbstractOrmManyToOneMapping2_0<T extends XmlManyToOne>
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		// TODO derived id validation
+		this.derivedId.validate(messages, reporter);
 	}
 }

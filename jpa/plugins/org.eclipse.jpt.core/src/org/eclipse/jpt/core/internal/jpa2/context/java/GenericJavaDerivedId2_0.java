@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
@@ -18,6 +19,8 @@ import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaDerivedId2_0
 	extends AbstractJavaJpaContextNode
@@ -93,5 +96,11 @@ public class GenericJavaDerivedId2_0
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		IdAnnotation annotation = this.getIdAnnotation();
 		return annotation == null ? null : annotation.getTextRange(astRoot);
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		// no validation rules
 	}
 }

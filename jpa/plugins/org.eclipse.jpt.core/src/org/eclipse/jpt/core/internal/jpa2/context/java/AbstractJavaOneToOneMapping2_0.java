@@ -11,12 +11,16 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaOneToOneMapping2_0
 	extends AbstractJavaOneToOneMapping
@@ -47,6 +51,11 @@ public abstract class AbstractJavaOneToOneMapping2_0
 	}
 	
 	@Override
+	public boolean isIdMapping() {
+		return this.derivedId.getValue();
+	}
+	
+	@Override
 	protected void initialize() {
 		super.initialize();
 		this.derivedId.initialize();
@@ -56,5 +65,11 @@ public abstract class AbstractJavaOneToOneMapping2_0
 	protected void update() {
 		super.update();
 		this.derivedId.update();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.derivedId.validate(messages, reporter, astRoot);
 	}
 }

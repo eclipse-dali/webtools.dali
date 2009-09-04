@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmDerivedId2_0 
 	extends AbstractXmlContextNode
@@ -31,6 +34,11 @@ public class GenericOrmDerivedId2_0
 		this.value = getResourceToContextValue();
 	}
 	
+	
+	@Override
+	public OrmSingleRelationshipMapping2_0 getParent() {
+		return (OrmSingleRelationshipMapping2_0) super.getParent();
+	}
 	
 	public boolean getValue() {
 		return this.value;
@@ -63,5 +71,11 @@ public class GenericOrmDerivedId2_0
 	
 	public TextRange getValidationTextRange() {
 		return this.resource.getDerivedIdTextRange();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		// no validation rules
 	}
 }
