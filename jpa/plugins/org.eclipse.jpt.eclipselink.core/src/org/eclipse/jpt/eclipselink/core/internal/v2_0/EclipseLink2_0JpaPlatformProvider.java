@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingProvider;
@@ -142,6 +143,7 @@ public class EclipseLink2_0JpaPlatformProvider
 		// order should not be important here
 		return new MappingFileDefinition[] {
 			GenericOrmXmlDefinition.instance(),
+			GenericOrmXml2_0Definition.instance(),
 			EclipseLinkOrmXmlDefinition.instance(),
 			EclipseLinkOrmXml1_1Definition.instance()};
 	}
