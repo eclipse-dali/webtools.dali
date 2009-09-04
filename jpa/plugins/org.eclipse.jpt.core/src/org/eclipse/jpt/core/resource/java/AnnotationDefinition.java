@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
  * 
  * @see Annotation
  * @see org.eclipse.jpt.core.JpaPlatform
- * @see org.eclipse.jpt.core.internal.platform.GenericJpaPlatform
+ * @see org.eclipse.jpt.core.internal.GenericJpaPlatform
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

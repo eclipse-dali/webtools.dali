@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmXmlContextNodeFactory;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlContextNodeFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmFactory;
 

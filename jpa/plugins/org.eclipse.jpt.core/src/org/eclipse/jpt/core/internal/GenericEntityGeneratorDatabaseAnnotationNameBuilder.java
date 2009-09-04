@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.db.Column;

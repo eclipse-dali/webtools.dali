@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaPlatformProvider;
+import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;

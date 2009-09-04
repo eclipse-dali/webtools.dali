@@ -13,9 +13,9 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 

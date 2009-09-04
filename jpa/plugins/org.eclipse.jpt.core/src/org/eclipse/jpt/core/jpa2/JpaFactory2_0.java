@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.PersistentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @see org.eclipse.jpt.core.internal.platform.GenericJpaFactory2_0
+ * @see org.eclipse.jpt.core.internal.jpa2.GenericJpaFactory2_0
  */
 public interface JpaFactory2_0
 	extends JpaFactory

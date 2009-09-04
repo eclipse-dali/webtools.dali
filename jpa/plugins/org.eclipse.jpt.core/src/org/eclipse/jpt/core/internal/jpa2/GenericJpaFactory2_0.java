@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa2.platform;
+package org.eclipse.jpt.core.internal.jpa2;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
@@ -28,9 +28,7 @@ import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.jpa2.GenericJpaProject2_0;
-import org.eclipse.jpt.core.internal.jpa2.GenericPersistentTypeStaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.internal.jpa2.GenericStaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericRootContextNode2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
@@ -47,7 +45,6 @@ import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericPersistence
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericPersistenceUnit2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.ImpliedMappingFileRef2_0;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaFactory;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;

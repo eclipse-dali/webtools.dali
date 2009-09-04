@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
+import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkBasicCollectionAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkBasicMapAnnotationDefinition;

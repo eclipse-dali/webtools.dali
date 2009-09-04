@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaFactory;
+import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 
 public class TestJpaFactory extends AbstractJpaFactory
 {

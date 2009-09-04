@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
+import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.core.internal.jpa2.operations.Orm2_0FileCreationOperation;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntityMappings;

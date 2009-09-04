@@ -180,14 +180,14 @@
 		<jpaPlatform
 			id="generic"
 			label="%GENERIC_PLATFORM_LABEL"
-			factoryClass="org.eclipse.jpt.core.internal.platform.GenericJpaPlatformFactory"
+			factoryClass="org.eclipse.jpt.core.internal.GenericJpaPlatformFactory"
 			default="false">
 		</jpaPlatform>
 			
 	  <jpaPlatform
 	        id="generic2_0"
 	        label="%GENERIC2_0_PLATFORM_LABEL"
-	        factoryClass="org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformFactory"
 	        default="false">
 	  </jpaPlatform>
 		

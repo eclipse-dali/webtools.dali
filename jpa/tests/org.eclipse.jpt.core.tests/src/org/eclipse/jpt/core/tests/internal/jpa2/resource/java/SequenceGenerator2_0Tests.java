@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;

@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.internal.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.core.internal.OrmResourceModelProvider;
@@ -32,7 +33,6 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 
 public class TestJpaPlatformProvider extends AbstractJpaPlatformProvider
 {

@@ -109,7 +109,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @see org.eclipse.jpt.core.internal.platform.GenericJpaFactory
+ * @see org.eclipse.jpt.core.internal.jpa1.GenericJpaFactory
  */
 public interface JpaFactory 
 {

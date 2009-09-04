@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;
 
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.tests.internal.resource.java.JavaResourceModelTestCase;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
 

@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmXmlContextNodeFactory;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 
 public class EclipseLinkOrmXmlDefinition

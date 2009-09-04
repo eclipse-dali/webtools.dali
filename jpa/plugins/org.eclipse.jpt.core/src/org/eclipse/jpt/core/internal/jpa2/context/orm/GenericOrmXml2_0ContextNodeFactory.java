@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa2.platform;
+package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -37,31 +37,8 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericOrmGeneratorContainer2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericEntityMappings2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverrideRelationshipReference2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddable2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEntity2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmManyToOneMapping2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOneToOneMapping2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentAttribute2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentType2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericPersistenceUnitMetadata2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlAssociationOverride2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlBasic2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlEmbedded2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlEmbeddedId2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlId2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlManyToMany2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlManyToOne2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlNullAttributeMapping2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlOneToMany2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlOneToOne2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlTransient2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlVersion2_0;
-import org.eclipse.jpt.core.internal.platform.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
@@ -85,7 +62,7 @@ import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
-public class GenericJpaOrm2_0Factory extends AbstractOrmXmlContextNodeFactory
+public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNodeFactory
 {	
 
 	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {

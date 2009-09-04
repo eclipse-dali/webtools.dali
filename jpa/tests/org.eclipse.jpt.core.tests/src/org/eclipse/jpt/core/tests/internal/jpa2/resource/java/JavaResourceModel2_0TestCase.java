@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.resource.java;
 
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.tests.internal.resource.java.JavaResourceModelTestCase;
 
 public class JavaResourceModel2_0TestCase extends JavaResourceModelTestCase

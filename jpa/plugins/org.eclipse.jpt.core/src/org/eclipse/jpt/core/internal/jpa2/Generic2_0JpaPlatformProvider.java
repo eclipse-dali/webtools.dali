@@ -7,13 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa2.platform;
+package org.eclipse.jpt.core.internal.jpa2;
 
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.internal.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.core.internal.OrmResourceModelProvider;
@@ -31,11 +32,8 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
-import org.eclipse.jpt.core.internal.jpa2.Orm2_0ResourceModelProvider;
-import org.eclipse.jpt.core.internal.jpa2.Persistence2_0ResourceModelProvider;
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingProvider2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once

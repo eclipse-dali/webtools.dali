@@ -7,10 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 

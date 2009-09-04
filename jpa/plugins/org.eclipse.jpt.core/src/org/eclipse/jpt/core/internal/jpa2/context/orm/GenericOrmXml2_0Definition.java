@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
-import org.eclipse.jpt.core.internal.jpa2.platform.GenericJpaOrm2_0Factory;
 
 public class GenericOrmXml2_0Definition
 	extends AbstractOrmXmlDefinition
@@ -43,7 +42,7 @@ public class GenericOrmXml2_0Definition
 	
 	@Override
 	protected OrmXmlContextNodeFactory buildFactory() {
-		return new GenericJpaOrm2_0Factory();
+		return new GenericOrmXml2_0ContextNodeFactory();
 	}
 	
 	public IContentType getContentType() {

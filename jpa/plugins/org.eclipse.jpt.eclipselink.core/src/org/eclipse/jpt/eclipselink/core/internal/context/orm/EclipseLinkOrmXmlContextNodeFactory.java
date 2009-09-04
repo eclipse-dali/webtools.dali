@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal;
+package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
@@ -37,7 +37,7 @@ import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.platform.AbstractOrmXmlContextNodeFactory;
+import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
@@ -48,40 +48,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBas
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappingsImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkPersistenceUnitMetadata;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkEmbeddableImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkEntityImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkManyToManyMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkManyToOneMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkMappedSuperclassImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistentType;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkTransformationMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkVariableOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkVersionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlBasic;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlBasicCollection;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlBasicMap;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlEmbedded;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlEmbeddedId;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlId;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlManyToMany;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlManyToOne;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlNullAttributeMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlOneToMany;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlOneToOne;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlTransformation;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlTransient;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlVariableOneToOne;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlVersion;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;

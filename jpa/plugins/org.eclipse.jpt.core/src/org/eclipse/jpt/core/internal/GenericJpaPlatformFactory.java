@@ -7,12 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
-import org.eclipse.jpt.core.internal.jpa1.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.internal.jpa1.GenericJpaFactory;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once

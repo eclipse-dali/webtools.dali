@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.context.orm.OrmBasicMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddableProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedIdMappingProvider;
@@ -30,7 +31,6 @@ import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingProvider;
-import org.eclipse.jpt.core.internal.platform.GenericOrmXmlContextNodeFactory;
 
 public class GenericOrmXmlDefinition
 	extends AbstractOrmXmlDefinition

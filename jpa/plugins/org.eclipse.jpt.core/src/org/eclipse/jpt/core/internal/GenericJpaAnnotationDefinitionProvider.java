@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,15 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa2.platform;
+package org.eclipse.jpt.core.internal;
 
 import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
-import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverride2_0AnnotationDefinition;
-import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverrides2_0AnnotationDefinition;
-import org.eclipse.jpt.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
+import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.BasicAnnotationDefinition;
@@ -50,6 +47,7 @@ import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnAnnotatio
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnsAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTablesAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.SequenceGeneratorAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TableGeneratorAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TemporalAnnotationDefinition;
@@ -57,16 +55,12 @@ import org.eclipse.jpt.core.internal.resource.java.TransientAnnotationDefinition
 import org.eclipse.jpt.core.internal.resource.java.VersionAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 
-/**
- * Support for existing JPA 1.0 annotations, new JPA 2.0 annotations, and 
- * augmented support for annotations changed from 1.0 to 2.0
- */
-public class Generic2_0JpaAnnotationDefinitionProvider
+public class GenericJpaAnnotationDefinitionProvider
 	extends AbstractJpaAnnotationDefintionProvider
-{
+{	
 	// singleton
 	private static final JpaAnnotationDefinitionProvider INSTANCE = 
-			new Generic2_0JpaAnnotationDefinitionProvider();
+			new GenericJpaAnnotationDefinitionProvider();
 	
 	
 	/**
@@ -78,18 +72,17 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	
 	
 	/**
-	 * Enforce singleton usage
+	 * Ensure singleton usage
 	 */
-	private Generic2_0JpaAnnotationDefinitionProvider() {
+	protected GenericJpaAnnotationDefinitionProvider() {
 		super();
 	}
 	
 	
 	@Override
 	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(Access2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverride2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverrides2_0AnnotationDefinition.instance());
+		definitions.add(AssociationOverrideAnnotationDefinition.instance());
+		definitions.add(AssociationOverridesAnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(DiscriminatorColumnAnnotationDefinition.instance());
@@ -107,9 +100,9 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());
 		definitions.add(SecondaryTableAnnotationDefinition.instance());
 		definitions.add(SecondaryTablesAnnotationDefinition.instance());
-		definitions.add(SequenceGenerator2_0AnnotationDefinition.instance());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(TableAnnotationDefinition.instance());
-		definitions.add(TableGeneratorAnnotationDefinition.instance());		
+		definitions.add(TableGeneratorAnnotationDefinition.instance());
 	}
 	
 	@Override
@@ -121,9 +114,8 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	
 	@Override
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(Access2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverride2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverrides2_0AnnotationDefinition.instance());
+		definitions.add(AssociationOverrideAnnotationDefinition.instance());
+		definitions.add(AssociationOverridesAnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(BasicAnnotationDefinition.instance());
@@ -145,7 +137,7 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(OrderByAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());
-		definitions.add(SequenceGenerator2_0AnnotationDefinition.instance());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 		definitions.add(TemporalAnnotationDefinition.instance());
 		definitions.add(TransientAnnotationDefinition.instance());

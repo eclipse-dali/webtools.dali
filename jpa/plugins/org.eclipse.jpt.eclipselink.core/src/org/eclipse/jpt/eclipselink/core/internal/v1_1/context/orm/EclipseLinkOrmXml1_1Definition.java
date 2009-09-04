@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1OrmXmlContextNodeFactory;
 
 public class EclipseLinkOrmXml1_1Definition
 	extends AbstractOrmXmlDefinition
@@ -43,7 +42,7 @@ public class EclipseLinkOrmXml1_1Definition
 	
 	@Override
 	protected OrmXmlContextNodeFactory buildFactory() {
-		return new EclipseLink1_1OrmXmlContextNodeFactory();
+		return new EclipseLinkOrmXml1_1ContextNodeFactory();
 	}
 	
 	public IContentType getContentType() {
