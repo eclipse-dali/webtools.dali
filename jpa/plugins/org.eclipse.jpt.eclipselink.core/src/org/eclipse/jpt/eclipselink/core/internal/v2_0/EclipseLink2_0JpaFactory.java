@@ -12,14 +12,14 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaFactory;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLinkPersistenceUnit2_0;
 
 /**
  *  EclipseLink2_0JpaFactory
  */
 public class EclipseLink2_0JpaFactory
-	extends EclipseLink1_1JpaFactory
+	extends EclipseLinkJpaFactory
 {
 	protected EclipseLink2_0JpaFactory() {
 		super();

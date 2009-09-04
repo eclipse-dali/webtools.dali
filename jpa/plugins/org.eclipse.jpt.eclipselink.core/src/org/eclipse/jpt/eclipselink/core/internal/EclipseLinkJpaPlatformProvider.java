@@ -29,15 +29,15 @@ import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappingFileDefinition;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkMappingFileDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 
 /**
  * EclipseLink platform
@@ -135,7 +135,7 @@ public class EclipseLinkJpaPlatformProvider
 	protected MappingFileDefinition[] buildMappingFileDefinitions() {
 		// order should not be important here
 		return new MappingFileDefinition[] {
-			EclipseLinkMappingFileDefinition.instance(),
-			GenericOrmMappingFileDefinition.instance()};
+			EclipseLinkOrmXmlDefinition.instance(),
+			GenericOrmXmlDefinition.instance()};
 	}
 }

@@ -14,11 +14,10 @@ import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public abstract class AbstractOrmAssociationOverride extends AbstractXmlContextNode
+public abstract class AbstractOrmAssociationOverride extends AbstractOrmXmlContextNode
 	implements OrmAssociationOverride
 {
 	protected final AssociationOverride.Owner owner;
@@ -38,7 +37,9 @@ public abstract class AbstractOrmAssociationOverride extends AbstractXmlContextN
 		this.name = xmlAssociationOverride.getName();
 	}
 	
-	protected abstract OrmAssociationOverrideRelationshipReference buildRelationshipReference(XmlAssociationOverride xmlAssociationOverride);
+	protected OrmAssociationOverrideRelationshipReference buildRelationshipReference(XmlAssociationOverride xmlAssociationOverride) {
+		return getXmlContextNodeFactory().buildOrmAssociationOverrideRelationshipReference(this, xmlAssociationOverride);
+	}
 	
 	public void initializeFrom(AssociationOverride oldAssociationOverride) {
 		this.setName(oldAssociationOverride.getName());

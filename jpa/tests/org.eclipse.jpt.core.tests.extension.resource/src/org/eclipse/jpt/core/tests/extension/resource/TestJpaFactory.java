@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.platform.AbstractJpaFactory;
 
 public class TestJpaFactory extends AbstractJpaFactory
 {
+	
 	@Override
 	public JavaEntity buildJavaEntity(JavaPersistentType parent) {
 		return new TestJavaEntity(parent);

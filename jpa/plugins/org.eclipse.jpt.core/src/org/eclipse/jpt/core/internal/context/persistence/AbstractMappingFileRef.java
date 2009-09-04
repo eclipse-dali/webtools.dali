@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
@@ -61,10 +60,6 @@ public abstract class AbstractMappingFileRef
 
 	public String getId() {
 		return PersistenceStructureNodes.MAPPING_FILE_REF_ID;
-	}
-	
-	public IContentType getContentType() {
-		return getParent().getContentType();
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
@@ -162,7 +157,7 @@ public abstract class AbstractMappingFileRef
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
 		MappingFileDefinition mappingFileDef = getJpaPlatform().getMappingFileDefinition(resource.getContentType());
-		return (mappingFileDef == null) ? null : mappingFileDef.buildMappingFile(this, resource, getJpaFactory());
+		return (mappingFileDef == null) ? null : mappingFileDef.buildMappingFile(this, resource);
 	}
 	
 	@Override

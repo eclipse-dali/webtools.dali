@@ -29,17 +29,17 @@ import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappingFileDefinition;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkMappingFileDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLink1_1MappingFileDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1Definition;
 
 /**
  * EclipseLink platform
@@ -140,8 +140,8 @@ public class EclipseLink1_1JpaPlatformProvider
 	protected MappingFileDefinition[] buildMappingFileDefinitions() {
 		// order should not be important here
 		return new MappingFileDefinition[] {
-			GenericOrmMappingFileDefinition.instance(),
-			EclipseLinkMappingFileDefinition.instance(),
-			EclipseLink1_1MappingFileDefinition.instance()};
+			GenericOrmXmlDefinition.instance(),
+			EclipseLinkOrmXmlDefinition.instance(),
+			EclipseLinkOrmXml1_1Definition.instance()};
 	}
 }

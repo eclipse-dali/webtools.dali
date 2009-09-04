@@ -82,6 +82,7 @@ public abstract class AbstractJarFile
 		return null;
 	}
 	
+	@Override
 	public IContentType getContentType() {
 		return JptCorePlugin.JAR_CONTENT_TYPE;
 	}

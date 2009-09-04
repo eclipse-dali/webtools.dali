@@ -10,14 +10,13 @@
 package org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaFactory;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmFactory;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntity;
 
@@ -53,8 +52,8 @@ public class OrmEclipseLinkEntity1_1Provider
 		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlEntity();
 	}
 
-	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildOrmEclipseLinkEntity1_1(parent, (XmlEntity) resourceMapping);
+	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildOrmEntity(parent, (XmlEntity) resourceMapping);
 	}
 
 	public String getKey() {

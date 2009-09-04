@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -66,10 +65,6 @@ public abstract class AbstractJavaPersistentAttribute
 
 	public String getId() {
 		return JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID;
-	}
-
-	public IContentType getContentType() {
-		return this.getPersistentType().getContentType();
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

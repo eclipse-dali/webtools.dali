@@ -12,12 +12,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public abstract class AbstractPersistenceUnitMetadata extends AbstractXmlContextNode
+public abstract class AbstractPersistenceUnitMetadata extends AbstractOrmXmlContextNode
 	implements PersistenceUnitMetadata
 {
 	protected boolean xmlMappingMetadataComplete;
@@ -30,7 +29,7 @@ public abstract class AbstractPersistenceUnitMetadata extends AbstractXmlContext
 		super(parent);
 		this.xmlEntityMappings = resource;
 		this.xmlMappingMetadataComplete = this.getResourceXmlMappingMetadataComplete();
-		this.persistenceUnitDefaults = getJpaFactory().buildPersistenceUnitDefaults(this, this.xmlEntityMappings);
+		this.persistenceUnitDefaults = getXmlContextNodeFactory().buildPersistenceUnitDefaults(this, this.xmlEntityMappings);
 	}
 
 	public boolean isXmlMappingMetadataComplete() {

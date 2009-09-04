@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.persistence;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -85,10 +84,6 @@ public abstract class AbstractClassRef
 
 	public String getId() {
 		return PersistenceStructureNodes.CLASS_REF_ID;
-	}
-	
-	public IContentType getContentType() {
-		return getParent().getContentType();
 	}
 	
 	public JpaStructureNode getStructureNode(int textOffset) {

@@ -11,12 +11,12 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
 
-public class OrmEclipseLinkPrivateOwned extends AbstractXmlContextNode
+public class OrmEclipseLinkPrivateOwned extends AbstractOrmXmlContextNode
 	implements EclipseLinkPrivateOwned
 {
 	protected final XmlPrivateOwned resource;

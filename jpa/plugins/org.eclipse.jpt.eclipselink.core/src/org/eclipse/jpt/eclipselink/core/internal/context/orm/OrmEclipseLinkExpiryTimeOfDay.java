@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 
-public class OrmEclipseLinkExpiryTimeOfDay extends AbstractXmlContextNode
+public class OrmEclipseLinkExpiryTimeOfDay extends AbstractOrmXmlContextNode
 	implements EclipseLinkExpiryTimeOfDay
 {
 	

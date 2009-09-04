@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkConvert extends AbstractXmlContextNode implements EclipseLinkConvert, OrmConverter
+public class OrmEclipseLinkConvert extends AbstractOrmXmlContextNode implements EclipseLinkConvert, OrmConverter
 {
 	protected String specifiedConverterName;
 	

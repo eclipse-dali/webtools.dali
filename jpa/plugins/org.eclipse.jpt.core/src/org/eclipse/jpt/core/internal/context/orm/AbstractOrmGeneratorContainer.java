@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmGeneratorContainer extends AbstractXmlContextNode
+public abstract class AbstractOrmGeneratorContainer extends AbstractOrmXmlContextNode
 	implements OrmGeneratorContainer
 {
 	protected OrmSequenceGenerator sequenceGenerator;
@@ -113,17 +112,22 @@ public abstract class AbstractOrmGeneratorContainer extends AbstractXmlContextNo
 	}
 	
 	protected abstract XmlSequenceGenerator buildResourceSequenceGenerator();
-
-	protected abstract OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator);
+	
+	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
+		return getXmlContextNodeFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
+	}
 
 	protected void initializeTableGenerator() {
 		if (this.resourceGeneratorContainer.getTableGenerator() != null) {
 			this.tableGenerator = buildTableGenerator(this.resourceGeneratorContainer.getTableGenerator());
 		}
 	}
+	
 	protected abstract XmlTableGenerator buildResourceTableGenerator();
 	
-	protected abstract OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator);
+	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
+		return getXmlContextNodeFactory().buildOrmTableGenerator(this, resourceTableGenerator);
+	}
 	
 	public void update() {
 		this.updateSequenceGenerator();

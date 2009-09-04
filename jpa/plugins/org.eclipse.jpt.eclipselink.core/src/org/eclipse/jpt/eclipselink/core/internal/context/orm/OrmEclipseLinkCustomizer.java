@@ -10,14 +10,14 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 
-public class OrmEclipseLinkCustomizer extends AbstractXmlContextNode
+public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 	implements EclipseLinkCustomizer
 {
 	protected final XmlCustomizerHolder resource;

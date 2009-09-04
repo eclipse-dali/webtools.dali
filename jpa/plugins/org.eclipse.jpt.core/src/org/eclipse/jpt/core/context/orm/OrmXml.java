@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -30,8 +29,6 @@ public interface OrmXml
 	 * covariant override
 	 */
 	MappingFileRef getParent();
-
-	IContentType getContentType();
 
 
 	// ********** entity mappings **********

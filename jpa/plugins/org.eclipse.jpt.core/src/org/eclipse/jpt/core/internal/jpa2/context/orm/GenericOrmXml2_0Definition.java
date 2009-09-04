@@ -7,46 +7,29 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa2.context;
+package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmBasicMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddableMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddedIdMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddedMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEntityMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmIdMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmManyToManyMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmManyToOneMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmMappedSuperclassMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmNullAttributeMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOneToManyMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOneToOneMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmTransientMapping2_0Provider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmVersionMapping2_0Provider;
-import org.eclipse.jpt.core.internal.platform.AbstractMappingFileDefinition;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.jpa2.platform.GenericJpaOrm2_0Factory;
 
-public class GenericOrm2_0MappingFileDefinition
-	extends AbstractMappingFileDefinition
+public class GenericOrmXml2_0Definition
+	extends AbstractOrmXmlDefinition
 {
 	// singleton
-	private static final MappingFileDefinition INSTANCE = 
-			new GenericOrm2_0MappingFileDefinition();
+	private static final OrmXmlDefinition INSTANCE = 
+			new GenericOrmXml2_0Definition();
 	
 	
 	/**
 	 * Return the singleton
 	 */
-	public static MappingFileDefinition instance() {
+	public static OrmXmlDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -54,17 +37,17 @@ public class GenericOrm2_0MappingFileDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private GenericOrm2_0MappingFileDefinition() {
+	private GenericOrmXml2_0Definition() {
 		super();
 	}
 	
+	@Override
+	protected OrmXmlContextNodeFactory buildFactory() {
+		return new GenericJpaOrm2_0Factory();
+	}
 	
 	public IContentType getContentType() {
 		return JptCorePlugin.ORM2_0_XML_CONTENT_TYPE;
-	}
-	
-	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildMappingFile2_0(parent, resource);
 	}
 	
 	

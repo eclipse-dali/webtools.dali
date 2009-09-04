@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.MappingFileRoot;
@@ -42,6 +43,10 @@ public abstract class AbstractJpaContextNode
 
 
 	// ********** JpaContextNode implementation **********
+
+	public IContentType getContentType() {
+		return getParent().getContentType();
+	}
 
 	/**
 	 * Overridden in GenericPersistence and GenericPersistenceXml to throw

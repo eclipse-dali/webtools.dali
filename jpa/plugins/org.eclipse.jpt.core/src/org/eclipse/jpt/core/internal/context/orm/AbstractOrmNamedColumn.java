@@ -12,14 +12,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlNamedColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 
 
-public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn>  extends AbstractXmlContextNode
+public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> extends AbstractOrmXmlContextNode
 	implements OrmNamedColumn
 {
 	protected Owner owner;

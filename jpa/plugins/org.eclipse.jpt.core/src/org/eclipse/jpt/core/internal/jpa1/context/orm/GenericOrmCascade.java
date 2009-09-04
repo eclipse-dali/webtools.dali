@@ -12,14 +12,14 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class GenericOrmCascade extends AbstractXmlContextNode implements OrmCascade
+public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmCascade
 {
 	protected boolean all;
 

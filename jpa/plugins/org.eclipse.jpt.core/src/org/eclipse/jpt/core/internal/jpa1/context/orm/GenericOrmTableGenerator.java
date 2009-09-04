@@ -406,7 +406,7 @@ public class GenericOrmTableGenerator
 	}
 
 	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
-		return this.getJpaFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
+		return this.getXmlContextNodeFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
 	}
 
 

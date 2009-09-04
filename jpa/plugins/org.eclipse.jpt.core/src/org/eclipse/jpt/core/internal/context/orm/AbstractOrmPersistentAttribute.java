@@ -10,11 +10,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
@@ -22,7 +20,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -31,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextNode
+public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlContextNode
 	implements OrmPersistentAttribute
 {
 	protected final Owner owner;
@@ -64,7 +61,7 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 	protected OrmAttributeMapping buildAttributeMapping(XmlAttributeMapping resourceMapping) {
 		OrmAttributeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmAttributeMappingProvider(resourceMapping.getMappingKey());
-		return mappingProvider.buildMapping(this, resourceMapping, getJpaFactory());
+		return mappingProvider.buildMapping(this, resourceMapping, getXmlContextNodeFactory());
 	}
 	
 	public String getId() {
@@ -181,14 +178,6 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 	
 	public JpaStructureNode getStructureNode(int offset) {
 		return this;
-	}
-
-	public IContentType getContentType() {
-		return this.getPersistentType().getContentType();
-	}
-	
-	public MappingFileDefinition getMappingFileDefinition() {
-		return getJpaPlatform().getMappingFileDefinition(getContentType());
 	}
 
 	public boolean contains(int textOffset) {

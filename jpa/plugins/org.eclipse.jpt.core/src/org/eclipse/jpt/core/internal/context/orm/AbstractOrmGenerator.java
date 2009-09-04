@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
@@ -25,7 +24,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * 
  */
 public abstract class AbstractOrmGenerator<T extends XmlGenerator>
-	extends AbstractXmlContextNode 
+	extends AbstractOrmXmlContextNode 
 	implements OrmGenerator
 {
 

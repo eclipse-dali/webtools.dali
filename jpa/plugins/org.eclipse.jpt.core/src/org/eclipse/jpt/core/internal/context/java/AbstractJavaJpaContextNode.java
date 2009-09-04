@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
@@ -28,6 +30,11 @@ public abstract class AbstractJavaJpaContextNode
 
 	protected AbstractJavaJpaContextNode(JpaContextNode parent) {
 		super(parent);
+	}
+	
+	@Override
+	public IContentType getContentType() {
+		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
 	}
 
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {

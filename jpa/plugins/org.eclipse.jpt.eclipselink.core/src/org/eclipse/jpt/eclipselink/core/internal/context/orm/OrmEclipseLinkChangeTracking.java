@@ -11,7 +11,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 
-public class OrmEclipseLinkChangeTracking extends AbstractXmlContextNode
+public class OrmEclipseLinkChangeTracking extends AbstractOrmXmlContextNode
 	implements EclipseLinkChangeTracking
 {
 	protected final XmlChangeTrackingHolder resource;

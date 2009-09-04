@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappingFileDefinition;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 
 public class TestJpaPlatformProvider extends AbstractJpaPlatformProvider
@@ -116,6 +116,6 @@ public class TestJpaPlatformProvider extends AbstractJpaPlatformProvider
 	@Override
 	protected MappingFileDefinition[] buildMappingFileDefinitions() {
 		return new MappingFileDefinition[] {
-			GenericOrmMappingFileDefinition.instance()};
+			GenericOrmXmlDefinition.instance()};
 	}
 }

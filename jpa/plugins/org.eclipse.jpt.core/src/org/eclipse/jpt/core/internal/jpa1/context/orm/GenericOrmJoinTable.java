@@ -502,7 +502,7 @@ public class GenericOrmJoinTable
 	// ********** misc **********
 
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn, OrmJoinColumn.Owner owner) {
-		return this.getJpaFactory().buildOrmJoinColumn(this, owner, resourceJoinColumn);
+		return this.getXmlContextNodeFactory().buildOrmJoinColumn(this, owner, resourceJoinColumn);
 	}
 
 

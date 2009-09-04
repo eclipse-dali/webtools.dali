@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm;
 
-import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXml;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaFactory;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmFactory;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEntityMappings;
 
@@ -28,18 +26,8 @@ public class EclipseLinkOrmXml1_1 extends AbstractOrmXml
 	}
 	
 	@Override
-	protected EclipseLink1_1JpaFactory getJpaFactory() {
-		return (EclipseLink1_1JpaFactory) super.getJpaFactory();
-	}
-	
-	@Override
 	protected XmlEntityMappings buildEntityMappingsResource() {
 		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlEntityMappings();
-	}
-	
-	@Override
-	protected EntityMappings buildEntityMappings(org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return getJpaFactory().buildEclipseLinkEntityMappings1_1(this, (XmlEntityMappings) xmlEntityMappings);
 	}
 	
 	

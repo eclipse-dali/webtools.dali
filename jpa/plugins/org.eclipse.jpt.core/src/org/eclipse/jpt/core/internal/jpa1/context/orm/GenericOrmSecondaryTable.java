@@ -269,7 +269,7 @@ public class GenericOrmSecondaryTable
 	}	
 
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
-		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, this.joinColumnOwner, resourcePkJoinColumn);
+		return getXmlContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, this.joinColumnOwner, resourcePkJoinColumn);
 	}
 
 	/**

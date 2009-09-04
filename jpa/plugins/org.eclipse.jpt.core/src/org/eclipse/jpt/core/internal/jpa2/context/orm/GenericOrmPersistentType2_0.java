@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentType;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
@@ -39,11 +38,6 @@ public class GenericOrmPersistentType2_0
 	@Override
 	protected Attributes createResourceAttributes() {
 		return Orm2_0Factory.eINSTANCE.createAttributes();
-	}
-	
-	@Override
-	protected OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentAttribute.Owner owner, org.eclipse.jpt.core.resource.orm.XmlAttributeMapping resourceMapping) {
-		return getJpaFactory().buildOrmPersistentAttribute2_0(this, owner, (XmlAttributeMapping) resourceMapping);
 	}
 	
 	@Override

@@ -15,12 +15,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -35,7 +33,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -56,7 +53,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractEntityMappings
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements EntityMappings
 {
 	protected final XmlEntityMappings xmlEntityMappings;
@@ -91,7 +88,7 @@ public abstract class AbstractEntityMappings
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
-		this.queryContainer = getJpaFactory().buildOrmQueryContainer(this, xmlEntityMappings);
+		this.queryContainer = getXmlContextNodeFactory().buildOrmQueryContainer(this, xmlEntityMappings);
 
 		this.persistenceUnitMetadata = buildPersistenceUnitMetadata();
 		this.description = this.xmlEntityMappings.getDescription();
@@ -111,8 +108,13 @@ public abstract class AbstractEntityMappings
 		this.initializeSequenceGenerators();
 	}
 	
-	protected abstract PersistenceUnitMetadata buildPersistenceUnitMetadata();
+	protected PersistenceUnitMetadata buildPersistenceUnitMetadata() {
+		return getXmlContextNodeFactory().buildPersistenceUnitMetadata(this, this.xmlEntityMappings);
+	}
 	
+	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
+		return getXmlContextNodeFactory().buildOrmPersistentType(this, resourceMapping);
+	}	
 	
 	// **************** JpaNode impl *******************************************
 	
@@ -367,8 +369,6 @@ public abstract class AbstractEntityMappings
 		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
 		return persistentType;
 	}
-	
-	protected abstract OrmPersistentType buildPersistentType(XmlTypeMapping typeMapping);
 
 	protected int insertionIndex(OrmPersistentType ormPersistentType) {
 		return CollectionTools.insertionIndexOf(this.persistentTypes, ormPersistentType, buildMappingComparator());
@@ -474,7 +474,7 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public OrmTableGenerator addTableGenerator(int index) {
-		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGenerator();
+		XmlTableGenerator resourceTableGenerator = buildResourceTableGenerator();
 		OrmTableGenerator contextTableGenerator = buildTableGenerator(resourceTableGenerator);
 		this.tableGenerators.add(index, contextTableGenerator);
 		this.xmlEntityMappings.getTableGenerators().add(index, resourceTableGenerator);
@@ -509,6 +509,10 @@ public abstract class AbstractEntityMappings
 		this.xmlEntityMappings.getTableGenerators().move(targetIndex, sourceIndex);
 		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
+	
+	protected XmlTableGenerator buildResourceTableGenerator() {
+		return OrmFactory.eINSTANCE.createXmlTableGenerator();
+	}
 
 
 	// ********** named queries **********
@@ -533,14 +537,6 @@ public abstract class AbstractEntityMappings
 
 	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
-	}
-
-	public IContentType getContentType() {
-		return this.getOrmXml().getContentType();
-	}
-	
-	public MappingFileDefinition getMappingFileDefinition() {
-		return getJpaPlatform().getMappingFileDefinition(getContentType());
 	}
 
 	/**
@@ -661,7 +657,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
-		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
+		return getXmlContextNodeFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
 	protected void updateSequenceGenerators() {
@@ -684,7 +680,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
-		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
+		return getXmlContextNodeFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 
 	@Override

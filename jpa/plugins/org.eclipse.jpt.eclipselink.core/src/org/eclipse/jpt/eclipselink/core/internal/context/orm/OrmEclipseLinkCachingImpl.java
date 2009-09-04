@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 
-public class OrmEclipseLinkCachingImpl extends AbstractXmlContextNode
+public class OrmEclipseLinkCachingImpl extends AbstractOrmXmlContextNode
 	implements OrmEclipseLinkCaching
 {
 	protected final XmlCacheHolder resource;

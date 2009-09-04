@@ -9,18 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaFactory;
 
 public class OrmEclipseLinkNullAttributeMapping1_1Provider
 	implements OrmAttributeMappingProvider
@@ -41,10 +38,6 @@ public class OrmEclipseLinkNullAttributeMapping1_1Provider
 	private OrmEclipseLinkNullAttributeMapping1_1Provider() {
 		super();
 	}
-	
-	public IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK1_1_ORM_XML_CONTENT_TYPE;
-	}
 
 	public String getKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
@@ -54,12 +47,12 @@ public class OrmEclipseLinkNullAttributeMapping1_1Provider
 		throw new UnsupportedOperationException();
 	}
 
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildOrmEclipseLinkNullAttributeMapping1_1(parent, (XmlNullAttributeMapping) resourceMapping);
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildOrmNullAttributeMapping(parent, (XmlNullAttributeMapping) resourceMapping);
 	}
 	
-	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildVirtualEclipseLinkXmlNullAttributeMapping1_1(ormTypeMapping, javaAttributeMapping);
+	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildVirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
 	}
 
 }

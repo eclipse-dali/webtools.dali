@@ -71,8 +71,9 @@ public abstract class AbstractPersistenceXml
 		return null;
 	}
 	
+	@Override
 	public IContentType getContentType() {
-		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
+		return this.persistenceXmlResource.getContentType();
 	}
 	
 	

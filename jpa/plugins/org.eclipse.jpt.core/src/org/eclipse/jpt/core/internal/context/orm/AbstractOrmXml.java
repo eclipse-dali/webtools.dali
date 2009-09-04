@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -29,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmXml
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements OrmXml
 {
 	protected JpaXmlResource xmlResource;
@@ -75,6 +74,7 @@ public abstract class AbstractOrmXml
 		return null;
 	}
 
+	@Override
 	public IContentType getContentType() {
 		return this.xmlResource.getContentType();
 	}
@@ -180,7 +180,9 @@ public abstract class AbstractOrmXml
 		}
 	}
 	
-	protected abstract EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings);
+	protected EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings) {
+		return getXmlContextNodeFactory().buildEntityMappings(this, xmlEntityMappings);
+	}	
 	
 	@Override
 	public void postUpdate() {

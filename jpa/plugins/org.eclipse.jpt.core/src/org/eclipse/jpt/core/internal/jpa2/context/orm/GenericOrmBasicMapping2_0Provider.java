@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
@@ -19,7 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -44,10 +41,6 @@ public class GenericOrmBasicMapping2_0Provider
 		super();
 	}
 
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM2_0_XML_CONTENT_TYPE;
-	}
-
 	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -56,12 +49,12 @@ public class GenericOrmBasicMapping2_0Provider
 		return Orm2_0Factory.eINSTANCE.createXmlBasic();
 	}
 	
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildOrmBasicMapping2_0(parent, (XmlBasic) resourceMapping);
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildOrmBasicMapping(parent, (XmlBasic) resourceMapping);
 	}
 
-	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildVirtualXmlBasic2_0(ormTypeMapping, (JavaBasicMapping) javaAttributeMapping);
+	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildVirtualXmlBasic(ormTypeMapping, (JavaBasicMapping) javaAttributeMapping);
 	}
 
 }

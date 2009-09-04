@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 /**
@@ -24,12 +22,10 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
  */
 public interface OrmTypeMappingProvider {
 
-	IContentType getContentType();
-
 	String getKey();
 	
 	XmlTypeMapping buildResourceMapping();
 	
-	OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory);
+	OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, OrmXmlContextNodeFactory factory);
 
 }

@@ -46,7 +46,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.relationshipReference = buildRelationshipReference();
-		this.cascade = getJpaFactory().buildOrmCascade(this, this.resourceAttributeMapping);
+		this.cascade = getXmlContextNodeFactory().buildOrmCascade(this, this.resourceAttributeMapping);
 		this.specifiedTargetEntity = getResourceTargetEntity();
 		this.defaultTargetEntity = buildDefaultTargetEntity();
 		this.resolvedTargetEntity = buildResolvedTargetEntity();

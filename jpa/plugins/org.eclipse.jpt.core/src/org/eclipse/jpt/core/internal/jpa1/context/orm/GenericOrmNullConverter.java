@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class GenericOrmNullConverter extends AbstractXmlContextNode
+public class GenericOrmNullConverter extends AbstractOrmXmlContextNode
 	implements OrmConverter
 {
 	

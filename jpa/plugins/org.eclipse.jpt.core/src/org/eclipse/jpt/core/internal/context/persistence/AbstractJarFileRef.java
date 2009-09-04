@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -119,10 +118,6 @@ public abstract class AbstractJarFileRef
 	
 	public String getId() {
 		return PersistenceStructureNodes.JAR_FILE_REF_ID;
-	}
-	
-	public IContentType getContentType() {
-		return getParent().getContentType();
 	}
 	
 	public JpaStructureNode getStructureNode(int textOffset) {

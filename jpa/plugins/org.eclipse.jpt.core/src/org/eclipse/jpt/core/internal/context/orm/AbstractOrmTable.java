@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
@@ -36,7 +35,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
  * 
  */
 public abstract class AbstractOrmTable
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements Table, UniqueConstraint.Owner
 {
 	protected String specifiedName;
@@ -301,7 +300,7 @@ public abstract class AbstractOrmTable
 	}
 
 	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
-		return this.getJpaFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
+		return this.getXmlContextNodeFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
 	}
 
 

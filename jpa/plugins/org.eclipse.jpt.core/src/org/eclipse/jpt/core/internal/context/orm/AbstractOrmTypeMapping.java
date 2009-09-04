@@ -11,14 +11,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
@@ -33,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
-	extends AbstractXmlContextNode 
+	extends AbstractOrmXmlContextNode 
 	implements OrmTypeMapping
 {
 	protected String class_;
@@ -203,10 +201,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	
 	protected Boolean getResourceMetadataComplete() {
 		return this.resourceTypeMapping.getMetadataComplete();
-	}
-	
-	public IContentType getContentType() {
-		return this.getPersistentType().getContentType();
 	}
 
 	

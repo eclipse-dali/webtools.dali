@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.db.Catalog;
@@ -33,6 +34,11 @@ public interface JpaContextNode
 	 * persistence.xml context.  Otherwise return null.
 	 */
 	PersistenceUnit getPersistenceUnit();
+
+	/**
+	 * Return the content type of the context node's resource.
+	 */
+	IContentType getContentType();
 	
 	/**
 	 * Return the mapping file root object if the context node is within a 

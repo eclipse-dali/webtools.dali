@@ -48,16 +48,16 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	
 	protected AbstractOrmIdMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.column = getJpaFactory().buildOrmColumn(this, this);
+		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
 		this.generatorContainer = buildGeneratorContainer();
 		this.initializeGeneratedValue();
-		this.defaultConverter = getJpaFactory().buildOrmNullConverter(this);
+		this.defaultConverter = getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return getJpaFactory().buildOrmGeneratorContainer(this, this.resourceAttributeMapping);
+		return getXmlContextNodeFactory().buildOrmGeneratorContainer(this, this.resourceAttributeMapping);
 	}
 	
 	public String getKey() {
@@ -203,7 +203,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 	
 	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue resourceGeneratedValue) {
-		return getJpaFactory().buildOrmGeneratedValue(this, resourceGeneratedValue);
+		return getXmlContextNodeFactory().buildOrmGeneratedValue(this, resourceGeneratedValue);
 	}
 	
 	@Override
@@ -239,7 +239,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getJpaFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
+			return getXmlContextNodeFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}

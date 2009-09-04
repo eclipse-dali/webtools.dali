@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkConverterHolder extends AbstractXmlContextNode implements EclipseLinkConverterHolder
+public class OrmEclipseLinkConverterHolder extends AbstractOrmXmlContextNode implements EclipseLinkConverterHolder
 {	
 	private final XmlConvertersHolder resourceConvertersHolder;
 	

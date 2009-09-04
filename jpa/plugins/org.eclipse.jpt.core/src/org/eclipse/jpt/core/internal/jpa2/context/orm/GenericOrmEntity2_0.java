@@ -9,12 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.JoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
-import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity;
@@ -28,28 +24,8 @@ public class GenericOrmEntity2_0
 	}
 	
 	@Override
-	protected JpaFactory2_0 getJpaFactory() {
-		return (JpaFactory2_0) super.getJpaFactory();
-	}
-	
-	@Override
-	protected OrmAssociationOverride buildAssociationOverride(org.eclipse.jpt.core.resource.orm.XmlAssociationOverride associationOverride) {
-		return getJpaFactory().buildOrmAssociationOverride2_0(this, buildAssociationOverrideOwner(), (XmlAssociationOverride) associationOverride);
-	}
-	
-	@Override
 	protected XmlAssociationOverride buildResourceAssociationOverride() {
 		return Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
-	}
-
-	@Override
-	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, JoiningStrategy joiningStrategy) {
-		return new VirtualXmlAssociationOverride2_0(name, this, joiningStrategy);		
-	}
-	
-	@Override
-	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return getJpaFactory().buildOrmGeneratorContainer2_0(this, this.resourceTypeMapping);
 	}
 
 }

@@ -15,9 +15,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaFactory;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmFactory;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbeddable;
 
@@ -54,8 +54,8 @@ public class OrmEclipseLinkEmbeddable1_1Provider
 		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlEmbeddable();
 	}
 
-	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildOrmEclipseLinkEmbeddable(parent, (XmlEmbeddable) resourceMapping);
+	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildOrmEmbeddable(parent, (XmlEmbeddable) resourceMapping);
 	}
 
 	public String getKey() {

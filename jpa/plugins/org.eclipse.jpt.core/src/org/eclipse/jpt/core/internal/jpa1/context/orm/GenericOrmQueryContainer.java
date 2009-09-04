@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -36,7 +36,7 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericOrmQueryContainer extends AbstractXmlContextNode
+public class GenericOrmQueryContainer extends AbstractOrmXmlContextNode
 	implements OrmQueryContainer
 {
 	private final XmlQueryContainer resourceQueryContainer;
@@ -183,7 +183,7 @@ public class GenericOrmQueryContainer extends AbstractXmlContextNode
 	}
 
 	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery resourceNamedQuery) {
-		return getJpaFactory().buildOrmNamedQuery(this, resourceNamedQuery);
+		return getXmlContextNodeFactory().buildOrmNamedQuery(this, resourceNamedQuery);
 	}
 
 	protected void updateNamedNativeQueries() {
@@ -206,7 +206,7 @@ public class GenericOrmQueryContainer extends AbstractXmlContextNode
 	}
 
 	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery resourceNamedNativeQuery) {
-		return getJpaFactory().buildOrmNamedNativeQuery(this, resourceNamedNativeQuery);
+		return getXmlContextNodeFactory().buildOrmNamedNativeQuery(this, resourceNamedNativeQuery);
 	}
 	
 	

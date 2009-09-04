@@ -10,12 +10,12 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
@@ -47,7 +47,7 @@ public class OrmEmbeddableProvider
 		return OrmFactory.eINSTANCE.createXmlEmbeddable();
 	}
 	
-	public OrmEmbeddable buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
+	public OrmEmbeddable buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
 		return factory.buildOrmEmbeddable(parent, (XmlEmbeddable) resourceMapping);
 	}
 	

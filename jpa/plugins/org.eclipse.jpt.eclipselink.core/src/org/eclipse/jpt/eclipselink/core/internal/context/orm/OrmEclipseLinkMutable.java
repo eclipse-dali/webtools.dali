@@ -10,14 +10,14 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 
-public class OrmEclipseLinkMutable extends AbstractXmlContextNode 
+public class OrmEclipseLinkMutable extends AbstractOrmXmlContextNode 
 	implements EclipseLinkMutable
 {
 	protected final XmlMutable resource;

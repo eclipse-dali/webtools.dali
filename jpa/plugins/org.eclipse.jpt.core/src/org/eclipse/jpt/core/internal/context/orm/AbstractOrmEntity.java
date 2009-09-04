@@ -140,7 +140,7 @@ public abstract class AbstractOrmEntity
 
 	protected AbstractOrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
-		this.table = getJpaFactory().buildOrmTable(this);
+		this.table = getXmlContextNodeFactory().buildOrmTable(this);
 		this.specifiedSecondaryTables = new ArrayList<OrmSecondaryTable>();
 		this.virtualSecondaryTables = new ArrayList<OrmSecondaryTable>();
 		this.discriminatorColumn = buildDiscriminatorColumn();
@@ -178,7 +178,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
-		return getJpaFactory().buildOrmDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
+		return getXmlContextNodeFactory().buildOrmDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
 	protected OrmDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
@@ -249,11 +249,11 @@ public abstract class AbstractOrmEntity
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return getJpaFactory().buildOrmGeneratorContainer(this, this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmGeneratorContainer(this, this.resourceTypeMapping);
 	}
 
 	protected OrmQueryContainer buildQueryContainer() {
-		return getJpaFactory().buildOrmQueryContainer(this, this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmQueryContainer(this, this.resourceTypeMapping);
 	}
 	
 	// ******************* ITypeMapping implementation ********************
@@ -887,7 +887,7 @@ public abstract class AbstractOrmEntity
 	protected OrmAttributeOverride setAttributeOverrideSpecified(OrmAttributeOverride oldAttributeOverride) {
 		int index = specifiedAttributeOverridesSize();
 		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride();
-		OrmAttributeOverride newAttributeOverride = getJpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), xmlAttributeOverride);
+		OrmAttributeOverride newAttributeOverride = getXmlContextNodeFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
 		this.resourceTypeMapping.getAttributeOverrides().add(xmlAttributeOverride);
@@ -1557,7 +1557,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, JoiningStrategy joiningStrategy) {
-		return new VirtualXmlAssociationOverride(name, this, joiningStrategy);		
+		return getXmlContextNodeFactory().buildVirtualXmlAssociationOverride(name, this, joiningStrategy);
 	}
 
 	protected void initializeSpecifiedAssociationOverrides() {
@@ -1773,7 +1773,7 @@ public abstract class AbstractOrmEntity
 	}
 
 	protected OrmSecondaryTable buildSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
-		return getJpaFactory().buildOrmSecondaryTable(this, xmlSecondaryTable);
+		return getXmlContextNodeFactory().buildOrmSecondaryTable(this, xmlSecondaryTable);
 	}
 	
 	protected OrmSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
@@ -1856,7 +1856,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
-		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
+		return getXmlContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
 	}
 
 	protected void updateSpecifiedAttributeOverrides() {
@@ -1910,7 +1910,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmAttributeOverride buildAttributeOverride(XmlAttributeOverride attributeOverride) {
-		return getJpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), attributeOverride);
+		return getXmlContextNodeFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), attributeOverride);
 	}
 
 	protected AttributeOverride.Owner createAttributeOverrideOwner() {
@@ -1968,7 +1968,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmAssociationOverride buildAssociationOverride(XmlAssociationOverride associationOverride) {
-		return getJpaFactory().buildOrmAssociationOverride(this, buildAssociationOverrideOwner(), associationOverride);
+		return getXmlContextNodeFactory().buildOrmAssociationOverride(this, buildAssociationOverrideOwner(), associationOverride);
 	}
 
 	protected XmlAssociationOverride buildResourceAssociationOverride() {

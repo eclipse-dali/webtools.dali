@@ -10,9 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXml;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntityMappings;
@@ -31,19 +29,9 @@ public class GenericOrmXml2_0
 	}
 	
 	@Override
-	protected JpaFactory2_0 getJpaFactory() {
-		return (JpaFactory2_0) super.getJpaFactory();
-	}
-	
-	@Override
 	protected XmlEntityMappings buildEntityMappingsResource() {
 		return Orm2_0Factory.eINSTANCE.createXmlEntityMappings();
 	}
-	
-	@Override
-	protected EntityMappings buildEntityMappings(org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return getJpaFactory().buildEntityMappings2_0(this, (XmlEntityMappings) xmlEntityMappings);
-	}	
 	
 	protected void checkResource(JpaXmlResource resource) {
 		if ( ! resource.getContentType().isKindOf(JptCorePlugin.ORM2_0_XML_CONTENT_TYPE)) {

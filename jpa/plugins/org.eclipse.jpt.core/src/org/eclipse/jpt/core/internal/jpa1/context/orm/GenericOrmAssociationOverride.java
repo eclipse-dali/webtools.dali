@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
@@ -20,11 +19,6 @@ public class GenericOrmAssociationOverride extends AbstractOrmAssociationOverrid
 
 	public GenericOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
 		super(parent, owner, xmlAssociationOverride);
-	}
-	
-	@Override
-	protected OrmAssociationOverrideRelationshipReference buildRelationshipReference(XmlAssociationOverride xmlAssociationOverride) {
-		return getJpaFactory().buildOrmAssociationOverrideRelationshipReference(this, xmlAssociationOverride);
 	}
 
 }

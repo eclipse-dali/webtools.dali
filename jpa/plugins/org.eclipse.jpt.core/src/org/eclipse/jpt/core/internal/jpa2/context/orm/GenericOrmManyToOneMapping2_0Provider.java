@@ -9,16 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne;
@@ -44,10 +41,6 @@ public class GenericOrmManyToOneMapping2_0Provider
 		super();
 	}
 
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM2_0_XML_CONTENT_TYPE;
-	}
-
 	public String getKey() {
 		return MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -59,18 +52,18 @@ public class GenericOrmManyToOneMapping2_0Provider
 	public OrmAttributeMapping buildMapping(
 			OrmPersistentAttribute parent, 
 			XmlAttributeMapping resourceMapping, 
-			JpaFactory factory) {
+			OrmXmlContextNodeFactory factory) {
 		
-		return ((JpaFactory2_0) factory).buildOrmManyToOneMapping2_0(
+		return factory.buildOrmManyToOneMapping(
 			parent, (XmlManyToOne) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(
 			OrmTypeMapping ormTypeMapping, 
 			JavaAttributeMapping javaAttributeMapping, 
-			JpaFactory factory) {
+			OrmXmlContextNodeFactory factory) {
 		
-		return ((JpaFactory2_0) factory).buildVirtualXmlManyToOne2_0(
+		return factory.buildVirtualXmlManyToOne(
 			ormTypeMapping, 
 			(JavaManyToOneMapping2_0) javaAttributeMapping);
 	}

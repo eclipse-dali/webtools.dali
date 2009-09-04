@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
@@ -30,7 +29,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlContextNode 
+public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmXmlContextNode 
 	implements OrmQuery
 {
 
@@ -133,7 +132,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 	}
 
 	protected OrmQueryHint buildQueryHint(XmlQueryHint resourceQueryHint) {
-		return getJpaFactory().buildOrmQueryHint(this, resourceQueryHint);
+		return getXmlContextNodeFactory().buildOrmQueryHint(this, resourceQueryHint);
 	}
 	
 	public void update(E xmlQuery) {

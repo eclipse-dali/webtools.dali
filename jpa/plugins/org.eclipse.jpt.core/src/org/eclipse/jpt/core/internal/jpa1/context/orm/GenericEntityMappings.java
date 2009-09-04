@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 public class GenericEntityMappings
 	extends AbstractEntityMappings
@@ -23,14 +20,5 @@ public class GenericEntityMappings
 	public GenericEntityMappings(OrmXml parent, XmlEntityMappings resource) {
 		super(parent, resource);
 	}
-	
-	@Override
-	protected PersistenceUnitMetadata buildPersistenceUnitMetadata() {
-		return 	getJpaFactory().buildPersistenceUnitMetadata(this, this.xmlEntityMappings);
-	}
 
-	@Override
-	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
-		return getJpaFactory().buildOrmPersistentType(this, resourceMapping);
-	}
 }

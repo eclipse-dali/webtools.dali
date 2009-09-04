@@ -109,7 +109,7 @@ public class GenericOrmJoinTableJoiningStrategy
 	public void update() {
 		if (mayHaveJoinTable()) {
 			if (this.joinTable == null) {
-				setJoinTable_(getJpaFactory().buildOrmJoinTable(this, getResourceJoinTable()));
+				setJoinTable_(getXmlContextNodeFactory().buildOrmJoinTable(this, getResourceJoinTable()));
 			}
 			this.joinTable.update();
 		}

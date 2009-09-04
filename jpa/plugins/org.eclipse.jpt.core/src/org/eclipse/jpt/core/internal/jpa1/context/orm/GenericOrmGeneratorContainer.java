@@ -11,8 +11,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
-import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
-import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
@@ -35,16 +33,6 @@ public class GenericOrmGeneratorContainer extends AbstractOrmGeneratorContainer
 	@Override
 	protected XmlTableGenerator buildResourceTableGenerator() {
 		return OrmFactory.eINSTANCE.createXmlTableGenerator();
-	}
-	
-	@Override
-	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
-		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
-	}
-	
-	@Override
-	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
-		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
 }

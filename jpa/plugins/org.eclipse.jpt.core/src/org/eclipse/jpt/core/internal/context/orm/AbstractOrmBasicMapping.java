@@ -50,11 +50,11 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	
 	protected AbstractOrmBasicMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.column = getJpaFactory().buildOrmColumn(this, this);
+		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to factory
 		this.specifiedFetch = this.getResourceFetch();
 		this.specifiedOptional = this.getResourceOptional();
-		this.defaultConverter = getJpaFactory().buildOrmNullConverter(this);
+		this.defaultConverter = getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
@@ -214,13 +214,13 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
-			return getJpaFactory().buildOrmEnumeratedConverter(this, this.resourceAttributeMapping);
+			return getXmlContextNodeFactory().buildOrmEnumeratedConverter(this, this.resourceAttributeMapping);
 		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getJpaFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
+			return getXmlContextNodeFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		if (this.valuesAreEqual(converterType, Converter.LOB_CONVERTER)) {
-			return getJpaFactory().buildOrmLobConverter(this, this.resourceAttributeMapping);
+			return getXmlContextNodeFactory().buildOrmLobConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}

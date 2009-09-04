@@ -11,12 +11,12 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 
-public class OrmEclipseLinkReadOnly extends AbstractXmlContextNode
+public class OrmEclipseLinkReadOnly extends AbstractOrmXmlContextNode
 	implements EclipseLinkReadOnly
 {
 	protected final XmlReadOnly resource;

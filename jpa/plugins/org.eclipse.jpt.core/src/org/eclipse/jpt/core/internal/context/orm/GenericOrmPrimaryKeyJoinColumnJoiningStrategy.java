@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
@@ -35,7 +34,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements OrmPrimaryKeyJoinColumnJoiningStrategy
 {
 	protected XmlOneToOne resource;
@@ -68,7 +67,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(
 			XmlPrimaryKeyJoinColumn resourceJoinColumn) {
-		return this.getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, this.joinColumnOwner, resourceJoinColumn);
+		return this.getXmlContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, this.joinColumnOwner, resourceJoinColumn);
 	}
 	
 	@Override

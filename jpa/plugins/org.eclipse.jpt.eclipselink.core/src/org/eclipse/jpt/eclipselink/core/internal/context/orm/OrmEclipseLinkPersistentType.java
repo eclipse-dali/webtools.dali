@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
@@ -33,11 +31,6 @@ public class OrmEclipseLinkPersistentType extends AbstractOrmPersistentType
 	@Override
 	protected Attributes createResourceAttributes() {
 		return EclipseLinkOrmFactory.eINSTANCE.createAttributes();
-	}
-	
-	@Override
-	protected OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
-		return getJpaFactory().buildOrmEclipseLinkPersistentAttribute(this, owner, resourceMapping);
 	}
 
 }

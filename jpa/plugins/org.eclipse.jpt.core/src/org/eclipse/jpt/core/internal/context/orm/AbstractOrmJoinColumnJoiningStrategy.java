@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -34,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmJoinColumnJoiningStrategy 
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements OrmJoinColumnJoiningStrategy
 {
 	protected OrmJoinColumn defaultJoinColumn;
@@ -214,7 +213,7 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 	}
 	
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
-		return this.getJpaFactory().buildOrmJoinColumn(this, this.joinColumnOwner, resourceJoinColumn);
+		return this.getXmlContextNodeFactory().buildOrmJoinColumn(this, this.joinColumnOwner, resourceJoinColumn);
 	}
 	
 	// **************** resource => context ************************************

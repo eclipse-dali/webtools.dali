@@ -16,11 +16,10 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnInAssociationOverrideJoiningStrategy;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public abstract class AbstractOrmAssociationOverrideRelationshipReference extends AbstractXmlContextNode
+public abstract class AbstractOrmAssociationOverrideRelationshipReference extends AbstractOrmXmlContextNode
 	implements OrmAssociationOverrideRelationshipReference
 {
 

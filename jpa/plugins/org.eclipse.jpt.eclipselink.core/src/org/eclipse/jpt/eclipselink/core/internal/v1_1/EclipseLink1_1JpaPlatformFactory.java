@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProv
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -36,7 +37,7 @@ public class EclipseLink1_1JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
-			new EclipseLink1_1JpaFactory(), 
+			new EclipseLinkJpaFactory(), 
 			buildJpaAnnotationProvider(),
 			EclipseLink1_1JpaPlatformProvider.instance(), 
 			buildJpaPlatformVariation());

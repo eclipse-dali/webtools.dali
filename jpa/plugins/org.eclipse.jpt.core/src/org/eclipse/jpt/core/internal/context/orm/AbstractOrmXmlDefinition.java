@@ -7,12 +7,16 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmXml;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
@@ -20,22 +24,35 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 /**
  * All the state in the definition should be "static" (i.e. unchanging once it is initialized).
  */
-public abstract class AbstractMappingFileDefinition
-	implements MappingFileDefinition
+public abstract class AbstractOrmXmlDefinition
+	implements OrmXmlDefinition
 {
 	private OrmTypeMappingProvider[] ormTypeMappingProviders;
 
 	private OrmAttributeMappingProvider[] ormAttributeMappingProviders;
 	
+	private final OrmXmlContextNodeFactory factory;
 	
 	/**
 	 * zero-argument constructor
 	 */
-	protected AbstractMappingFileDefinition() {
+	protected AbstractOrmXmlDefinition() {
 		super();
+		this.factory = buildFactory();
 	}
 	
+	protected abstract OrmXmlContextNodeFactory buildFactory();
 	
+	public OrmXmlContextNodeFactory getFactory() {
+		return this.factory;
+	}
+	
+	// ********** Mapping File **********
+	
+	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
+		return getFactory().buildMappingFile(parent, resource);
+	}
+		
 	// ********** ORM type mappings **********
 	
 	public OrmTypeMappingProvider getOrmTypeMappingProvider(String mappingKey) {

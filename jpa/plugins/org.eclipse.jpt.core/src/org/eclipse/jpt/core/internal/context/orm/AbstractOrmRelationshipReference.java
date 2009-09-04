@@ -17,12 +17,11 @@ import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public abstract class AbstractOrmRelationshipReference 
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements OrmRelationshipReference
 {
 	protected AbstractXmlRelationshipMapping resourceMapping;

@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
@@ -25,7 +24,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmJoinTableJoiningStrategy 
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements OrmJoinTableJoiningStrategy
 {
 	protected OrmJoinTable joinTable;
@@ -66,7 +65,7 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	public void addStrategy() {
 		if (this.joinTable == null) {
 			XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
-			this.joinTable = getJpaFactory().buildOrmJoinTable(this, resourceJoinTable);
+			this.joinTable = getXmlContextNodeFactory().buildOrmJoinTable(this, resourceJoinTable);
 			setResourceJoinTable(resourceJoinTable);
 			this.firePropertyChanged(JOIN_TABLE_PROPERTY, null, this.joinTable);
 		}
@@ -117,14 +116,14 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	
 	protected void initialize() {
 		if (mayHaveJoinTable()) {
-			this.joinTable = getJpaFactory().buildOrmJoinTable(this, getResourceJoinTable());
+			this.joinTable = getXmlContextNodeFactory().buildOrmJoinTable(this, getResourceJoinTable());
 		}
 	}
 	
 	public void update() {
 		if (mayHaveJoinTable()) {
 			if (this.joinTable == null) {
-				setJoinTable_(getJpaFactory().buildOrmJoinTable(this, getResourceJoinTable()));
+				setJoinTable_(getXmlContextNodeFactory().buildOrmJoinTable(this, getResourceJoinTable()));
 			}
 			this.joinTable.update();
 		}

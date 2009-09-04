@@ -15,14 +15,14 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class GenericOrmUniqueConstraint
-	extends AbstractXmlContextNode
+	extends AbstractOrmXmlContextNode
 	implements OrmUniqueConstraint
 {
 	

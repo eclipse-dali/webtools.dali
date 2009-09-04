@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXml;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -32,11 +31,6 @@ public class GenericOrmXml
 	protected XmlEntityMappings buildEntityMappingsResource() {
 		return OrmFactory.eINSTANCE.createXmlEntityMappings();
 	}
-	
-	@Override
-	protected EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings) {
-		return getJpaFactory().buildEntityMappings(this, xmlEntityMappings);
-	}	
 	
 	// ********** updating **********
 	

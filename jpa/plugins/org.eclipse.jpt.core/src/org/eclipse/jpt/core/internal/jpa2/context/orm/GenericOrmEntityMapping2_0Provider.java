@@ -10,13 +10,12 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
@@ -53,8 +52,8 @@ public class GenericOrmEntityMapping2_0Provider
 		return Orm2_0Factory.eINSTANCE.createXmlEntity();
 	}
 
-	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildOrmEntity2_0(parent, (XmlEntity) resourceMapping);
+	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildOrmEntity(parent, (XmlEntity) resourceMapping);
 	}
 
 }

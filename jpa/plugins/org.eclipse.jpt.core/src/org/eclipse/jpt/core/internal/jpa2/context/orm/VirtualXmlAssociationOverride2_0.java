@@ -28,7 +28,7 @@ public class VirtualXmlAssociationOverride2_0 extends XmlAssociationOverride
 	
 	protected final VirtualXmlAssociationOverride virtualXmlAssociationOverride;
 
-	protected VirtualXmlAssociationOverride2_0(String name, OrmTypeMapping ormTypeMapping, JoiningStrategy joiningStrategy) {
+	public VirtualXmlAssociationOverride2_0(String name, OrmTypeMapping ormTypeMapping, JoiningStrategy joiningStrategy) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.joiningStrategy = joiningStrategy;

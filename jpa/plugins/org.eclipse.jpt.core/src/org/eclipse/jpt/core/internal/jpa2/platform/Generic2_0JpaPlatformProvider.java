@@ -30,11 +30,11 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappingFileDefinition;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.jpa2.Orm2_0ResourceModelProvider;
 import org.eclipse.jpt.core.internal.jpa2.Persistence2_0ResourceModelProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.GenericOrm2_0MappingFileDefinition;
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingProvider2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 
 /**
@@ -128,7 +128,7 @@ public class Generic2_0JpaPlatformProvider
 	@Override
 	protected MappingFileDefinition[] buildMappingFileDefinitions() {
 		return new MappingFileDefinition[] {
-			GenericOrmMappingFileDefinition.instance(),
-			GenericOrm2_0MappingFileDefinition.instance()};
+			GenericOrmXmlDefinition.instance(),
+			GenericOrmXml2_0Definition.instance()};
 	}
 }

@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
@@ -19,7 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -44,10 +41,6 @@ public class GenericOrmVersionMapping2_0Provider
 		super();
 	}
 
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM2_0_XML_CONTENT_TYPE;
-	}
-
 	public String getKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -56,12 +49,12 @@ public class GenericOrmVersionMapping2_0Provider
 		return Orm2_0Factory.eINSTANCE.createXmlVersion();
 	}
 
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildOrmVersionMapping2_0(parent, (XmlVersion) resourceMapping);
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildOrmVersionMapping(parent, (XmlVersion) resourceMapping);
 	}
 
-	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((JpaFactory2_0) factory).buildVirtualXmlVersion2_0(ormTypeMapping, (JavaVersionMapping) javaAttributeMapping);
+	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, OrmXmlContextNodeFactory factory) {
+		return factory.buildVirtualXmlVersion(ormTypeMapping, (JavaVersionMapping) javaAttributeMapping);
 	}
 
 }
