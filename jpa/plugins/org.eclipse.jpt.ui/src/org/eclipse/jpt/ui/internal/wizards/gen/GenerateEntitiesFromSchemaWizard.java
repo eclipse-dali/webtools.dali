@@ -490,12 +490,12 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	public ORMGenCustomizer getCustomizer (){
 		return customizer;
 	} 
-	Collection<Table> getPossibleTables() {
-		if ( this.tablesSelectorPage != null) {
-			return this.tablesSelectorPage.getTables();
-		}
-		return ( this.projectDefaultSchemaExists()) ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
-	}
+//	Collection<Table> getPossibleTables() {
+//		if ( this.tablesSelectorPage != null) {
+//			return this.tablesSelectorPage.getTables();
+//		}
+//		return ( this.projectDefaultSchemaExists()) ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
+//	}
 	
 	public ConnectionProfile getProjectConnectionProfile() {
 		return this.jpaProject.getConnectionProfile();
@@ -517,10 +517,6 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 
 	public Schema getDefaultSchema() {
 		return getJpaProject().getDefaultDbSchema() ;
-	}
-
-	private boolean projectDefaultSchemaExists() {
-		return ( this.getDefaultSchema() != null);
 	}
 
 	public boolean synchronizePersistenceXml() {

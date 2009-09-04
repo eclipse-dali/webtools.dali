@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -110,13 +111,31 @@ class TablesSelectorWizardPage extends WizardPage{
 		this.schema = s;
 	}
 
-	public Collection<Table> getTables() {
+	private Collection<Table> possibleTables() {
+		Collection<Table> tables = new ArrayList<Table>();
 		Schema schema = this.getSchema();
 		if (schema != null && schema.getName() != null) {
-			return CollectionTools.collection(schema.tables());
+			tables = CollectionTools.collection(schema.tables());
 		}
-		return Collections.<Table> emptyList();
+		//This next line is questionable, but leaving in place for now
+		tables = ( this.projectDefaultSchemaExists()) ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
+		//return only tables that have columns - this filters out synonyms where they are not
+		//fully supported and potentially other problematic table types - see bug 269057
+		return filterEmptyTables(tables.iterator());
 	}
+
+	private Collection<Table> filterEmptyTables(Iterator<Table> tables) {
+		Collection<Table> nonEmptyTables = new ArrayList<Table>();
+		while (tables.hasNext()) {
+			Table candidateTable = tables.next();
+			if (candidateTable.columnsSize() > 0) {
+				nonEmptyTables.add(candidateTable);
+			}
+		}
+		return nonEmptyTables;
+	}
+
+
 
 	public void createControl(Composite parent) {
 		initializeDialogUnits(parent);
@@ -244,8 +263,8 @@ class TablesSelectorWizardPage extends WizardPage{
 		doStatusUpdate();
 	}
 
-	private void initTablesSelectionControl(Collection<Table> possibleTables) {
-		this.tableTable.setInput(possibleTables);
+	private void initTablesSelectionControl(Collection<Table> nonEmptyTables) {
+		this.tableTable.setInput(nonEmptyTables);
 	}
 
 	private void createTablesSelectionControl(Composite parent, int columns) {
@@ -300,15 +319,9 @@ class TablesSelectorWizardPage extends WizardPage{
 			}
 		});
 
-
 		updateTablesSelector( databaseGroup.getSelectedSchema() );
-
 		createButtonComposite(parent);
-		
-		GenerateEntitiesFromSchemaWizard generateEntitiesWizard = ((GenerateEntitiesFromSchemaWizard)this.getWizard());
-		Collection<Table> possibleTables = generateEntitiesWizard.getPossibleTables();
-
-		initTablesSelectionControl(possibleTables);		
+		initTablesSelectionControl(possibleTables());		
 	}
 
 	private void createButtonComposite(Composite parent){
@@ -374,7 +387,14 @@ class TablesSelectorWizardPage extends WizardPage{
 		return new TableTableContentProvider();
 	}
 
-
+	private boolean projectDefaultSchemaExists() {
+		return ( this.getDefaultSchema() != null);
+	}
+	
+	public Schema getDefaultSchema() {
+		return this.jpaProject.getDefaultDbSchema() ;
+	}
+	
 	Collection<Table> getSelectedTables() {
 		ArrayList<Table> selectedTables = new ArrayList<Table>();
 		for (Object selectedTable : this.tableTable.getCheckedElements())
@@ -480,7 +500,7 @@ class TablesSelectorWizardPage extends WizardPage{
 			return;
 		this.jpaProject.setUserOverrideDefaultSchema( schema.getIdentifier());
 		
-		updateTablesListViewer( CollectionTools.collection(schema.tables()));
+		updateTablesListViewer(filterEmptyTables(schema.tables()));
 
 		//Create the ORMGenCustomizer
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) getWizard();
