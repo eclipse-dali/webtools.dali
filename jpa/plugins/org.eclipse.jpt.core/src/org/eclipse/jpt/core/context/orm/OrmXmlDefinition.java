@@ -13,8 +13,6 @@ import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -28,9 +26,6 @@ public interface OrmXmlDefinition extends MappingFileDefinition
 
 	//covariant override
 	OrmXmlContextNodeFactory getFactory();
-	
-	//covariant override
-	OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
 	
 	
 	// ********** ORM type/attribute mappings **********

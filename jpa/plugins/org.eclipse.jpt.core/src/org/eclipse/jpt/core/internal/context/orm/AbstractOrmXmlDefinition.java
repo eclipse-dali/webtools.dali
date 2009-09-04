@@ -12,11 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
@@ -47,12 +44,7 @@ public abstract class AbstractOrmXmlDefinition
 		return this.factory;
 	}
 	
-	// ********** Mapping File **********
 	
-	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return getFactory().buildMappingFile(parent, resource);
-	}
-		
 	// ********** ORM type mappings **********
 	
 	public OrmTypeMappingProvider getOrmTypeMappingProvider(String mappingKey) {

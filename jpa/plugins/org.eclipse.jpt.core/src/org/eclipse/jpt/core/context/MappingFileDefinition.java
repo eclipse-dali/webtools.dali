@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * A JpaPlatform can support multiple mapping files.  Each will
@@ -37,10 +35,5 @@ public interface MappingFileDefinition
 	 * Return the factory for building xml context nodes
 	 */
 	XmlContextNodeFactory getFactory();
-	
-	/**
-	 * Build a mapping with the specified parent and resource.
-	 */
-	MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
 
 }
