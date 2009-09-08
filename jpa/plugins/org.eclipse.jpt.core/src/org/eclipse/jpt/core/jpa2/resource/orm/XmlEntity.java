@@ -260,7 +260,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity
 	}
 	
 	protected static Translator buildAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlEntity_AssociationOverrides());
+		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
 
 } // XmlEntity

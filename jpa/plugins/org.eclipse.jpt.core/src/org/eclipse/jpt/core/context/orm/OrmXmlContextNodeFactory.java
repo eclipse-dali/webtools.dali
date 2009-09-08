@@ -29,8 +29,10 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -96,6 +98,10 @@ public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
 	
 	OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
 	
+	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, XmlAttributeOverrideContainer resourceAttributeOverrideContainer);
+
+	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
+
 	OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
 	OrmAssociationOverride buildOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);

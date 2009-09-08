@@ -62,7 +62,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer #//XmlEventMethodContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer #//XmlEventMethodContainer #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//XmlTable"
         containment="true" resolveProxies="false"/>
@@ -85,10 +85,16 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
-        eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverrideContainer" abstract="true"
+      interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="associationOverrides" upperBound="-1"
         eType="#//XmlAssociationOverride" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverrideContainer" abstract="true"
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
+        eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractXmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlQueryContainer" abstract="true" interface="true">

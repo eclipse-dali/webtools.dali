@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.internal.context.java.VirtualAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinTableAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
@@ -29,7 +29,7 @@ public final class VirtualAssociationOverride2_0Annotation
 
 	private final JoinTableAnnotation joinTable;
 	
-	public VirtualAssociationOverride2_0Annotation(JavaResourcePersistentType parent, String name, JoiningStrategy joiningStrategy) {
+	public VirtualAssociationOverride2_0Annotation(JavaResourcePersistentMember parent, String name, JoiningStrategy joiningStrategy) {
 		super(parent, name, joiningStrategy);
 		this.joinTable = this.buildJoinTable();
 	}

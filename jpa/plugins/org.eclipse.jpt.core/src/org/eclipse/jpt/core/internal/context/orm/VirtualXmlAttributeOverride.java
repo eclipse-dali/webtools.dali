@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 public class VirtualXmlAttributeOverride extends XmlAttributeOverride
 {
 
-	protected VirtualXmlAttributeOverride(String name, XmlColumn xmlColumn) {
+	public VirtualXmlAttributeOverride(String name, XmlColumn xmlColumn) {
 		super();
 		this.name = name;
 		this.column = xmlColumn;

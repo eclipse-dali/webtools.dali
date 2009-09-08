@@ -32,7 +32,7 @@ public class VirtualXmlColumn extends XmlColumn
 	protected OrmTypeMapping ormTypeMapping;
 	
 	
-	protected VirtualXmlColumn(OrmTypeMapping ormTypeMapping, Column column) {
+	public VirtualXmlColumn(OrmTypeMapping ormTypeMapping, Column column) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.column = column;

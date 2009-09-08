@@ -9,18 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
+import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 
-public class GenericOrmEntity2_0
-	extends AbstractOrmEntity
+public class GenericOrmAssociationOverrideContainer2_0 extends AbstractOrmAssociationOverrideContainer
 {
-	
-	public GenericOrmEntity2_0(OrmPersistentType parent, XmlEntity resourceMapping) {
-		super(parent, resourceMapping);
+
+	public GenericOrmAssociationOverrideContainer2_0(XmlContextNode parent, XmlAssociationOverrideContainer resource) {
+		super(parent, resource);
 	}
 	
 	@Override

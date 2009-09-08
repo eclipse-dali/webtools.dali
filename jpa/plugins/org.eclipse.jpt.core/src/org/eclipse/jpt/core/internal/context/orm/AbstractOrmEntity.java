@@ -16,33 +16,25 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
-import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
-import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
-import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
-import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
-import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
@@ -58,9 +50,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
-import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClass;
@@ -74,7 +63,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -126,13 +114,9 @@ public abstract class AbstractOrmEntity
 
 	protected final OrmGeneratorContainer generatorContainer;
 
-	protected final List<OrmAttributeOverride> specifiedAttributeOverrides;
+	protected final OrmAttributeOverrideContainer attributeOverrideContainer;
 	
-	protected final List<OrmAttributeOverride> virtualAttributeOverrides;
-
-	protected final List<OrmAssociationOverride> specifiedAssociationOverrides;
-
-	protected final List<OrmAssociationOverride> virtualAssociationOverrides;
+	protected final OrmAssociationOverrideContainer associationOverrideContainer;
 
 	protected final OrmQueryContainer queryContainer;
 	
@@ -146,10 +130,8 @@ public abstract class AbstractOrmEntity
 		this.discriminatorColumn = buildDiscriminatorColumn();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
 		this.defaultPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
-		this.specifiedAttributeOverrides = new ArrayList<OrmAttributeOverride>();
-		this.virtualAttributeOverrides = new ArrayList<OrmAttributeOverride>();
-		this.specifiedAssociationOverrides = new ArrayList<OrmAssociationOverride>();
-		this.virtualAssociationOverrides = new ArrayList<OrmAssociationOverride>();
+		this.associationOverrideContainer = buildAssociationOverrideContainer();
+		this.attributeOverrideContainer = buildAttributeOverrideContainer();
 		this.queryContainer = this.buildQueryContainer();
 		this.generatorContainer = this.buildGeneratorContainer();
 		this.specifiedName = this.resourceTypeMapping.getName();
@@ -170,10 +152,6 @@ public abstract class AbstractOrmEntity
 		this.initializeVirtualSecondaryTables();
 		this.initializeSpecifiedPrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumns();
-		this.initializeSpecifiedAttributeOverrides();
-		this.initializeVirtualAttributeOverrides();
-		this.initializeSpecifiedAssociationOverrides();
-		this.initializeVirtualAssociationOverrides();
 		this.initializeIdClass(this.getResourceIdClass());
 	}
 	
@@ -246,6 +224,14 @@ public abstract class AbstractOrmEntity
 				return AbstractOrmEntity.this.getValidationTextRange();
 			}
 		};
+	}
+
+	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
+		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, this.resourceTypeMapping);
+	}
+	
+	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, this.resourceTypeMapping);
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
@@ -820,273 +806,15 @@ public abstract class AbstractOrmEntity
 		this.resourceTypeMapping.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
 		fireItemMoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
-	
-	@SuppressWarnings("unchecked")
-	public ListIterator<OrmAttributeOverride> attributeOverrides() {
-		return new CompositeListIterator<OrmAttributeOverride>(specifiedAttributeOverrides(), virtualAttributeOverrides());
-	}
 
-	public int attributeOverridesSize() {
-		return this.specifiedAttributeOverridesSize() + this.virtualAttributeOverridesSize();
+	public OrmAttributeOverrideContainer getAttributeOverrideContainer() {
+		return this.attributeOverrideContainer;
 	}
 	
-	public ListIterator<OrmAttributeOverride> virtualAttributeOverrides() {
-		return new CloneListIterator<OrmAttributeOverride>(this.virtualAttributeOverrides);
+	public OrmAssociationOverrideContainer getAssociationOverrideContainer() {
+		return this.associationOverrideContainer;
 	}
 	
-	public int virtualAttributeOverridesSize() {
-		return this.virtualAttributeOverrides.size();
-	}
-	
-	protected void addVirtualAttributeOverride(OrmAttributeOverride attributeOverride) {
-		addItemToList(attributeOverride, this.virtualAttributeOverrides, Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
-	}
-	
-	protected void removeVirtualAttributeOverride(OrmAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.virtualAttributeOverrides, Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
-	}
-	
-	protected OrmAttributeOverride setAttributeOverrideVirtual(boolean virtual, OrmAttributeOverride attributeOverride) {
-		if (virtual) {
-			return setAttributeOverrideVirtual(attributeOverride);
-		}
-		return setAttributeOverrideSpecified(attributeOverride);
-	}
-	
-	protected OrmAttributeOverride setAttributeOverrideVirtual(OrmAttributeOverride attributeOverride) {
-		int index = this.specifiedAttributeOverrides.indexOf(attributeOverride);
-		this.specifiedAttributeOverrides.remove(index);
-		String attributeOverrideName = attributeOverride.getName();
-		//add the virtual attribute override so that I can control the order that change notification is sent.
-		//otherwise when we remove the annotation from java we will get an update and add the attribute override
-		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
-		OrmAttributeOverride virtualAttributeOverride = null;
-		if (attributeOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
-				if (persistentAttribute.getName().equals(attributeOverrideName)) {
-					JavaAttributeOverride javaAttributeOverride = null;
-					if (getJavaEntity() != null) {
-						javaAttributeOverride = getJavaEntity().getAttributeOverrideNamed(attributeOverrideName);
-					}
-					//store the virtualAttributeOverride so we can fire change notification later
-					virtualAttributeOverride = buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride);
-					this.virtualAttributeOverrides.add(virtualAttributeOverride);
-				}
-			}
-		}
-
-		this.resourceTypeMapping.getAttributeOverrides().remove(index);
-		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
-		
-		if (virtualAttributeOverride != null) {
-			fireItemAdded(Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, virtualAttributeOverridesSize() - 1, virtualAttributeOverride);
-		}
-		return virtualAttributeOverride;
-	}
-	
-	protected OrmAttributeOverride setAttributeOverrideSpecified(OrmAttributeOverride oldAttributeOverride) {
-		int index = specifiedAttributeOverridesSize();
-		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride();
-		OrmAttributeOverride newAttributeOverride = getXmlContextNodeFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), xmlAttributeOverride);
-		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
-		
-		this.resourceTypeMapping.getAttributeOverrides().add(xmlAttributeOverride);
-		
-		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
-		this.virtualAttributeOverrides.remove(defaultIndex);
-
-		newAttributeOverride.setName(oldAttributeOverride.getName());
-		newAttributeOverride.getColumn().setSpecifiedName(oldAttributeOverride.getColumn().getName());
-		
-		this.fireItemRemoved(Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, defaultIndex, oldAttributeOverride);
-		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, newAttributeOverride);		
-
-		return newAttributeOverride;
-	}
-
-	public ListIterator<OrmAttributeOverride> specifiedAttributeOverrides() {
-		return new CloneListIterator<OrmAttributeOverride>(this.specifiedAttributeOverrides);
-	}
-
-	public int specifiedAttributeOverridesSize() {
-		return this.specifiedAttributeOverrides.size();
-	}
-
-	protected void addSpecifiedAttributeOverride(int index, OrmAttributeOverride attributeOverride) {
-		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
-	}
-	
-	protected void addSpecifiedAttributeOverride(OrmAttributeOverride attributeOverride) {
-		this.addSpecifiedAttributeOverride(this.specifiedAttributeOverrides.size(), attributeOverride);
-	}
-	
-	protected void removeSpecifiedAttributeOverride_(OrmAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
-	}
-	
-	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.resourceTypeMapping.getAttributeOverrides().move(targetIndex, sourceIndex);
-		fireItemMoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
-	}
-
-	@SuppressWarnings("unchecked")
-	public ListIterator<OrmAssociationOverride> associationOverrides() {
-		return new CompositeListIterator<OrmAssociationOverride>(specifiedAssociationOverrides(), virtualAssociationOverrides());
-	}
-
-	public int associationOverridesSize() {
-		return this.specifiedAssociationOverridesSize() + this.virtualAssociationOverridesSize();
-	}
-
-	public ListIterator<OrmAssociationOverride> virtualAssociationOverrides() {
-		return new CloneListIterator<OrmAssociationOverride>(this.virtualAssociationOverrides);
-	}
-	
-	public int virtualAssociationOverridesSize() {
-		return this.virtualAssociationOverrides.size();
-	}
-	
-	protected void addVirtualAssociationOverride(OrmAssociationOverride associationOverride) {
-		addItemToList(associationOverride, this.virtualAssociationOverrides, Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
-	}
-	
-	protected void removeVirtualAssociationOverride(OrmAssociationOverride associationOverride) {
-		removeItemFromList(associationOverride, this.virtualAssociationOverrides, Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
-	}
-	
-	protected OrmAssociationOverride setAssociationOverrideVirtual(boolean virtual, OrmAssociationOverride associationOverride) {
-		if (virtual) {
-			return setAssociationOverrideVirtual(associationOverride);
-		}
-		return setAssociationOverrideSpecified(associationOverride);
-	}
-	
-	protected OrmAssociationOverride setAssociationOverrideVirtual(OrmAssociationOverride associationOverride) {
-		int index = this.specifiedAssociationOverrides.indexOf(associationOverride);
-		this.specifiedAssociationOverrides.remove(index);
-		String associationOverrideName = associationOverride.getName();
-		//add the virtual attribute override so that I can control the order that change notification is sent.
-		//otherwise when we remove the annotation from java we will get an update and add the attribute override
-		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
-		OrmAssociationOverride virtualAssociationOverride = null;
-		if (associationOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
-				if (persistentAttribute.getName().equals(associationOverrideName)) {
-					JavaAssociationOverride javaAssociationOverride = null;
-					if (getJavaEntity() != null) {
-						javaAssociationOverride = getJavaEntity().getAssociationOverrideNamed(associationOverrideName);
-					}
-					//store the virtualAssociationOverride so we can fire change notification later
-					virtualAssociationOverride = buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride);
-					this.virtualAssociationOverrides.add(virtualAssociationOverride);
-				}
-			}
-		}
-
-		this.resourceTypeMapping.getAssociationOverrides().remove(index);
-		fireItemRemoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
-		
-		if (virtualAssociationOverride != null) {
-			fireItemAdded(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualAssociationOverridesSize() - 1, virtualAssociationOverride);
-		}
-		return virtualAssociationOverride;
-	}
-	
-	protected OrmAssociationOverride setAssociationOverrideSpecified(OrmAssociationOverride oldAssociationOverride) {
-		int index = specifiedAssociationOverridesSize();
-		XmlAssociationOverride xmlAssociationOverride = buildResourceAssociationOverride();
-		OrmAssociationOverride newAssociationOverride = buildAssociationOverride(xmlAssociationOverride);
-		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
-		
-		this.resourceTypeMapping.getAssociationOverrides().add(xmlAssociationOverride);
-		
-		int defaultIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
-		this.virtualAssociationOverrides.remove(defaultIndex);
-
-		newAssociationOverride.initializeFrom(oldAssociationOverride);
-		
-		this.fireItemRemoved(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, defaultIndex, oldAssociationOverride);
-		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		
-
-		return newAssociationOverride;
-	}
-	
-	public ListIterator<OrmAssociationOverride> specifiedAssociationOverrides() {
-		return new CloneListIterator<OrmAssociationOverride>(this.specifiedAssociationOverrides);
-	}
-
-	public int specifiedAssociationOverridesSize() {
-		return this.specifiedAssociationOverrides.size();
-	}
-
-	protected void addSpecifiedAssociationOverride(int index, OrmAssociationOverride associationOverride) {
-		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
-	}
-	
-	protected void addSpecifiedAssociationOverride(OrmAssociationOverride associationOverride) {
-		this.addSpecifiedAssociationOverride(this.specifiedAssociationOverrides.size(), associationOverride);
-	}
-	
-	protected void removeSpecifiedAssociationOverride_(OrmAssociationOverride associationOverride) {
-		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
-	}
-	
-	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
-		this.resourceTypeMapping.getAssociationOverrides().move(targetIndex, sourceIndex);
-		fireItemMoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
-	}
-
-	public OrmAttributeOverride getAttributeOverrideNamed(String name) {
-		return (OrmAttributeOverride) getOverrideNamed(name, attributeOverrides());
-	}
-
-	public boolean containsAttributeOverride(String name) {
-		return containsOverride(name, attributeOverrides());
-	}
-
-	public boolean containsDefaultAttributeOverride(String name) {
-		return containsOverride(name, virtualAttributeOverrides());
-	}
-
-	public boolean containsSpecifiedAttributeOverride(String name) {
-		return containsOverride(name, specifiedAttributeOverrides());
-	}
-
-	public OrmAssociationOverride getAssociationOverrideNamed(String name) {
-		return (OrmAssociationOverride) getOverrideNamed(name, associationOverrides());
-	}
-
-	public boolean containsAssociationOverride(String name) {
-		return containsOverride(name, associationOverrides());
-	}
-
-	public boolean containsSpecifiedAssociationOverride(String name) {
-		return containsOverride(name, specifiedAssociationOverrides());
-	}
-
-	public boolean containsDefaultAssociationOverride(String name) {
-		return containsOverride(name, virtualAssociationOverrides());
-	}
-
-	private BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
-		for (BaseOverride override : CollectionTools.iterable(overrides)) {
-			String overrideName = override.getName();
-			if (overrideName == null && name == null) {
-				return override;
-			}
-			if (overrideName != null && overrideName.equals(name)) {
-				return override;
-			}
-		}
-		return null;
-	}
-
-	private boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
-		return getOverrideNamed(name, overrides) != null;
-	}
-
 	public OrmQueryContainer getQueryContainer() {
 		return this.queryContainer;
 	}
@@ -1492,80 +1220,6 @@ public abstract class AbstractOrmEntity
 		}
 	}
 	
-	protected void initializeVirtualAttributeOverrides() {
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
-			OrmAttributeOverride ormAttributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
-			if (ormAttributeOverride == null) {
-				JavaAttributeOverride javaAttributeOverride = null;
-				if (getJavaEntity() != null) {
-					javaAttributeOverride = getJavaEntity().getAttributeOverrideNamed(persistentAttribute.getName());
-				}
-				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
-			}
-		}
-	}
-	
-	protected void initializeSpecifiedAttributeOverrides() {
-		for (XmlAttributeOverride attributeOverride : this.resourceTypeMapping.getAttributeOverrides()) {
-			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
-		}
-	}
-
-	protected OrmAttributeOverride buildVirtualAttributeOverride(PersistentAttribute persistentAttribute, JavaAttributeOverride javaAttributeOverride) {
-		return buildAttributeOverride(buildVirtualXmlAttributeOverride(persistentAttribute, javaAttributeOverride));
-	}
-	
-	protected XmlAttributeOverride buildVirtualXmlAttributeOverride(PersistentAttribute persistentAttribute, JavaAttributeOverride javaAttributeOverride) {
-		XmlColumn xmlColumn;
-		if (javaAttributeOverride == null) {
-			ColumnMapping columnMapping = (ColumnMapping) persistentAttribute.getMapping();
-			xmlColumn = new VirtualXmlAttributeOverrideColumn(columnMapping.getColumn());
-		}
-		else {
-			xmlColumn = new VirtualXmlColumn(this, javaAttributeOverride.getColumn());
-		}
-		return new VirtualXmlAttributeOverride(persistentAttribute.getName(), xmlColumn);
-	}
-	
-	protected void initializeVirtualAssociationOverrides() {
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
-			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
-			if (ormAssociationOverride == null) {
-				JavaAssociationOverride javaAssociationOverride = null;
-				if (getJavaEntity() != null) {
-					javaAssociationOverride = getJavaEntity().getAssociationOverrideNamed(persistentAttribute.getName());
-				}
-				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
-			}
-		}
-	}
-
-	protected OrmAssociationOverride buildVirtualAssociationOverride(PersistentAttribute persistentAttribute, JavaAssociationOverride javaAssociationOverride) {
-		return buildAssociationOverride(buildVirtualXmlAssociationOverride(persistentAttribute, javaAssociationOverride));
-	}
-	
-	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(PersistentAttribute persistentAttribute, JavaAssociationOverride javaAssociationOverride) {
-		RelationshipReference relationshipReference;
-		if (javaAssociationOverride == null || javaAssociationOverride.isVirtual()) {
-			RelationshipMapping relationshipMapping = (RelationshipMapping) persistentAttribute.getMapping();
-			relationshipReference = relationshipMapping.getRelationshipReference();
-		}
-		else {
-			relationshipReference = javaAssociationOverride.getRelationshipReference();
-		}
-		return buildVirtualXmlAssociationOverride(persistentAttribute.getName(), relationshipReference.getPredominantJoiningStrategy());
-	}
-	
-	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, JoiningStrategy joiningStrategy) {
-		return getXmlContextNodeFactory().buildVirtualXmlAssociationOverride(name, this, joiningStrategy);
-	}
-
-	protected void initializeSpecifiedAssociationOverrides() {
-		for (XmlAssociationOverride associationOverride : this.resourceTypeMapping.getAssociationOverrides()) {
-			this.specifiedAssociationOverrides.add(buildAssociationOverride(associationOverride));
-		}
-	}
-	
 	protected void initializeIdClass(XmlIdClass idClassResource) {
 		this.idClass = this.getResourceIdClass(idClassResource);	
 	}
@@ -1591,10 +1245,8 @@ public abstract class AbstractOrmEntity
 		this.generatorContainer.update();
 		this.updateSpecifiedPrimaryKeyJoinColumns();
 		this.updateDefaultPrimaryKeyJoinColumns();
-		this.updateSpecifiedAttributeOverrides();
-		this.updateVirtualAttributeOverrides();
-		this.updateSpecifiedAssociationOverrides();
-		this.updateVirtualAssociationOverrides();
+		getAttributeOverrideContainer().update();
+		getAssociationOverrideContainer().update();
 		getQueryContainer().update();
 		this.updateIdClass(this.getResourceIdClass());
 	}
@@ -1858,126 +1510,6 @@ public abstract class AbstractOrmEntity
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		return getXmlContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
 	}
-
-	protected void updateSpecifiedAttributeOverrides() {
-		// make a copy of the XML overrides (to prevent ConcurrentModificationException)
-		Iterator<XmlAttributeOverride> xmlOverrides = new CloneIterator<XmlAttributeOverride>(this.resourceTypeMapping.getAttributeOverrides());
-		
-		for (Iterator<OrmAttributeOverride> contextOverrides = this.specifiedAttributeOverrides(); contextOverrides.hasNext(); ) {
-			OrmAttributeOverride contextOverride = contextOverrides.next();
-			if (xmlOverrides.hasNext()) {
-				contextOverride.update(xmlOverrides.next());
-			}
-			else {
-				removeSpecifiedAttributeOverride_(contextOverride);
-			}
-		}
-		
-		while (xmlOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(buildAttributeOverride(xmlOverrides.next()));
-		}
-	}
-	
-	protected void updateVirtualAttributeOverrides() {
-		Iterator<PersistentAttribute> overridableAttributes = allOverridableAttributes();
-		ListIterator<OrmAttributeOverride> virtualAttributeOverridesCopy = virtualAttributeOverrides();
-		
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(overridableAttributes)) {
-			OrmAttributeOverride ormAttributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
-			if (ormAttributeOverride != null && !ormAttributeOverride.isVirtual()) {
-				continue;
-			}
-			JavaAttributeOverride javaAttributeOverride = null;
-			if (getJavaEntity() != null) {
-				javaAttributeOverride = getJavaEntity().getAttributeOverrideNamed(persistentAttribute.getName());
-			}
-			if (ormAttributeOverride != null) {
-				if (virtualAttributeOverridesCopy.hasNext()) {
-					OrmAttributeOverride virtualAttributeOverride = virtualAttributeOverridesCopy.next();
-					virtualAttributeOverride.update(buildVirtualXmlAttributeOverride(persistentAttribute, javaAttributeOverride));
-				}
-				else {
-					addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
-				}
-			}
-			else {
-				addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
-			}
-		}
-		for (OrmAttributeOverride virtualAttributeOverride : CollectionTools.iterable(virtualAttributeOverridesCopy)) {
-			removeVirtualAttributeOverride(virtualAttributeOverride);
-		}
-	}
-	
-	protected OrmAttributeOverride buildAttributeOverride(XmlAttributeOverride attributeOverride) {
-		return getXmlContextNodeFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), attributeOverride);
-	}
-
-	protected AttributeOverride.Owner createAttributeOverrideOwner() {
-		return new AttributeOverrideOwner();
-	}
-
-	protected void updateSpecifiedAssociationOverrides() {
-		// make a copy of the XML overrides (to prevent ConcurrentModificationException)
-		Iterator<XmlAssociationOverride> xmlOverrides = new CloneIterator<XmlAssociationOverride>(this.resourceTypeMapping.getAssociationOverrides());
-		
-		for (Iterator<OrmAssociationOverride> contextOverrides = this.specifiedAssociationOverrides(); contextOverrides.hasNext(); ) {
-			OrmAssociationOverride contextOverride = contextOverrides.next();
-			if (xmlOverrides.hasNext()) {
-				contextOverride.update(xmlOverrides.next());
-			}
-			else {
-				removeSpecifiedAssociationOverride_(contextOverride);
-			}
-		}
-		
-		while (xmlOverrides.hasNext()) {
-			addSpecifiedAssociationOverride(buildAssociationOverride(xmlOverrides.next()));
-		}
-	}
-	
-	protected void updateVirtualAssociationOverrides() {
-		Iterator<PersistentAttribute> overridableAssociations = allOverridableAssociations();
-		ListIterator<OrmAssociationOverride> virtualAssociationOverridesCopy = virtualAssociationOverrides();
-		
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(overridableAssociations)) {
-			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
-			if (ormAssociationOverride != null && !ormAssociationOverride.isVirtual()) {
-				continue;
-			}
-			JavaAssociationOverride javaAssociationOverride = null;
-			if (getJavaEntity() != null) {
-				javaAssociationOverride = getJavaEntity().getAssociationOverrideNamed(persistentAttribute.getName());
-			}
-			if (ormAssociationOverride != null) {
-				if (virtualAssociationOverridesCopy.hasNext()) {
-					OrmAssociationOverride virtualAssociationOverride = virtualAssociationOverridesCopy.next();
-					virtualAssociationOverride.update(buildVirtualXmlAssociationOverride(persistentAttribute, javaAssociationOverride));
-				}
-				else {
-					addVirtualAssociationOverride(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
-				}
-			}
-			else {
-				addVirtualAssociationOverride(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
-			}
-		}
-		for (OrmAssociationOverride virtualAssociationOverride : CollectionTools.iterable(virtualAssociationOverridesCopy)) {
-			removeVirtualAssociationOverride(virtualAssociationOverride);
-		}
-	}
-	
-	protected OrmAssociationOverride buildAssociationOverride(XmlAssociationOverride associationOverride) {
-		return getXmlContextNodeFactory().buildOrmAssociationOverride(this, buildAssociationOverrideOwner(), associationOverride);
-	}
-
-	protected XmlAssociationOverride buildResourceAssociationOverride() {
-		return OrmFactory.eINSTANCE.createXmlAssociationOverride();
-	}
-	
-	protected AssociationOverride.Owner buildAssociationOverrideOwner() {
-		return new AssociationOverrideOwner();
-	}
 	
 	protected void updateIdClass(XmlIdClass idClassResource) {
 		this.setIdClass_(this.getResourceIdClass(idClassResource));
@@ -1999,7 +1531,7 @@ public abstract class AbstractOrmEntity
 			if (name != null) {
 				//if the attribute is a primary key then we need to check if there is an attribute override
 				//and use its column name instead (bug 229423)
-				AttributeOverride attributeOverride = getAttributeOverrideNamed(attribute.getName());
+				AttributeOverride attributeOverride = getAttributeOverrideContainer().getAttributeOverrideNamed(attribute.getName());
 				if (attributeOverride != null) {
 					name = attributeOverride.getColumn().getName();
 				}
@@ -2036,16 +1568,10 @@ public abstract class AbstractOrmEntity
 		this.validateInheritance(messages, reporter);
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
-
+		this.attributeOverrideContainer.validate(messages, reporter);
+		this.associationOverrideContainer.validate(messages, reporter);
+		
 		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
-			stream.next().validate(messages, reporter);
-		}
-
-		for (Iterator<OrmAttributeOverride> stream = this.attributeOverrides(); stream.hasNext(); ) {
-			stream.next().validate(messages, reporter);
-		}
-
-		for (Iterator<OrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext(); ) {
 			stream.next().validate(messages, reporter);
 		}
 	}
@@ -2253,64 +1779,4 @@ public abstract class AbstractOrmEntity
 		}
 	}
 	
-	class AttributeOverrideOwner implements AttributeOverride.Owner {
-
-		public ColumnMapping getColumnMapping(String attributeName) {
-			if (attributeName == null) {
-				return null;
-			}
-			for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
-				PersistentAttribute persAttribute = stream.next();
-				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof ColumnMapping) {
-						return (ColumnMapping) persAttribute.getMapping();
-					}
-				}
-			}
-			return null;
-		}
-
-		public boolean isVirtual(BaseOverride override) {
-			return AbstractOrmEntity.this.virtualAttributeOverrides.contains(override);
-		}
-
-		public BaseOverride setVirtual(boolean virtual, BaseOverride override) {
-			return AbstractOrmEntity.this.setAttributeOverrideVirtual(virtual, (OrmAttributeOverride) override);
-		}
-
-		public TypeMapping getTypeMapping() {
-			return AbstractOrmEntity.this;
-		}
-		
-	}
-
-	class AssociationOverrideOwner implements AssociationOverride.Owner {
-
-		public RelationshipMapping getRelationshipMapping(String attributeName) {
-			if (attributeName == null) {
-				return null;
-			}
-			for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
-				PersistentAttribute persAttribute = stream.next();
-				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof RelationshipMapping) {
-						return (RelationshipMapping) persAttribute.getMapping();
-					}
-				}
-			}
-			return null;
-		}
-
-		public boolean isVirtual(BaseOverride override) {
-			return AbstractOrmEntity.this.virtualAssociationOverrides.contains(override);
-		}
-
-		public BaseOverride setVirtual(boolean virtual, BaseOverride override) {
-			return AbstractOrmEntity.this.setAssociationOverrideVirtual(virtual, (OrmAssociationOverride) override);
-		}
-
-		public TypeMapping getTypeMapping() {
-			return AbstractOrmEntity.this;
-		}
-	}
 }

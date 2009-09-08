@@ -15,7 +15,9 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -34,6 +36,7 @@ import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritabl
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
@@ -250,8 +253,8 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 	
-	private ListValueModel<AssociationOverride> buildDefaultAssociationOverridesListHolder() {
-		return new ListAspectAdapter<Entity, AssociationOverride>(getSubjectHolder(), Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST) {
+	private ListValueModel<AssociationOverride> buildDefaultAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
+		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, AssociationOverrideContainer.VIRTUAL_ASSOCIATION_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AssociationOverride> listIterator_() {
 				return this.subject.virtualAssociationOverrides();
@@ -264,8 +267,8 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 
-	private ListValueModel<AttributeOverride> buildDefaultAttributeOverridesListHolder() {
-		return new ListAspectAdapter<Entity, AttributeOverride>(getSubjectHolder(), Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST) {
+	private ListValueModel<AttributeOverride> buildDefaultAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
+		return new ListAspectAdapter<AttributeOverrideContainer, AttributeOverride>(containerHolder, AttributeOverrideContainer.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
 				return this.subject.virtualAttributeOverrides();
@@ -350,12 +353,33 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 	}
 
 	private ListValueModel<BaseOverride> buildOverridesListHolder() {
+		PropertyValueModel<AttributeOverrideContainer> attributeOverrideContainerHolder = buildAttributeOverrideContainerHolder();
+		PropertyValueModel<AssociationOverrideContainer> associationOverrideContainerHolder = buildAssociationOverrideContainerHolder();
+		
 		List<ListValueModel<? extends BaseOverride>> list = new ArrayList<ListValueModel<? extends BaseOverride>>();
-		list.add(buildSpecifiedAttributeOverridesListHolder());
-		list.add(buildDefaultAttributeOverridesListHolder());
-		list.add(buildSpecifiedAssociationOverridesListHolder());
-		list.add(buildDefaultAssociationOverridesListHolder());
+		list.add(buildSpecifiedAttributeOverridesListHolder(attributeOverrideContainerHolder));
+		list.add(buildDefaultAttributeOverridesListHolder(attributeOverrideContainerHolder));
+		list.add(buildSpecifiedAssociationOverridesListHolder(associationOverrideContainerHolder));
+		list.add(buildDefaultAssociationOverridesListHolder(associationOverrideContainerHolder));
 		return new CompositeListValueModel<ListValueModel<? extends BaseOverride>, BaseOverride>(list);
+	}
+
+	private PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder() {
+		return new PropertyAspectAdapter<Entity, AttributeOverrideContainer>(getSubjectHolder()) {
+			@Override
+			protected AttributeOverrideContainer buildValue_() {
+				return this.subject.getAttributeOverrideContainer();
+			}
+		};
+	}
+
+	private PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder() {
+		return new PropertyAspectAdapter<Entity, AssociationOverrideContainer>(getSubjectHolder()) {
+			@Override
+			protected AssociationOverrideContainer buildValue_() {
+				return this.subject.getAssociationOverrideContainer();
+			}
+		};
 	}
 
 	private ListValueModel<BaseOverride> buildOverridesListModel() {
@@ -382,8 +406,8 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 
-	private ListValueModel<AssociationOverride> buildSpecifiedAssociationOverridesListHolder() {
-		return new ListAspectAdapter<Entity, AssociationOverride>(getSubjectHolder(), Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
+	private ListValueModel<AssociationOverride> buildSpecifiedAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
+		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, AssociationOverrideContainer.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AssociationOverride> listIterator_() {
 				return this.subject.specifiedAssociationOverrides();
@@ -396,8 +420,8 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 
-	private ListValueModel<AttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
-		return new ListAspectAdapter<Entity, AttributeOverride>(getSubjectHolder(), Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
+	private ListValueModel<AttributeOverride> buildSpecifiedAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
+		return new ListAspectAdapter<AttributeOverrideContainer, AttributeOverride>(containerHolder, AttributeOverrideContainer.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
 				return this.subject.specifiedAttributeOverrides();

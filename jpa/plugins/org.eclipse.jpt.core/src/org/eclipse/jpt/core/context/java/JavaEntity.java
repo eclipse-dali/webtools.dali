@@ -42,26 +42,15 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 	ListIterator<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> attributeOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
-	JavaAttributeOverride getAttributeOverrideNamed(String name);
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAssociationOverride> associationOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAssociationOverride> specifiedAssociationOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAssociationOverride> virtualAssociationOverrides();
-	JavaAssociationOverride getAssociationOverrideNamed(String name);
 	
 	Iterator<JavaPersistentAttribute> overridableAttributes();
 	
 	Iterator<JavaPersistentAttribute> overridableAssociations();
 
+	JavaAttributeOverrideContainer getAttributeOverrideContainer();
+	
+	JavaAssociationOverrideContainer getAssociationOverrideContainer();
+	
 	JavaQueryContainer getQueryContainer();
 	
 	JavaGeneratorContainer getGeneratorContainer();

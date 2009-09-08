@@ -85,27 +85,16 @@ public interface OrmEntity
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
-
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> attributeOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
-	OrmAttributeOverride getAttributeOverrideNamed(String name);
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAssociationOverride> associationOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAssociationOverride> specifiedAssociationOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAssociationOverride> virtualAssociationOverrides();
 	
 	
 	Iterator<OrmPersistentAttribute> overridableAttributes();
 
 	Iterator<OrmPersistentAttribute> overridableAssociations();
 
+	OrmAttributeOverrideContainer getAttributeOverrideContainer();
+	
+	OrmAssociationOverrideContainer getAssociationOverrideContainer();
+	
 	OrmQueryContainer getQueryContainer();
 	
 	OrmGeneratorContainer getGeneratorContainer();

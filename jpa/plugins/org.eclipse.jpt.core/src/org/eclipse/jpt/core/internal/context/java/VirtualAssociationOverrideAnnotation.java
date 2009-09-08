@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
@@ -32,7 +32,7 @@ public abstract class VirtualAssociationOverrideAnnotation
 
 	private final Vector<JoinColumnAnnotation> joinColumns;
 	
-	protected VirtualAssociationOverrideAnnotation(JavaResourcePersistentType parent, String name, JoiningStrategy joiningStrategy) {
+	protected VirtualAssociationOverrideAnnotation(JavaResourcePersistentMember parent, String name, JoiningStrategy joiningStrategy) {
 		super(parent, name);
 		this.joiningStrategy = joiningStrategy;
 		this.joinColumns = this.buildJoinColumns();

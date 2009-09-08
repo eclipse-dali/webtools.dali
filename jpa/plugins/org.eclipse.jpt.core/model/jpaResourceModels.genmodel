@@ -102,8 +102,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlEntity/excludeDefaultListeners"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlEntity/excludeSuperclassListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/entityListeners"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/attributeOverrides"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/associationOverrides"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlAssociationOverrideContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAssociationOverrideContainer/associationOverrides"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlAttributeOverrideContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAttributeOverrideContainer/attributeOverrides"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlEmbeddable"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlQueryContainer">

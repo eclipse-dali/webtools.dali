@@ -20,9 +20,11 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaCascade;
@@ -75,6 +77,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -235,8 +238,12 @@ public interface JpaFactory
 	
 	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner);
 	
+	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent);
+
 	JavaAttributeOverride buildJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner);
 	
+	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent);
+
 	JavaAssociationOverride buildJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner);
 	
 	JavaAssociationOverrideRelationshipReference buildJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent);
@@ -259,7 +266,7 @@ public interface JpaFactory
 
 	JavaConverter buildJavaNullConverter(JavaAttributeMapping parent);
 	
-	AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentType jrpt, String name, JoiningStrategy joiningStrategy);
+	AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy);
 	
 
 	// ********** JAR Context Model **********

@@ -26,9 +26,11 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaCascade;
@@ -84,8 +86,10 @@ import org.eclipse.jpt.core.internal.jpa1.GenericJpaProject;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericRootContextNode;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJarFile;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverride;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAttributeOverride;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaBasicMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaCascade;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
@@ -135,6 +139,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFile
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -335,6 +340,14 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaPrimaryKeyJoinColumn(parent, owner);
 	}
 	
+	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent) {
+		return new GenericJavaAttributeOverrideContainer(parent);
+	}
+	
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent) {
+		return new GenericJavaAssociationOverrideContainer(parent);
+	}
+	
 	public JavaAttributeOverride buildJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {
 		return new GenericJavaAttributeOverride(parent, owner);
 	}
@@ -347,8 +360,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaAssociationOverrideRelationshipReference(parent);
 	}
 	
-	public AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentType jrpt, String name, JoiningStrategy joiningStrategy) {
-		return new VirtualAssociationOverride1_0Annotation(jrpt, name, joiningStrategy);
+	public AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy) {
+		return new VirtualAssociationOverride1_0Annotation(jrpm, name, joiningStrategy);
 	}
 	
 	public JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent) {

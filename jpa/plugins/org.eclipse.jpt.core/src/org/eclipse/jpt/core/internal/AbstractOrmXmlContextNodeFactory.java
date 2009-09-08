@@ -27,9 +27,11 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmCascade;
@@ -86,8 +88,10 @@ import org.eclipse.jpt.core.internal.context.orm.VirtualXmlTransient;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlVersion;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmBasicMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmColumn;
@@ -129,8 +133,10 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefa
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -214,6 +220,14 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXmlContextN
 	
 	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn) {
 		return new GenericOrmJoinColumn(parent, owner, resourceJoinColumn);
+	}
+	
+	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, XmlAttributeOverrideContainer resourceAttributeOverrideContainer) {
+		return new GenericOrmAttributeOverrideContainer(parent, resourceAttributeOverrideContainer);
+	}
+	
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+		return new GenericOrmAssociationOverrideContainer(parent, resourceAssociationOverrideContainer);
 	}
 	
 	public OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {

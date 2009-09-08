@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.internal.context.java.VirtualAssociationOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 /**
  * javax.persistence.AssociationOverride
@@ -20,7 +20,7 @@ public class VirtualAssociationOverride1_0Annotation
 	extends VirtualAssociationOverrideAnnotation
 {
 	
-	public VirtualAssociationOverride1_0Annotation(JavaResourcePersistentType parent, String name, JoiningStrategy joiningStrategy) {
+	public VirtualAssociationOverride1_0Annotation(JavaResourcePersistentMember parent, String name, JoiningStrategy joiningStrategy) {
 		super(parent, name, joiningStrategy);
 	}
 

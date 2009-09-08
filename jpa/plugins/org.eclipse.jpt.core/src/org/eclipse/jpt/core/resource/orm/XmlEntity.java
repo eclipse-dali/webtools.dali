@@ -51,8 +51,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getEntityListeners <em>Entity Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getAttributeOverrides <em>Attribute Overrides</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getAssociationOverrides <em>Association Overrides</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,7 +58,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer
 {
 
 	/**
@@ -172,6 +170,26 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected PostLoad postLoad;
+
+	/**
+	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAttributeOverride> attributeOverrides;
+
+	/**
+	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAssociationOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAssociationOverride> associationOverrides;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -332,26 +350,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected EntityListeners entityListeners;
-
-	/**
-	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAttributeOverride> attributeOverrides;
-
-	/**
-	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAssociationOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAssociationOverride> associationOverrides;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1487,7 +1485,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverrideContainer_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1510,7 +1508,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_AssociationOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverrideContainer_AssociationOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1555,6 +1553,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return basicSetPostUpdate(null, msgs);
 			case OrmPackage.XML_ENTITY__POST_LOAD:
 				return basicSetPostLoad(null, msgs);
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
+				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
+				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__TABLE:
 				return basicSetTable(null, msgs);
 			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
@@ -1571,10 +1573,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return basicSetEntityListeners(null, msgs);
-			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
-				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
-				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1611,6 +1609,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getPostUpdate();
 			case OrmPackage.XML_ENTITY__POST_LOAD:
 				return getPostLoad();
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
+				return getAttributeOverrides();
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
+				return getAssociationOverrides();
 			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1635,10 +1637,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return isExcludeSuperclassListeners();
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return getEntityListeners();
-			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
-				return getAttributeOverrides();
-			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
-				return getAssociationOverrides();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1689,6 +1687,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__POST_LOAD:
 				setPostLoad((PostLoad)newValue);
 				return;
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
+				getAttributeOverrides().clear();
+				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
+				getAssociationOverrides().clear();
+				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
 				return;
@@ -1727,14 +1733,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
-				getAttributeOverrides().clear();
-				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
-				getAssociationOverrides().clear();
-				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -1783,6 +1781,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__POST_LOAD:
 				setPostLoad((PostLoad)null);
 				return;
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
+				getAttributeOverrides().clear();
+				return;
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
+				getAssociationOverrides().clear();
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -1818,12 +1822,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)null);
-				return;
-			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
-				getAttributeOverrides().clear();
-				return;
-			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
-				getAssociationOverrides().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -1861,6 +1859,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return postUpdate != null;
 			case OrmPackage.XML_ENTITY__POST_LOAD:
 				return postLoad != null;
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
+				return attributeOverrides != null && !attributeOverrides.isEmpty();
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
+				return associationOverrides != null && !associationOverrides.isEmpty();
 			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1885,10 +1887,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return entityListeners != null;
-			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
-				return attributeOverrides != null && !attributeOverrides.isEmpty();
-			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
-				return associationOverrides != null && !associationOverrides.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1933,6 +1931,22 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1973,6 +1987,22 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_UPDATE: return OrmPackage.XML_ENTITY__PRE_UPDATE;
 				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_UPDATE: return OrmPackage.XML_ENTITY__POST_UPDATE;
 				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_LOAD: return OrmPackage.XML_ENTITY__POST_LOAD;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -2148,11 +2178,11 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	}
 		
 	protected static Translator buildAttributeOverrideTranslator() {
-		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getXmlEntity_AttributeOverrides());
+		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getXmlAttributeOverrideContainer_AttributeOverrides());
 	}
 	
 	protected static Translator buildAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlEntity_AssociationOverrides());
+		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
 
 } // Entity

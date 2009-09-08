@@ -15,7 +15,9 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
@@ -286,7 +288,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
+		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
@@ -295,13 +298,13 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		//add an annotation to the resource model and verify the context model is updated
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("FOO");
-		specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();		
+		specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		attributeOverride = (AttributeOverrideAnnotation) typeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
-		specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();		
+		specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
@@ -309,7 +312,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		attributeOverride = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAZ");
-		specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();		
+		specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
@@ -317,26 +320,26 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 	
 		//move an annotation to the resource model and verify the context model is updated
 		typeResource.moveAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDES);
-		specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();		
+		specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		typeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();		
+		specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	
 		typeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();		
+		specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		
 		typeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		specifiedAttributeOverrides = getJavaEntity().specifiedAttributeOverrides();		
+		specifiedAttributeOverrides = overrideContainer.specifiedAttributeOverrides();		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	}
 
@@ -350,14 +353,15 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		AttributeOverrideContainer overrideContainer = javaEntity.getAttributeOverrideContainer();
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 		
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
-		AttributeOverride virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals(3, overrideContainer.virtualAttributeOverridesSize());
+		AttributeOverride virtualAttributeOverride = overrideContainer.virtualAttributeOverrides().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
@@ -373,8 +377,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertNull(typeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
-		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals(3, overrideContainer.virtualAttributeOverridesSize());
+		virtualAttributeOverride = overrideContainer.virtualAttributeOverrides().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
@@ -385,13 +389,13 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertNull(typeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 
-		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		virtualAttributeOverride = overrideContainer.virtualAttributeOverrides().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
 		virtualAttributeOverride = virtualAttributeOverride.setVirtual(false);
-		assertEquals(2, javaEntity.virtualAttributeOverridesSize());
+		assertEquals(2, overrideContainer.virtualAttributeOverridesSize());
 	}
 	
 	public void testDefaultAttributeOverridesEntityHierachy() throws Exception {
@@ -404,14 +408,15 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		AttributeOverrideContainer overrideContainer = javaEntity.getAttributeOverrideContainer();
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 		
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
-		AttributeOverride virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals(3, overrideContainer.virtualAttributeOverridesSize());
+		AttributeOverride virtualAttributeOverride = overrideContainer.virtualAttributeOverrides().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
@@ -427,8 +432,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertNull(typeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
-		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals(3, overrideContainer.virtualAttributeOverridesSize());
+		virtualAttributeOverride = overrideContainer.virtualAttributeOverrides().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
@@ -439,20 +444,21 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertNull(typeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 
-		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		virtualAttributeOverride = overrideContainer.virtualAttributeOverrides().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
 		virtualAttributeOverride = virtualAttributeOverride.setVirtual(false);
-		assertEquals(2, javaEntity.virtualAttributeOverridesSize());
+		assertEquals(2, overrideContainer.virtualAttributeOverridesSize());
 	}
 	
 	public void testSpecifiedAttributeOverridesSize() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(0, getJavaEntity().specifiedAttributeOverridesSize());
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
+		assertEquals(0, overrideContainer.specifiedAttributeOverridesSize());
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
@@ -462,7 +468,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		attributeOverride = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
 
-		assertEquals(2, getJavaEntity().specifiedAttributeOverridesSize());
+		assertEquals(2, overrideContainer.specifiedAttributeOverridesSize());
 	}
 	
 	public void testDefaultAttributeOverridesSize() throws Exception {
@@ -471,18 +477,18 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Entity javaEntity = getJavaEntity();
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
+		assertEquals(3, overrideContainer.virtualAttributeOverridesSize());
 
-		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
-		assertEquals(2, javaEntity.virtualAttributeOverridesSize());
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		assertEquals(2, overrideContainer.virtualAttributeOverridesSize());
 		
-		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
-		assertEquals(1, javaEntity.virtualAttributeOverridesSize());
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		assertEquals(1, overrideContainer.virtualAttributeOverridesSize());
 		
-		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
-		assertEquals(0, javaEntity.virtualAttributeOverridesSize());
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		assertEquals(0, overrideContainer.virtualAttributeOverridesSize());
 	}
 	
 	public void testAttributeOverridesSize() throws Exception {
@@ -491,21 +497,21 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 			
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Entity javaEntity = getJavaEntity();
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		
-		assertEquals(3, javaEntity.attributeOverridesSize());
+		assertEquals(3, overrideContainer.attributeOverridesSize());
 
-		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
-		assertEquals(3, javaEntity.attributeOverridesSize());
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		assertEquals(3, overrideContainer.attributeOverridesSize());
 		
-		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
-		assertEquals(3, javaEntity.attributeOverridesSize());
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		assertEquals(3, overrideContainer.attributeOverridesSize());
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		annotation.setName("bar");	
-		assertEquals(4, javaEntity.attributeOverridesSize());
+		assertEquals(4, overrideContainer.attributeOverridesSize());
 	}
 
 	public void testAttributeOverrideSetVirtual() throws Exception {
@@ -514,9 +520,10 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 			
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 				
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> attributeOverrides = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
@@ -532,11 +539,12 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		
-		ListIterator<JavaAttributeOverride> virtualAttributeOverrides = getJavaEntity().virtualAttributeOverrides();
+		ListIterator<JavaAttributeOverride> virtualAttributeOverrides = overrideContainer.virtualAttributeOverrides();
 		virtualAttributeOverrides.next();
 		virtualAttributeOverrides.next().setVirtual(false);
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> attributeOverrides = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
@@ -552,41 +560,42 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 			
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 				
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(3, CollectionTools.size(typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME)));
 
-		getJavaEntity().specifiedAttributeOverrides().next().setVirtual(true);
+		overrideContainer.specifiedAttributeOverrides().next().setVirtual(true);
 		
 		Iterator<NestableAnnotation> attributeOverrideResources = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		assertEquals("name", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());		
 		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());
 		assertFalse(attributeOverrideResources.hasNext());
 		
-		Iterator<JavaAttributeOverride> attributeOverrides = getJavaEntity().specifiedAttributeOverrides();
+		Iterator<JavaAttributeOverride> attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("name", attributeOverrides.next().getName());		
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		
-		getJavaEntity().specifiedAttributeOverrides().next().setVirtual(true);
+		overrideContainer.specifiedAttributeOverrides().next().setVirtual(true);
 		attributeOverrideResources = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());		
 		assertFalse(attributeOverrideResources.hasNext());
 
-		attributeOverrides = getJavaEntity().specifiedAttributeOverrides();
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		
-		getJavaEntity().specifiedAttributeOverrides().next().setVirtual(true);
+		overrideContainer.specifiedAttributeOverrides().next().setVirtual(true);
 		attributeOverrideResources = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		assertFalse(attributeOverrideResources.hasNext());
-		attributeOverrides = getJavaEntity().specifiedAttributeOverrides();
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertFalse(attributeOverrides.hasNext());
 
 		assertNull(typeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
@@ -599,10 +608,10 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Entity entity = getJavaEntity();
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
 
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
@@ -611,8 +620,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(3, CollectionTools.size(javaAttributeOverrides));
 		
 		
-		entity.moveSpecifiedAttributeOverride(2, 0);
-		ListIterator<AttributeOverride> attributeOverrides = entity.specifiedAttributeOverrides();
+		overrideContainer.moveSpecifiedAttributeOverride(2, 0);
+		ListIterator<AttributeOverride> attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("name", attributeOverrides.next().getName());
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
@@ -623,8 +632,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("id", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
 
 
-		entity.moveSpecifiedAttributeOverride(0, 1);
-		attributeOverrides = entity.specifiedAttributeOverrides();
+		overrideContainer.moveSpecifiedAttributeOverride(0, 1);
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertEquals("name", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
@@ -638,47 +647,47 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 	public void testUpdateSpecifiedAttributeOverrides() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-
-		Entity entity = getJavaEntity();		
+	
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 	
 		((AttributeOverrideAnnotation) typeResource.addAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((AttributeOverrideAnnotation) typeResource.addAnnotation(1, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((AttributeOverrideAnnotation) typeResource.addAnnotation(2, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 			
-		ListIterator<AttributeOverride> attributeOverrides = entity.specifiedAttributeOverrides();
+		ListIterator<AttributeOverride> attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		typeResource.moveAnnotation(2, 0, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		attributeOverrides = entity.specifiedAttributeOverrides();
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		typeResource.moveAnnotation(0, 1, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		attributeOverrides = entity.specifiedAttributeOverrides();
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		typeResource.removeAnnotation(1,  AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		attributeOverrides = entity.specifiedAttributeOverrides();
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		typeResource.removeAnnotation(1,  AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		attributeOverrides = entity.specifiedAttributeOverrides();
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		typeResource.removeAnnotation(0,  AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		attributeOverrides = entity.specifiedAttributeOverrides();
+		attributeOverrides = overrideContainer.specifiedAttributeOverrides();
 		assertFalse(attributeOverrides.hasNext());
 	}
 
@@ -687,8 +696,9 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestSubType();
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
 		
-		ListIterator<JavaAttributeOverride> virtualAttributeOverrides = getJavaEntity().virtualAttributeOverrides();	
+		ListIterator<JavaAttributeOverride> virtualAttributeOverrides = overrideContainer.virtualAttributeOverrides();	
 		AttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
@@ -702,12 +712,12 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertTrue(virtualAttributeOverride.isVirtual());
 		assertFalse(virtualAttributeOverrides.hasNext());
 
-		getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
-		AttributeOverride specifiedAttributeOverride = getJavaEntity().specifiedAttributeOverrides().next();
+		overrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
 		assertFalse(specifiedAttributeOverride.isVirtual());
 		
 		
-		virtualAttributeOverrides = getJavaEntity().virtualAttributeOverrides();	
+		virtualAttributeOverrides = overrideContainer.virtualAttributeOverrides();	
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("name", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
@@ -782,7 +792,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<JavaAssociationOverride> specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
+		ListIterator<JavaAssociationOverride> specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
@@ -791,13 +802,13 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		//add an annotation to the resource model and verify the context model is updated
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("FOO");
-		specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();		
+		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		associationOverride = (AssociationOverrideAnnotation) typeResource.addAnnotation(1, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("BAR");
-		specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();		
+		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
@@ -805,7 +816,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		associationOverride = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("BAZ");
-		specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();		
+		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
@@ -813,26 +824,26 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 	
 		//move an annotation to the resource model and verify the context model is updated
 		typeResource.moveAnnotation(1, 0, JPA.ASSOCIATION_OVERRIDES);
-		specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();		
+		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		typeResource.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
-		specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();		
+		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 	
 		typeResource.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
-		specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();		
+		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		
 		typeResource.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
-		specifiedAssociationOverrides = getJavaEntity().specifiedAssociationOverrides();		
+		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 	}
 
@@ -846,14 +857,15 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		AssociationOverrideContainer overrideContainer = javaEntity.getAssociationOverrideContainer();
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getAnnotation(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AssociationOverridesAnnotation.ANNOTATION_NAME));
 		
-		assertEquals(4, javaEntity.virtualAssociationOverridesSize());
-		AssociationOverride virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
+		assertEquals(4, overrideContainer.virtualAssociationOverridesSize());
+		AssociationOverride virtualAssociationOverride = overrideContainer.virtualAssociationOverrides().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		
 
@@ -866,8 +878,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertNull(typeResource.getAnnotation(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AssociationOverridesAnnotation.ANNOTATION_NAME));
 
-		assertEquals(4, javaEntity.virtualAssociationOverridesSize());
-		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
+		assertEquals(4, overrideContainer.virtualAssociationOverridesSize());
+		virtualAssociationOverride = overrideContainer.virtualAssociationOverrides().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 
 		//idMapping.getColumn().setSpecifiedName(null);
@@ -876,11 +888,11 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertNull(typeResource.getAnnotation(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AssociationOverridesAnnotation.ANNOTATION_NAME));
 
-		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
+		virtualAssociationOverride = overrideContainer.virtualAssociationOverrides().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		
 		virtualAssociationOverride = virtualAssociationOverride.setVirtual(false);
-		assertEquals(3, javaEntity.virtualAssociationOverridesSize());
+		assertEquals(3, overrideContainer.virtualAssociationOverridesSize());
 		
 		
 		
@@ -930,8 +942,9 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 	public void testSpecifiedAssociationOverridesSize() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		
-		assertEquals(0, getJavaEntity().specifiedAssociationOverridesSize());
+		assertEquals(0, overrideContainer.specifiedAssociationOverridesSize());
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
@@ -941,7 +954,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		associationOverride = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("BAR");
 
-		assertEquals(2, getJavaEntity().specifiedAssociationOverridesSize());
+		assertEquals(2, overrideContainer.specifiedAssociationOverridesSize());
 	}
 	
 	public void testDefaultAssociationOverridesSize() throws Exception {
@@ -950,21 +963,21 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Entity javaEntity = getJavaEntity();
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		
-		assertEquals(4, javaEntity.virtualAssociationOverridesSize());
+		assertEquals(4, overrideContainer.virtualAssociationOverridesSize());
 		
-		javaEntity.virtualAssociationOverrides().next().setVirtual(false);
-		assertEquals(3, javaEntity.virtualAssociationOverridesSize());
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		assertEquals(3, overrideContainer.virtualAssociationOverridesSize());
 		
-		javaEntity.virtualAssociationOverrides().next().setVirtual(false);
-		assertEquals(2, javaEntity.virtualAssociationOverridesSize());
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		assertEquals(2, overrideContainer.virtualAssociationOverridesSize());
 		
-		javaEntity.virtualAssociationOverrides().next().setVirtual(false);
-		assertEquals(1, javaEntity.virtualAssociationOverridesSize());
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		assertEquals(1, overrideContainer.virtualAssociationOverridesSize());
 		
-		javaEntity.virtualAssociationOverrides().next().setVirtual(false);
-		assertEquals(0, javaEntity.virtualAssociationOverridesSize());
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		assertEquals(0, overrideContainer.virtualAssociationOverridesSize());
 	}
 	
 	public void testAssociationOverridesSize() throws Exception {
@@ -973,21 +986,21 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 			
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Entity javaEntity = getJavaEntity();
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		
-		assertEquals(4, javaEntity.associationOverridesSize());
+		assertEquals(4, overrideContainer.associationOverridesSize());
 
-		javaEntity.virtualAssociationOverrides().next().setVirtual(false);
-		assertEquals(4, javaEntity.associationOverridesSize());
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		assertEquals(4, overrideContainer.associationOverridesSize());
 		
-		javaEntity.virtualAssociationOverrides().next().setVirtual(false);
-		assertEquals(4, javaEntity.associationOverridesSize());
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		assertEquals(4, overrideContainer.associationOverridesSize());
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		AssociationOverrideAnnotation annotation = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		annotation.setName("bar");	
-		assertEquals(5, javaEntity.associationOverridesSize());
+		assertEquals(5, overrideContainer.associationOverridesSize());
 	}
 
 	public void testAssociationOverrideSetVirtual() throws Exception {
@@ -996,9 +1009,10 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 			
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 				
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> associationOverrides = typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
@@ -1014,11 +1028,12 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		
-		ListIterator<JavaAssociationOverride> virtualAssociationOverrides = getJavaEntity().virtualAssociationOverrides();
+		ListIterator<JavaAssociationOverride> virtualAssociationOverrides = overrideContainer.virtualAssociationOverrides();
 		virtualAssociationOverrides.next();
 		virtualAssociationOverrides.next().setVirtual(false);
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> associationOverrides = typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
@@ -1034,28 +1049,29 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 			
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 				
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(2, CollectionTools.size(typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME)));
 
-		getJavaEntity().specifiedAssociationOverrides().next().setVirtual(true);
+		overrideContainer.specifiedAssociationOverrides().next().setVirtual(true);
 		
 		Iterator<NestableAnnotation> associationOverrideResources = typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		assertEquals("address2", ((AssociationOverrideAnnotation) associationOverrideResources.next()).getName());		
 		assertFalse(associationOverrideResources.hasNext());
 
-		Iterator<JavaAssociationOverride> associationOverrides = getJavaEntity().specifiedAssociationOverrides();
+		Iterator<JavaAssociationOverride> associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
 		
-		getJavaEntity().specifiedAssociationOverrides().next().setVirtual(true);
+		overrideContainer.specifiedAssociationOverrides().next().setVirtual(true);
 		associationOverrideResources = typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		assertFalse(associationOverrideResources.hasNext());
-		associationOverrides = getJavaEntity().specifiedAssociationOverrides();
+		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertFalse(associationOverrides.hasNext());
 
 		assertNull(typeResource.getAnnotation(AssociationOverridesAnnotation.ANNOTATION_NAME));
@@ -1068,9 +1084,9 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Entity entity = getJavaEntity();
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
 
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
@@ -1079,8 +1095,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(2, CollectionTools.size(javaAssociationOverrides));
 		
 		
-		entity.moveSpecifiedAssociationOverride(1, 0);
-		ListIterator<AssociationOverride> associationOverrides = entity.specifiedAssociationOverrides();
+		overrideContainer.moveSpecifiedAssociationOverride(1, 0);
+		ListIterator<AssociationOverride> associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertEquals("address", associationOverrides.next().getName());
 
@@ -1089,8 +1105,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("address", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
 
 
-		entity.moveSpecifiedAssociationOverride(0, 1);
-		associationOverrides = entity.specifiedAssociationOverrides();
+		overrideContainer.moveSpecifiedAssociationOverride(0, 1);
+		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("address", associationOverrides.next().getName());
 		assertEquals("address2", associationOverrides.next().getName());
 
@@ -1103,46 +1119,46 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Entity entity = getJavaEntity();		
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 	
 		((AssociationOverrideAnnotation) typeResource.addAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((AssociationOverrideAnnotation) typeResource.addAnnotation(1, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((AssociationOverrideAnnotation) typeResource.addAnnotation(2, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 			
-		ListIterator<AssociationOverride> associationOverrides = entity.specifiedAssociationOverrides();
+		ListIterator<AssociationOverride> associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 		
 		typeResource.moveAnnotation(2, 0, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		associationOverrides = entity.specifiedAssociationOverrides();
+		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 	
 		typeResource.moveAnnotation(0, 1, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		associationOverrides = entity.specifiedAssociationOverrides();
+		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 	
 		typeResource.removeAnnotation(1,  AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		associationOverrides = entity.specifiedAssociationOverrides();
+		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 	
 		typeResource.removeAnnotation(1,  AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		associationOverrides = entity.specifiedAssociationOverrides();
+		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 		
 		typeResource.removeAnnotation(0,  AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		associationOverrides = entity.specifiedAssociationOverrides();
+		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertFalse(associationOverrides.hasNext());
 	}
 
@@ -1151,8 +1167,9 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestSubType();
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		AssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		
-		ListIterator<JavaAssociationOverride> virtualAssociationOverrides = getJavaEntity().virtualAssociationOverrides();	
+		ListIterator<JavaAssociationOverride> virtualAssociationOverrides = overrideContainer.virtualAssociationOverrides();	
 		AssociationOverride virtualAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
@@ -1170,12 +1187,12 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertTrue(virtualAssociationOverride.isVirtual());
 		assertFalse(virtualAssociationOverrides.hasNext());
 
-		getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
-		AssociationOverride specifiedAssociationOverride = getJavaEntity().specifiedAssociationOverrides().next();
+		overrideContainer.virtualAssociationOverrides().next().setVirtual(false);
+		AssociationOverride specifiedAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
 		assertFalse(specifiedAssociationOverride.isVirtual());
 		
 		
-		virtualAssociationOverrides = getJavaEntity().virtualAssociationOverrides();	
+		virtualAssociationOverrides = overrideContainer.virtualAssociationOverrides();	
 		virtualAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address2", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());

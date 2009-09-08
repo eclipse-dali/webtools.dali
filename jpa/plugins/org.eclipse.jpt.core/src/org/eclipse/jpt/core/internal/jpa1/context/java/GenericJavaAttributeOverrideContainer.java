@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.java;
+package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,131 +16,52 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
-import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
-import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.VirtualAttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
-import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
-	extends AbstractJavaAttributeMapping<T>
-	implements JavaBaseEmbeddedMapping
+public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContextNode
+	implements JavaAttributeOverrideContainer
 {
+	protected JavaResourcePersistentMember javaResourcePersistentMember;
+
 	protected final List<JavaAttributeOverride> specifiedAttributeOverrides;
 
 	protected final List<JavaAttributeOverride> virtualAttributeOverrides;
-
-	private Embeddable embeddable;
-
-	protected AbstractJavaBaseEmbeddedMapping(JavaPersistentAttribute parent) {
+	
+	public GenericJavaAttributeOverrideContainer(JavaJpaContextNode parent) {
 		super(parent);
 		this.specifiedAttributeOverrides = new ArrayList<JavaAttributeOverride>();
 		this.virtualAttributeOverrides = new ArrayList<JavaAttributeOverride>();
 	}
 
-	//****************** JavaAttributeMapping implemenation *******************
-
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
-			JPA.ATTRIBUTE_OVERRIDE,
-			JPA.ATTRIBUTE_OVERRIDES);
+	//TODO need a Owner object since the parent could be an Embedded or an Entity
+	@Override
+	public JavaEntity getParent() {
+		return (JavaEntity) super.getParent();
 	}
 	
-	//****************** AttributeOverride.Owner implemenation *******************
-	
-	public ColumnMapping getColumnMapping(String attributeName) {
-		return MappingTools.getColumnMapping(attributeName, getEmbeddable());
-	}
-
-	public boolean isVirtual(BaseOverride override) {
-		return this.virtualAttributeOverrides.contains(override);
-	}
-	
-	public BaseOverride setVirtual(boolean virtual, BaseOverride override) {
-		// Add a new attribute override
-		if (virtual) {
-			return setAttributeOverrideVirtual((JavaAttributeOverride) override);
-		}
-		return setAttributeOverrideSpecified((JavaAttributeOverride) override);
-	}
-	
-	protected JavaAttributeOverride setAttributeOverrideVirtual(JavaAttributeOverride attributeOverride) {
-		int index = this.specifiedAttributeOverrides.indexOf(attributeOverride);
-		this.specifiedAttributeOverrides.remove(index);
-		String attributeOverrideName = attributeOverride.getName();
-		//add the virtual attribute override so that I can control the order that change notification is sent.
-		//otherwise when we remove the annotation from java we will get an update and add the attribute override
-		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
-		JavaAttributeOverride virtualAttributeOverride = null;
-		if (attributeOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
-				if (persistentAttribute.getName().equals(attributeOverrideName)) {
-					//store the virtualAttributeOverride so we can fire change notification later
-					virtualAttributeOverride = buildVirtualAttributeOverride(persistentAttribute.getName());
-					this.virtualAttributeOverrides.add(virtualAttributeOverride);
-					break;
-				}
-			}
-		}
-
-		getResourcePersistentAttribute().removeAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
-		
-		if (virtualAttributeOverride != null) {
-			fireItemAdded(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, virtualAttributeOverridesSize() - 1, virtualAttributeOverride);
-		}
-		return virtualAttributeOverride;
-	}
-	
-	protected JavaAttributeOverride setAttributeOverrideSpecified(JavaAttributeOverride oldAttributeOverride) {
-		int index = specifiedAttributeOverridesSize();
-		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
-		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
-		
-		AttributeOverrideAnnotation attributeOverrideResource = 
-				(AttributeOverrideAnnotation) getResourcePersistentAttribute().addAnnotation(
-					index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
-					AttributeOverridesAnnotation.ANNOTATION_NAME);
-		newAttributeOverride.initialize(attributeOverrideResource);
-		
-		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
-		this.virtualAttributeOverrides.remove(defaultIndex);
-		
-		newAttributeOverride.setName(oldAttributeOverride.getName());
-		newAttributeOverride.getColumn().setSpecifiedName(oldAttributeOverride.getColumn().getName());
-		
-		this.fireItemRemoved(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, defaultIndex, oldAttributeOverride);
-		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, newAttributeOverride);		
-
-		return newAttributeOverride;
-	}
-
-	
-	//****************** BaseEmbeddedMapping implementation *******************
-
 	@SuppressWarnings("unchecked")
 	public ListIterator<JavaAttributeOverride> attributeOverrides() {
-		return new CompositeListIterator<JavaAttributeOverride>(this.specifiedAttributeOverrides(), this.virtualAttributeOverrides());
+		return new CompositeListIterator<JavaAttributeOverride>(specifiedAttributeOverrides(), virtualAttributeOverrides());
 	}
 	
 	public int attributeOverridesSize() {
@@ -162,32 +83,109 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	public int specifiedAttributeOverridesSize() {
 		return this.specifiedAttributeOverrides.size();
 	}
+
+	protected JavaAttributeOverride addSpecifiedAttributeOverride(int index) {
+		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
+		this.specifiedAttributeOverrides.add(index, attributeOverride);
+		AttributeOverrideAnnotation attributeOverrideResource = 
+				(AttributeOverrideAnnotation) this.javaResourcePersistentMember.addAnnotation(
+					index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
+		attributeOverride.initialize(attributeOverrideResource);
+		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		return attributeOverride;
+	}
+	
+	protected JavaAttributeOverride setAttributeOverrideVirtual(boolean virtual, JavaAttributeOverride attributeOverride) {
+		// Add a new attribute override
+		if (virtual) {
+			return setAttributeOverrideVirtual(attributeOverride);
+		}
+		return setAttributeOverrideSpecified(attributeOverride);
+	}
+	
+	protected JavaAttributeOverride setAttributeOverrideVirtual(JavaAttributeOverride attributeOverride) {
+		int index = this.specifiedAttributeOverrides.indexOf(attributeOverride);
+		this.specifiedAttributeOverrides.remove(index);
+		String attributeOverrideName = attributeOverride.getName();
+		//add the virtual attribute override so that I can control the order that change notification is sent.
+		//otherwise when we remove the annotation from java we will get an update and add the attribute override
+		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		JavaAttributeOverride virtualAttributeOverride = null;
+		if (attributeOverrideName != null) {
+			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+				if (persistentAttribute.getName().equals(attributeOverrideName)) {
+					//store the virtualAttributeOverride so we can fire change notification later
+					virtualAttributeOverride = buildVirtualAttributeOverride(persistentAttribute);
+					this.virtualAttributeOverrides.add(virtualAttributeOverride);
+					break;
+				}
+			}
+		}
+
+		this.javaResourcePersistentMember.removeAnnotation(
+				index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+				AttributeOverridesAnnotation.ANNOTATION_NAME);
+		fireItemRemoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		
+		if (virtualAttributeOverride != null) {
+			fireItemAdded(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, virtualAttributeOverridesSize() - 1, virtualAttributeOverride);
+		}
+		return virtualAttributeOverride;
+	}
+	
+	protected JavaAttributeOverride setAttributeOverrideSpecified(JavaAttributeOverride oldAttributeOverride) {
+		int index = specifiedAttributeOverridesSize();
+		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
+		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
+		
+		AttributeOverrideAnnotation attributeOverrideResource = 
+				(AttributeOverrideAnnotation) this.javaResourcePersistentMember.addAnnotation(
+					index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					AttributeOverridesAnnotation.ANNOTATION_NAME);
+		newAttributeOverride.initialize(attributeOverrideResource);
+		
+		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
+		this.virtualAttributeOverrides.remove(defaultIndex);
+
+		newAttributeOverride.setName(oldAttributeOverride.getName());
+		newAttributeOverride.getColumn().setSpecifiedName(oldAttributeOverride.getColumn().getName());
+		
+		this.fireItemRemoved(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, defaultIndex, oldAttributeOverride);
+		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, newAttributeOverride);		
+
+		return newAttributeOverride;
+	}
+	
+	protected AttributeOverride.Owner createAttributeOverrideOwner() {
+		return new AttributeOverrideOwner();
+	}
 	
 	protected void addSpecifiedAttributeOverride(int index, JavaAttributeOverride attributeOverride) {
-		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
-
+	
 	protected void addSpecifiedAttributeOverride(JavaAttributeOverride attributeOverride) {
-		addSpecifiedAttributeOverride(this.specifiedAttributeOverrides.size(), attributeOverride);
+		this.addSpecifiedAttributeOverride(this.specifiedAttributeOverrides.size(), attributeOverride);
 	}
-
+	
 	protected void removeSpecifiedAttributeOverride_(JavaAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		getResourcePersistentAttribute().moveAnnotation(
+		this.javaResourcePersistentMember.moveAnnotation(
 				targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	protected void addVirtualAttributeOverride(JavaAttributeOverride attributeOverride) {
-		addItemToList(attributeOverride, this.virtualAttributeOverrides, BaseEmbeddedMapping.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
+		addItemToList(attributeOverride, this.virtualAttributeOverrides, VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	protected void removeVirtualAttributeOverride(JavaAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.virtualAttributeOverrides, BaseEmbeddedMapping.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
+		removeItemFromList(attributeOverride, this.virtualAttributeOverrides, VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 	public JavaAttributeOverride getAttributeOverrideNamed(String name) {
@@ -205,7 +203,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	public boolean containsSpecifiedAttributeOverride(String name) {
 		return containsOverride(name, specifiedAttributeOverrides());
 	}
-	
+
 	protected BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
 		for (BaseOverride override : CollectionTools.iterable(overrides)) {
 			String overrideName = override.getName();
@@ -222,56 +220,45 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	protected boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
 		return getOverrideNamed(name, overrides) != null;
 	}
-
-	public Embeddable getEmbeddable() {
-		return this.embeddable;
-	}
+	
 
 	
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.initializeAttributeOverrides();
-		this.initializeDefaultAttributeOverrides();
-		this.embeddable = this.getPersistentAttribute().getEmbeddable();
+	public void initialize(JavaResourcePersistentMember resourcePersistentMember) {
+		this.javaResourcePersistentMember = resourcePersistentMember;
+		this.initializeSpecifiedAttributeOverrides();
+		this.initializeVirtualAttributeOverrides();
 	}
 	
-	protected void initializeAttributeOverrides() {
-		Iterator<NestableAnnotation> annotations = 
-				this.resourcePersistentAttribute.annotations(
+	protected void initializeSpecifiedAttributeOverrides() {
+		for (Iterator<NestableAnnotation> stream = 
+				this.javaResourcePersistentMember.annotations(
 					AttributeOverrideAnnotation.ANNOTATION_NAME, 
-					AttributeOverridesAnnotation.ANNOTATION_NAME);
-		
-		while(annotations.hasNext()) {
-			JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
-			attributeOverride.initialize((AttributeOverrideAnnotation) annotations.next());
-			this.specifiedAttributeOverrides.add(attributeOverride);
+					AttributeOverridesAnnotation.ANNOTATION_NAME); 
+				stream.hasNext(); ) {
+			this.specifiedAttributeOverrides.add(
+				buildAttributeOverride((AttributeOverrideAnnotation) stream.next()));
 		}
 	}
 	
-	protected void initializeDefaultAttributeOverrides() {
-		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
-			String attributeName = i.next();
-			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(attributeName);
+	protected void initializeVirtualAttributeOverrides() {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
 			if (attributeOverride == null) {
-				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(attributeName));
+				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentAttribute));
 			}
 		}
 	}
 	
-	@Override
-	protected void update() {
-		super.update();
-		this.embeddable = this.getPersistentAttribute().getEmbeddable();
+	public void update(JavaResourcePersistentMember resourcePersistentMember) {
+		this.javaResourcePersistentMember = resourcePersistentMember;
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
-		
 	}
+	
 	protected void updateSpecifiedAttributeOverrides() {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
 		Iterator<NestableAnnotation> resourceAttributeOverrides = 
-				this.resourcePersistentAttribute.annotations(
+				this.javaResourcePersistentMember.annotations(
 					AttributeOverrideAnnotation.ANNOTATION_NAME, 
 					AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
@@ -291,33 +278,32 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 	
 	protected JavaAttributeOverride buildAttributeOverride(AttributeOverrideAnnotation attributeOverrideResource) {
-		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
+		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		attributeOverride.initialize(attributeOverrideResource);
 		return attributeOverride;
 	}
 	
-	protected JavaAttributeOverride buildVirtualAttributeOverride(String attributeName) {
-		return buildAttributeOverride(buildVirtualAttributeOverrideAnnotation(attributeName));
+	protected JavaAttributeOverride buildVirtualAttributeOverride(PersistentAttribute attribute) {
+		return buildAttributeOverride(buildVirtualAttributeOverrideAnnotation(attribute));
+	}
+	
+	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(PersistentAttribute attribute) {
+		ColumnMapping columnMapping = (ColumnMapping) attribute.getMapping();
+		return new VirtualAttributeOverrideAnnotation(this.javaResourcePersistentMember, attribute.getName(), columnMapping.getColumn());
 	}
 
-	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(String attributeName) {
-		ColumnMapping columnMapping = (ColumnMapping) this.getEmbeddable().getPersistentType().getAttributeNamed(attributeName).getMapping();
-		return new VirtualAttributeOverrideAnnotation(this.resourcePersistentAttribute, attributeName, columnMapping.getColumn());
-	}
-
-	protected void updateVirtualAttributeOverrides() {
-		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
-			String attributeName = i.next();
-			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(attributeName);
+	protected void updateVirtualAttributeOverrides( ) {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
 			if (attributeOverride == null) {
-				addVirtualAttributeOverride(buildVirtualAttributeOverride(attributeName));
+				addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute));
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.update(buildVirtualAttributeOverrideAnnotation(attributeName));
+				attributeOverride.update(buildVirtualAttributeOverrideAnnotation(persistentAttribute));
 			}
 		}
 		
-		Collection<String> attributeNames = CollectionTools.collection(allOverridableAttributeNames());
+		Collection<String> attributeNames = CollectionTools.collection(getParent().allOverridableAttributeNames());
 	
 		//remove any default mappings that are not included in the attributeNames collection
 		for (JavaAttributeOverride attributeOverride : CollectionTools.iterable(virtualAttributeOverrides())) {
@@ -327,28 +313,9 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 			}
 		}
 	}
-
-
-	public Iterator<String> allOverridableAttributeNames() {
-		return new TransformationIterator<PersistentAttribute, String>(this.allOverridableAttributes()) {
-			@Override
-			protected String transform(PersistentAttribute attribute) {
-				return attribute.getName();
-			}
-		};
-	}
-
-	public Iterator<PersistentAttribute> allOverridableAttributes() {
-		if (this.getEmbeddable() == null) {
-			return EmptyIterator.instance();
-		}
-		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.getEmbeddable().getPersistentType().attributes()) {
-			@Override
-			protected boolean accept(PersistentAttribute o) {
-				return o.isOverridableAttribute();
-			}
-		};
-	}
+	
+	
+	//******************** Code Completion *************************
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -356,23 +323,61 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		if (result != null) {
 			return result;
 		}
-		for (AttributeOverride override : CollectionTools.iterable(this.attributeOverrides())) {
-			result = ((JavaAttributeOverride) override).javaCompletionProposals(pos, filter, astRoot);
+		for (JavaAttributeOverride override : CollectionTools.iterable(this.attributeOverrides())) {
+			result = override.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		return null;
 	}
-
-	//******** Validation ******************
+	
+	//********** Validation ********************************************
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		
-		for (Iterator<JavaAttributeOverride> stream = attributeOverrides(); stream.hasNext();) {
+		for (Iterator<JavaAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
 			stream.next().validate(messages, reporter, astRoot);
 		}
 	}
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.javaResourcePersistentMember.getTextRange(astRoot);
+	}
+
+	
+	
+	// ********** attribute override owner **********
+
+	class AttributeOverrideOwner implements AttributeOverride.Owner {
+
+		public ColumnMapping getColumnMapping(String attributeName) {
+			if (attributeName == null) {
+				return null;
+			}
+			for (Iterator<PersistentAttribute> stream = getParent().getPersistentType().allAttributes(); stream.hasNext();) {
+				PersistentAttribute persAttribute = stream.next();
+				if (attributeName.equals(persAttribute.getName())) {
+					if (persAttribute.getMapping() instanceof ColumnMapping) {
+						return (ColumnMapping) persAttribute.getMapping();
+					}
+				}
+			}
+			return null;
+		}
+
+		public boolean isVirtual(BaseOverride override) {
+			return GenericJavaAttributeOverrideContainer.this.virtualAttributeOverrides.contains(override);
+		}
+
+		public BaseOverride setVirtual(boolean virtual, BaseOverride attributeOverride) {
+			return GenericJavaAttributeOverrideContainer.this.setAttributeOverrideVirtual(virtual, (JavaAttributeOverride) attributeOverride);
+		}
+
+		public TypeMapping getTypeMapping() {
+			return getParent();
+		}
+	}
+
 }
