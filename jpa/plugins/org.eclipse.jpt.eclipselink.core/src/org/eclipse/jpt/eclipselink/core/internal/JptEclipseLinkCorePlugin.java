@@ -33,7 +33,8 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	 * 
 	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
 	 */
-	public static final IContentType ECLIPSELINK_ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
+	public static final IContentType ECLIPSELINK_ORM_XML_CONTENT_TYPE = 
+			Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
 	
 	/**
 	 * Value of the content-type for eclipselink-orm.xml version 1.1 mappings files. Use this 
@@ -42,8 +43,19 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	 * 
 	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
 	 */
-	public static final IContentType ECLIPSELINK1_1_ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType("org.eclipse.jpt.eclipselink1_1.core.content.orm"); //$NON-NLS-1$
-
+	public static final IContentType ECLIPSELINK1_1_ORM_XML_CONTENT_TYPE = 
+			Platform.getContentTypeManager().getContentType("org.eclipse.jpt.eclipselink1_1.core.content.orm"); //$NON-NLS-1$
+	
+	/**
+	 * Value of the content-type for eclipselink-orm.xml version 2.0 mappings files. Use this 
+	 * value to retrieve the ORM xml content type from the content type manager 
+	 * and to add new eclipselink-orm.xml-like extensions to this content type.
+	 * 
+	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
+	 */
+	public static final IContentType ECLIPSELINK2_0_ORM_XML_CONTENT_TYPE = 
+			Platform.getContentTypeManager().getContentType("org.eclipse.jpt.eclipselink2_0.core.content.orm");
+	
 	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
 	
 	
@@ -86,7 +98,7 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	public static void log(Throwable throwable) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, throwable.getLocalizedMessage(), throwable));
 	}
-
+	
 	
 	// ********** plug-in implementation **********	
 	

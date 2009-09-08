@@ -30,6 +30,19 @@
 			</describer>
 		</content-type>
 		
+		<content-type
+			id="org.eclipse.jpt.eclipselink2_0.core.content.orm"
+			name="%ECLIPSELINK2_0_x_ORM_XML_CONTENT"
+			base-type="org.eclipse.jpt.eclipselink.core.content.orm">
+			<describer
+				class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementVersionContentDescriber">
+				<parameter
+					name="element"
+					value="{http://www.eclipse.org/eclipselink/xsds/persistence/orm}entity-mappings:2.0">
+				</parameter>
+			</describer>
+		</content-type>
+		
 	</extension>
 	
 	
@@ -157,12 +170,23 @@
 	             contentTypeId="org.eclipse.jpt.eclipselink1_1.core.content.orm">
 	       	</contentTypeBinding>
 	    </resourceFactory>
-	 </extension>
+	    
+	    <resourceFactory
+	        class="org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmXmlResourceFactory"
+	        isDefault="true">
+	       	<contentTypeBinding
+	             contentTypeId="org.eclipse.jpt.eclipselink2_0.core.content.orm">
+	       	</contentTypeBinding>
+	    </resourceFactory>
+	    
+	</extension>
+	
 	
 	<extension 
 		point="org.eclipse.wst.xml.core.catalogContributions">
 		
 		<catalogContribution id="default">
+			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd"
 				uri="schemas/eclipselink_orm_1_0.xsd" />
@@ -178,6 +202,14 @@
 			<public
 				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
 				uri="schemas/eclipselink_orm_1_1.xsd"/>
+			
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_0.xsd"
+				uri="schemas/eclipselink_orm_2_0.xsd" />
+			
+			<public
+				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
+				uri="schemas/eclipselink_orm_2_0.xsd"/>
 			
 		</catalogContribution>
 		
