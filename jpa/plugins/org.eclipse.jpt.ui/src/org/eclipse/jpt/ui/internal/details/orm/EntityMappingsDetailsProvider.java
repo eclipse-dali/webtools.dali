@@ -12,10 +12,10 @@ package org.eclipse.jpt.ui.internal.details.orm;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.internal.details.AbstractEntityMappingsDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  * configuration or from the Mappings Descriptor).
  */
 public class EntityMappingsDetailsProvider
-	implements JpaDetailsProvider
+	extends AbstractEntityMappingsDetailsProvider
 {
 	// singleton
 	private static final JpaDetailsProvider INSTANCE = new EntityMappingsDetailsProvider();
@@ -41,10 +41,6 @@ public class EntityMappingsDetailsProvider
 	 */
 	private EntityMappingsDetailsProvider() {
 		super();
-	}
-	
-	public String getId() {
-		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
 	}
 	
 	public IContentType getContentType() {
