@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.EntityMappings2_0DetailsProvider;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmBasicMapping2_0UiProvider;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddable2_0UiProvider;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedIdMapping2_0UiProvider;
@@ -63,6 +65,7 @@ public class Generic2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiProvid
 	
 	@Override
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(EntityMappings2_0DetailsProvider.instance());
 	}
 	
 	

@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.details.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.ui.internal.details.GeneratorComposite;
 import org.eclipse.jpt.ui.internal.details.SequenceGeneratorComposite;
 import org.eclipse.jpt.ui.internal.details.TableGeneratorComposite;
 import org.eclipse.jpt.ui.internal.details.GeneratorComposite.GeneratorBuilder;
@@ -80,18 +82,19 @@ import org.eclipse.ui.part.PageBook;
 public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 {
 	private WritablePropertyValueModel<OrmGenerator> generatorHolder;
-	private SequenceGeneratorComposite sequenceGeneratorPane;
+	private GeneratorComposite<SequenceGenerator> sequenceGeneratorPane;
 	private TableGeneratorComposite tableGeneratorPane;
 	private AddRemoveListPane<EntityMappings> listPane;
 
 	/**
-	 * Creates a new <code>OrmGeneratorsComposite</code>.
+	 * Creates a new <code>EntityMappingsGeneratorsComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EntityMappingsGeneratorsComposite(Pane<? extends EntityMappings> parentPane,
-	                              Composite parent) {
+	public EntityMappingsGeneratorsComposite(
+						Pane<? extends EntityMappings> parentPane,
+						Composite parent) {
 
 		super(parentPane, parent, false);
 	}
@@ -284,23 +287,22 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 
 		// List pane
 		this.listPane = addListPane(container);
-		installPaneEnabler();
+		this.installPaneEnabler();
 
 		// Property pane
 		PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder =
-			buildSequenceGeneratorHolder();
+			this.buildSequenceGeneratorHolder();
 		PropertyValueModel<TableGenerator> tableGeneratorHolder =
-			buildTableGeneratorHolder();
+			this.buildTableGeneratorHolder();
 
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Sequence Generator property pane
-		this.sequenceGeneratorPane = new SequenceGeneratorComposite(
-			this,
-			sequenceGeneratorHolder,
+		this.sequenceGeneratorPane = this.buildSequenceGeneratorComposite(
 			pageBook,
-			buildSequenceGeneratorBuilder()
+			sequenceGeneratorHolder,
+			this.buildSequenceGeneratorBuilder()
 		);
 
 		// Table Generator property pane
@@ -308,12 +310,25 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 			this,
 			tableGeneratorHolder,
 			pageBook,
-			buildTableGeneratorBuilder()
+			this.buildTableGeneratorBuilder()
 		);
 
-		addAlignRight(this.sequenceGeneratorPane);
-		addAlignRight(this.tableGeneratorPane);
-		installPaneSwitcher(pageBook);
+		this.addAlignRight(this.sequenceGeneratorPane);
+		this.addAlignRight(this.tableGeneratorPane);
+		this.installPaneSwitcher(pageBook);
+	}
+
+	protected GeneratorComposite<SequenceGenerator> buildSequenceGeneratorComposite(
+			Composite parent,
+			PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder,
+			GeneratorBuilder<SequenceGenerator> generatorBuilder) {
+
+		return new SequenceGeneratorComposite(
+			this,
+			sequenceGeneratorHolder,
+			parent,
+			generatorBuilder
+		);
 	}
 
 	private AddRemoveListPane<EntityMappings> addListPane(Composite container) {
@@ -321,22 +336,22 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		return new AddRemoveListPane<EntityMappings>(
 			this,
 			container,
-			buildGeneratorAdapter(),
-			buildDisplayableGeneratorListHolder(),
+			this.buildGeneratorAdapter(),
+			this.buildDisplayableGeneratorListHolder(),
 			this.generatorHolder,
-			buildGeneratorLabelProvider()
+			this.buildGeneratorLabelProvider()
 		);
 	}
 
 	private void installPaneEnabler() {
 		new PaneEnabler(
-			buildPaneEnablerHolder(),
+			this.buildPaneEnablerHolder(),
 			this.listPane
 		);
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.generatorHolder, buildPaneTransformer(), pageBook);
+		new ControlSwitcher(this.generatorHolder, this.buildPaneTransformer(), pageBook);
 	}	
 
 	private GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder() {
