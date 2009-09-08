@@ -77,7 +77,7 @@ import org.eclipse.swt.widgets.Composite;
 public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMappings>
 {
 	/**
-	 * Creates a new <code>XmlEntityMappingsDetailsPage</code>.
+	 * Creates a new <code>EntityMappingsDetailsPage</code>.
 	 *
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
@@ -242,13 +242,17 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		);
 
 		// Generators pane
-		new EntityMappingsGeneratorsComposite(
-			this,
-			container
-		);
+		this.buildEntityMappingsGeneratorsComposite(container);
 
 		// Queries pane
 		new OrmQueriesComposite(
+			this,
+			container
+		);
+	}
+
+	protected void buildEntityMappingsGeneratorsComposite(Composite container) {
+		new EntityMappingsGeneratorsComposite(
 			this,
 			container
 		);

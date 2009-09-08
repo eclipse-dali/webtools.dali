@@ -84,7 +84,7 @@ import org.eclipse.swt.widgets.Composite;
 public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.internal.details.orm.EntityMappingsDetailsPage
 {
 	/**
-	 * Creates a new <code>XmlEntityMappingsDetailsPage</code>.
+	 * Creates a new <code>EclipseLinkEntityMappingsDetailsPage</code>.
 	 *
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
@@ -94,7 +94,6 @@ public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.int
 
 		super(parent, widgetFactory);
 	}
-
 
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -106,7 +105,7 @@ public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.int
 		addLabeledComposite(
 			container,
 			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_schema,
-			addSchemaCombo(container),
+			this.addSchemaCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_SCHEMA
 		);
 
@@ -114,7 +113,7 @@ public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.int
 		addLabeledComposite(
 			container,
 			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_catalog,
-			addCatalogCombo(container),
+			this.addCatalogCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
 
@@ -122,22 +121,19 @@ public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.int
 		addLabeledComposite(
 			container,
 			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_access,
-			addAccessTypeCombo(container),
+			this.addAccessTypeCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_ACCESS
 		);
 
 		// Persistence Unit Metadata widgets
 		new PersistenceUnitMetadataComposite(
 			this,
-			buildPersistentUnitMetadataHolder(),
-			addSubPane(container, 5)
+			this.buildPersistentUnitMetadataHolder(),
+			this.addSubPane(container, 5)
 		);
 
 		// Generators pane
-		new EntityMappingsGeneratorsComposite(
-			this,
-			container
-		);
+		this.buildEntityMappingsGeneratorsComposite(container);
 
 		// Queries pane
 		new OrmQueriesComposite(
@@ -153,7 +149,7 @@ public class EclipseLinkEntityMappingsDetailsPage extends org.eclipse.jpt.ui.int
 		
 		new OrmEclipseLinkConvertersComposite(
 			this,
-			buildConverterHolder(),
+			this.buildConverterHolder(),
 			container
 		);
 	}
