@@ -56,7 +56,8 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 	 */
 	@Override
 	protected String[] getValidationPropertyNames() {
-		return new String[]{IEntityDataModelProperties.ENTITY_FIELDS};
+		return new String[]{IEntityDataModelProperties.ENTITY_FIELDS, 
+							IEntityDataModelProperties.PK_FIELDS};
 	}
 	
 	/* Create the main composite and add to it the entity properties

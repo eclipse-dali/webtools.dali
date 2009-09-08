@@ -24,8 +24,14 @@ import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposalProvider;
+import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -59,13 +65,13 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -81,13 +87,42 @@ public class EntityRowTableWizardSection extends Composite {
 	/**
 	 * The possible entity types, mentioned in the specification (Chapter 2.1.1 Persistent Fields and Properties p.20)
 	 */
-	protected final static String[] VALID_TYPES = {"int", "long", "short", "char", "boolean", "byte", "double", "float", "java.lang.String",
-		"byte[]", "char[]",	"java.lang.Byte[]", "java.lang.Character[]", "java.math.BigDecimal", "java.math.BigInteger", "java.sql.Date", "java.sql.Time", "java.sql.Timestamp",
-		"java.util.Date", "java.util.Calendar"};
+	protected final static String[] VALID_TYPES = {"int", 
+												   "long", 
+												   "short", 
+												   "char", 
+												   "boolean", 
+												   "byte", 
+												   "double", 
+												   "float", 
+												   "java.lang.String", 
+												   "java.lang.Integer", 
+												   "java.lang.Long", 
+												   "java.lang.Short",
+												   "java.lang.Character", 
+												   "java.lang.Boolean", 
+												   "java.lang.Byte", 
+												   "java.lang.Double", 
+												   "java.lang.Float", 
+												   "java.math.BigDecimal", 
+												   "java.math.BigInteger", 
+												   "java.util.Date", 
+												   "java.util.Calendar",
+												   "java.sql.Date", 
+												   "java.sql.Time", 
+												   "java.sql.Timestamp",
+												   "String", 
+												   "Integer", 
+												   "Long", 
+												   "Short",
+												   "Character", 
+												   "Boolean", 
+												   "Byte", 
+												   "Double", 
+												   "Float" };	
 	
 	  private CheckboxTableViewer mTableViewer = null;
 	  private Table mTableWidget = null;
-	  private final int PK_COLUMN = 0;
 	  private final int NAME_COLUMN = 1;
 	  private final int TYPE_COLUMN = 2;
 	
@@ -98,12 +133,20 @@ public class EntityRowTableWizardSection extends Composite {
 	private Button editButton;
 	private Button removeButton;
 	private String title = EntityWizardMsg.ENTITY_FIELDS_DIALOG_TITLE;
-	private String[] labelsForCombo = VALID_TYPES;
+	private String[] typeProposals = VALID_TYPES;
 	private String[] labelsForText = new String[]{EntityWizardMsg.TYPE_TEXT_FIELD, EntityWizardMsg.NAME_TEXT_FIELD};
 	private IDataModel model;
 	private String propertyName;
 	private Image labelProviderImage = null;
 	private DialogCallback callback;	
+	private static KeyStroke ks = null;
+	static {
+		try {
+			ks = KeyStroke.getInstance("Ctrl+Space");			
+		} catch (ParseException e1) {
+			JptUiPlugin.log(e1);
+		} 
+	}
 
 
 	/**
@@ -261,16 +304,13 @@ public class EntityRowTableWizardSection extends Composite {
 	 * add new entity field
 	 */
 	private void handleAddButtonSelected() {
-		AddFieldDialog dialog = new AddFieldDialog(getShell(), title, labelsForCombo, labelsForText);
+		AddFieldDialog dialog = new AddFieldDialog(getShell(), title, typeProposals, labelsForText);
 		int result = dialog.open();
 		if (result == Window.CANCEL) {
 			return;
 		}
 		EntityRow entityRow = dialog.getEntityRow();
 		addEntityRow(entityRow);
-		if (!entityRow.couldBeKey()) {
-			mTableViewer.setGrayed(entityRow, true);
-		}		
 	}
 	
 	/**
@@ -305,18 +345,13 @@ public class EntityRowTableWizardSection extends Composite {
 		int index = mTableWidget.getSelectionIndex();
 		boolean isChecked = mTableViewer.getChecked(entityForEdit);
 		
-		EditFieldDialog dialog = new EditFieldDialog(getShell(), title, labelsForCombo, labelsForText, entityForEdit);
+		EditFieldDialog dialog = new EditFieldDialog(getShell(), title, typeProposals, labelsForText, entityForEdit);
 		dialog.open();
 		EntityRow entityRow = dialog.getEntityRow();
 		if (entityRow != null) {			
 			editEntityRow(index, entityRow);
 			mTableViewer.setChecked(entityRow, isChecked);
-			if (!entityRow.couldBeKey()) {
-				mTableViewer.setChecked(entityRow, false);
-				mTableViewer.setGrayed(entityRow, true);
-			} else {				
-				mTableViewer.setGrayed(entityRow, false);
-			}
+			mTableViewer.setGrayed(entityRow, false);
 		}
 	}
 	
@@ -425,9 +460,7 @@ public class EntityRowTableWizardSection extends Composite {
 			if (columnIndex == TYPE_COLUMN) {
 				return entity.getFqnTypeName();
 			}		
-			if (entity.couldBeKey()) {
-				mTableViewer.setChecked(entity, entity.isKey());
-			} 
+			mTableViewer.setChecked(entity, entity.isKey());
 			return "";
 		}
 
@@ -454,17 +487,16 @@ public class EntityRowTableWizardSection extends Composite {
 	private class PKFieldCheckStateListener implements ICheckStateListener {
 
 		public void checkStateChanged(CheckStateChangedEvent event) {
-			Object[] checkedElements = mTableViewer.getCheckedElements();
 			List<String> pkFields = new ArrayList<String>();
-			for (Object object : checkedElements) {
-				EntityRow entity = (EntityRow)object;
-				if (entity.couldBeKey()) {					
-					pkFields.add(entity.getName());
-				} else {
-					mTableViewer.setChecked(entity, false);
-				}
-			}			
-			model.setProperty(IEntityDataModelProperties.PK_FIELDS, pkFields);			
+	        TableItem[] children = mTableViewer.getTable().getItems();
+	        for (int i = 0; i < children.length; i++) {
+	            TableItem item = children[i];
+	            EntityRow entityRow = (EntityRow)item.getData(); 
+	            entityRow.setKey(item.getChecked());
+				if (item.getChecked())
+					pkFields.add(entityRow.getName());
+	        }
+	        model.setProperty(IEntityDataModelProperties.PK_FIELDS, pkFields);
 		}
 		
 	}
@@ -485,7 +517,7 @@ public class EntityRowTableWizardSection extends Composite {
 		 * @return <code>true</code> if the values in the text fields are 
 		 *         valid, <code>false</code> otherwise.	 
 		 */
-		public boolean validate(Combo combo, Text[] texts);
+		public boolean validate(Text type, Text[] texts);
 		
 		/**
 		 * Retrieves the entity presentation object from the fields of the dialog. 
@@ -497,7 +529,7 @@ public class EntityRowTableWizardSection extends Composite {
 		 * @param texts	the name of the entity field	
 		 * @return the entity presentation object retrieved from the dialog
 		 */
-		public EntityRow retrieveResultStrings(Combo combo, Text[] texts);
+		public EntityRow retrieveResultStrings(Text type, Text[] texts);
 		
 	}
 	
@@ -510,7 +542,7 @@ public class EntityRowTableWizardSection extends Composite {
 		/**
 		 * The first text field should not be empty. 
 		 */
-		public boolean validate(Combo combo, Text[] texts) {
+		public boolean validate(Text type, Text[] texts) {
 			if (texts.length > 0) {
 				IStatus validateFieldNameStatus = JavaConventions
 						.validateFieldName(texts[0].getText(),
@@ -520,7 +552,7 @@ public class EntityRowTableWizardSection extends Composite {
 					return false;
 				}
 			}
-			if (combo.getText().equals("")) {
+			if (type.getText().equals("")) {
 				return false;
 			}
 			return true;
@@ -531,9 +563,9 @@ public class EntityRowTableWizardSection extends Composite {
 		 * entity field presentation
 		 * @see org.eclipse.jpt.ui.internal.wizards.entity.data.model.EntityRow
 		 */
-		public EntityRow retrieveResultStrings(Combo combo, Text[] texts) {
+		public EntityRow retrieveResultStrings(Text type, Text[] texts) {
 			EntityRow entity = new EntityRow();			
-			entity.setFqnTypeName(combo.getText());
+			entity.setFqnTypeName(type.getText());
 			entity.setName(texts[0].getText());
 			return entity;
 		}
@@ -546,23 +578,24 @@ public class EntityRowTableWizardSection extends Composite {
 	 */
 	private class AddFieldDialog extends Dialog implements ModifyListener, SelectionListener {
 		protected String windowTitle;
-		protected String[] labelsForCombo;
+		protected String[] typeProposals;
 		protected String[] labelsForText;
 		protected Text[] texts;		
 		protected EntityRow entityRow;
-		protected Combo combo;
+		protected Text attributeType;
+		protected ContentProposalAdapter contentProposalAdapter; 		
 		
 		/**
 		 * Constructs AddFieldDialog
 		 * @param shell
 		 * @param windowTitle dialog label
-		 * @param labelsForCombo the elements for the combo
+		 * @param typeProposals the elements for the combo
 		 * @param labelsForText name text
 		 */
-		public AddFieldDialog(Shell shell, String windowTitle, String[] labelsForCombo, String[] labelsForText) {
+		public AddFieldDialog(Shell shell, String windowTitle, String[] typeProposals, String[] labelsForText) {
 			super(shell);
 			this.windowTitle = windowTitle;
-			this.labelsForCombo = labelsForCombo;
+			this.typeProposals = typeProposals;
 			this.labelsForText  = labelsForText;
 		}
 		
@@ -589,11 +622,11 @@ public class EntityRowTableWizardSection extends Composite {
 			label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 			
 			
-			combo = new Combo(composite, SWT.SINGLE | SWT.BORDER);// | SWT.READ_ONLY);		
-			combo.setItems(labelsForCombo);
+			attributeType = new Text(composite, SWT.SINGLE | SWT.BORDER);// | SWT.READ_ONLY);		
+			//combo.setItems(labelsForCombo);
 			data = new GridData(GridData.FILL_HORIZONTAL);
 			data.horizontalSpan = 2;			
-			combo.setLayoutData(data);
+			attributeType.setLayoutData(data);
 			
 			Button browseButton = new Button(composite, SWT.PUSH);
 			browseButton.setText(EntityWizardMsg.BROWSE_BUTTON_LABEL);
@@ -618,14 +651,31 @@ public class EntityRowTableWizardSection extends Composite {
 				labelI.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 				texts[i-1] = new Text(composite, SWT.SINGLE | SWT.BORDER);
 				data = new GridData(GridData.FILL_HORIZONTAL);
-				data.widthHint = 100;
+				data.horizontalSpan = 2;		
 				texts[i-1].setLayoutData(data);
 			}
 
-			combo.setFocus();
+			attributeType.setFocus();
 			Dialog.applyDialogFont(parent);
+			createContentProposalProvider();			
 			return composite;
 		}
+		
+		private IContentProposalProvider createContentProposalProvider() {
+			SimpleContentProposalProvider contProvider = new SimpleContentProposalProvider(typeProposals);
+			contProvider.setFiltering(true);
+			
+			contentProposalAdapter = new ContentProposalAdapter(
+					attributeType,
+					new TextContentAdapter(), 
+					contProvider,
+					ks,
+					new char[] {'b', 'c', 'd', 'i', 'f', 'l', 's', 'j', 'B', 'C', 'D', 'F', 'S', 'L', 'I'});
+			contentProposalAdapter.setEnabled(true);
+			contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+			return contProvider;
+		}
+		
 
 		/**
 		 * Process browsing when the Browse... button have been pressed. Allow adding of entity field
@@ -670,7 +720,7 @@ public class EntityRowTableWizardSection extends Composite {
 				if (type != null) {
 					superclassFullPath = type.getFullyQualifiedName();
 				}
-				combo.setText(superclassFullPath);
+				attributeType.setText(superclassFullPath);
 				//getControl().setCursor(null);
 				return;
 			}
@@ -685,8 +735,8 @@ public class EntityRowTableWizardSection extends Composite {
 		protected Control createContents(Composite parent) {
 			Composite composite = (Composite) super.createContents(parent);
 			
-			combo.addSelectionListener(this);
-			combo.addModifyListener(this);
+			attributeType.addSelectionListener(this);
+			attributeType.addModifyListener(this);
 			for (int i = 0; i < texts.length; i++) {
 				texts[i].addModifyListener(this);
 			}
@@ -701,7 +751,7 @@ public class EntityRowTableWizardSection extends Composite {
 		 */
 		@Override
 		protected void okPressed() {
-			entityRow = callback.retrieveResultStrings(combo, texts);
+			entityRow = callback.retrieveResultStrings(attributeType, texts);
 			super.okPressed();
 		}
 
@@ -724,7 +774,7 @@ public class EntityRowTableWizardSection extends Composite {
 		 * @see DialogCallback
 		 */
 		private void updateOKButton() {
-			getButton(IDialogConstants.OK_ID).setEnabled(callback.validate(combo, texts));
+			getButton(IDialogConstants.OK_ID).setEnabled(callback.validate(attributeType, texts));
 		}
 		/* (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
@@ -762,7 +812,7 @@ public class EntityRowTableWizardSection extends Composite {
 
 			Composite composite = (Composite) super.createDialogArea(parent);
 
-			combo.setText(entityRow.getFqnTypeName());
+			attributeType.setText(entityRow.getFqnTypeName());
 			texts[0].setText(entityRow.getName());
 			
 			return composite;

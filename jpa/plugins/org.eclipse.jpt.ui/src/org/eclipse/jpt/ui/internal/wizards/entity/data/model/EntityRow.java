@@ -17,48 +17,23 @@ import java.util.List;
 public class EntityRow {
 
 	private static final String DOT = ".";
+	private static final char BRACKET_SQUARE = '[';
+	private static final char BRACKET_ANGULAR = '<';
+	private static final String PACKAGE_JAVA_LANG = "java.lang.";
 	private boolean key = false;
 	private String name = "";
 	private String type = "";
 	private String fqnTypeName = "";
-	private boolean isSimpleType = false;
 
 	private final static String[] PK_TYPES = {"int", "long", "short", "char", "boolean", "byte", "double", "float", 
 		"java.lang.String", "java.sql.Date", "java.util.Date", "java.lang.Integer", "java.lang.Long", "java.lang.Short",
 		"java.lang.Character", "java.lang.Boolean", "java.lang.Byte", "java.lang.Double", "java.lang.Float"};
 	
-	private final static List<String> VALID_PK_TYPES = Arrays.asList(PK_TYPES);
-	
-	
-	/**
-	 * Constructs <code>EntityColumn</code>.
-	 */
-	public EntityRow() {
-		super();
-	}
+	private final static String[] PK_TYPES_SHORT = { "String", "Integer", "Long", "Short", "Character", "Boolean", 
+		 "Byte", "Double", "Float" };
 
-	
-	/**
-	 * 
-	 * Constructs <code>EntityColumn</code> with the following parameters
-	 * 
-	 * @param fqnTypeName - fully qualified name of the entity field type
-	 * @param name - name of the entity field
-	 * @param isKey - flag which indicates whether the entity field is primary key or part of composite primary key
-	 */
-	public EntityRow(String fqnTypeName, String name, boolean isKey) {
-		super();
-		this.fqnTypeName = type;
-		this.name = name;
-		this.key = isKey;
-		if (fqnTypeName.indexOf(DOT) == -1) {
-			type = fqnTypeName;
-			isSimpleType = true;
-		} else {
-			type = getSimpleName(fqnTypeName);
-		}
-	}
-	
+	private final static List<String> VALID_PK_TYPES = Arrays.asList(PK_TYPES);
+	private final static List<String> VALID_PK_TYPES_SHORT = Arrays.asList(PK_TYPES_SHORT);
 	
 	/**
 	 * @return whether the presented entity field is primary key or part of composite primary key
@@ -124,6 +99,31 @@ public class EntityRow {
 	public String getFqnTypeName() {
 		return fqnTypeName;
 	}
+	
+	private String removeSpaces(String str) {
+		str = str.trim();
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (!Character.isWhitespace(c)) 
+				sb.append(c);
+		}
+		return sb.toString();
+	}
+	
+	private String getBasicFQN(String fqn) {
+		String res;
+		int bsIndex = fqn.indexOf(BRACKET_SQUARE);
+		int baIndex = fqn.indexOf(BRACKET_ANGULAR);
+		if (bsIndex == -1) {
+			if (baIndex == -1) res = fqn;
+			else res = fqn.substring(0, baIndex);
+		} else {
+			if (baIndex == -1) res = fqn.substring(0, bsIndex);
+			else res = fqn.substring(0, Math.max(bsIndex, baIndex));
+		}
+		return res;
+	}
 
 	/**
 	 * Sets the fully qualified type name of the entity field
@@ -131,30 +131,20 @@ public class EntityRow {
 	 * @param fqnTypeName
 	 */
 	public void setFqnTypeName(String fqnTypeName) {
-		this.fqnTypeName = fqnTypeName;
-		if (fqnTypeName.indexOf(DOT) == -1) {
-			setType(fqnTypeName);
-			setSimpleType(true);
+		fqnTypeName = removeSpaces(fqnTypeName);
+		String fqnBasicTypeName = getBasicFQN(fqnTypeName);
+		if (fqnBasicTypeName.indexOf(DOT) == -1) {
+			if (VALID_PK_TYPES_SHORT.contains(fqnBasicTypeName)) {
+				this.fqnTypeName = PACKAGE_JAVA_LANG + fqnTypeName;
+				setType(fqnTypeName);
+			} else {
+				this.fqnTypeName = fqnTypeName;
+				setType(fqnTypeName);
+			}			
 		} else {
+			this.fqnTypeName = fqnTypeName;
 			setType(getSimpleName(fqnTypeName));
-		}
-		
-	}
-
-	/**
-	 * @return is the type of the entity field is primitive type
-	 */
-	public boolean isSimpleType() {
-		return isSimpleType;
-	}
-
-	/**
-	 * Sets the flag which indicate the type of the entity field as primitive type
-	 * 
-	 * @param isSimpleType
-	 */
-	public void setSimpleType(boolean isSimpleType) {
-		this.isSimpleType = isSimpleType;
+		}		
 	}
 
 	/**
@@ -173,7 +163,6 @@ public class EntityRow {
 	 */
 	private String getSimpleName(String fullyName) {
 		return fullyName.substring(fullyName.lastIndexOf(DOT) + 1);
-
 	}
 
 	@Override
