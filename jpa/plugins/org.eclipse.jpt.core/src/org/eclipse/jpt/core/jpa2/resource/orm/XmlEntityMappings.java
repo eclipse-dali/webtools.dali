@@ -58,7 +58,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 
 	private static Translator buildRootTranslator() {
 		return new SimpleRootTranslator(
-				JPA.ENTITY_MAPPINGS,
+				JPA2_0.ENTITY_MAPPINGS,
 				Orm2_0Package.eINSTANCE.getXmlEntityMappings(),
 				buildTranslatorChildren()
 			);
@@ -71,29 +71,28 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 			buildSchemaNamespaceTranslator(),
 			buildSchemaLocationTranslator(),
 			buildDescriptionTranslator(),
-			XmlPersistenceUnitMetadata.buildTranslator(JPA.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
+			XmlPersistenceUnitMetadata.buildTranslator(JPA2_0.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
 			buildSchemaTranslator(),
 			buildCatalogTranslator(),
 			buildAccessTranslator(),
-			XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
-			XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
+			XmlSequenceGenerator.buildTranslator(JPA2_0.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
+			XmlTableGenerator.buildTranslator(JPA2_0.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
 			//TODO switch these to use the 2.0 version once we have context model for XmlNamedQueries in 2.0
-			org.eclipse.jpt.core.resource.orm.XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
-			org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
-			SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
-			XmlMappedSuperclass.buildTranslator(JPA.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
-			XmlEntity.buildTranslator(JPA.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
-			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
+			org.eclipse.jpt.core.resource.orm.XmlNamedQuery.buildTranslator(JPA2_0.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
+			org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery.buildTranslator(JPA2_0.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
+			SqlResultSetMapping.buildTranslator(JPA2_0.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
+			XmlMappedSuperclass.buildTranslator(JPA2_0.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
+			XmlEntity.buildTranslator(JPA2_0.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
+			XmlEmbeddable.buildTranslator(JPA2_0.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
 	}
 	
 	private static Translator buildNamespaceTranslator() {
-		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.NAMESPACE_URL);
+		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA2_0.SCHEMA_NAMESPACE);
 	}
 
 	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_2_0);
+		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA2_0.SCHEMA_NAMESPACE + ' ' + JPA2_0.SCHEMA_LOCATION);
 	}
-
 } // XmlEntityMappings

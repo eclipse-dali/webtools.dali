@@ -341,11 +341,11 @@ public class XmlEmbedded extends org.eclipse.jpt.core.resource.orm.XmlEmbedded i
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}		
 	
 	protected static Translator buildAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlEmbedded_AssociationOverrides());
+		return XmlAssociationOverride.buildTranslator(JPA2_0.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlEmbedded_AssociationOverrides());
 	}
 
 } // XmlEmbedded

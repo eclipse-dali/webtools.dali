@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.jpa2.resource.orm.JPA;
+import org.eclipse.jpt.core.jpa2.resource.orm.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
@@ -62,7 +62,7 @@ public class Orm2_0XmlResourceProvider
 	@Override
 	protected void populateRoot() {
 		XmlEntityMappings entityMappings = Orm2_0Factory.eINSTANCE.createXmlEntityMappings();
-		entityMappings.setVersion(JPA.VERSION_2_0);
+		entityMappings.setVersion(JPA2_0.SCHEMA_VERSION);
 		getResourceContents().add(entityMappings);
 	}
 }

@@ -201,7 +201,7 @@ public class XmlCollectionTable extends AbstractXmlTable
 	}
 	
 	protected static Translator buildJoinColumnsTranslator() {
-		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlCollectionTable_JoinColumns());
+		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA2_0.JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlCollectionTable_JoinColumns());
 	}
 
 } // XmlCollectionTable

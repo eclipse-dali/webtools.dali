@@ -277,11 +277,11 @@ public class XmlConversionValue extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	public TextRange getDataValueTextRange() {
-		return getAttributeTextRange(JPA.CONVERSION_VALUE__DATA_VALUE);
+		return getAttributeTextRange(EclipseLink.CONVERSION_VALUE__DATA_VALUE);
 	}
 	
 	public TextRange getObjectValueTextRange() {
-		return getAttributeTextRange(JPA.CONVERSION_VALUE__OBJECT_VALUE);
+		return getAttributeTextRange(EclipseLink.CONVERSION_VALUE__OBJECT_VALUE);
 	}
 	
 	// ********** translators **********
@@ -298,11 +298,11 @@ public class XmlConversionValue extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	protected static Translator buildDataValueTranslator() {
-		return new Translator(JPA.CONVERSION_VALUE__DATA_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlConversionValue_DataValue(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CONVERSION_VALUE__DATA_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlConversionValue_DataValue(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildObjectValueTranslator() {
-		return new Translator(JPA.CONVERSION_VALUE__OBJECT_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlConversionValue_ObjectValue(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CONVERSION_VALUE__OBJECT_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlConversionValue_ObjectValue(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlConversionValue

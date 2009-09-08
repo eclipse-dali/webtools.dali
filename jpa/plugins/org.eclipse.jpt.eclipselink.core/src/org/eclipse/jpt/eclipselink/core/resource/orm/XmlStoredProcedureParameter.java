@@ -566,27 +566,27 @@ public class XmlStoredProcedureParameter extends AbstractJpaEObject implements J
 	}
 	
 	protected static Translator buildDirectionTranslator() {
-		return new Translator(JPA.PARAMETER__DIRECTION, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Direction(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.PARAMETER__DIRECTION, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Direction(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.PARAMETER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.PARAMETER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Name(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildQueryParameterTranslator() {
-		return new Translator(JPA.PARAMETER__QUERY_PARAMETER, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_QueryParameter(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.PARAMETER__QUERY_PARAMETER, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_QueryParameter(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildTypeTranslator() {
-		return new Translator(JPA.PARAMETER__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Type(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.PARAMETER__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_Type(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildJdbcTypeTranslator() {
-		return new Translator(JPA.PARAMETER__JDBC_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_JdbcType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.PARAMETER__JDBC_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_JdbcType(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildJdbcTypeNameTranslator() {
-		return new Translator(JPA.PARAMETER__JDBC_TYPE_NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_JdbcTypeName(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.PARAMETER__JDBC_TYPE_NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlStoredProcedureParameter_JdbcTypeName(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlStoredProcedureParameter

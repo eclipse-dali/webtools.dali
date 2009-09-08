@@ -10,13 +10,10 @@
 package org.eclipse.jpt.eclipselink.core.v2_0.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.jpa2.resource.orm.JPA;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -219,7 +216,6 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOr
 	}
 		
 	protected static Translator buildValidationModeTranslator() {
-		return new Translator(JPA.VALIDATION_MODE, EclipseLink2_0OrmPackage.eINSTANCE.getXmlOrderColumn_ValidationMode(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.VALIDATION_MODE, EclipseLink2_0OrmPackage.eINSTANCE.getXmlOrderColumn_ValidationMode(), Translator.DOM_ATTRIBUTE);
 	}
-
 } // XmlOrderColumn

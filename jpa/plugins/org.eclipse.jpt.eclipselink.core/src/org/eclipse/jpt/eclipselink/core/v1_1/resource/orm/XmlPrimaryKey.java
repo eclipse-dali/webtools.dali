@@ -286,11 +286,11 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	protected static Translator buildValidationTranslator() {
-		return new Translator(JPA.PRIMARY_KEY__VALIDATION, EclipseLink1_1OrmPackage.eINSTANCE.getXmlPrimaryKey_Validation(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink1_1.PRIMARY_KEY__VALIDATION, EclipseLink1_1OrmPackage.eINSTANCE.getXmlPrimaryKey_Validation(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildColumnTranslator() {
-		return XmlColumn.buildTranslator(JPA.PRIMARY_KEY__COLUMN, EclipseLink1_1OrmPackage.eINSTANCE.getXmlPrimaryKey_Columns());
+		return XmlColumn.buildTranslator(EclipseLink1_1.PRIMARY_KEY__COLUMN, EclipseLink1_1OrmPackage.eINSTANCE.getXmlPrimaryKey_Columns());
 	}
 
 } // XmlPrimaryKey

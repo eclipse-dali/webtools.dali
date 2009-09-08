@@ -315,11 +315,11 @@ public class XmlAssociationOverride extends org.eclipse.jpt.core.resource.orm.Xm
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlAssociationOverride_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlAssociationOverride_Description());
 	}
 	
 	protected static Translator buildJoinTableTranslator() {
-		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, Orm2_0Package.eINSTANCE.getXmlAssociationOverride_JoinTable());
+		return XmlJoinTable.buildTranslator(JPA2_0.JOIN_TABLE, Orm2_0Package.eINSTANCE.getXmlAssociationOverride_JoinTable());
 	}	
 
 } // XmlAssociationOverride

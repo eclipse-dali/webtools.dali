@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.resource.orm;
 @SuppressWarnings("nls")
 public interface JPA
 {
-	String NAMESPACE_URL = "http://java.sun.com/xml/ns/persistence/orm";
-	String SCHEMA_LOCATION_1_0 = "http://java.sun.com/xml/ns/persistence/orm_1_0.xsd";
-	String VERSION_1_0		= "1.0";
+	String SCHEMA_NAMESPACE = "http://java.sun.com/xml/ns/persistence/orm";
+	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/orm_1_0.xsd";
+	String SCHEMA_VERSION = "1.0";
 	
 	String ACCESS = "access";
 	String ALLOCATION_SIZE = "allocation-size";

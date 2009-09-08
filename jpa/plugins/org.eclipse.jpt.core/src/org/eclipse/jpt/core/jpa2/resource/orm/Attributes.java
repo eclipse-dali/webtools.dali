@@ -279,23 +279,23 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 	
 	public static Translator buildTranslator() {
 		return buildTranslator(
-			JPA.ATTRIBUTES, 
+			JPA2_0.ATTRIBUTES, 
 			OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes());
 	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			XmlId.buildTranslator(JPA.ID, OrmPackage.eINSTANCE.getAttributes_Ids()),
-			XmlEmbeddedId.buildTranslator(JPA.EMBEDDED_ID, OrmPackage.eINSTANCE.getAttributes_EmbeddedIds()),
-			XmlBasic.buildTranslator(JPA.BASIC, OrmPackage.eINSTANCE.getAttributes_Basics()),
-			XmlVersion.buildTranslator(JPA.VERSION, OrmPackage.eINSTANCE.getAttributes_Versions()),
-			XmlManyToOne.buildTranslator(JPA.MANY_TO_ONE, OrmPackage.eINSTANCE.getAttributes_ManyToOnes()),
-			XmlOneToMany.buildTranslator(JPA.ONE_TO_MANY, OrmPackage.eINSTANCE.getAttributes_OneToManys()),
-			XmlOneToOne.buildTranslator(JPA.ONE_TO_ONE, OrmPackage.eINSTANCE.getAttributes_OneToOnes()),
-			XmlManyToMany.buildTranslator(JPA.MANY_TO_MANY, OrmPackage.eINSTANCE.getAttributes_ManyToManys()),
-			XmlElementCollection.buildTranslator(JPA.ELEMENT_COLLECTION, Orm2_0Package.eINSTANCE.getAttributes_ElementCollections()),
-			XmlEmbedded.buildTranslator(JPA.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
-			XmlTransient.buildTranslator(JPA.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
+			XmlId.buildTranslator(JPA2_0.ID, OrmPackage.eINSTANCE.getAttributes_Ids()),
+			XmlEmbeddedId.buildTranslator(JPA2_0.EMBEDDED_ID, OrmPackage.eINSTANCE.getAttributes_EmbeddedIds()),
+			XmlBasic.buildTranslator(JPA2_0.BASIC, OrmPackage.eINSTANCE.getAttributes_Basics()),
+			XmlVersion.buildTranslator(JPA2_0.VERSION, OrmPackage.eINSTANCE.getAttributes_Versions()),
+			XmlManyToOne.buildTranslator(JPA2_0.MANY_TO_ONE, OrmPackage.eINSTANCE.getAttributes_ManyToOnes()),
+			XmlOneToMany.buildTranslator(JPA2_0.ONE_TO_MANY, OrmPackage.eINSTANCE.getAttributes_OneToManys()),
+			XmlOneToOne.buildTranslator(JPA2_0.ONE_TO_ONE, OrmPackage.eINSTANCE.getAttributes_OneToOnes()),
+			XmlManyToMany.buildTranslator(JPA2_0.MANY_TO_MANY, OrmPackage.eINSTANCE.getAttributes_ManyToManys()),
+			XmlElementCollection.buildTranslator(JPA2_0.ELEMENT_COLLECTION, Orm2_0Package.eINSTANCE.getAttributes_ElementCollections()),
+			XmlEmbedded.buildTranslator(JPA2_0.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
+			XmlTransient.buildTranslator(JPA2_0.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
 		};
 	}
 

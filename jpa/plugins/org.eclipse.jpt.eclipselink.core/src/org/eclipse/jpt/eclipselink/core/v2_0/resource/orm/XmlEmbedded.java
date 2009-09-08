@@ -252,7 +252,7 @@ public class XmlEmbedded extends org.eclipse.jpt.eclipselink.core.v1_1.resource.
 	}
 	
 	protected static Translator buildAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlEmbedded_AssociationOverrides());
+		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlEmbedded_AssociationOverrides());
 	}
 
 } // XmlEmbedded

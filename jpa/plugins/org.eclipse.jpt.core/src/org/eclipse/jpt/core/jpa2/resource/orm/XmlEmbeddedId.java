@@ -263,7 +263,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}		
 
 } // XmlEmbeddedId

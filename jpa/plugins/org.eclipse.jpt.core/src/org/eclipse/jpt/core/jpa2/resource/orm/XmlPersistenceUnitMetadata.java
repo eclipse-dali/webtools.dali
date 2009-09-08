@@ -210,12 +210,12 @@ public class XmlPersistenceUnitMetadata extends org.eclipse.jpt.core.resource.or
 		return new Translator[] {
 			buildDescriptionTranslator(),
 			buildXmlMappingMetadataCompleteTranslator(),
-			XmlPersistenceUnitDefaults.buildTranslator(JPA.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
+			XmlPersistenceUnitDefaults.buildTranslator(JPA2_0.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
 		};
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlPersistenceUnitMetadata_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlPersistenceUnitMetadata_Description());
 	}
 
 } // XmlPersistenceUnitMetadata

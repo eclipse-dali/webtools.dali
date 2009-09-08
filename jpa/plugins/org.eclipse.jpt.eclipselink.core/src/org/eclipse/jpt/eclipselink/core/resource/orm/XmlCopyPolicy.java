@@ -222,7 +222,7 @@ public class XmlCopyPolicy extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	protected static Translator buildClassTranslator() {
-		return new Translator(JPA.COPY_POLICY__CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlCopyPolicy_Class(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.COPY_POLICY__CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlCopyPolicy_Class(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlCopyPolicy

@@ -250,12 +250,12 @@ public class XmlTableGenerator extends org.eclipse.jpt.core.resource.orm.XmlTabl
 			buildInitialValueTranslator(),
 			buildAllocationSizeTranslator(),
 			buildDescriptionTranslator(),
-			XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints())
+			XmlUniqueConstraint.buildTranslator(JPA2_0.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints())
 		};
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlGenerator_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlGenerator_Description());
 	}
 	
 } // XmlTableGenerator

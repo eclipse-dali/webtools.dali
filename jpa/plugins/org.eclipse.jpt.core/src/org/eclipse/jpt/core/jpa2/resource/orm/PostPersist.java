@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -238,7 +237,7 @@ public class PostPersist extends org.eclipse.jpt.core.resource.orm.PostPersist i
 	
 	public static Translator buildTranslator() {
 		return buildTranslator(
-			JPA.POST_PERSIST,
+			JPA2_0.POST_PERSIST,
 			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostPersist());
 	}
 
@@ -250,7 +249,6 @@ public class PostPersist extends org.eclipse.jpt.core.resource.orm.PostPersist i
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getEventMethod_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getEventMethod_Description());
 	}
-
 } // PostPersist

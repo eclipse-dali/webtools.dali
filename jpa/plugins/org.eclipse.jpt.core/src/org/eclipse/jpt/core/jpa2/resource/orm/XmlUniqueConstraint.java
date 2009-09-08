@@ -214,7 +214,7 @@ public class XmlUniqueConstraint extends org.eclipse.jpt.core.resource.orm.XmlUn
 	}
 	
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.NAME, Orm2_0Package.eINSTANCE.getXmlUniqueConstraint_Name());
+		return new Translator(JPA2_0.NAME, Orm2_0Package.eINSTANCE.getXmlUniqueConstraint_Name());
 	}
 	
 } // XmlUniqueConstraint

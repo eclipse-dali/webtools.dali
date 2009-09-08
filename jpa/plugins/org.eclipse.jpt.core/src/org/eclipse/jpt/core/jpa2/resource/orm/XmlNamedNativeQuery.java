@@ -249,6 +249,6 @@ public class XmlNamedNativeQuery extends org.eclipse.jpt.core.resource.orm.XmlNa
 	}
 
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlQuery_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlQuery_Description());
 	}
 } // XmlNamedNativeQuery

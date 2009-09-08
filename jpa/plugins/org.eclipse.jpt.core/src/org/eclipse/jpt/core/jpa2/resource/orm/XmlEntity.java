@@ -239,28 +239,28 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity
 	}
 	
 	protected static Translator buildCacheableTranslator() {
-		return new Translator(JPA.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlEntity_Cacheable(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlEntity_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	//TODO use these 2.0 version translators once we have context model for XmlNamedQueries in 2.0	
 //	protected static Translator buildNamedQueryTranslator() {
-//		return XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries());
+//		return XmlNamedQuery.buildTranslator(JPA2_0.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries());
 //	}
 //	
 //	protected static Translator buildNamedNativeQueryTranslator() {
-//		return XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries());
+//		return XmlNamedNativeQuery.buildTranslator(JPA2_0.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries());
 //	}
 	
 	protected static Translator buildSequenceGeneratorTranslator() {
-		return XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
+		return XmlSequenceGenerator.buildTranslator(JPA2_0.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
 	}
 	
 	protected static Translator buildTableGeneratorTranslator() {
-		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+		return XmlTableGenerator.buildTranslator(JPA2_0.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
 	}
 	
 	protected static Translator buildAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
+		return XmlAssociationOverride.buildTranslator(JPA2_0.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
 
 } // XmlEntity

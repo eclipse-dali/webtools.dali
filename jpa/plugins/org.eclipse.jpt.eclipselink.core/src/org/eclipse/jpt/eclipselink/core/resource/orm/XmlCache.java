@@ -802,39 +802,39 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	}
 
 	protected static Translator buildExpiryTranslator() {
-		return new Translator(JPA.CACHE__EXPIRY, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Expiry());
+		return new Translator(EclipseLink.CACHE__EXPIRY, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Expiry());
 	}
 	
 	protected static Translator buildExpiryTimeOfDayTranslator() {
-		return XmlTimeOfDay.buildTranslator(JPA.EXPIRY_TIME_OF_DAY, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_ExpiryTimeOfDay());
+		return XmlTimeOfDay.buildTranslator(EclipseLink.EXPIRY_TIME_OF_DAY, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_ExpiryTimeOfDay());
 	}
 	
 	protected static Translator buildSizeTranslator() {
-		return new Translator(JPA.CACHE__SIZE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Size(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CACHE__SIZE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Size(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildSharedTranslator() {
-		return new Translator(JPA.CACHE__SHARED, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Shared(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CACHE__SHARED, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Shared(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildTypeTranslator() {
-		return new Translator(JPA.CACHE__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Type(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CACHE__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Type(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildAlwaysRefreshTranslator() {
-		return new Translator(JPA.CACHE__ALWAYS_REFRESH, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_AlwaysRefresh(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CACHE__ALWAYS_REFRESH, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_AlwaysRefresh(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildRefreshOnlyIfNewerTranslator() {
-		return new Translator(JPA.CACHE__REFRESH_ONLY_IF_NEWER, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_RefreshOnlyIfNewer(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CACHE__REFRESH_ONLY_IF_NEWER, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_RefreshOnlyIfNewer(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildDisableHitsTranslator() {
-		return new Translator(JPA.CACHE__DISABLE_HITS, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_DisableHits(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CACHE__DISABLE_HITS, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_DisableHits(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildCoordinationTypeTranslator() {
-		return new Translator(JPA.CACHE__COORDINATION_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_CoordinationType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CACHE__COORDINATION_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_CoordinationType(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlCache

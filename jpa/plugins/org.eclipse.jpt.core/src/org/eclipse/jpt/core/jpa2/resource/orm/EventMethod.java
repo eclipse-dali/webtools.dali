@@ -72,7 +72,7 @@ public interface EventMethod extends org.eclipse.jpt.core.resource.orm.EventMeth
 //	}
 //	
 //	protected static Translator buildDescriptionTranslator() {
-//		return new Translator(JPA.METHOD_NAME, Orm2_0Package.eINSTANCE.getEventMethod_Description());
+//		return new Translator(JPA2_0.METHOD_NAME, Orm2_0Package.eINSTANCE.getEventMethod_Description());
 //	}
 
 } // EventMethod

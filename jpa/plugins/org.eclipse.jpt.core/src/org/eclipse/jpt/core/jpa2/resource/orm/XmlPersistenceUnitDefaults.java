@@ -283,16 +283,16 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.core.resource.or
 			buildDelimitedIdentifiersTranslator(),
 			buildAccessTranslator(),
 			buildCascadePersistTranslator(),
-			EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_EntityListeners())
+			EntityListeners.buildTranslator(JPA2_0.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_EntityListeners())
 		};
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlPersistenceUnitDefaults_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlPersistenceUnitDefaults_Description());
 	}
 	
 	protected static Translator buildDelimitedIdentifiersTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.DELIMITIED_IDENTIFIERS, Orm2_0Package.eINSTANCE.getXmlPersistenceUnitDefaults_DelimitedIdentifiers());
+		return new EmptyTagBooleanTranslator(JPA2_0.DELIMITIED_IDENTIFIERS, Orm2_0Package.eINSTANCE.getXmlPersistenceUnitDefaults_DelimitedIdentifiers());
 	}
 	
 } // XmlPersistenceUnitDefaults

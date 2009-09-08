@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmFactory;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.JPA;
+import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1;
 
 public class EclipseLink1_1OrmXmlResourceProvider
 	extends AbstractXmlResourceProvider
@@ -37,7 +37,6 @@ public class EclipseLink1_1OrmXmlResourceProvider
 	 */
 	public static EclipseLink1_1OrmXmlResourceProvider getXmlResourceProvider(IProject project, String deployLocation) {
 		return getXmlResourceProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
-		
 	}
 	
 	/**
@@ -65,8 +64,7 @@ public class EclipseLink1_1OrmXmlResourceProvider
 	@Override
 	protected void populateRoot() {
 		XmlEntityMappings entityMappings = EclipseLink1_1OrmFactory.eINSTANCE.createXmlEntityMappings();
-		entityMappings.setVersion(JPA.VERSION_1_1);
+		entityMappings.setVersion(EclipseLink1_1.SCHEMA_VERSION);
 		getResourceContents().add(entityMappings);
 	}
-	
 }

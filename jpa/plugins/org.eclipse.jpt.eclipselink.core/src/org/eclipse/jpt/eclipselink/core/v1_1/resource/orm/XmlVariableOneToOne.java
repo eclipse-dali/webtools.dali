@@ -261,7 +261,7 @@ public class XmlVariableOneToOne extends org.eclipse.jpt.eclipselink.core.resour
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink1_1.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlVariableOneToOneImpl

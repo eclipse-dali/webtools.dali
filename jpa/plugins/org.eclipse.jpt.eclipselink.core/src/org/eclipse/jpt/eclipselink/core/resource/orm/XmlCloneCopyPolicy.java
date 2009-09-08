@@ -291,11 +291,11 @@ public class XmlCloneCopyPolicy extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	protected static Translator buildMethodTranslator() {
-		return new Translator(JPA.CLONE_COPY_POLICY__METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlCloneCopyPolicy_Method(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CLONE_COPY_POLICY__METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlCloneCopyPolicy_Method(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildWorkingCopyMethodTranslator() {
-		return new Translator(JPA.CLONE_COPY_POLICY__WORKING_COPY_METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlCloneCopyPolicy_WorkingCopyMethod(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CLONE_COPY_POLICY__WORKING_COPY_METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlCloneCopyPolicy_WorkingCopyMethod(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlCloneCopyPolicy

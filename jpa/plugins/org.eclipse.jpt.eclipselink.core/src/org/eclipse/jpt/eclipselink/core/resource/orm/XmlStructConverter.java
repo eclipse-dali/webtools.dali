@@ -217,7 +217,7 @@ public class XmlStructConverter extends XmlNamedConverter
 	}
 	
 	protected static Translator buildConverterTranslator() {
-		return new Translator(JPA.STRUCT_CONVERTER__CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlStructConverter_Converter(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.STRUCT_CONVERTER__CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlStructConverter_Converter(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlStructConverter

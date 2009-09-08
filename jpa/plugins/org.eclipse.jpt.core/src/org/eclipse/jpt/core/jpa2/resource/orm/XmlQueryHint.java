@@ -215,7 +215,7 @@ public class XmlQueryHint extends org.eclipse.jpt.core.resource.orm.XmlQueryHint
 	}
 
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlQueryHint_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlQueryHint_Description());
 	}
 	
 } // XmlQueryHint

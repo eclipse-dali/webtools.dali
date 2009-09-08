@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.v2_0.resource.orm;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.jpa2.resource.orm.JPA;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -97,7 +96,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.eclipselink.core.v1_1.r
 	}
 	
 	protected static Translator buildCacheableTranslator() {
-		return new Translator(JPA.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlMappedSuperclass_Cacheable(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlMappedSuperclass_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
-
 } // XmlMappedSuperclass

@@ -569,19 +569,19 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink1_1.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildGeneratedValueTranslator() {
-		return XmlGeneratedValue.buildTranslator(JPA.GENERATED_VALUE, EclipseLink1_1OrmPackage.eINSTANCE.getXmlBasic_GeneratedValue());
+		return XmlGeneratedValue.buildTranslator(EclipseLink1_1.GENERATED_VALUE, EclipseLink1_1OrmPackage.eINSTANCE.getXmlBasic_GeneratedValue());
 	}
 	
 	protected static Translator buildTableGeneratorTranslator() {
-		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+		return XmlTableGenerator.buildTranslator(EclipseLink1_1.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
 	}
 	
 	protected static Translator buildSequenceGeneratorTranslator() {
-		return XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
+		return XmlSequenceGenerator.buildTranslator(EclipseLink1_1.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
 	}
 
 } // XmlBasicImpl

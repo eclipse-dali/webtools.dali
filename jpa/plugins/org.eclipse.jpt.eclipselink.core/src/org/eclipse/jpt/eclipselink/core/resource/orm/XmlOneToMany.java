@@ -516,11 +516,11 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 	}
 	
 	public TextRange getPrivateOwnedTextRange() {
-		return getElementTextRange(JPA.PRIVATE_OWNED);
+		return getElementTextRange(EclipseLink.PRIVATE_OWNED);
 	}
 	
 	public TextRange getJoinFetchTextRange() {
-		return getElementTextRange(JPA.JOIN_FETCH);
+		return getElementTextRange(EclipseLink.JOIN_FETCH);
 	}
 	
 	// ********** translators **********
@@ -552,18 +552,18 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 	}
 	
 	protected static Translator buildPrivateOwnedTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.PRIVATE_OWNED, EclipseLinkOrmPackage.eINSTANCE.getXmlPrivateOwned_PrivateOwned());
+		return new EmptyTagBooleanTranslator(EclipseLink.PRIVATE_OWNED, EclipseLinkOrmPackage.eINSTANCE.getXmlPrivateOwned_PrivateOwned());
 	}
 	
 	protected static Translator buildJoinFetchTranslator() {
-		return new Translator(JPA.JOIN_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlJoinFetch_JoinFetch());
+		return new Translator(EclipseLink.JOIN_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlJoinFetch_JoinFetch());
 	}
 	
 	protected static Translator buildPropertyTranslator() {
-		return XmlProperty.buildTranslator(JPA.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
 	
 	protected static Translator buildAccessMethodsTranslator() {
-		return XmlAccessMethods.buildTranslator(JPA.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
+		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
 }

@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -238,7 +237,7 @@ public class PostUpdate extends org.eclipse.jpt.core.resource.orm.PostUpdate imp
 	
 	public static Translator buildTranslator() {
 		return buildTranslator(
-			JPA.POST_UPDATE,
+			JPA2_0.POST_UPDATE,
 			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostUpdate());
 	}
 
@@ -250,7 +249,6 @@ public class PostUpdate extends org.eclipse.jpt.core.resource.orm.PostUpdate imp
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getEventMethod_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getEventMethod_Description());
 	}
-
 } // PostUpdate

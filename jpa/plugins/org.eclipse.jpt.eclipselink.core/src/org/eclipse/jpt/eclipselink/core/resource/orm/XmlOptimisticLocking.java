@@ -365,15 +365,15 @@ public class XmlOptimisticLocking extends AbstractJpaEObject implements JpaEObje
 	}
 	
 	protected static Translator buildTypeTranslator() {
-		return new Translator(JPA.OPTIMISTIC_LOCKING__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_Type(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.OPTIMISTIC_LOCKING__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_Type(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildCascadeTranslator() {
-		return new BooleanTranslator(JPA.OPTIMISTIC_LOCKING__CASCADE, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_Cascade(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(EclipseLink.OPTIMISTIC_LOCKING__CASCADE, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_Cascade(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildSelectedColumnTranslator() {
-		return XmlColumn.buildTranslator(JPA.OPTIMISTIC_LOCKING__SELECTED_COLUMN, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_SelectedColumns());
+		return XmlColumn.buildTranslator(EclipseLink.OPTIMISTIC_LOCKING__SELECTED_COLUMN, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_SelectedColumns());
 	}
 
 } // XmlOptimisticLocking

@@ -256,7 +256,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.eclipselink.core.resour
 	}
 	
 	protected static Translator buildPrimaryKeyTranslator() {
-		return XmlPrimaryKey.buildTranslator(JPA.PRIMARY_KEY, EclipseLink1_1OrmPackage.eINSTANCE.getXmlMappedSuperclass_PrimaryKey());
+		return XmlPrimaryKey.buildTranslator(EclipseLink1_1.PRIMARY_KEY, EclipseLink1_1OrmPackage.eINSTANCE.getXmlMappedSuperclass_PrimaryKey());
 	}
 
 } // XmlMappedSuperclass

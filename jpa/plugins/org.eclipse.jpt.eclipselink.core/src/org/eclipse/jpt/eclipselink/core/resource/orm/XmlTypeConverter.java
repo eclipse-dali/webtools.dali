@@ -284,10 +284,10 @@ public class XmlTypeConverter extends XmlNamedConverter
 	}
 	
 	protected static Translator buildDataTypeTranslator() {
-		return new Translator(JPA.TYPE_CONVERTER__DATA_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlTypeConverter_DataType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.TYPE_CONVERTER__DATA_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlTypeConverter_DataType(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildObjectTypeTranslator() {
-		return new Translator(JPA.TYPE_CONVERTER__OBJECT_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlTypeConverter_ObjectType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.TYPE_CONVERTER__OBJECT_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlTypeConverter_ObjectType(), Translator.DOM_ATTRIBUTE);
 	}
 } // XmlTypeConverter

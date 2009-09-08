@@ -6,122 +6,19 @@
  * 
  * Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.v1_1.resource.orm;
+package org.eclipse.jpt.eclipselink.core.resource.orm;
+
+import org.eclipse.jpt.core.resource.orm.JPA;
 
 @SuppressWarnings("nls")
-public interface JPA
+public interface EclipseLink
+	extends JPA
 {
+	String SCHEMA_NAMESPACE = "http://www.eclipse.org/eclipselink/xsds/persistence/orm";
+	String SCHEMA_LOCATION = "http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd";
+	String SCHEMA_VERSION = "1.0";
 	
-	String NAMESPACE_URL = "http://www.eclipse.org/eclipselink/xsds/persistence/orm";
-	String SCHEMA_LOCATION_1_1 = "http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_1.xsd";
-	String VERSION_1_1	= "1.1";
-	
-	String ACCESS = "access";
-	String ALLOCATION_SIZE = "allocation-size";
-	String ASSOCIATION_OVERRIDE = "association-override";
-	String ATTRIBUTE_OVERRIDE = "attribute-override";
-	String ATTRIBUTES = "attributes";
-	String BASIC = "basic";
-	String CASCADE = "cascade";
-	String CASCADE_ALL = "cascade-all";
-	String CASCADE_MERGE = "cascade-merge";
-	String CASCADE_PERSIST = "cascade-persist";
-	String CASCADE_REFRESH = "cascade-refresh";	
-	String CASCADE_REMOVE = "cascade-remove";	
-	String CATALOG = "catalog";
-	String CLASS = "class";
-	String COLUMN = "column";
-	String COLUMN_DEFINITION= "column-definition";
-	String COLUMN_NAME = "column-name";
-	String COLUMN_RESULT = "column-result";
-	String DESCRIPTION = "description";
-	String DISCRIMINATOR_COLUMN = "discriminator-column";
-	String DISCRIMINATOR_TYPE = "discriminator-type";
-	String DISCRIMINATOR_VALUE = "discriminator-value";
-	String EMBEDDABLE = "embeddable";
-	String EMBEDDED = "embedded";
-	String EMBEDDED_ID = "embedded-id";
-	String ENTITY = "entity";
-	String ENTITY_CLASS = "entity-class";
-	String ENTITY_LISTENER = "entity-listener";
-	String ENTITY_LISTENERS = "entity-listeners";
-	String ENTITY_MAPPINGS = "entity-mappings";
-		String ENTITY_MAPPINGS__VERSION = "version";
-		
-	String ENTITY_RESULT = "entity-result";
-	String ENUMERATED = "enumerated";
-	String EXCLUDE_DEFAULT_LISTENERS = "exclude-default-listeners";
-	String EXCLUDE_SUPERCLASS_LISTENERS = "exclude-superclass-listeners";
-	String FETCH = "fetch";
-	String FIELD_RESULT = "field-result";
-	String GENERATED_VALUE = "generated-value";
-	String GENERATOR = "generator";
-	String HINT = "hint";
-	String ID = "id";
-	String ID_CLASS = "id-class";
-	String INHERITANCE = "inheritance";
-	String INITIAL_VALUE = "initial-value";
-	String INSERTABLE = "insertable";
-	String INVERSE_JOIN_COLUMN = "inverse-join-column";
-	String JOIN_COLUMN = "join-column";
-	String JOIN_TABLE = "join-table";
-	String LENGTH = "length";
-	String LOB = "lob";
-	String MANY_TO_MANY = "many-to-many";
-	String MANY_TO_ONE = "many-to-one";
-	String MAP_KEY = "map-key";
-	String MAPPED_BY = "mapped-by";
-	String MAPPED_SUPERCLASS = "mapped-superclass";
-	String METADATA_COMPLETE = "metadata-complete";
-	String METHOD_NAME = "method-name";
-	String NAME = "name";
-	String NAMED_NATIVE_QUERY = "named-native-query";
-	String NAMED_QUERY = "named-query";
-	String NULLABLE = "nullable";
-	String ONE_TO_MANY = "one-to-many";
-	String ONE_TO_ONE = "one-to-one";
-	String OPTIONAL = "optional";
-	String ORDER_BY = "order-by";
-	String PACKAGE = "package";
-	String PERSISTENCE_UNIT_DEFAULTS = "persistence-unit-defaults";
-	String PERSISTENCE_UNIT_METADATA = "persistence-unit-metadata";
-	String PK_COLUMN_NAME = "pk-column-name";
-	String PK_COLUMN_VALUE = "pk-column-value";
-	String POST_LOAD = "post-load";
-	String POST_PERSIST = "post-persist";
-	String POST_REMOVE = "post-remove";
-	String POST_UPDATE = "post-update";
-	String PRE_PERSIST = "pre-persist";
-	String PRE_REMOVE = "pre-remove";
-	String PRE_UPDATE = "pre-update";
-	String PRECISION= "precision";
-	String PRIMARY_KEY_JOIN_COLUMN = "primary-key-join-column";
-	String QUERY = "query";
-	String REFERENCED_COLUMN_NAME = "referenced-column-name";
-	String RESULT_CLASS = "result-class";
-	String RESULT_SET_MAPPING = "result-set-mapping";
-	String SCALE= "scale";
-	String SCHEMA = "schema";
-	String SECONDARY_TABLE = "secondary-table";
-	String SEQUENCE_GENERATOR = "sequence-generator";
-	String SEQUENCE_NAME = "sequence-name";
-	String SQL_RESULT_SET_MAPPING = "sql-result-set-mapping";
-	String STRATEGY = "strategy";
-	String TABLE = "table";
-	String TABLE_GENERATOR = "table-generator";
-	String TARGET_ENTITY = "target-entity";
-	String TEMPORAL = "temporal";
-	String TRANSIENT = "transient";
-	String UNIQUE = "unique";
-	String UNIQUE_CONSTRAINT = "unique-constraint";
-	String UPDATABLE = "updatable";
-	String VALUE = "value";
-	String VALUE_COLUMN_NAME = "value-column-name";
-	String VERSION = "version";
-	String XML_MAPPING_METADATA_COMPLETE = "xml-mapping-metadata-complete";
-
-	
-	// ********** EclipseLink 1.0 strings ***********
+	// EclipseLink specific nodes
 	
 	String ACCESS_METHODS = "access-methods"; //$NON-NLS-1$
 	String ACCESS_METHODS__GET_METHOD = "get-method"; //$NON-NLS-1$
@@ -229,10 +126,4 @@ public interface JPA
 	String TYPE_CONVERTER__OBJECT_TYPE = "object-type"; //$NON-NLS-1$
 		
 	String VARIABLE_ONE_TO_ONE = "variable-one-to-one";  //$NON-NLS-1$
-
-	// ********** EclipseLink 1.1 strings ***********
-	String PRIMARY_KEY = "primary-key";  //$NON-NLS-1$
-	String PRIMARY_KEY__VALIDATION = "validation";  //$NON-NLS-1$
-	String PRIMARY_KEY__COLUMN = "column";  //$NON-NLS-1$
-
 }

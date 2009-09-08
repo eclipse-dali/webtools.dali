@@ -857,39 +857,39 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildOrphanRemovalTranslator() {
-		return new Translator(JPA.ORPHAN_REMOVAL, Orm2_0Package.eINSTANCE.getXmlOneToMany_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ORPHAN_REMOVAL, Orm2_0Package.eINSTANCE.getXmlOneToMany_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildOrderColumnTranslator() {
-		return XmlOrderColumn.buildTranslator(JPA.ORDER_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_OrderColumn());
+		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_OrderColumn());
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA.MAP_KEY_TEMPORAL, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA.MAP_KEY_ENUMERATED, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyEnumerated());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyEnumerated());
 	}
 	
 	protected static Translator buildMapKeyClassTranslator() {
-		return XmlMapKeyClass.buildTranslator(JPA.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyClass());
+		return XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyClass());
 	}
 
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {
-		return XmlAttributeOverride.buildTranslator(JPA.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyAttributeOverrides());
+		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyAttributeOverrides());
 	}
 
 	protected static Translator buildMapKeyColumnTranslator() {
-		return XmlColumn.buildTranslator(JPA.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyColumn());
+		return XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyColumn());
 	}
 
 	protected static Translator buildMapKeyJoinColumnTranslator() {
-		return XmlJoinColumn.buildTranslator(JPA.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyJoinColumns());
+		return XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlOneToMany_MapKeyJoinColumns());
 	}
 	
 } // XmlOneToMany

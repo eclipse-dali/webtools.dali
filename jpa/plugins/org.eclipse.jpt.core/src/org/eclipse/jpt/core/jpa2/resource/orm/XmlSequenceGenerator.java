@@ -391,15 +391,15 @@ public class XmlSequenceGenerator extends org.eclipse.jpt.core.resource.orm.XmlS
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlGenerator_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlGenerator_Description());
 	}
 
 	protected static Translator buildCatalogTranslator() {
-		return new Translator(JPA.CATALOG, Orm2_0Package.eINSTANCE.getXmlSequenceGenerator_Catalog());
+		return new Translator(JPA2_0.CATALOG, Orm2_0Package.eINSTANCE.getXmlSequenceGenerator_Catalog());
 	}
 
 	protected static Translator buildSchemaTranslator() {
-		return new Translator(JPA.SCHEMA, Orm2_0Package.eINSTANCE.getXmlSequenceGenerator_Schema());
+		return new Translator(JPA2_0.SCHEMA, Orm2_0Package.eINSTANCE.getXmlSequenceGenerator_Schema());
 	}
 
 } // XmlSequenceGenerator

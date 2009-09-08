@@ -213,7 +213,7 @@ public class XmlAttributeOverride extends org.eclipse.jpt.core.resource.orm.XmlA
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlAttributeOverride_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlAttributeOverride_Description());
 	}
 
 } // XmlAttributeOverride

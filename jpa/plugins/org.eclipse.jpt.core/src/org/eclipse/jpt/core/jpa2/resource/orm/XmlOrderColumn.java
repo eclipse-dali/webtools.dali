@@ -356,15 +356,15 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn
 	}
 		
 	protected static Translator buildNullableTranslator() {
-		return new BooleanTranslator(JPA.NULLABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Nullable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA2_0.NULLABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Nullable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildInsertableTranslator() {
-		return new BooleanTranslator(JPA.INSERTABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Insertable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA2_0.INSERTABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Insertable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildUpdatableTranslator() {
-		return new BooleanTranslator(JPA.UPDATABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Updatable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA2_0.UPDATABLE, Orm2_0Package.eINSTANCE.getXmlOrderColumn_Updatable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlOrderColumn

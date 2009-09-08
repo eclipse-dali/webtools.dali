@@ -60,7 +60,7 @@ public class EntityListeners extends org.eclipse.jpt.core.resource.orm.EntityLis
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			EntityListener.buildTranslator(JPA.ENTITY_LISTENER, OrmPackage.eINSTANCE.getEntityListeners_EntityListeners())
+			EntityListener.buildTranslator(JPA2_0.ENTITY_LISTENER, OrmPackage.eINSTANCE.getEntityListeners_EntityListeners())
 		};
 	}
 } // EntityListeners

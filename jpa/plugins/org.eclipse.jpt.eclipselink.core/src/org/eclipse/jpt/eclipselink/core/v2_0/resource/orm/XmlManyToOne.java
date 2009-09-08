@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.jpa2.resource.orm.JPA;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
@@ -356,11 +355,10 @@ public class XmlManyToOne extends org.eclipse.jpt.eclipselink.core.v1_1.resource
 	}
 	
 	protected static Translator buildMappedByIdTranslator() {
-		return new Translator(JPA.MAPPED_BY_ID, Orm2_0Package.eINSTANCE.getXmlManyToOne_MappedById(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.MAPPED_BY_ID, Orm2_0Package.eINSTANCE.getXmlManyToOne_MappedById(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildIdTranslator() {
-		return new Translator(JPA.ID, Orm2_0Package.eINSTANCE.getXmlDerivedId_Id(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.ID, Orm2_0Package.eINSTANCE.getXmlDerivedId_Id(), Translator.DOM_ATTRIBUTE);
 	}
-
 } // XmlManyToOne

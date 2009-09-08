@@ -205,7 +205,7 @@ public class XmlNamedConverter extends AbstractJpaEObject implements JpaEObject
 	// ********** translators **********
 	
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.CONVERTER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedConverter_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CONVERTER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedConverter_Name(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlNamedConverter

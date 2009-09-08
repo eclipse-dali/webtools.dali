@@ -209,7 +209,7 @@ public class XmlCustomizer extends AbstractJpaEObject implements JpaEObject
 	}
 
 	public TextRange getCustomizerClassNameTextRange() {
-		return getAttributeTextRange(JPA.CLASS);
+		return getAttributeTextRange(EclipseLink.CLASS);
 	}
 
 	// ********** translators **********
@@ -225,7 +225,7 @@ public class XmlCustomizer extends AbstractJpaEObject implements JpaEObject
 	}
 		
 	protected static Translator buildClassTranslator() {
-		return new Translator(JPA.CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizer_CustomizerClassName(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizer_CustomizerClassName(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlCustomizer

@@ -272,7 +272,7 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 	}
 	
 	protected static Translator buildPrimaryKeyTranslator() {
-		return XmlPrimaryKey.buildTranslator(JPA.PRIMARY_KEY, EclipseLink1_1OrmPackage.eINSTANCE.getXmlEntity_PrimaryKey());
+		return XmlPrimaryKey.buildTranslator(EclipseLink1_1.PRIMARY_KEY, EclipseLink1_1OrmPackage.eINSTANCE.getXmlEntity_PrimaryKey());
 	}
 
 } // XmlEntity

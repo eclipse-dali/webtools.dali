@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.resource.orm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -1162,7 +1161,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	}
 
 	private static Translator buildNamespaceTranslator() {
-		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.NAMESPACE_URL);
+		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.SCHEMA_NAMESPACE);
 	}
 
 	protected static Translator buildSchemaNamespaceTranslator() {
@@ -1170,7 +1169,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	}
 
 	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_1_0);
+		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.SCHEMA_NAMESPACE + ' ' + JPA.SCHEMA_LOCATION);
 	}
 
 	protected static Translator buildVersionTranslator() {

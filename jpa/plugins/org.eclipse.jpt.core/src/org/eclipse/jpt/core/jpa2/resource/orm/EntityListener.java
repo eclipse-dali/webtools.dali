@@ -220,7 +220,7 @@ public class EntityListener extends org.eclipse.jpt.core.resource.orm.EntityList
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getEntityListener_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getEntityListener_Description());
 	}
 
 } // EntityListener

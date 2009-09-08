@@ -225,7 +225,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 	
 	protected static Translator buildCacheableTranslator() {
-		return new Translator(JPA.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlMappedSuperclass_Cacheable(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlMappedSuperclass_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlMappedSuperclass

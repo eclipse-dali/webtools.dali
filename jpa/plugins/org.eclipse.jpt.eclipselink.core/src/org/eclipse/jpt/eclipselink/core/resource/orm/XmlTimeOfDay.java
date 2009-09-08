@@ -427,19 +427,19 @@ public class XmlTimeOfDay extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	protected static Translator buildHourTranslator() {
-		return new Translator(JPA.EXPIRY_TIME_OF_DAY__HOUR, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Hour(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.EXPIRY_TIME_OF_DAY__HOUR, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Hour(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildMinuteTranslator() {
-		return new Translator(JPA.EXPIRY_TIME_OF_DAY__MINUTE, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Minute(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.EXPIRY_TIME_OF_DAY__MINUTE, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Minute(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildSecondTranslator() {
-		return new Translator(JPA.EXPIRY_TIME_OF_DAY__SECOND, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Second(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.EXPIRY_TIME_OF_DAY__SECOND, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Second(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildMillisecondTranslator() {
-		return new Translator(JPA.EXPIRY_TIME_OF_DAY__MILLISECOND, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Millisecond(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.EXPIRY_TIME_OF_DAY__MILLISECOND, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Millisecond(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlTimeOfDay

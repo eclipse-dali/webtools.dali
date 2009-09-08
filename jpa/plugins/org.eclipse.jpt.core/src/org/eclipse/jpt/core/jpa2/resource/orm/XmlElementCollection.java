@@ -1534,15 +1534,15 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	public TextRange getEnumeratedTextRange() {
-		return getAttributeTextRange(JPA.ENUMERATED);
+		return getAttributeTextRange(JPA2_0.ENUMERATED);
 	}
 	
 	public TextRange getLobTextRange() {
-		return getAttributeTextRange(JPA.LOB);
+		return getAttributeTextRange(JPA2_0.LOB);
 	}
 	
 	public TextRange getTemporalTextRange() {
-		return getAttributeTextRange(JPA.TEMPORAL);
+		return getAttributeTextRange(JPA2_0.TEMPORAL);
 	}
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -1556,66 +1556,66 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			buildFetchTranslator(),
 			buildAccessTranslator(),
 			buildOrderByTranslator(),
-			XmlOrderColumn.buildTranslator(JPA.ORDER_COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_OrderColumn()),		
+			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_OrderColumn()),		
 			buildMapKeyTranslator(),
-			XmlMapKeyClass.buildTranslator(JPA.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyClass()),		
+			XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyClass()),		
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
-			org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride.buildTranslator(JPA.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyAttributeOverrides()),		
-			XmlColumn.buildTranslator(JPA.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyColumn()),		
-			XmlJoinColumn.buildTranslator(JPA.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyJoinColumns()),		
-			XmlColumn.buildTranslator(JPA.COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_Column()),		
+			org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyAttributeOverrides()),		
+			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyColumn()),		
+			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyJoinColumns()),		
+			XmlColumn.buildTranslator(JPA2_0.COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_Column()),		
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
-			org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlElementCollection_AttributeOverrides()),		
-			org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlElementCollection_AssociationOverrides()),		
-			XmlCollectionTable.buildTranslator(JPA.COLLECTION_TABLE, Orm2_0Package.eINSTANCE.getXmlElementCollection_CollectionTable())			
+			org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride.buildTranslator(JPA2_0.ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlElementCollection_AttributeOverrides()),		
+			org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride.buildTranslator(JPA2_0.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlElementCollection_AssociationOverrides()),		
+			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, Orm2_0Package.eINSTANCE.getXmlElementCollection_CollectionTable())			
 		};
 	}
 	
 	protected static Translator buildTargetClassTranslator() {
-		return new Translator(JPA.TARGET_CLASS, Orm2_0Package.eINSTANCE.getXmlElementCollection_TargetClass(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.TARGET_CLASS, Orm2_0Package.eINSTANCE.getXmlElementCollection_TargetClass(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildFetchTranslator() {
-		return new Translator(JPA.FETCH, Orm2_0Package.eINSTANCE.getXmlElementCollection_Fetch(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.FETCH, Orm2_0Package.eINSTANCE.getXmlElementCollection_Fetch(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildOrderByTranslator() {
-		return new BooleanTranslator(JPA.ORDER_BY, Orm2_0Package.eINSTANCE.getXmlElementCollection_OrderBy());
+		return new BooleanTranslator(JPA2_0.ORDER_BY, Orm2_0Package.eINSTANCE.getXmlElementCollection_OrderBy());
 	}
 	
 	protected static Translator buildColumnTranslator() {
-		return XmlColumn.buildTranslator(JPA.COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_Column());
+		return XmlColumn.buildTranslator(JPA2_0.COLUMN, Orm2_0Package.eINSTANCE.getXmlElementCollection_Column());
 	}
 	
 	protected static Translator buildLobTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.LOB, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Lob());
+		return new EmptyTagBooleanTranslator(JPA2_0.LOB, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Lob());
 	}
 	
 	protected static Translator buildTemporalTranslator() {
-		return new Translator(JPA.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
+		return new Translator(JPA2_0.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
 	}
 	
 	protected static Translator buildEnumeratedTranslator() {
-		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
+		return new Translator(JPA2_0.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
 	}
 	
 	protected static Translator buildMapKeyTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.MAP_KEY, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKey());
+		return new EmptyTagBooleanTranslator(JPA2_0.MAP_KEY, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKey());
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA.TEMPORAL, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyTemporal());
+		return new Translator(JPA2_0.TEMPORAL, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyEnumerated());
+		return new Translator(JPA2_0.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyEnumerated());
 	}
 
 } // XmlElementCollection

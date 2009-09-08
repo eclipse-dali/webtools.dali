@@ -274,7 +274,7 @@ public class XmlOneToOne extends org.eclipse.jpt.eclipselink.core.resource.orm.X
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink1_1.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlOneToOneImpl

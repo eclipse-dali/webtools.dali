@@ -238,7 +238,7 @@ public class PostLoad extends org.eclipse.jpt.core.resource.orm.PostLoad impleme
 	
 	public static Translator buildTranslator() {
 		return buildTranslator(
-			JPA.POST_LOAD,
+			JPA2_0.POST_LOAD,
 			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostLoad());
 	}
 
@@ -250,7 +250,7 @@ public class PostLoad extends org.eclipse.jpt.core.resource.orm.PostLoad impleme
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getEventMethod_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getEventMethod_Description());
 	}
 
 } // PostLoad

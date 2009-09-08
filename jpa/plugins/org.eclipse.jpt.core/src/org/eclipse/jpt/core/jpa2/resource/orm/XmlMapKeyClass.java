@@ -213,7 +213,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements JpaEObject
 	}
 		
 	protected static Translator buildClassNameTranslator() {
-		return new BooleanTranslator(JPA.CLASS, Orm2_0Package.eINSTANCE.getXmlMapKeyClass_ClassName(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA2_0.CLASS, Orm2_0Package.eINSTANCE.getXmlMapKeyClass_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlMapKeyClass

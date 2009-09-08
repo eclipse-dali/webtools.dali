@@ -467,7 +467,7 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	}
 	
 	public TextRange getDerivedIdTextRange() {
-		return getAttributeTextRange(JPA.ID);
+		return getAttributeTextRange(JPA2_0.ID);
 	}
 	
 	
@@ -500,19 +500,19 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildOrphanRemovalTranslator() {
-		return new Translator(JPA.ORPHAN_REMOVAL, Orm2_0Package.eINSTANCE.getXmlOneToOne_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ORPHAN_REMOVAL, Orm2_0Package.eINSTANCE.getXmlOneToOne_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildMappedByIdTranslator() {
-		return new Translator(JPA.MAPPED_BY_ID, Orm2_0Package.eINSTANCE.getXmlOneToOne_MappedById(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.MAPPED_BY_ID, Orm2_0Package.eINSTANCE.getXmlOneToOne_MappedById(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildIdTranslator() {
-		return new Translator(JPA.ID, Orm2_0Package.eINSTANCE.getXmlDerivedId_Id(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ID, Orm2_0Package.eINSTANCE.getXmlDerivedId_Id(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlOneToOne

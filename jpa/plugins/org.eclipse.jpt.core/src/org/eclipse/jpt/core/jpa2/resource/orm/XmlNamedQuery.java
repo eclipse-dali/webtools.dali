@@ -320,17 +320,17 @@ public class XmlNamedQuery extends org.eclipse.jpt.core.resource.orm.XmlNamedQue
 			buildDescriptionTranslator(),
 			buildQueryTranslator(),
 			buildLockModeTranslator(),
-			XmlQueryHint.buildTranslator(JPA.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints()),
+			XmlQueryHint.buildTranslator(JPA2_0.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints()),
 		};
 	}
 
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlQuery_Description());
+		return new Translator(JPA2_0.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlQuery_Description());
 	}
 	
 	
 	protected static Translator buildLockModeTranslator() {
-		return new Translator(JPA.NAMED_QUERY__LOCK_MODE, Orm2_0Package.eINSTANCE.getXmlNamedQuery_LockMode());
+		return new Translator(JPA2_0.NAMED_QUERY__LOCK_MODE, Orm2_0Package.eINSTANCE.getXmlNamedQuery_LockMode());
 	}
 	
 } // XmlNamedQuery

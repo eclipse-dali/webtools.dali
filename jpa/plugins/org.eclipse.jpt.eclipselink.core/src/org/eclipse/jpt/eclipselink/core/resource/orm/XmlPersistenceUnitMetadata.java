@@ -225,7 +225,7 @@ public class XmlPersistenceUnitMetadata extends org.eclipse.jpt.core.resource.or
 	}
 	
 	protected static Translator buildExcludeDefaultMappingsTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_ExcludeDefaultMappings());
+		return new EmptyTagBooleanTranslator(EclipseLink.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_ExcludeDefaultMappings());
 	}
 
 } // XmlPersistenceUnitMetadata

@@ -993,46 +993,46 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	}
 
 	protected static Translator buildExcludeDefaultMappingsTranslator() {
-		return new Translator(JPA.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_ExcludeDefaultMappings(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_ExcludeDefaultMappings(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildCustomizerTranslator() {
-		return XmlCustomizer.buildTranslator(JPA.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
+		return XmlCustomizer.buildTranslator(EclipseLink.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
 	}
 
 	protected static Translator buildChangeTrackingTranslator() {
-		return XmlChangeTracking.buildTranslator(JPA.CHANGE_TRACKING, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking());
+		return XmlChangeTracking.buildTranslator(EclipseLink.CHANGE_TRACKING, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking());
 	}
 	protected static Translator buildConverterTranslator() {
-		return XmlConverter.buildTranslator(JPA.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters());
+		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters());
 	}
 
 	protected static Translator buildTypeConverterTranslator() {
-		return XmlTypeConverter.buildTranslator(JPA.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters());
+		return XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters());
 	}
 
 	protected static Translator buildObjectTypeConverterTranslator() {
-		return XmlObjectTypeConverter.buildTranslator(JPA.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters());
+		return XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters());
 	}
 
 	protected static Translator buildStructConverterTranslator() {
-		return XmlStructConverter.buildTranslator(JPA.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters());
+		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters());
 	}
 
 	protected static Translator buildCopyPolicyTranslator() {
-		return XmlCopyPolicy.buildTranslator(JPA.COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CopyPolicy());
+		return XmlCopyPolicy.buildTranslator(EclipseLink.COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CopyPolicy());
 	}
 
 	protected static Translator buildInstantiationCoypPolicyTranslator() {
-		return XmlInstantiationCopyPolicy.buildTranslator(JPA.INSTANTIATION_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_InstantiationCopyPolicy());
+		return XmlInstantiationCopyPolicy.buildTranslator(EclipseLink.INSTANTIATION_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_InstantiationCopyPolicy());
 	}
 
 	protected static Translator buildCloneCopyPolicyTranslator() {
-		return XmlCloneCopyPolicy.buildTranslator(JPA.CLONE_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CloneCopyPolicy());
+		return XmlCloneCopyPolicy.buildTranslator(EclipseLink.CLONE_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CloneCopyPolicy());
 	}
 
 	protected static Translator buildPropertyTranslator() {
-		return XmlProperty.buildTranslator(JPA.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
 
 } // XmlEmbeddable

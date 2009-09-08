@@ -219,7 +219,7 @@ public class XmlChangeTracking extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	protected static Translator buildTypeTranslator() {
-		return new Translator(JPA.TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTracking_Type(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTracking_Type(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlChangeTracking

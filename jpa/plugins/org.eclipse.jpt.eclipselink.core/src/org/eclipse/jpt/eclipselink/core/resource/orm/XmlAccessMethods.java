@@ -281,11 +281,11 @@ public class XmlAccessMethods extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	protected static Translator buildGetMethodTranslator() {
-		return new Translator(JPA.ACCESS_METHODS__GET_METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethods_GetMethod(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.ACCESS_METHODS__GET_METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethods_GetMethod(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildSetMethodTranslator() {
-		return new Translator(JPA.ACCESS_METHODS__SET_METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethods_SetMethod(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink.ACCESS_METHODS__SET_METHOD, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethods_SetMethod(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlAccessMethods

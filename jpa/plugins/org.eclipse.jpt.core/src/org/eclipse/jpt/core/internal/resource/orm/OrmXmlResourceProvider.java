@@ -62,7 +62,7 @@ public class OrmXmlResourceProvider
 	@Override
 	protected void populateRoot() {
 		XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-		entityMappings.setVersion(JPA.VERSION_1_0);
+		entityMappings.setVersion(JPA.SCHEMA_VERSION);
 		getResourceContents().add(entityMappings);
 	}
 }
