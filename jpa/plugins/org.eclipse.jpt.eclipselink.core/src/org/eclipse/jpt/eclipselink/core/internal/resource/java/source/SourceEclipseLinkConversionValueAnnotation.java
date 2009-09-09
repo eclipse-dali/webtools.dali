@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 
@@ -57,11 +57,11 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildDataValueAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, EclipseLinkJPA.CONVERSION_VALUE__DATA_VALUE, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, EclipseLink.CONVERSION_VALUE__DATA_VALUE, false);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildObjectValueAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, EclipseLinkJPA.CONVERSION_VALUE__OBJECT_VALUE, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, EclipseLink.CONVERSION_VALUE__OBJECT_VALUE, false);
 	}
 
 	public String getAnnotationName() {
@@ -159,7 +159,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildConversionValueAnnotationAdapter(DeclarationAnnotationAdapter daa, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(daa, EclipseLinkJPA.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES, index, EclipseLinkJPA.CONVERSION_VALUE, false);
+		return new NestedIndexedDeclarationAnnotationAdapter(daa, EclipseLink.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES, index, EclipseLink.CONVERSION_VALUE, false);
 	}
 
 }

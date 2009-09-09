@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkMutableAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.MUTABLE;
+	String ANNOTATION_NAME = EclipseLink.MUTABLE;
 		
 	/**
 	 * Corresponds to the 'value' element of the Mutable annotation.

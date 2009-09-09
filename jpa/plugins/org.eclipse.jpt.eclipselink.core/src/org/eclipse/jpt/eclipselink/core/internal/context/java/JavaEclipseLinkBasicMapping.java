@@ -19,7 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -45,8 +45,8 @@ public class JavaEclipseLinkBasicMapping
 		return new CompositeIterator<String>(
 			super.supportingAnnotationNames(),
 			new ArrayIterator<String>(
-				EclipseLinkJPA.MUTABLE,
-				EclipseLinkJPA.CONVERT));
+				EclipseLink.MUTABLE,
+				EclipseLink.CONVERT));
 	}
 
 	//************** AbstractJavaBasicMapping implementation ***************

@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -50,8 +50,8 @@ public class JavaEclipseLinkOneToManyMapping
 		return new CompositeIterator<String>(
 			super.supportingAnnotationNames(),
 			new ArrayIterator<String>(
-				EclipseLinkJPA.JOIN_FETCH,
-				EclipseLinkJPA.PRIVATE_OWNED));
+				EclipseLink.JOIN_FETCH,
+				EclipseLink.PRIVATE_OWNED));
 	}
 	
 	@Override

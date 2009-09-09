@@ -24,7 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -56,7 +56,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CONVERT);
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.CONVERT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -74,7 +74,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, EclipseLinkJPA.MUTABLE);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, EclipseLink.MUTABLE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -93,7 +93,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, EclipseLinkJPA.MUTABLE, "java.util.Date");
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, EclipseLink.MUTABLE, "java.util.Date");
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

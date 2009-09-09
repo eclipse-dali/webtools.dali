@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -78,7 +78,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 
 	@Override
 	String getNameElementName() {
-		return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__NAME;
+		return EclipseLink.OBJECT_TYPE_CONVERTER__NAME;
 	}
 
 
@@ -86,12 +86,12 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 
 	@Override
 	String getDataTypeElementName() {
-		return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__DATA_TYPE;
+		return EclipseLink.OBJECT_TYPE_CONVERTER__DATA_TYPE;
 	}
 
 	@Override
 	String getObjectTypeElementName() {
-		return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__OBJECT_TYPE;
+		return EclipseLink.OBJECT_TYPE_CONVERTER__OBJECT_TYPE;
 	}
 
 
@@ -187,7 +187,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildDefaultObjectValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE, false, StringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE, false, StringExpressionConverter.instance());
 	}
 
 
@@ -209,7 +209,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		}
 
 		public String getElementName() {
-			return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES;
+			return EclipseLink.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES;
 		}
 
 		public String getNestableAnnotationName() {

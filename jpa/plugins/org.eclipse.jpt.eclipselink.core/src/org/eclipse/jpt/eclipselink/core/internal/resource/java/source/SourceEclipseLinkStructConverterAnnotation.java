@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
 /**
@@ -63,7 +63,7 @@ public final class SourceEclipseLinkStructConverterAnnotation
 
 	@Override
 	String getNameElementName() {
-		return EclipseLinkJPA.STRUCT_CONVERTER__NAME;
+		return EclipseLink.STRUCT_CONVERTER__NAME;
 	}
 
 
@@ -96,7 +96,7 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildConverterAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.STRUCT_CONVERTER__CONVERTER, false, StringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.STRUCT_CONVERTER__CONVERTER, false, StringExpressionConverter.instance());
 	}
 
 }

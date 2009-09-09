@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkConverterAnnotation
 	extends EclipseLinkNamedConverterAnnotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.CONVERTER;
+	String ANNOTATION_NAME = EclipseLink.CONVERTER;
 		
 	/**
 	 * Corresponds to the 'converterClass' element of the Converter annotation.

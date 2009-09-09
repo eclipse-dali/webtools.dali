@@ -25,7 +25,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
@@ -39,7 +39,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLinkJPA.PRIVATE_OWNED);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLink.PRIVATE_OWNED);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -58,7 +58,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLinkJPA.JOIN_FETCH);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, EclipseLink.JOIN_FETCH);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

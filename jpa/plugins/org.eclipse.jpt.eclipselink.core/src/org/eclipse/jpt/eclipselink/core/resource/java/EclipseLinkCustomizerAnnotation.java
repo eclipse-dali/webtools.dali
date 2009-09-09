@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkCustomizerAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.CUSTOMIZER;
+	String ANNOTATION_NAME = EclipseLink.CUSTOMIZER;
 
 	/**
 	 * Corresponds to the 'value' element of the Customizer annotation.

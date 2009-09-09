@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -31,7 +31,7 @@ public class EclipseLinkJavaManyToOneMappingTests extends EclipseLinkContextMode
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_ONE, EclipseLinkJPA.JOIN_FETCH);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_ONE, EclipseLink.JOIN_FETCH);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

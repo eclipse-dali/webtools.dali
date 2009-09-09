@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -54,19 +54,19 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 
 	@Override
 	String getNameElementName() {
-		return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__NAME;
+		return EclipseLink.OBJECT_TYPE_CONVERTER__NAME;
 	}
 
 	// ********** BinaryBaseTypeConverterAnnotation implementation **********
 
 	@Override
 	String getDataTypeElementName() {
-		return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__DATA_TYPE;
+		return EclipseLink.OBJECT_TYPE_CONVERTER__DATA_TYPE;
 	}
 
 	@Override
 	String getObjectTypeElementName() {
-		return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__OBJECT_TYPE;
+		return EclipseLink.OBJECT_TYPE_CONVERTER__OBJECT_TYPE;
 	}
 
 	// ********** ObjectTypeConverterAnnotation implementation **********
@@ -87,7 +87,7 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	private String buildDefaultObjectValue() {
-		return (String) this.getJdtMemberValue(EclipseLinkJPA.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE);
+		return (String) this.getJdtMemberValue(EclipseLink.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE);
 	}
 
 	public TextRange getDefaultObjectValueTextRange(CompilationUnit astRoot) {
@@ -124,7 +124,7 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	private Vector<EclipseLinkConversionValueAnnotation> buildConversionValues() {
-		Object[] jdtConversionValues = this.getJdtMemberValues(EclipseLinkJPA.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES);
+		Object[] jdtConversionValues = this.getJdtMemberValues(EclipseLink.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES);
 		Vector<EclipseLinkConversionValueAnnotation> result = new Vector<EclipseLinkConversionValueAnnotation>(jdtConversionValues.length);
 		for (Object jdtConversionValue : jdtConversionValues) {
 			result.add(new BinaryEclipseLinkConversionValueAnnotation(this, (IAnnotation) jdtConversionValue));

@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceType;
 
@@ -90,7 +90,7 @@ public final class SourceEclipseLinkExistenceCheckingAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.EXISTENCE_CHECKING__VALUE, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.EXISTENCE_CHECKING__VALUE, false);
 	}
 
 }

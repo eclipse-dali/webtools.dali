@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkTransformationAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.TRANSFORMATION;
+	String ANNOTATION_NAME = EclipseLink.TRANSFORMATION;
 
 	/**
 	 * Corresponds to the 'fetch' element of the Transformation annotation.

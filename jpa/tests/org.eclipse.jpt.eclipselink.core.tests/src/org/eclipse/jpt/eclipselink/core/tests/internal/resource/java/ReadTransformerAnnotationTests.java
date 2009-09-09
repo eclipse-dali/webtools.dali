@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -28,7 +28,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLinkJPA.READ_TRANSFORMER);
+				return new ArrayIterator<String>(EclipseLink.READ_TRANSFORMER);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -41,7 +41,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLinkJPA.READ_TRANSFORMER);
+				return new ArrayIterator<String>(EclipseLink.READ_TRANSFORMER);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -54,7 +54,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLinkJPA.READ_TRANSFORMER);
+				return new ArrayIterator<String>(EclipseLink.READ_TRANSFORMER);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -68,13 +68,13 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER));
+		assertNotNull(attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER));
 		
-		attributeResource.removeAnnotation(EclipseLinkJPA.READ_TRANSFORMER)	;
-		assertNull(attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER));
+		attributeResource.removeAnnotation(EclipseLink.READ_TRANSFORMER)	;
+		assertNull(attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER));
 		
-		attributeResource.addAnnotation(EclipseLinkJPA.READ_TRANSFORMER);
-		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER));
+		attributeResource.addAnnotation(EclipseLink.READ_TRANSFORMER);
+		assertNotNull(attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER));
 	}
 
 	public void testGetTransformerClass() throws Exception {
@@ -82,7 +82,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER);
+		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
 	}
 
@@ -91,7 +91,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER);
+		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
 		
 		readTransformer.setTransformerClass("Bar");
@@ -105,7 +105,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER);
+		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
 		
 		readTransformer.setTransformerClass(null);
@@ -120,7 +120,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER);
+		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
 	}
 
@@ -129,7 +129,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER);
+		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
 		
 		readTransformer.setMethod("foo");
@@ -143,7 +143,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.READ_TRANSFORMER);
+		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
 		
 		readTransformer.setMethod(null);

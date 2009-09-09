@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkExistenceCheckingAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.EXISTENCE_CHECKING;
+	String ANNOTATION_NAME = EclipseLink.EXISTENCE_CHECKING;
 
 	/**
 	 * Corresponds to the 'value' element of the ExistenceChecking annotation.

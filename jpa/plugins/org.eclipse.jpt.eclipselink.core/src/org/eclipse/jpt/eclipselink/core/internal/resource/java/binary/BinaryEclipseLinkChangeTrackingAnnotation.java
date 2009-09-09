@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * org.eclipse.persistence.annotations.ChangeTracking
@@ -63,7 +63,7 @@ public final class BinaryEclipseLinkChangeTrackingAnnotation
 	}
 
 	private ChangeTrackingType buildValue() {
-		return ChangeTrackingType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLinkJPA.CHANGE_TRACKING__VALUE));
+		return ChangeTrackingType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.CHANGE_TRACKING__VALUE));
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

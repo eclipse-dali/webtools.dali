@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 public interface EclipseLinkBasicCollectionAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.BASIC_COLLECTION;
+	String ANNOTATION_NAME = EclipseLink.BASIC_COLLECTION;
 }

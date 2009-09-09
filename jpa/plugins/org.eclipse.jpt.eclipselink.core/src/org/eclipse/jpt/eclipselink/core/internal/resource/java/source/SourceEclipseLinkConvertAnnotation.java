@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * org.eclipse.persistence.annotations.Convert
@@ -94,7 +94,7 @@ public final class SourceEclipseLinkConvertAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CONVERT__VALUE, false, StringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CONVERT__VALUE, false, StringExpressionConverter.instance());
 	}
 
 }

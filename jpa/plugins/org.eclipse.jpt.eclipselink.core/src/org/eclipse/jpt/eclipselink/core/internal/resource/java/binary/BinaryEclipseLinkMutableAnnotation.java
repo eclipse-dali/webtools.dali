@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 
 /**
@@ -61,7 +61,7 @@ public final class BinaryEclipseLinkMutableAnnotation
 	}
 
 	private Boolean buildValue() {
-		return (Boolean) this.getJdtMemberValue(EclipseLinkJPA.MUTABLE__VALUE);
+		return (Boolean) this.getJdtMemberValue(EclipseLink.MUTABLE__VALUE);
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

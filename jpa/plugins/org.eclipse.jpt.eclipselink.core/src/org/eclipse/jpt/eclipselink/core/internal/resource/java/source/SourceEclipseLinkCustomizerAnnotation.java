@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * org.eclipse.persistence.annotations.Customizer
@@ -96,7 +96,7 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CUSTOMIZER__VALUE, false, SimpleTypeStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CUSTOMIZER__VALUE, false, SimpleTypeStringExpressionConverter.instance());
 	}
 
 }

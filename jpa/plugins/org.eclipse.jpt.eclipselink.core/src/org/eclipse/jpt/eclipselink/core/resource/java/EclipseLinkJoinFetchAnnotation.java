@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkJoinFetchAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.JOIN_FETCH;
+	String ANNOTATION_NAME = EclipseLink.JOIN_FETCH;
 
 	/**
 	 * Corresponds to the 'value' element of the JoinFetch annotation.

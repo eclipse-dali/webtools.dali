@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * org.eclipse.persistence.annotations.Converter
@@ -46,7 +46,7 @@ public final class BinaryEclipseLinkConverterAnnotation
 
 	@Override
 	String getNameElementName() {
-		return EclipseLinkJPA.CONVERTER__NAME;
+		return EclipseLink.CONVERTER__NAME;
 	}
 
 	// ********** ConverterAnnotation implementation **********
@@ -67,7 +67,7 @@ public final class BinaryEclipseLinkConverterAnnotation
 	}
 
 	private String buildConverterClass() {
-		return (String) this.getJdtMemberValue(EclipseLinkJPA.CONVERTER__CONVERTER_CLASS);
+		return (String) this.getJdtMemberValue(EclipseLink.CONVERTER__CONVERTER_CLASS);
 	}
 
 	public TextRange getConverterClassTextRange(CompilationUnit astRoot) {

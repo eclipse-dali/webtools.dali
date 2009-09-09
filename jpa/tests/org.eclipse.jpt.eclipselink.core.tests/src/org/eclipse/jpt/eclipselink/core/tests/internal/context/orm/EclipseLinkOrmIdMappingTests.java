@@ -22,7 +22,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -57,7 +57,7 @@ public class EclipseLinkOrmIdMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, EclipseLinkJPA.MUTABLE, "java.util.Date");
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, EclipseLink.MUTABLE, "java.util.Date");
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

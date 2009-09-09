@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceType;
 
@@ -62,7 +62,7 @@ public final class BinaryEclipseLinkExistenceCheckingAnnotation
 	}
 
 	private ExistenceType buildValue() {
-		return ExistenceType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLinkJPA.EXISTENCE_CHECKING__VALUE));
+		return ExistenceType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.EXISTENCE_CHECKING__VALUE));
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

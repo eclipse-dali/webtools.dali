@@ -24,8 +24,8 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  */
 public enum JoinFetchType {
 
-    INNER(EclipseLinkJPA.JOIN_FETCH_TYPE__INNER),
-    OUTER(EclipseLinkJPA.JOIN_FETCH_TYPE__OUTER);
+    INNER(EclipseLink.JOIN_FETCH_TYPE__INNER),
+    OUTER(EclipseLink.JOIN_FETCH_TYPE__OUTER);
 
 
 	private String javaAnnotationValue;

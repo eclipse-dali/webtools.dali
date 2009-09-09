@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheType;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
@@ -89,7 +89,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private CacheType buildType() {
-		return CacheType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLinkJPA.CACHE__TYPE));
+		return CacheType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.CACHE__TYPE));
 	}
 
 	public TextRange getTypeTextRange(CompilationUnit astRoot) {
@@ -112,7 +112,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private Integer buildSize() {
-		return (Integer) this.getJdtMemberValue(EclipseLinkJPA.CACHE__SIZE);
+		return (Integer) this.getJdtMemberValue(EclipseLink.CACHE__SIZE);
 	}
 
 	public TextRange getSizeTextRange(CompilationUnit astRoot) {
@@ -135,7 +135,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private Boolean buildShared() {
-		return (Boolean) this.getJdtMemberValue(EclipseLinkJPA.CACHE__SHARED);
+		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__SHARED);
 	}
 
 	public TextRange getSharedTextRange(CompilationUnit astRoot) {
@@ -158,7 +158,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private Integer buildExpiry() {
-		return (Integer) this.getJdtMemberValue(EclipseLinkJPA.CACHE__EXPIRY);
+		return (Integer) this.getJdtMemberValue(EclipseLink.CACHE__EXPIRY);
 	}
 
 	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
@@ -188,7 +188,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private IAnnotation getJdtExpiryTimeOfDay() {
-		return (IAnnotation) this.getJdtMemberValue(EclipseLinkJPA.CACHE__EXPIRY_TIME_OF_DAY);
+		return (IAnnotation) this.getJdtMemberValue(EclipseLink.CACHE__EXPIRY_TIME_OF_DAY);
 	}
 
 	private void setExpiryTimeOfDay(EclipseLinkTimeOfDayAnnotation expiryTimeOfDay) {
@@ -232,7 +232,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private Boolean buildAlwaysRefresh() {
-		return (Boolean) this.getJdtMemberValue(EclipseLinkJPA.CACHE__ALWAYS_REFRESH);
+		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__ALWAYS_REFRESH);
 	}
 
 	public TextRange getAlwaysRefreshTextRange(CompilationUnit astRoot) {
@@ -255,7 +255,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private Boolean buildRefreshOnlyIfNewer() {
-		return (Boolean) this.getJdtMemberValue(EclipseLinkJPA.CACHE__REFRESH_ONLY_IF_NEWER);
+		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__REFRESH_ONLY_IF_NEWER);
 	}
 
 	public TextRange getRefreshOnlyIfNewerTextRange(CompilationUnit astRoot) {
@@ -278,7 +278,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private Boolean buildDisableHits() {
-		return (Boolean) this.getJdtMemberValue(EclipseLinkJPA.CACHE__DISABLE_HITS);
+		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__DISABLE_HITS);
 	}
 
 	public TextRange getDisablesHitsTextRange(CompilationUnit astRoot) {
@@ -301,7 +301,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	private CacheCoordinationType buildCoordinationType() {
-		return CacheCoordinationType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLinkJPA.CACHE__COORDINATION_TYPE));
+		return CacheCoordinationType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.CACHE__COORDINATION_TYPE));
 	}
 
 	public TextRange getCoordinationTypeTextRange(CompilationUnit astRoot) {

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * org.eclipse.persistence.annotations.Convert
@@ -60,7 +60,7 @@ public final class BinaryEclipseLinkConvertAnnotation
 	}
 
 	private String buildValue() {
-		return (String) this.getJdtMemberValue(EclipseLinkJPA.CONVERT__VALUE);
+		return (String) this.getJdtMemberValue(EclipseLink.CONVERT__VALUE);
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

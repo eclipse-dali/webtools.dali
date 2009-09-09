@@ -22,7 +22,7 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  * @since 2.1
  */
 @SuppressWarnings("nls")
-public interface EclipseLinkJPA {
+public interface EclipseLink {
 
 	// EclipseLink package
 	String PACKAGE = "org.eclipse.persistence.annotations"; //$NON-NLS-1$
@@ -128,5 +128,4 @@ public interface EclipseLinkJPA {
 		String JOIN_FETCH_TYPE_ = JOIN_FETCH_TYPE + ".";
 		String JOIN_FETCH_TYPE__INNER = JOIN_FETCH_TYPE_ + "INNER";
 		String JOIN_FETCH_TYPE__OUTER = JOIN_FETCH_TYPE_ + "OUTER";
-
 }

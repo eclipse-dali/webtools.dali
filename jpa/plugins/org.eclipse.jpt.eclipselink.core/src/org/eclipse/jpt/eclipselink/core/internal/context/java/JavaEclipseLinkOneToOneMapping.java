@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -43,8 +43,8 @@ public class JavaEclipseLinkOneToOneMapping
 		return new CompositeIterator<String>(
 			super.supportingAnnotationNames(),
 			new ArrayIterator<String>(
-				EclipseLinkJPA.JOIN_FETCH,
-				EclipseLinkJPA.PRIVATE_OWNED));
+				EclipseLink.JOIN_FETCH,
+				EclipseLink.PRIVATE_OWNED));
 	}
 	
 	public EclipseLinkJoinFetch getJoinFetch() {

@@ -20,7 +20,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -32,7 +32,7 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.EMBEDDABLE, EclipseLinkJPA.CUSTOMIZER);
+				return new ArrayIterator<String>(JPA.EMBEDDABLE, EclipseLink.CUSTOMIZER);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -46,7 +46,7 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.EMBEDDABLE, EclipseLinkJPA.CHANGE_TRACKING);
+				return new ArrayIterator<String>(JPA.EMBEDDABLE, EclipseLink.CHANGE_TRACKING);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

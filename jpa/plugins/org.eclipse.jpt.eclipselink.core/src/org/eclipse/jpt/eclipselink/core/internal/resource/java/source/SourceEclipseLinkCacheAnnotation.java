@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheType;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
@@ -373,39 +373,39 @@ public final class SourceEclipseLinkCacheAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildTypeAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__TYPE);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__TYPE);
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildSizeAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__SIZE, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__SIZE, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildSharedAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__SHARED, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__SHARED, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildExpiryAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__EXPIRY, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__EXPIRY, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildAlwaysRefreshAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__ALWAYS_REFRESH, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__ALWAYS_REFRESH, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildRefreshOnlyIfNewerAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__REFRESH_ONLY_IF_NEWER, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__REFRESH_ONLY_IF_NEWER, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildDisableHitsAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__DISABLE_HITS, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__DISABLE_HITS, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildCoordinationTypeAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__COORDINATION_TYPE);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__COORDINATION_TYPE);
 	}
 
 	private static NestedDeclarationAnnotationAdapter buildExpiryTimeOfDayAdapter() {
-		return new NestedDeclarationAnnotationAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__EXPIRY_TIME_OF_DAY, EclipseLinkJPA.TIME_OF_DAY);
+		return new NestedDeclarationAnnotationAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__EXPIRY_TIME_OF_DAY, EclipseLink.TIME_OF_DAY);
 	}
 
 }

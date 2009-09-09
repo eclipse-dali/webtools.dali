@@ -24,13 +24,13 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  */
 public enum CacheType {
 
-	FULL(EclipseLinkJPA.CACHE_TYPE__FULL),
-	WEAK(EclipseLinkJPA.CACHE_TYPE__WEAK),
-	SOFT(EclipseLinkJPA.CACHE_TYPE__SOFT),
-	SOFT_WEAK(EclipseLinkJPA.CACHE_TYPE__SOFT_WEAK),
-	HARD_WEAK(EclipseLinkJPA.CACHE_TYPE__HARD_WEAK),
-	CACHE(EclipseLinkJPA.CACHE_TYPE__CACHE),
-	NONE(EclipseLinkJPA.CACHE_TYPE__NONE);
+	FULL(EclipseLink.CACHE_TYPE__FULL),
+	WEAK(EclipseLink.CACHE_TYPE__WEAK),
+	SOFT(EclipseLink.CACHE_TYPE__SOFT),
+	SOFT_WEAK(EclipseLink.CACHE_TYPE__SOFT_WEAK),
+	HARD_WEAK(EclipseLink.CACHE_TYPE__HARD_WEAK),
+	CACHE(EclipseLink.CACHE_TYPE__CACHE),
+	NONE(EclipseLink.CACHE_TYPE__NONE);
 
 
 	private String javaAnnotationValue;

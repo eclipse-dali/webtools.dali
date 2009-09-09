@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -28,7 +28,7 @@ public class PrivateOwnedTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLinkJPA.PRIVATE_OWNED);
+				return new ArrayIterator<String>(EclipseLink.PRIVATE_OWNED);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -42,7 +42,7 @@ public class PrivateOwnedTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkPrivateOwnedAnnotation privateOwned = (EclipseLinkPrivateOwnedAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.PRIVATE_OWNED);
+		EclipseLinkPrivateOwnedAnnotation privateOwned = (EclipseLinkPrivateOwnedAnnotation) attributeResource.getAnnotation(EclipseLink.PRIVATE_OWNED);
 		assertNotNull(privateOwned);
 	}
 

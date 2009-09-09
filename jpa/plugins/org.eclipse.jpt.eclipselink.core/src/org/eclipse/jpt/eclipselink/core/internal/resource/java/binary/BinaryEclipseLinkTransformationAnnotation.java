@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
 
 /**
@@ -65,7 +65,7 @@ public class BinaryEclipseLinkTransformationAnnotation
 	}
 
 	private FetchType buildFetch() {
-		return FetchType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLinkJPA.TRANSFORMATION__FETCH));
+		return FetchType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.TRANSFORMATION__FETCH));
 	}
 
 	public TextRange getFetchTextRange(CompilationUnit astRoot) {
@@ -88,7 +88,7 @@ public class BinaryEclipseLinkTransformationAnnotation
 	}
 
 	private Boolean buildOptional() {
-		return (Boolean) this.getJdtMemberValue(EclipseLinkJPA.TRANSFORMATION__OPTIONAL);
+		return (Boolean) this.getJdtMemberValue(EclipseLink.TRANSFORMATION__OPTIONAL);
 	}
 
 	public TextRange getOptionalTextRange(CompilationUnit astRoot) {

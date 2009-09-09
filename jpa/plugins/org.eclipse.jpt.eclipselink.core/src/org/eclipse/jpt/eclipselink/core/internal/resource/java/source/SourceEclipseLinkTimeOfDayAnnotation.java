@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
@@ -176,19 +176,19 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildHourAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLinkJPA.TIME_OF_DAY__HOUR, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__HOUR, false, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildMinuteAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLinkJPA.TIME_OF_DAY__MINUTE, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__MINUTE, false, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildSecondAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLinkJPA.TIME_OF_DAY__SECOND, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__SECOND, false, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildMillisecondAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLinkJPA.TIME_OF_DAY__MILLISECOND, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__MILLISECOND, false, NumberIntegerExpressionConverter.instance());
 	}
 
 }

@@ -24,7 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
@@ -40,7 +40,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, EclipseLinkJPA.CONVERT, EclipseLinkJPA.OBJECT_TYPE_CONVERTER);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, EclipseLink.CONVERT, EclipseLink.OBJECT_TYPE_CONVERTER);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -61,7 +61,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CONVERT, EclipseLinkJPA.OBJECT_TYPE_CONVERTER, EclipseLinkJPA.CONVERSION_VALUE);
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.CONVERT, EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLink.CONVERSION_VALUE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

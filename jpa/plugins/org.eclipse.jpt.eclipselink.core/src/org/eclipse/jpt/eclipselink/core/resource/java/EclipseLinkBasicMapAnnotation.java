@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 public interface EclipseLinkBasicMapAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.BASIC_MAP;
+	String ANNOTATION_NAME = EclipseLink.BASIC_MAP;
 }

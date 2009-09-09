@@ -25,5 +25,5 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
 public interface EclipseLinkReadTransformerAnnotation
 	extends EclipseLinkTransformerAnnotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.READ_TRANSFORMER;
+	String ANNOTATION_NAME = EclipseLink.READ_TRANSFORMER;
 }

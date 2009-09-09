@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * org.eclipse.persistence.annotations.Customizer
@@ -61,7 +61,7 @@ public final class BinaryEclipseLinkCustomizerAnnotation
 	}
 
 	private String buildValue() {
-		return (String) this.getJdtMemberValue(EclipseLinkJPA.CUSTOMIZER__VALUE);
+		return (String) this.getJdtMemberValue(EclipseLink.CUSTOMIZER__VALUE);
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -28,7 +28,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLinkJPA.CONVERT);
+				return new ArrayIterator<String>(EclipseLink.CONVERT);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -41,7 +41,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLinkJPA.CONVERT);
+				return new ArrayIterator<String>(EclipseLink.CONVERT);
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
@@ -55,13 +55,13 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.CONVERT));
+		assertNotNull(attributeResource.getAnnotation(EclipseLink.CONVERT));
 		
-		attributeResource.removeAnnotation(EclipseLinkJPA.CONVERT);
-		assertNull(attributeResource.getAnnotation(EclipseLinkJPA.CONVERT));
+		attributeResource.removeAnnotation(EclipseLink.CONVERT);
+		assertNull(attributeResource.getAnnotation(EclipseLink.CONVERT));
 		
-		attributeResource.addAnnotation(EclipseLinkJPA.CONVERT);
-		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.CONVERT));
+		attributeResource.addAnnotation(EclipseLink.CONVERT);
+		assertNotNull(attributeResource.getAnnotation(EclipseLink.CONVERT));
 	}
 
 	public void testGetValue() throws Exception {
@@ -69,7 +69,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.CONVERT);
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getAnnotation(EclipseLink.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 	}
 
@@ -78,7 +78,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.CONVERT);
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getAnnotation(EclipseLink.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue("Bar");
@@ -92,7 +92,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.CONVERT);
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getAnnotation(EclipseLink.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue(null);

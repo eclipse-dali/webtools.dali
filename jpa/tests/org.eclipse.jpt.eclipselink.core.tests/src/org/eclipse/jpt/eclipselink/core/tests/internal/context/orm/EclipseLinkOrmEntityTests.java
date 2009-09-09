@@ -30,7 +30,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
@@ -54,7 +54,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.READ_ONLY);
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.READ_ONLY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -67,7 +67,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CUSTOMIZER);
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.CUSTOMIZER);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -80,7 +80,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CHANGE_TRACKING);
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLink.CHANGE_TRACKING);
 			}
 			
 			@Override

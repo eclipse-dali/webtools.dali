@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkCacheAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.CACHE;
+	String ANNOTATION_NAME = EclipseLink.CACHE;
 
 	/**
 	 * Corresponds to the 'type' element of the Cache annotation.

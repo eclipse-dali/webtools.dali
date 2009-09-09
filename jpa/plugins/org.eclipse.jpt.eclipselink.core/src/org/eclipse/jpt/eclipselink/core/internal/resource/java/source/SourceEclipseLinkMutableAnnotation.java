@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 
 /**
@@ -90,7 +90,7 @@ public final class SourceEclipseLinkMutableAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.MUTABLE__VALUE, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.MUTABLE__VALUE, false, BooleanExpressionConverter.instance());
 	}
 
 }

@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
 
 /**
@@ -39,12 +39,12 @@ public final class SourceEclipseLinkReadTransformerAnnotation
 
 	@Override
 	String getTransformerClassElementName() {
-		return EclipseLinkJPA.READ_TRANSFORMER__TRANSFORMER_CLASS;
+		return EclipseLink.READ_TRANSFORMER__TRANSFORMER_CLASS;
 	}
 
 	@Override
 	String getMethodElementName() {
-		return EclipseLinkJPA.READ_TRANSFORMER__METHOD;
+		return EclipseLink.READ_TRANSFORMER__METHOD;
 	}
 
 }

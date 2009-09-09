@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkTimeOfDayAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.TIME_OF_DAY;
+	String ANNOTATION_NAME = EclipseLink.TIME_OF_DAY;
 
 	/**
 	 * Corresponds to the 'hour' element of the TimeOfDay annotation.

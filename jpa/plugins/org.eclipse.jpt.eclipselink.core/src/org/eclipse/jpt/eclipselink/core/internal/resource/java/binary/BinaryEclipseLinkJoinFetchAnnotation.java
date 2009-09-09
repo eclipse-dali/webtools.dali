@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType;
 
@@ -62,7 +62,7 @@ public final class BinaryEclipseLinkJoinFetchAnnotation
 	}
 
 	private JoinFetchType buildValue() {
-		return JoinFetchType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLinkJPA.JOIN_FETCH__VALUE));
+		return JoinFetchType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.JOIN_FETCH__VALUE));
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

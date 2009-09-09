@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkWriteTransformerAnnotation
 	extends EclipseLinkTransformerAnnotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.WRITE_TRANSFORMER;
+	String ANNOTATION_NAME = EclipseLink.WRITE_TRANSFORMER;
 
 	/**
 	 * Corresponds to the 'column' element of the WriteTransformer annotation.

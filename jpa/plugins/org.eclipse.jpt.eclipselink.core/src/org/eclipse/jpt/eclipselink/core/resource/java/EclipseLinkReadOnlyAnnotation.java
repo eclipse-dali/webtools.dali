@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 public interface EclipseLinkReadOnlyAnnotation
 	extends Annotation
 {	
-	String ANNOTATION_NAME = EclipseLinkJPA.READ_ONLY;
+	String ANNOTATION_NAME = EclipseLink.READ_ONLY;
 }

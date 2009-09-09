@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
 /**
@@ -39,7 +39,7 @@ public final class SourceEclipseLinkTypeConverterAnnotation
 
 	@Override
 	String getNameElementName() {
-		return EclipseLinkJPA.TYPE_CONVERTER__NAME;
+		return EclipseLink.TYPE_CONVERTER__NAME;
 	}
 
 
@@ -47,12 +47,12 @@ public final class SourceEclipseLinkTypeConverterAnnotation
 
 	@Override
 	String getDataTypeElementName() {
-		return EclipseLinkJPA.TYPE_CONVERTER__DATA_TYPE;
+		return EclipseLink.TYPE_CONVERTER__DATA_TYPE;
 	}
 
 	@Override
 	String getObjectTypeElementName() {
-		return EclipseLinkJPA.TYPE_CONVERTER__OBJECT_TYPE;
+		return EclipseLink.TYPE_CONVERTER__OBJECT_TYPE;
 	}
 
 }

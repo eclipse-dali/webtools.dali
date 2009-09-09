@@ -25,5 +25,5 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
 public interface EclipseLinkTypeConverterAnnotation
 	extends BaseEclipseLinkTypeConverterAnnotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.TYPE_CONVERTER;
+	String ANNOTATION_NAME = EclipseLink.TYPE_CONVERTER;
 }

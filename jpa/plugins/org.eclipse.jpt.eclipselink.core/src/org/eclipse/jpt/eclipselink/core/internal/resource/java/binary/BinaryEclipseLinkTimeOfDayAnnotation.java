@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
@@ -70,7 +70,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 	}
 
 	private Integer buildHour() {
-		return (Integer) this.getJdtMemberValue(EclipseLinkJPA.TIME_OF_DAY__HOUR);
+		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__HOUR);
 	}
 
 	public TextRange getHourTextRange(CompilationUnit astRoot) {
@@ -93,7 +93,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 	}
 
 	private Integer buildMinute() {
-		return (Integer) this.getJdtMemberValue(EclipseLinkJPA.TIME_OF_DAY__MINUTE);
+		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__MINUTE);
 	}
 
 	public TextRange getMinuteTextRange(CompilationUnit astRoot) {
@@ -116,7 +116,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 	}
 
 	private Integer buildSecond() {
-		return (Integer) this.getJdtMemberValue(EclipseLinkJPA.TIME_OF_DAY__SECOND);
+		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__SECOND);
 	}
 
 	public TextRange getSecondTextRange(CompilationUnit astRoot) {
@@ -139,7 +139,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 	}
 
 	private Integer buildMillisecond() {
-		return (Integer) this.getJdtMemberValue(EclipseLinkJPA.TIME_OF_DAY__MILLISECOND);
+		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__MILLISECOND);
 	}
 
 	public TextRange getMillisecondTextRange(CompilationUnit astRoot) {

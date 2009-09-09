@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
 
 /**
@@ -35,12 +35,12 @@ public final class BinaryEclipseLinkReadTransformerAnnotation
 
 	@Override
 	String getTransformerClassElementName() {
-		return EclipseLinkJPA.READ_TRANSFORMER__TRANSFORMER_CLASS;
+		return EclipseLink.READ_TRANSFORMER__TRANSFORMER_CLASS;
 	}
 
 	@Override
 	String getMethodElementName() {
-		return EclipseLinkJPA.READ_TRANSFORMER__METHOD;
+		return EclipseLink.READ_TRANSFORMER__METHOD;
 	}
 
 }

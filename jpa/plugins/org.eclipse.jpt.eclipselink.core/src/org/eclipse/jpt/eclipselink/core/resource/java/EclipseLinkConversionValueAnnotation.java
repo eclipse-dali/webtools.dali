@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkConversionValueAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.CONVERSION_VALUE;
+	String ANNOTATION_NAME = EclipseLink.CONVERSION_VALUE;
 
 	/**
 	 * Corresponds to the 'dataValue' element of the ConversionValue annotation.

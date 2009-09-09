@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
 
 /**
@@ -122,11 +122,11 @@ public final class SourceEclipseLinkTransformationAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.TRANSFORMATION__OPTIONAL, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.TRANSFORMATION__OPTIONAL, false, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.TRANSFORMATION__FETCH, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.TRANSFORMATION__FETCH, false);
 	}
 
 }

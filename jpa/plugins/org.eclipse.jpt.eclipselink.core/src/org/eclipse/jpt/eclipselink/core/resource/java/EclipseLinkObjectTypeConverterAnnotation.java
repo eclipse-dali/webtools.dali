@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkObjectTypeConverterAnnotation
 	extends BaseEclipseLinkTypeConverterAnnotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.OBJECT_TYPE_CONVERTER;
+	String ANNOTATION_NAME = EclipseLink.OBJECT_TYPE_CONVERTER;
 	
 	/**
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.

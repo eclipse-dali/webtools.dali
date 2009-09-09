@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkStructConverterAnnotation
 	extends EclipseLinkNamedConverterAnnotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.STRUCT_CONVERTER;
+	String ANNOTATION_NAME = EclipseLink.STRUCT_CONVERTER;
 
 	/**
 	 * Corresponds to the 'converter' element of the StructConverter annotation.

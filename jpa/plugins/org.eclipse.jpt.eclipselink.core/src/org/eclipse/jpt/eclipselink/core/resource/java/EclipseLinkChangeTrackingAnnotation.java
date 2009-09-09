@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface EclipseLinkChangeTrackingAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.CHANGE_TRACKING;
+	String ANNOTATION_NAME = EclipseLink.CHANGE_TRACKING;
 
 	/**
 	 * Corresponds to the 'value' element of the ChangeTracking annotation.

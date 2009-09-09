@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 public interface EclipseLinkPrivateOwnedAnnotation
 	extends Annotation
 {	
-	String ANNOTATION_NAME = EclipseLinkJPA.PRIVATE_OWNED;
+	String ANNOTATION_NAME = EclipseLink.PRIVATE_OWNED;
 }

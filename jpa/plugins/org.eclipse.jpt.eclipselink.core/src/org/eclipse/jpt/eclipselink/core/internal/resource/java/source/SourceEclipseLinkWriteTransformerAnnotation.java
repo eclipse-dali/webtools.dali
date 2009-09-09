@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.NullEclipseLinkWriteTransformerColumnAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
 
 /**
@@ -78,12 +78,12 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 
 	@Override
 	String getTransformerClassElementName() {
-		return EclipseLinkJPA.WRITE_TRANSFORMER__TRANSFORMER_CLASS;
+		return EclipseLink.WRITE_TRANSFORMER__TRANSFORMER_CLASS;
 	}
 
 	@Override
 	String getMethodElementName() {
-		return EclipseLinkJPA.WRITE_TRANSFORMER__METHOD;
+		return EclipseLink.WRITE_TRANSFORMER__METHOD;
 	}
 
 
@@ -127,7 +127,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationAdapter buildColumnAnnotationAdapter(DeclarationAnnotationAdapter writeTransformerAnnotationAdapter) {
-		return new NestedDeclarationAnnotationAdapter(writeTransformerAnnotationAdapter, EclipseLinkJPA.WRITE_TRANSFORMER__COLUMN, JPA.COLUMN, false);
+		return new NestedDeclarationAnnotationAdapter(writeTransformerAnnotationAdapter, EclipseLink.WRITE_TRANSFORMER__COLUMN, JPA.COLUMN, false);
 	}
 
 	private static ColumnAnnotation createColumn(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter writeTransformerAnnotationAdapter) {

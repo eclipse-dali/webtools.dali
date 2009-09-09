@@ -24,10 +24,10 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  */
 public enum ChangeTrackingType {
 
-	ATTRIBUTE(EclipseLinkJPA.CHANGE_TRACKING_TYPE__ATTRIBUTE),
-	OBJECT(EclipseLinkJPA.CHANGE_TRACKING_TYPE__OBJECT),
-	DEFERRED(EclipseLinkJPA.CHANGE_TRACKING_TYPE__DEFERRED),
-	AUTO(EclipseLinkJPA.CHANGE_TRACKING_TYPE__AUTO);
+	ATTRIBUTE(EclipseLink.CHANGE_TRACKING_TYPE__ATTRIBUTE),
+	OBJECT(EclipseLink.CHANGE_TRACKING_TYPE__OBJECT),
+	DEFERRED(EclipseLink.CHANGE_TRACKING_TYPE__DEFERRED),
+	AUTO(EclipseLink.CHANGE_TRACKING_TYPE__AUTO);
 
 
 	private String javaAnnotationValue;

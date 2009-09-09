@@ -22,7 +22,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkVersionMapping;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -57,7 +57,7 @@ public class EclipseLinkOrmVersionMappingTests
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION, EclipseLinkJPA.MUTABLE, "java.util.Date");
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION, EclipseLink.MUTABLE, "java.util.Date");
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -27,7 +27,7 @@ public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(EclipseLinkJPA.READ_ONLY);
+				return new ArrayIterator<String>(EclipseLink.READ_ONLY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -40,7 +40,7 @@ public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestReadOnly();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		EclipseLinkReadOnlyAnnotation readOnly = (EclipseLinkReadOnlyAnnotation) typeResource.getAnnotation(EclipseLinkJPA.READ_ONLY);
+		EclipseLinkReadOnlyAnnotation readOnly = (EclipseLinkReadOnlyAnnotation) typeResource.getAnnotation(EclipseLink.READ_ONLY);
 		assertNotNull(readOnly);
 	}
 

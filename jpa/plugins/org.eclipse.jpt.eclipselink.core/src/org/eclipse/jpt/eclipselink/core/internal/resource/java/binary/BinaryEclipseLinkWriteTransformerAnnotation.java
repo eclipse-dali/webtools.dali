@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.NullEclipseLinkWriteTransformerColumnAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
 
 /**
@@ -49,12 +49,12 @@ public class BinaryEclipseLinkWriteTransformerAnnotation
 
 	@Override
 	String getTransformerClassElementName() {
-		return EclipseLinkJPA.WRITE_TRANSFORMER__TRANSFORMER_CLASS;
+		return EclipseLink.WRITE_TRANSFORMER__TRANSFORMER_CLASS;
 	}
 
 	@Override
 	String getMethodElementName() {
-		return EclipseLinkJPA.WRITE_TRANSFORMER__METHOD;
+		return EclipseLink.WRITE_TRANSFORMER__METHOD;
 	}
 
 
@@ -91,7 +91,7 @@ public class BinaryEclipseLinkWriteTransformerAnnotation
 	}
 
 	private IAnnotation getJdtColumn() {
-		return (IAnnotation) this.getJdtMemberValue(EclipseLinkJPA.WRITE_TRANSFORMER__COLUMN);
+		return (IAnnotation) this.getJdtMemberValue(EclipseLink.WRITE_TRANSFORMER__COLUMN);
 	}
 
 	private void setColumn(ColumnAnnotation column) {

@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 public interface EclipseLinkVariableOneToOneAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = EclipseLinkJPA.VARIABLE_ONE_TO_ONE;
+	String ANNOTATION_NAME = EclipseLink.VARIABLE_ONE_TO_ONE;
 }
