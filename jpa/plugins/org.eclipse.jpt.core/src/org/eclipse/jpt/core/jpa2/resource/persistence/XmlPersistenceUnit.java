@@ -10,10 +10,8 @@
 package org.eclipse.jpt.core.jpa2.resource.persistence;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.persistence.PersistencePackage;
@@ -289,28 +287,27 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 				buildProviderTranslator(),
 				buildJtaDataSourceTranslator(),
 				buildNonJtaDataSourceTranslator(),
-				XmlMappingFileRef.buildTranslator(JPA.MAPPING_FILE, pkg.getXmlPersistenceUnit_MappingFiles()),
-				XmlJarFileRef.buildTranslator(JPA.JAR_FILE, pkg.getXmlPersistenceUnit_JarFiles()),
-				XmlJavaClassRef.buildTranslator(JPA.CLASS, pkg.getXmlPersistenceUnit_Classes()),
+				XmlMappingFileRef.buildTranslator(JPA2_0.MAPPING_FILE, pkg.getXmlPersistenceUnit_MappingFiles()),
+				XmlJarFileRef.buildTranslator(JPA2_0.JAR_FILE, pkg.getXmlPersistenceUnit_JarFiles()),
+				XmlJavaClassRef.buildTranslator(JPA2_0.CLASS, pkg.getXmlPersistenceUnit_Classes()),
 				buildExcludeUnlistedClassesTranslator(),
 				buildCachingTranslator(),
 				buildValidationModeTranslator(),
-				XmlProperties.buildTranslator(JPA.PROPERTIES, pkg.getXmlPersistenceUnit_Properties())
+				XmlProperties.buildTranslator(JPA2_0.PROPERTIES, pkg.getXmlPersistenceUnit_Properties())
 			};
 	}
 
 	protected static Translator buildCachingTranslator() {
 		return new Translator(
-				JPA.PERSISTENCE_UNIT__SHARED_CACHE_MODE,
+				JPA2_0.PERSISTENCE_UNIT__SHARED_CACHE_MODE,
 				Persistence2_0Package.eINSTANCE.getXmlPersistenceUnit_SharedCacheMode()
 			);
 	}
 
 	protected static Translator buildValidationModeTranslator() {
 		return new Translator(
-				JPA.PERSISTENCE_UNIT__VALIDATION_MODE,
+				JPA2_0.PERSISTENCE_UNIT__VALIDATION_MODE,
 				Persistence2_0Package.eINSTANCE.getXmlPersistenceUnit_ValidationMode()
 			);
 	}
-
 } // XmlPersistenceUnit

@@ -58,7 +58,7 @@ public class XmlPersistence extends org.eclipse.jpt.core.resource.persistence.Xm
 
 	private static Translator buildRootTranslator() {
 		return new SimpleRootTranslator(
-				JPA.PERSISTENCE,
+				JPA2_0.PERSISTENCE,
 				Persistence2_0Package.eINSTANCE.getXmlPersistence(),
 				buildTranslatorChildren()
 			);
@@ -70,12 +70,11 @@ public class XmlPersistence extends org.eclipse.jpt.core.resource.persistence.Xm
 				buildNamespaceTranslator(),
 				buildSchemaNamespaceTranslator(),
 				buildSchemaLocationTranslator(),
-				XmlPersistenceUnit.buildTranslator(JPA.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
+				XmlPersistenceUnit.buildTranslator(JPA2_0.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
 			};
 	}
 	
 	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_2_0);
+		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA2_0.SCHEMA_NAMESPACE + ' ' + JPA2_0.SCHEMA_LOCATION);
 	}
-
 } // XmlPersistence

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.resource.persistence;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -313,7 +312,7 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	}
 
 	protected static Translator buildNamespaceTranslator() {
-		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.NAMESPACE_URL);
+		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.SCHEMA_NAMESPACE);
 	}
 
 	protected static Translator buildSchemaNamespaceTranslator() {
@@ -321,7 +320,7 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	}
 
 	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_1_0);
+		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.SCHEMA_NAMESPACE + ' ' + JPA.SCHEMA_LOCATION);
 	}
 
 	protected static Translator buildVersionTranslator() {
@@ -331,5 +330,4 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 				Translator.DOM_ATTRIBUTE
 			);
 	}
-
 }

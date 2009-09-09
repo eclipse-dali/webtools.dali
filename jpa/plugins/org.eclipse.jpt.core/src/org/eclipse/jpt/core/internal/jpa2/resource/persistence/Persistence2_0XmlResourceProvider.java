@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.jpa2.resource.persistence.JPA;
+import org.eclipse.jpt.core.jpa2.resource.persistence.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.persistence.Persistence2_0Factory;
 import org.eclipse.jpt.core.jpa2.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.jpa2.resource.persistence.XmlPersistenceUnit;
@@ -63,7 +63,7 @@ public class Persistence2_0XmlResourceProvider
 	@Override
 	protected void populateRoot() {
 		XmlPersistence persistence = Persistence2_0Factory.eINSTANCE.createXmlPersistence();
-		persistence.setVersion(JPA.VERSION_2_0);
+		persistence.setVersion(JPA2_0.SCHEMA_VERSION);
 		XmlPersistenceUnit persistenceUnit = Persistence2_0Factory.eINSTANCE.createXmlPersistenceUnit();
 		persistenceUnit.setName(getProject().getName());
 		persistence.getPersistenceUnits().add(persistenceUnit);

@@ -63,7 +63,7 @@ public class PersistenceXmlResourceProvider
 	@Override
 	protected void populateRoot() {
 		XmlPersistence persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		persistence.setVersion(JPA.VERSION_1_0);
+		persistence.setVersion(JPA.SCHEMA_VERSION);
 		XmlPersistenceUnit persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		persistenceUnit.setName(getProject().getName());
 		persistence.getPersistenceUnits().add(persistenceUnit);

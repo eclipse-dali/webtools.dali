@@ -19,12 +19,12 @@ package org.eclipse.jpt.core.resource.persistence;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 @SuppressWarnings("nls")
-public interface JPA {
-
-	String NAMESPACE_URL = "http://java.sun.com/xml/ns/persistence";
-	String SCHEMA_LOCATION_1_0 = "http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd";
-	String VERSION_1_0		= "1.0";
-
+public interface JPA 
+{
+	String SCHEMA_NAMESPACE = "http://java.sun.com/xml/ns/persistence";
+	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd";
+	String SCHEMA_VERSION = "1.0";
+	
 	String CLASS = "class";
 
 	String DESCRIPTION = "description";
