@@ -10,8 +10,9 @@
 package org.eclipse.jpt.eclipselink.core.context.java;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 
 /**
@@ -23,7 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.0
  * @since 2.1
  */
 public interface JavaEclipseLinkMappedSuperclass extends EclipseLinkMappedSuperclass, JavaMappedSuperclass
@@ -34,6 +35,7 @@ public interface JavaEclipseLinkMappedSuperclass extends EclipseLinkMappedSuperc
 
 	JavaEclipseLinkCaching getCaching();
 	
-	Iterator<JavaPersistentAttribute> overridableAttributes();
-	Iterator<JavaPersistentAttribute> overridableAssociations();
+	Iterator<JavaColumnMapping> overridableAttributes();
+	
+	Iterator<JavaRelationshipMapping> overridableAssociations();
 }

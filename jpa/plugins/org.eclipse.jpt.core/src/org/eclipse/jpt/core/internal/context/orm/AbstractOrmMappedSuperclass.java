@@ -15,9 +15,11 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClass;
@@ -126,21 +128,21 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	}
 
 	@Override
-	public Iterator<OrmPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
+	public Iterator<OrmColumnMapping> overridableAttributes() {
+		return new FilteringIterator<OrmAttributeMapping, OrmColumnMapping>(this.attributeMappings()) {
 			@Override
-			protected boolean accept(OrmPersistentAttribute o) {
-				return o.isOverridableAttribute();
+			protected boolean accept(OrmAttributeMapping o) {
+				return o.isOverridableAttributeMapping();
 			}
 		};
 	}
 
 	@Override
-	public Iterator<OrmPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
+	public Iterator<OrmRelationshipMapping> overridableAssociations() {
+		return new FilteringIterator<OrmAttributeMapping, OrmRelationshipMapping>(this.attributeMappings()) {
 			@Override
-			protected boolean accept(OrmPersistentAttribute o) {
-				return o.isOverridableAssociation();
+			protected boolean accept(OrmAttributeMapping o) {
+				return o.isOverridableAssociationMapping();
 			}
 		};
 	}

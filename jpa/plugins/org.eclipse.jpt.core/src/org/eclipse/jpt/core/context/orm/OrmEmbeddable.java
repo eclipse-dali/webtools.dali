@@ -31,8 +31,8 @@ public interface OrmEmbeddable
 	 */
 	JavaEmbeddable getJavaEmbeddable();
 	
-	Iterator<OrmPersistentAttribute> overridableAttributes();
+	Iterator<OrmColumnMapping> overridableAttributes();
 
-	Iterator<OrmPersistentAttribute> overridableAssociations();
+	Iterator<OrmRelationshipMapping> overridableAssociations();
 
 }

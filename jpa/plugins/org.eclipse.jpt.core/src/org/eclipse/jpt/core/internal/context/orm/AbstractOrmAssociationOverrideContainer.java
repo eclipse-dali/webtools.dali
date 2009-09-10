@@ -106,14 +106,14 @@ public abstract class AbstractOrmAssociationOverrideContainer extends AbstractOr
 		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		OrmAssociationOverride virtualAssociationOverride = null;
 		if (associationOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAssociations())) {
-				if (persistentAttribute.getName().equals(associationOverrideName)) {
+			for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getParent().allOverridableAssociations())) {
+				if (overridableAssociation.getName().equals(associationOverrideName)) {
 					JavaAssociationOverride javaAssociationOverride = null;
 					if (getParent().getJavaEntity() != null) {
 						javaAssociationOverride = getJavaAssociationOverrideName(associationOverrideName);
 					}
 					//store the virtualAssociationOverride so we can fire change notification later
-					virtualAssociationOverride = buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride);
+					virtualAssociationOverride = buildVirtualAssociationOverride(overridableAssociation, javaAssociationOverride);
 					this.virtualAssociationOverrides.add(virtualAssociationOverride);
 				}
 			}
@@ -208,32 +208,31 @@ public abstract class AbstractOrmAssociationOverrideContainer extends AbstractOr
 	
 	
 	protected void initializeVirtualAssociationOverrides() {
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAssociations())) {
-			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
+		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getParent().allOverridableAssociations())) {
+			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
 			if (ormAssociationOverride == null) {
 				JavaAssociationOverride javaAssociationOverride = null;
 				if (getParent().getJavaEntity() != null) {
-					javaAssociationOverride = getJavaAssociationOverrideName(persistentAttribute.getName());
+					javaAssociationOverride = getJavaAssociationOverrideName(overridableAssociation.getName());
 				}
-				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
+				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(overridableAssociation, javaAssociationOverride));
 			}
 		}
 	}
 
-	protected OrmAssociationOverride buildVirtualAssociationOverride(PersistentAttribute persistentAttribute, JavaAssociationOverride javaAssociationOverride) {
-		return buildAssociationOverride(buildVirtualXmlAssociationOverride(persistentAttribute, javaAssociationOverride));
+	protected OrmAssociationOverride buildVirtualAssociationOverride(RelationshipMapping overridableAssociation, JavaAssociationOverride javaAssociationOverride) {
+		return buildAssociationOverride(buildVirtualXmlAssociationOverride(overridableAssociation, javaAssociationOverride));
 	}
 	
-	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(PersistentAttribute persistentAttribute, JavaAssociationOverride javaAssociationOverride) {
+	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(RelationshipMapping overridableAssociation, JavaAssociationOverride javaAssociationOverride) {
 		RelationshipReference relationshipReference;
 		if (javaAssociationOverride == null || javaAssociationOverride.isVirtual()) {
-			RelationshipMapping relationshipMapping = (RelationshipMapping) persistentAttribute.getMapping();
-			relationshipReference = relationshipMapping.getRelationshipReference();
+			relationshipReference = overridableAssociation.getRelationshipReference();
 		}
 		else {
 			relationshipReference = javaAssociationOverride.getRelationshipReference();
 		}
-		return buildVirtualXmlAssociationOverride(persistentAttribute.getName(), relationshipReference.getPredominantJoiningStrategy());
+		return buildVirtualXmlAssociationOverride(overridableAssociation.getName(), relationshipReference.getPredominantJoiningStrategy());
 	}
 	
 	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, JoiningStrategy joiningStrategy) {
@@ -271,29 +270,29 @@ public abstract class AbstractOrmAssociationOverrideContainer extends AbstractOr
 	}
 	
 	protected void updateVirtualAssociationOverrides() {
-		Iterator<PersistentAttribute> overridableAssociations = getParent().allOverridableAssociations();
+		Iterator<RelationshipMapping> overridableAssociations = getParent().allOverridableAssociations();
 		ListIterator<OrmAssociationOverride> virtualAssociationOverridesCopy = virtualAssociationOverrides();
 		
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(overridableAssociations)) {
-			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
+		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(overridableAssociations)) {
+			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
 			if (ormAssociationOverride != null && !ormAssociationOverride.isVirtual()) {
 				continue;
 			}
 			JavaAssociationOverride javaAssociationOverride = null;
 			if (getParent().getJavaEntity() != null) {
-				javaAssociationOverride = getJavaAssociationOverrideName(persistentAttribute.getName());
+				javaAssociationOverride = getJavaAssociationOverrideName(overridableAssociation.getName());
 			}
 			if (ormAssociationOverride != null) {
 				if (virtualAssociationOverridesCopy.hasNext()) {
 					OrmAssociationOverride virtualAssociationOverride = virtualAssociationOverridesCopy.next();
-					virtualAssociationOverride.update(buildVirtualXmlAssociationOverride(persistentAttribute, javaAssociationOverride));
+					virtualAssociationOverride.update(buildVirtualXmlAssociationOverride(overridableAssociation, javaAssociationOverride));
 				}
 				else {
-					addVirtualAssociationOverride(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
+					addVirtualAssociationOverride(buildVirtualAssociationOverride(overridableAssociation, javaAssociationOverride));
 				}
 			}
 			else {
-				addVirtualAssociationOverride(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
+				addVirtualAssociationOverride(buildVirtualAssociationOverride(overridableAssociation, javaAssociationOverride));
 			}
 		}
 		for (OrmAssociationOverride virtualAssociationOverride : CollectionTools.iterable(virtualAssociationOverridesCopy)) {

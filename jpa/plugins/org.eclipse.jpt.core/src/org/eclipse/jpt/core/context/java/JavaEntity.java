@@ -43,9 +43,9 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
 	
-	Iterator<JavaPersistentAttribute> overridableAttributes();
+	Iterator<JavaColumnMapping> overridableAttributes();
 	
-	Iterator<JavaPersistentAttribute> overridableAssociations();
+	Iterator<JavaRelationshipMapping> overridableAssociations();
 
 	JavaAttributeOverrideContainer getAttributeOverrideContainer();
 	

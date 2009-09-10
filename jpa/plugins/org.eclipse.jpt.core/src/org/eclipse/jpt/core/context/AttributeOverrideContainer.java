@@ -79,7 +79,7 @@ public interface AttributeOverrideContainer
 	
 	interface Owner
 	{
-		Iterator<PersistentAttribute> allOverridableAttributes();
+		Iterator<ColumnMapping> allOverridableAttributes();
 		
 		Iterator<String> allOverridableAttributeNames();
 		

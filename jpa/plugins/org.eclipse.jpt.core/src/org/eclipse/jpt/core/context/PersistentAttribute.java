@@ -70,16 +70,6 @@ public interface PersistentAttribute
 	String getPrimaryKeyColumnName();
 
 	/**
-	 * Return whether the attribute's "attribute" mapping can be overridden.
-	 */
-	boolean isOverridableAttribute();
-
-	/**
-	 * Return whether the attribute's "association" mapping can be overridden.
-	 */
-	boolean isOverridableAssociation();
-
-	/**
 	 * Return whether the attribute's "attribute" mapping is for an ID.
 	 */
 	boolean isIdAttribute();

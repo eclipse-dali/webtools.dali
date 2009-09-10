@@ -118,14 +118,6 @@ public abstract class AbstractJavaPersistentAttribute
 		return this.getMapping().getPrimaryKeyColumnName();
 	}
 
-	public boolean isOverridableAttribute() {
-		return this.getMapping().isOverridableAttributeMapping();
-	}
-
-	public boolean isOverridableAssociation() {
-		return this.getMapping().isOverridableAssociationMapping();
-	}
-
 	public boolean isIdAttribute() {
 		return this.getMapping().isIdMapping();
 	}

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Embeddable;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -65,22 +65,22 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	}
 	
 	public Iterator<String> allOverridableAttributeNames() {
-		return new TransformationIterator<PersistentAttribute, String>(this.allOverridableAttributes()) {
+		return new TransformationIterator<ColumnMapping, String>(this.allOverridableAttributes()) {
 			@Override
-			protected String transform(PersistentAttribute attribute) {
+			protected String transform(ColumnMapping attribute) {
 				return attribute.getName();
 			}
 		};
 	}
 
-	public Iterator<PersistentAttribute> allOverridableAttributes() {
+	public Iterator<ColumnMapping> allOverridableAttributes() {
 		if (this.getEmbeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.getEmbeddable().getPersistentType().attributes()) {
+		return new FilteringIterator<AttributeMapping, ColumnMapping>(this.getEmbeddable().attributeMappings()) {
 			@Override
-			protected boolean accept(PersistentAttribute o) {
-				return o.isOverridableAttribute();
+			protected boolean accept(AttributeMapping o) {
+				return o.isOverridableAttributeMapping();
 			}
 		};
 	}

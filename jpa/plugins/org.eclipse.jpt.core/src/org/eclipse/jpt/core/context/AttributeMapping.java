@@ -34,12 +34,13 @@ public interface AttributeMapping extends JpaContextNode
 
 	/**
 	 * Return whether the "attribute" mapping can be overridden.
-	 * The attribute mapping must be a ColumnMapping
+	 * Must be a {@link ColumnMapping}
 	 */
 	boolean isOverridableAttributeMapping();
 
 	/**
 	 * Return whether the "association" mapping can be overridden.
+	 * Must be a {@link RelationshipMapping}
 	 */
 	boolean isOverridableAssociationMapping();
 

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
@@ -31,16 +32,22 @@ public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(JavaResourcePersistentType jrpt);
-	
+
 	String getAnnotationName();
 	
 	Iterator<String> supportingAnnotationNames();
 	
+	
+	// ********** covariant overrides **********
+
 	JavaPersistentType getPersistentType();
 	
 	@SuppressWarnings("unchecked")
-	Iterator<JavaPersistentAttribute> overridableAttributes();
+	ListIterator<JavaAttributeMapping> attributeMappings();
 	
 	@SuppressWarnings("unchecked")
-	Iterator<JavaPersistentAttribute> overridableAssociations();
+	Iterator<JavaColumnMapping> overridableAttributes();
+	
+	@SuppressWarnings("unchecked")
+	Iterator<JavaRelationshipMapping> overridableAssociations();
 }

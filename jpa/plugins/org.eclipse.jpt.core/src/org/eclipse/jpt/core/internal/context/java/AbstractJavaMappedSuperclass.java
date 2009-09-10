@@ -12,9 +12,11 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -104,21 +106,21 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 	}
 
 	@Override
-	public Iterator<JavaPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
+	public Iterator<JavaColumnMapping> overridableAttributes() {
+		return new FilteringIterator<JavaAttributeMapping, JavaColumnMapping>(this.attributeMappings()) {
 			@Override
-			protected boolean accept(JavaPersistentAttribute o) {
-				return o.isOverridableAttribute();
+			protected boolean accept(JavaAttributeMapping o) {
+				return o.isOverridableAttributeMapping();
 			}
 		};
 	}
 
 	@Override
-	public Iterator<JavaPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
+	public Iterator<JavaRelationshipMapping> overridableAssociations() {
+		return new FilteringIterator<JavaAttributeMapping, JavaRelationshipMapping>(this.attributeMappings()) {
 			@Override
-			protected boolean accept(JavaPersistentAttribute o) {
-				return o.isOverridableAssociation();
+			protected boolean accept(JavaAttributeMapping o) {
+				return o.isOverridableAssociationMapping();
 			}
 		};
 	}

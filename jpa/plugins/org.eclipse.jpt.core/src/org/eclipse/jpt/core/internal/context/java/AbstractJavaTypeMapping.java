@@ -10,11 +10,17 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -22,6 +28,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
 
 public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
@@ -81,11 +88,20 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return EmptyIterator.instance();
 	}
 
-	public Iterator<JavaPersistentAttribute> overridableAttributes() {
+	public ListIterator<JavaAttributeMapping> attributeMappings() {
+		return new TransformationListIterator<JavaPersistentAttribute, JavaAttributeMapping>(getPersistentType().attributes()) {
+			@Override
+			protected JavaAttributeMapping transform(JavaPersistentAttribute next) {
+				return next.getMapping();
+			}
+		};
+	}
+
+	public Iterator<JavaColumnMapping> overridableAttributes() {
 		return EmptyIterator.instance();
 	}
 	
-	public Iterator<PersistentAttribute> allOverridableAttributes() {
+	public Iterator<ColumnMapping> allOverridableAttributes() {
 		return EmptyIterator.instance();
 	}
 	
@@ -97,7 +113,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return this.namesOf(this.allOverridableAttributes());
 	}
 
-	public Iterator<JavaPersistentAttribute> overridableAssociations() {
+	public Iterator<JavaRelationshipMapping> overridableAssociations() {
 		return EmptyIterator.instance();
 	}
 	
@@ -105,7 +121,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return this.namesOf(this.overridableAssociations());
 	}
 
-	public Iterator<PersistentAttribute> allOverridableAssociations() {
+	public Iterator<RelationshipMapping> allOverridableAssociations() {
 		return EmptyIterator.instance();
 	}
 	
@@ -113,11 +129,11 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return this.namesOf(this.allOverridableAssociations());
 	}
 	
-	protected Iterator<String> namesOf(Iterator<? extends PersistentAttribute> attributes) {
-		return new TransformationIterator<PersistentAttribute, String>(attributes) {
+	protected Iterator<String> namesOf(Iterator<? extends AttributeMapping> attributeMappings) {
+		return new TransformationIterator<AttributeMapping, String>(attributeMappings) {
 			@Override
-			protected String transform(PersistentAttribute attribute) {
-				return attribute.getName();
+			protected String transform(AttributeMapping attributeMapping) {
+				return attributeMapping.getName();
 			}
 		};
 	}

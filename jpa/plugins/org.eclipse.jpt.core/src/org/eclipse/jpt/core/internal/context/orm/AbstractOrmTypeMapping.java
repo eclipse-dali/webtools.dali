@@ -11,11 +11,17 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -26,6 +32,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -144,7 +151,16 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return true;
 	}
 
-	public Iterator<OrmPersistentAttribute> overridableAttributes() {
+	public ListIterator<OrmAttributeMapping> attributeMappings() {
+		return new TransformationListIterator<OrmPersistentAttribute, OrmAttributeMapping>(getPersistentType().attributes()) {
+			@Override
+			protected OrmAttributeMapping transform(OrmPersistentAttribute next) {
+				return next.getMapping();
+			}
+		};
+	}
+
+	public Iterator<OrmColumnMapping> overridableAttributes() {
 		return EmptyIterator.instance();
 	}
 
@@ -152,7 +168,7 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return this.namesOf(this.overridableAttributes());
 	}
 	
-	public Iterator<PersistentAttribute> allOverridableAttributes() {
+	public Iterator<ColumnMapping> allOverridableAttributes() {
 		return EmptyIterator.instance();
 	}
 
@@ -160,7 +176,7 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return this.namesOf(this.allOverridableAttributes());
 	}
 
-	public Iterator<OrmPersistentAttribute> overridableAssociations() {
+	public Iterator<OrmRelationshipMapping> overridableAssociations() {
 		return EmptyIterator.instance();
 	}	
 	
@@ -168,15 +184,15 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return this.namesOf(this.overridableAssociations());
 	}
 
-	public Iterator<PersistentAttribute> allOverridableAssociations() {
+	public Iterator<RelationshipMapping> allOverridableAssociations() {
 		return EmptyIterator.instance();
 	}
 
-	private Iterator<String> namesOf(Iterator<? extends PersistentAttribute> attributes) {
-		return new TransformationIterator<PersistentAttribute, String>(attributes) {
+	private Iterator<String> namesOf(Iterator<? extends AttributeMapping> attributeMappings) {
+		return new TransformationIterator<AttributeMapping, String>(attributeMappings) {
 			@Override
-			protected String transform(PersistentAttribute attribute) {
-				return attribute.getName();
+			protected String transform(AttributeMapping attributeMapping) {
+				return attributeMapping.getName();
 			}
 		};
 	}

@@ -24,8 +24,8 @@ import org.eclipse.jpt.core.context.Embeddable;
 public interface JavaEmbeddable
 	extends JavaTypeMapping, Embeddable
 {
-	Iterator<JavaPersistentAttribute> overridableAttributes();
+	Iterator<JavaColumnMapping> overridableAttributes();
 	
-	Iterator<JavaPersistentAttribute> overridableAssociations();
+	Iterator<JavaRelationshipMapping> overridableAssociations();
 
 }

@@ -87,9 +87,9 @@ public interface OrmEntity
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
 	
-	Iterator<OrmPersistentAttribute> overridableAttributes();
+	Iterator<OrmColumnMapping> overridableAttributes();
 
-	Iterator<OrmPersistentAttribute> overridableAssociations();
+	Iterator<OrmRelationshipMapping> overridableAssociations();
 
 	OrmAttributeOverrideContainer getAttributeOverrideContainer();
 	

@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
 public interface JavaMappedSuperclass
 	extends JavaTypeMapping, MappedSuperclass
 {
-	Iterator<JavaPersistentAttribute> overridableAttributes();
+	Iterator<JavaColumnMapping> overridableAttributes();
 	
-	Iterator<JavaPersistentAttribute> overridableAssociations();
+	Iterator<JavaRelationshipMapping> overridableAssociations();
 }

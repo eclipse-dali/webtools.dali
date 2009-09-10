@@ -154,14 +154,6 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 		return this.attributeMapping.getPrimaryKeyColumnName();
 	}
 
-	public boolean isOverridableAttribute() {
-		return this.attributeMapping.isOverridableAttributeMapping();
-	}
-
-	public boolean isOverridableAssociation() {
-		return this.attributeMapping.isOverridableAssociationMapping();
-	}
-
 	public boolean isIdAttribute() {
 		return this.attributeMapping.isIdMapping();
 	}

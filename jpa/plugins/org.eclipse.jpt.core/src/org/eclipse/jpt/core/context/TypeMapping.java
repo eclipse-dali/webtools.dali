@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jpt.db.Schema;
 
 /**
@@ -76,12 +77,18 @@ public interface TypeMapping extends JpaContextNode {
 	 */
 	boolean tableNameIsInvalid(String tableName);
 	
+
 	/**
-	 * Return an Iterator of attributes that can be overridden by a 
+	 * A convenience methods for getting the attribute mappings from PersistentType.attributes()
+	 */
+	<T extends AttributeMapping> ListIterator<T> attributeMappings();
+
+	/**
+	 * Return an Iterator of column mapping attributes that can be overridden by a 
 	 * sub type mapping. The attribute mapping type is used to determine if
 	 * the attribute is overridable.
 	 */
-	<T extends PersistentAttribute> Iterator<T> overridableAttributes();
+	<T extends ColumnMapping> Iterator<T> overridableAttributes();
 
 	/**
 	/**
@@ -93,7 +100,7 @@ public interface TypeMapping extends JpaContextNode {
 	Iterator<String> overridableAttributeNames();
 
 	/**
-	 * Return an Iterator of all attributes that can be overridden in this
+	 * Return an Iterator of all column mapping attributes that can be overridden in this
 	 * type mapping.  The attribute mapping type is used to determine if
 	 * the attribute is overridable.
 	 * 
@@ -101,7 +108,7 @@ public interface TypeMapping extends JpaContextNode {
 	 * {@link TypeMapping#overridableAttributes()} and
 	 * {@link PersistentType#inheritanceHierarchy()}
 	 */
-	Iterator<PersistentAttribute> allOverridableAttributes();
+	Iterator<ColumnMapping> allOverridableAttributes();
 
 	/**
 	 * Return an Iterator of all attribute names that can be overridden in this
@@ -116,7 +123,7 @@ public interface TypeMapping extends JpaContextNode {
 	 * sub type mapping. The platform and joining strategy are used to determine
 	 * if it is an overridable association.
 	 */
-	<T extends PersistentAttribute> Iterator<T> overridableAssociations();
+	<T extends RelationshipMapping> Iterator<T> overridableAssociations();
 
 	/**
 	 * Return an Iterator of association names that can be overridden by a 
@@ -135,7 +142,7 @@ public interface TypeMapping extends JpaContextNode {
 	 * {@link TypeMapping#overridableAssociations()} and
 	 * {@link PersistentType#inheritanceHierarchy()}
 	 */
-	Iterator<PersistentAttribute> allOverridableAssociations();
+	Iterator<RelationshipMapping> allOverridableAssociations();
 	
 	/**
 	 * Return an Iterator of all associations names that can be overridden in this

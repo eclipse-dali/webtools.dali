@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
@@ -26,19 +27,22 @@ import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
@@ -1019,48 +1023,48 @@ public abstract class AbstractJavaEntity
 			}
 		};
 	}
-
+	
 	@Override
-	public Iterator<JavaPersistentAttribute> overridableAttributes() {
+	public Iterator<JavaColumnMapping> overridableAttributes() {
 		if (!isTablePerClass()) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
+		return new FilteringIterator<JavaAttributeMapping, JavaColumnMapping>(this.attributeMappings()) {
 			@Override
-			protected boolean accept(JavaPersistentAttribute o) {
-				return o.isOverridableAttribute();
+			protected boolean accept(JavaAttributeMapping o) {
+				return o.isOverridableAttributeMapping();
 			}
 		};
 	}
 
 	@Override
-	public Iterator<JavaPersistentAttribute> overridableAssociations() {
+	public Iterator<JavaRelationshipMapping> overridableAssociations() {
 		if (!isTablePerClass()) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
+		return new FilteringIterator<JavaAttributeMapping, JavaRelationshipMapping>(this.attributeMappings()) {
 			@Override
-			protected boolean accept(JavaPersistentAttribute o) {
-				return o.isOverridableAssociation();
+			protected boolean accept(JavaAttributeMapping o) {
+				return o.isOverridableAssociationMapping();
 			}
 		};
 	}
 
 	@Override
-	public Iterator<PersistentAttribute> allOverridableAttributes() {
-		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.ancestors()) {
+	public Iterator<ColumnMapping> allOverridableAttributes() {
+		return new CompositeIterator<ColumnMapping>(new TransformationIterator<TypeMapping, Iterator<ColumnMapping>>(this.ancestors()) {
 			@Override
-			protected Iterator<PersistentAttribute> transform(TypeMapping mapping) {
+			protected Iterator<ColumnMapping> transform(TypeMapping mapping) {
 				return mapping.overridableAttributes();
 			}
 		});
 	}
 
 	@Override
-	public Iterator<PersistentAttribute> allOverridableAssociations() {
-		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.ancestors()) {
+	public Iterator<RelationshipMapping> allOverridableAssociations() {
+		return new CompositeIterator<RelationshipMapping>(new TransformationIterator<TypeMapping, Iterator<RelationshipMapping>>(this.ancestors()) {
 			@Override
-			protected Iterator<PersistentAttribute> transform(TypeMapping mapping) {
+			protected Iterator<RelationshipMapping> transform(TypeMapping mapping) {
 				return mapping.overridableAssociations();
 			}
 		});

@@ -31,8 +31,8 @@ public interface OrmMappedSuperclass
 	 */
 	JavaMappedSuperclass getJavaMappedSuperclass();
 		
-	Iterator<OrmPersistentAttribute> overridableAttributes();
+	Iterator<OrmColumnMapping> overridableAttributes();
 
-	Iterator<OrmPersistentAttribute> overridableAssociations();
+	Iterator<OrmRelationshipMapping> overridableAssociations();
 
 }
