@@ -181,10 +181,7 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlEmbedded" abstract="true"
-      eSuperTypes="#//AbstractXmlAttributeMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
-        eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
-  </eClassifiers>
+      eSuperTypes="#//AbstractXmlAttributeMapping #//XmlAttributeOverrideContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="#//AbstractXmlEmbedded"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="#//AbstractXmlEmbedded"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlConvertibleMapping" abstract="true"

@@ -79,7 +79,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see EntityNameComposite
  * @see InheritanceComposite
  * @see IdClassComposite
- * @see OverridesComposite
+ * @see EntityOverridesComposite
  * @see TableComposite
  * @see GenerationComposite
  *
@@ -162,7 +162,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 	}
 	
 	protected void addAttributeOverridesComposite(Composite container) {
-		new OverridesComposite(this, container);
+		new EntityOverridesComposite(this, container);
 	}
 
 	protected void initializeInheritancePane(Composite container) {

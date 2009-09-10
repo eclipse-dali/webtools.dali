@@ -98,7 +98,7 @@ public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
 	
 	OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
 	
-	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, XmlAttributeOverrideContainer resourceAttributeOverrideContainer);
+	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, OrmAttributeOverrideContainer.Owner owner, XmlAttributeOverrideContainer resourceAttributeOverrideContainer);
 
 	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
 

@@ -18,7 +18,7 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ColumnMapping extends JpaContextNode, Column.Owner
+public interface ColumnMapping extends AttributeMapping, Column.Owner
 {
 	Column getColumn();
 

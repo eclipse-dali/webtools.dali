@@ -340,8 +340,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaPrimaryKeyJoinColumn(parent, owner);
 	}
 	
-	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent) {
-		return new GenericJavaAttributeOverrideContainer(parent);
+	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent, JavaAttributeOverrideContainer.Owner owner) {
+		return new GenericJavaAttributeOverrideContainer(parent, owner);
 	}
 	
 	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent) {

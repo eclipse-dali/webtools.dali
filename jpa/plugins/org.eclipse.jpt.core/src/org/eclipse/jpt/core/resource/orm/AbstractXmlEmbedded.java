@@ -29,18 +29,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded#getAttributeOverrides <em>Attribute Overrides</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlEmbedded()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlEmbedded extends AbstractXmlAttributeMapping
+public abstract class AbstractXmlEmbedded extends AbstractXmlAttributeMapping implements XmlAttributeOverrideContainer
 {
 	/**
 	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
@@ -83,7 +77,7 @@ public abstract class AbstractXmlEmbedded extends AbstractXmlAttributeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlEmbedded_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverrideContainer_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -179,10 +173,48 @@ public abstract class AbstractXmlEmbedded extends AbstractXmlAttributeMapping
 		return super.eIsSet(featureID);
 	}
 	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES: return OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
 	// ********** translators **********
 
 	protected static Translator buildAttributeOverrideTranslator() {
-		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getAbstractXmlEmbedded_AttributeOverrides());
+		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getXmlAttributeOverrideContainer_AttributeOverrides());
 	}
 
 } // BaseXmlEmbedded

@@ -15,7 +15,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.details.EmbeddedAttributeOverridesComposite;
+import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -59,7 +59,7 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite extends AbstractEmbeddedM
 	protected void initializeLayout(Composite container) {
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 
-		new EmbeddedAttributeOverridesComposite(
+		new EmbeddedMappingOverridesComposite(
 			this,
 			container
 		);

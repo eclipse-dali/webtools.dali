@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.AssociationOverrideContainer;
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.PageBook;
 
 /**
  * Here the layout of this pane:
@@ -46,10 +44,10 @@ import org.eclipse.ui.part.PageBook;
  * @see AttributeOverrideComposite
  * @see AssociationOverrideComposite
  *
- * @version 2.0
+ * @version 3.0
  * @since 1.0
  */
-public class OverridesComposite extends AbstractOverridesComposite
+public abstract class AbstractEntityOverridesComposite extends AbstractOverridesComposite<Entity>
 {
 
 	/**
@@ -58,33 +56,35 @@ public class OverridesComposite extends AbstractOverridesComposite
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public OverridesComposite(FormPane<? extends Entity> parentPane,
+	protected AbstractEntityOverridesComposite(FormPane<? extends Entity> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
-
-	/**
-	 * Creates a new <code>OverridesComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OverridesComposite(PropertyValueModel<? extends Entity> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+	
+	@Override
+	protected boolean supportsAssociationOverrides() {
+		return true;
+	}	
+	
+	@Override
+	protected PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder() {
+		return new PropertyAspectAdapter<Entity, AttributeOverrideContainer>(getSubjectHolder()) {
+			@Override
+			protected AttributeOverrideContainer buildValue_() {
+				return this.subject.getAttributeOverrideContainer();
+			}
+		};
 	}
 
 	@Override
-	protected Pane<AttributeOverride> buildAttributeOverridePane(PageBook pageBook, PropertyValueModel<AttributeOverride> attributeOverrideHolder) {
-		return new AttributeOverrideComposite(this, attributeOverrideHolder, pageBook);
+	protected PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder() {
+		return new PropertyAspectAdapter<Entity, AssociationOverrideContainer>(getSubjectHolder()) {
+			@Override
+			protected AssociationOverrideContainer buildValue_() {
+				return this.subject.getAssociationOverrideContainer();
+			}
+		};
 	}
 
-	@Override
-	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
-		return new AssociationOverrideComposite(this, associationOverrideHolder, pageBook);
-	}
 }

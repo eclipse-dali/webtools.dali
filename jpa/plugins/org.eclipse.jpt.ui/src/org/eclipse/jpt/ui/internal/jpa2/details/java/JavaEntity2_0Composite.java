@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.details.TableComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.ui.internal.jpa2.details.Overrides2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -84,6 +84,6 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 	
 	@Override
 	protected void addAttributeOverridesComposite(Composite container) {
-		new Overrides2_0Composite(this, container);
+		new Entity2_0OverridesComposite(this, container);
 	}
 }

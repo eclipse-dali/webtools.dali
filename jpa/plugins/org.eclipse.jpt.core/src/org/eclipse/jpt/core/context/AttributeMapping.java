@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,13 +27,14 @@ public interface AttributeMapping extends JpaContextNode
 	boolean isDefault();
 
 	/**
-	 * Return a unique key for the IPersistentAttributeMapping.  If this is defined in
+	 * Return a unique key for the attribute mapping.  If this is defined in
 	 * an extension they should be equal.
 	 */
 	String getKey();
 
 	/**
 	 * Return whether the "attribute" mapping can be overridden.
+	 * The attribute mapping must be a ColumnMapping
 	 */
 	boolean isOverridableAttributeMapping();
 

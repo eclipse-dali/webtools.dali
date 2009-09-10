@@ -22,8 +22,8 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.VirtualAttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
@@ -47,16 +47,17 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 
 	protected final List<JavaAttributeOverride> virtualAttributeOverrides;
 	
-	public GenericJavaAttributeOverrideContainer(JavaJpaContextNode parent) {
+	protected final Owner owner;
+	
+	public GenericJavaAttributeOverrideContainer(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
+		this.owner = owner;
 		this.specifiedAttributeOverrides = new ArrayList<JavaAttributeOverride>();
 		this.virtualAttributeOverrides = new ArrayList<JavaAttributeOverride>();
 	}
 
-	//TODO need a Owner object since the parent could be an Embedded or an Entity
-	@Override
-	public JavaEntity getParent() {
-		return (JavaEntity) super.getParent();
+	public Owner getOwner() {
+		return this.owner;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -110,10 +111,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		String attributeOverrideName = attributeOverride.getName();
 		//add the virtual attribute override so that I can control the order that change notification is sent.
 		//otherwise when we remove the annotation from java we will get an update and add the attribute override
-		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		JavaAttributeOverride virtualAttributeOverride = null;
 		if (attributeOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
 				if (persistentAttribute.getName().equals(attributeOverrideName)) {
 					//store the virtualAttributeOverride so we can fire change notification later
 					virtualAttributeOverride = buildVirtualAttributeOverride(persistentAttribute);
@@ -241,7 +242,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 	
 	protected void initializeVirtualAttributeOverrides() {
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
 			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
 			if (attributeOverride == null) {
 				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentAttribute));
@@ -292,8 +293,8 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		return new VirtualAttributeOverrideAnnotation(this.javaResourcePersistentMember, attribute.getName(), columnMapping.getColumn());
 	}
 
-	protected void updateVirtualAttributeOverrides( ) {
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+	protected void updateVirtualAttributeOverrides() {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
 			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
 			if (attributeOverride == null) {
 				addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute));
@@ -303,7 +304,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 			}
 		}
 		
-		Collection<String> attributeNames = CollectionTools.collection(getParent().allOverridableAttributeNames());
+		Collection<String> attributeNames = CollectionTools.collection(getOwner().allOverridableAttributeNames());
 	
 		//remove any default mappings that are not included in the attributeNames collection
 		for (JavaAttributeOverride attributeOverride : CollectionTools.iterable(virtualAttributeOverrides())) {
@@ -353,18 +354,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
 		public ColumnMapping getColumnMapping(String attributeName) {
-			if (attributeName == null) {
-				return null;
-			}
-			for (Iterator<PersistentAttribute> stream = getParent().getPersistentType().allAttributes(); stream.hasNext();) {
-				PersistentAttribute persAttribute = stream.next();
-				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof ColumnMapping) {
-						return (ColumnMapping) persAttribute.getMapping();
-					}
-				}
-			}
-			return null;
+			return MappingTools.getColumnMapping(attributeName, getOwner().getOverridablePersistentType());
 		}
 
 		public boolean isVirtual(BaseOverride override) {
@@ -376,7 +366,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getParent();
+			return getOwner().getTypeMapping();
 		}
 	}
 

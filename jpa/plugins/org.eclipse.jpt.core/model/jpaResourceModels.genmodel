@@ -162,9 +162,7 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlId">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/generatedValue"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlEmbedded">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AbstractXmlEmbedded/attributeOverrides"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlEmbedded"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbeddedId"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbedded"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlConvertibleMapping">

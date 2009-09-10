@@ -19,8 +19,7 @@ import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -36,7 +35,6 @@ import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritabl
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
@@ -71,14 +69,11 @@ import org.eclipse.ui.part.PageBook;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Entity
- * @see EntityComposite - The parent container
- *
- * @version 2.0
+ * @version 3.0
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractOverridesComposite extends FormPane<Entity>
+public abstract class AbstractOverridesComposite<T extends JpaContextNode> extends FormPane<T>
 {
 	private Pane<AttributeOverride> attributeOverridePane;
 	private Pane<AssociationOverride> associationOverridePane;
@@ -92,24 +87,10 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	protected AbstractOverridesComposite(FormPane<? extends Entity> parentPane,
+	protected AbstractOverridesComposite(FormPane<? extends T> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent, false);
-	}
-
-	/**
-	 * Creates a new <code>OverridesComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>Entity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	protected AbstractOverridesComposite(PropertyValueModel<? extends Entity> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
@@ -122,6 +103,7 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		return new SimplePropertyValueModel<BaseOverride>();
 	}
 
+	protected abstract boolean supportsAssociationOverrides();
 
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -148,11 +130,17 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		
 		// Property pane
 		PageBook pageBook = addPageBook(container);
-		initializeAttributeOverridePane(pageBook);
-		initializeAssociationOverridePane(pageBook);
+		initializeOverridePanes(pageBook);
 		installOverrideControlSwitcher(this.selectedOverrideHolder, pageBook);
 	}
-
+	
+	protected void initializeOverridePanes(PageBook pageBook) {
+		initializeAttributeOverridePane(pageBook);
+		if (supportsAssociationOverrides()) {
+			initializeAssociationOverridePane(pageBook);
+		}
+	}
+	
 	private PropertyValueModel<Boolean> buildSelectedOverrideBooleanHolder() {
 		return new TransformationPropertyValueModel<BaseOverride, Boolean>(this.selectedOverrideHolder) {
 			@Override
@@ -162,9 +150,9 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 	
-	private AddRemoveListPane<Entity> initializeOverridesList(Composite container) {
+	private void initializeOverridesList(Composite container) {
 
-		return new AddRemoveListPane<Entity>(
+		new AddRemoveListPane<T>(
 			this,
 			addSubPane(container, 8),
 			buildOverridesAdapter(),
@@ -186,13 +174,15 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 	
-	private void initializeAttributeOverridePane(PageBook pageBook) {
+	protected void initializeAttributeOverridePane(PageBook pageBook) {
 		PropertyValueModel<AttributeOverride>  attributeOverrideHolder = buildAttributeOverrideHolder();
 		this.attributeOverridePane = buildAttributeOverridePane(pageBook, attributeOverrideHolder);
 		installAttributeOverridePaneEnabler(this.attributeOverridePane, attributeOverrideHolder);
 	}
 
-	protected abstract Pane<AttributeOverride> buildAttributeOverridePane(PageBook pageBook, PropertyValueModel<AttributeOverride> attributeOverrideHolder);
+	protected Pane<AttributeOverride> buildAttributeOverridePane(PageBook pageBook, PropertyValueModel<AttributeOverride> attributeOverrideHolder) {
+		return new AttributeOverrideComposite(this, attributeOverrideHolder, pageBook);
+	}
 	
 	private void installAttributeOverridePaneEnabler(Pane<AttributeOverride> pane, PropertyValueModel<AttributeOverride> overrideHolder) {
 		new PaneEnabler(
@@ -210,13 +200,15 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 	
-	private void initializeAssociationOverridePane(PageBook pageBook) {
+	protected void initializeAssociationOverridePane(PageBook pageBook) {
 		PropertyValueModel<AssociationOverride>  associationOverrideHolder = buildAssociationOverrideHolder();
 		this.associationOverridePane = buildAssociationOverridePane(pageBook, associationOverrideHolder);
 		installAssociationOverridePaneEnabler(this.associationOverridePane, associationOverrideHolder);
 	}
 
-	protected abstract Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder);
+	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
+		return new AssociationOverrideComposite(this, associationOverrideHolder, pageBook);		
+	}
 
 	private void installAssociationOverridePaneEnabler(Pane<AssociationOverride> pane, PropertyValueModel<AssociationOverride> overrideHolder) {
 		new PaneEnabler(
@@ -330,7 +322,7 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		return sb.toString();
 	}
 
-	private ILabelProvider buildOverrideLabelProvider() {
+	protected ILabelProvider buildOverrideLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -339,7 +331,7 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 
-	private Adapter buildOverridesAdapter() {
+	protected Adapter buildOverridesAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
@@ -352,35 +344,25 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 		};
 	}
 
-	private ListValueModel<BaseOverride> buildOverridesListHolder() {
+	protected ListValueModel<BaseOverride> buildOverridesListHolder() {
 		PropertyValueModel<AttributeOverrideContainer> attributeOverrideContainerHolder = buildAttributeOverrideContainerHolder();
-		PropertyValueModel<AssociationOverrideContainer> associationOverrideContainerHolder = buildAssociationOverrideContainerHolder();
-		
 		List<ListValueModel<? extends BaseOverride>> list = new ArrayList<ListValueModel<? extends BaseOverride>>();
+		
 		list.add(buildSpecifiedAttributeOverridesListHolder(attributeOverrideContainerHolder));
 		list.add(buildDefaultAttributeOverridesListHolder(attributeOverrideContainerHolder));
-		list.add(buildSpecifiedAssociationOverridesListHolder(associationOverrideContainerHolder));
-		list.add(buildDefaultAssociationOverridesListHolder(associationOverrideContainerHolder));
+		
+		if (supportsAssociationOverrides()) {
+			PropertyValueModel<AssociationOverrideContainer> associationOverrideContainerHolder = buildAssociationOverrideContainerHolder();
+			list.add(buildSpecifiedAssociationOverridesListHolder(associationOverrideContainerHolder));
+			list.add(buildDefaultAssociationOverridesListHolder(associationOverrideContainerHolder));
+		}
+		
 		return new CompositeListValueModel<ListValueModel<? extends BaseOverride>, BaseOverride>(list);
 	}
 
-	private PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder() {
-		return new PropertyAspectAdapter<Entity, AttributeOverrideContainer>(getSubjectHolder()) {
-			@Override
-			protected AttributeOverrideContainer buildValue_() {
-				return this.subject.getAttributeOverrideContainer();
-			}
-		};
-	}
+	protected abstract PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder();
 
-	private PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder() {
-		return new PropertyAspectAdapter<Entity, AssociationOverrideContainer>(getSubjectHolder()) {
-			@Override
-			protected AssociationOverrideContainer buildValue_() {
-				return this.subject.getAssociationOverrideContainer();
-			}
-		};
-	}
+	protected abstract PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder();
 
 	private ListValueModel<BaseOverride> buildOverridesListModel() {
 		return new ItemPropertyListValueModelAdapter<BaseOverride>(
@@ -392,20 +374,26 @@ public abstract class AbstractOverridesComposite extends FormPane<Entity>
 	private Transformer<BaseOverride, Control> buildPaneTransformer() {
 		return new Transformer<BaseOverride, Control>() {
 			public Control transform(BaseOverride override) {
-
-				if (override instanceof AttributeOverride) {
-					return AbstractOverridesComposite.this.attributeOverridePane.getControl();
-				}
-
-				if (override instanceof AssociationOverride) {
-					return AbstractOverridesComposite.this.associationOverridePane.getControl();
-				}
-
-				return null;
+				return AbstractOverridesComposite.this.transformSelectedOverride(override);
 			}
 		};
 	}
 
+	/**
+	 * Given the selected override, return the control that will be displayed
+	 */
+	protected Control transformSelectedOverride(BaseOverride selectedOverride) {
+		if (selectedOverride instanceof AttributeOverride) {
+			return AbstractOverridesComposite.this.attributeOverridePane.getControl();
+		}
+
+		if (selectedOverride instanceof AssociationOverride) {
+			return AbstractOverridesComposite.this.associationOverridePane.getControl();
+		}
+
+		return null;
+	}
+	
 	private ListValueModel<AssociationOverride> buildSpecifiedAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
 		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, AssociationOverrideContainer.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
 			@Override

@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
@@ -45,11 +47,13 @@ import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmTable;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClass;
@@ -231,7 +235,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, this, this.resourceTypeMapping);
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
@@ -242,7 +246,8 @@ public abstract class AbstractOrmEntity
 		return getXmlContextNodeFactory().buildOrmQueryContainer(this, this.resourceTypeMapping);
 	}
 	
-	// ******************* ITypeMapping implementation ********************
+
+	// ******************* TypeMapping implementation ********************
 
 	public String getKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
@@ -311,6 +316,32 @@ public abstract class AbstractOrmEntity
 		return getJavaEntity();
 	}
 	
+	
+	//****************** OrmAttributeOverrideContainer.Owner implementation *******************
+	
+	public PersistentType getOverridablePersistentType() {
+		return getPersistentType().getSuperPersistentType();
+	}
+
+	public OrmTypeMapping getTypeMapping() {
+		return this;
+	}
+	
+	public XmlColumn buildVirtualXmlColumn(ColumnMapping overridableColumnMapping) {
+		JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(overridableColumnMapping.getName());
+		if (javaAttributeOverride == null) {
+			return new VirtualXmlAttributeOverrideColumn(overridableColumnMapping.getColumn());
+		}
+		return new VirtualXmlColumn(this, javaAttributeOverride.getColumn());
+	}
+	
+	protected JavaAttributeOverride getJavaAttributeOverrideNamed(String attributeName) {
+		if (getJavaEntity() != null) {
+			return getJavaEntity().getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+		}
+		return null;
+	}
+		
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
 	}

@@ -19,14 +19,11 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverride;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverrideColumn;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlColumn;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
@@ -48,24 +45,29 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 
 	protected final List<OrmAttributeOverride> virtualAttributeOverrides;
 
+	protected final Owner owner;
 
-	public GenericOrmAttributeOverrideContainer(XmlContextNode parent, XmlAttributeOverrideContainer resource) {
+	public GenericOrmAttributeOverrideContainer(XmlContextNode parent, Owner owner,  XmlAttributeOverrideContainer resource) {
 		super(parent);
+		this.owner = owner;
 		this.resourceAttributeOverrideContainer = resource;
 		this.specifiedAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 		this.virtualAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 		this.initializeSpecifiedAttributeOverrides();
 		this.initializeVirtualAttributeOverrides();
 	}
-	
-	//TODO need a Owner object since the parent could be an Embedded or an Entity
-	@Override
-	public OrmEntity getParent() {
-		return (OrmEntity) super.getParent();
+
+	public void initializeFromAttributeOverrideContainer(OrmAttributeOverrideContainer oldContainer) {
+		int index = 0;
+		for (OrmAttributeOverride attributeOverride : CollectionTools.iterable(oldContainer.specifiedAttributeOverrides())) {
+		OrmAttributeOverride newAttributeOverride = addSpecifiedAttributeOverride(index++);
+			newAttributeOverride.setName(attributeOverride.getName());
+			newAttributeOverride.getColumn().initializeFrom(attributeOverride.getColumn());
+		}
 	}
-	
-	protected JavaAttributeOverride getJavaAttributeOverrideName(String attributeName) {
-		return getParent().getJavaEntity().getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+
+	public Owner getOwner() {
+		return this.owner;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -106,17 +108,13 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		String attributeOverrideName = attributeOverride.getName();
 		//add the virtual attribute override so that I can control the order that change notification is sent.
 		//otherwise when we remove the annotation from java we will get an update and add the attribute override
-		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		OrmAttributeOverride virtualAttributeOverride = null;
 		if (attributeOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
 				if (persistentAttribute.getName().equals(attributeOverrideName)) {
-					JavaAttributeOverride javaAttributeOverride = null;
-					if (getParent().getJavaEntity() != null) {
-						javaAttributeOverride = getJavaAttributeOverrideName(attributeOverrideName);
-					}
 					//store the virtualAttributeOverride so we can fire change notification later
-					virtualAttributeOverride = buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride);
+					virtualAttributeOverride = buildVirtualAttributeOverride(persistentAttribute);
 					this.virtualAttributeOverrides.add(virtualAttributeOverride);
 				}
 			}
@@ -157,6 +155,15 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 
 	public int specifiedAttributeOverridesSize() {
 		return this.specifiedAttributeOverrides.size();
+	}
+	
+	protected OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride();
+		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
+		this.specifiedAttributeOverrides.add(index, attributeOverride);
+		this.resourceAttributeOverrideContainer.getAttributeOverrides().add(index, xmlAttributeOverride);
+		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		return attributeOverride;
 	}
 
 	protected void addSpecifiedAttributeOverride(int index, OrmAttributeOverride attributeOverride) {
@@ -210,18 +217,11 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		return getOverrideNamed(name, overrides) != null;
 	}
 	
-	
-	
-	
 	protected void initializeVirtualAttributeOverrides() {
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getParent().allOverridableAttributes())) {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
 			OrmAttributeOverride ormAttributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
 			if (ormAttributeOverride == null) {
-				JavaAttributeOverride javaAttributeOverride = null;
-				if (getParent().getJavaEntity() != null) {
-					javaAttributeOverride = getJavaAttributeOverrideName(persistentAttribute.getName());
-				}
-				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
+				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentAttribute));
 			}
 		}
 	}
@@ -237,20 +237,13 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		this.updateVirtualAttributeOverrides();
 	}
 
-	protected OrmAttributeOverride buildVirtualAttributeOverride(PersistentAttribute persistentAttribute, JavaAttributeOverride javaAttributeOverride) {
-		return buildAttributeOverride(buildVirtualXmlAttributeOverride(persistentAttribute, javaAttributeOverride));
+	protected OrmAttributeOverride buildVirtualAttributeOverride(PersistentAttribute overridableAttribute) {
+		return buildAttributeOverride(buildVirtualXmlAttributeOverride(overridableAttribute));
 	}
 	
-	protected XmlAttributeOverride buildVirtualXmlAttributeOverride(PersistentAttribute persistentAttribute, JavaAttributeOverride javaAttributeOverride) {
-		XmlColumn xmlColumn;
-		if (javaAttributeOverride == null) {
-			ColumnMapping columnMapping = (ColumnMapping) persistentAttribute.getMapping();
-			xmlColumn = new VirtualXmlAttributeOverrideColumn(columnMapping.getColumn());
-		}
-		else {
-			xmlColumn = new VirtualXmlColumn(getParent(), javaAttributeOverride.getColumn());
-		}
-		return new VirtualXmlAttributeOverride(persistentAttribute.getName(), xmlColumn);
+	protected XmlAttributeOverride buildVirtualXmlAttributeOverride(PersistentAttribute overridableAttribute) {
+		XmlColumn xmlColumn = getOwner().buildVirtualXmlColumn((ColumnMapping) overridableAttribute.getMapping());
+		return new VirtualXmlAttributeOverride(overridableAttribute.getName(), xmlColumn);
 	}
 
 
@@ -274,29 +267,25 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	}
 	
 	protected void updateVirtualAttributeOverrides() {
-		Iterator<PersistentAttribute> overridableAttributes = getParent().allOverridableAttributes();
+		Iterator<PersistentAttribute> overridableAttributes = getOwner().allOverridableAttributes();
 		ListIterator<OrmAttributeOverride> virtualAttributeOverridesCopy = virtualAttributeOverrides();
 		
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(overridableAttributes)) {
-			OrmAttributeOverride ormAttributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
+		for (PersistentAttribute overridableAttribute : CollectionTools.iterable(overridableAttributes)) {
+			OrmAttributeOverride ormAttributeOverride = getAttributeOverrideNamed(overridableAttribute.getName());
 			if (ormAttributeOverride != null && !ormAttributeOverride.isVirtual()) {
 				continue;
-			}
-			JavaAttributeOverride javaAttributeOverride = null;
-			if (getParent().getJavaEntity() != null) {
-				javaAttributeOverride = getJavaAttributeOverrideName(persistentAttribute.getName());
 			}
 			if (ormAttributeOverride != null) {
 				if (virtualAttributeOverridesCopy.hasNext()) {
 					OrmAttributeOverride virtualAttributeOverride = virtualAttributeOverridesCopy.next();
-					virtualAttributeOverride.update(buildVirtualXmlAttributeOverride(persistentAttribute, javaAttributeOverride));
+					virtualAttributeOverride.update(buildVirtualXmlAttributeOverride(overridableAttribute));
 				}
 				else {
-					addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
+					addVirtualAttributeOverride(buildVirtualAttributeOverride(overridableAttribute));
 				}
 			}
 			else {
-				addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
+				addVirtualAttributeOverride(buildVirtualAttributeOverride(overridableAttribute));
 			}
 		}
 		for (OrmAttributeOverride virtualAttributeOverride : CollectionTools.iterable(virtualAttributeOverridesCopy)) {
@@ -332,18 +321,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
 		public ColumnMapping getColumnMapping(String attributeName) {
-			if (attributeName == null) {
-				return null;
-			}
-			for (Iterator<PersistentAttribute> stream = getParent().getPersistentType().allAttributes(); stream.hasNext();) {
-				PersistentAttribute persAttribute = stream.next();
-				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof ColumnMapping) {
-						return (ColumnMapping) persAttribute.getMapping();
-					}
-				}
-			}
-			return null;
+			return MappingTools.getColumnMapping(attributeName, getOwner().getOverridablePersistentType());
 		}
 
 		public boolean isVirtual(BaseOverride override) {
@@ -355,7 +333,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getParent();
+			return getOwner().getTypeMapping();
 		}
 		
 	}

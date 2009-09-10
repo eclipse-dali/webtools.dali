@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see AttributeOverride
- * @see OverridesComposite - The parent container
+ * @see EntityOverridesComposite - The parent container
  * @see ColumnComposite
  *
  * @version 2.0

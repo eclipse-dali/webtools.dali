@@ -238,7 +238,7 @@ public interface JpaFactory
 	
 	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner);
 	
-	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent);
+	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent, JavaAttributeOverrideContainer.Owner owner);
 
 	JavaAttributeOverride buildJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner);
 	

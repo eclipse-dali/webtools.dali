@@ -6582,21 +6582,6 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded#getAttributeOverrides <em>Attribute Overrides</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Attribute Overrides</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded#getAttributeOverrides()
-	 * @see #getAbstractXmlEmbedded()
-	 * @generated
-	 */
-	public EReference getAbstractXmlEmbedded_AttributeOverrides()
-	{
-		return (EReference)abstractXmlEmbeddedEClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlEmbeddedId <em>Xml Embedded Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8742,7 +8727,6 @@ public class OrmPackage extends EPackageImpl
 		createEReference(xmlIdEClass, XML_ID__GENERATED_VALUE);
 
 		abstractXmlEmbeddedEClass = createEClass(ABSTRACT_XML_EMBEDDED);
-		createEReference(abstractXmlEmbeddedEClass, ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
 
 		xmlEmbeddedIdEClass = createEClass(XML_EMBEDDED_ID);
 
@@ -9000,6 +8984,7 @@ public class OrmPackage extends EPackageImpl
 		xmlIdEClass.getESuperTypes().add(this.getXmlConvertibleMapping());
 		xmlIdEClass.getESuperTypes().add(this.getXmlGeneratorContainer());
 		abstractXmlEmbeddedEClass.getESuperTypes().add(this.getAbstractXmlAttributeMapping());
+		abstractXmlEmbeddedEClass.getESuperTypes().add(this.getXmlAttributeOverrideContainer());
 		xmlEmbeddedIdEClass.getESuperTypes().add(this.getAbstractXmlEmbedded());
 		xmlEmbeddedEClass.getESuperTypes().add(this.getAbstractXmlEmbedded());
 		xmlBasicEClass.getESuperTypes().add(this.getAbstractXmlAttributeMapping());
@@ -9156,7 +9141,6 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getXmlId_GeneratedValue(), this.getXmlGeneratedValue(), null, "generatedValue", null, 0, 1, XmlId.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(abstractXmlEmbeddedEClass, AbstractXmlEmbedded.class, "AbstractXmlEmbedded", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAbstractXmlEmbedded_AttributeOverrides(), this.getXmlAttributeOverride(), null, "attributeOverrides", null, 0, -1, AbstractXmlEmbedded.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbeddedIdEClass, XmlEmbeddedId.class, "XmlEmbeddedId", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -10191,14 +10175,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass ABSTRACT_XML_EMBEDDED = eINSTANCE.getAbstractXmlEmbedded();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Overrides</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES = eINSTANCE.getAbstractXmlEmbedded_AttributeOverrides();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlEmbeddedId <em>Xml Embedded Id</em>}' class.

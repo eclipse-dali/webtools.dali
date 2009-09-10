@@ -128,7 +128,7 @@ public abstract class AbstractJavaEntity
 		this.discriminatorColumn = buildJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<JavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
-		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this);
+		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this);
 		this.associationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this);
 		this.queryContainer = this.getJpaFactory().buildJavaQueryContainer(this);
 		this.generatorContainer = this.getJpaFactory().buildJavaGeneratorContainer(this);
@@ -275,8 +275,20 @@ public abstract class AbstractJavaEntity
 	protected EntityAnnotation getResourceMappingAnnotation() {
 		return (EntityAnnotation) super.getResourceMappingAnnotation();
 	}
+
 	
-	//****************** TypeMapping implemenation *******************
+	//****************** AttributeOverrideContainer.Owner implementation *******************
+
+	public TypeMapping getTypeMapping() {
+		return this;
+	}
+	
+	public PersistentType getOverridablePersistentType() {
+		return getPersistentType().getSuperPersistentType();
+	}
+	
+	
+	//****************** TypeMapping implementation *******************
 	
 	public String getKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;

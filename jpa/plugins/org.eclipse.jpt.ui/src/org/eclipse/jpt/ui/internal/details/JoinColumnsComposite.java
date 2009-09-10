@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see JoiningStrategyJoinColumnsComposite - A container of this pane
  * @see JoinTableComposite - A container of this pane
- * @see OverridesComposite - A container of this pane
+ * @see EntityOverridesComposite - A container of this pane
  *
  * @version 3.0
  * @since 2.0

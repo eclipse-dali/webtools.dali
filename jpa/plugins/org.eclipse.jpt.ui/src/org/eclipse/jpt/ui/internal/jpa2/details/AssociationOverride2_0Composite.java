@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Group;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see AssociationOverride
- * @see OverridesComposite - The parent container
+ * @see EntityOverridesComposite - The parent container
  * @see JoinColumnsComposite
  *
  * @version 2.2

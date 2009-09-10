@@ -15,7 +15,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.Overrides2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see OrmEntity
  * @see BaseJpaUiFactory - The factory creating this pane
- * @see Overrides2_0Composite
+ * @see Entity2_0OverridesComposite
  */
 public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
 {
@@ -44,7 +44,7 @@ public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
 	
 	@Override
 	protected void addAttributeOverridesComposite(Composite container) {
-		new Overrides2_0Composite(this, container);
+		new Entity2_0OverridesComposite(this, container);
 	}
 
 	@Override

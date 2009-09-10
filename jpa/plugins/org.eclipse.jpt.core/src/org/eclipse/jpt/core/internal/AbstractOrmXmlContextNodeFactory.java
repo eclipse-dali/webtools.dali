@@ -222,8 +222,8 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXmlContextN
 		return new GenericOrmJoinColumn(parent, owner, resourceJoinColumn);
 	}
 	
-	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, XmlAttributeOverrideContainer resourceAttributeOverrideContainer) {
-		return new GenericOrmAttributeOverrideContainer(parent, resourceAttributeOverrideContainer);
+	public OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, OrmAttributeOverrideContainer.Owner owner, XmlAttributeOverrideContainer resourceAttributeOverrideContainer) {
+		return new GenericOrmAttributeOverrideContainer(parent, owner, resourceAttributeOverrideContainer);
 	}
 	
 	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {

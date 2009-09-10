@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
+import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
 public interface OrmAttributeOverrideContainer extends AttributeOverrideContainer, XmlContextNode
 {
@@ -27,4 +29,19 @@ public interface OrmAttributeOverrideContainer extends AttributeOverrideContaine
 	OrmAttributeOverride getAttributeOverrideNamed(String name);
 	
 	void update();
+	
+	void initializeFromAttributeOverrideContainer(OrmAttributeOverrideContainer oldContainer);
+
+	Owner getOwner();
+	
+	interface Owner extends AttributeOverrideContainer.Owner
+	{		
+		OrmTypeMapping getTypeMapping();
+		
+		/**
+		 * Build a virtual xml column based on the overridable column mapping.
+		 */
+		XmlColumn buildVirtualXmlColumn(ColumnMapping overridableColumnMapping);
+
+	}
 }

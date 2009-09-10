@@ -70,10 +70,10 @@ public class VirtualXmlEmbeddedId extends XmlEmbeddedId
 		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES);
 		ListIterator<JavaAttributeOverride> javaAttributeOverrides;
 		if (!this.isOrmMetadataComplete()) {
-			javaAttributeOverrides = this.javaAttributeMapping.attributeOverrides();
+			javaAttributeOverrides = this.javaAttributeMapping.getAttributeOverrideContainer().attributeOverrides();
 		}
 		else {
-			javaAttributeOverrides = this.javaAttributeMapping.virtualAttributeOverrides();
+			javaAttributeOverrides = this.javaAttributeMapping.getAttributeOverrideContainer().virtualAttributeOverrides();
 		}
 		for (JavaAttributeOverride javaAttributeOverride : CollectionTools.iterable(javaAttributeOverrides)) {
 			XmlColumn xmlColumn = new VirtualXmlColumn(this.ormTypeMapping, javaAttributeOverride.getColumn());

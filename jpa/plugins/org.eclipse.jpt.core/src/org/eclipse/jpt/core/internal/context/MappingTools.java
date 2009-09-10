@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.ColumnMapping;
-import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.db.Table;
@@ -148,11 +148,11 @@ public class MappingTools {
 		return targetEntity.getPrimaryKeyColumnName();
 	}
 
-	public static ColumnMapping getColumnMapping(String attributeName, Embeddable embeddable) {
-		if (attributeName == null || embeddable == null) {
+	public static ColumnMapping getColumnMapping(String attributeName, PersistentType persistentType) {
+		if (attributeName == null || persistentType == null) {
 			return null;
 		}
-		for (Iterator<PersistentAttribute> stream = embeddable.getPersistentType().allAttributes(); stream.hasNext(); ) {
+		for (Iterator<PersistentAttribute> stream = persistentType.allAttributes(); stream.hasNext(); ) {
 			PersistentAttribute persAttribute = stream.next();
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof ColumnMapping) {

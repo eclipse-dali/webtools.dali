@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see BaseEmbeddedMapping
  * @see BaseJpaUiFactory - The factory creating this pane
- * @see EmbeddedAttributeOverridesComposite
+ * @see EmbeddedMappingOverridesComposite
  *
  * @version 2.0
  * @since 1.0
@@ -55,7 +55,7 @@ public abstract class AbstractEmbeddedMappingComposite<T extends BaseEmbeddedMap
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		new EmbeddedAttributeOverridesComposite(
+		new EmbeddedMappingOverridesComposite(
 			this,
 			container
 		);

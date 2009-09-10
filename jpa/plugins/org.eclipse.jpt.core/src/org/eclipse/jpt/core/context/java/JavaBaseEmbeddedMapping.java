@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 
 /**
@@ -24,12 +23,5 @@ import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 public interface JavaBaseEmbeddedMapping
 	extends JavaAttributeMapping, BaseEmbeddedMapping
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> attributeOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
-	
-	JavaAttributeOverride getAttributeOverrideNamed(String name);
+	JavaAttributeOverrideContainer getAttributeOverrideContainer();
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -72,5 +73,26 @@ public interface AttributeOverrideContainer
 	 * with the given name.
 	 */
 	AttributeOverride getAttributeOverrideNamed(String name);
+	
+	
+	Owner getOwner();
+	
+	interface Owner
+	{
+		Iterator<PersistentAttribute> allOverridableAttributes();
+		
+		Iterator<String> allOverridableAttributeNames();
+		
+		/**
+		 * Return the type mapping of the owning persistent type.
+		 */
+		TypeMapping getTypeMapping();
+		
+		/**
+		 * Return the overridable persistent type, not the owning persistent type.
+		 * This will be the persistent type of the mapped superclass or embeddable.
+		 */
+		PersistentType getOverridablePersistentType();
+	}
 
 }

@@ -73,7 +73,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see ColumnCombo
  * @see TableCombo
  * @see BasicMappingComposite - A container of this pane
- * @see EmbeddedAttributeOverridesComposite - A container of this pane
+ * @see EmbeddedMappingOverridesComposite - A container of this pane
  * @see IdMappingComposite - A container of this pane
  * @see VersionMappingComposite - A container of this pane
  *
