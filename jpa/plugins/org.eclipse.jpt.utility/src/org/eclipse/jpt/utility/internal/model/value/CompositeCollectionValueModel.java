@@ -37,7 +37,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * {@link CollectionValueModel}. This composite collection contains
  * the combined items from all these component collections.
  * <p>
- * <b>NB:</b> The wrapped collection must be an "identity set" that does not
+ * <strong>NB:</strong> The wrapped collection must be an "identity set" that does not
  * contain the same item twice or this class will throw an exception.
  * <p>
  * Terminology:<ul>

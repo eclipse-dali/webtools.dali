@@ -26,14 +26,14 @@ import java.util.NoSuchElementException;
  * and <code>o2</code> are considered equal if and only if
  * <code>(o1 == null ? o2 == null : o1.equals(o2))</code>.)
  * <p>
- * <b>
+ * <strong>
  * This class is <em>not</em> a general-purpose {@link Bag}
  * implementation! While this class implements the {@link Bag} interface, it
  * intentionally violates {@link Bag}'s general contract, which mandates the
  * use of the <code>equals</code> method when comparing objects. This class is
  * designed for use only in the rare cases wherein object-identity
  * semantics are required.
- * </b>
+ * </strong>
  * <p>
  * This class makes no guarantees as to the iteration order of
  * the bag's elements; in particular, it does not guarantee that the order
@@ -50,7 +50,7 @@ import java.util.NoSuchElementException;
  * important not to set the initial capacity too high (or the load factor too
  * low) if iteration performance is important.
  * <p>
- * <b>Note that this implementation is not synchronized.</b> If multiple
+ * <strong>Note that this implementation is not synchronized.</strong> If multiple
  * threads access a bag concurrently, and at least one of the threads modifies
  * the bag, it <em>must</em> be synchronized externally. This is typically
  * accomplished by synchronizing on some object that naturally encapsulates

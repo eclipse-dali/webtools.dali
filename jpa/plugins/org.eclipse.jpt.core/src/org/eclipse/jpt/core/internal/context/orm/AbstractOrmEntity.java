@@ -1288,9 +1288,8 @@ public abstract class AbstractOrmEntity
 	@Override
 	public void postUpdate() {
 		super.postUpdate();
-		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
-		getDiscriminatorColumn().postUpdate();
-		postUpdateDiscriminatorValue();
+		this.postUpdateDiscriminatorColumn();
+		this.postUpdateDiscriminatorValue();
 	}
 
 	protected String buildDefaultName() {
@@ -1314,7 +1313,7 @@ public abstract class AbstractOrmEntity
 	
 	protected void postUpdateDiscriminatorColumn() {
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
-		getDiscriminatorColumn().postUpdate();
+		this.getDiscriminatorColumn().postUpdate();
 	}
 	
 	protected void updateDiscriminatorValue() {

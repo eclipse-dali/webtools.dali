@@ -20,7 +20,7 @@ public class SynchronizedBag<E>
 	implements Bag<E>, Serializable
 {
 	/** Backing bag. */
-	private Bag<E> bag;
+	private final Bag<E> bag;
 
 	/** Object to synchronize on. */
 	private final Object mutex;

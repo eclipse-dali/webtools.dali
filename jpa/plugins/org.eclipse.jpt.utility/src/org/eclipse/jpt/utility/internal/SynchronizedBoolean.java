@@ -15,14 +15,15 @@ import org.eclipse.jpt.utility.Command;
 /**
  * This class provides synchronized access to a <code>boolean</code> value.
  * It also provides protocol for suspending a thread until the
- * boolean value is set to true or false, with optional time-outs.
+ * <code>boolean</code> value is set to <code>true</code> or <code>false</code>,
+ * with optional time-outs.
  * 
  * @see BooleanHolder
  */
 public class SynchronizedBoolean
 	implements Cloneable, Serializable
 {
-	/** Backing boolean. */
+	/** Backing <code>boolean</code>. */
 	private boolean value;
 
 	/** Object to synchronize on. */
@@ -34,8 +35,8 @@ public class SynchronizedBoolean
 	// ********** constructors **********
 
 	/**
-	 * Create a synchronized <code>boolean</code> with the specified initial value
-	 * and mutex.
+	 * Create a synchronized <code>boolean</code> with the specified
+	 * initial value and mutex.
 	 */
 	public SynchronizedBoolean(boolean value, Object mutex) {
 		super();
@@ -44,7 +45,9 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Create a synchronized <code>boolean</code> with the specified initial value.
+	 * Create a synchronized <code>boolean</code> with the
+	 * specified initial value.
+	 * The synchronized <code>boolean</code> itself will be the mutex.
 	 */
 	public SynchronizedBoolean(boolean value) {
 		super();
@@ -53,7 +56,8 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Create a synchronized <code>boolean</code> with an initial value of <code>false</code>
+	 * Create a synchronized <code>boolean</code>
+	 * with an initial value of <code>false</code>
 	 * and specified mutex.
 	 */
 	public SynchronizedBoolean(Object mutex) {
@@ -61,7 +65,9 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Create a synchronized <code>boolean</code> with an initial value of <code>false</code>.
+	 * Create a synchronized <code>boolean</code>
+	 * with an initial value of <code>false</code>.
+	 * The synchronized <code>boolean</code> itself will be the mutex.
 	 */
 	public SynchronizedBoolean() {
 		this(false);
@@ -71,7 +77,7 @@ public class SynchronizedBoolean
 	// ********** accessors **********
 
 	/**
-	 * Return the current boolean value.
+	 * Return the current <code>boolean</code> value.
 	 */
 	public boolean getValue() {
 		synchronized (this.mutex) {
@@ -80,7 +86,8 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Return whether the current boolean value is true.
+	 * Return whether the current <code>boolean</code>
+	 * value is <code>true</code>.
 	 */
 	public boolean isTrue() {
 		synchronized (this.mutex) {
@@ -89,7 +96,8 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Return whether the current boolean value is false.
+	 * Return whether the current <code>boolean</code>
+	 * value is <code>false</code>.
 	 */
 	public boolean isFalse() {
 		synchronized (this.mutex) {
@@ -98,7 +106,8 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Return whether the current boolean value is the specified value.
+	 * Return whether the current <code>boolean</code>
+	 * value is the specified value.
 	 */
 	public boolean is(boolean v) {
 		synchronized (this.mutex) {
@@ -107,36 +116,39 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Set the boolean value. If the value changes, all waiting
-	 * threads are notified.
+	 * Set the <code>boolean</code> value.
+	 * If the value changes, all waiting threads are notified.
 	 */
 	public void setValue(boolean value) {
 		synchronized (this.mutex) {
-			if (this.value != value) {
-				this.value = value;
-				this.mutex.notifyAll();
-			}
+			this.setValue_(value);
 		}
 	}
 
 	/**
-	 * Set the boolean value to true. If the value changes, all waiting
-	 * threads are notified.
+	 * Pre-condition: synchronized
+	 */
+	private void setValue_(boolean value) {
+		if (this.value != value) {
+			this.value = value;
+			this.mutex.notifyAll();
+		}
+	}
+
+	/**
+	 * Set the <code>boolean</code> value to <code>true</code>.
+	 * If the value changes, all waiting threads are notified.
 	 */
 	public void setTrue() {
-		synchronized (this.mutex) {
-			this.setValue(true);
-		}
+		this.setValue(true);
 	}
 
 	/**
-	 * Set the boolean value to false. If the value changes, all waiting
-	 * threads are notified.
+	 * Set the <code>boolean</code> value to <code>false</code>.
+	 * If the value changes, all waiting threads are notified.
 	 */
 	public void setFalse() {
-		synchronized (this.mutex) {
-			this.setValue(false);
-		}
+		this.setValue(false);
 	}
 
 	/**
@@ -151,176 +163,196 @@ public class SynchronizedBoolean
 	// ********** indefinite waits **********
 
 	/**
-	 * Suspend the current thread until the boolean value changes
-	 * to the specified value. If the boolean value is already the
+	 * Suspend the current thread until the <code>boolean</code> value changes
+	 * to the specified value. If the <code>boolean</code> value is already the
 	 * specified value, return immediately.
 	 */
 	public void waitUntilValueIs(boolean v) throws InterruptedException {
 		synchronized (this.mutex) {
-			while (this.value != v) {
-				this.mutex.wait();
-			}
+			this.waitUntilValueIs_(v);
 		}
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to true.
-	 * If the boolean value is already true, return immediately.
+	 * Pre-condition: synchronized
+	 */
+	private void waitUntilValueIs_(boolean v) throws InterruptedException {
+		while (this.value != v) {
+			this.mutex.wait();
+		}
+	}
+
+	/**
+	 * Suspend the current thread until the <code>boolean</code> value
+	 * changes to <code>true</code>.
+	 * If the <code>boolean</code> value is already <code>true</code>,
+	 * return immediately.
 	 */
 	public void waitUntilTrue() throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitUntilValueIs(true);
-		}
+		this.waitUntilValueIs(true);
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to false.
-	 * If the boolean value is already false, return immediately.
+	 * Suspend the current thread until the <code>boolean</code> value
+	 * changes to <code>false</code>.
+	 * If the <code>boolean</code> value is already <code>false</code>,
+	 * return immediately.
 	 */
 	public void waitUntilFalse() throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitUntilValueIs(false);
-		}
+		this.waitUntilValueIs(false);
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to
-	 * NOT the specified value, then change it back to the specified
-	 * value and continue executing. If the boolean value is already
-	 * NOT the specified value, set the value to the specified value
+	 * Suspend the current thread until the <code>boolean</code> value changes to
+	 * <em>not</em> the specified value, then change it back to the specified
+	 * value and continue executing. If the <code>boolean</code> value is already
+	 * <em>not</em> the specified value, set the value to the specified value
 	 * immediately.
 	 */
 	public void waitToSetValue(boolean v) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIs( ! v);
-			this.setValue(v);
+			this.waitUntilValueIs_( ! v);
+			this.setValue_(v);
 		}
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to false,
-	 * then change it back to true and continue executing. If the boolean
-	 * value is already false, set the value to true immediately.
+	 * Suspend the current thread until the <code>boolean</code> value
+	 * changes to <code>false</code>,
+	 * then change it back to <code>true</code> and continue executing.
+	 * If the <code>boolean</code> value is already <code>false</code>,
+	 * set the value to <code>true</code> immediately.
 	 */
 	public void waitToSetTrue() throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitToSetValue(true);
-		}
+		this.waitToSetValue(true);
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to true,
-	 * then change it back to false and continue executing. If the boolean
-	 * value is already true, set the value to false immediately.
+	 * Suspend the current thread until the <code>boolean</code> value
+	 * changes to <code>true</code>,
+	 * then change it back to <code>false</code> and continue executing.
+	 * If the <code>boolean</code> value is already <code>true</code>,
+	 * set the value to <code>false</code> immediately.
 	 */
 	public void waitToSetFalse() throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitToSetValue(false);
-		}
+		this.waitToSetValue(false);
 	}
 
 
 	// ********** timed waits **********
 
 	/**
-	 * Suspend the current thread until the boolean value changes
+	 * Suspend the current thread until the <code>boolean</code> value changes
 	 * to the specified value or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return true if the specified
-	 * value was achieved; return false if a time-out occurred.
-	 * If the boolean value is already the specified value, return true
-	 * immediately.
+	 * The time-out is specified in milliseconds. Return <code>true</code> if the specified
+	 * value was achieved; return <code>false</code> if a time-out occurred.
+	 * If the <code>boolean</code> value is already the specified value,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitUntilValueIs(boolean v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			if (timeout == 0L) {
-				this.waitUntilValueIs(v);	// wait indefinitely until notified
-				return true;	// if it ever comes back, the condition was met
-			}
-	
-			long stop = System.currentTimeMillis() + timeout;
-			long remaining = timeout;
-			while ((this.value != v) && (remaining > 0L)) {
-				this.mutex.wait(remaining);
-				remaining = stop - System.currentTimeMillis();
-			}
-			return (this.value == v);
+			return this.waitUntilValueIs_(v, timeout);
 		}
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes
-	 * to true or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return true if the specified
-	 * value was achieved; return false if a time-out occurred.
-	 * If the boolean value is already true, return true immediately.
+	 * Pre-condition: synchronized
+	 */
+	private boolean waitUntilValueIs_(boolean v, long timeout) throws InterruptedException {
+		if (timeout == 0L) {
+			this.waitUntilValueIs_(v);	// wait indefinitely until notified
+			return true;	// if it ever comes back, the condition was met
+		}
+
+		long stop = System.currentTimeMillis() + timeout;
+		long remaining = timeout;
+		while ((this.value != v) && (remaining > 0L)) {
+			this.mutex.wait(remaining);
+			remaining = stop - System.currentTimeMillis();
+		}
+		return (this.value == v);
+	}
+
+	/**
+	 * Suspend the current thread until the <code>boolean</code> value changes
+	 * to <code>true</code> or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code> if the specified
+	 * value was achieved; return <code>false</code> if a time-out occurred.
+	 * If the <code>boolean</code> value is already <code>true</code>,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitUntilTrue(long timeout) throws InterruptedException {
-		synchronized (this.mutex) {
-			return this.waitUntilValueIs(true, timeout);
-		}
+		return this.waitUntilValueIs(true, timeout);
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes
-	 * to false or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return true if the specified
-	 * value was achieved; return false if a time-out occurred.
-	 * If the boolean value is already true, return true immediately.
+	 * Suspend the current thread until the <code>boolean</code> value changes
+	 * to <code>false</code> or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code> if the specified
+	 * value was achieved; return <code>false</code> if a time-out occurred.
+	 * If the <code>boolean</code> value is already <code>true</code>,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitUntilFalse(long timeout) throws InterruptedException {
-		synchronized (this.mutex) {
-			return this.waitUntilValueIs(false, timeout);
-		}
+		return this.waitUntilValueIs(false, timeout);
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to NOT the
-	 * specified value, then change it back to the specified value and continue
-	 * executing. If the boolean value does not change to false before the
-	 * time-out, simply continue executing without changing the value.
-	 * The time-out is specified in milliseconds. Return true if the value was
-	 * set to the specified value; return false if a time-out occurred.
-	 * If the boolean value is already NOT the specified value, set the value
-	 * to the specified value immediately and return true.
+	 * Suspend the current thread until the <code>boolean</code> value changes
+	 * to <em>not</em> the specified value, then change it back to the specified
+	 * value and continue executing. If the <code>boolean</code> value does not
+	 * change to <code>false</code> before the time-out, simply continue
+	 * executing without changing the value.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value was set to the specified value; return <code>false</code>
+	 * if a time-out occurred. If the <code>boolean</code> value is already
+	 * <em>not</em> the specified value, set the value to the specified value
+	 * immediately and return <code>true</code>.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitToSetValue(boolean v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIs( ! v, timeout);
+			boolean success = this.waitUntilValueIs_( ! v, timeout);
 			if (success) {
-				this.setValue(v);
+				this.setValue_(v);
 			}
 			return success;
 		}
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to false,
-	 * then change it back to true and continue executing. If the boolean
-	 * value does not change to false before the time-out, simply continue
-	 * executing without changing the value. The time-out is specified in
-	 * milliseconds. Return true if the value was set to true; return false
-	 * if a time-out occurred. If the boolean value is already false, set the
-	 * value to true immediately and return true.
+	 * Suspend the current thread until the <code>boolean</code> value changes
+	 * to <code>false</code>, then change it back to <code>true</code> and
+	 * continue executing. If the <code>boolean</code> value does not change to
+	 * <code>false</code> before the time-out, simply continue executing without
+	 * changing the value. The time-out is specified in milliseconds. Return
+	 * <code>true</code> if the value was set to <code>true</code>;
+	 * return <code>false</code> if a time-out occurred. If the
+	 * <code>boolean</code> value is already <code>false</code>, set the
+	 * value to <code>true</code> immediately and return <code>true</code>.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitToSetTrue(long timeout) throws InterruptedException {
-		synchronized (this.mutex) {
-			return this.waitToSetValue(true, timeout);
-		}
+		return this.waitToSetValue(true, timeout);
 	}
 
 	/**
-	 * Suspend the current thread until the boolean value changes to true,
-	 * then change it back to false and continue executing. If the boolean
-	 * value does not change to true before the time-out, simply continue
-	 * executing without changing the value. The time-out is specified in
-	 * milliseconds. Return true if the value was set to false; return false
-	 * if a time-out occurred. If the boolean value is already true, set the
-	 * value to false immediately and return true.
+	 * Suspend the current thread until the <code>boolean</code> value changes
+	 * to <code>true</code>, then change it back to <code>false</code> and
+	 * continue executing. If the <code>boolean</code> value does not change to
+	 * <code>true</code> before the time-out, simply continue executing without
+	 * changing the value. The time-out is specified in milliseconds. Return
+	 * <code>true</code> if the value was set to <code>false</code>;
+	 * return <code>false</code> if a time-out occurred. If the
+	 * <code>boolean</code> value is already <code>true</code>, set the
+	 * value to <code>false</code> immediately and return <code>true</code>.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitToSetFalse(long timeout) throws InterruptedException {
-		synchronized (this.mutex) {
-			return this.waitToSetValue(false, timeout);
-		}
+		return this.waitToSetValue(false, timeout);
 	}
 
 
@@ -328,7 +360,7 @@ public class SynchronizedBoolean
 
 	/**
 	 * If the current thread is not interrupted, execute the specified command 
-	 * with the mutex locked. This is useful for initializing the value in another
+	 * with the mutex locked. This is useful for initializing the value from another
 	 * thread.
 	 */
 	public void execute(Command command) throws InterruptedException {
@@ -344,10 +376,10 @@ public class SynchronizedBoolean
 	// ********** standard methods **********
 
 	@Override
-	public Object clone() {
+	public SynchronizedBoolean clone() {
 		try {
 			synchronized (this.mutex) {
-				return super.clone();
+				return (SynchronizedBoolean) super.clone();
 			}
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();

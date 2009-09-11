@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
  * important not to set the initial capacity too high (or the load factor too
  * low) if iteration performance is important.
  * <p>
- * <b>Note that this implementation is not synchronized.</b> If multiple
+ * <strong>Note that this implementation is not synchronized.</strong> If multiple
  * threads access a bag concurrently, and at least one of the threads modifies
  * the bag, it <em>must</em> be synchronized externally. This is typically
  * accomplished by synchronizing on some object that naturally encapsulates

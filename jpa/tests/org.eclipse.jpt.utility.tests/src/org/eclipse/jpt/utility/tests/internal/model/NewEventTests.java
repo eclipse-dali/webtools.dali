@@ -13,7 +13,7 @@ import java.util.EventListener;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
@@ -154,15 +154,15 @@ public class NewEventTests extends TestCase {
 		private ListenerList<FooChangeListener> getFooChangeListenerList() {
 			return this.getListenerList(FOO_CHANGE_LISTENER_CLASS);
 		}
-		private FooChangeListener[] getFooChangeListeners() {
+		private Iterable<FooChangeListener> getFooChangeListeners() {
 			ListenerList<FooChangeListener> listenerList = this.getFooChangeListenerList();
 			return (listenerList == null) ? null : listenerList.getListeners();
 		}
 		private boolean hasFooChangeListener(FooChangeListener listener) {
-			return ArrayTools.contains(this.getFooChangeListeners(), listener);
+			return CollectionTools.contains(this.getFooChangeListeners(), listener);
 		}
 		public void fireFooChanged() {
-			FooChangeListener[] listeners = this.getFooChangeListeners();
+			Iterable<FooChangeListener> listeners = this.getFooChangeListeners();
 			if (listeners != null) {
 				FooChangeEvent event = null;
 				for (FooChangeListener listener : listeners) {

@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
  * This is useful if you have a value that may change, but whose aspects can also
  * change in a fashion that might be of interest to the client.
  * <p>
- * <b>NB:</b> Clients will need to listen for two different change notifications:
+ * <strong>NB:</strong> Clients will need to listen for two different change notifications:
  * a property change event will be be fired when the <em>value</em> changes;
  * a state change event will be fired when an <em>aspect</em> of the value changes.
  * <p>

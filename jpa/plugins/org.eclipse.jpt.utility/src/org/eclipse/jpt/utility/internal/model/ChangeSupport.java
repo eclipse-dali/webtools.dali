@@ -54,7 +54,7 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * It provides for state, property, collection, list, and tree change notifications to
  * listeners.
  * <p>
- * <b>NB1:</b> There is lots of copy-n-paste code in this class. Nearly all of this duplication
+ * <strong>NB1:</strong> There is lots of copy-n-paste code in this class. Nearly all of this duplication
  * is an effort to prevent the unnecessary creation of new objects (typically event
  * objects). Since many events are fired when there are no listeners, we postpone
  * the creation of event objects until we know we have interested listeners.
@@ -65,16 +65,16 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * the case, as we have added support for "state" changes, "dirty" notification,
  * and custom "notifiers", with more to come, I'm sure....  ~bjv
  * <p>
- * <b>NB2:</b> This class will check to see if, during the firing of events, a listener
+ * <strong>NB2:</strong> This class will check to see if, during the firing of events, a listener
  * on the original, cloned, list of listeners has been removed from the master
  * list of listeners <em>before</em> it is notified. If the listener has been removed
  * "concurrently" it will <em>not</em> be notified.
  * <p>
- * <b>NB3:</b> Any listener that is added during the firing of events will <em>not</em> be
+ * <strong>NB3:</strong> Any listener that is added during the firing of events will <em>not</em> be
  * also notified. This is a bit inconsistent with NB2, but seems reasonable
  * since any added listener should already be in synch with the model.
  * <p>
- * <b>NB4:</b> This class is serializable, but it will only write out listeners that
+ * <strong>NB4:</strong> This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.
  * 
  * @see Model
@@ -281,13 +281,13 @@ public class ChangeSupport
 		return this.getListenerList(CHANGE_LISTENER_CLASS);
 	}
 
-	private ChangeListener[] getChangeListeners() {
+	private Iterable<ChangeListener> getChangeListeners() {
 		ListenerList<ChangeListener> listenerList = this.getChangeListenerList();
 		return (listenerList == null) ? null : listenerList.getListeners();
 	}
 
 	private boolean hasChangeListener(ChangeListener listener) {
-		return ArrayTools.contains(this.getChangeListeners(), listener);
+		return CollectionTools.contains(this.getChangeListeners(), listener);
 	}
 
 
@@ -320,20 +320,20 @@ public class ChangeSupport
 		return this.getListenerList(STATE_CHANGE_LISTENER_CLASS);
 	}
 
-	private StateChangeListener[] getStateChangeListeners() {
+	private Iterable<StateChangeListener> getStateChangeListeners() {
 		ListenerList<StateChangeListener> listenerList = this.getStateChangeListenerList();
 		return (listenerList == null) ? null : listenerList.getListeners();
 	}
 
 	private boolean hasStateChangeListener(StateChangeListener listener) {
-		return ArrayTools.contains(this.getStateChangeListeners(), listener);
+		return CollectionTools.contains(this.getStateChangeListeners(), listener);
 	}
 
 	/**
 	 * Fire the specified state change event to any registered listeners.
 	 */
 	public void fireStateChanged(StateChangeEvent event) {
-		StateChangeListener[] listeners = this.getStateChangeListeners();
+		Iterable<StateChangeListener> listeners = this.getStateChangeListeners();
 		if (listeners != null) {
 			for (StateChangeListener listener : listeners) {
 				if (this.hasStateChangeListener(listener)) {  // verify listener is still listening
@@ -342,7 +342,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -359,7 +359,7 @@ public class ChangeSupport
 	public void fireStateChanged() {
 //		this.fireStateChanged(new StateChangeEvent(this.source));
 		StateChangeEvent event = null;
-		StateChangeListener[] listeners = this.getStateChangeListeners();
+		Iterable<StateChangeListener> listeners = this.getStateChangeListeners();
 		if (listeners != null) {
 			for (StateChangeListener listener : listeners) {
 				if (this.hasStateChangeListener(listener)) {  // verify listener is still listening
@@ -371,7 +371,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -416,13 +416,13 @@ public class ChangeSupport
 		return this.getListenerList(PROPERTY_CHANGE_LISTENER_CLASS, propertyName);
 	}
 
-	private PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
+	private Iterable<PropertyChangeListener> getPropertyChangeListeners(String propertyName) {
 		ListenerList<PropertyChangeListener> listenerList = this.getPropertyChangeListenerList(propertyName);
 		return (listenerList == null) ? null : listenerList.getListeners();
 	}
 
 	private boolean hasPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		return ArrayTools.contains(this.getPropertyChangeListeners(propertyName), listener);
+		return CollectionTools.contains(this.getPropertyChangeListeners(propertyName), listener);
 	}
 
 	/**
@@ -442,7 +442,7 @@ public class ChangeSupport
 	 */
 	protected void firePropertyChanged_(PropertyChangeEvent event) {
 		String propertyName = event.getPropertyName();
-		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
+		Iterable<PropertyChangeListener> listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
 			for (PropertyChangeListener listener : listeners) {
 				if (this.hasPropertyChangeListener(propertyName, listener)) {  // verify listener is still listening
@@ -451,7 +451,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -479,7 +479,7 @@ public class ChangeSupport
 	 */
 	protected void firePropertyChanged_(String propertyName, Object oldValue, Object newValue) {
 		PropertyChangeEvent event = null;
-		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
+		Iterable<PropertyChangeListener> listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
 			for (PropertyChangeListener listener : listeners) {
 				if (this.hasPropertyChangeListener(propertyName, listener)) {  // verify listener is still listening
@@ -491,7 +491,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -523,7 +523,7 @@ public class ChangeSupport
 	 */
 	protected void firePropertyChanged_(String propertyName, int oldValue, int newValue) {
 		PropertyChangeEvent event = null;
-		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
+		Iterable<PropertyChangeListener> listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
 			for (PropertyChangeListener listener : listeners) {
 				if (this.hasPropertyChangeListener(propertyName, listener)) {  // verify listener is still listening
@@ -535,7 +535,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -567,7 +567,7 @@ public class ChangeSupport
 	 */
 	protected void firePropertyChanged_(String propertyName, boolean oldValue, boolean newValue) {
 		PropertyChangeEvent event = null;
-		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
+		Iterable<PropertyChangeListener> listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
 			for (PropertyChangeListener listener : listeners) {
 				if (this.hasPropertyChangeListener(propertyName, listener)) {  // verify listener is still listening
@@ -579,7 +579,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -624,13 +624,13 @@ public class ChangeSupport
 		return this.getListenerList(COLLECTION_CHANGE_LISTENER_CLASS, collectionName);
 	}
 
-	private CollectionChangeListener[] getCollectionChangeListeners(String collectionName) {
+	private Iterable<CollectionChangeListener> getCollectionChangeListeners(String collectionName) {
 		ListenerList<CollectionChangeListener> listenerList = this.getCollectionChangeListenerList(collectionName);
 		return (listenerList == null) ? null : listenerList.getListeners();
 	}
 
 	private boolean hasCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		return ArrayTools.contains(this.getCollectionChangeListeners(collectionName), listener);
+		return CollectionTools.contains(this.getCollectionChangeListeners(collectionName), listener);
 	}
 
 	/**
@@ -647,7 +647,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsAdded_(CollectionAddEvent event) {
 		String collectionName = event.getCollectionName();
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -656,7 +656,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -681,7 +681,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsAdded_(String collectionName, Collection<?> addedItems) {
 		CollectionAddEvent event = null;
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -693,7 +693,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -713,7 +713,7 @@ public class ChangeSupport
 //		this.fireItemsAdded(collectionName, Collections.singleton(addedItem));
 
 		CollectionAddEvent event = null;
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -725,7 +725,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -752,7 +752,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsRemoved_(CollectionRemoveEvent event) {
 		String collectionName = event.getCollectionName();
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -761,7 +761,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -786,7 +786,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsRemoved_(String collectionName, Collection<?> removedItems) {
 		CollectionRemoveEvent event = null;
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -798,7 +798,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -818,7 +818,7 @@ public class ChangeSupport
 //		this.fireItemsRemoved(collectionName, Collections.singleton(removedItem));
 
 		CollectionRemoveEvent event = null;
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -830,7 +830,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -848,7 +848,7 @@ public class ChangeSupport
 	 */
 	public void fireCollectionCleared(CollectionClearEvent event) {
 		String collectionName = event.getCollectionName();
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -857,7 +857,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -874,7 +874,7 @@ public class ChangeSupport
 //		this.fireCollectionCleared(new CollectionClearEvent(this.source, collectionName));
 
 		CollectionClearEvent event = null;
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -886,7 +886,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -904,7 +904,7 @@ public class ChangeSupport
 	 */
 	public void fireCollectionChanged(CollectionChangeEvent event) {
 		String collectionName = event.getCollectionName();
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -913,7 +913,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -930,7 +930,7 @@ public class ChangeSupport
 //		this.fireCollectionChanged(new CollectionChangeEvent(this.source, collectionName, collection));
 
 		CollectionChangeEvent event = null;
-		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
+		Iterable<CollectionChangeListener> listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
 			for (CollectionChangeListener listener : listeners) {
 				if (this.hasCollectionChangeListener(collectionName, listener)) {  // verify listener is still listening
@@ -942,7 +942,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1284,13 +1284,13 @@ public class ChangeSupport
 		return this.getListenerList(LIST_CHANGE_LISTENER_CLASS, listName);
 	}
 
-	private ListChangeListener[] getListChangeListeners(String listName) {
+	private Iterable<ListChangeListener> getListChangeListeners(String listName) {
 		ListenerList<ListChangeListener> listenerList = this.getListChangeListenerList(listName);
 		return (listenerList == null) ? null : listenerList.getListeners();
 	}
 
 	private boolean hasListChangeListener(String listName, ListChangeListener listener) {
-		return ArrayTools.contains(this.getListChangeListeners(listName), listener);
+		return CollectionTools.contains(this.getListChangeListeners(listName), listener);
 	}
 
 	/**
@@ -1307,7 +1307,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsAdded_(ListAddEvent event) {
 		String listName = event.getListName();
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1316,7 +1316,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1341,7 +1341,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsAdded_(String listName, int index, List<?> addedItems) {
 		ListAddEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1353,7 +1353,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1373,7 +1373,7 @@ public class ChangeSupport
 //		this.fireItemsAdded(listName, index, Collections.singletonList(addedItem));
 
 		ListAddEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1385,7 +1385,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1412,7 +1412,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsRemoved_(ListRemoveEvent event) {
 		String listName = event.getListName();
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1421,7 +1421,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1446,7 +1446,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsRemoved_(String listName, int index, List<?> removedItems) {
 		ListRemoveEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1458,7 +1458,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1478,7 +1478,7 @@ public class ChangeSupport
 //		this.fireItemsRemoved(listName, index, Collections.singletonList(removedItem));
 
 		ListRemoveEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1490,7 +1490,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1517,7 +1517,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsReplaced_(ListReplaceEvent event) {
 		String listName = event.getListName();
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1526,7 +1526,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1551,7 +1551,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsReplaced_(String listName, int index, List<?> newItems, List<?> oldItems) {
 		ListReplaceEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1563,7 +1563,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1591,7 +1591,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemReplaced_(String listName, int index, Object newItem, Object oldItem) {
 		ListReplaceEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1603,7 +1603,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1631,7 +1631,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsMoved_(ListMoveEvent event) {
 		String listName = event.getListName();
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1640,7 +1640,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1666,7 +1666,7 @@ public class ChangeSupport
 	 */
 	protected void fireItemsMoved_(String listName, int targetIndex, int sourceIndex, int length) {
 		ListMoveEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1678,7 +1678,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1703,7 +1703,7 @@ public class ChangeSupport
 	 */
 	public void fireListCleared(ListClearEvent event) {
 		String listName = event.getListName();
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1712,7 +1712,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1729,7 +1729,7 @@ public class ChangeSupport
 //		this.fireListCleared(new ListClearEvent(this.source, listName));
 
 		ListClearEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1741,7 +1741,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1759,7 +1759,7 @@ public class ChangeSupport
 	 */
 	public void fireListChanged(ListChangeEvent event) {
 		String listName = event.getListName();
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1768,7 +1768,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -1785,7 +1785,7 @@ public class ChangeSupport
 //		this.fireListChanged(new ListChangeEvent(this.source, listName));
 
 		ListChangeEvent event = null;
-		ListChangeListener[] listeners = this.getListChangeListeners(listName);
+		Iterable<ListChangeListener> listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
 			for (ListChangeListener listener : listeners) {
 				if (this.hasListChangeListener(listName, listener)) {  // verify listener is still listening
@@ -1797,7 +1797,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2366,13 +2366,13 @@ public class ChangeSupport
 		return this.getListenerList(TREE_CHANGE_LISTENER_CLASS, treeName);
 	}
 
-	private TreeChangeListener[] getTreeChangeListeners(String treeName) {
+	private Iterable<TreeChangeListener> getTreeChangeListeners(String treeName) {
 		ListenerList<TreeChangeListener> listenerList = this.getTreeChangeListenerList(treeName);
 		return (listenerList == null) ? null : listenerList.getListeners();
 	}
 
 	private boolean hasTreeChangeListener(String treeName, TreeChangeListener listener) {
-		return ArrayTools.contains(this.getTreeChangeListeners(treeName), listener);
+		return CollectionTools.contains(this.getTreeChangeListeners(treeName), listener);
 	}
 
 	/**
@@ -2380,7 +2380,7 @@ public class ChangeSupport
 	 */
 	public void fireNodeAdded(TreeAddEvent event) {
 		String treeName = event.getTreeName();
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2389,7 +2389,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2405,7 +2405,7 @@ public class ChangeSupport
 	public void fireNodeAdded(String treeName, List<?> path) {
 //		this.fireNodeAdded(new TreeAddEvent(this.source, treeName, path));
 		TreeAddEvent event = null;
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2417,7 +2417,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2435,7 +2435,7 @@ public class ChangeSupport
 	 */
 	public void fireNodeRemoved(TreeRemoveEvent event) {
 		String treeName = event.getTreeName();
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2444,7 +2444,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2461,7 +2461,7 @@ public class ChangeSupport
 //		this.fireNodeRemoved(new TreeRemoveEvent(this.source, treeName, path));
 
 		TreeRemoveEvent event = null;
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2473,7 +2473,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2491,7 +2491,7 @@ public class ChangeSupport
 	 */
 	public void fireTreeCleared(TreeClearEvent event) {
 		String treeName = event.getTreeName();
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2500,7 +2500,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2517,7 +2517,7 @@ public class ChangeSupport
 //		this.fireTreeCleared(new TreeClearEvent(this.source, treeName));
 
 		TreeClearEvent event = null;
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2529,7 +2529,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2547,7 +2547,7 @@ public class ChangeSupport
 	 */
 	public void fireTreeChanged(TreeChangeEvent event) {
 		String treeName = event.getTreeName();
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2556,7 +2556,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2573,7 +2573,7 @@ public class ChangeSupport
 //		this.fireTreeChanged(new TreeChangeEvent(this.source, treeName, nodes));
 
 		TreeChangeEvent event = null;
-		TreeChangeListener[] listeners = this.getTreeChangeListeners(treeName);
+		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
 		if (listeners != null) {
 			for (TreeChangeListener listener : listeners) {
 				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
@@ -2585,7 +2585,7 @@ public class ChangeSupport
 			}
 		}
 
-		ChangeListener[] changeListeners = this.getChangeListeners();
+		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
 		if (changeListeners != null) {
 			for (ChangeListener changeListener : changeListeners) {
 				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
@@ -2660,7 +2660,7 @@ public class ChangeSupport
 		}
 
 		boolean matches(Class<? extends EventListener> listenerClass, @SuppressWarnings("unused") String aspectName) {
-			return this.listenerList.getListeners().getClass().getComponentType() == listenerClass;
+			return this.listenerList.getListenerType() == listenerClass;
 		}
 
 		boolean matches(Class<? extends EventListener> listenerClass) {

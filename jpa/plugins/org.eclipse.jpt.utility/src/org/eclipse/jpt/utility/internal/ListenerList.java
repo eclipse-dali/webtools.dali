@@ -17,6 +17,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.EventListener;
 
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+
 /**
  * Maintain a thread-safe list of listeners that does not allow adding
  * duplicate listeners or removing non-listeners.
@@ -24,6 +26,10 @@ import java.util.EventListener;
 public class ListenerList<L extends EventListener>
 	implements Serializable
 {
+	/**
+	 * We can mark this volatile and not synchronize the read methods because
+	 * we never change the <em>contents</em> of the array.
+	 */
 	private transient volatile L[] listeners;
 
 	private static final long serialVersionUID = 1L;
@@ -58,8 +64,8 @@ public class ListenerList<L extends EventListener>
 	/**
 	 * Return the listeners.
 	 */
-	public L[] getListeners() {
-		return this.listeners;
+	public Iterable<L> getListeners() {
+		return new ArrayIterable<L>(this.listeners);
 	}
 
 	/**
@@ -110,6 +116,14 @@ public class ListenerList<L extends EventListener>
 	 */
 	public synchronized void clear() {
 		this.listeners = ArrayTools.clear(this.listeners);
+	}
+
+	/**
+	 * Return the type of listeners held by the listener list.
+	 */
+	@SuppressWarnings("unchecked")
+	public Class<L> getListenerType() {
+		return (Class<L>) this.listeners.getClass().getComponentType();
 	}
 
 	@Override

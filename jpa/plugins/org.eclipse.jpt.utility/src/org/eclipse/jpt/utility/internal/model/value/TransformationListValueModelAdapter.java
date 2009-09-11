@@ -36,7 +36,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * The {@link Transformer} can be changed at any time; allowing the same
  * adapter to be used with different transformations.
  * <p>
- * <b>NB:</b> Since we only listen to the wrapped list when we have
+ * <strong>NB:</strong> Since we only listen to the wrapped list when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * list while we are listening to it, results to various methods
  * (e.g. {@link #size()}, {@link #get(int)}) will be unpredictable whenever

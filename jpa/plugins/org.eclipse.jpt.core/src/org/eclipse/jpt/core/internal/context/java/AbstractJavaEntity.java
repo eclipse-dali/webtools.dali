@@ -1097,8 +1097,8 @@ public abstract class AbstractJavaEntity
 	@Override
 	public void postUpdate() {
 		super.postUpdate();
-		postUpdateDiscriminatorColumn();
-		postUpdateDiscriminatorValue();
+		this.postUpdateDiscriminatorColumn();
+		this.postUpdateDiscriminatorValue();
 		this.associationOverrideContainer.postUpdate();
 	}
 	
@@ -1157,7 +1157,7 @@ public abstract class AbstractJavaEntity
 	
 	protected void postUpdateDiscriminatorColumn() {
 		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
-		getDiscriminatorColumn().postUpdate();
+		this.getDiscriminatorColumn().postUpdate();
 	}
 	
 	protected void updateDiscriminatorValue(DiscriminatorValueAnnotation discriminatorValueResource) {

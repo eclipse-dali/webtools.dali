@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * To maintain a reasonably consistent appearance to client code, we
  * keep an internal list somewhat in synch with the wrapped collection.
  * <p>
- * <b>NB:</b> Since we only listen to the wrapped collection when we have
+ * <strong>NB:</strong> Since we only listen to the wrapped collection when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * collection while we are listening to it, results to various methods
  * (e.g. {@link #size()}, {@link #get(int)}) will be unpredictable whenever

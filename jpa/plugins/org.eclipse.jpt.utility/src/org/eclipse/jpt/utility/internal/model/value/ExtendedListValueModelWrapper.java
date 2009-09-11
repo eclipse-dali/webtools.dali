@@ -31,7 +31,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * This wrapper extends a {@link ListValueModel} (or {@link CollectionValueModel})
  * with fixed collections of items on either end.
  * <p>
- * <b>NB:</b> Be careful using or wrapping this list value model, since the
+ * <strong>NB:</strong> Be careful using or wrapping this list value model, since the
  * "extended" items may be unexpected by the client code or wrapper.
  */
 public class ExtendedListValueModelWrapper<E>

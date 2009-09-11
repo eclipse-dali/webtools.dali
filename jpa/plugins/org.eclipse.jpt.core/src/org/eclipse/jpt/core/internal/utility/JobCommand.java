@@ -30,6 +30,11 @@ public interface JobCommand {
 	/**
 	 * Execute the command. The semantics of the command
 	 * is determined by the contract between the client and server.
+	 * The command should check, as appropriate, whether the specified progress
+	 * monitor is {@link IProgressMonitor#isCanceled() "canceled"}; if it is,
+	 * the command should throw an
+	 * {@link org.eclipse.core.runtime.OperationCanceledException OperationCanceledException}.
+	 * @see IProgressMonitor#isCanceled()
 	 */
 	IStatus execute(IProgressMonitor monitor);
 

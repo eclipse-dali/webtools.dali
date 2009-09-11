@@ -34,7 +34,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * adapter to be used with different filter criteria (e.g. when the user
  * wants to view a list of <code>.java</code> files).
  * <p>
- * <b>NB:</b> If the objects in the "filtered" collection can change in such a way
+ * <strong>NB:</strong> If the objects in the "filtered" collection can change in such a way
  * that they should be removed from the "filtered" collection, you will
  * need to wrap the original collection in an {@link ItemAspectListValueModelAdapter}.
  * For example, if the filter only "accepts" items whose names begin

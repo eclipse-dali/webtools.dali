@@ -22,7 +22,7 @@ public class SynchronizedStack<E>
 	implements Stack<E>, Serializable
 {
 	/** Backing stack. */
-	private Stack<E> stack;
+	private final Stack<E> stack;
 
 	/** Object to synchronize on. */
 	private final Object mutex;

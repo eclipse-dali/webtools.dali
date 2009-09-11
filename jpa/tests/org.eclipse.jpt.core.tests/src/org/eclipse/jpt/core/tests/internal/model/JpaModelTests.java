@@ -79,11 +79,11 @@ public class JpaModelTests extends TestCase {
 	 * pre-existing entities added.
 	 */
 	private TestFacetedProject buildTestProject() throws Exception {
-		TestJavaProject testProject = TestJavaProject.buildJavaProject(ClassTools.shortClassNameForObject(this), true);
-		testProject.installFacet("jst.utility", "1.0");
-		testProject.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
-		testProject.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
-		return testProject;
+		TestJavaProject tjp = TestJavaProject.buildJavaProject(ClassTools.shortClassNameForObject(this), true);
+		tjp.installFacet("jst.utility", "1.0");
+		tjp.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
+		tjp.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
+		return tjp;
 	}	
 
 	private IFile getFile(TestPlatformProject p, String path) {

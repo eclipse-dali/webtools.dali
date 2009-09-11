@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
  *     to return the current property value, as derived from the
  *     component values
  * </ul>
- * <b>NB:</b> The wrapped collection must not contain any duplicates
+ * <strong>NB:</strong> The wrapped collection must not contain any duplicates
  * or this class will throw an exception.
  * <p>
  */

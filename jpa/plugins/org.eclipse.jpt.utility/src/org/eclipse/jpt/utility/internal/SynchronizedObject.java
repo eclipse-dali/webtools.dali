@@ -13,15 +13,20 @@ import java.io.Serializable;
 import org.eclipse.jpt.utility.Command;
 
 /**
- * This class provides synchronized access to an object of type T.
+ * This class provides synchronized access to an object of type <code>V</code>.
  * It also provides protocol for suspending a thread until the
- * value is set to null or a non-null value, with optional time-outs.
+ * value is set to <code>null</code> or a non-<code>null</code> value,
+ * with optional time-outs.
+ * 
+ * @parm V the type of the synchronized object's value
  */
-public class SynchronizedObject<T>
+public class SynchronizedObject<V>
 	implements Cloneable, Serializable
 {
-	/** Backing value. */
-	private T value;
+	/**
+	 * Backing value.
+	 */
+	private V value;
 
 	/** Object to synchronize on. */
 	private final Object mutex;
@@ -35,7 +40,7 @@ public class SynchronizedObject<T>
 	 * Create a synchronized object with the specified initial value
 	 * and mutex.
 	 */
-	public SynchronizedObject(T value, Object mutex) {
+	public SynchronizedObject(V value, Object mutex) {
 		super();
 		this.value = value;
 		this.mutex = mutex;
@@ -43,8 +48,9 @@ public class SynchronizedObject<T>
 
 	/**
 	 * Create a synchronized object with the specified initial value.
+	 * The synchronized object itself will be the mutex.
 	 */
-	public SynchronizedObject(T value) {
+	public SynchronizedObject(V value) {
 		super();
 		this.value = value;
 		this.mutex = this;
@@ -52,6 +58,7 @@ public class SynchronizedObject<T>
 
 	/**
 	 * Create a synchronized object with an initial value of null.
+	 * The synchronized object itself will be the mutex.
 	 */
 	public SynchronizedObject() {
 		this(null);
@@ -63,7 +70,7 @@ public class SynchronizedObject<T>
 	/**
 	 * Return the current value.
 	 */
-	public T getValue() {
+	public V getValue() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
@@ -89,29 +96,53 @@ public class SynchronizedObject<T>
 
 	/**
 	 * Set the value. If the value changes, all waiting
-	 * threads are notified.
+	 * threads are notified. Return the previous value.
 	 */
-	public void setValue(T value) {
+	public V setValue(V value) {
 		synchronized (this.mutex) {
-			if (this.value != value) {
-				this.value = value;
-				this.mutex.notifyAll();
-			}
+			return this.setValue_(value);
 		}
 	}
 
 	/**
-	 * Set the value to null. If the value changes, all waiting
-	 * threads are notified.
+	 * Pre-condition: synchronized
 	 */
-	public void setNull() {
+	private V setValue_(V v) {
+		V old = this.value;
+		if (this.value != v) {
+			this.value = v;
+			this.mutex.notifyAll();
+		}
+		return old;
+	}
+
+	/**
+	 * Set the value to <code>null</code>. If the value changes, all waiting
+	 * threads are notified. Return the previous value.
+	 */
+	public V setNull() {
+		return this.setValue(null);
+	}
+
+	/**
+	 * If the current value is the specified expected value, set it to the
+	 * specified new value. Return the previous value.
+	 */
+	public V compareAndSwap(V expectedValue, V newValue) {
 		synchronized (this.mutex) {
-			this.setValue(null);
+			return this.compareAndSwap_(expectedValue, newValue);
 		}
 	}
 
 	/**
-	 * Return the object this object locks on while performing
+	 * Pre-condition: synchronized
+	 */
+	private V compareAndSwap_(V expectedValue, V newValue) {
+		return (this.value == expectedValue) ? this.setValue_(newValue) : this.value;
+	}
+
+	/**
+	 * Return the object the synchronized object locks on while performing
 	 * its operations.
 	 */
 	public Object getMutex() {
@@ -126,72 +157,99 @@ public class SynchronizedObject<T>
 	 * to the specified value. If the value is already the
 	 * specified value, return immediately.
 	 */
-	public void waitUntilValueIs(T v) throws InterruptedException {
+	public void waitUntilValueIs(V v) throws InterruptedException {
 		synchronized (this.mutex) {
-			while (this.value != v) {
-				this.mutex.wait();
-			}
+			this.waitUntilValueIs_(v);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void waitUntilValueIs_(V v) throws InterruptedException {
+		while (this.value != v) {
+			this.mutex.wait();
 		}
 	}
 
 	/**
 	 * Suspend the current thread until the value changes
 	 * to something other than the specified value. If the
-	 * value is already NOT the specified value, return immediately.
+	 * value is already <em>not</em> the specified value,
+	 * return immediately.
 	 */
-	public void waitUntilValueIsNot(T v) throws InterruptedException {
+	public void waitUntilValueIsNot(V v) throws InterruptedException {
 		synchronized (this.mutex) {
-			while (this.value == v) {
-				this.mutex.wait();
-			}
+			this.waitUntilValueIsNot_(v);
 		}
 	}
 
 	/**
-	 * Suspend the current thread until the value changes to null.
-	 * If the value is already null, return immediately.
+	 * Pre-condition: synchronized
+	 */
+	private void waitUntilValueIsNot_(V v) throws InterruptedException {
+		while (this.value == v) {
+			this.mutex.wait();
+		}
+	}
+
+	/**
+	 * Suspend the current thread until the value changes to <code>null</code>.
+	 * If the value is already <code>null</code>, return immediately.
 	 */
 	public void waitUntilNull() throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitUntilValueIs(null);
-		}
+		this.waitUntilValueIs(null);
 	}
 
 	/**
 	 * Suspend the current thread until the value changes
-	 * to something other than null.
-	 * If the value is already NOT null, return immediately.
+	 * to something other than <code>null</code>.
+	 * If the value is already <em>not</em> <code>null</code>,
+	 * return immediately.
 	 */
 	public void waitUntilNotNull() throws InterruptedException {
-		synchronized (this.mutex) {
-			this.waitUntilValueIsNot(null);
-		}
+		this.waitUntilValueIsNot(null);
 	}
 
 	/**
 	 * Suspend the current thread until the value changes to
 	 * something other than the specified value, then change
 	 * it back to the specified value and continue executing.
-	 * If the value is already NOT the specified value, set
+	 * If the value is already <em>not</em> the specified value, set
 	 * the value immediately.
+	 * Return the previous value.
 	 */
-	public void waitToSetValue(T v) throws InterruptedException {
+	public V waitToSetValue(V v) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIsNot(v);
-			this.setValue(v);
+			this.waitUntilValueIsNot_(v);
+			return this.setValue_(v);
 		}
 	}
 
 	/**
 	 * Suspend the current thread until the value changes to
-	 * something other than null, then change it back to null
-	 * and continue executing. If the value is already NOT null,
-	 * set the value to null immediately.
+	 * something other than <code>null</code>, then change it
+	 * back to <code>null</code> and continue executing.
+	 * If the value is already <em>not</em> <code>null</code>,
+	 * set the value to <code>null</code> immediately.
+	 * Return the previous value.
 	 */
-	public void waitToSetNull() throws InterruptedException {
+	public V waitToSetNull() throws InterruptedException {
+		return this.waitToSetValue(null);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes to
+	 * the specified expected value, then change it
+	 * to the specified new value and continue executing.
+	 * If the value is already the specified expected value,
+	 * set the value to the specified new value immediately.
+	 * Return the previous value.
+	 */
+	public V waitToSwap(V expectedValue, V newValue) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilNotNull();
-			this.setValue(null);
+			this.waitUntilValueIs_(expectedValue);
+			return this.setValue_(newValue);
 		}
 	}
 
@@ -201,75 +259,93 @@ public class SynchronizedObject<T>
 	/**
 	 * Suspend the current thread until the value changes
 	 * to the specified value or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return true if the specified
-	 * value was achieved; return false if a time-out occurred.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code>
+	 * if a time-out occurred.
 	 * If the value is already the specified value, return true immediately.
+	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitUntilValueIs(T v, long timeout) throws InterruptedException {
+	public boolean waitUntilValueIs(V v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			if (timeout == 0L) {
-				this.waitUntilValueIs(v);	// wait indefinitely until notified
-				return true;	// if it ever comes back, the condition was met
-			}
-
-			long stop = System.currentTimeMillis() + timeout;
-			long remaining = timeout;
-			while ((this.value != v) && (remaining > 0L)) {
-				this.mutex.wait(remaining);
-				remaining = stop - System.currentTimeMillis();
-			}
-			return (this.value == v);
+			return this.waitUntilValueIs_(v, timeout);
 		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private boolean waitUntilValueIs_(V v, long timeout) throws InterruptedException {
+		if (timeout == 0L) {
+			this.waitUntilValueIs_(v);  // wait indefinitely until notified
+			return true;  // if it ever comes back, the condition was met
+		}
+
+		long stop = System.currentTimeMillis() + timeout;
+		long remaining = timeout;
+		while ((this.value != v) && (remaining > 0L)) {
+			this.mutex.wait(remaining);
+			remaining = stop - System.currentTimeMillis();
+		}
+		return (this.value == v);
 	}
 
 	/**
 	 * Suspend the current thread until the value changes to something
 	 * other than the specified value or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return true if the specified
-	 * value was removed; return false if a time-out occurred.
-	 * If the value is already NOT the specified value, return true immediately.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was removed; return <code>false</code> if a
+	 * time-out occurred. If the value is already <em>not</em> the specified
+	 * value, return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitUntilValueIsNot(T v, long timeout) throws InterruptedException {
+	public boolean waitUntilValueIsNot(V v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			if (timeout == 0L) {
-				this.waitUntilValueIsNot(v);	// wait indefinitely until notified
-				return true;	// if it ever comes back, the condition was met
-			}
-
-			long stop = System.currentTimeMillis() + timeout;
-			long remaining = timeout;
-			while ((this.value == v) && (remaining > 0L)) {
-				this.mutex.wait(remaining);
-				remaining = stop - System.currentTimeMillis();
-			}
-			return (this.value != v);
+			return this.waitUntilValueIsNot_(v, timeout);
 		}
 	}
 
 	/**
+	 * Pre-condition: synchronized
+	 */
+	private boolean waitUntilValueIsNot_(V v, long timeout) throws InterruptedException {
+		if (timeout == 0L) {
+			this.waitUntilValueIsNot_(v);	// wait indefinitely until notified
+			return true;	// if it ever comes back, the condition was met
+		}
+
+		long stop = System.currentTimeMillis() + timeout;
+		long remaining = timeout;
+		while ((this.value == v) && (remaining > 0L)) {
+			this.mutex.wait(remaining);
+			remaining = stop - System.currentTimeMillis();
+		}
+		return (this.value != v);
+	}
+
+	/**
 	 * Suspend the current thread until the value changes
-	 * to null or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return true if the specified
-	 * value was achieved; return false if a time-out occurred.
-	 * If the value is already null, return true immediately.
+	 * to <code>null</code> or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code>
+	 * if a time-out occurred. If the value is already <code>null</code>,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitUntilNull(long timeout) throws InterruptedException {
-		synchronized (this.mutex) {
-			return this.waitUntilValueIs(null, timeout);
-		}
+		return this.waitUntilValueIs(null, timeout);
 	}
 
 	/**
 	 * Suspend the current thread until the value changes
-	 * to something other than null or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return true if the specified
-	 * value was achieved; return false if a time-out occurred.
-	 * If the value is already NOT null, return true immediately.
+	 * to something other than <code>null</code> or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code>
+	 * if a time-out occurred. If the value is already <em>not</em>
+	 * <code>null</code>, return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitUntilNotNull(long timeout) throws InterruptedException {
-		synchronized (this.mutex) {
-			return this.waitUntilValueIsNot(null, timeout);
-		}
+		return this.waitUntilValueIsNot(null, timeout);
 	}
 
 	/**
@@ -277,18 +353,20 @@ public class SynchronizedObject<T>
 	 * something other than the specified value, then change
 	 * it back to the specified value and continue executing.
 	 * If the value does not change to something other than the
-	 * specified before the time-out, simply continue executing
+	 * specified value before the time-out, simply continue executing
 	 * without changing the value.
-	 * The time-out is specified in milliseconds. Return true if the value was
-	 * set to true; return false if a time-out occurred.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value was set to the specified value; return <code>false</code>
+	 * if a time-out occurred.
 	 * If the value is already something other than the specified value, set
-	 * the value immediately and return true.
+	 * the value immediately and return <code>true</code>.
+	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitToSetValue(T v, long timeout) throws InterruptedException {
+	public boolean waitToSetValue(V v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIsNot(v, timeout);
+			boolean success = this.waitUntilValueIsNot_(v, timeout);
 			if (success) {
-				this.setValue(v);
+				this.setValue_(v);
 			}
 			return success;
 		}
@@ -296,19 +374,41 @@ public class SynchronizedObject<T>
 
 	/**
 	 * Suspend the current thread until the value changes to something
-	 * other than null, then change it back to null and continue executing.
-	 * If the value does not change to something other than null before
-	 * the time-out, simply continue executing without changing the value.
-	 * The time-out is specified in milliseconds. Return true if the value was
-	 * set to false; return false if a time-out occurred.
-	 * If the value is already something other than null, set
-	 * the value to null immediately and return true.
+	 * other than <code>null</code>, then change it back to <code>null</code>
+	 * and continue executing. If the value does not change to something
+	 * other than <code>null</code> before the time-out, simply continue
+	 * executing without changing the value.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value was set to <code>null</code>; return <code>false</code>
+	 * if a time-out occurred.
+	 * If the value is already something other than <code>null</code>, set
+	 * the value to <code>null</code> immediately and return <code>true</code>.
+	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitToSetNull(long timeout) throws InterruptedException {
+		return this.waitToSetValue(null, timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes to
+	 * the specified expected value, then change it
+	 * to the specified new value and continue executing.
+	 * If the value does not change to the specified expected value
+	 * before the time-out, simply continue executing without changing
+	 * the value.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value was set to the specified new value; return
+	 * <code>false</code> if a time-out occurred.
+	 * If the value is already the specified expected value,
+	 * set the value to the specified new value immediately.
+	 * Return the previous value.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitToSwap(V expectedValue, V newValue, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilNotNull(timeout);
+			boolean success = this.waitUntilValueIs_(expectedValue, timeout);
 			if (success) {
-				this.setValue(null);
+				this.setValue_(newValue);
 			}
 			return success;
 		}
@@ -319,7 +419,7 @@ public class SynchronizedObject<T>
 
 	/**
 	 * If current thread is not interrupted, execute the specified command 
-	 * with the mutex locked. This is useful for initializing the value in another
+	 * with the mutex locked. This is useful for initializing the value from another
 	 * thread.
 	 */
 	public void execute(Command command) throws InterruptedException {
@@ -335,11 +435,11 @@ public class SynchronizedObject<T>
 	// ********** standard methods **********
 
 	@Override
-	public SynchronizedObject<T> clone() {
+	public SynchronizedObject<V> clone() {
 		try {
 			synchronized (this.mutex) {
 				@SuppressWarnings("unchecked")
-				SynchronizedObject<T> clone = (SynchronizedObject<T>) super.clone();
+				SynchronizedObject<V> clone = (SynchronizedObject<V>) super.clone();
 				return clone;
 			}
 		} catch (CloneNotSupportedException ex) {
@@ -354,8 +454,7 @@ public class SynchronizedObject<T>
 		}
 		Object v1 = this.getValue();
 		Object v2 = ((SynchronizedObject<?>) obj).getValue();
-		return (v1 == null) ?
-			(v2 == null) : v1.equals(v2);
+		return (v1 == null) ? (v2 == null) : v1.equals(v2);
 	}
 
 	@Override

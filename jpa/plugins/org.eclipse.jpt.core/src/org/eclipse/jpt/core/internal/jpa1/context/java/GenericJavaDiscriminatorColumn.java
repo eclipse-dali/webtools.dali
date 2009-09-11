@@ -183,8 +183,8 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	public void postUpdate() {
 		super.postUpdate();
 		this.setDefaultName(this.buildDefaultName());
-		this.setDefaultLength(this.buildDefaultLength());
 		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
+		this.setDefaultLength(this.buildDefaultLength());
 	}
 	
 	protected DiscriminatorType getResourceDiscriminatorType(DiscriminatorColumnAnnotation discriminatorColumn) {

@@ -51,9 +51,14 @@ public interface JpaContextNode
 	Catalog getContextDefaultDbCatalog();
 	
 	Schema getContextDefaultDbSchema();
-	
+
 	/**
-	 * Called after the update is called.
+	 * "Post update" is called once the JPA project "update" is complete.
+	 * We use this to calculate (typically default) state that is dependent
+	 * on the entity inheritance hierarchy (e.g. discriminator column name).
+	 * Of course, if these settings change, yet another "update" will be
+	 * triggered, followed by yet another "post update"; until the JPA
+	 * project's state quiesces
 	 */
 	void postUpdate();
 }
