@@ -34,15 +34,17 @@ public class GenericJpaProject2_0
 		this.staticMetamodelSynchronizer = this.buildStaticMetamodelSynchronizer();
 		this.staticMetamodelSynchronizationJob = this.buildStaticMetamodelSynchronizationJob();
 		// we have to synchronize here since we can't during the initial update called from the super ctor
-		this.synchronizeStaticMetamodel();
+//		this.synchronizeStaticMetamodel();
 	}
 
 	protected StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer() {
 		return this.getJpaFactory().buildStaticMetamodelSynchronizer(this);
 	}
 
+	// TODO i18n
+	// TODO schedule rule
 	protected Job buildStaticMetamodelSynchronizationJob() {
-		return new Job("sync static metamodel") {
+		return new Job("Synchronize Static Metamodel") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				GenericJpaProject2_0.this.synchronizeStaticMetamodel_();
