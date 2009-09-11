@@ -1331,25 +1331,20 @@ public abstract class AbstractJpaProject
 	 * Called by the updater.
 	 */
 	public IStatus update(IProgressMonitor monitor) {
-		try {
-			this.update_(monitor);
-		} catch (OperationCanceledException ex) {
-			return Status.CANCEL_STATUS;
-		} catch (Throwable ex) {
-			// Exceptions can occur when the update is running and changes are
-			// made concurrently to the Java source. When that happens, our
-			// model might be in an inconsistent state because it is not yet in
-			// sync with the changed Java source.
-			// Log these exceptions and assume they won't happen when the
-			// update runs again as a result of the concurrent Java source changes.
-			JptCorePlugin.log(ex);
-		}
-		this.rootContextNode.postUpdate();
+		this.update_(monitor);
 		return Status.OK_STATUS;
 	}
 
 	protected void update_(IProgressMonitor monitor) {
 		this.rootContextNode.update(monitor);
+		this.rootContextNode.postUpdate();
+	}
+
+	/**
+	 * Also called by the updater.
+	 */
+	public void updateQuiesced() {
+		// do nothing by default
 	}
 
 }

@@ -17,6 +17,7 @@ import org.eclipse.jpt.utility.tests.internal.iterables.JptUtilityIterablesTests
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
 import org.eclipse.jpt.utility.tests.internal.node.JptUtilityNodeTests;
+import org.eclipse.jpt.utility.tests.internal.synchronizers.JptUtilitySynchronizersTests;
 
 /**
  * decentralize test creation code
@@ -31,9 +32,9 @@ public class JptUtilityTests {
 		suite.addTest(JptUtilityIteratorsTests.suite());
 		suite.addTest(JptUtilityModelTests.suite());
 		suite.addTest(JptUtilityNodeTests.suite());
+		suite.addTest(JptUtilitySynchronizersTests.suite());
 
 		suite.addTestSuite(ArrayToolsTests.class);
-		suite.addTestSuite(AsynchronousSynchronizerTests.class);
 		suite.addTestSuite(BitToolsTests.class);
 		suite.addTestSuite(BooleanHolderTests.class);
 		suite.addTestSuite(BooleanToolsTests.class);
@@ -62,8 +63,6 @@ public class JptUtilityTests {
 		suite.addTestSuite(SynchronizedBooleanTests.class);
 		suite.addTestSuite(SynchronizedObjectTests.class);
 		suite.addTestSuite(SynchronizedStackTests.class);
-		suite.addTestSuite(SynchronizerTests.class);
-		suite.addTestSuite(SynchronousSynchronizerTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
 		return suite;

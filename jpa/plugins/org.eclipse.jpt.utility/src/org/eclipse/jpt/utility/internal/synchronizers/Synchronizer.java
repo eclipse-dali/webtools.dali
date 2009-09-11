@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility;
+package org.eclipse.jpt.utility.internal.synchronizers;
 
 import java.io.Serializable;
 
@@ -38,7 +38,9 @@ public interface Synchronizer {
 	void start();
 
 	/**
-	 * Synchronize the dependent model with the primary model.
+	 * Synchronize the dependent model with the primary model. Do nothing if
+	 * {@link #start()} has not previously been called. Do nothing if {@link #stop}
+	 * has been called (without any intermediate call to {@link #start()}.
 	 */
 	void synchronize();
 
@@ -51,7 +53,7 @@ public interface Synchronizer {
 
 
 	/**
-	 * Singleton implementation of the {@link Sychronizer} interface that will do
+	 * Singleton implementation of the {@link Synchronizer} interface that will do
 	 * nothing.
 	 */
 	final class Null implements Synchronizer, Serializable {

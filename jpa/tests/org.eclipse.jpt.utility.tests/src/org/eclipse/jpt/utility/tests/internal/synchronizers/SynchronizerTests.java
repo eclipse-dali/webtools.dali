@@ -7,11 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.tests.internal;
+package org.eclipse.jpt.utility.tests.internal.synchronizers;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.Synchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 
 public class SynchronizerTests extends TestCase {
 

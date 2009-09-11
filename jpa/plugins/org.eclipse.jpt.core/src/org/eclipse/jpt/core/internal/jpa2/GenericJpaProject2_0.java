@@ -11,6 +11,9 @@ package org.eclipse.jpt.core.internal.jpa2;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
@@ -24,14 +27,28 @@ public class GenericJpaProject2_0
 	implements JpaProject2_0
 {
 	protected final StaticMetamodelSynchronizer staticMetamodelSynchronizer;
+	protected final Job staticMetamodelSynchronizationJob;
 
 	public GenericJpaProject2_0(JpaProject.Config config) throws CoreException {
 		super(config);
 		this.staticMetamodelSynchronizer = this.buildStaticMetamodelSynchronizer();
+		this.staticMetamodelSynchronizationJob = this.buildStaticMetamodelSynchronizationJob();
+		// we have to synchronize here since we can't during the initial update called from the super ctor
+		this.synchronizeStaticMetamodel();
 	}
 
 	protected StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer() {
 		return this.getJpaFactory().buildStaticMetamodelSynchronizer(this);
+	}
+
+	protected Job buildStaticMetamodelSynchronizationJob() {
+		return new Job("sync static metamodel") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				GenericJpaProject2_0.this.synchronizeStaticMetamodel_();
+				return Status.OK_STATUS;
+			}
+		};
 	}
 
 	@Override
@@ -44,13 +61,22 @@ public class GenericJpaProject2_0
 		return (JpaRootContextNode2_0) super.getRootContextNode();
 	}
 
+	/**
+	 * The job is null during the initial (synchronous) update.
+	 */
 	public void synchronizeStaticMetamodel() {
+		if (this.staticMetamodelSynchronizationJob != null) {
+			this.staticMetamodelSynchronizationJob.schedule();
+		}
+	}
+
+	protected void synchronizeStaticMetamodel_() {
 		this.getRootContextNode().synchronizeStaticMetamodel();
 	}
 
 	@Override
-	protected void update_(IProgressMonitor monitor) {
-		super.update_(monitor);
+	public void updateQuiesced() {
+		super.updateQuiesced();
 //		this.synchronizeStaticMetamodel();
 	}
 

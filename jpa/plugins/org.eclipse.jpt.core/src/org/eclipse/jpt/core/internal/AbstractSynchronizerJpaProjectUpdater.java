@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.utility.Synchronizer;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
 
 /**
  * Adapt the "synchronizer" interface to the JPA project "updater" interface.
@@ -21,15 +21,26 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public abstract class AbstractSynchronizerJpaProjectUpdater
 	implements JpaProject.Updater
 {
-	protected final Synchronizer synchronizer;
+	protected final JpaProject jpaProject;
+	protected final CallbackSynchronizer synchronizer;
 
 
 	protected AbstractSynchronizerJpaProjectUpdater(JpaProject jpaProject) {
 		super();
-		this.synchronizer = this.buildSynchronizer(jpaProject);
+		this.jpaProject = jpaProject;
+		this.synchronizer = this.buildSynchronizer();
+		this.synchronizer.addListener(this.buildCallbackSynchronizerListener());
 	}
 
-	protected abstract Synchronizer buildSynchronizer(JpaProject jpaProject);
+	protected abstract CallbackSynchronizer buildSynchronizer();
+
+	protected CallbackSynchronizer.Listener buildCallbackSynchronizerListener() {
+		return new CallbackSynchronizer.Listener() {
+			public void synchronizationQuiesced(CallbackSynchronizer s) {
+				AbstractSynchronizerJpaProjectUpdater.this.jpaProject.updateQuiesced();
+			}
+		};
+	}
 
 
 	// ********** JpaProject.Updater implementation **********
@@ -38,7 +49,7 @@ public abstract class AbstractSynchronizerJpaProjectUpdater
 		this.synchronizer.start();
 	}
 
-	// recursion: we come back here when IJpaProject#update() is called during the "update"
+	// recursion: we come back here if IJpaProject#update() is called again, during the "update"
 	public void update() {
 		this.synchronizer.synchronize();
 	}

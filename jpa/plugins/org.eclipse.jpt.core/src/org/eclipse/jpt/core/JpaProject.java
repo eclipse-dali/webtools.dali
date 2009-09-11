@@ -242,6 +242,13 @@ public interface JpaProject
 	 */
 	IStatus update(IProgressMonitor monitor);
 
+	/**
+	 * This is the callback used by the updater to notify the JPA project that
+	 * the "update" has quiesced (i.e. the "update" has completed and there
+	 * are no outstanding requests for further "updates").
+	 */
+	void updateQuiesced();
+
 
 	/**
 	 * Define a strategy that can be used to "update" a JPA project whenever

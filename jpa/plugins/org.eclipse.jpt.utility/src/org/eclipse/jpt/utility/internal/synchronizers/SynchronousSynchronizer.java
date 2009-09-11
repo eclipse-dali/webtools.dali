@@ -7,10 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.internal;
+package org.eclipse.jpt.utility.internal.synchronizers;
 
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.Synchronizer;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**
  * This synchronizer will synchronize immediately and not return until the
@@ -30,7 +31,9 @@ import org.eclipse.jpt.utility.Synchronizer;
  * This thread need not be the same thread that executes
  * {@link Synchronizer#start()} and {@link Synchronizer#stop()}.
  */
-public class SynchronousSynchronizer implements Synchronizer {
+public class SynchronousSynchronizer
+	implements Synchronizer
+{
 	/**
 	 * The client-supplied command that performs the synchronization. It may
 	 * trigger further calls to {@link #synchronize()} (i.e. the
@@ -46,22 +49,33 @@ public class SynchronousSynchronizer implements Synchronizer {
 	protected final Flags flags;
 
 
+	// ********** construction **********
+
 	/**
 	 * Construct a synchronous synchronizer that uses the specified command to
 	 * perform the synchronization.
 	 */
 	public SynchronousSynchronizer(Command command) {
 		super();
+		if (command == null) {
+			throw new NullPointerException();
+		}
 		this.command = command;
-		this.flags = new Flags();
+		this.flags = this.buildFlags();
 	}
 
+	protected Flags buildFlags() {
+		return new Flags();
+	}
+
+
+	// ********** Synchronizer implementation **********
+
 	/**
-	 * Initialize the flags and kick off the first synchronization.
+	 * Initialize the flags and execute the first synchronization.
 	 */
 	public void start() {
 		this.flags.start();
-		this.synchronize();
 	}
 
 	/**
@@ -70,10 +84,27 @@ public class SynchronousSynchronizer implements Synchronizer {
 	 */
 	public void synchronize() {
 		if (this.flags.synchronizeCanStart()) {
-			do {
-				this.command.execute();
-			} while (this.flags.synchronizeMustRunAgain());
+			this.synchronize_();
 		}
+	}
+
+	/**
+	 * This method should be called only once per set of "recursing"
+	 * synchronizations. Any recursive call to {@link #synchronize()} will
+	 * simply set the {@link Flags#again "again"} flag, causing the command
+	 * to execute again.
+	 */
+	protected void synchronize_() {
+		do {
+			this.execute();
+		} while (this.flags.synchronizeMustRunAgain());
+	}
+
+	/**
+	 * By default, just execute the command.
+	 */
+	protected void execute() {
+		this.command.execute();
 	}
 
 	/**
@@ -98,7 +129,7 @@ public class SynchronousSynchronizer implements Synchronizer {
 	 * whether a synchronization can start ({@link #synchronizeCanStart()}) will alter
 	 * the "again" flag, depending on the current state of the other flags.
 	 */
-	protected static class Flags {
+	protected class Flags {
 		/**
 		 * Use a synchronized boolean to communicate between the two threads
 		 * that might separately call {@link #start()}/{@link #stop()}
@@ -109,6 +140,11 @@ public class SynchronousSynchronizer implements Synchronizer {
 		protected boolean again = false;
 		protected boolean stop = true;
 
+
+		protected Flags() {
+			super();
+		}
+
 		/**
 		 * Simply clear the "stop" flag.
 		 */
@@ -117,23 +153,28 @@ public class SynchronousSynchronizer implements Synchronizer {
 				throw new IllegalStateException("The Synchronizer was not stopped."); //$NON-NLS-1$
 			}
 			this.stop = false;
+
+			// execute the synchronize here so we get to perform the first "synchronize"
+			// immediately and synchronously, without allowing another thread to slip in
+			SynchronousSynchronizer.this.synchronize();
 		}
 
 		/**
-		 * Restore our start-up state and wait for any current synchronization
-		 * to complete.
+		 * Restore our start-up state and wait for any currently executing
+		 * synchronization to complete.
 		 */
 		protected synchronized void stop() {
 			if (this.stop) {
 				throw new IllegalStateException("The Synchronizer was not started."); //$NON-NLS-1$
 			}
 			this.stop = true;
-			this.again = false;  // may not necessarily be true
+			this.again = false;  // may not necessarily be 'true'
 			try {
 				this.executing.waitUntilFalse();  // #start() cannot be called during this wait...
 			} catch (InterruptedException ex) {
-				// the thread that called #stop() was interrupted while waiting - ignore;
-				// 'stop' is still set to true, so the #synchronize() loop will still stop - we
+				// the thread that called #stop() was interrupted while waiting
+				// for the synchronization to finish - ignore;
+				// 'stop' is still set to 'true', so the #synchronize() loop will still stop - we
 				// just won't wait around for it...
 			}
 		}
@@ -157,7 +198,7 @@ public class SynchronousSynchronizer implements Synchronizer {
 				return false;
 			}
 			this.executing.setTrue();
-			this.again = false;
+			this.again = false;  // probably already 'false'(?)
 			return true;
 		}
 
@@ -180,7 +221,7 @@ public class SynchronousSynchronizer implements Synchronizer {
 				return false;
 			}
 			if (this.again) {
-				// leave 'executing' set to true
+				// leave 'executing' set to 'true'
 				this.again = false;
 				return true;
 			}

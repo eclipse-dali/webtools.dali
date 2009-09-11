@@ -7,14 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.tests.internal;
+package org.eclipse.jpt.utility.tests.internal.synchronizers;
 
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.Synchronizer;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.SynchronousSynchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
 
 @SuppressWarnings("nls")
 public class SynchronousSynchronizerTests extends TestCase {

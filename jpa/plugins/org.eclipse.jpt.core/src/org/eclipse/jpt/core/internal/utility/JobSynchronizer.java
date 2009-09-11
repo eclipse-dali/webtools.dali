@@ -13,39 +13,58 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jpt.utility.Synchronizer;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 
 /**
  * This synchronizer will perform synchronizations in an Eclipse job on a
  * separate thread, allowing calls to {@link Synchronizer#synchronize()}
  * to return immediately.
+ * <p>
+ * If necessary, the client-supplied job command should handle any
+ * exceptions appropriately. Although, the default exception-handling provided
+ * by the Eclipse Job Framework is probably adequate in most cases:<ul>
+ * <li>An {@link org.eclipse.core.runtime.OperationCanceledException OperationCanceledException}
+ *     results in a {@link org.eclipse.core.runtime.Status#CANCEL_STATUS CANCEL_STATUS}.
+ * <li>Any non-{@link ThreadDeath} {@link Throwable}
+ *     results in a {@link org.eclipse.core.runtime.IStatus#ERROR ERROR}
+ *     {@link org.eclipse.core.runtime.IStatus IStatus}
+ * </ul>
+ * @see org.eclipse.core.internal.jobs.Worker#run()
  */
-public class JobSynchronizer implements Synchronizer {
-	protected final SynchronizeJob job;
+public class JobSynchronizer
+	implements Synchronizer
+{
+	/**
+	 * The synchronization is performed by this job. The same job is used
+	 * for every start/stop cycle (since a job can be re-started).
+	 */
+	protected final SynchronizationJob job;
 
 
 	// ********** construction **********
 
 	/**
-	 * Construct a job synchronizer that uses the specified command to
-	 * perform the synchronization.
+	 * Construct a job synchronizer that uses the specified job command to
+	 * perform the synchronization. Assign the generated Eclipse job the
+	 * specified name.
 	 */
 	public JobSynchronizer(String jobName, JobCommand command) {
 		this(jobName, command, null);
 	}
 
 	/**
-	 * Construct a job synchronizer that uses the specified command to
-	 * perform the synchronization.
+	 * Construct a job synchronizer that uses the specified job command to
+	 * perform the synchronization. Assign the generated Eclipse job the
+	 * specified name and scheduling rule.
 	 */
 	public JobSynchronizer(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
 		super();
 		this.job = this.buildJob(jobName, command, schedulingRule);
 	}
 
-	protected SynchronizeJob buildJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
-		return new SynchronizeJob(jobName, command, schedulingRule);
+	protected SynchronizationJob buildJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
+		return new SynchronizationJob(jobName, command, schedulingRule);
 	}
 
 
@@ -53,20 +72,17 @@ public class JobSynchronizer implements Synchronizer {
 
 	/**
 	 * Allow the job to be scheduled, but postpone the first synchronization
-	 * until requested.
+	 * until requested, via {@link #synchronize()}.
 	 */
 	public void start() {
 		this.job.start();
 	}
 
 	/**
-	 * Simply re-schedule the job, allowing the current execution
-	 * to run to completion (i.e. do not cancel it).
-	 * This should reduce the number of times the job is re-executed
-	 * (recursively).
+	 * "Schedule" the job.
 	 */
 	public void synchronize() {
-		this.job.schedule();
+		this.job.synchronize();
 	}
 
 	/**
@@ -88,7 +104,7 @@ public class JobSynchronizer implements Synchronizer {
 	 * This is the job that gets scheduled by the job synchronizer.
 	 * When the job is run it executes the client-supplied job command.
 	 */
-	protected static class SynchronizeJob extends Job {
+	protected static class SynchronizationJob extends Job {
 		/**
 		 * The client-supplied job command that executes every time the job
 		 * runs.
@@ -99,25 +115,24 @@ public class JobSynchronizer implements Synchronizer {
 		 * When this flag is set to false, the job does not stop immediately;
 		 * but it will not be scheduled to run again.
 		 */
-		protected boolean shouldSchedule;
+		// use 'volatile' because synchronization isn't really required
+		protected volatile boolean shouldSchedule;
 
-		protected SynchronizeJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
+
+		protected SynchronizationJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
 			super(jobName);
+			if (command == null) {
+				throw new NullPointerException();
+			}
 			this.command = command;
 			this.shouldSchedule = false;
 			this.setRule(schedulingRule);
 		}
 
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			return this.command.execute(monitor);
-		}
-
-		@Override
-		public boolean shouldSchedule() {
-			return this.shouldSchedule;
-		}
-
+		/**
+		 * Just set the "should schedule" flag so the job <em>can</em> be
+		 * scheduled; but don't actually schedule it.
+		 */
 		protected void start() {
 			if (this.shouldSchedule) {
 				throw new IllegalStateException("The Synchronizer was not stopped."); //$NON-NLS-1$
@@ -126,10 +141,28 @@ public class JobSynchronizer implements Synchronizer {
 		}
 
 		/**
+		 * Simply re-schedule the job, allowing the current execution
+		 * to run to completion (i.e. do not try to cancel it prematurely).
+		 * This should minimize the number of times the job is re-executed
+		 * (recursively and otherwise).
+		 */
+		protected void synchronize() {
+			this.schedule();
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			return this.command.execute(monitor);
+		}
+
+		/**
 		 * Prevent the job from running again and wait for the current
 		 * execution, if there is any, to end before returning.
 		 */
-		public void stop() {
+		protected void stop() {
+			if ( ! this.shouldSchedule) {
+				throw new IllegalStateException("The Synchronizer was not started."); //$NON-NLS-1$
+			}
 			// this will prevent the job from being scheduled to run again
 			this.shouldSchedule = false;
 			// this will cancel the job if it has already been scheduled, but is currently WAITING
@@ -138,8 +171,21 @@ public class JobSynchronizer implements Synchronizer {
 				// if the job is currently RUNNING, wait until it is done before returning
 				this.join();
 			} catch (InterruptedException ex) {
-				// the job thread was interrupted while waiting - ignore
+				// the thread that called #stop() was interrupted while waiting to
+				// join the synchronization job - ignore;
+				// 'shouldSchedule' is still set to 'false', so the job loop will still stop - we
+				// just won't wait around for it...
 			}
+		}
+
+		/**
+		 * This is part of the normal {@link Job} behavior. By default, it is
+		 * not used (i.e. it always returns <code>true</code>).
+		 * We implement it here.
+		 */
+		@Override
+		public boolean shouldSchedule() {
+			return this.shouldSchedule;
 		}
 
 	}

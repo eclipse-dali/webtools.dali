@@ -7,14 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.tests.internal;
+package org.eclipse.jpt.utility.tests.internal.synchronizers;
 
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.Synchronizer;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.AsynchronousSynchronizer;
 import org.eclipse.jpt.utility.internal.ExceptionHandler;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.utility.internal.synchronizers.AsynchronousSynchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 
 import junit.framework.TestCase;
 
@@ -44,13 +44,13 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		this.primaryModel1 = new PrimaryModel1();
 		this.secondaryModel1 = new SecondaryModel1(this.primaryModel1);
 		this.command1 = new SynchronizeSecondaryModelCommand1(this.secondaryModel1);
-		this.synchronizer1 = new LocalAsynchronousSynchronizer(this.command1, this.startFlag1, this.completeFlag1);
+		this.synchronizer1 = new TestAsynchronousSynchronizer(this.command1, this.startFlag1, this.completeFlag1);
 		this.primaryModel1.setSynchronizer(this.synchronizer1);
 
 		this.primaryModel2 = new PrimaryModel2();
 		this.secondaryModel2 = new SecondaryModel2(this.primaryModel2);
 		this.command2 = new SynchronizeSecondaryModelCommand2(this.primaryModel2, this.secondaryModel2);
-		this.synchronizer2 = new LocalAsynchronousSynchronizer(this.command2, this.startFlag2, this.completeFlag2);
+		this.synchronizer2 = new TestAsynchronousSynchronizer(this.command2, this.startFlag2, this.completeFlag2);
 		this.primaryModel2.setSynchronizer(this.synchronizer2);
 	}
 
@@ -168,34 +168,12 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testNullExceptionHandler() {
-		boolean exCaught = false;
-		try {
-			Synchronizer s = new AsynchronousSynchronizer(this.command1, "sync", null);
-			fail("bogus: " + s);
-		} catch (NullPointerException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
 	public void testThreadName() {
 		Synchronizer s = new AsynchronousSynchronizer(this.command1, "sync");
 		s.start();
 		Thread t = (Thread) ClassTools.fieldValue(s, "thread");
 		assertEquals("sync", t.getName());
 		s.stop();
-	}
-
-	public void testExceptionHandler() {
-		Command command = new BogusCommand();
-		LocalExceptionHandler exHandler = new LocalExceptionHandler();
-		Synchronizer s = new AsynchronousSynchronizer(command, exHandler);
-		s.start();
-		s.synchronize();
-		delay(1);
-		s.stop();
-		assertTrue(exHandler.exHandled);
 	}
 
 	public class BogusCommand implements Command {
@@ -445,21 +423,21 @@ public class AsynchronousSynchronizerTests extends TestCase {
 	/**
 	 * Hopefully, we don't modify the behavior too much....
 	 */
-	public static class LocalAsynchronousSynchronizer extends AsynchronousSynchronizer {
-		public LocalAsynchronousSynchronizer(Command command, SynchronizedBoolean startFlag, SynchronizedBoolean completeFlag) {
+	public static class TestAsynchronousSynchronizer extends AsynchronousSynchronizer {
+		public TestAsynchronousSynchronizer(Command command, SynchronizedBoolean startFlag, SynchronizedBoolean completeFlag) {
 			super(command);
-			((LocalRunnableSychronization) this.runnable).setStartFlag(startFlag);
-			((LocalRunnableSychronization) this.runnable).setCompleteFlag(completeFlag);
+			((TestRunnableSynchronization) this.runnable).setStartFlag(startFlag);
+			((TestRunnableSynchronization) this.runnable).setCompleteFlag(completeFlag);
 		}
 		@Override
-		protected Runnable buildRunnable(Command command, ExceptionHandler exceptionHandler) {
-			return new LocalRunnableSychronization(command, this.synchronizeFlag, exceptionHandler);
+		protected Runnable buildRunnable(Command command) {
+			return new TestRunnableSynchronization(command, this.synchronizeFlag);
 		}
-		protected static class LocalRunnableSychronization extends RunnableSychronization {
+		protected static class TestRunnableSynchronization extends RunnableSynchronization {
 			private SynchronizedBoolean startFlag;
 			private SynchronizedBoolean completeFlag;
-			protected LocalRunnableSychronization(Command command, SynchronizedBoolean synchronizeFlag, ExceptionHandler exceptionHandler) {
-				super(command, synchronizeFlag, exceptionHandler);
+			protected TestRunnableSynchronization(Command command, SynchronizedBoolean synchronizeFlag) {
+				super(command, synchronizeFlag);
 			}
 			public void setStartFlag(SynchronizedBoolean startFlag) {
 				this.startFlag = startFlag;

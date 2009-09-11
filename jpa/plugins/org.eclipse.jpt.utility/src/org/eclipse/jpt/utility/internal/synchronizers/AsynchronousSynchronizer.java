@@ -7,14 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.internal;
+package org.eclipse.jpt.utility.internal.synchronizers;
 
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.Synchronizer;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**
  * This synchronizer will perform synchronizations in a separate thread,
  * allowing calls to {@link Synchronizer#synchronize()} to return immediately.
+ * <p>
+ * <strong>NB:</strong> The client-supplied command should handle any exceptions
+ * appropriately (e.g. log the exception and return gracefully so the thread
+ * can continue the synchronization process).
  */
 public class AsynchronousSynchronizer
 	implements Synchronizer
@@ -50,50 +55,26 @@ public class AsynchronousSynchronizer
 
 	/**
 	 * Construct an asynchronous synchronizer that uses the specified command to
-	 * perform the synchronization. Use the JDK-generated thread name, and use
-	 * a "null" exception handler.
+	 * perform the synchronization. Allow the generated thread(s) to be assigned
+	 * JDK-generated names.
 	 */
 	public AsynchronousSynchronizer(Command command) {
-		this(command, null, ExceptionHandler.Null.instance());
+		this(command, null);
 	}
 
 	/**
 	 * Construct an asynchronous synchronizer that uses the specified command to
-	 * perform the synchronization. Use the specified thread name, and use a
-	 * "null" exception handler.
+	 * perform the synchronization. Assign the generated thread(s) the specified
+	 * name.
 	 */
 	public AsynchronousSynchronizer(Command command, String threadName) {
-		this(command, threadName, ExceptionHandler.Null.instance());
-	}
-
-	/**
-	 * Construct an asynchronous synchronizer that uses the specified command to
-	 * perform the synchronization. Use the specified exception handler, and use
-	 * the JDK-generated thread name.
-	 */
-	public AsynchronousSynchronizer(Command command, ExceptionHandler exceptionHandler) {
-		this(command, null, exceptionHandler);
-	}
-
-	/**
-	 * Construct an asynchronous synchronizer that uses the specified command to
-	 * perform the synchronization. Use the specified thread name and exception
-	 * handler.
-	 */
-	public AsynchronousSynchronizer(Command command, String threadName, ExceptionHandler exceptionHandler) {
 		super();
-		if (command == null) {
-			throw new NullPointerException("command"); //$NON-NLS-1$
-		}
-		if (exceptionHandler == null) {
-			throw new NullPointerException("exceptionHandler"); //$NON-NLS-1$
-		}
-		this.runnable = this.buildRunnable(command, exceptionHandler);
+		this.runnable = this.buildRunnable(command);
 		this.threadName = threadName;
 	}
 
-	protected Runnable buildRunnable(Command command, ExceptionHandler exceptionHandler) {
-		return new RunnableSychronization(command, this.synchronizeFlag, exceptionHandler);
+	protected Runnable buildRunnable(Command command) {
+		return new RunnableSynchronization(command, this.synchronizeFlag);
 	}
 
 
@@ -101,7 +82,7 @@ public class AsynchronousSynchronizer
 
 	/**
 	 * Build and start the synchronization thread, but postpone the first
-	 * synchronization until requested.
+	 * synchronization until requested, via {@link #synchronize()}.
 	 */
 	public synchronized void start() {
 		if (this.thread != null) {
@@ -136,10 +117,10 @@ public class AsynchronousSynchronizer
 		try {
 			this.thread.join();
 		} catch (InterruptedException ex) {
-			// not sure why *this* thread would be interrupted;
-			// ignore it for now...
-			// 'thread' is still "interrupted", so the #run() loop will still stop - we
-			// just won't wait around for it...
+			// the thread that called #stop() was interrupted while waiting to
+			// join the synchronization thread - ignore;
+			// 'thread' is still "interrupted", so its #run() loop will still stop
+			// after its current execution - we just won't wait around for it...
 		}
 		this.thread = null;
 	}
@@ -161,26 +142,21 @@ public class AsynchronousSynchronizer
 	 * the command will be re-executed immediately. Stop the thread by calling
 	 * {@link Thread#interrupt()}.
 	 */
-	protected static class RunnableSychronization implements Runnable {
+	protected static class RunnableSynchronization implements Runnable {
 		/** The client-supplied command that executes on this thread. */
 		protected final Command command;
 
 		/** When this flag is set to true, we execute the client-supplied command. */
 		protected final SynchronizedBoolean synchronizeFlag;
 
-		/** Pass any exceptions encountered during synchronization to the client-supplied handler. */
-		protected final ExceptionHandler exceptionHandler;
 
-
-		protected RunnableSychronization(
-				Command command,
-				SynchronizedBoolean synchronizeFlag,
-				ExceptionHandler exceptionHandler
-		) {
+		protected RunnableSynchronization(Command command, SynchronizedBoolean synchronizeFlag) {
 			super();
+			if (command == null) {
+				throw new NullPointerException();
+			}
 			this.command = command;
 			this.synchronizeFlag = synchronizeFlag;
-			this.exceptionHandler = exceptionHandler;
 		}
 
 		/**
@@ -192,16 +168,16 @@ public class AsynchronousSynchronizer
 		 * (thus the call to {@link Thread#isInterrupted()} before each cycle).
 		 * <p>
 		 * If this thread is interrupted <em>during</em> the synchronization, the
-		 * call to {@link Thread#isInterrupted()} will stop the loop. If this thread is
+		 * call to {@link Thread#interrupted()} will stop the loop. If this thread is
 		 * interrupted during the call to {@link SynchronizedBoolean#waitToSetFalse()},
 		 * we will catch the {@link InterruptedException} and stop the loop.
 		 */
 		public void run() {
-			while ( ! Thread.currentThread().isInterrupted()) {
+			while ( ! Thread.interrupted()) {
 				try {
 					this.synchronizeFlag.waitToSetFalse();
 				} catch (InterruptedException ex) {
-					// we were interrupted while waiting, must be quittin' time
+					// we were interrupted while waiting, must be Quittin' Time
 					return;
 				}
 				this.execute();
@@ -209,36 +185,10 @@ public class AsynchronousSynchronizer
 		}
 
 		/**
-		 * Execute the client-supplied command, handling any exceptions. If an
-		 * exception occurs (and the client-supplied exception handler does not
-		 * throw yet another exception), we terminate the synchronization until the
-		 * "synchronize" flag is set again. Some exceptions occur because
-		 * of concurrent changes to the model that occur <em>after</em> synchronization
-		 * starts but before it completes an entire pass over the model. If that
-		 * is the case, things should be OK; because the exception will be
-		 * caught and the "synchronize" flag will have been set again <em>during</em> the
-		 * initial synchronization pass. So when we return from catching the exception
-		 * we will simply re-start the synchronization, hopefully with the model in
-		 * a consistent state that will prevent another exception from
-		 * occurring. Of course, if we have any exceptions that are <em>not</em>
-		 * the result of the model being in an inconsistent state, the exception
-		 * handler will probably fill its log; and those exceptions are bugs that need
-		 * to be fixed. (!) Hopefully the user will notice the enormous log and
-		 * file a bug....  ~bjv
+		 * Execute the client-supplied command.
 		 */
 		protected void execute() {
-			try {
-				this.command.execute();
-			} catch (Throwable t) {
-				this.handleException(t);
-			}
-		}
-
-		/**
-		 * Delegate to the client-supplied exception handler.
-		 */
-		protected void handleException(Throwable t) {
-			this.exceptionHandler.handleException(t);
+			this.command.execute();
 		}
 
 	}

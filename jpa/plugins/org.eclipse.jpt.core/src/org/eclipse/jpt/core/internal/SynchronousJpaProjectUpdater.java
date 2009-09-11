@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.Synchronizer;
-import org.eclipse.jpt.utility.internal.SynchronousSynchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
 
 /**
  * Adapt the "synchronizer" interface to the JPA project "updater" interface.
@@ -33,33 +33,16 @@ public class SynchronousJpaProjectUpdater
 	}
 
 	@Override
-	protected Synchronizer buildSynchronizer(JpaProject jpaProject) {
-		return new SynchronousSynchronizer(this.buildCommand(jpaProject));
+	protected CallbackSynchronizer buildSynchronizer() {
+		return new CallbackSynchronousSynchronizer(this.buildCommand());
 	}
 
-	protected Command buildCommand(JpaProject jpaProject) {
-		return new LocalCommand(jpaProject);
-	}
-
-
-	// ********** Command **********
-
-	/**
-	 * Call the "internal" JPA project update method.
-	 */
-	protected static class LocalCommand
-		implements Command
-	{
-		protected final JpaProject jpaProject;
-
-		protected LocalCommand(JpaProject jpaProject) {
-			super();
-			this.jpaProject = jpaProject;
-		}
-
-		public void execute() {
-			this.jpaProject.update(new NullProgressMonitor());
-		}
+	protected Command buildCommand() {
+		return new Command() {
+			public void execute() {
+				SynchronousJpaProjectUpdater.this.jpaProject.update(new NullProgressMonitor());
+			}
+		};
 	}
 
 }

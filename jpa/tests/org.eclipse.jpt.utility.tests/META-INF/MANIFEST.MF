@@ -17,4 +17,5 @@ Export-Package: org.eclipse.jpt.utility.tests.internal;x-internal:=true,
  org.eclipse.jpt.utility.tests.internal.model.value;x-internal:=true,
  org.eclipse.jpt.utility.tests.internal.model.value.prefs;x-internal:=true,
  org.eclipse.jpt.utility.tests.internal.model.value.swing;x-internal:=true,
- org.eclipse.jpt.utility.tests.internal.node;x-internal:=true
+ org.eclipse.jpt.utility.tests.internal.node;x-internal:=true,
+ org.eclipse.jpt.utility.tests.internal.synchronizers;x-internal:=true

@@ -13,9 +13,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.internal.utility.CallbackJobSynchronizer;
 import org.eclipse.jpt.core.internal.utility.JobCommand;
-import org.eclipse.jpt.core.internal.utility.JobSynchronizer;
-import org.eclipse.jpt.utility.Synchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -33,45 +33,28 @@ public class AsynchronousJpaProjectUpdater
 	}
 
 	@Override
-	protected Synchronizer buildSynchronizer(JpaProject jpaProject) {
-		return new JobSynchronizer(
-				this.buildJobName(jpaProject),
-				this.buildJobCommand(jpaProject),
-				this.buildJobSchedulingRule(jpaProject)
+	protected CallbackSynchronizer buildSynchronizer() {
+		return new CallbackJobSynchronizer(
+				this.buildJobName(),
+				this.buildJobCommand(),
+				this.buildJobSchedulingRule()
 			);
 	}
 
-	protected String buildJobName(JpaProject jpaProject) {
-		return NLS.bind(JptCoreMessages.UPDATE_JOB_NAME, jpaProject.getName());
+	protected String buildJobName() {
+		return NLS.bind(JptCoreMessages.UPDATE_JOB_NAME, this.jpaProject.getName());
 	}
 
-	protected JobCommand buildJobCommand(JpaProject jpaProject) {
-		return new LocalJobCommand(jpaProject);
+	protected JobCommand buildJobCommand() {
+		return new JobCommand() {
+			public IStatus execute(IProgressMonitor monitor) {
+				return AsynchronousJpaProjectUpdater.this.jpaProject.update(monitor);
+			}
+		};
 	}
 
-	protected ISchedulingRule buildJobSchedulingRule(JpaProject jpaProject) {
-		return jpaProject.getProject();
-	}
-
-
-	// ********** Command **********
-
-	/**
-	 * Call the "internal" JPA project update method.
-	 */
-	protected static class LocalJobCommand
-		implements JobCommand
-	{
-		protected final JpaProject jpaProject;
-
-		protected LocalJobCommand(JpaProject jpaProject) {
-			super();
-			this.jpaProject = jpaProject;
-		}
-
-		public IStatus execute(IProgressMonitor monitor) {
-			return this.jpaProject.update(monitor);
-		}
+	protected ISchedulingRule buildJobSchedulingRule() {
+		return this.jpaProject.getProject();
 	}
 
 }
