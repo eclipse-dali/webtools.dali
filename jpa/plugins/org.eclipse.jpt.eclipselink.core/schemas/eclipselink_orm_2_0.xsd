@@ -14,7 +14,7 @@
 *****************************************************************************/
 -->
 <!-- Java Persistence API object-relational mapping file schema -->
-<xsd:schema targetNamespace="http://www.eclipse.org/eclipselink/xsds/persistence/orm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:orm="http://www.eclipse.org/eclipselink/xsds/persistence/orm" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+<xsd:schema targetNamespace="http://www.eclipse.org/eclipselink/xsds/persistence/orm" xmlns:orm="http://www.eclipse.org/eclipselink/xsds/persistence/orm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
 	<xsd:annotation>
 		<xsd:documentation>
       @(#)eclipselink_orm_2_0.xsd 1.0  February 1 2008
@@ -480,7 +480,7 @@
 				<xsd:element name="entity" type="orm:entity" minOccurs="0" maxOccurs="unbounded"/>
 				<xsd:element name="embeddable" type="orm:embeddable" minOccurs="0" maxOccurs="unbounded"/>
 			</xsd:sequence>
-			<xsd:attribute name="version" type="orm:versionType" use="required" fixed="1.1"/>
+			<xsd:attribute name="version" type="orm:versionType" use="required" fixed="2.0"/>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- **************************************************** -->
