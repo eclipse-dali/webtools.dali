@@ -582,10 +582,6 @@ public abstract class AbstractOrmPersistentType
 	protected OrmPersistentAttribute.Owner buildSpecifiedPersistentAttributeOwner() {
 		return new SpecifiedPersistentAttributeOwner();
 	}
-	
-	protected AccessType getAccess(@SuppressWarnings("unused") OrmPersistentAttribute ormPersistentAttribute) {
-		return getAccess();
-	}
 
 	/**
 	 * All orm.xml persistent types must be able to generate a static metamodel
@@ -608,7 +604,7 @@ public abstract class AbstractOrmPersistentType
 			if (ormName == null) {
 				return null;
 			}
-			AccessType ormAccess = AbstractOrmPersistentType.this.getAccess(ormPersistentAttribute);
+			AccessType ormAccess = ormPersistentAttribute.getAccess();
 
 			JavaPersistentAttribute javaPersistentAttribute = this.findExistingJavaPersistentAttribute(ormName);
 			if ((javaPersistentAttribute != null) && (javaPersistentAttribute.getAccess() == ormAccess)) {
@@ -725,9 +721,14 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	protected Iterator<JavaResourcePersistentAttribute> javaPersistentAttributes(JavaResourcePersistentType resourcePersistentType) {
-		return (this.getAccess() == AccessType.PROPERTY) ?
-				resourcePersistentType.persistableProperties() :
-				resourcePersistentType.persistableFields();
+		AccessType access = getSpecifiedAccess();
+		if (access == null && !getMapping().isMetadataComplete()) {
+			access = getJavaPersistentType().getSpecifiedAccess();
+		}
+		if (access == null) {
+			access = this.getDefaultAccess();
+		}
+		return resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(access));
 	}
 
 	protected PersistentType buildSuperPersistentType() {

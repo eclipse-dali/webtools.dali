@@ -9,12 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentType;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
@@ -31,21 +26,4 @@ public class OrmEclipseLinkPersistentType1_1 extends AbstractOrmPersistentType
 	protected Attributes createResourceAttributes() {
 		return EclipseLink1_1OrmFactory.eINSTANCE.createAttributes();
 	}
-	
-	@Override
-	protected AccessType getAccess(OrmPersistentAttribute ormPersistentAttribute) {
-		return ormPersistentAttribute.getAccess();
-	}
-	
-	@Override
-	protected Iterator<JavaResourcePersistentAttribute> javaPersistentAttributes(JavaResourcePersistentType resourcePersistentType) {
-		AccessType specifiedAccess = getSpecifiedAccess();
-		if (specifiedAccess == null && !getMapping().isMetadataComplete()) {
-			specifiedAccess = getJavaPersistentType().getSpecifiedAccess();
-		}
-		return specifiedAccess == null
-			? super.javaPersistentAttributes(resourcePersistentType)
-			: resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(specifiedAccess));
-	}
-
 }
