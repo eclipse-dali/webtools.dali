@@ -56,11 +56,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="orm.ecore#//XmlId #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="orm.ecore#//XmlEmbeddedId #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="orm.ecore#//XmlEmbedded #//XmlAttributeMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="associationOverrides" upperBound="-1"
-        eType="ecore:EClass orm.ecore#//XmlAssociationOverride" containment="true"
-        resolveProxies="false"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="orm.ecore#//XmlEmbedded #//XmlAttributeMapping orm.ecore#//XmlAssociationOverrideContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" eSuperTypes="orm.ecore#//XmlBasic #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="orm.ecore#//XmlVersion #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlDerivedId" abstract="true" interface="true">

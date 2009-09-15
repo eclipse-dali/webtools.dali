@@ -73,7 +73,11 @@ public class MappingTools {
 		if (owningTable == null) {
 			return null;
 		}
-		Entity targetEntity = relationshipReference.getRelationshipMapping().getResolvedTargetEntity();
+		RelationshipMapping relationshipMapping = relationshipReference.getRelationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return null;
 		}
@@ -157,6 +161,22 @@ public class MappingTools {
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof ColumnMapping) {
 					return (ColumnMapping) persAttribute.getMapping();
+				}
+				// keep looking or return null???
+			}
+		}
+		return null;		
+	}
+	
+	public static RelationshipMapping getRelationshipMapping(String attributeName, PersistentType persistentType) {
+		if (attributeName == null || persistentType == null) {
+			return null;
+		}
+		for (Iterator<PersistentAttribute> stream = persistentType.allAttributes(); stream.hasNext(); ) {
+			PersistentAttribute persAttribute = stream.next();
+			if (attributeName.equals(persAttribute.getName())) {
+				if (persAttribute.getMapping() instanceof RelationshipMapping) {
+					return (RelationshipMapping) persAttribute.getMapping();
 				}
 				// keep looking or return null???
 			}

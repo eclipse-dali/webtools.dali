@@ -27,9 +27,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -37,18 +39,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * A representation of the model object '<em><b>Xml Embedded</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded#getAssociationOverrides <em>Association Overrides</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlEmbedded()
  * @model kind="class"
  * @generated
  */
-public class XmlEmbedded extends org.eclipse.jpt.core.resource.orm.XmlEmbedded implements XmlAttributeMapping
+public class XmlEmbedded extends org.eclipse.jpt.core.resource.orm.XmlEmbedded implements XmlAttributeMapping, XmlAssociationOverrideContainer
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -145,7 +141,7 @@ public class XmlEmbedded extends org.eclipse.jpt.core.resource.orm.XmlEmbedded i
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlEmbedded_AssociationOverrides()
+	 * @see org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package#getXmlAssociationOverrideContainer_AssociationOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -275,6 +271,14 @@ public class XmlEmbedded extends org.eclipse.jpt.core.resource.orm.XmlEmbedded i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case Orm2_0Package.XML_EMBEDDED__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -298,6 +302,14 @@ public class XmlEmbedded extends org.eclipse.jpt.core.resource.orm.XmlEmbedded i
 		{
 			switch (baseFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES: return Orm2_0Package.XML_EMBEDDED__ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -341,11 +353,11 @@ public class XmlEmbedded extends org.eclipse.jpt.core.resource.orm.XmlEmbedded i
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}		
 	
 	protected static Translator buildAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(JPA2_0.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlEmbedded_AssociationOverrides());
+		return org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
 
 } // XmlEmbedded

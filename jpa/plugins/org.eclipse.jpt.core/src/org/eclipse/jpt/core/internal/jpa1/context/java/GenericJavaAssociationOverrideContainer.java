@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
@@ -43,20 +43,21 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 {
 	protected JavaResourcePersistentMember javaResourcePersistentMember;
 
-
+	protected final AssociationOverrideContainer.Owner owner;
+	
 	protected final List<JavaAssociationOverride> specifiedAssociationOverrides;
 
 	protected final List<JavaAssociationOverride> virtualAssociationOverrides;
 	
-	public GenericJavaAssociationOverrideContainer(JavaJpaContextNode parent) {
+	public GenericJavaAssociationOverrideContainer(JavaJpaContextNode parent, AssociationOverrideContainer.Owner owner) {
 		super(parent);
+		this.owner = owner;
 		this.specifiedAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 	}
 
-	@Override
-	public JavaEntity getParent() {
-		return (JavaEntity) super.getParent();
+	public Owner getOwner() {
+		return this.owner;
 	}
 
 	public JavaAssociationOverride getAssociationOverrideNamed(String name) {
@@ -170,7 +171,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		JavaAssociationOverride virtualAssociationOverride = null;
 		if (associationOverrideName != null) {
-			for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getParent().allOverridableAssociations())) {
+			for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
 				if (overridableAssociation.getName().equals(associationOverrideName)) {
 					//store the virtualAttributeOverride so we can fire change notification later
 					virtualAssociationOverride = buildVirtualAssociationOverride(overridableAssociation);
@@ -241,7 +242,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	}
 	
 	protected void initializeVirtualAssociationOverrides() {
-		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getParent().allOverridableAssociations())) {
+		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
 			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
 			if (associationOverride == null) {
 				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(overridableAssociation));
@@ -303,7 +304,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	}
 
 	protected void updateVirtualAssociationOverrides() {
-		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getParent().allOverridableAssociations())) {
+		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
 			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
 			if (associationOverride == null) {
 				addVirtualAssociationOverride(buildVirtualAssociationOverride(overridableAssociation));
@@ -313,7 +314,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 			}
 		}
 		
-		Collection<String> associationNames = CollectionTools.collection(getParent().allOverridableAssociationNames());
+		Collection<String> associationNames = CollectionTools.collection(getOwner().allOverridableAssociationNames());
 	
 		//remove any default mappings that are not included in the associationNames collection
 		for (JavaAssociationOverride associationOverride : CollectionTools.iterable(virtualAssociationOverrides())) {
@@ -363,18 +364,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	class AssociationOverrideOwner implements AssociationOverride.Owner {
 
 		public RelationshipMapping getRelationshipMapping(String attributeName) {
-			if (attributeName == null) {
-				return null;
-			}
-			for (Iterator<PersistentAttribute> stream = getParent().getPersistentType().allAttributes(); stream.hasNext();) {
-				PersistentAttribute persAttribute = stream.next();
-				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof RelationshipMapping) {
-						return (RelationshipMapping) persAttribute.getMapping();
-					}
-				}
-			}
-			return null;
+			return MappingTools.getRelationshipMapping(attributeName, getOwner().getOverridablePersistentType());
 		}
 
 		public boolean isVirtual(BaseOverride override) {
@@ -386,7 +376,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getParent();
+			return getOwner().getTypeMapping();
 		}
 	}
 

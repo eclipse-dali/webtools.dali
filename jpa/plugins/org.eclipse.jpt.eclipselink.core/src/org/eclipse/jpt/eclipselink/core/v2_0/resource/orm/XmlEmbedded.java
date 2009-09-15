@@ -26,6 +26,8 @@ import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 
+import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -252,7 +254,7 @@ public class XmlEmbedded extends org.eclipse.jpt.eclipselink.core.v1_1.resource.
 	}
 	
 	protected static Translator buildAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.ASSOCIATION_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlEmbedded_AssociationOverrides());
+		return org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
 
 } // XmlEmbedded

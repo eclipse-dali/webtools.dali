@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
@@ -36,6 +37,11 @@ public abstract class AbstractJavaRelationshipReference
 	
 	public TypeMapping getTypeMapping() {
 		return getRelationshipMapping().getTypeMapping();
+	}
+	
+	public Entity getEntity() {
+		TypeMapping typeMapping = getTypeMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 	
 	public boolean isOverridableAssociation() {

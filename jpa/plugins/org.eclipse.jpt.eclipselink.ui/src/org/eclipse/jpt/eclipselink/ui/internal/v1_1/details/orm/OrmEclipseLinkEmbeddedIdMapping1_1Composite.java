@@ -13,9 +13,9 @@ import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.2
  */
-public class OrmEclipseLinkEmbeddedIdMapping1_1Composite extends AbstractEmbeddedMappingComposite<EmbeddedIdMapping>
+public class OrmEclipseLinkEmbeddedIdMapping1_1Composite extends FormPane<EmbeddedIdMapping>
                                         implements JpaComposite
 {
 	/**

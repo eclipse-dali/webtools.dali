@@ -568,6 +568,9 @@ public abstract class AbstractJavaPersistentType
 	public void postUpdate() {
 		super.postUpdate();
 		getMapping().postUpdate();
+		for (PersistentAttribute attribute : CollectionTools.iterable(attributes())) {
+			attribute.postUpdate();
+		}
 	}
 	
 	// ********** validation **********

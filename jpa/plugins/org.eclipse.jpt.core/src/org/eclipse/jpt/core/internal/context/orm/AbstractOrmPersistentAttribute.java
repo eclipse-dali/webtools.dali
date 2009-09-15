@@ -164,6 +164,12 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 		this.owner.updateJavaPersistentAttribute();
 	}
 	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		getMapping().postUpdate();
+	}
+	
 	protected JavaPersistentAttribute findJavaPersistentAttribute() {
 		return this.owner.findJavaPersistentAttribute(this);
 	}

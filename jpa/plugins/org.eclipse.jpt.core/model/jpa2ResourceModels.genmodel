@@ -60,9 +60,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlId"/>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlEmbeddedId"/>
-    <genClasses image="false" ecoreClass="orm2.ecore#//XmlEmbedded">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2.ecore#//XmlEmbedded/associationOverrides"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="orm2.ecore#//XmlEmbedded"/>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlBasic"/>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlVersion"/>
     <genClasses image="false" ecoreClass="orm2.ecore#//XmlDerivedId">

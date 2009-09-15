@@ -34,6 +34,13 @@ public interface RelationshipReference extends JpaContextNode
 	TypeMapping getTypeMapping();
 	
 	/**
+	 * Return the entity that owns the relationship mapping. This is
+	 * just a convenience method that calls getTypeMapping() and returns
+	 * null if it is not an Entity
+	 */
+	Entity getEntity();
+	
+	/**
 	 * Return whether this is the owning side of the relationship.
 	 * @see {@link RelationshipMapping#isRelationshipOwner()}
 	 */

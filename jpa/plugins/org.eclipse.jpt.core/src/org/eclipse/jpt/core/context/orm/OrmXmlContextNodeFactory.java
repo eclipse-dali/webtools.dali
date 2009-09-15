@@ -100,7 +100,7 @@ public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
 	
 	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, OrmAttributeOverrideContainer.Owner owner, XmlAttributeOverrideContainer resourceAttributeOverrideContainer);
 
-	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
+	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
 
 	OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
@@ -165,7 +165,7 @@ public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
 	
 	// ********** ORM Virtual Resource Model **********
 	
-	XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmEntity parent, JoiningStrategy joiningStrategy);
+	XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmTypeMapping parent, JoiningStrategy joiningStrategy);
 	
 	XmlBasic buildVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping);
 	

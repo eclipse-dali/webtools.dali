@@ -506,6 +506,24 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ENTITY__POST_LOAD = OrmPackage.XML_ENTITY__POST_LOAD;
 
 	/**
+	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ATTRIBUTE_OVERRIDES = OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ASSOCIATION_OVERRIDES = OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -612,24 +630,6 @@ public class Orm2_0Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY__ENTITY_LISTENERS = OrmPackage.XML_ENTITY__ENTITY_LISTENERS;
-
-	/**
-	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ATTRIBUTE_OVERRIDES = OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES;
-
-	/**
-	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ASSOCIATION_OVERRIDES = OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
 
 	/**
 	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
@@ -4620,20 +4620,6 @@ public class Orm2_0Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded#getAssociationOverrides <em>Association Overrides</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Association Overrides</em>'.
-	 * @see org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded#getAssociationOverrides()
-	 * @see #getXmlEmbedded()
-	 * @generated
-	 */
-	public EReference getXmlEmbedded_AssociationOverrides()
-	{
-		return (EReference)xmlEmbeddedEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic <em>Xml Basic</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5693,7 +5679,6 @@ public class Orm2_0Package extends EPackageImpl
 		xmlEmbeddedIdEClass = createEClass(XML_EMBEDDED_ID);
 
 		xmlEmbeddedEClass = createEClass(XML_EMBEDDED);
-		createEReference(xmlEmbeddedEClass, XML_EMBEDDED__ASSOCIATION_OVERRIDES);
 
 		xmlBasicEClass = createEClass(XML_BASIC);
 
@@ -5855,6 +5840,7 @@ public class Orm2_0Package extends EPackageImpl
 		xmlEmbeddedIdEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlEmbeddedEClass.getESuperTypes().add(theOrmPackage.getXmlEmbedded());
 		xmlEmbeddedEClass.getESuperTypes().add(this.getXmlAttributeMapping());
+		xmlEmbeddedEClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
 		xmlBasicEClass.getESuperTypes().add(theOrmPackage.getXmlBasic());
 		xmlBasicEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlVersionEClass.getESuperTypes().add(theOrmPackage.getXmlVersion());
@@ -5954,7 +5940,6 @@ public class Orm2_0Package extends EPackageImpl
 		initEClass(xmlEmbeddedIdEClass, XmlEmbeddedId.class, "XmlEmbeddedId", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlEmbeddedEClass, XmlEmbedded.class, "XmlEmbedded", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEmbedded_AssociationOverrides(), theOrmPackage.getXmlAssociationOverride(), null, "associationOverrides", null, 0, -1, XmlEmbedded.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlBasicEClass, XmlBasic.class, "XmlBasic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -6384,14 +6369,6 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_EMBEDDED = eINSTANCE.getXmlEmbedded();
-
-		/**
-		 * The meta object literal for the '<em><b>Association Overrides</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_EMBEDDED__ASSOCIATION_OVERRIDES = eINSTANCE.getXmlEmbedded_AssociationOverrides();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic <em>Xml Basic</em>}' class.

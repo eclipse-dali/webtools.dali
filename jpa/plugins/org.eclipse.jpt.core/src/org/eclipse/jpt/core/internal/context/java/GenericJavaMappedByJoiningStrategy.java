@@ -63,8 +63,8 @@ public class GenericJavaMappedByJoiningStrategy
 	
 	public boolean relationshipIsOwnedBy(RelationshipMapping otherMapping) {
 		String thisEntity = 
-			(getRelationshipMapping().getEntity()) == null ?
-				null : getRelationshipMapping().getEntity().getName();
+			(getRelationshipReference().getEntity()) == null ?
+				null : getRelationshipReference().getEntity().getName();
 		String targetEntity = 
 			(getRelationshipMapping().getResolvedTargetEntity() == null) ?
 				null : getRelationshipMapping().getResolvedTargetEntity().getName();

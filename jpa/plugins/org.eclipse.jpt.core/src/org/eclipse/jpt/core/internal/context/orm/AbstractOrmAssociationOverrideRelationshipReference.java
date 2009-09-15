@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -54,6 +55,11 @@ public abstract class AbstractOrmAssociationOverrideRelationshipReference extend
 
 	public TypeMapping getTypeMapping() {
 		return getAssociationOverride().getOwner().getTypeMapping();
+	}
+	
+	public Entity getEntity() {
+		TypeMapping typeMapping = getTypeMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 	
 	public boolean isOverridableAssociation() {

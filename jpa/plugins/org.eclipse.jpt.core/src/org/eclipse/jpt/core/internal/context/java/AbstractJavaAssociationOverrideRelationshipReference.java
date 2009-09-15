@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -61,6 +62,13 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 	public TypeMapping getTypeMapping() {
 		return getAssociationOverride().getOwner().getTypeMapping();
 	}
+
+	public Entity getEntity() {
+		TypeMapping typeMapping = getTypeMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
+	}
+
+	// **************** RelationshipMapping implementation *******************************
 	
 	public boolean isParentVirtual() {
 		return getAssociationOverride().isVirtual();

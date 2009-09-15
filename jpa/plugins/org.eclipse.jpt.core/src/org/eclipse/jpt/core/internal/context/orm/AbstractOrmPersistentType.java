@@ -893,6 +893,9 @@ public abstract class AbstractOrmPersistentType
 			this.javaPersistentType.postUpdate();
 		}
 		getMapping().postUpdate();
+		for (PersistentAttribute attribute : CollectionTools.iterable(attributes())) {
+			attribute.postUpdate();
+		}
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

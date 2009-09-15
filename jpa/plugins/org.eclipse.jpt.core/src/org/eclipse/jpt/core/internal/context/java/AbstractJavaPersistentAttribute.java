@@ -502,7 +502,13 @@ public abstract class AbstractJavaPersistentAttribute
 		this.updateDefaultMapping();
 		this.updateSpecifiedMapping();
 	}
-
+	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		getMapping().postUpdate();
+	}
+	
 	protected void updateDefaultMapping() {
 		// There will always be a mapping provider, even if it is a "null" mapping provider ...
 		JavaAttributeMappingProvider mappingProvider = 

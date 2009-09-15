@@ -22,10 +22,6 @@ import java.util.Iterator;
  */
 public interface RelationshipMapping extends AttributeMapping, Fetchable
 {
-	/**
-	 * Return the entity that owns the relationship mapping.
-	 */
-	Entity getEntity();
 	
 	/**
 	 * Return the meta-information used to populate the entities of the 

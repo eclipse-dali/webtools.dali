@@ -7,18 +7,30 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa1.context.java;
+package org.eclipse.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
+import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
 
 
-public class GenericJavaEmbeddedMapping
-	extends AbstractJavaEmbeddedMapping
+public abstract class AbstractJavaEmbeddedMapping
+	extends AbstractJavaBaseEmbeddedMapping<EmbeddedAnnotation>
 	implements JavaEmbeddedMapping
 {
-	public GenericJavaEmbeddedMapping(JavaPersistentAttribute parent) {
+	protected AbstractJavaEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
+	}
+	
+	//****************** JavaAttributeMapping implementation *******************
+
+	public String getKey() {
+		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	public String getAnnotationName() {
+		return EmbeddedAnnotation.ANNOTATION_NAME;
 	}
 }

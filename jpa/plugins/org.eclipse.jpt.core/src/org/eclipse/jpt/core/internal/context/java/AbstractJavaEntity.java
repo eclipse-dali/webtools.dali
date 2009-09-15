@@ -133,7 +133,7 @@ public abstract class AbstractJavaEntity
 		this.specifiedSecondaryTables = new ArrayList<JavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
 		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this);
-		this.associationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this);
+		this.associationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this, this);
 		this.queryContainer = this.getJpaFactory().buildJavaQueryContainer(this);
 		this.generatorContainer = this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}

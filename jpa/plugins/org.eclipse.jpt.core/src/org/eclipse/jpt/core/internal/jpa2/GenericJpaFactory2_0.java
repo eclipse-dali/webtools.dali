@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
@@ -32,6 +33,7 @@ import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericRootContextNode2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
@@ -162,6 +164,11 @@ public class GenericJpaFactory2_0
 	@Override
 	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
 		return new GenericJavaEmbeddable2_0(parent);
+	}
+	
+	@Override
+	public JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaEmbeddedMapping2_0(parent);
 	}
 	
 	@Override

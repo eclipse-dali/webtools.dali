@@ -26,11 +26,14 @@ public final class VirtualAssociationOverrideJoinTableAnnotation extends NullJoi
 	private JoinTable joinTable; //TODO uniqueConstraints
 
 	private final Vector<JoinColumnAnnotation> joinColumns;
+	
+	private final Vector<JoinColumnAnnotation> inverseJoinColumns;
 
 	public VirtualAssociationOverrideJoinTableAnnotation(AssociationOverride2_0Annotation parent, JoinTable joinTable) {
 		super(parent);
 		this.joinTable = joinTable;
 		this.joinColumns = this.buildJoinColumns();
+		this.inverseJoinColumns = this.buildInverseJoinColumns();
 	}
 
 	@Override
@@ -41,6 +44,14 @@ public final class VirtualAssociationOverrideJoinTableAnnotation extends NullJoi
 	private Vector<JoinColumnAnnotation> buildJoinColumns() {
 		Vector<JoinColumnAnnotation> result = new Vector<JoinColumnAnnotation>(this.joinTable.joinColumnsSize());
 		for (JoinColumn joinColumn : CollectionTools.iterable(this.joinTable.joinColumns())) {
+			result.add(new VirtualAssociationOverrideJoinColumnAnnotation(this, joinColumn));
+		}
+		return result;
+	}
+	
+	private Vector<JoinColumnAnnotation> buildInverseJoinColumns() {
+		Vector<JoinColumnAnnotation> result = new Vector<JoinColumnAnnotation>(this.joinTable.inverseJoinColumnsSize());
+		for (JoinColumn joinColumn : CollectionTools.iterable(this.joinTable.inverseJoinColumns())) {
 			result.add(new VirtualAssociationOverrideJoinColumnAnnotation(this, joinColumn));
 		}
 		return result;
@@ -97,18 +108,26 @@ public final class VirtualAssociationOverrideJoinTableAnnotation extends NullJoi
 		return this.joinColumns.size();
 	}
 	
+	// ***** inverse join columns
 	@Override
-	public JoinColumnAnnotation addJoinColumn(int index) {
-		throw new UnsupportedOperationException();
+	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
+		return this.inverseJoinColumns.listIterator();
 	}
 	
 	@Override
-	public void removeJoinColumn(int index) {
-		throw new UnsupportedOperationException();
+	public JoinColumnAnnotation inverseJoinColumnAt(int index) {
+		return this.inverseJoinColumns.elementAt(index);
 	}
 	
 	@Override
-	public void moveJoinColumn(int targetIndex, int sourceIndex) {
-		throw new UnsupportedOperationException();
+	public int indexOfInverseJoinColumn(JoinColumnAnnotation joinColumn) {
+		return this.inverseJoinColumns.indexOf(joinColumn);
 	}
+	
+	@Override
+	public int inverseJoinColumnsSize() {
+		return this.inverseJoinColumns.size();
+	}
+
+
 }

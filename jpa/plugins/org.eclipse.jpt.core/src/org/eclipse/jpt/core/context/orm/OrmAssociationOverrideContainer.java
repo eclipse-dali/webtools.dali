@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
+import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.XmlContextNode;
 
 public interface OrmAssociationOverrideContainer extends AssociationOverrideContainer, XmlContextNode
@@ -27,4 +29,13 @@ public interface OrmAssociationOverrideContainer extends AssociationOverrideCont
 	OrmAssociationOverride getAssociationOverrideNamed(String name);
 	
 	void update();
+	
+	Owner getOwner();
+	
+	interface Owner extends AssociationOverrideContainer.Owner
+	{		
+		OrmTypeMapping getTypeMapping();
+
+		RelationshipReference getOverridableRelationshipReference(RelationshipMapping overridableAssociation);
+	}
 }

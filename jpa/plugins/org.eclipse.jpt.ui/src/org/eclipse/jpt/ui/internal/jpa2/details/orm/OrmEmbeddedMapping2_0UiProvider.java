@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEmbeddedMapping2_0UiProvider
-	extends AbstractEmbeddedMappingUiProvider<OrmEmbeddedMapping>
+	extends AbstractEmbeddedMappingUiProvider<OrmEmbeddedMapping2_0>
 {
 	// singleton
 	private static final OrmEmbeddedMapping2_0UiProvider INSTANCE = 
@@ -31,7 +31,7 @@ public class OrmEmbeddedMapping2_0UiProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<OrmEmbeddedMapping> instance() {
+	public static AttributeMappingUiProvider<OrmEmbeddedMapping2_0> instance() {
 		return INSTANCE;
 	}
 	
@@ -49,7 +49,7 @@ public class OrmEmbeddedMapping2_0UiProvider
 	
 	public JpaComposite buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
+			PropertyValueModel<OrmEmbeddedMapping2_0> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new OrmEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);

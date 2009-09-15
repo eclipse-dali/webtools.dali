@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
@@ -212,14 +211,6 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 						this.defaultTargetEntity :
 						this.mappingAnnotation.getFullyQualifiedTargetEntityClassName();
 		return (targetEntityClassName == null) ? null : this.getPersistenceUnit().getEntity(targetEntityClassName);
-	}
-
-
-	// **************** RelationshipMapping implementation *******************************
-
-	public Entity getEntity() {
-		TypeMapping typeMapping = this.getTypeMapping();
-		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 
 	

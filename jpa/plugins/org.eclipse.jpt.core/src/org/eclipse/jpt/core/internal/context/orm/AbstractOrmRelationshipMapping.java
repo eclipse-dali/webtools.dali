@@ -240,13 +240,6 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	
 	// ********** RelationshipMapping implementation **********
 
-	public Entity getEntity() {
-		if (getTypeMapping() instanceof Entity) {
-			return (Entity) getTypeMapping();
-		}
-		return null;
-	}
-
 	@Override
 	public void initializeFromOrmRelationshipMapping(OrmRelationshipMapping oldMapping) {
 		super.initializeFromOrmRelationshipMapping(oldMapping);

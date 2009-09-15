@@ -576,7 +576,7 @@ public class GenericJavaJoinTable
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getRelationshipMapping().getTypeMapping();
+			return GenericJavaJoinTable.this.getParent().getRelationshipReference().getTypeMapping();
 		}
 
 		public RelationshipMapping getRelationshipMapping() {
@@ -631,7 +631,7 @@ public class GenericJavaJoinTable
 		}
 
 		public Entity getTargetEntity() {
-			return GenericJavaJoinTable.this.getRelationshipMapping().getEntity();
+			return GenericJavaJoinTable.this.getParent().getRelationshipReference().getEntity();
 		}
 
 		public String getAttributeName() {

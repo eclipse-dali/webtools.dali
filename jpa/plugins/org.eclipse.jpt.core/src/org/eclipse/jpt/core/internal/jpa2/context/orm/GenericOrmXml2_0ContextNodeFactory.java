@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
@@ -96,8 +96,8 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	}
 	
 	@Override
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
-		return new GenericOrmAssociationOverrideContainer2_0(parent, resourceAssociationOverrideContainer);
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+		return new GenericOrmAssociationOverrideContainer2_0(parent, owner, resourceAssociationOverrideContainer);
 	}
 	
 	@Override
@@ -124,12 +124,16 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlOneToOne resourceMapping) {
 		return new GenericOrmOneToOneMapping2_0(parent, (XmlOneToOne) resourceMapping);
 	}
-
+	
+	@Override
+	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlEmbedded resourceMapping) {
+		return new GenericOrmEmbeddedMapping2_0(parent, (XmlEmbedded) resourceMapping);
+	}
 	
 	// ********** ORM Virtual Resource Model **********
 
 	@Override
-	public XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmEntity parent, JoiningStrategy joiningStrategy) {
+	public XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmTypeMapping parent, JoiningStrategy joiningStrategy) {
 		return new VirtualXmlAssociationOverride2_0(name, parent, joiningStrategy);		
 	}
 

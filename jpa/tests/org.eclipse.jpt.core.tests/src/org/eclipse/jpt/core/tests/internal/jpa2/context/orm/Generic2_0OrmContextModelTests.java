@@ -20,6 +20,7 @@ public class Generic2_0OrmContextModelTests extends TestCase
 		TestSuite suite = new TestSuite(Generic2_0OrmContextModelTests.class.getName());
 		suite.addTestSuite(GenericOrmAssociationOverride2_0Tests.class);
 		suite.addTestSuite(GenericOrmEntity2_0Tests.class);
+		suite.addTestSuite(GenericOrmEmbeddedMapping2_0Tests.class);
 		suite.addTestSuite(GenericOrmManyToOneMapping2_0Tests.class);
 		suite.addTestSuite(GenericOrmOneToOneMapping2_0Tests.class);
 		suite.addTestSuite(GenericOrmPersistentAttribute2_0Tests.class);

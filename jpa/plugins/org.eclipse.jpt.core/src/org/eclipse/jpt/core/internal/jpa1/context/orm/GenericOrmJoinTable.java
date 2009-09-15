@@ -620,7 +620,7 @@ public class GenericOrmJoinTable
 		}
 
 		public TypeMapping getTypeMapping() {
-			return this.getRelationshipMapping().getTypeMapping();
+			return GenericOrmJoinTable.this.getParent().getRelationshipReference().getTypeMapping();
 		}
 
 		public RelationshipMapping getRelationshipMapping() {
@@ -673,7 +673,7 @@ public class GenericOrmJoinTable
 		}
 
 		public Entity getTargetEntity() {
-			return GenericOrmJoinTable.this.getRelationshipMapping().getEntity();
+			return GenericOrmJoinTable.this.getParent().getRelationshipReference().getEntity();
 		}
 
 		public String getAttributeName() {

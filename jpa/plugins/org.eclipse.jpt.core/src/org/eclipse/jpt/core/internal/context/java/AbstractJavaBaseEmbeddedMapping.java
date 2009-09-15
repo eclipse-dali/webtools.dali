@@ -76,7 +76,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	protected void update() {
 		super.update();
 		this.embeddable = this.getPersistentAttribute().getEmbeddable();
-		getAttributeOverrideContainer().update(this.resourcePersistentAttribute);
+		this.attributeOverrideContainer.update(this.resourcePersistentAttribute);
 	}
 
 	public Iterator<String> allOverridableAttributeNames() {

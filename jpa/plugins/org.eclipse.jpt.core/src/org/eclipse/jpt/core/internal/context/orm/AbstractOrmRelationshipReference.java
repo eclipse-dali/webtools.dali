@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
@@ -58,6 +59,11 @@ public abstract class AbstractOrmRelationshipReference
 	
 	public TypeMapping getTypeMapping() {
 		return getRelationshipMapping().getTypeMapping();
+	}
+	
+	public Entity getEntity() {
+		TypeMapping typeMapping = getTypeMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 	
 	public boolean isOverridableAssociation() {

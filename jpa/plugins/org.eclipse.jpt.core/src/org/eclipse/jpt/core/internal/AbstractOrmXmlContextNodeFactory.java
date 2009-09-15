@@ -226,8 +226,8 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXmlContextN
 		return new GenericOrmAttributeOverrideContainer(parent, owner, resourceAttributeOverrideContainer);
 	}
 	
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
-		return new GenericOrmAssociationOverrideContainer(parent, resourceAssociationOverrideContainer);
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+		return new GenericOrmAssociationOverrideContainer(parent, owner, resourceAssociationOverrideContainer);
 	}
 	
 	public OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
@@ -353,7 +353,7 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXmlContextN
 	
 	// ********** ORM Virtual Resource Model **********
 
-	public XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmEntity parent, JoiningStrategy joiningStrategy) {
+	public XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmTypeMapping parent, JoiningStrategy joiningStrategy) {
 		return new VirtualXmlAssociationOverride(name, parent, joiningStrategy);		
 	}
 	

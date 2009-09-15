@@ -27,9 +27,11 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -234,7 +236,7 @@ public abstract class AbstractOrmEntity
 	}
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, this, this.resourceTypeMapping);
 	}
 	
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
@@ -341,6 +343,23 @@ public abstract class AbstractOrmEntity
 	protected JavaAttributeOverride getJavaAttributeOverrideNamed(String attributeName) {
 		if (getJavaEntity() != null) {
 			return getJavaEntity().getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+		}
+		return null;
+	}
+	
+	//****************** OrmAssociationOverrideContainer.Owner implementation *******************
+	
+	public RelationshipReference getOverridableRelationshipReference(RelationshipMapping overridableAssociation) {
+		JavaAssociationOverride javaAssociationOverride = getJavaAssociationOverrideNamed(overridableAssociation.getName());
+		if (javaAssociationOverride == null || javaAssociationOverride.isVirtual()) {
+			return overridableAssociation.getRelationshipReference();
+		}
+		return javaAssociationOverride.getRelationshipReference();
+	}
+	
+	protected JavaAssociationOverride getJavaAssociationOverrideNamed(String attributeName) {
+		if (getJavaEntity() != null) {
+			return getJavaEntity().getAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
 		}
 		return null;
 	}
