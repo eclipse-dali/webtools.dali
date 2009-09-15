@@ -61,7 +61,7 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 	protected OrmAttributeMapping buildAttributeMapping(XmlAttributeMapping resourceMapping) {
 		OrmAttributeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmAttributeMappingProvider(resourceMapping.getMappingKey());
-		return mappingProvider.buildMapping(this, resourceMapping, getXmlContextNodeFactory());
+		return mappingProvider.buildContextMapping(this, resourceMapping, getXmlContextNodeFactory());
 	}
 	
 	public String getId() {
@@ -107,7 +107,8 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 		OrmAttributeMapping oldMapping = this.attributeMapping;
 		OrmAttributeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmAttributeMappingProvider(newMappingKey);
-		XmlAttributeMapping resourceAttributeMapping = mappingProvider.buildResourceMapping();
+		XmlAttributeMapping resourceAttributeMapping = 
+				mappingProvider.buildResourceMapping(getResourceNodeFactory());
 		this.attributeMapping = buildAttributeMapping(resourceAttributeMapping);
 		
 		getPersistentType().changeMapping(this, oldMapping, this.attributeMapping);

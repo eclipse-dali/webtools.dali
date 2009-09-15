@@ -10,12 +10,32 @@
 package org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm;
 
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmBasicMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddableProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmEntityProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmManyToManyMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmManyToOneMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmMappedSuperclassProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicCollectionMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkTransformationMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkVariableOneToOneMappingProvider;
+import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmFactory;
 
 public class EclipseLinkOrmXml1_1Definition
 	extends AbstractOrmXmlDefinition
@@ -40,8 +60,13 @@ public class EclipseLinkOrmXml1_1Definition
 		super();
 	}
 	
+	
+	public EFactory getResourceNodeFactory() {
+		return EclipseLink1_1OrmFactory.eINSTANCE;
+	}
+	
 	@Override
-	protected OrmXmlContextNodeFactory buildFactory() {
+	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
 		return new EclipseLinkOrmXml1_1ContextNodeFactory();
 	}
 	
@@ -58,9 +83,9 @@ public class EclipseLinkOrmXml1_1Definition
 		// @see {@link EclipseLink1_1JpaPlatformProvider}
 		// NOTE: no new type mapping providers from eclipselink 1.0 to 1.1
 		return new OrmTypeMappingProvider[] {
-			OrmEclipseLinkEntity1_1Provider.instance(),
-			OrmEclipseLinkEmbeddable1_1Provider.instance(),
-			OrmEclipseLinkMappedSuperclass1_1Provider.instance()};
+			OrmEntityProvider.instance(),
+			OrmEmbeddableProvider.instance(),
+			OrmMappedSuperclassProvider.instance()};
 	}
 	
 	
@@ -71,20 +96,20 @@ public class EclipseLinkOrmXml1_1Definition
 		// order should not matter here, but we'll use the same order as for java
 		// @see {@link EclipseLink1_1JpaPlatformProvider}
 		return new OrmAttributeMappingProvider[] {
-			OrmEclipseLinkTransientMapping1_1Provider.instance(),
-			OrmEclipseLinkBasicCollectionMapping1_1Provider.instance(),
-			OrmEclipseLinkBasicMapMapping1_1Provider.instance(),
-			OrmEclipseLinkIdMapping1_1Provider.instance(),
-			OrmEclipseLinkVersionMapping1_1Provider.instance(),
-			OrmEclipseLinkBasicMapping1_1Provider.instance(),
-			OrmEclipseLinkEmbeddedMapping1_1Provider.instance(),
-			OrmEclipseLinkEmbeddedIdMapping1_1Provider.instance(),
-			OrmEclipseLinkTransformationMapping1_1Provider.instance(),
-			OrmEclipseLinkManyToManyMapping1_1Provider.instance(),
-			OrmEclipseLinkManyToOneMapping1_1Provider.instance(),
-			OrmEclipseLinkOneToManyMapping1_1Provider.instance(),
-			OrmEclipseLinkOneToOneMapping1_1Provider.instance(),
-			OrmEclipseLinkVariableOneToOneMapping1_1Provider.instance(),
-			OrmEclipseLinkNullAttributeMapping1_1Provider.instance()};
+			OrmTransientMappingProvider.instance(),
+			OrmEclipseLinkBasicCollectionMappingProvider.instance(),
+			OrmEclipseLinkBasicMapMappingProvider.instance(),
+			OrmIdMappingProvider.instance(),
+			OrmVersionMappingProvider.instance(),
+			OrmBasicMappingProvider.instance(),
+			OrmEmbeddedMappingProvider.instance(),
+			OrmEmbeddedIdMappingProvider.instance(),
+			OrmEclipseLinkTransformationMappingProvider.instance(),
+			OrmManyToManyMappingProvider.instance(),
+			OrmManyToOneMappingProvider.instance(),
+			OrmOneToManyMappingProvider.instance(),
+			OrmOneToOneMappingProvider.instance(),
+			OrmEclipseLinkVariableOneToOneMappingProvider.instance(),
+			NullOrmAttributeMappingProvider.instance()};
 	}
 }

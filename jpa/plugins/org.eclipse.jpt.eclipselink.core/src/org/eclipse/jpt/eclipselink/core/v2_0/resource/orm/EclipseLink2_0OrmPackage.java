@@ -478,6 +478,24 @@ public class EclipseLink2_0OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__POST_LOAD = EclipseLink1_1OrmPackage.XML_ENTITY__POST_LOAD;
 
 	/**
+	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ATTRIBUTE_OVERRIDES = EclipseLink1_1OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ASSOCIATION_OVERRIDES = EclipseLink1_1OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -584,24 +602,6 @@ public class EclipseLink2_0OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY__ENTITY_LISTENERS = EclipseLink1_1OrmPackage.XML_ENTITY__ENTITY_LISTENERS;
-
-	/**
-	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ATTRIBUTE_OVERRIDES = EclipseLink1_1OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES;
-
-	/**
-	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ASSOCIATION_OVERRIDES = EclipseLink1_1OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
 
 	/**
 	 * The feature id for the '<em><b>Read Only</b></em>' attribute.

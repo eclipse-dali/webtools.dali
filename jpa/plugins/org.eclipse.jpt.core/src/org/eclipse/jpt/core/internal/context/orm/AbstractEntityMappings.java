@@ -356,7 +356,8 @@ public abstract class AbstractEntityMappings
 	public OrmPersistentType addPersistentType(String mappingKey, String className) {
 		OrmTypeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmTypeMappingProvider(mappingKey);
-		XmlTypeMapping typeMapping = mappingProvider.buildResourceMapping();
+		XmlTypeMapping typeMapping = 
+				mappingProvider.buildResourceMapping(getResourceNodeFactory());
 		OrmPersistentType persistentType = buildPersistentType(typeMapping);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
@@ -371,7 +372,8 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected int insertionIndex(OrmPersistentType ormPersistentType) {
-		return CollectionTools.insertionIndexOf(this.persistentTypes, ormPersistentType, buildMappingComparator());
+		return CollectionTools.insertionIndexOf(
+				this.persistentTypes, ormPersistentType, buildMappingComparator());
 	}
 
 	private Comparator<OrmPersistentType> buildMappingComparator() {

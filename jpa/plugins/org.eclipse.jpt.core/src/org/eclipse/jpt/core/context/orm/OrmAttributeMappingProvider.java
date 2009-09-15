@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
@@ -23,12 +25,30 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
  */
 public interface OrmAttributeMappingProvider
 {
+	/**
+	 * Return the mapping key associated with this provider
+	 * @see {@link MappingKeys}
+	 */
 	String getKey();
 	
-	XmlAttributeMapping buildResourceMapping();
-
-	OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory);
+	/**
+	 * Build a resource mapping
+	 */
+	XmlAttributeMapping buildResourceMapping(EFactory factory);
 	
-	XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, OrmXmlContextNodeFactory factory);
-
+	/**
+	 * Build a virtual resource mapping
+	 */
+	XmlAttributeMapping buildVirtualResourceMapping(
+			OrmTypeMapping ormTypeMapping, 
+			JavaAttributeMapping javaAttributeMapping, 
+			OrmXmlContextNodeFactory factory);
+	
+	/**
+	 * Build a context mapping
+	 */
+	OrmAttributeMapping buildContextMapping(
+			OrmPersistentAttribute parent, 
+			XmlAttributeMapping resourceMapping, 
+			OrmXmlContextNodeFactory factory);	
 }

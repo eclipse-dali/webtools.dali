@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -127,7 +126,7 @@ public abstract class AbstractOrmPersistentType
 	protected OrmTypeMapping buildTypeMapping(XmlTypeMapping resourceMapping) {
 		OrmTypeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmTypeMappingProvider(resourceMapping.getMappingKey());
-		return mappingProvider.buildMapping(this, resourceMapping, getXmlContextNodeFactory());
+		return mappingProvider.buildContextMapping(this, resourceMapping, getXmlContextNodeFactory());
 	}
 
 	public OrmTypeMapping getMapping() {
@@ -180,7 +179,8 @@ public abstract class AbstractOrmPersistentType
 		OrmTypeMapping oldMapping = getMapping();
 		OrmTypeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmTypeMappingProvider(newMappingKey);
-		XmlTypeMapping resourceTypeMapping = mappingProvider.buildResourceMapping();
+		XmlTypeMapping resourceTypeMapping = 
+				mappingProvider.buildResourceMapping(getResourceNodeFactory());
 		this.typeMapping = buildTypeMapping(resourceTypeMapping);
 		this.getEntityMappings().changeMapping(this, oldMapping, this.typeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);
@@ -293,7 +293,8 @@ public abstract class AbstractOrmPersistentType
 		
 		OrmAttributeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmAttributeMappingProvider(mappingKey);
-		XmlAttributeMapping resourceMapping = mappingProvider.buildResourceMapping();
+		XmlAttributeMapping resourceMapping = 
+				mappingProvider.buildResourceMapping(getResourceNodeFactory());
 		
 		OrmPersistentAttribute newPersistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping);
 		int insertionIndex = insertionIndex(newPersistentAttribute);
@@ -429,8 +430,10 @@ public abstract class AbstractOrmPersistentType
 		
 		OrmAttributeMappingProvider mappingProvider = 
 				getMappingFileDefinition().getOrmAttributeMappingProvider(mappingKey);
-		XmlAttributeMapping resourceMapping = mappingProvider.buildResourceMapping();
-		OrmPersistentAttribute persistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping);
+		XmlAttributeMapping resourceMapping = 
+				mappingProvider.buildResourceMapping(getResourceNodeFactory());
+		OrmPersistentAttribute persistentAttribute = 
+				buildSpecifiedOrmPersistentAttribute(resourceMapping);
 		int index = insertionIndex(persistentAttribute);
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
 		persistentAttribute.getMapping().addToResourceModel(resourceAttributes);

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 /**
@@ -20,12 +22,24 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmTypeMappingProvider {
-
+public interface OrmTypeMappingProvider
+{
+	/**
+	 * Return the mapping key associated with this provider
+	 * @see {@link MappingKeys}
+	 */
 	String getKey();
 	
-	XmlTypeMapping buildResourceMapping();
+	/**
+	 * Build a resource mapping
+	 */
+	XmlTypeMapping buildResourceMapping(EFactory factory);
 	
-	OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, OrmXmlContextNodeFactory factory);
-
+	/**
+	 * Build a context mapping
+	 */
+	OrmTypeMapping buildContextMapping(
+			OrmPersistentType parent, 
+			XmlTypeMapping resourceMapping, 
+			OrmXmlContextNodeFactory factory);
 }

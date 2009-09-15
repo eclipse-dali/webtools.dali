@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.v1_1;
+package org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm.EclipseLink1_1OrmXmlResourceProvider;
 
 /**
  * EclipseLink orm.xml
@@ -47,5 +46,4 @@ public class EclipseLink1_1OrmResourceModelProvider
 	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {
 		return EclipseLink1_1OrmXmlResourceProvider.getXmlResourceProvider(file).getXmlResource();
 	}
-
 }

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.emf.ecore.EFactory;
 
 /**
  * A JpaPlatform can support multiple mapping files.  Each will
@@ -30,10 +31,14 @@ public interface MappingFileDefinition
 	 * Return the associated mapping file content type.
 	 */
 	IContentType getContentType();
-
+	
+	/**
+	 * Return the factory for building xml resource nodes
+	 */
+	EFactory getResourceNodeFactory();
+	
 	/**
 	 * Return the factory for building xml context nodes
 	 */
-	XmlContextNodeFactory getFactory();
-
+	XmlContextNodeFactory getContextNodeFactory();
 }

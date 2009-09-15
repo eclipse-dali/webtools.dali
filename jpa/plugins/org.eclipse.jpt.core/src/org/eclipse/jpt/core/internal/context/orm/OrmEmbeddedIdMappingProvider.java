@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -17,44 +18,57 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
+import org.eclipse.jpt.core.resource.xml.EmfTools;
 
 public class OrmEmbeddedIdMappingProvider
 	implements OrmAttributeMappingProvider
 {
 	// singleton
-	private static final OrmAttributeMappingProvider INSTANCE = new OrmEmbeddedIdMappingProvider();
-
+	private static final OrmAttributeMappingProvider INSTANCE = 
+			new OrmEmbeddedIdMappingProvider();
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static OrmAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private OrmEmbeddedIdMappingProvider() {
 		super();
 	}
-
+	
+	
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public XmlAttributeMapping buildResourceMapping() {
-		return OrmFactory.eINSTANCE.createXmlEmbeddedId();
+	public XmlAttributeMapping buildResourceMapping(EFactory factory) {
+		return EmfTools.create(
+				factory, 
+				OrmPackage.eINSTANCE.getXmlEmbeddedId(), 
+				XmlEmbeddedId.class);
 	}
 	
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+	public OrmAttributeMapping buildContextMapping(
+			OrmPersistentAttribute parent, 
+			XmlAttributeMapping resourceMapping, 
+			OrmXmlContextNodeFactory factory) {
 		return factory.buildOrmEmbeddedIdMapping(parent, (XmlEmbeddedId) resourceMapping);
 	}
 
-	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, OrmXmlContextNodeFactory factory) {
+	public XmlAttributeMapping buildVirtualResourceMapping(
+			OrmTypeMapping ormTypeMapping, 
+			JavaAttributeMapping javaAttributeMapping, 
+			OrmXmlContextNodeFactory factory) {
 		return factory.buildVirtualXmlEmbeddedId(ormTypeMapping, (JavaEmbeddedIdMapping) javaAttributeMapping);
 	}
-
 }

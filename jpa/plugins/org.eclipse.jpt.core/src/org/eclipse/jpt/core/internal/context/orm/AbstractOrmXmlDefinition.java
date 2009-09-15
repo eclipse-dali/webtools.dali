@@ -30,17 +30,19 @@ public abstract class AbstractOrmXmlDefinition
 	
 	private final OrmXmlContextNodeFactory factory;
 	
+	
 	/**
 	 * zero-argument constructor
 	 */
 	protected AbstractOrmXmlDefinition() {
 		super();
-		this.factory = buildFactory();
+		this.factory = buildContextNodeFactory();
 	}
 	
-	protected abstract OrmXmlContextNodeFactory buildFactory();
 	
-	public OrmXmlContextNodeFactory getFactory() {
+	protected abstract OrmXmlContextNodeFactory buildContextNodeFactory();
+	
+	public OrmXmlContextNodeFactory getContextNodeFactory() {
 		return this.factory;
 	}
 	

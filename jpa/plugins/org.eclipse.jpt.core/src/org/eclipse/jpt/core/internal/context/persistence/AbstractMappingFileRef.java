@@ -157,7 +157,7 @@ public abstract class AbstractMappingFileRef
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
 		MappingFileDefinition mappingFileDef = getJpaPlatform().getMappingFileDefinition(resource.getContentType());
-		return (mappingFileDef == null) ? null : mappingFileDef.getFactory().buildMappingFile(this, resource);
+		return (mappingFileDef == null) ? null : mappingFileDef.getContextNodeFactory().buildMappingFile(this, resource);
 	}
 	
 	@Override

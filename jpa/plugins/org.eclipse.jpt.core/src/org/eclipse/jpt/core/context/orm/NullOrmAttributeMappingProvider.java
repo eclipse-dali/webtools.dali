@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -37,16 +38,16 @@ public class NullOrmAttributeMappingProvider
 		super();
 	}
 	
-
+	
 	public String getKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public XmlAttributeMapping buildResourceMapping() {
+	public XmlAttributeMapping buildResourceMapping(EFactory factory) {
 		throw new UnsupportedOperationException();
 	}
-
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
+	
+	public OrmAttributeMapping buildContextMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
 		return factory.buildOrmNullAttributeMapping(parent, (XmlNullAttributeMapping) resourceMapping);
 	}
 	

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
@@ -34,8 +35,11 @@ public abstract class AbstractOrmXmlContextNode
 		return (OrmXmlDefinition) getJpaPlatform().getMappingFileDefinition(getContentType());
 	}
 	
-	public OrmXmlContextNodeFactory getXmlContextNodeFactory() {
-		return getMappingFileDefinition().getFactory();
+	public EFactory getResourceNodeFactory() {
+		return getMappingFileDefinition().getResourceNodeFactory();
 	}
-
+	
+	public OrmXmlContextNodeFactory getXmlContextNodeFactory() {
+		return getMappingFileDefinition().getContextNodeFactory();
+	}
 }

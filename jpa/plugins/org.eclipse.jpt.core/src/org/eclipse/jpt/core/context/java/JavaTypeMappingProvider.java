@@ -21,8 +21,8 @@ import org.eclipse.jpt.core.JpaFactory;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaTypeMappingProvider {
-
+public interface JavaTypeMappingProvider 
+{
 	/**
 	 * Return the type mapping's key.
 	 */
