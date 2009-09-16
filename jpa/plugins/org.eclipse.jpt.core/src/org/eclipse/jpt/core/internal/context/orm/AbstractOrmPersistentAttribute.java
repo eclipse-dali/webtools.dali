@@ -37,11 +37,14 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 
 	protected JavaPersistentAttribute javaPersistentAttribute;	
 	
+	protected AccessType defaultAccess;
+	
 	protected AbstractOrmPersistentAttribute(OrmPersistentType parent, Owner owner, XmlAttributeMapping resourceMapping) {
 		super(parent);
 		this.owner = owner;
 		this.attributeMapping = buildAttributeMapping(resourceMapping);
 		this.javaPersistentAttribute = findJavaPersistentAttribute();
+		this.defaultAccess = buildDefaultAccess();
 	}
 	
 	public XmlAttributeMapping getResourceAttributeMapping() {
@@ -73,9 +76,15 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 	}
 	
 	public AccessType getDefaultAccess() {
-		return getPersistentType().getAccess();
+		return this.defaultAccess;
 	}
 
+	protected void setDefaultAccess(AccessType newAccess) {
+		AccessType old = this.defaultAccess;
+		this.defaultAccess = newAccess;
+		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, this.defaultAccess);
+	}
+	
 	public String getName() {
 		return this.attributeMapping.getName();
 	}
@@ -163,8 +172,9 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 		this.attributeMapping.update();
 		this.setJavaPersistentAttribute(findJavaPersistentAttribute());
 		this.owner.updateJavaPersistentAttribute();
+		this.setDefaultAccess(buildDefaultAccess());
 	}
-	
+
 	@Override
 	public void postUpdate() {
 		super.postUpdate();
@@ -173,6 +183,10 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 	
 	protected JavaPersistentAttribute findJavaPersistentAttribute() {
 		return this.owner.findJavaPersistentAttribute(this);
+	}
+	
+	protected AccessType buildDefaultAccess() {
+		return getPersistentType().getAccess();
 	}
 	
 	public JpaStructureNode getStructureNode(int offset) {

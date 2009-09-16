@@ -50,6 +50,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 
+	protected AccessType defaultAccess;
 
 	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super(parent);
@@ -57,6 +58,7 @@ public abstract class AbstractJavaPersistentAttribute
 		this.name = buildName();
 		this.defaultMapping = buildDefaultMapping();
 		this.specifiedMapping = buildSpecifiedMapping();
+		this.defaultAccess = buildDefaultAccess();
 	}
 
 
@@ -95,7 +97,13 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public AccessType getDefaultAccess() {
-		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
+		return this.defaultAccess;
+	}
+	
+	protected void setDefaultAccess(AccessType newAccess) {
+		AccessType old = this.defaultAccess;
+		this.defaultAccess = newAccess;
+		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, this.defaultAccess);
 	}
 
 
@@ -501,6 +509,7 @@ public abstract class AbstractJavaPersistentAttribute
 		this.setName(this.buildName());
 		this.updateDefaultMapping();
 		this.updateSpecifiedMapping();
+		this.setDefaultAccess(buildDefaultAccess());
 	}
 	
 	@Override
@@ -538,7 +547,10 @@ public abstract class AbstractJavaPersistentAttribute
 		}
 	}
 	
-	
+	protected AccessType buildDefaultAccess() {
+		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
+	}
+
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
