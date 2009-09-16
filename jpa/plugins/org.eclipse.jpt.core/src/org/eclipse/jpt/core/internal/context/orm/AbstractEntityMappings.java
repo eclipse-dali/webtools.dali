@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -354,10 +354,10 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public OrmPersistentType addPersistentType(String mappingKey, String className) {
-		OrmTypeMappingProvider mappingProvider = 
-				getMappingFileDefinition().getOrmTypeMappingProvider(mappingKey);
+		OrmTypeMappingDefinition mappingDefinition = 
+				getMappingFileDefinition().getOrmTypeMappingDefinition(mappingKey);
 		XmlTypeMapping typeMapping = 
-				mappingProvider.buildResourceMapping(getResourceNodeFactory());
+				mappingDefinition.buildResourceMapping(getResourceNodeFactory());
 		OrmPersistentType persistentType = buildPersistentType(typeMapping);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);

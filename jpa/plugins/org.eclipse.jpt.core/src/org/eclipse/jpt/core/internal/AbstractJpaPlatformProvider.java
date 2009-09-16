@@ -10,15 +10,14 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullJavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullJavaTypeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingDefinition;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
@@ -31,11 +30,11 @@ public abstract class AbstractJpaPlatformProvider
 {
 	private JpaResourceModelProvider[] resourceModelProviders;
 
-	private JavaTypeMappingProvider[] javaTypeMappingProviders;
+	private JavaTypeMappingDefinition[] javaTypeMappingDefinitions;
 
-	private JavaAttributeMappingProvider[] specifiedJavaAttributeMappingProviders;
+	private JavaAttributeMappingDefinition[] specifiedJavaAttributeMappingDefinitions;
 
-	private JavaAttributeMappingProvider[] defaultJavaAttributeMappingProviders;
+	private JavaAttributeMappingDefinition[] defaultJavaAttributeMappingDefinitions;
 
 	private MappingFileDefinition[] mappingFileDefinitions;
 
@@ -66,109 +65,109 @@ public abstract class AbstractJpaPlatformProvider
 	
 	// ********** Java type mappings **********
 	
-	public ListIterator<JavaTypeMappingProvider> javaTypeMappingProviders() {
-		return new ArrayListIterator<JavaTypeMappingProvider>(getJavaTypeMappingProviders());
+	public ListIterator<JavaTypeMappingDefinition> javaTypeMappingDefinitions() {
+		return new ArrayListIterator<JavaTypeMappingDefinition>(getJavaTypeMappingDefinitions());
 	}
 	
-	protected synchronized JavaTypeMappingProvider[] getJavaTypeMappingProviders() {
-		if (this.javaTypeMappingProviders == null) {
-			this.javaTypeMappingProviders = this.buildJavaTypeMappingProviders();
+	protected synchronized JavaTypeMappingDefinition[] getJavaTypeMappingDefinitions() {
+		if (this.javaTypeMappingDefinitions == null) {
+			this.javaTypeMappingDefinitions = this.buildJavaTypeMappingDefinitions();
 		}
-		return this.javaTypeMappingProviders;
+		return this.javaTypeMappingDefinitions;
 	}
 	
 	/**
-	 * Return an array of mapping providers to use for analyzing the mapping of a type given all 
-	 * annotations on it.  The order is important, as once a mapping provider tests positive for an 
-	 * attribute, all following mapping providers are ignored.
-	 * Extenders may either overwrite this method or {@link #buildNonNullJavaTypeMappingProviders()}.
+	 * Return an array of mapping definitions to use for analyzing the mapping of a type given all 
+	 * annotations on it.  The order is important, as once a mapping definition tests positive for an 
+	 * attribute, all following mapping definitions are ignored.
+	 * Extenders may either overwrite this method or {@link #buildNonNullJavaTypeMappingDefinitions()}.
 	 * Doing the former places the additional requirement on the extender to provide a "null"
-	 * mapping provider (@see {@link NullJavaTypeMappingProvider}.)
+	 * mapping definition (@see {@link NullJavaTypeMappingDefinition}.)
 	 */
-	protected JavaTypeMappingProvider[] buildJavaTypeMappingProviders() {
+	protected JavaTypeMappingDefinition[] buildJavaTypeMappingDefinitions() {
 		return ArrayTools.add(
-			buildNonNullJavaTypeMappingProviders(), 
-			NullJavaTypeMappingProvider.instance());
+			buildNonNullJavaTypeMappingDefinitions(), 
+			NullJavaTypeMappingDefinition.instance());
 	}
 	
 	/**
 	 * No-op implementation of this method. 
-	 * @see #buildJavaTypeMappingProviders()
+	 * @see #buildJavaTypeMappingDefinitions()
 	 */
-	protected JavaTypeMappingProvider[] buildNonNullJavaTypeMappingProviders() {
-		return new JavaTypeMappingProvider[0];
+	protected JavaTypeMappingDefinition[] buildNonNullJavaTypeMappingDefinitions() {
+		return new JavaTypeMappingDefinition[0];
 	}
 	
 	
 	// ********** Java attribute mappings **********
 	
-	public ListIterator<JavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
-		return new ArrayListIterator<JavaAttributeMappingProvider>(getDefaultJavaAttributeMappingProviders());
+	public ListIterator<JavaAttributeMappingDefinition> defaultJavaAttributeMappingDefinitions() {
+		return new ArrayListIterator<JavaAttributeMappingDefinition>(getDefaultJavaAttributeMappingDefinitions());
 	}
-
-	protected synchronized JavaAttributeMappingProvider[] getDefaultJavaAttributeMappingProviders() {
-		if (this.defaultJavaAttributeMappingProviders == null) {
-			this.defaultJavaAttributeMappingProviders = this.buildDefaultJavaAttributeMappingProviders();
+	
+	protected synchronized JavaAttributeMappingDefinition[] getDefaultJavaAttributeMappingDefinitions() {
+		if (this.defaultJavaAttributeMappingDefinitions == null) {
+			this.defaultJavaAttributeMappingDefinitions = this.buildDefaultJavaAttributeMappingDefinitions();
 		}
-		return this.defaultJavaAttributeMappingProviders;
+		return this.defaultJavaAttributeMappingDefinitions;
 	}
 	
 	/**
-	 * Return an array of mapping providers to use for analyzing the default mapping of an attribute
-	 * in the absence of any annotations.  The order is important, as once a mapping provider tests
-	 * positively for a given attribute, all following mapping providers are ignored.
+	 * Return an array of mapping definitions to use for analyzing the default mapping of an attribute
+	 * in the absence of any annotations.  The order is important, as once a mapping definition tests
+	 * positively for a given attribute, all following mapping definitions are ignored.
 	 * Extenders may either overwrite this method or 
-	 * {@link #buildNonNullDefaultJavaAttributeMappingProviders()}.
+	 * {@link #buildNonNullDefaultJavaAttributeMappingDefinitions()}.
 	 * Doing the former places the additional requirement on the extender to provide a "null"
-	 * mapping provider (@see {@link NullDefaultJavaAttributeMappingProvider}.)
+	 * mapping definition (@see {@link NullDefaultJavaAttributeMappingDefinition}.)
 	 */
-	protected JavaAttributeMappingProvider[] buildDefaultJavaAttributeMappingProviders() {
+	protected JavaAttributeMappingDefinition[] buildDefaultJavaAttributeMappingDefinitions() {
 		return ArrayTools.add(
-			buildNonNullDefaultJavaAttributeMappingProviders(), 
-			NullDefaultJavaAttributeMappingProvider.instance());
+			buildNonNullDefaultJavaAttributeMappingDefinitions(), 
+			NullDefaultJavaAttributeMappingDefinition.instance());
 	}
 	
 	/**
 	 * No-op implementation of this method. 
-	 * @see #buildDefaultJavaAttributeMappingProviders()
+	 * @see #buildDefaultJavaAttributeMappingDefinitions()
 	 */
-	protected JavaAttributeMappingProvider[] buildNonNullDefaultJavaAttributeMappingProviders() {
-		return new JavaAttributeMappingProvider[0];
+	protected JavaAttributeMappingDefinition[] buildNonNullDefaultJavaAttributeMappingDefinitions() {
+		return new JavaAttributeMappingDefinition[0];
 	}
 	
-	public ListIterator<JavaAttributeMappingProvider> specifiedJavaAttributeMappingProviders() {
-		return new ArrayListIterator<JavaAttributeMappingProvider>(
-			getSpecifiedJavaAttributeMappingProviders());
+	public ListIterator<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions() {
+		return new ArrayListIterator<JavaAttributeMappingDefinition>(
+			getSpecifiedJavaAttributeMappingDefinitions());
 	}
 	
-	protected synchronized JavaAttributeMappingProvider[] getSpecifiedJavaAttributeMappingProviders() {
-		if (this.specifiedJavaAttributeMappingProviders == null) {
-			this.specifiedJavaAttributeMappingProviders = this.buildSpecifiedJavaAttributeMappingProviders();
+	protected synchronized JavaAttributeMappingDefinition[] getSpecifiedJavaAttributeMappingDefinitions() {
+		if (this.specifiedJavaAttributeMappingDefinitions == null) {
+			this.specifiedJavaAttributeMappingDefinitions = this.buildSpecifiedJavaAttributeMappingDefinitions();
 		}
-		return this.specifiedJavaAttributeMappingProviders;
+		return this.specifiedJavaAttributeMappingDefinitions;
 	}
 	
 	/**
-	 * Return an array of mapping providers to use for analyzing the specified mapping of an attribute
-	 * given all annotations on it.  The order is important, as once a mapping provider tests
-	 * positively for a given attribute, all following mapping providers are ignored.
+	 * Return an array of mapping definitions to use for analyzing the specified mapping of an attribute
+	 * given all annotations on it.  The order is important, as once a mapping definition tests
+	 * positively for a given attribute, all following mapping definitions are ignored.
 	 * Extenders may either overwrite this method or 
-	 * {@link #buildNonNullSpecifiedJavaAttributeMappingProviders()}.
+	 * {@link #buildNonNullSpecifiedJavaAttributeMappingDefinitions()}.
 	 * Doing the former places the additional requirement on the extender to provide a "null"
-	 * mapping provider (@see {@link NullSpecifiedJavaAttributeMappingProvider}.)
+	 * mapping definition (@see {@link NullSpecifiedJavaAttributeMappingDefinition}.)
 	 */
-	protected JavaAttributeMappingProvider[] buildSpecifiedJavaAttributeMappingProviders() {
+	protected JavaAttributeMappingDefinition[] buildSpecifiedJavaAttributeMappingDefinitions() {
 		return ArrayTools.add(
-			buildNonNullSpecifiedJavaAttributeMappingProviders(), 
-			NullSpecifiedJavaAttributeMappingProvider.instance());
+			buildNonNullSpecifiedJavaAttributeMappingDefinitions(), 
+			NullSpecifiedJavaAttributeMappingDefinition.instance());
 	}
 	
 	/**
 	 * No-op implementation of this method. 
-	 * @see #buildSpecifiedJavaAttributeMappingProviders()
+	 * @see #buildSpecifiedJavaAttributeMappingDefinitions()
 	 */
-	protected JavaAttributeMappingProvider[] buildNonNullSpecifiedJavaAttributeMappingProviders() {
-		return new JavaAttributeMappingProvider[0];
+	protected JavaAttributeMappingDefinition[] buildNonNullSpecifiedJavaAttributeMappingDefinitions() {
+		return new JavaAttributeMappingDefinition[0];
 	}
 	
 	

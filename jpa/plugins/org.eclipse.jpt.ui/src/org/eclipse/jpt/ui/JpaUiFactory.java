@@ -13,7 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
@@ -52,9 +52,9 @@ import org.eclipse.swt.widgets.Composite;
  * Use {@link JpaFactory} to create any {@link JavaTypeMapping} or
  * {@link JavaAttributeMapping}s. This is necessary so that platforms can
  * extend the java model with their own annotations.
- * {@link JavaTypeMappingProvider} and {@link JavaAttributeMappingProvider} use
- * this factory. See {@link JpaPlatform#javaTypeMappingProviders()} and
- * {@link JpaPlatform#javaAttributeMappingProviders() for creating new mappings
+ * {@link JavaTypeMappingDefinition} and {@link JavaAttributeMappingDefinition} use
+ * this factory. See {@link JpaPlatform#javaTypeMappingDefinitions()} and
+ * {@link JpaPlatform#javaAttributeMappingDefinitions() for creating new mappings
  * types.
  * <p>
  * Provisional API: This interface is part of an interim API that is still under

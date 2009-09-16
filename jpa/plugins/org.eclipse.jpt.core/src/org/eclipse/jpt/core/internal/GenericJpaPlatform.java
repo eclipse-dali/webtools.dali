@@ -23,10 +23,10 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
@@ -131,73 +131,74 @@ public class GenericJpaPlatform
 
 	// ********** Java type mappings **********
 	
-	public JavaTypeMappingProvider getJavaTypeMappingProvider(JavaPersistentType type) {
-		for (JavaTypeMappingProvider provider : 
-				CollectionTools.iterable(javaTypeMappingProviders())) {
-			if (provider.test(type)) {
-				return provider;
+	public JavaTypeMappingDefinition getJavaTypeMappingDefinition(JavaPersistentType type) {
+		for (JavaTypeMappingDefinition definition : 
+				CollectionTools.iterable(javaTypeMappingDefinitions())) {
+			if (definition.test(type)) {
+				return definition;
 			}
 		}
-		throw new IllegalStateException("There must be a mapping provider for all types"); //$NON-NLS-1$
+		throw new IllegalStateException("There must be a mapping definition for all types"); //$NON-NLS-1$
 	}
 	
-	public JavaTypeMappingProvider getJavaTypeMappingProvider(String mappingKey) {
-		for (JavaTypeMappingProvider provider : 
-				CollectionTools.iterable(javaTypeMappingProviders())) {
-			if (Tools.valuesAreEqual(provider.getKey(), mappingKey)) {
-				return provider;
+	public JavaTypeMappingDefinition getJavaTypeMappingDefinition(String mappingKey) {
+		for (JavaTypeMappingDefinition definition : 
+				CollectionTools.iterable(javaTypeMappingDefinitions())) {
+			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+				return definition;
 			}
 		}
 		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 	
-	protected ListIterator<JavaTypeMappingProvider> javaTypeMappingProviders() {
-		return this.platformProvider.javaTypeMappingProviders();
+	protected ListIterator<JavaTypeMappingDefinition> javaTypeMappingDefinitions() {
+		return this.platformProvider.javaTypeMappingDefinitions();
 	}
 	
 	
 	// ********** Java attribute mappings **********
 	
-	public JavaAttributeMappingProvider getDefaultJavaAttributeMappingProvider(
+	public JavaAttributeMappingDefinition getDefaultJavaAttributeMappingDefinition(
 			JavaPersistentAttribute attribute) {
-		for (JavaAttributeMappingProvider provider : 
-				CollectionTools.iterable(defaultJavaAttributeMappingProviders())) {
-			if (provider.testDefault(attribute)) {
-				return provider;
+		for (JavaAttributeMappingDefinition definition : 
+				CollectionTools.iterable(defaultJavaAttributeMappingDefinitions())) {
+			if (definition.testDefault(attribute)) {
+				return definition;
 			}
 		}
-		throw new IllegalStateException("There must be a mapping provider for all attributes"); //$NON-NLS-1$
+		throw new IllegalStateException("There must be a mapping definition for all attributes"); //$NON-NLS-1$
 	}
 	
-	protected ListIterator<JavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
-		return this.platformProvider.defaultJavaAttributeMappingProviders();
+	protected ListIterator<JavaAttributeMappingDefinition> defaultJavaAttributeMappingDefinitions() {
+		return this.platformProvider.defaultJavaAttributeMappingDefinitions();
 	}
 	
-	public JavaAttributeMappingProvider getSpecifiedJavaAttributeMappingProvider(
+	public JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(
 			JavaPersistentAttribute attribute) {
-		for (JavaAttributeMappingProvider provider : 
-				CollectionTools.iterable(specifiedJavaAttributeMappingProviders())) {
-			if (provider.testSpecified(attribute)) {
-				return provider;
+		for (JavaAttributeMappingDefinition definition : 
+				CollectionTools.iterable(specifiedJavaAttributeMappingDefinitions())) {
+			if (definition.testSpecified(attribute)) {
+				return definition;
 			}
 		}
-		throw new IllegalStateException("There must be a mapping provider for all attributes"); //$NON-NLS-1$
+		throw new IllegalStateException("There must be a mapping definition for all attributes"); //$NON-NLS-1$
 	}
 	
-	protected ListIterator<JavaAttributeMappingProvider> specifiedJavaAttributeMappingProviders() {
-		return this.platformProvider.specifiedJavaAttributeMappingProviders();
+	protected ListIterator<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions() {
+		return this.platformProvider.specifiedJavaAttributeMappingDefinitions();
 	}
 	
-	public JavaAttributeMappingProvider getSpecifiedJavaAttributeMappingProvider(String mappingKey) {
-		for (JavaAttributeMappingProvider provider : CollectionTools.iterable(specifiedJavaAttributeMappingProviders())) {
-			if (Tools.valuesAreEqual(provider.getKey(), mappingKey)) {
-				return provider;
+	public JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(String mappingKey) {
+		for (JavaAttributeMappingDefinition definition : 
+				CollectionTools.iterable(specifiedJavaAttributeMappingDefinitions())) {
+			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+				return definition;
 			}
 		}
 		throw new IllegalArgumentException("Illegal attribute mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 	
-
+	
 	// ********** Mapping Files **********
 	
 	public MappingFileDefinition getMappingFileDefinition(IContentType contentType) {

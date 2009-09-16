@@ -12,33 +12,33 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.core.internal.PersistenceResourceModelProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaEntityProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaIdMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaEntityDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaIdMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMappingProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMappingProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMappingProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingProvider;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMappingDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMappingDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMappingDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1Definition;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm.EclipseLink1_1OrmResourceModelProvider;
@@ -92,49 +92,49 @@ public class EclipseLink2_0JpaPlatformProvider
 	// ********* java type mappings *********	
 	
 	@Override
-	protected JavaTypeMappingProvider[] buildNonNullJavaTypeMappingProviders() {
+	protected JavaTypeMappingDefinition[] buildNonNullJavaTypeMappingDefinitions() {
 		// order determined by analyzing order that eclipselink uses
 		// NOTE: no type mappings specific to eclipselink
-		return new JavaTypeMappingProvider[] {
-			JavaEntityProvider.instance(),
-			JavaEmbeddableProvider.instance(),
-			JavaMappedSuperclassProvider.instance()};
+		return new JavaTypeMappingDefinition[] {
+			JavaEntityDefinition.instance(),
+			JavaEmbeddableDefinition.instance(),
+			JavaMappedSuperclassDefinition.instance()};
 	}
 	
 	
 	// ********* java attribute mappings *********	
 	
 	@Override
-	protected JavaAttributeMappingProvider[] buildNonNullDefaultJavaAttributeMappingProviders() {
+	protected JavaAttributeMappingDefinition[] buildNonNullDefaultJavaAttributeMappingDefinitions() {
 		// order determined by analyzing order that eclipselink uses
 		// NOTE: no new attribute mappings from eclipselink 1.0 to 1.1
-		return new JavaAttributeMappingProvider[] {
-			JavaEmbeddedMappingProvider.instance(),
-			JavaEclipseLinkOneToManyMappingProvider.instance(),
-			JavaEclipseLinkOneToOneMappingProvider.instance(),
-			JavaEclipseLinkVariableOneToOneMappingProvider.instance(),
-			JavaBasicMappingProvider.instance()};
+		return new JavaAttributeMappingDefinition[] {
+			JavaEmbeddedMappingDefinition.instance(),
+			JavaEclipseLinkOneToManyMappingDefinition.instance(),
+			JavaEclipseLinkOneToOneMappingDefinition.instance(),
+			JavaEclipseLinkVariableOneToOneMappingDefinition.instance(),
+			JavaBasicMappingDefinition.instance()};
 	}
 	
 	@Override
-	protected JavaAttributeMappingProvider[] buildNonNullSpecifiedJavaAttributeMappingProviders() {
+	protected JavaAttributeMappingDefinition[] buildNonNullSpecifiedJavaAttributeMappingDefinitions() {
 		// order determined by analyzing order that eclipselink uses
 		// NOTE: no new attribute mappings from eclipselink 1.0 to 1.1
-		return new JavaAttributeMappingProvider[] {
-			JavaTransientMappingProvider.instance(),
-			JavaEclipseLinkBasicCollectionMappingProvider.instance(),
-			JavaEclipseLinkBasicMapMappingProvider.instance(),
-			JavaIdMappingProvider.instance(),
-			JavaVersionMappingProvider.instance(),
-			JavaBasicMappingProvider.instance(),
-			JavaEmbeddedMappingProvider.instance(),
-			JavaEmbeddedIdMappingProvider.instance(),
-			JavaEclipseLinkTransformationMappingProvider.instance(),
-			JavaManyToManyMappingProvider.instance(),
-			JavaManyToOneMappingProvider.instance(),
-			JavaEclipseLinkOneToManyMappingProvider.instance(),
-			JavaEclipseLinkOneToOneMappingProvider.instance(),
-			JavaEclipseLinkVariableOneToOneMappingProvider.instance()};
+		return new JavaAttributeMappingDefinition[] {
+			JavaTransientMappingDefinition.instance(),
+			JavaEclipseLinkBasicCollectionMappingDefinition.instance(),
+			JavaEclipseLinkBasicMapMappingDefinition.instance(),
+			JavaIdMappingDefinition.instance(),
+			JavaVersionMappingDefinition.instance(),
+			JavaBasicMappingDefinition.instance(),
+			JavaEmbeddedMappingDefinition.instance(),
+			JavaEmbeddedIdMappingDefinition.instance(),
+			JavaEclipseLinkTransformationMappingDefinition.instance(),
+			JavaManyToManyMappingDefinition.instance(),
+			JavaManyToOneMappingDefinition.instance(),
+			JavaEclipseLinkOneToManyMappingDefinition.instance(),
+			JavaEclipseLinkOneToOneMappingDefinition.instance(),
+			JavaEclipseLinkVariableOneToOneMappingDefinition.instance()};
 	}
 	
 	

@@ -28,21 +28,21 @@ public interface OrmXmlDefinition
 	// ********** ORM type/attribute mappings **********
 	
 	/**
-	 * Return an {@link OrmTypeMappingProvider} for the given type mapping key.
+	 * Return an {@link OrmTypeMappingDefinition} for the given type mapping key.
 	 * Throws an {@link IllegalArgumentException} if the mapping key is not supported.
 	 * 
 	 * @param mappingKey The type mapping key
 	 * @return The mapping provider for the given mapping key
 	 */
-	OrmTypeMappingProvider getOrmTypeMappingProvider(String mappingKey);
+	OrmTypeMappingDefinition getOrmTypeMappingDefinition(String mappingKey);
 	
 	/**
-	 * Return an {@link OrmAttributeMappingProvider} for the given attribute mapping key.
-	 * This must not return null.  (@see {@link NullOrmAttributeMappingProvider})
+	 * Return an {@link OrmAttributeMappingDefinition} for the given attribute mapping key.
+	 * This must not return null.  (@see {@link NullOrmAttributeMappingDefinition})
 	 * Throws an {@link IllegalArgumentException} if the mapping key is not supported.
 	 * 
 	 * @param mappingKey The attribute mapping key
-	 * @return The mapping provider for the given mapping key
+	 * @return The mapping definition for the given mapping key
 	 */
-	OrmAttributeMappingProvider getOrmAttributeMappingProvider(String mappingKey);
+	OrmAttributeMappingDefinition getOrmAttributeMappingDefinition(String mappingKey);
 }

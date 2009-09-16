@@ -15,17 +15,17 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.JavaTestAttributeMapping;
-import org.eclipse.jpt.core.tests.extension.resource.JavaTestAttributeMappingProvider;
+import org.eclipse.jpt.core.tests.extension.resource.JavaTestAttributeMappingDefinition;
 import org.eclipse.jpt.core.tests.extension.resource.JavaTestTypeMapping;
-import org.eclipse.jpt.core.tests.extension.resource.JavaTestTypeMappingProvider;
+import org.eclipse.jpt.core.tests.extension.resource.JavaTestTypeMappingDefinition;
 import org.eclipse.jpt.core.tests.extension.resource.TestJavaBasicMapping;
 import org.eclipse.jpt.core.tests.extension.resource.TestJavaEntity;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaFactory;
@@ -50,8 +50,8 @@ public class JpaPlatformTests extends ContextModelTestCase
 	public static final String TEST_PLATFORM_CLASS_NAME = TestJpaPlatformProvider.class.getName();
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	public static final String TEST_JPA_FACTORY = TestJpaFactory.class.getName();
-	public static final String TEST_TYPE_MAPPING_PROVIDER_CLASS = JavaTestTypeMappingProvider.class.getName();
-	public static final String TEST_ATTRIBUTE_MAPPING_PROVIDER_CLASS = JavaTestAttributeMappingProvider.class.getName();
+	public static final String TEST_TYPE_MAPPING_PROVIDER_CLASS = JavaTestTypeMappingDefinition.class.getName();
+	public static final String TEST_ATTRIBUTE_MAPPING_PROVIDER_CLASS = JavaTestAttributeMappingDefinition.class.getName();
 	
 	public JpaPlatformTests(String name) {
 		super(name);
@@ -101,15 +101,15 @@ public class JpaPlatformTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaTypeMappingProvider mappingProvider =
-			jpaPlatform().getJavaTypeMappingProvider(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY);
+		JavaTypeMappingDefinition mappingDefinition =
+			jpaPlatform().getJavaTypeMappingDefinition(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY);
 		JavaTypeMapping mapping = 
-			mappingProvider.buildMapping(getJavaPersistentType(), jpaPlatform().getJpaFactory());
+			mappingDefinition.buildMapping(getJavaPersistentType(), jpaPlatform().getJpaFactory());
 		assertTrue(mapping instanceof JavaTestTypeMapping);
 		
-		mappingProvider = 
-			jpaPlatform().getJavaTypeMappingProvider(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		mapping = mappingProvider.buildMapping(getJavaPersistentType(), jpaPlatform().getJpaFactory());
+		mappingDefinition = 
+			jpaPlatform().getJavaTypeMappingDefinition(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		mapping = mappingDefinition.buildMapping(getJavaPersistentType(), jpaPlatform().getJpaFactory());
 		assertTrue(mapping instanceof TestJavaEntity);	
 	}
 	
@@ -117,15 +117,15 @@ public class JpaPlatformTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaAttributeMappingProvider mappingProvider = 
-			jpaPlatform().getSpecifiedJavaAttributeMappingProvider(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY);
+		JavaAttributeMappingDefinition mappingDefinition = 
+			jpaPlatform().getSpecifiedJavaAttributeMappingDefinition(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY);
 		JavaAttributeMapping mapping = 
-			mappingProvider.buildMapping(getJavaPersistentType().getAttributeNamed("name"), jpaPlatform().getJpaFactory());	
+			mappingDefinition.buildMapping(getJavaPersistentType().getAttributeNamed("name"), jpaPlatform().getJpaFactory());	
 		assertTrue(mapping instanceof JavaTestAttributeMapping);
 		
-		mappingProvider = jpaPlatform().getSpecifiedJavaAttributeMappingProvider(
+		mappingDefinition = jpaPlatform().getSpecifiedJavaAttributeMappingDefinition(
 				MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		mapping = mappingProvider.buildMapping(
+		mapping = mappingDefinition.buildMapping(
 					getJavaPersistentType().getAttributeNamed("name"), jpaPlatform().getJpaFactory());
 		assertTrue(mapping instanceof TestJavaBasicMapping);
 	}

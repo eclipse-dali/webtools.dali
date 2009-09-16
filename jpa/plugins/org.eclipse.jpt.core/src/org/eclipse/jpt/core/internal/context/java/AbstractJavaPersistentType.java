@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -30,7 +29,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -215,13 +214,13 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected JavaTypeMapping buildMapping() {
-		JavaTypeMappingProvider mappingProvider = 
-				getJpaPlatform().getJavaTypeMappingProvider(this);
-		return buildMapping(mappingProvider);
+		JavaTypeMappingDefinition mappingDefinition = 
+				getJpaPlatform().getJavaTypeMappingDefinition(this);
+		return buildMapping(mappingDefinition);
 	}
 	
-	protected JavaTypeMapping buildMapping(JavaTypeMappingProvider mappingProvider) {
-		JavaTypeMapping jtMapping = mappingProvider.buildMapping(this, getJpaFactory());
+	protected JavaTypeMapping buildMapping(JavaTypeMappingDefinition mappingDefinition) {
+		JavaTypeMapping jtMapping = mappingDefinition.buildMapping(this, getJpaFactory());
 		// mapping may be null
 		if (jtMapping != null) {
 			jtMapping.initialize(this.resourcePersistentType);
@@ -230,8 +229,9 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected JavaTypeMapping buildMappingFromMappingKey(String key) {
-		JavaTypeMappingProvider mappingProvider = getJpaPlatform().getJavaTypeMappingProvider(key);
-		JavaTypeMapping jtMapping = mappingProvider.buildMapping(this, getJpaFactory());
+		JavaTypeMappingDefinition mappingDefinition = 
+				getJpaPlatform().getJavaTypeMappingDefinition(key);
+		JavaTypeMapping jtMapping = mappingDefinition.buildMapping(this, getJpaFactory());
 		//no mapping.initialize(JavaResourcePersistentType) call here
 		//we do not yet have a mapping annotation so we can't call initialize
 		return jtMapping;
@@ -473,16 +473,16 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected void updateMapping() {
-		// There will always be a mapping provider, even if it is a "null" mapping provider ...
-		JavaTypeMappingProvider mappingProvider = 
-				getJpaPlatform().getJavaTypeMappingProvider(this);
-		String mappingKey = mappingProvider.getKey();
+		// There will always be a mapping definition, even if it is a "null" mapping definition ...
+		JavaTypeMappingDefinition mappingDefinition = 
+				getJpaPlatform().getJavaTypeMappingDefinition(this);
+		String mappingKey = mappingDefinition.getKey();
 		if (this.mapping != null
 				&& valuesAreEqual(this.mapping.getKey(), mappingKey)) {
 			this.mapping.update(this.resourcePersistentType);
 		} 
 		else {
-			setMapping(buildMapping(mappingProvider));
+			setMapping(buildMapping(mappingDefinition));
 		}
 	}
 	

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
@@ -59,9 +59,9 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 	}
 
 	protected OrmAttributeMapping buildAttributeMapping(XmlAttributeMapping resourceMapping) {
-		OrmAttributeMappingProvider mappingProvider = 
-				getMappingFileDefinition().getOrmAttributeMappingProvider(resourceMapping.getMappingKey());
-		return mappingProvider.buildContextMapping(this, resourceMapping, getXmlContextNodeFactory());
+		OrmAttributeMappingDefinition mappingDefinition = 
+				getMappingFileDefinition().getOrmAttributeMappingDefinition(resourceMapping.getMappingKey());
+		return mappingDefinition.buildContextMapping(this, resourceMapping, getXmlContextNodeFactory());
 	}
 	
 	public String getId() {
@@ -105,10 +105,10 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractOrmXmlConte
 			return;
 		}
 		OrmAttributeMapping oldMapping = this.attributeMapping;
-		OrmAttributeMappingProvider mappingProvider = 
-				getMappingFileDefinition().getOrmAttributeMappingProvider(newMappingKey);
+		OrmAttributeMappingDefinition mappingDefinition = 
+				getMappingFileDefinition().getOrmAttributeMappingDefinition(newMappingKey);
 		XmlAttributeMapping resourceAttributeMapping = 
-				mappingProvider.buildResourceMapping(getResourceNodeFactory());
+				mappingDefinition.buildResourceMapping(getResourceNodeFactory());
 		this.attributeMapping = buildAttributeMapping(resourceAttributeMapping);
 		
 		getPersistentType().changeMapping(this, oldMapping, this.attributeMapping);

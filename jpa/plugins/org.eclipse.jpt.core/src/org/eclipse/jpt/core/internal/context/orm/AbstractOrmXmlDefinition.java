@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -24,9 +24,9 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 public abstract class AbstractOrmXmlDefinition
 	implements OrmXmlDefinition
 {
-	private OrmTypeMappingProvider[] ormTypeMappingProviders;
-
-	private OrmAttributeMappingProvider[] ormAttributeMappingProviders;
+	private OrmTypeMappingDefinition[] ormTypeMappingDefinitions;
+	
+	private OrmAttributeMappingDefinition[] ormAttributeMappingDefinitions;
 	
 	private final OrmXmlContextNodeFactory factory;
 	
@@ -49,58 +49,58 @@ public abstract class AbstractOrmXmlDefinition
 	
 	// ********** ORM type mappings **********
 	
-	public OrmTypeMappingProvider getOrmTypeMappingProvider(String mappingKey) {
-		for (OrmTypeMappingProvider provider : CollectionTools.iterable(ormTypeMappingProviders())) {
-			if (Tools.valuesAreEqual(provider.getKey(), mappingKey)) {
-				return provider;
+	public OrmTypeMappingDefinition getOrmTypeMappingDefinition(String mappingKey) {
+		for (OrmTypeMappingDefinition definition : CollectionTools.iterable(ormTypeMappingDefinitions())) {
+			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+				return definition;
 			}
 		}
 		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 	
-	public ListIterator<OrmTypeMappingProvider> ormTypeMappingProviders() {
-		return new ArrayListIterator<OrmTypeMappingProvider>(getOrmTypeMappingProviders());
+	public ListIterator<OrmTypeMappingDefinition> ormTypeMappingDefinitions() {
+		return new ArrayListIterator<OrmTypeMappingDefinition>(getOrmTypeMappingDefinitions());
 	}
 	
-	protected synchronized OrmTypeMappingProvider[] getOrmTypeMappingProviders() {
-		if (this.ormTypeMappingProviders == null) {
-			this.ormTypeMappingProviders = this.buildOrmTypeMappingProviders();
+	protected synchronized OrmTypeMappingDefinition[] getOrmTypeMappingDefinitions() {
+		if (this.ormTypeMappingDefinitions == null) {
+			this.ormTypeMappingDefinitions = this.buildOrmTypeMappingDefinitions();
 		}
-		return this.ormTypeMappingProviders;
+		return this.ormTypeMappingDefinitions;
 	}
 	
 	/**
-	 * Return an array of mapping providers to use for types in mapping files of this type.  
+	 * Return an array of mapping definitions to use for types in mapping files of this type.  
 	 * The order is unimportant.
 	 */
-	protected abstract OrmTypeMappingProvider[] buildOrmTypeMappingProviders();
+	protected abstract OrmTypeMappingDefinition[] buildOrmTypeMappingDefinitions();
 	
 	
 	// ********** ORM attribute mappings **********
 	
-	public OrmAttributeMappingProvider getOrmAttributeMappingProvider(String mappingKey) {
-		for (OrmAttributeMappingProvider provider : CollectionTools.iterable(ormAttributeMappingProviders())) {
-			if (Tools.valuesAreEqual(provider.getKey(), mappingKey)) {
-				return provider;
+	public OrmAttributeMappingDefinition getOrmAttributeMappingDefinition(String mappingKey) {
+		for (OrmAttributeMappingDefinition definition : CollectionTools.iterable(ormAttributeMappingDefinitions())) {
+			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+				return definition;
 			}
 		}
 		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 	
-	public ListIterator<OrmAttributeMappingProvider> ormAttributeMappingProviders() {
-		return new ArrayListIterator<OrmAttributeMappingProvider>(getOrmAttributeMappingProviders());
+	public ListIterator<OrmAttributeMappingDefinition> ormAttributeMappingDefinitions() {
+		return new ArrayListIterator<OrmAttributeMappingDefinition>(getOrmAttributeMappingDefinitions());
 	}
 	
-	protected synchronized OrmAttributeMappingProvider[] getOrmAttributeMappingProviders() {
-		if (this.ormAttributeMappingProviders == null) {
-			this.ormAttributeMappingProviders = this.buildOrmAttributeMappingProviders();
+	protected synchronized OrmAttributeMappingDefinition[] getOrmAttributeMappingDefinitions() {
+		if (this.ormAttributeMappingDefinitions == null) {
+			this.ormAttributeMappingDefinitions = this.buildOrmAttributeMappingDefinitions();
 		}
-		return this.ormAttributeMappingProviders;
+		return this.ormAttributeMappingDefinitions;
 	}
 	
 	/**
-	 * Return an array of mapping providers to use for attributes in mapping files of this type.  
+	 * Return an array of mapping definitions to use for attributes in mapping files of this type.  
 	 * The order is unimportant.
 	 */
-	protected abstract OrmAttributeMappingProvider[] buildOrmAttributeMappingProviders();
+	protected abstract OrmAttributeMappingDefinition[] buildOrmAttributeMappingDefinitions();
 }

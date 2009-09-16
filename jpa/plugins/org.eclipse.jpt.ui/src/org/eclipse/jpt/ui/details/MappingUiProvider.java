@@ -52,7 +52,7 @@ public interface MappingUiProvider<T> {
 
 	/**
 	 * Returns a unique string that corresponds to the key of the mapping in the
-	 * core (JavaAttributeMappingProvider and/or OrmAttributeMappingProvider).
+	 * core (JavaAttributeMappingDefinition and/or OrmAttributeMappingProvider).
 	 *
 	 * @return The key representing the mapping
 	 */

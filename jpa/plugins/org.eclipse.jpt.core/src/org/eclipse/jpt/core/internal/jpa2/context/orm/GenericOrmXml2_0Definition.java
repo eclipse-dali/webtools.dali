@@ -12,25 +12,25 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
-import org.eclipse.jpt.core.internal.context.orm.OrmBasicMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddableProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedIdMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmEntityProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmIdMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmManyToManyMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmManyToOneMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmMappedSuperclassProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingProvider;
-import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmBasicMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddableDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedIdMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmEntityDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmIdMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmManyToManyMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmManyToOneMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmMappedSuperclassDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingDefinition;
+import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
 
 public class GenericOrmXml2_0Definition
@@ -74,34 +74,34 @@ public class GenericOrmXml2_0Definition
 	// ********** ORM type mappings **********
 	
 	@Override
-	protected OrmTypeMappingProvider[] buildOrmTypeMappingProviders() {
+	protected OrmTypeMappingDefinition[] buildOrmTypeMappingDefinitions() {
 		// order should not matter here, but we'll use the same order as for java 
 		// (@see {@link Generic2_0JpaPlatformProvider})
-		return new OrmTypeMappingProvider[] {
-			OrmEntityProvider.instance(),
-			OrmEmbeddableProvider.instance(),
-			OrmMappedSuperclassProvider.instance()};
+		return new OrmTypeMappingDefinition[] {
+			OrmEntityDefinition.instance(),
+			OrmEmbeddableDefinition.instance(),
+			OrmMappedSuperclassDefinition.instance()};
 	}
 	
 	
 	// ********** ORM attribute mappings **********
 	
 	@Override
-	protected OrmAttributeMappingProvider[] buildOrmAttributeMappingProviders() {
+	protected OrmAttributeMappingDefinition[] buildOrmAttributeMappingDefinitions() {
 		// order should not matter here, but we'll use the same order as for java
 		// (@see {@link Generic2_0JpaPlatformProvider})
-		return new OrmAttributeMappingProvider[] {
-			OrmTransientMappingProvider.instance(),
+		return new OrmAttributeMappingDefinition[] {
+			OrmTransientMappingDefinition.instance(),
 			//OrmElementCollectionMappingProvider.instance(),
-			OrmIdMappingProvider.instance(),
-			OrmVersionMappingProvider.instance(),
-			OrmBasicMappingProvider.instance(),
-			OrmEmbeddedMappingProvider.instance(),
-			OrmEmbeddedIdMappingProvider.instance(),
-			OrmManyToManyMappingProvider.instance(),
-			OrmManyToOneMappingProvider.instance(),
-			OrmOneToManyMappingProvider.instance(),
-			OrmOneToOneMappingProvider.instance(),
-			NullOrmAttributeMappingProvider.instance()};
+			OrmIdMappingDefinition.instance(),
+			OrmVersionMappingDefinition.instance(),
+			OrmBasicMappingDefinition.instance(),
+			OrmEmbeddedMappingDefinition.instance(),
+			OrmEmbeddedIdMappingDefinition.instance(),
+			OrmManyToManyMappingDefinition.instance(),
+			OrmManyToOneMappingDefinition.instance(),
+			OrmOneToManyMappingDefinition.instance(),
+			OrmOneToOneMappingDefinition.instance(),
+			NullOrmAttributeMappingDefinition.instance()};
 	}
 }

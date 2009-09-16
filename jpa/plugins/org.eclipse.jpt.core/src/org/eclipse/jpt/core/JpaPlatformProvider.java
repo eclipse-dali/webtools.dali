@@ -11,8 +11,8 @@ package org.eclipse.jpt.core;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.MappingFileDefinition;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
@@ -46,17 +46,17 @@ public interface JpaPlatformProvider
 	ListIterator<MappingFileDefinition> mappingFileDefinitions();
 
 	/**
-	 * Return the java type mapping providers that apply to this platform.
+	 * Return the java type mapping definitions that apply to this platform.
 	 */
-	ListIterator<JavaTypeMappingProvider> javaTypeMappingProviders();
+	ListIterator<JavaTypeMappingDefinition> javaTypeMappingDefinitions();
 	
 	/**
-	 * Return the mapping providers to use for default java attribute mappings for this platform.
+	 * Return the mapping definitions to use for default java attribute mappings for this platform.
 	 */
-	ListIterator<JavaAttributeMappingProvider> defaultJavaAttributeMappingProviders();
+	ListIterator<JavaAttributeMappingDefinition> defaultJavaAttributeMappingDefinitions();
 
 	/**
-	 * Return the mapping providers to use for specified java attribute mappings for this platform.
+	 * Return the mapping definitions to use for specified java attribute mappings for this platform.
 	 */
-	ListIterator<JavaAttributeMappingProvider> specifiedJavaAttributeMappingProviders();
+	ListIterator<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions();
 }
