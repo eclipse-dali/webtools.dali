@@ -74,6 +74,7 @@ import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAssociationOverride;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlBasic;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbedded;
@@ -129,6 +130,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmTemporalConverte
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmTransientMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVersionMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
@@ -167,9 +169,14 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public abstract class AbstractOrmXmlContextNodeFactory implements OrmXmlContextNodeFactory
 {
+	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
+		return new GenericOrmXml(parent, resource);
+	}
+
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericEntityMappings(parent, xmlEntityMappings);
 	}

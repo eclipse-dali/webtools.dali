@@ -20,16 +20,10 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
@@ -55,19 +49,8 @@ import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlVersion;
 
 public class EclipseLinkOrmXml1_1ContextNodeFactory extends EclipseLinkOrmXmlContextNodeFactory
 {	
-
-	
-	@Override
-	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return new EclipseLinkOrmXml1_1(parent, resource);
-	}
 	
 	// ********** EclipseLink1.1-specific ORM Context Model **********
-
-	@Override
-	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
-		return new OrmEclipseLinkPersistentType1_1((EclipseLinkEntityMappings) parent, resourceMapping);
-	}
 
 	@Override
 	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, org.eclipse.jpt.core.resource.orm.XmlAttributeMapping resourceMapping) {

@@ -35,11 +35,12 @@ import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.resource.xml.EmfTools;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -462,7 +463,10 @@ public abstract class AbstractEntityMappings
 	}
 	
 	protected XmlSequenceGenerator buildResourceSequenceGenerator() {
-		return OrmFactory.eINSTANCE.createXmlSequenceGenerator();
+		return EmfTools.create(
+			getResourceNodeFactory(), 
+			OrmPackage.eINSTANCE.getXmlSequenceGenerator(), 
+			XmlSequenceGenerator.class);
 	}
 
 	// ********** table generators **********
@@ -513,7 +517,10 @@ public abstract class AbstractEntityMappings
 	}
 	
 	protected XmlTableGenerator buildResourceTableGenerator() {
-		return OrmFactory.eINSTANCE.createXmlTableGenerator();
+		return EmfTools.create(
+			getResourceNodeFactory(), 
+			OrmPackage.eINSTANCE.getXmlTableGenerator(), 
+			XmlTableGenerator.class);
 	}
 
 

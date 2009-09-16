@@ -22,33 +22,24 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
-import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
-import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
-import org.eclipse.jpt.core.internal.jpa2.context.GenericOrmGeneratorContainer2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddedId;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlId;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne;
@@ -57,33 +48,10 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
-import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNodeFactory
 {	
-
-	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return new GenericOrmXml2_0((MappingFileRef2_0) parent, resource);
-	}
-
-	@Override
-	public EntityMappings buildEntityMappings(OrmXml parent, org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return new GenericEntityMappings2_0(parent, (XmlEntityMappings) xmlEntityMappings);
-	}
-	
-	@Override
-	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return new GenericPersistenceUnitMetadata2_0(parent, xmlEntityMappings);
-	}
-
-	@Override
-	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
-		return new GenericOrmPersistentType2_0(parent, resourceMapping);
-	}
 	
 	@Override
 	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent, org.eclipse.jpt.core.resource.orm.XmlEmbeddable resourceMapping) {
@@ -96,18 +64,8 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	}
 	
 	@Override
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
-		return new GenericOrmAssociationOverrideContainer2_0(parent, owner, resourceAssociationOverrideContainer);
-	}
-	
-	@Override
 	public OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent, org.eclipse.jpt.core.resource.orm.XmlAssociationOverride associationOverride) {
 		return new GenericOrmAssociationOverrideRelationshipReference2_0(parent, (XmlAssociationOverride) associationOverride);
-	}
-	
-	@Override
-	public OrmGeneratorContainer buildOrmGeneratorContainer(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer) {
-		return new GenericOrmGeneratorContainer2_0(parent, resourceGeneratorContainer);
 	}
 	
 	@Override

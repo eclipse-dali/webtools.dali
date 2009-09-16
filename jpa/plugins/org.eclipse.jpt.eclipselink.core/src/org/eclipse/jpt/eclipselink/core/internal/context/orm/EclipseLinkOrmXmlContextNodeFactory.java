@@ -35,14 +35,9 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
@@ -70,25 +65,11 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 public class EclipseLinkOrmXmlContextNodeFactory extends AbstractOrmXmlContextNodeFactory
 {	
 
-	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return new EclipseLinkOrmXml(parent, resource);
-	}
-	
 	// ********** EclipseLink-specific ORM Context Model **********
 	
 	@Override
 	public EntityMappings buildEntityMappings(OrmXml parent, org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
 		return new EclipseLinkEntityMappingsImpl(parent, (XmlEntityMappings) xmlEntityMappings);
-	}
-	
-	@Override
-	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return new EclipseLinkPersistenceUnitMetadata(parent, xmlEntityMappings);
-	}
-
-	@Override
-	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
-		return new OrmEclipseLinkPersistentType((EclipseLinkEntityMappings) parent, resourceMapping);
 	}
 	
 	@Override
