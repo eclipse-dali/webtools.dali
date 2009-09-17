@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElemen
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.AccessType;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -89,7 +89,7 @@ public final class SourceAccess2_0Annotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ACCESS__VALUE);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.ACCESS__VALUE);
 	}
 
 }

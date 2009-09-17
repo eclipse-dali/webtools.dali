@@ -10,11 +10,13 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -39,7 +41,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA.TRANSIENT, JPA.ACCESS, JPA.ACCESS_TYPE);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA.TRANSIENT, JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -66,7 +68,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA.ACCESS, JPA.ACCESS_TYPE);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.BASIC, JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {

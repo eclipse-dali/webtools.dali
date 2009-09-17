@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinarySequenceGeneratorAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -60,7 +60,7 @@ public final class BinarySequenceGenerator2_0Annotation
 	}
 
 	private String buildCatalog() {
-		return (String) this.getJdtMemberValue(JPA.SEQUENCE_GENERATOR__CATALOG);
+		return (String) this.getJdtMemberValue(JPA2_0.SEQUENCE_GENERATOR__CATALOG);
 	}
 
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
@@ -88,7 +88,7 @@ public final class BinarySequenceGenerator2_0Annotation
 	}
 
 	private String buildSchema() {
-		return (String) this.getJdtMemberValue(JPA.SEQUENCE_GENERATOR__SCHEMA);
+		return (String) this.getJdtMemberValue(JPA2_0.SEQUENCE_GENERATOR__SCHEMA);
 	}
 
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {

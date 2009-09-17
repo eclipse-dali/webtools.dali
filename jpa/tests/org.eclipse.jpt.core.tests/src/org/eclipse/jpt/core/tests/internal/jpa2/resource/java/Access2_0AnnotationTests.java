@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.tests.internal.jpa2.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.AccessType;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -29,7 +29,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ACCESS, JPA.ACCESS_TYPE);
+				return new ArrayIterator<String>(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			
 			@Override
@@ -43,7 +43,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ACCESS, JPA.ACCESS_TYPE);
+				return new ArrayIterator<String>(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 		
 			@Override
@@ -57,7 +57,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ACCESS, JPA.ACCESS_TYPE);
+				return new ArrayIterator<String>(JPA2_0.ACCESS, JPA2_0.ACCESS_TYPE);
 			}
 			
 			@Override
@@ -71,7 +71,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		ICompilationUnit cu = this.createTestAccessOnType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		Access2_0Annotation access = (Access2_0Annotation) typeResource.getAnnotation(JPA.ACCESS);
+		Access2_0Annotation access = (Access2_0Annotation) typeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
 		assertEquals(AccessType.PROPERTY, access.getValue());
 	}
@@ -80,13 +80,13 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		ICompilationUnit cu = this.createTestType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		Access2_0Annotation access = (Access2_0Annotation) typeResource.getAnnotation(JPA.ACCESS);
+		Access2_0Annotation access = (Access2_0Annotation) typeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNull(access);
 		
-		typeResource.addAnnotation(JPA.ACCESS);
+		typeResource.addAnnotation(JPA2_0.ACCESS);
 		assertSourceContains("@Access", cu);
 
-		access = (Access2_0Annotation) typeResource.getAnnotation(JPA.ACCESS);
+		access = (Access2_0Annotation) typeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
 		
 		access.setValue(AccessType.FIELD);
@@ -98,7 +98,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		assertSourceContains("@Access(PROPERTY)", cu);
 		
 		access.setValue(null);
-		assertNull(typeResource.getAnnotation(JPA.ACCESS));
+		assertNull(typeResource.getAnnotation(JPA2_0.ACCESS));
 		assertSourceDoesNotContain("@Access", cu);
 	}
 	
@@ -107,7 +107,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableFields().next();
 		
-		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA.ACCESS);
+		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
 		assertEquals(AccessType.FIELD, access.getValue());
 	}
@@ -117,13 +117,13 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableFields().next();
 		
-		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA.ACCESS);
+		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNull(access);
 		
-		attributeResource.addAnnotation(JPA.ACCESS);
+		attributeResource.addAnnotation(JPA2_0.ACCESS);
 		assertSourceContains("@Access", cu);
 
-		access = (Access2_0Annotation) attributeResource.getAnnotation(JPA.ACCESS);
+		access = (Access2_0Annotation) attributeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
 		
 		access.setValue(AccessType.FIELD);
@@ -135,7 +135,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		assertSourceContains("@Access(PROPERTY)", cu);
 		
 		access.setValue(null);
-		assertNull(attributeResource.getAnnotation(JPA.ACCESS));
+		assertNull(attributeResource.getAnnotation(JPA2_0.ACCESS));
 		assertSourceDoesNotContain("@Access", cu);
 	}
 	
@@ -144,7 +144,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableProperties().next();
 		
-		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA.ACCESS);
+		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
 		assertEquals(AccessType.PROPERTY, access.getValue());
 	}
@@ -154,13 +154,13 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableProperties().next();
 		
-		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA.ACCESS);
+		Access2_0Annotation access = (Access2_0Annotation) attributeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNull(access);
 		
-		attributeResource.addAnnotation(JPA.ACCESS);
+		attributeResource.addAnnotation(JPA2_0.ACCESS);
 		assertSourceContains("@Access", cu);
 
-		access = (Access2_0Annotation) attributeResource.getAnnotation(JPA.ACCESS);
+		access = (Access2_0Annotation) attributeResource.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
 		
 		access.setValue(AccessType.FIELD);
@@ -172,7 +172,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		assertSourceContains("@Access(PROPERTY)", cu);
 		
 		access.setValue(null);
-		assertNull(attributeResource.getAnnotation(JPA.ACCESS));
+		assertNull(attributeResource.getAnnotation(JPA2_0.ACCESS));
 		assertSourceDoesNotContain("@Access", cu);
 	}
 }

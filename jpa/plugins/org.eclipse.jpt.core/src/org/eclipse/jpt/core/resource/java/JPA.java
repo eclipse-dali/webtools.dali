@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.resource.java;
 
 /**
  * JPA Java-related stuff (annotations etc.)
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -189,9 +189,6 @@ public interface JPA {
 		String SEQUENCE_GENERATOR__SEQUENCE_NAME = "sequenceName";
 		String SEQUENCE_GENERATOR__INITIAL_VALUE = "initialValue";
 		String SEQUENCE_GENERATOR__ALLOCATION_SIZE = "allocationSize";
-	// JPA 2.0 elements
-		String SEQUENCE_GENERATOR__CATALOG = "catalog";
-		String SEQUENCE_GENERATOR__SCHEMA = "schema";
 	String SQL_RESULT_SET_MAPPING = PACKAGE_ + "SqlResultSetMapping";
 		String SQL_RESULT_SET_MAPPING__NAME = "name";
 		String SQL_RESULT_SET_MAPPING__ENTITIES = "entities";
@@ -218,10 +215,6 @@ public interface JPA {
 	String UNIQUE_CONSTRAINT = PACKAGE_ + "UniqueConstraint";
 		String UNIQUE_CONSTRAINT__COLUMN_NAMES = "columnNames";
 	String VERSION = PACKAGE_ + "Version";
-
-	// JPA 2.0 annotations
-	String ACCESS = PACKAGE_ + "Access";
-		String ACCESS__VALUE = "value";
 
 	// JPA enums
 	String CASCADE_TYPE = PACKAGE_ + "CascadeType";
@@ -277,12 +270,6 @@ public interface JPA {
 		String TEMPORAL_TYPE__TIME = TEMPORAL_TYPE_ + "TIME";
 		String TEMPORAL_TYPE__TIMESTAMP = TEMPORAL_TYPE_ + "TIMESTAMP";
 
-	// JPA 2.0 enums
-	String ACCESS_TYPE = PACKAGE_ + "AccessType";
-		String ACCESS_TYPE_ = ACCESS_TYPE + '.';
-		String ACCESS_TYPE__FIELD = ACCESS_TYPE_ + "FIELD";
-		String ACCESS_TYPE__PROPERTY = ACCESS_TYPE_ + "PROPERTY";
-	
 	// JPA interfaces
 	String ENTITY_MANAGER = PACKAGE_ + "EntityManager";
 	String ENTITY_MANAGER_FACTORY = PACKAGE_ + "EntityManagerFactory";

@@ -9,20 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+
 /**
  * Corresponds to the JPA 2.0 enum
  * javax.persistence.AccessType
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
+// TODO move to jpa2 package? currently intertwined with 1.0 code...
 public enum AccessType {
 
-	FIELD(JPA.ACCESS_TYPE__FIELD),
-	PROPERTY(JPA.ACCESS_TYPE__PROPERTY);
+	FIELD(JPA2_0.ACCESS_TYPE__FIELD),
+	PROPERTY(JPA2_0.ACCESS_TYPE__PROPERTY);
 
 
 	private String javaAnnotationValue;

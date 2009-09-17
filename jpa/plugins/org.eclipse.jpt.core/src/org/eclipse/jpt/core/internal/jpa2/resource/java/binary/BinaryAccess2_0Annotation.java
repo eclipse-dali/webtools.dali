@@ -13,8 +13,8 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.AccessType;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -67,7 +67,7 @@ public final class BinaryAccess2_0Annotation
 	}
 
 	private AccessType buildValue() {
-		return AccessType.fromJavaAnnotationValue(this.getJdtMemberValue(JPA.ACCESS__VALUE));
+		return AccessType.fromJavaAnnotationValue(this.getJdtMemberValue(JPA2_0.ACCESS));
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
