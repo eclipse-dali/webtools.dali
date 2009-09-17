@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaSingleRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 
-
+/**
+ * Java single relationship (1:1, m:1) mapping
+ */
 public abstract class AbstractJavaSingleRelationshipMapping<T extends RelationshipMappingAnnotation>
 	extends AbstractJavaRelationshipMapping<T>
 	implements JavaSingleRelationshipMapping
@@ -26,15 +28,22 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	protected AbstractJavaSingleRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-	
-	
+
 	@Override
-	public boolean isOverridableAssociationMapping() {
-		return true;
+	protected void initialize() {
+		super.initialize();
+		this.specifiedOptional = this.getResourceOptional();
 	}
-	
-	// **************** optional ***********************************************
-	
+
+	@Override
+	protected void update() {
+		super.update();
+		this.setSpecifiedOptional_(this.getResourceOptional());
+	}
+
+
+	// ********** optional **********
+
 	public boolean isOptional() {
 		return (this.specifiedOptional != null) ? this.specifiedOptional.booleanValue() : this.isDefaultOptional();
 	}
@@ -46,48 +55,42 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	public void setSpecifiedOptional(Boolean optional) {
 		Boolean old = this.specifiedOptional;
 		this.specifiedOptional = optional;
-		this.setOptionalOnResourceModel(optional);
+		this.setResourceOptional(optional);
 		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
 	}
-	
+
 	protected void setSpecifiedOptional_(Boolean optional) {
 		Boolean old = this.specifiedOptional;
 		this.specifiedOptional = optional;
 		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
 	}
-	
+
 	public boolean isDefaultOptional() {
 		return Nullable.DEFAULT_OPTIONAL;
 	}
-	
-	protected abstract void setOptionalOnResourceModel(Boolean newOptional);
 
-
-	// **************** resource => context ************************************
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.specifiedOptional = this.getResourceOptional();
-	}
-	
-	@Override
-	protected void update() {
-		super.update();
-		this.setSpecifiedOptional_(this.getResourceOptional());
-	}
-	
 	protected abstract Boolean getResourceOptional();
-	
+
+	protected abstract void setResourceOptional(Boolean newOptional);
+
+
+	// ********** AbstractJavaRelationshipMapping implementation **********
+
+	@Override
+	public boolean isOverridableAssociationMapping() {
+		return true;
+	}
+
 	@Override
 	protected String buildDefaultTargetEntity() {
 		return this.getPersistentAttribute().getSingleReferenceEntityTypeName();
 	}
 
 
-	// **************** Fetchable implementation *******************************
-	
+	// ********** Fetchable implementation **********
+
 	public FetchType getDefaultFetch() {
 		return DEFAULT_FETCH_TYPE;
 	}
+
 }

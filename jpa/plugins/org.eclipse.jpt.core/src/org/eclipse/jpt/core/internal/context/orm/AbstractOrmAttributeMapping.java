@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -210,6 +211,11 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return this.resourceAttributeMapping.getNameTextRange();
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
+	}
+
 
 	// ********** validation **********
 
@@ -249,9 +255,4 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		}
 	}
 	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
-	}
-
 }

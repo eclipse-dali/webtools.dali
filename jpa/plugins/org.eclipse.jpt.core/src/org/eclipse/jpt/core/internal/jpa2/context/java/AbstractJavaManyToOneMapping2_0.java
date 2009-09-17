@@ -41,7 +41,7 @@ public abstract class AbstractJavaManyToOneMapping2_0
 	
 	@Override
 	public Iterator<String> supportingAnnotationNames() {
-		return new CompositeIterator(
+		return new CompositeIterator<String>(
 				super.supportingAnnotationNames(),
 				JPA.ID);
 	}

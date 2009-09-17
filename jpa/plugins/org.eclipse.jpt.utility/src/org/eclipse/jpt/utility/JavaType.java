@@ -46,15 +46,15 @@ public interface JavaType {
 	/**
 	 * Return whether the type is a "primitive" (e.g. <code>int</code>, <code>float</code>).
 	 * <p>
-	 * NB: <code>void.class.isPrimitive() == true</code>
+	 * <strong>NB:</strong> <code>void.class.isPrimitive() == true</code>
 	 */
 	boolean isPrimitive();
 
 	/**
-	 * Return whether the type is a "primitive" (e.g. <code>java.lang.Integer</code>,
-	 * <code>java.lang.Float</code>).
+	 * Return whether the type is a "primitive wrapper" (e.g. {@link java.lang.Integer},
+	 * {@link java.lang.Float}).
 	 * <p>
-	 * NB: <code>void.class.isPrimitive() == true</code>
+	 * <strong>NB:</strong> <code>void.class.isPrimitive() == true</code>
 	 */
 	boolean isPrimitiveWrapper();
 
@@ -62,16 +62,16 @@ public interface JavaType {
 	 * Return whether the type is a "variable primitive" (e.g. <code>int</code>, <code>float</code>,
 	 * but not <code>void</code>).
 	 * <p>
-	 * NB: variables cannot be declared <code>void</code>
+	 * <strong>NB:</strong> variables cannot be declared <code>void</code>
 	 */
 	boolean isVariablePrimitive();
 
 	/**
-	 * Return whether the type is a "variable primitive" (e.g.
-	 * <code>java.lang.Integer</code>, <code>java.lang.Float</code>,
-	 * but not <code>java.lang.Void</code>).
+	 * Return whether the type is a "variable primitive wrapper" (e.g.
+	 * {@link java.lang.Integer}, {@link java.lang.Float},
+	 * but not {@link java.lang.Void}).
 	 * <p>
-	 * NB: variables cannot be declared <code>void</code>
+	 * <strong>NB:</strong> variables cannot be declared <code>void</code>
 	 */
 	boolean isVariablePrimitiveWrapper();
 

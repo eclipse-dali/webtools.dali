@@ -89,7 +89,8 @@ public interface JavaResourcePersistentAttribute
 	 * If the type is an array, this name will include the appropriate number
 	 * of bracket pairs.
 	 * This name will not include the type's generic type arguments
-	 * (e.g. "java.util.Collection<java.lang.String>").
+	 * (e.g. "java.util.Collection<java.lang.String>" will only return
+	 * "java.util.Collection").
 	 * @see #typeTypeArgumentNames()
 	 */
 	String getTypeName();
@@ -111,7 +112,7 @@ public interface JavaResourcePersistentAttribute
 	 * Return the names of the attribute type's superclasses.
 	 */
 	ListIterator<String> typeSuperclassNames();
-		String TYPE_SUPERCLASS_NAMES_COLLECTION = "typeSuperclassNames"; //$NON-NLS-1$
+		String TYPE_SUPERCLASS_NAMES_LIST = "typeSuperclassNames"; //$NON-NLS-1$
 
 	/**
 	 * Return the names of the attribute type's interfaces.
@@ -126,7 +127,7 @@ public interface JavaResourcePersistentAttribute
 	 * The names will not include any further generic type arguments.
 	 */
 	ListIterator<String> typeTypeArgumentNames();
-		String TYPE_TYPE_ARGUMENT_NAMES_COLLECTION = "typeTypeArgumentNames"; //$NON-NLS-1$
+		String TYPE_TYPE_ARGUMENT_NAMES_LIST = "typeTypeArgumentNames"; //$NON-NLS-1$
 
 	int typeTypeArgumentNamesSize();
 

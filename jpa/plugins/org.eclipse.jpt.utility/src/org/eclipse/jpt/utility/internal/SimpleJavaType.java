@@ -14,7 +14,7 @@ import java.io.Serializable;
 import org.eclipse.jpt.utility.JavaType;
 
 /**
- * Straightforward implementation of the JavaType interface.
+ * Straightforward implementation of the {@link JavaType} interface.
  */
 public final class SimpleJavaType
 	implements JavaType, Cloneable, Serializable
@@ -60,13 +60,14 @@ public final class SimpleJavaType
 
 	/**
 	 * Construct a Java type for the specified class.
-	 * The class name can be in one of the following forms:
-	 *     java.lang.Object
-	 *     int
-	 *     java.util.Map$Entry
-	 *     [Ljava.lang.Object;
-	 *     [I
-	 *     [Ljava.util.Map$Entry;
+	 * The class name can be in one of the following forms:<ul><code>
+	 * <li>java.lang.Object
+	 * <li>int
+	 * <li>java.util.Map$Entry
+	 * <li>[Ljava.lang.Object;
+	 * <li>[I
+	 * <li>[Ljava.util.Map$Entry;
+	 * </code></ul>
 	 */
 	public SimpleJavaType(String javaClassName) {
 		this(ClassTools.elementTypeNameForClassNamed(javaClassName), ClassTools.arrayDepthForClassNamed(javaClassName));
@@ -154,11 +155,6 @@ public final class SimpleJavaType
 
 	// ********** printing and displaying **********
 
-	/**
-	 * Return the version of the type's name that can be used in source code:
-	 *     "[[J" => "long[][]"
-	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
-	 */
 	public String declaration() {
 		if (this.arrayDepth == 0) {
 			return this.getElementTypeNameDeclaration();
@@ -168,11 +164,6 @@ public final class SimpleJavaType
 		return sb.toString();
 	}
 
-	/**
-	 * Append the version of the type's name that can be used in source code:
-	 *     "[[J" => "long[][]"
-	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
-	 */
 	public void appendDeclarationTo(StringBuilder sb) {
 		sb.append(this.getElementTypeNameDeclaration());
 		for (int i = this.arrayDepth; i-- > 0; ) {
@@ -180,11 +171,6 @@ public final class SimpleJavaType
 		}
 	}
 
-	/**
-	 * Print the version of the type's name that can be used in source code:
-	 *     "[[J" => "long[][]"
-	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
-	 */
 	public void printDeclarationOn(PrintWriter pw) {
 		pw.print(this.getElementTypeNameDeclaration());
 		for (int i = this.arrayDepth; i-- > 0; ) {
@@ -193,8 +179,8 @@ public final class SimpleJavaType
 	}
 
 	/**
-	 * The '$' version of the name is used in Class.forName(String),
-	 * but the '.' version of the name is used in source code.
+	 * The <code>'$'</code> version of the name is used in {@link Class#forName(String)},
+	 * but the <code>'.'</code> version of the name is used in source code.
 	 * Very irritating....
 	 */
 	private String getElementTypeNameDeclaration() {

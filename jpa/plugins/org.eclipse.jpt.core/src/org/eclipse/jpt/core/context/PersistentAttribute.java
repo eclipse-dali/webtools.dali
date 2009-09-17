@@ -11,10 +11,9 @@ package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 
-
 /**
  * Persistent "attribute" (field or property)
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -41,12 +40,13 @@ public interface PersistentAttribute
 
 	/**
 	 * Return the attribute's "specified" mapping, or if it is null
-	 * return the "default" mapping.  WIll not return null.
+	 * return the attribute's "default" mapping. Do not return null.
 	 */
 	AttributeMapping getMapping();
+		String DEFAULT_MAPPING_PROPERTY = "defaultMapping"; //$NON-NLS-1$
 
 	/**
-	 * Return the attribute's "specified" mapping, could be null
+	 * Return the attribute's "specified" mapping - could be null.
 	 */
 	AttributeMapping getSpecifiedMapping();
 		String SPECIFIED_MAPPING_PROPERTY = "specifiedMapping"; //$NON-NLS-1$
@@ -57,7 +57,6 @@ public interface PersistentAttribute
 	 * cleared and the attribute's mapping to be its "default" mapping.
 	 */
 	void setSpecifiedMappingKey(String key);
-		String DEFAULT_MAPPING_PROPERTY = "defaultMapping"; //$NON-NLS-1$
 	
 	TypeMapping getTypeMapping();
 
@@ -70,13 +69,14 @@ public interface PersistentAttribute
 	String getPrimaryKeyColumnName();
 
 	/**
-	 * Return whether the attribute's "attribute" mapping is for an ID.
+	 * Return whether the attribute's mapping is for an ID.
 	 */
 	boolean isIdAttribute();
 	
 	/**
 	 * Return whether this attribute actually has a textual representation
-	 * in its underlying resource (false = no)
+	 * in its underlying resource (false = no).
 	 */
 	boolean isVirtual();
+
 }

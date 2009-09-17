@@ -67,7 +67,7 @@ public abstract class AbstractJavaOneToOneMapping
 	}
 	
 	@Override
-	protected void setOptionalOnResourceModel(Boolean newOptional) {
+	protected void setResourceOptional(Boolean newOptional) {
 		this.mappingAnnotation.setOptional(newOptional);
 	}
 }

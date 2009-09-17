@@ -291,7 +291,7 @@ final class SourcePersistentAttribute
 	}
 
 	private void setTypeSuperclassNames(List<String> typeSuperclassNames) {
-		this.synchronizeList(typeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_COLLECTION);
+		this.synchronizeList(typeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_LIST);
 	}
 
 	private List<String> buildTypeSuperclassNames(CompilationUnit astRoot) {
@@ -355,7 +355,7 @@ final class SourcePersistentAttribute
 	}
 
 	private void setTypeTypeArgumentNames(List<String> typeTypeArgumentNames) {
-		this.synchronizeList(typeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_COLLECTION);
+		this.synchronizeList(typeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_LIST);
 	}
 
 	/**

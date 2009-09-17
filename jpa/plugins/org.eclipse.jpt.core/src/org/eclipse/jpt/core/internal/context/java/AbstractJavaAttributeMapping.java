@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -24,7 +25,9 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * Java attribute mapping
+ */
 public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	extends AbstractJavaJpaContextNode
 	implements JavaAttributeMapping
@@ -33,6 +36,7 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	
 	protected T mappingAnnotation;
 	
+
 	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.resourcePersistentAttribute = parent.getResourcePersistentAttribute();
@@ -96,7 +100,6 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	}
 	
 	public boolean isOwnedBy(RelationshipMapping mapping) {
-		// Default implementation - override where needed
 		return false;
 	}
 
@@ -120,8 +123,13 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 		// do nothing by default
 	}
 
-	
-	//************ Validation *************************
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
+	}
+
+
+	// ********** validation **********
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -144,17 +152,12 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getResourceMappingTextRange(astRoot);
+		TextRange textRange = this.getMappingAnnotationTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 	
-	protected TextRange getResourceMappingTextRange(CompilationUnit astRoot) {
+	protected TextRange getMappingAnnotationTextRange(CompilationUnit astRoot) {
 		return (this.mappingAnnotation == null) ? null : this.mappingAnnotation.getTextRange(astRoot);
 	}
 	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
-	}
-
 }

@@ -68,7 +68,7 @@ public interface PersistentType
 	 * Return the persistent type's persistent attributes.
 	 */
 	<T extends PersistentAttribute> ListIterator<T> attributes();
-		String ATTRIBUTES_LIST = "specifiedAttributes"; //$NON-NLS-1$
+		String ATTRIBUTES_LIST = "attributes"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of the persistent type's persistent attributes.

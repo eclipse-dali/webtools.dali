@@ -66,9 +66,9 @@ class MySQL
 	 * stored as directories and tables are stored as files in the underlying
 	 * O/S; and the case-sensitivity of the names is determined by the behavior
 	 * of filenames on the O/S. Then, to complicate things,
-	 * none of the other identifiers, like table and column names, are folded;
+	 * none of the other identifiers, like index and column names, are folded;
 	 * but they are case-insensitive, unless delimited. See
-	 * http://dev.mysql.com/doc/refman/6.0/en/identifier-case-sensitivity.html.)
+	 * http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html.)
 	 */
 	@Override
 	FoldingStrategy getFoldingStrategy() {
