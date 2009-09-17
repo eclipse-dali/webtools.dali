@@ -61,6 +61,7 @@ public class JptUtilityTests {
 		suite.addTestSuite(SimpleStackTests.class);
 		suite.addTestSuite(StringToolsTests.class);
 		suite.addTestSuite(SynchronizedBooleanTests.class);
+		suite.addTestSuite(SynchronizedIntTests.class);
 		suite.addTestSuite(SynchronizedObjectTests.class);
 		suite.addTestSuite(SynchronizedStackTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
