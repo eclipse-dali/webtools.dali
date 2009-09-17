@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
@@ -22,212 +22,282 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-
+/**
+ * Java multi-relationship (m:m, 1:m) mapping
+ */
 public abstract class AbstractJavaMultiRelationshipMapping<T extends RelationshipMappingAnnotation>
 	extends AbstractJavaRelationshipMapping<T> 
-	implements MultiRelationshipMapping
+	implements JavaMultiRelationshipMapping
 {
 	protected String orderBy;
 
-	protected boolean isNoOrdering;
+	protected boolean noOrdering = false;
 
-	protected boolean isPkOrdering;
+	protected boolean pkOrdering = false;
 
-	protected boolean isCustomOrdering;
-	
+	protected boolean customOrdering = false;
+
 	protected String mapKey;
-	
-	
+
+
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
 
-	public String getOrderBy() {
-		return this.orderBy;
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.initializeOrderBy();
+		this.initializeMapKey();
 	}
 
-	public void setOrderBy(String newOrderBy) {
-		String oldOrderBy = this.orderBy;
-		this.orderBy = newOrderBy;
-		if (newOrderBy == null) {
-			if (getResourceOrderBy() != null) { 
-				removeResourceOrderBy();
-			}
-		}
-		else {
-			if (getResourceOrderBy() == null) {
-				addResourceOrderBy();
-			}
-			getResourceOrderBy().setValue(newOrderBy);
-		}
-		firePropertyChanged(MultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
-	}
-	
-	protected void setOrderBy_(String newOrderBy) {
-		String oldOrderBy = this.orderBy;
-		this.orderBy = newOrderBy;
-		firePropertyChanged(MultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
-	}
-	
-	protected OrderByAnnotation getResourceOrderBy() {
-		return (OrderByAnnotation) getResourcePersistentAttribute().
-				getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-	}
-	
-	protected OrderByAnnotation addResourceOrderBy() {
-		return (OrderByAnnotation) getResourcePersistentAttribute().
-				addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-	}
-	
-	protected void removeResourceOrderBy() {
-		getResourcePersistentAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-	}
-	
-	public boolean isNoOrdering() {
-		return this.isNoOrdering;
+	@Override
+	protected void update() {
+		super.update();
+		this.updateOrderBy();
+		this.updateMapKey();
 	}
 
-	public void setNoOrdering(boolean newNoOrdering) {
-		boolean oldNoOrdering = this.isNoOrdering;
-		this.isNoOrdering = newNoOrdering;
-		if (newNoOrdering) {
-			if (getResourceOrderBy() != null) {
-				removeResourceOrderBy();
-			}
-		}
-		else {
-			//??
-		}
-		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);
-	}
-	
-	protected void setNoOrdering_(boolean newNoOrdering) {
-		boolean oldNoOrdering = this.isNoOrdering;
-		this.isNoOrdering = newNoOrdering;
-		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);			
-	}
 
-	public boolean isPkOrdering() {
-		return this.isPkOrdering;
-	}
-	
-	public void setPkOrdering(boolean newPkOrdering) {
-		boolean oldPkOrdering = this.isPkOrdering;
-		this.isPkOrdering = newPkOrdering;
-		if (newPkOrdering) {
-			if (getResourceOrderBy() == null) {
-				addResourceOrderBy();
-			}
-			else {
-				getResourceOrderBy().setValue(null);
-			}
-		}
-		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
-	}
-	
-	protected void setPkOrdering_(boolean newPkOrdering) {
-		boolean oldPkOrdering = this.isPkOrdering;
-		this.isPkOrdering = newPkOrdering;
-		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
-	}
-
-	public boolean isCustomOrdering() {
-		return this.isCustomOrdering;
-	}
-
-	public void setCustomOrdering(boolean newCustomOrdering) {
-		boolean oldCustomOrdering = this.isCustomOrdering;
-		this.isCustomOrdering = newCustomOrdering;
-		if (newCustomOrdering) {
-			setOrderBy(""); //$NON-NLS-1$
-		}
-		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
-	}
-	
-	protected void setCustomOrdering_(boolean newCustomOrdering) {
-		boolean oldCustomOrdering = this.isCustomOrdering;
-		this.isCustomOrdering = newCustomOrdering;
-		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
-	}
-	
-	public FetchType getDefaultFetch() {
-		return MultiRelationshipMapping.DEFAULT_FETCH_TYPE;
-	}
-
-	public String getMapKey() {
-		return this.mapKey;
-	}
-
-	public void setMapKey(String newMapKey) {
-		String oldMapKey = this.mapKey;
-		this.mapKey = newMapKey;
-		if (this.valuesAreDifferent(oldMapKey, newMapKey)) {
-			if (this.getMapKeyResource() != null) {
-				if (newMapKey != null) {
-					this.getMapKeyResource().setName(newMapKey);
-				}
-				else {
-					getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);				
-				}
-			}
-			else if (newMapKey != null) {
-				getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
-				getMapKeyResource().setName(newMapKey);
-			}
-		}
-		firePropertyChanged(MultiRelationshipMapping.MAP_KEY_PROPERTY, oldMapKey, newMapKey);
-	}
-
-	protected void setMapKey_(String newMapKey) {
-		String oldMapKey = this.mapKey;
-		this.mapKey = newMapKey;
-		firePropertyChanged(MultiRelationshipMapping.MAP_KEY_PROPERTY, oldMapKey, newMapKey);
-	}
-
-//TODO default orderBy - this wasn't supported in 1.0 either
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		super.refreshDefaults(defaultsContext);
-//		//		if (isOrderByPk()) {
-//		//			refreshDefaultOrderBy(defaultsContext);
-//		//		}
-//	}
-//
-//	//primary key ordering when just the @OrderBy annotation is present
-//	protected void refreshDefaultOrderBy(DefaultsContext defaultsContext) {
-//		IEntity targetEntity = getResolvedTargetEntity();
-//		if (targetEntity != null) {
-//			setOrderBy(targetEntity.primaryKeyAttributeName() + " ASC");
-//		}
-//	}
+	// ********** AbstractJavaRelationshipMapping implementation **********  
 
 	@Override
 	protected String buildDefaultTargetEntity() {
 		return this.getPersistentAttribute().getMultiReferenceEntityTypeName();
 	}
-	
-	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
-		if (getMapKeyResource() != null) {
-			return getMapKeyResource().nameTouches(pos, astRoot);
+
+
+	// ********** order by **********  
+
+	public String getOrderBy() {
+		return this.orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		String old = this.orderBy;
+		this.orderBy = orderBy;
+		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
+		if (orderBy == null) {
+			if (orderByAnnotation != null) { 
+				this.removeOrderByAnnotation();
+			}
+		} else {
+			if (orderByAnnotation == null) {
+				orderByAnnotation = this.addOrderByAnnotation();
+			}
+			orderByAnnotation.setValue(orderBy);
 		}
-		return false;
-	}
-	
-	protected MapKeyAnnotation getMapKeyResource() {
-		return (MapKeyAnnotation) this.resourcePersistentAttribute.
-			getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		this.firePropertyChanged(ORDER_BY_PROPERTY, old, orderBy);
 	}
 
-	public Iterator<String> candidateMapKeyNames() {
-		return this.allTargetEntityAttributeNames();
+	protected void setOrderBy_(String orderBy) {
+		String old = this.orderBy;
+		this.orderBy = orderBy;
+		this.firePropertyChanged(ORDER_BY_PROPERTY, old, orderBy);
 	}
 
-	protected Iterator<String> candidateMapKeyNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateMapKeyNames(), filter);
+	protected void initializeOrderBy() {
+		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
+		if (orderByAnnotation == null) {
+			this.noOrdering = true;
+		} else {
+			this.orderBy = orderByAnnotation.getValue();
+			if (orderByAnnotation.getValue() == null) {
+				this.pkOrdering = true;
+			} else {
+				this.customOrdering = true;
+			}
+		}
 	}
 
-	protected Iterator<String> javaCandidateMapKeyNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateMapKeyNames(filter));
+	protected void updateOrderBy() {
+		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
+		if (orderByAnnotation == null) {
+			this.setOrderBy_(null);
+			this.setNoOrdering_(true);
+			this.setPkOrdering_(false);
+			this.setCustomOrdering_(false);
+		} else {
+			String ob = orderByAnnotation.getValue();
+			this.setOrderBy_(ob);
+			if (ob == null) {
+				this.setPkOrdering_(true);
+				this.setCustomOrdering_(false);
+				this.setNoOrdering_(false);
+			}
+			else {
+				this.setCustomOrdering_(true);
+				this.setPkOrdering_(false);
+				this.setNoOrdering_(false);
+			}
+		}
 	}
+
+	protected OrderByAnnotation getOrderByAnnotation() {
+		return (OrderByAnnotation) this.resourcePersistentAttribute.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+	}
+
+	protected OrderByAnnotation addOrderByAnnotation() {
+		return (OrderByAnnotation) this.resourcePersistentAttribute.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void removeOrderByAnnotation() {
+		this.resourcePersistentAttribute.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+	}
+
+
+	// ********** no ordering **********  
+
+	public boolean isNoOrdering() {
+		return this.noOrdering;
+	}
+
+	public void setNoOrdering(boolean noOrdering) {
+		boolean old = this.noOrdering;
+		this.noOrdering = noOrdering;
+		if (noOrdering) {
+			if (this.getOrderByAnnotation() != null) {
+				this.removeOrderByAnnotation();
+			}
+		} else {
+			// the 'noOrdering' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setNoOrdering_(boolean)
+		}
+		this.firePropertyChanged(NO_ORDERING_PROPERTY, old, noOrdering);
+	}
+
+	protected void setNoOrdering_(boolean noOrdering) {
+		boolean old = this.noOrdering;
+		this.noOrdering = noOrdering;
+		this.firePropertyChanged(NO_ORDERING_PROPERTY, old, noOrdering);	
+	}
+
+
+	// ********** pk ordering **********  
+
+	public boolean isPkOrdering() {
+		return this.pkOrdering;
+	}
+
+	public void setPkOrdering(boolean pkOrdering) {
+		boolean old = this.pkOrdering;
+		this.pkOrdering = pkOrdering;
+		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
+		if (pkOrdering) {
+			if (orderByAnnotation == null) {
+				this.addOrderByAnnotation();
+			} else {
+				orderByAnnotation.setValue(null);
+			}
+		} else {
+			// the 'pkOrdering' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setPkOrdering_(boolean)
+		}
+		this.firePropertyChanged(PK_ORDERING_PROPERTY, old, pkOrdering);
+	}
+
+	protected void setPkOrdering_(boolean pkOrdering) {
+		boolean old = this.pkOrdering;
+		this.pkOrdering = pkOrdering;
+		this.firePropertyChanged(PK_ORDERING_PROPERTY, old, pkOrdering);
+	}
+
+
+	// ********** custom ordering **********  
+
+	public boolean isCustomOrdering() {
+		return this.customOrdering;
+	}
+
+	public void setCustomOrdering(boolean customOrdering) {
+		boolean old = this.customOrdering;
+		this.customOrdering = customOrdering;
+		if (customOrdering) {
+			this.setOrderBy(""); //$NON-NLS-1$
+		} else {
+			// the 'customOrdering' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setCustomOrdering_(boolean)
+		}
+		this.firePropertyChanged(CUSTOM_ORDERING_PROPERTY, old, customOrdering);
+	}
+
+	protected void setCustomOrdering_(boolean customOrdering) {
+		boolean old = this.customOrdering;
+		this.customOrdering = customOrdering;
+		this.firePropertyChanged(CUSTOM_ORDERING_PROPERTY, old, customOrdering);
+	}
+
+
+	// ********** Fetchable implementation **********  
+
+	public FetchType getDefaultFetch() {
+		return DEFAULT_FETCH_TYPE;
+	}
+
+
+	// ********** map key **********  
+
+	public String getMapKey() {
+		return this.mapKey;
+	}
+
+	public void setMapKey(String mapKey) {
+		String old = this.mapKey;
+		this.mapKey = mapKey;
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		if (mapKey == null) {
+			if (mapKeyAnnotation != null) {
+				this.removeMapKeyAnnotation();
+			}
+		} else {
+			if (mapKeyAnnotation == null) {
+				mapKeyAnnotation = this.addMapKeyAnnotation();
+			}
+			mapKeyAnnotation.setName(mapKey);
+		}
+		this.firePropertyChanged(MAP_KEY_PROPERTY, old, mapKey);
+	}
+
+	protected void setMapKey_(String mapKey) {
+		String old = this.mapKey;
+		this.mapKey = mapKey;
+		this.firePropertyChanged(MAP_KEY_PROPERTY, old, mapKey);
+	}
+
+	protected void initializeMapKey() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		if (mapKeyAnnotation != null) {
+			this.mapKey = mapKeyAnnotation.getName();
+		}
+	}
+
+	protected void updateMapKey() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		this.setMapKey_((mapKeyAnnotation == null) ? null : mapKeyAnnotation.getName());
+	}
+
+	protected MapKeyAnnotation getMapKeyAnnotation() {
+		return (MapKeyAnnotation) this.resourcePersistentAttribute.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	}
+
+	protected MapKeyAnnotation addMapKeyAnnotation() {
+		return (MapKeyAnnotation) this.resourcePersistentAttribute.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void removeMapKeyAnnotation() {
+		this.resourcePersistentAttribute.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	}
+
+	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
+	}
+
+
+	// ********** Java completion proposals **********  
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -240,70 +310,17 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		}
 		return null;
 	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyResource();
-		if (mapKeyAnnotation != null) {
-			this.mapKey = mapKeyAnnotation.getName();
-		}
-		this.initializeOrderBy();
+
+	protected Iterator<String> javaCandidateMapKeyNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateMapKeyNames(filter));
 	}
-	
-	protected void initializeOrderBy() {
-		OrderByAnnotation orderByAnnotation = this.getResourceOrderBy();
-		if (orderByAnnotation != null) {
-			this.orderBy = orderByAnnotation.getValue();
-			if (orderByAnnotation.getValue() == null) {
-				this.isPkOrdering = true;
-			}
-			else {
-				this.isCustomOrdering = true;
-			}
-		}
-		else {
-			this.isNoOrdering = true;
-		}
+
+	protected Iterator<String> candidateMapKeyNames(Filter<String> filter) {
+		return new FilteringIterator<String, String>(this.candidateMapKeyNames(), filter);
 	}
-	
-	@Override
-	protected void update() {
-		super.update();
-		this.updateMapKey();
-		this.updateOrderBy();
-	}	
-	
-	protected void updateMapKey() {
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyResource();
-		if (mapKeyAnnotation != null) {
-			setMapKey_(mapKeyAnnotation.getName());
-		}
-		else {
-			setMapKey_(null);
-		}
+
+	public Iterator<String> candidateMapKeyNames() {
+		return this.allTargetEntityAttributeNames();
 	}
-	
-	protected void updateOrderBy() {
-		OrderByAnnotation orderByAnnotation = this.getResourceOrderBy();
-		if (orderByAnnotation != null) {
-			setOrderBy_(orderByAnnotation.getValue());
-			if (orderByAnnotation.getValue() == null) {
-				setPkOrdering_(true);
-				setCustomOrdering_(false);
-				setNoOrdering_(false);
-			}
-			else {
-				setPkOrdering_(false);
-				setCustomOrdering_(true);
-				setNoOrdering_(false);
-			}
-		}
-		else {
-			setOrderBy_(null);
-			setPkOrdering_(false);
-			setCustomOrdering_(false);
-			setNoOrdering_(true);
-		}
-	}
+
 }

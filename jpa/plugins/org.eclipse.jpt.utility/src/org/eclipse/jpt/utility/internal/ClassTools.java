@@ -17,6 +17,8 @@ import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.Stack;
 
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+
 /**
  * Convenience methods related to the java.lang.reflect package.
  * These methods provide shortcuts for manipulating objects via
@@ -48,7 +50,7 @@ public final class ClassTools {
 	public static final char REFERENCE_CLASS_CODE = 'L';
 	public static final char REFERENCE_CLASS_NAME_DELIMITER = ';';
 	
-	private static Primitive[] PRIMITIVES;  // pseudo-'final' - lazy-initialized
+	private static final Iterable<Primitive> PRIMITIVES = buildPrimitives();
 	public static final char BYTE_CODE = 'B';
 	public static final char CHAR_CODE = 'C';
 	public static final char DOUBLE_CODE = 'D';
@@ -58,8 +60,8 @@ public final class ClassTools {
 	public static final char SHORT_CODE = 'S';
 	public static final char BOOLEAN_CODE = 'Z';
 	public static final char VOID_CODE = 'V';
-	private static int MAX_PRIMITIVE_CLASS_NAME_LENGTH = -1;  // pseudo-'final' - lazy-initialized
-	private static int MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH = -1;  // pseudo-'final' - lazy-initialized
+	private static final int MAX_PRIMITIVE_CLASS_NAME_LENGTH = calculateMaxPrimitiveClassNameLength();
+	private static final int MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH = calculateMaxPrimitiveWrapperClassNameLength();
 
 	public static final String VOID_CLASS_NAME = void.class.getName();
 	public static final String VOID_WRAPPER_CLASS_NAME = java.lang.Void.class.getName();
@@ -1283,12 +1285,11 @@ public final class ClassTools {
 	 * NB: void.class.isPrimitive() == true
 	 */
 	public static boolean classNamedIsPrimitive(String className) {
-		if (classNamedIsArray(className) || (className.length() > maxPrimitiveClassNameLength())) {
+		if (classNamedIsArray(className) || (className.length() > MAX_PRIMITIVE_CLASS_NAME_LENGTH)) {
 			return false;  // performance tweak
 		}
-		Primitive[] codes = primitives();
-		for (int i = codes.length; i-- > 0; ) {
-			if (codes[i].javaClass.getName().equals(className)) {
+		for (Primitive primitive : PRIMITIVES) {
+			if (primitive.javaClass.getName().equals(className)) {
 				return true;
 			}
 		}
@@ -1306,18 +1307,43 @@ public final class ClassTools {
 	}
 
 	/**
+	 * Return the name of the wrapper class corresponding to the specified
+	 * primitive class.
+	 */
+	public static String wrapperClassName(String primitiveClassName) {
+		for (Primitive primitive : PRIMITIVES) {
+			if (primitive.javaClass.getName().equals(primitiveClassName)) {
+				return primitive.wrapperClass.getName();
+			}
+		}
+		throw new IllegalArgumentException("unknown primitive: " + primitiveClassName); //$NON-NLS-1$
+	}
+
+	/**
+	 * Return the name of the wrapper class corresponding to the specified
+	 * primitive class.
+	 */
+	public static Class<?> wrapperClass(Class<?> primitiveClass) {
+		for (Primitive primitive : PRIMITIVES) {
+			if (primitive.javaClass == primitiveClass) {
+				return primitive.wrapperClass;
+			}
+		}
+		throw new IllegalArgumentException("unknown primitive: " + primitiveClass.getName()); //$NON-NLS-1$
+	}
+
+	/**
 	 * Return whether the specified class is a primitive wrapper
 	 * class (i.e. 'java.lang.Void' or one of the primitive variable wrapper classes,
 	 * ['java.lang.Boolean', 'java.lang.Integer', 'java.lang.Float', etc.]).
 	 * NB: void.class.isPrimitive() == true
 	 */
 	public static boolean classNamedIsPrimitiveWrapperClass(String className) {
-		if (classNamedIsArray(className) || (className.length() > maxPrimitiveWrapperClassNameLength())) {
+		if (classNamedIsArray(className) || (className.length() > MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH)) {
 			return false;  // performance tweak
 		}
-		Primitive[] codes = primitives();
-		for (int i = codes.length; i-- > 0; ) {
-			if (codes[i].wrapperClass.getName().equals(className)) {
+		for (Primitive primitive : PRIMITIVES) {
+			if (primitive.wrapperClass.getName().equals(className)) {
 				return true;
 			}
 		}
@@ -1341,12 +1367,11 @@ public final class ClassTools {
 	 * NB: void.class.isPrimitive() == true
 	 */
 	public static boolean classIsPrimitiveWrapperClass(Class<?> javaClass) {
-		if (javaClass.isArray() || (javaClass.getName().length() > maxPrimitiveWrapperClassNameLength())) {
+		if (javaClass.isArray() || (javaClass.getName().length() > MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH)) {
 			return false;  // performance tweak
 		}
-		Primitive[] codes = primitives();
-		for (int i = codes.length; i-- > 0; ) {
-			if (codes[i].wrapperClass == javaClass) {
+		for (Primitive primitive : PRIMITIVES) {
+			if (primitive.wrapperClass == javaClass) {
 				return true;
 			}
 		}
@@ -1384,10 +1409,9 @@ public final class ClassTools {
 	 * @see java.lang.Class#getName()
 	 */
 	public static Class<?> classForCode(char classCode) {
-		Primitive[] codes = primitives();
-		for (int i = codes.length; i-- > 0; ) {
-			if (codes[i].code == classCode) {
-				return codes[i].javaClass;
+		for (Primitive primitive : PRIMITIVES) {
+			if (primitive.code == classCode) {
+				return primitive.javaClass;
 			}
 		}
 		throw new IllegalArgumentException(String.valueOf(classCode));
@@ -1406,11 +1430,10 @@ public final class ClassTools {
 	 * @see java.lang.Class#getName()
 	 */
 	public static char codeForClass(Class<?> javaClass) {
-		if (( ! javaClass.isArray()) && (javaClass.getName().length() <= maxPrimitiveClassNameLength())) {
-			Primitive[] codes = primitives();
-			for (int i = codes.length; i-- > 0; ) {
-				if (codes[i].javaClass == javaClass) {
-					return codes[i].code;
+		if (( ! javaClass.isArray()) && (javaClass.getName().length() <= MAX_PRIMITIVE_CLASS_NAME_LENGTH)) {
+			for (Primitive primitive : PRIMITIVES) {
+				if (primitive.javaClass == javaClass) {
+					return primitive.code;
 				}
 			}
 		}
@@ -1422,11 +1445,10 @@ public final class ClassTools {
 	 * @see java.lang.Class#getName()
 	 */
 	public static char codeForClassNamed(String className) {
-		if (( ! classNamedIsArray(className)) && (className.length() <= maxPrimitiveClassNameLength())) {
-			Primitive[] codes = primitives();
-			for (int i = codes.length; i-- > 0; ) {
-				if (codes[i].javaClass.getName().equals(className)) {
-					return codes[i].code;
+		if (( ! classNamedIsArray(className)) && (className.length() <= MAX_PRIMITIVE_CLASS_NAME_LENGTH)) {
+			for (Primitive primitive : PRIMITIVES) {
+				if (primitive.javaClass.getName().equals(className)) {
+					return primitive.code;
 				}
 			}
 		}
@@ -1472,11 +1494,10 @@ public final class ClassTools {
 		// primitives cannot be loaded via Class#forName(),
 		// so check for a primitive class name first
 		Primitive pcc = null;
-		if (elementTypeName.length() <= maxPrimitiveClassNameLength()) {  // performance tweak
-			Primitive[] codes = primitives();
-			for (int i = codes.length; i-- > 0; ) {
-				if (codes[i].javaClass.getName().equals(elementTypeName)) {
-					pcc = codes[i];
+		if (elementTypeName.length() <= MAX_PRIMITIVE_CLASS_NAME_LENGTH) {  // performance tweak
+			for (Primitive primitive : PRIMITIVES) {
+				if (primitive.javaClass.getName().equals(elementTypeName)) {
+					pcc = primitive;
 					break;
 				}
 			}
@@ -1586,11 +1607,10 @@ public final class ClassTools {
 
 		// look for a primitive first
 		Primitive pcc = null;
-		if (elementTypeName.length() <= maxPrimitiveClassNameLength()) {  // performance tweak
-			Primitive[] codes = primitives();
-			for (int i = codes.length; i-- > 0; ) {
-				if (codes[i].javaClass.getName().equals(elementTypeName)) {
-					pcc = codes[i];
+		if (elementTypeName.length() <= MAX_PRIMITIVE_CLASS_NAME_LENGTH) {  // performance tweak
+			for (Primitive primitive : PRIMITIVES) {
+				if (primitive.javaClass.getName().equals(elementTypeName)) {
+					pcc = primitive;
 					break;
 				}
 			}
@@ -1610,37 +1630,21 @@ public final class ClassTools {
 
 	// ********** primitive constants **********
 
-	private synchronized static int maxPrimitiveClassNameLength() {
-		if (MAX_PRIMITIVE_CLASS_NAME_LENGTH == -1) {
-			MAX_PRIMITIVE_CLASS_NAME_LENGTH = calculateMaxPrimitiveClassNameLength();
-		}
-		return MAX_PRIMITIVE_CLASS_NAME_LENGTH;
-	}
-
 	private static int calculateMaxPrimitiveClassNameLength() {
 		int max = -1;
-		Primitive[] codes = primitives();
-		for (int i = codes.length; i-- > 0; ) {
-			int len = codes[i].javaClass.getName().length();
+		for (Primitive primitive : PRIMITIVES) {
+			int len = primitive.javaClass.getName().length();
 			if (len > max) {
 				max = len;
 			}
 		}
 		return max;
-	}
-
-	private synchronized static int maxPrimitiveWrapperClassNameLength() {
-		if (MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH == -1) {
-			MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH = calculateMaxPrimitiveWrapperClassNameLength();
-		}
-		return MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH;
 	}
 
 	private static int calculateMaxPrimitiveWrapperClassNameLength() {
 		int max = -1;
-		Primitive[] codes = primitives();
-		for (int i = codes.length; i-- > 0; ) {
-			int len = codes[i].wrapperClass.getName().length();
+		for (Primitive primitive : PRIMITIVES) {
+			int len = primitive.wrapperClass.getName().length();
 			if (len > max) {
 				max = len;
 			}
@@ -1648,28 +1652,21 @@ public final class ClassTools {
 		return max;
 	}
 
-	private synchronized static Primitive[] primitives() {
-		if (PRIMITIVES == null) {
-			PRIMITIVES = buildPrimitives();
-		}
-		return PRIMITIVES;
-	}
-	
 	/**
 	 * NB: void.class.isPrimitive() == true
 	 */
-	private static Primitive[] buildPrimitives() {
-		Primitive[] result = new Primitive[9];
-		result[0] = new Primitive(BYTE_CODE, java.lang.Byte.class);
-		result[1] = new Primitive(CHAR_CODE, java.lang.Character.class);
-		result[2] = new Primitive(DOUBLE_CODE, java.lang.Double.class);
-		result[3] = new Primitive(FLOAT_CODE, java.lang.Float.class);
-		result[4] = new Primitive(INT_CODE, java.lang.Integer.class);
-		result[5] = new Primitive(LONG_CODE, java.lang.Long.class);
-		result[6] = new Primitive(SHORT_CODE, java.lang.Short.class);
-		result[7] = new Primitive(BOOLEAN_CODE, java.lang.Boolean.class);
-		result[8] = new Primitive(VOID_CODE, java.lang.Void.class);
-		return result;
+	private static Iterable<Primitive> buildPrimitives() {
+		Primitive[] array = new Primitive[9];
+		array[0] = new Primitive(BYTE_CODE, java.lang.Byte.class);
+		array[1] = new Primitive(CHAR_CODE, java.lang.Character.class);
+		array[2] = new Primitive(DOUBLE_CODE, java.lang.Double.class);
+		array[3] = new Primitive(FLOAT_CODE, java.lang.Float.class);
+		array[4] = new Primitive(INT_CODE, java.lang.Integer.class);
+		array[5] = new Primitive(LONG_CODE, java.lang.Long.class);
+		array[6] = new Primitive(SHORT_CODE, java.lang.Short.class);
+		array[7] = new Primitive(BOOLEAN_CODE, java.lang.Boolean.class);
+		array[8] = new Primitive(VOID_CODE, java.lang.Void.class);
+		return new ArrayIterable<Primitive>(array);
 	}
 
 

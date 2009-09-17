@@ -23,7 +23,9 @@ public class GenericMappingFileRef2_0
 	}
 
 	public void synchronizeStaticMetamodel() {
-		this.getMappingFile().synchronizeStaticMetamodel();
+		if (this.mappingFile != null) {
+			this.mappingFile.synchronizeStaticMetamodel();
+		}
 	}
 
 }

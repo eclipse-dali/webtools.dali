@@ -777,6 +777,20 @@ public final class CollectionTools {
 	}
 
 
+	// ********** hash code **********
+
+	public static int hashCode(Iterable<?> iterable) {
+		if (iterable == null) {
+			return 0;
+		}
+		int hash = 1;
+		for (Object element : iterable) {
+			hash = 31 * hash + (element == null ? 0 : element.hashCode());
+		}
+		return hash;
+	}
+
+
 	// ********** index of **********
 
 	/**

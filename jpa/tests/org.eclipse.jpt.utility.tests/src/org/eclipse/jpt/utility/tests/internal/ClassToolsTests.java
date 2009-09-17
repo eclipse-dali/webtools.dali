@@ -543,6 +543,34 @@ public class ClassToolsTests extends TestCase {
 		assertFalse(ClassTools.classNamedIsVariablePrimitive(java.lang.Boolean.class.getName()));
 	}
 
+	public void testWrapperClassName() {
+		assertEquals(java.lang.Void.class.getName(), ClassTools.wrapperClassName(void.class.getName()));
+		assertEquals(java.lang.Integer.class.getName(), ClassTools.wrapperClassName(int.class.getName()));
+		assertEquals(java.lang.Float.class.getName(), ClassTools.wrapperClassName(float.class.getName()));
+		assertEquals(java.lang.Boolean.class.getName(), ClassTools.wrapperClassName(boolean.class.getName()));
+
+		try {
+			ClassTools.wrapperClassName(java.lang.String.class.getName());
+			fail("should not get here...");
+		} catch (IllegalArgumentException ex) {
+			// expected
+		}
+	}
+
+	public void testWrapperClass() {
+		assertEquals(java.lang.Void.class, ClassTools.wrapperClass(void.class));
+		assertEquals(java.lang.Integer.class, ClassTools.wrapperClass(int.class));
+		assertEquals(java.lang.Float.class, ClassTools.wrapperClass(float.class));
+		assertEquals(java.lang.Boolean.class, ClassTools.wrapperClass(boolean.class));
+
+		try {
+			ClassTools.wrapperClass(java.lang.String.class);
+			fail("should not get here...");
+		} catch (IllegalArgumentException ex) {
+			// expected
+		}
+	}
+
 	public void testClassNamedIsVariablePrimitiveWrapperClass() {
 		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Void.class.getName()));
 

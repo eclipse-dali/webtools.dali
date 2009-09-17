@@ -7,15 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2;
+package org.eclipse.jpt.core.jpa2.context.orm;
 
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 
 /**
- * JPA 2.0 project.
+ * JPA 2.0 ORM persistent attribute
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,23 +21,8 @@ import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaProject2_0
-	extends JpaProject, StaticMetamodelGenerator
+public interface OrmPersistentAttribute2_0
+	extends OrmPersistentAttribute, PersistentAttribute2_0
 {
-
-	/**
-	 * Covariant override.
-	 */
-	public JpaRootContextNode2_0 getRootContextNode();
-
-
-	// ********** Static Metamodel **********
-
-	/**
-	 * 
-	 */
-	void synchronizeStaticMetamodel(PersistentType persistentType);
-
-	IPackageFragmentRoot getStaticMetaModelSourceFolder();
-
+	// nothing yet
 }

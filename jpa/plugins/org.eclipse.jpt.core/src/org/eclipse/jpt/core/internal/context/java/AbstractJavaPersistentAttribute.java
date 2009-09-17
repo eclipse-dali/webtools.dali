@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -21,16 +23,20 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
+import org.eclipse.jpt.core.internal.jpa2.context.SimpleStaticMetamodelField;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.StaticMetamodelField;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -40,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaPersistentAttribute
 	extends AbstractJavaJpaContextNode
-	implements JavaPersistentAttribute
+	implements JavaPersistentAttribute2_0
 {
 	protected String name;
 
@@ -48,9 +54,10 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected JavaAttributeMapping specifiedMapping;
 
+	protected AccessType defaultAccess;
+
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 
-	protected AccessType defaultAccess;
 
 	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super(parent);
@@ -59,6 +66,19 @@ public abstract class AbstractJavaPersistentAttribute
 		this.defaultMapping = buildDefaultMapping();
 		this.specifiedMapping = buildSpecifiedMapping();
 		this.defaultAccess = buildDefaultAccess();
+	}
+
+	public void update() {
+		this.setName(this.buildName());
+		this.updateDefaultMapping();
+		this.updateSpecifiedMapping();
+		this.setDefaultAccess(this.buildDefaultAccess());
+	}
+
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		getMapping().postUpdate();
 	}
 
 
@@ -100,10 +120,14 @@ public abstract class AbstractJavaPersistentAttribute
 		return this.defaultAccess;
 	}
 	
-	protected void setDefaultAccess(AccessType newAccess) {
+	protected void setDefaultAccess(AccessType defaultAccess) {
 		AccessType old = this.defaultAccess;
-		this.defaultAccess = newAccess;
-		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, this.defaultAccess);
+		this.defaultAccess = defaultAccess;
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, defaultAccess);
+	}
+
+	protected AccessType buildDefaultAccess() {
+		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
 	}
 
 
@@ -266,36 +290,12 @@ public abstract class AbstractJavaPersistentAttribute
 	protected static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
 
 	// ***** reference entities
-	public String getSingleReferenceEntityTypeName() {
-		return this.buildSingleReferenceEntityTypeName(this.resourcePersistentAttribute.getTypeName());
-	}
-
-	public String getMultiReferenceEntityTypeName() {
-		// 'typeName' may include array brackets but not generic type arguments
-		String typeName = this.resourcePersistentAttribute.getTypeName();
-		if (typeName == null) {
-			return null;
-		}
-		if (ClassTools.arrayDepthForTypeDeclaration(typeName) != 0) {
-			return null;  // arrays cannot hold entities
-		}
-		switch (this.resourcePersistentAttribute.typeTypeArgumentNamesSize()) {
-			case 0:
-				return null;
-			case 1:
-				return this.typeIsCollection(typeName) ? this.resourcePersistentAttribute.getTypeTypeArgumentName(0) : null;
-			case 2:
-				return this.typeIsMap(typeName) ? this.resourcePersistentAttribute.getTypeTypeArgumentName(1) : null;
-			default:
-				return null;
-		}
-	}
-
 	/**
 	 * 'typeName' may include array brackets ("[]")
 	 * but not generic type arguments (e.g. "<java.lang.String>")
 	 */
-	protected String buildSingleReferenceEntityTypeName(String typeName) {
+	public String getSingleReferenceEntityTypeName() {
+		String typeName = this.resourcePersistentAttribute.getTypeName();
 		if (typeName == null) {
 			return null;
 		}
@@ -308,41 +308,20 @@ public abstract class AbstractJavaPersistentAttribute
 		return typeName;
 	}
 
-	/**
-	 * return whether the specified type is one of the collection
-	 * types allowed by the JPA spec
-	 */
-	protected boolean typeIsCollection(String typeName) {
-		return ArrayTools.contains(COLLECTION_TYPE_NAMES, typeName);
+	public String getMultiReferenceEntityTypeName() {
+		// 'typeName' may include array brackets but not generic type arguments
+		String typeName = this.resourcePersistentAttribute.getTypeName();
+		return (typeName == null) ? null :
+				this.getJpaContainer(typeName).getMultiReferenceEntityTypeName(this.resourcePersistentAttribute);
 	}
-	protected static final String[] COLLECTION_TYPE_NAMES = {
-		java.util.Collection.class.getName(),
-		java.util.Set.class.getName(),
-		java.util.List.class.getName()
-	};
-
-	/**
-	 * return whether the specified type is one of the map
-	 * types allowed by the JPA spec
-	 */
-	protected boolean typeIsMap(String typeName) {
-		return ArrayTools.contains(MAP_TYPE_NAMES, typeName);
-	}
-	protected static final String[] MAP_TYPE_NAMES = {
-		java.util.Map.class.getName()
-	};
 
 	/**
 	 * return whether the specified type is one of the container
 	 * types allowed by the JPA spec
 	 */
 	protected boolean typeIsContainer(String typeName) {
-		return ArrayTools.contains(CONTAINER_TYPE_NAMES, typeName);
+		return this.getJpaContainer(typeName).isContainer();
 	}
-	protected static final String[] CONTAINER_TYPE_NAMES = ArrayTools.concatenate(
-		COLLECTION_TYPE_NAMES,
-		MAP_TYPE_NAMES
-	);
 
 	// ***** name
 	public String getName() {
@@ -409,6 +388,20 @@ public abstract class AbstractJavaPersistentAttribute
 	 */
 	public boolean mappingIsDefault(JavaAttributeMapping mapping) {
 		return this.defaultMapping == mapping;
+	}
+
+	protected void updateDefaultMapping() {
+		// There will always be a mapping definition, even if it is a "null" mapping provider ...
+		JavaAttributeMappingDefinition mappingDefinition = 
+				getJpaPlatform().getDefaultJavaAttributeMappingDefinition(this);
+		String mappingKey = mappingDefinition.getKey();
+		if (this.valuesAreEqual(this.defaultMapping.getKey(), mappingKey)) {
+			this.defaultMapping.update(this.resourcePersistentAttribute.
+					getNullAnnotation(mappingDefinition.getAnnotationName()));
+		} 
+		else {
+			setDefaultMapping(buildDefaultMapping(mappingDefinition));
+		}
 	}
 
 	// ***** specified mapping
@@ -489,8 +482,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 	
 	protected JavaAttributeMapping buildMappingFromMappingKey(String key) {
-		JavaAttributeMappingDefinition mappingDefinition = 
-				getJpaPlatform().getSpecifiedJavaAttributeMappingDefinition(key);
+		JavaAttributeMappingDefinition mappingDefinition = getJpaPlatform().getSpecifiedJavaAttributeMappingDefinition(key);
 		JavaAttributeMapping mapping = mappingDefinition.buildMapping(this, getJpaFactory());
 		//no mapping.initialize(JavaResourcePersistentAttribute) call here
 		//we do not yet have a mapping annotation so we can't call initialize
@@ -500,36 +492,6 @@ public abstract class AbstractJavaPersistentAttribute
 	protected Iterator<String> supportingAnnotationNames() {
 		JavaAttributeMapping mapping = this.getMapping();
 		return (mapping != null) ? mapping.supportingAnnotationNames() : EmptyIterator.<String>instance();
-	}
-
-
-	// ********** updating **********
-
-	public void update() {
-		this.setName(this.buildName());
-		this.updateDefaultMapping();
-		this.updateSpecifiedMapping();
-		this.setDefaultAccess(buildDefaultAccess());
-	}
-	
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		getMapping().postUpdate();
-	}
-	
-	protected void updateDefaultMapping() {
-		// There will always be a mapping definition, even if it is a "null" mapping provider ...
-		JavaAttributeMappingDefinition mappingDefinition = 
-				getJpaPlatform().getDefaultJavaAttributeMappingDefinition(this);
-		String mappingKey = mappingDefinition.getKey();
-		if (this.valuesAreEqual(this.defaultMapping.getKey(), mappingKey)) {
-			this.defaultMapping.update(this.resourcePersistentAttribute.
-					getNullAnnotation(mappingDefinition.getAnnotationName()));
-		} 
-		else {
-			setDefaultMapping(buildDefaultMapping(mappingDefinition));
-		}
 	}
 
 	protected void updateSpecifiedMapping() {
@@ -546,10 +508,21 @@ public abstract class AbstractJavaPersistentAttribute
 			setSpecifiedMapping(buildSpecifiedMapping(mappingDefinition));
 		}
 	}
-	
-	protected AccessType buildDefaultAccess() {
-		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
+
+
+	// ********** misc overrides **********
+
+	@Override
+	public PersistentType getParent() {
+		return (PersistentType) super.getParent();
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(this.name);
+	}
+
 
 	// ********** validation **********
 
@@ -610,17 +583,209 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 
-	// ********** misc overrides **********
+	// ********** static metamodel **********
 
-	@Override
-	public PersistentType getParent() {
-		return (PersistentType) super.getParent();
+	public StaticMetamodelField getStaticMetamodelField() {
+		return new SimpleStaticMetamodelField(
+				this.getStaticMetamodelFieldModifiers(),
+				this.getStaticMetamodelFieldTypeName(),
+				this.getStaticMetamodelFieldTypeArgumentNames(),
+				this.getStaticMetamodelFieldName()
+			);
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.name);
+	protected Iterable<String> getStaticMetamodelFieldModifiers() {
+		return STANDARD_STATIC_METAMODEL_FIELD_MODIFIERS;
+	}
+
+	protected String getStaticMetamodelFieldTypeName() {
+		String typeName = this.resourcePersistentAttribute.getTypeName();
+		if (typeName == null) {
+			return JPA2_0.SINGULAR_ATTRIBUTE;
+		}
+		return this.getJpaContainer(typeName).getStaticMetamodelFieldTypeName();
+	}
+
+	protected Iterable<String> getStaticMetamodelFieldTypeArgumentNames() {
+		ArrayList<String> typeArgumentNames = new ArrayList<String>(3);
+		typeArgumentNames.add(this.getPersistentType().getName());
+		this.addStaticMetamodelFieldTypeArgumentNamesTo(typeArgumentNames);
+		return typeArgumentNames;
+	}
+
+	protected void addStaticMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames){
+		String typeName = this.resourcePersistentAttribute.getTypeName();
+		if (typeName == null) {
+			typeArgumentNames.add(OBJECT_CLASS_NAME);  // ???
+			return;
+		}
+		if (ClassTools.classNamedIsPrimitive(typeName)) {
+			typeArgumentNames.add(ClassTools.wrapperClassName(typeName));  // ???
+			return;
+		}
+		JpaContainer jpaContainer = this.getJpaContainer(typeName);
+		if (jpaContainer.isContainer()) {
+			jpaContainer.addStaticMetamodelFieldTypeArgumentNamesTo(typeArgumentNames, this.resourcePersistentAttribute);
+			return;
+		}
+		typeArgumentNames.add(typeName);
+	}
+
+	protected static final String OBJECT_CLASS_NAME = java.lang.Object.class.getName();
+
+	protected String getStaticMetamodelFieldName() {
+		return this.getName();
+	}
+
+
+	// ********** JPA containers **********
+
+	/**
+	 * Return the JPA container corresponding to the specified type;
+	 * return a "null" JPA container if the specified type is not one of the
+	 * container types allowed by the JPA spec.
+	 */
+	protected JpaContainer getJpaContainer(String typeName) {
+		for (JpaContainer jpaContainer : JPA_CONTAINERS) {
+			if (jpaContainer.getTypeName().equals(typeName)) {
+				return jpaContainer;
+			}
+		}
+		return JpaContainer.Null.instance();
+	}
+
+	protected static final Iterable<JpaContainer> JPA_CONTAINERS =
+		new ArrayIterable<JpaContainer>(new JpaContainer[] {
+			new CollectionJpaContainer(java.util.Collection.class, JPA2_0.COLLECTION_ATTRIBUTE),
+			new CollectionJpaContainer(java.util.Set.class, JPA2_0.SET_ATTRIBUTE),
+			new CollectionJpaContainer(java.util.List.class, JPA2_0.LIST_ATTRIBUTE),
+			new MapJpaContainer(java.util.Map.class, JPA2_0.MAP_ATTRIBUTE)
+		});
+
+	/**
+	 * JPA container interface (and null implementation)
+	 */
+	protected interface JpaContainer {
+		String getTypeName();
+		boolean isContainer();
+		String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
+		String getStaticMetamodelFieldTypeName();
+		void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute);
+
+		final class Null implements JpaContainer {
+			public static final JpaContainer INSTANCE = new Null();
+			public static JpaContainer instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Null() {
+				super();
+			}
+			public String getTypeName() {
+				return null;
+			}
+			public boolean isContainer() {
+				return false;
+			}
+			public String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+				return null;
+			}
+			public String getStaticMetamodelFieldTypeName() {
+				return JPA2_0.SINGULAR_ATTRIBUTE;
+			}
+			public void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute) {
+				throw new UnsupportedOperationException();
+			}
+			@Override
+			public String toString() {
+				return "JpaContainer.Null";  //$NON-NLS-1$
+			}
+		}
+
+	}
+
+	/**
+	 * Abstract JPA container
+	 */
+	protected abstract static class AbstractJpaContainer implements JpaContainer {
+		protected final String typeName;
+		protected final String staticMetamodelFieldTypeName;
+
+		protected AbstractJpaContainer(Class<?> containerClass, String staticMetamodelTypeDeclarationTypeName) {
+			this(containerClass.getName(), staticMetamodelTypeDeclarationTypeName);
+		}
+
+		protected AbstractJpaContainer(String typeName, String staticMetamodelFieldTypeName) {
+			super();
+			if ((typeName == null) || (staticMetamodelFieldTypeName == null)) {
+				throw new NullPointerException();
+			}
+			this.typeName = typeName;
+			this.staticMetamodelFieldTypeName = staticMetamodelFieldTypeName;
+		}
+
+		public String getTypeName() {
+			return this.typeName;
+		}
+
+		public boolean isContainer() {
+			return true;
+		}
+
+		public String getStaticMetamodelFieldTypeName() {
+			return this.staticMetamodelFieldTypeName;
+		}
+
+		public void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			String elementType = this.getMultiReferenceEntityTypeName(resourcePersistentAttribute);
+			typeArgumentNames.add((elementType != null) ? elementType : OBJECT_CLASS_NAME);
+		}
+
+	}
+
+	/**
+	 * Collection JPA container
+	 */
+	protected static class CollectionJpaContainer extends AbstractJpaContainer {
+		protected CollectionJpaContainer(Class<?> collectionClass, String staticMetamodelTypeDeclarationTypeName) {
+			super(collectionClass, staticMetamodelTypeDeclarationTypeName);
+		}
+
+		public String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 1) ?
+						resourcePersistentAttribute.getTypeTypeArgumentName(0) :
+						null;
+		}
+
+	}
+
+	/**
+	 * Map JPA container
+	 */
+	protected static class MapJpaContainer extends AbstractJpaContainer {
+		protected MapJpaContainer(Class<?> mapClass, String staticMetamodelTypeDeclarationTypeName) {
+			super(mapClass, staticMetamodelTypeDeclarationTypeName);
+		}
+
+		public String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
+						resourcePersistentAttribute.getTypeTypeArgumentName(1) :
+						null;
+		}
+
+		private String getMultiKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
+						resourcePersistentAttribute.getTypeTypeArgumentName(0) :
+						null;
+		}
+
+		@Override
+		public void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			String keyType = this.getMultiKeyTypeName(resourcePersistentAttribute);
+			typeArgumentNames.add((keyType != null) ? keyType : OBJECT_CLASS_NAME);
+			super.addStaticMetamodelFieldTypeArgumentNamesTo(typeArgumentNames, resourcePersistentAttribute);
+		}
+
 	}
 
 }

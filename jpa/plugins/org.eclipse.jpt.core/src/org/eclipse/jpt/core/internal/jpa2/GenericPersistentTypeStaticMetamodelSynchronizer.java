@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,10 +22,14 @@ import java.util.Map.Entry;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.context.StaticMetamodelField;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -35,6 +40,7 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 import com.ibm.icu.text.Collator;
+import com.ibm.icu.text.DateFormat;
 
 /**
  * 
@@ -46,7 +52,6 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 	protected final StaticMetamodelSynchronizer staticMetamodelSynchronizer;
 	protected final PersistentType persistentType;
 	protected final String metamodelClassName;
-	protected final IPackageFragmentRoot sourceFolder;
 
 
 	public GenericPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
@@ -54,13 +59,15 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 		this.staticMetamodelSynchronizer = staticMetamodelSynchronizer;
 		this.persistentType = persistentType;
 		this.metamodelClassName = this.buildMetamodelClassName();
-		// TODO
-		this.sourceFolder = staticMetamodelSynchronizer.getJpaProject().getJavaProject().getPackageFragmentRoot(staticMetamodelSynchronizer.getJpaProject().getProject().getFolder("src"));
 	}
 
 	// TODO
 	protected String buildMetamodelClassName() {
-		return this.persistentType.getName() + '_';
+		return this.buildMetamodelClassName(this.persistentType.getName());
+	}
+
+	protected String buildMetamodelClassName(String className) {
+		return className + '_';
 	}
 
 	// TODO
@@ -69,13 +76,14 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 	}
 
 	protected IPackageFragment buildPackageFragment() {
+		IPackageFragmentRoot sourceFolder = this.staticMetamodelSynchronizer.getSourceFolder();
 		String pkgName = this.getPackageName();
-		IPackageFragment packageFragment = this.sourceFolder.getPackageFragment(pkgName);
+		IPackageFragment packageFragment = sourceFolder.getPackageFragment(pkgName);
 		if (packageFragment.exists()) {
 			return packageFragment;
 		}
 		try {
-			return this.sourceFolder.createPackageFragment(pkgName, true, null);
+			return sourceFolder.createPackageFragment(pkgName, true, null);
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -135,17 +143,20 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 	// ********** class declaration **********
 
 	protected void printClassDeclarationOn(BodySourceWriter pw) {
-		this.printStaticMetamodelAnnotationOn(pw);
 		this.printGeneratedAnnotationOn(pw);
+		this.printStaticMetamodelAnnotationOn(pw);
 
 		pw.print("public class ");
 		pw.printTypeDeclaration(this.metamodelClassName);
+		PersistentType superPersistentType = this.persistentType.getSuperPersistentType();
+		if (superPersistentType != null) {
+			pw.print(" extends ");
+			pw.printTypeDeclaration(this.buildMetamodelClassName(superPersistentType.getName()));
+		}
 	}
 
 	protected void printStaticMetamodelAnnotationOn(BodySourceWriter pw) {
-		// TODO
-		pw.printAnnotation("javax.persistence.metamodel.StaticMetamodel");
-//		pw.printAnnotation(JPA.STATIC_METAMODEL);
+		pw.printAnnotation(JPA2_0.STATIC_METAMODEL);
 		pw.print('(');
 		pw.printTypeDeclaration(this.persistentType.getName());
 		pw.print(".class");
@@ -153,12 +164,11 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 		pw.println();
 	}
 
+	// TODO - comment?
 	protected void printGeneratedAnnotationOn(BodySourceWriter pw) {
 		pw.printAnnotation("javax.annotation.Generated");
 		pw.print('(');
-		// TODO
-		pw.printStringLiteral("Dali");
-		// TODO timestamp?
+		pw.printStringLiteral("Dali" + ' ' + DateFormat.getDateTimeInstance().format(new Date()));
 		pw.print(')');
 		pw.println();
 	}
@@ -168,15 +178,35 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 
 	protected void printAttributesOn(BodySourceWriter pw) {
 		for (Iterator<PersistentAttribute> stream = this.persistentType.attributes(); stream.hasNext(); ) {
-			PersistentAttribute pa = stream.next();
-			pw.print("public static volatile ");
-			// TODO
-			pw.printTypeDeclaration("javax.persistence.metamodel.SingularAttribute");
-			pw.print(' ');
-			pw.print(pa.getName());
-			pw.print(';');
-			pw.println();
+			this.printAttributeOn(stream.next(), pw);
 		}
+	}
+
+	protected void printAttributeOn(PersistentAttribute persistentAttribute, BodySourceWriter pw) {
+		StaticMetamodelField field = ((PersistentAttribute2_0) persistentAttribute).getStaticMetamodelField();
+		if (field != null) {
+			this.printFieldOn(field, pw);
+		}
+	}
+
+	protected void printFieldOn(StaticMetamodelField field, BodySourceWriter pw) {
+		for (String modifier : field.getModifiers()) {
+			pw.print(modifier);
+			pw.print(' ');
+		}
+		pw.printTypeDeclaration(field.getTypeName());
+		pw.print('<');
+		for (Iterator<String> stream = field.getTypeArgumentNames().iterator(); stream.hasNext(); ) {
+			pw.printTypeDeclaration(stream.next());
+			if (stream.hasNext()) {
+				pw.print(", ");
+			}
+		}
+		pw.print('>');
+		pw.print(' ');
+		pw.print(field.getName());
+		pw.print(';');
+		pw.println();
 	}
 
 
@@ -219,7 +249,6 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 			super(new StringWriter(2000));
 			this.packageName = packageName;
 			this.className = className;
-			this.imports.put(this.className, new ImportPackage(this.packageName));
 		}
 
 		protected String getSource() {
@@ -322,7 +351,7 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 				// this element type has already been imported
 				return shortTypeDeclaration;
 			}
-			if (currentPackageName.equals(packageName) &&
+			if (currentPackageName.equals(this.packageName) &&
 					prev.packageName.equals("java.lang")) {
 				// we force the 'java.lang' class to be explicitly imported
 				prev.collision = true;

@@ -14,13 +14,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
+import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.osgi.util.NLS;
 
 public class GenericJpaProject2_0
 	extends AbstractJpaProject
@@ -28,29 +31,32 @@ public class GenericJpaProject2_0
 {
 	protected final StaticMetamodelSynchronizer staticMetamodelSynchronizer;
 	protected final Job staticMetamodelSynchronizationJob;
+	protected boolean generatesStaticMetamodel = false;
+
 
 	public GenericJpaProject2_0(JpaProject.Config config) throws CoreException {
 		super(config);
 		this.staticMetamodelSynchronizer = this.buildStaticMetamodelSynchronizer();
 		this.staticMetamodelSynchronizationJob = this.buildStaticMetamodelSynchronizationJob();
 		// we have to synchronize here since we can't during the initial update called from the super ctor
-//		this.synchronizeStaticMetamodel();
+		this.synchronizeStaticMetamodel();
 	}
 
 	protected StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer() {
 		return this.getJpaFactory().buildStaticMetamodelSynchronizer(this);
 	}
 
-	// TODO i18n
-	// TODO schedule rule
 	protected Job buildStaticMetamodelSynchronizationJob() {
-		return new Job("Synchronize Static Metamodel") {
+		String jobName = NLS.bind(JptCoreMessages.SYNCHRONIZE_STATIC_METAMODEL_JOB_NAME, this.getName());
+		Job job = new Job(jobName) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				GenericJpaProject2_0.this.synchronizeStaticMetamodel_();
 				return Status.OK_STATUS;
 			}
 		};
+		job.setRule(this.project);
+		return job;
 	}
 
 	@Override
@@ -63,12 +69,23 @@ public class GenericJpaProject2_0
 		return (JpaRootContextNode2_0) super.getRootContextNode();
 	}
 
+	@Override
+	public void updateQuiesced() {
+		super.updateQuiesced();
+		this.synchronizeStaticMetamodel();
+	}
+
+
+	// ********** Static Metamodel **********
+
 	/**
 	 * The job is null during the initial (synchronous) update.
 	 */
 	public void synchronizeStaticMetamodel() {
-		if (this.staticMetamodelSynchronizationJob != null) {
-			this.staticMetamodelSynchronizationJob.schedule();
+		if (this.generatesStaticMetamodel) {
+			if (this.staticMetamodelSynchronizationJob != null) {
+				this.staticMetamodelSynchronizationJob.schedule();
+			}
 		}
 	}
 
@@ -76,17 +93,13 @@ public class GenericJpaProject2_0
 		this.getRootContextNode().synchronizeStaticMetamodel();
 	}
 
-	@Override
-	public void updateQuiesced() {
-		super.updateQuiesced();
-//		this.synchronizeStaticMetamodel();
-	}
-
-
-	// ********** Static Metamodel **********
-
 	public void synchronizeStaticMetamodel(PersistentType persistentType) {
 		this.staticMetamodelSynchronizer.synchronize(persistentType);
+	}
+
+	// TODO
+	public IPackageFragmentRoot getStaticMetaModelSourceFolder() {
+		return this.getJavaProject().getPackageFragmentRoot(this.getProject().getFolder("src"));
 	}
 
 }

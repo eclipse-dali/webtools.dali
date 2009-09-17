@@ -597,7 +597,9 @@ public class GenericOrmPersistentType
 	 */
 	public void synchronizeStaticMetamodel() {
 		// if we get here, it's safe to assume the JPA project is 2.0
-		((JpaProject2_0) this.getJpaProject()).synchronizeStaticMetamodel(this);
+		if (this.javaPersistentType != null) {
+			((JpaProject2_0) this.getJpaProject()).synchronizeStaticMetamodel(this);
+		}
 	}
 
 	protected class SpecifiedPersistentAttributeOwner implements OrmPersistentAttribute.Owner {

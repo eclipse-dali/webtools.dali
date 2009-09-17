@@ -124,7 +124,7 @@ public abstract class AbstractJavaPersistentType
 	// **************** access ************************************************
 	
 	public AccessType getAccess() {
-		return getSpecifiedAccess() != null ? getSpecifiedAccess() : getDefaultAccess();
+		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
 	}
 
 	public AccessType getDefaultAccess() {
