@@ -27,7 +27,7 @@ public class CallbackJobSynchronizer
 	extends JobSynchronizer
 	implements CallbackSynchronizer
 {
-	protected final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 
 
 	// ********** construction **********
@@ -55,7 +55,7 @@ public class CallbackJobSynchronizer
 	 * quiesced.
 	 */
 	@Override
-	protected SynchronizationJob buildJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
+	SynchronizationJob buildJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
 		return new CallbackSynchronizationJob(jobName, command, schedulingRule);
 	}
 
@@ -73,7 +73,7 @@ public class CallbackJobSynchronizer
 	/**
 	 * Notify our listeners.
 	 */
-	protected void synchronizationQuiesced() {
+	void synchronizationQuiesced() {
 		for (Listener listener : this.listenerList.getListeners()) {
 			listener.synchronizationQuiesced(this);
 		}
@@ -96,7 +96,7 @@ public class CallbackJobSynchronizer
 	 * but this synchronization will not occur until <em>after</em> all the
 	 * listeners have been notified.
 	 */
-	protected class CallbackSynchronizationJob
+	class CallbackSynchronizationJob
 		extends SynchronizationJob
 	{
 		/**
@@ -105,10 +105,10 @@ public class CallbackJobSynchronizer
 		 * has no public API for discovering whether a job is "scheduled".
 		 */
 		// use 'volatile' because synchronization isn't really required
-		protected volatile boolean scheduled;
+		private volatile boolean scheduled;
 
 
-		protected CallbackSynchronizationJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
+		CallbackSynchronizationJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
 			super(jobName, command, schedulingRule);
 			this.scheduled = false;
 		}
@@ -118,7 +118,7 @@ public class CallbackJobSynchronizer
 		 * was called), set the "scheduled" flag.
 		 */
 		@Override
-		protected void synchronize() {
+		void synchronize() {
 			if (this.shouldSchedule) {
 				this.scheduled = true;
 			}
@@ -143,7 +143,7 @@ public class CallbackJobSynchronizer
 		}
 
 		@Override
-		protected void stop() {
+		void stop() {
 			this.scheduled = false;
 			super.stop();
 		}

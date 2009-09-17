@@ -30,25 +30,25 @@ public class AsynchronousSynchronizer
 	 * currently executing, to execute again, once the current execution is
 	 * complete.
 	 */
-	protected final SynchronizedBoolean synchronizeFlag = new SynchronizedBoolean(false);
+	final SynchronizedBoolean synchronizeFlag = new SynchronizedBoolean(false);
 
 	/**
 	 * The runnable passed to the synchronization thread each time it is built.
 	 */
-	protected final Runnable runnable;
+	private final Runnable runnable;
 
 	/**
 	 * Optional, client-supplied name for the synchronization thread.
 	 * If null, allow the JDK to assign a name.
 	 */
-	protected final String threadName;
+	private final String threadName;
 
 	/**
 	 * The synchronization is performed on this thread. A new thread is built
 	 * for every start/stop cycle (since a thread cannot be started more than
 	 * once).
 	 */
-	protected Thread thread;
+	private Thread thread;
 
 
 	// ********** construction **********
@@ -73,8 +73,8 @@ public class AsynchronousSynchronizer
 		this.threadName = threadName;
 	}
 
-	protected Runnable buildRunnable(Command command) {
-		return new RunnableSynchronization(command, this.synchronizeFlag);
+	Runnable buildRunnable(Command command) {
+		return new RunnableSynchronization(command);
 	}
 
 
@@ -92,7 +92,7 @@ public class AsynchronousSynchronizer
 		this.thread.start();
 	}
 
-	protected Thread buildThread() {
+	private Thread buildThread() {
 		Thread t = new Thread(this.runnable);
 		if (this.threadName != null) {
 			t.setName(this.threadName);
@@ -142,21 +142,17 @@ public class AsynchronousSynchronizer
 	 * the command will be re-executed immediately. Stop the thread by calling
 	 * {@link Thread#interrupt()}.
 	 */
-	protected static class RunnableSynchronization implements Runnable {
+	class RunnableSynchronization implements Runnable {
 		/** The client-supplied command that executes on this thread. */
-		protected final Command command;
-
-		/** When this flag is set to true, we execute the client-supplied command. */
-		protected final SynchronizedBoolean synchronizeFlag;
+		private final Command command;
 
 
-		protected RunnableSynchronization(Command command, SynchronizedBoolean synchronizeFlag) {
+		RunnableSynchronization(Command command) {
 			super();
 			if (command == null) {
 				throw new NullPointerException();
 			}
 			this.command = command;
-			this.synchronizeFlag = synchronizeFlag;
 		}
 
 		/**
@@ -175,7 +171,7 @@ public class AsynchronousSynchronizer
 		public void run() {
 			while ( ! Thread.interrupted()) {
 				try {
-					this.synchronizeFlag.waitToSetFalse();
+					AsynchronousSynchronizer.this.synchronizeFlag.waitToSetFalse();
 				} catch (InterruptedException ex) {
 					// we were interrupted while waiting, must be Quittin' Time
 					return;
@@ -187,7 +183,7 @@ public class AsynchronousSynchronizer
 		/**
 		 * Execute the client-supplied command.
 		 */
-		protected void execute() {
+		void execute() {
 			this.command.execute();
 		}
 

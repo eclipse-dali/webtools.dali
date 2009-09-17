@@ -22,11 +22,13 @@ public interface CallbackSynchronizer
 	/**
 	 * Add the specified listener to be notified whenever the synchronizer has
 	 * quiesced.
+	 * @see #removeListener(Listener)
 	 */
 	void addListener(Listener listener);
 
 	/**
 	 * Remove the specified listener.
+	 * @see #addListener(Listener)
 	 */
 	void removeListener(Listener listener);
 
@@ -37,7 +39,9 @@ public interface CallbackSynchronizer
 	 * Interface implemented by listeners to be notified whenever the
 	 * synchronizer has quiesced.
 	 */
-	public interface Listener extends EventListener {
+	public interface Listener
+		extends EventListener
+	{
 		/**
 		 * The specified synchronizer has quiesced.
 		 */

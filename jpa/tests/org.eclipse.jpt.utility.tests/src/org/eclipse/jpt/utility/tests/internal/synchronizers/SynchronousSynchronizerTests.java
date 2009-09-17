@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
 
@@ -150,7 +151,7 @@ public class SynchronousSynchronizerTests extends TestCase {
 		assertEquals(4, secondaryModel3.getDoubleCount());
 		assertEquals(10, secondaryModel3.getDoubleCountPlus3());
 
-		Thread syncThread = this.buildSynchronizeThread(primaryModel3, 1);
+		Thread syncThread = this.buildTriggerSynchronizeThread(primaryModel3, 1);
 		Thread stopThread = this.buildStopThread(synchronizer3, 2);
 
 		log("ALL threads start");
@@ -172,8 +173,8 @@ public class SynchronousSynchronizerTests extends TestCase {
 		assertEquals(10, secondaryModel3.getDoubleCountPlus3());
 	}
 
-	private Thread buildSynchronizeThread(final PrimaryModel2 primaryModel, final long ticks) {
-		return new Thread() {
+	private Thread buildTriggerSynchronizeThread(final PrimaryModel2 primaryModel, final long ticks) {
+		return new Thread("trigger sync") {
 			@Override
 			public void run() {
 				delay(ticks);
@@ -183,7 +184,7 @@ public class SynchronousSynchronizerTests extends TestCase {
 	}
 
 	private Thread buildStopThread(final Synchronizer synchronizer, final long ticks) {
-		return new Thread() {
+		return new Thread("stop") {
 			@Override
 			public void run() {
 				delay(ticks);
@@ -234,7 +235,7 @@ public class SynchronousSynchronizerTests extends TestCase {
 		assertEquals(4, secondaryModel3.getDoubleCount());
 		assertEquals(10, secondaryModel3.getDoubleCountPlus3());
 
-		Thread syncThread = this.buildSynchronizeThread(primaryModel3, 1);
+		Thread syncThread = this.buildTriggerSynchronizeThread(primaryModel3, 1);
 		Thread stopThread = this.buildStopThread(synchronizer3, 2);
 		Thread interruptThread = this.buildInterruptThread(stopThread, 3);
 
@@ -301,7 +302,7 @@ public class SynchronousSynchronizerTests extends TestCase {
 		assertEquals(4, secondaryModel3.getDoubleCount());
 		assertEquals(10, secondaryModel3.getDoubleCountPlus3());
 
-		Thread syncThread = this.buildSynchronizeThread(primaryModel3, 1);
+		Thread syncThread = this.buildTriggerSynchronizeThread(primaryModel3, 1);
 		Thread stopThread = this.buildStopThread(synchronizer3, 2);
 		Thread interruptThread = this.buildInterruptThread(syncThread, 3);
 
@@ -324,12 +325,112 @@ public class SynchronousSynchronizerTests extends TestCase {
 	}
 
 	private Thread buildInterruptThread(final Thread thread, final long ticks) {
-		return new Thread() {
+		return new Thread("interrupt") {
 			@Override
 			public void run() {
 				delay(ticks);
 				log("INTERRUPT thread Thread.interrupt()");
 				thread.interrupt();
+			}
+		};
+	}
+
+	/**
+	 * Call #stop() during a long-running "synchronize"; then call #start()
+	 * while the #stop() is waiting for the "synchronize" to complete.
+	 * 
+	 * ticks:
+	 * 0 - start "sync" thread (which will sleep for 1 tick)
+	 *      start "stop" thread (which will sleep for 2 ticks)
+	 *      start "start" thread (which will sleep for 3 ticks)
+	 * 1 - "sync" thread wakes up and calls Synchronizer.synchronize() to begin
+	 *      synchronization (which will run for 3 ticks; i.e. it will finish on tick 4)
+	 * 2 - "stop" thread wakes up and calls Synchronizer.stop() and should
+	 *      wait until the synchronization is finished (i.e. tick 4)
+	 * 3 - "start" thread wakes up and calls Synchronizer.start()
+	 *      which will throw an exception
+	 * 4 - the "sync" thread finishes execution;
+	 *      it will stop since the "stop" thread told it to at tick 2;
+	 *      the "sync" and "stop" threads run to completion
+	 */
+	public void testCallStartDuringStop() throws Exception {
+		log("=====" + this.getName() + "=====");
+		DelayCommand command = this.buildDelayCommand(3);
+		Synchronizer synchronizer = new SynchronousSynchronizer(command);
+		synchronizer.start();
+
+		Thread syncThread = this.buildSynchronizeThread(synchronizer, 1);
+		Thread stopThread = this.buildStopThread(synchronizer, 2);
+		SynchronizedBoolean exCaught = new SynchronizedBoolean(false);
+		Thread startThread = this.buildStartThread(synchronizer, 3, exCaught);
+
+		log("ALL threads start");
+		syncThread.start();
+		stopThread.start();
+		startThread.start();
+
+		syncThread.join();
+		stopThread.join();
+		startThread.join();
+
+		assertTrue(exCaught.getValue());
+		assertEquals(2, command.count);
+	}
+
+	private DelayCommand buildDelayCommand(float ticks) {
+		return new DelayCommand(ticks);
+	}
+
+	class DelayCommand implements Command {
+		final float ticks;
+		boolean first = true;
+		int count = 0;
+
+		DelayCommand(float ticks) {
+			super();
+			this.ticks = ticks;
+		}
+
+		public void execute() {
+			this.count++;
+			// do nothing for the first call (from #start())
+			if (this.first) {
+				log("EXEC first");
+				this.first = false;
+				return;
+			}
+			log("EXEC start " + this.count);
+			delay(this.ticks);
+			log("EXEC stop " + this.count);
+		}
+
+	}
+
+	private Thread buildStartThread(final Synchronizer synchronizer, final long ticks, final SynchronizedBoolean exCaught) {
+		return new Thread("start") {
+			@Override
+			public void run() {
+				delay(ticks);
+				log("START thread Synchronizer.start()");
+				try {
+					synchronizer.start();
+				} catch (IllegalStateException ex) {
+					exCaught.setTrue();
+					log("START thread exception");
+				}
+				log("START thread stop");
+			}
+		};
+	}
+
+	private Thread buildSynchronizeThread(final Synchronizer synchronizer, final long ticks) {
+		return new Thread("synchronize") {
+			@Override
+			public void run() {
+				delay(ticks);
+				log("SYNC thread Synchronizer.synchronize()");
+				synchronizer.synchronize();
+				log("SYNC thread stop");
 			}
 		};
 	}

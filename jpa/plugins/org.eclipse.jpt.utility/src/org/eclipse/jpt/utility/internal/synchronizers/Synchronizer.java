@@ -33,7 +33,8 @@ import java.io.Serializable;
 public interface Synchronizer {
 
 	/**
-	 * Begin a synchronization and allow future synchronizations as requested.
+	 * Enable the synchronizer to allow future synchronizations as requested
+	 * by calls to {@link #synchronize()}.
 	 */
 	void start();
 

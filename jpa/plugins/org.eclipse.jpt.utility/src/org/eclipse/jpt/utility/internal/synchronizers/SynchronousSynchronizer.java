@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.internal.synchronizers;
 
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.utility.internal.SynchronizedObject;
 
 /**
  * This synchronizer will synchronize immediately and not return until the
@@ -39,14 +39,23 @@ public class SynchronousSynchronizer
 	 * trigger further calls to {@link #synchronize()} (i.e. the
 	 * synchronization may recurse).
 	 */
-	protected final Command command;
+	private final Command command;
 
 	/**
-	 * Synchronize reading and modifying of a set of flags that control what
-	 * happens when {@link #synchronize()} is called when the synchronizer is in
-	 * various states (idling, executing, stopped).
+	 * The synchronizer's current state.
 	 */
-	protected final Flags flags;
+	final SynchronizedObject<State> state;
+
+	/**
+	 * The synchronizer's initial state is {@link #STOPPED}.
+	 */
+	enum State {
+		STOPPED,
+		READY,
+		EXECUTING,
+		REPEAT,
+		STOPPING
+	}
 
 
 	// ********** construction **********
@@ -61,21 +70,31 @@ public class SynchronousSynchronizer
 			throw new NullPointerException();
 		}
 		this.command = command;
-		this.flags = this.buildFlags();
-	}
-
-	protected Flags buildFlags() {
-		return new Flags();
+		// use the synchronizer as the mutex so it is freed up by the wait in #stop()
+		this.state = new SynchronizedObject<State>(State.STOPPED, this);
 	}
 
 
 	// ********** Synchronizer implementation **********
 
 	/**
-	 * Initialize the flags and execute the first synchronization.
+	 * Set the synchronizer's {@link #state} to {@link State#READY READY}
+	 * and execute the first synchronization. Throw an exception if the
+	 * synchronizer is not {@link State#STOPPED STOPPED}.
 	 */
-	public void start() {
-		this.flags.start();
+	public synchronized void start() {
+		switch (this.state.getValue()) {
+			case STOPPED:
+				this.state.setValue(State.READY);
+				this.synchronize();
+				break;
+			case READY:
+			case EXECUTING:
+			case REPEAT:
+			case STOPPING:
+			default:
+				throw this.buildIllegalStateException();
+		}
 	}
 
 	/**
@@ -83,207 +102,134 @@ public class SynchronousSynchronizer
 	 * and triggers another synchronization.
 	 */
 	public void synchronize() {
-		if (this.flags.synchronizeCanStart()) {
+		if (this.beginSynchronization()) {
 			this.synchronize_();
+		}
+	}
+
+	/**
+	 * A client has requested a synchronization.
+	 * Return whether we can begin a new synchronization.
+	 * If a synchronization is already under way, return <code>false</code>;
+	 * but set the {@link #state} to {@link State#REPEAT REPEAT}
+	 * so another synchronization will occur once the current
+	 * synchronization is complete.
+	 */
+	private synchronized boolean beginSynchronization() {
+		switch (this.state.getValue()) {
+			case STOPPED:
+				// synchronization is not allowed
+				return false;
+			case READY:
+				// begin a new synchronization
+				this.state.setValue(State.EXECUTING);
+				return true;
+			case EXECUTING:
+				// set flag so a new synchronization will occur once the current one is finished
+				this.state.setValue(State.REPEAT);
+				return false;
+			case REPEAT:
+				// the "repeat" flag is already set
+				return false;
+			case STOPPING:
+				// no further synchronizations are allowed
+				return false;
+			default:
+				throw this.buildIllegalStateException();
 		}
 	}
 
 	/**
 	 * This method should be called only once per set of "recursing"
 	 * synchronizations. Any recursive call to {@link #synchronize()} will
-	 * simply set the {@link Flags#again "again"} flag, causing the command
-	 * to execute again.
+	 * simply set the {@link #state} to {@link State#REPEAT REPEAT},
+	 * causing the command to execute again.
 	 */
-	protected void synchronize_() {
+	private void synchronize_() {
 		do {
 			this.execute();
-		} while (this.flags.synchronizeMustRunAgain());
+		} while (this.endSynchronization());
 	}
 
 	/**
 	 * By default, just execute the command.
 	 */
-	protected void execute() {
+	void execute() {
 		this.command.execute();
+	}
+
+	/**
+	 * The current synchronization has finished.
+	 * Return whether we should begin another synchronization.
+	 */
+	private synchronized boolean endSynchronization() {
+		switch (this.state.getValue()) {
+			case STOPPED:
+			case READY:
+				throw this.buildIllegalStateException();
+			case EXECUTING:
+				// synchronization has finished and there are no outstanding requests for another; return to "ready"
+				this.state.setValue(State.READY);
+				return false;
+			case REPEAT:
+				// the "repeat" flag was set; clear it and start another synchronization
+				this.state.setValue(State.EXECUTING);
+				return true;
+			case STOPPING:
+				// a client has initiated a "stop"; mark the "stop" complete and perform no more synchronizations
+				this.state.setValue(State.STOPPED);
+				return false;
+			default:
+				throw this.buildIllegalStateException();
+		}
 	}
 
 	/**
 	 * Set the flags so that no further synchronizations occur.
 	 */
-	public void stop() {
-		this.flags.stop();
+	public synchronized void stop() {
+		switch (this.state.getValue()) {
+			case STOPPED:
+				throw this.buildIllegalStateException();
+			case READY:
+				// simply return to "stopped" state
+				this.state.setValue(State.STOPPED);
+				break;
+			case EXECUTING:
+			case REPEAT:
+				// set the "stopping" flag and wait until the synchronization has finished
+				this.state.setValue(State.STOPPING);
+				this.waitUntilStopped();
+				break;
+			case STOPPING:
+				throw this.buildIllegalStateException();
+			default:
+				throw this.buildIllegalStateException();
+		}
+	}
+
+	/**
+	 * This wait will free up the synchronizer's synchronized methods
+	 * (since the synchronizer is the state's mutex).
+	 */
+	private void waitUntilStopped() {
+		try {
+			this.state.waitUntilValueIs(State.STOPPED);
+		} catch (InterruptedException ex) {
+			// the thread that called #stop() was interrupted while waiting
+			// for the synchronization to finish - ignore;
+			// 'state' is still set to 'STOPPING', so the #synchronize_() loop
+			// will still stop - we just won't wait around for it...
+		}
+	}
+
+	private IllegalStateException buildIllegalStateException() {
+		return new IllegalStateException("state: " + this.state); //$NON-NLS-1$
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.flags);
-	}
-
-
-	// ********** synchronized flags **********
-
-	/**
-	 * Synchronize access to the "executing", "again" and "stop" flags.
-	 * These flags are tightly coupled to {@link SynchronousSynchronizer} in that they
-	 * are altered as the side-effect to various queries. For example, asking
-	 * whether a synchronization can start ({@link #synchronizeCanStart()}) will alter
-	 * the "again" flag, depending on the current state of the other flags.
-	 */
-	protected class Flags {
-		/**
-		 * Use a synchronized boolean to communicate between the two threads
-		 * that might separately call {@link #start()}/{@link #stop()}
-		 * and {@link #synchronizeCanStart()}/{@link #synchronizeMustRunAgain()}.
-		 */
-		protected final SynchronizedBoolean executing = new SynchronizedBoolean(false, this);
-
-		protected boolean again = false;
-		protected boolean stop = true;
-
-
-		protected Flags() {
-			super();
-		}
-
-		/**
-		 * Simply clear the "stop" flag.
-		 */
-		protected synchronized void start() {
-			if ( ! this.stop) {
-				throw new IllegalStateException("The Synchronizer was not stopped."); //$NON-NLS-1$
-			}
-			this.stop = false;
-
-			// execute the synchronize here so we get to perform the first "synchronize"
-			// immediately and synchronously, without allowing another thread to slip in
-			SynchronousSynchronizer.this.synchronize();
-		}
-
-		/**
-		 * Restore our start-up state and wait for any currently executing
-		 * synchronization to complete.
-		 */
-		protected synchronized void stop() {
-			if (this.stop) {
-				throw new IllegalStateException("The Synchronizer was not started."); //$NON-NLS-1$
-			}
-			this.stop = true;
-			this.again = false;  // may not necessarily be 'true'
-			try {
-				this.executing.waitUntilFalse();  // #start() cannot be called during this wait...
-			} catch (InterruptedException ex) {
-				// the thread that called #stop() was interrupted while waiting
-				// for the synchronization to finish - ignore;
-				// 'stop' is still set to 'true', so the #synchronize() loop will still stop - we
-				// just won't wait around for it...
-			}
-		}
-
-		/**
-		 * A client has requested a synchronization; return whether the
-		 * synchronizer can start the requested synchronization.
-		 * <p>
-		 * Side-effects:<ul>
-		 * <li>If we are supposed to stop, both the "executing" and "again" flags were cleared in {@link #stop()}.
-		 * <li>If we are currently "executing", set the "again" flag.
-		 * <li>If we are not currently "executing", set the "executing" flag and clear the "again" flag.
-		 * </ul>
-		 */
-		protected synchronized boolean synchronizeCanStart() {
-			if (this.stop) {
-				return false;
-			}
-			if (this.executing.isTrue()) {
-				this.again = true;
-				return false;
-			}
-			this.executing.setTrue();
-			this.again = false;  // probably already 'false'(?)
-			return true;
-		}
-
-		/**
-		 * The synchronization has finished; return whether the synchronizer
-		 * must perform another synchronization (because {@link Synchronizer#synchronize()} was
-		 * called during the synchronization).
-		 * Side-effects:<ul>
-		 * <li>If we are supposed to stop:<ul>
-		 *       <li>the "again" flag was cleared in {@link #stop()};
-		 *       <li>clear the "executing" flag so {@link #stop()} can complete
-		 * </ul>
-		 * <li>If we have to synchronize again, clear the "again" flag and leave the "executing" flag set.
-		 * <li>If we are finished (i.e. no recursive synchronize requests occurred), clear the "executing" flag.
-		 * </ul>
-		 */
-		protected synchronized boolean synchronizeMustRunAgain() {
-			if (this.stop) {
-				this.executing.setFalse();
-				return false;
-			}
-			if (this.again) {
-				// leave 'executing' set to 'true'
-				this.again = false;
-				return true;
-			}
-			this.executing.setFalse();
-			return false;
-		}
-
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this, this.buildExecutingString());
-		}
-
-		protected String buildExecutingString() {
-			return this.executing.isTrue() ? "executing" : "not executing";  //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
+		return StringTools.buildToStringFor(this, this.state);
 	}
 
 }
-
-//	State Machine
-//	
-//	executing=F again=F stop=F
-//	quiesced
-//		start() => exception - e.g. two calls to #start()
-//		stop() => stop=T - called when quiesced (e.g. immediately after #start() is called)
-//		synchronizeCanStart() => executing=T - first call to #synchronize(), or later calls when quiesced
-//		synchronizeMustRunAgain() => not possible - this is the only method that sets 'executing' to false and it is only called when 'executing' is true
-//	
-//	executing=F again=F stop=T
-//	stopped
-//		start() => stop=F - first call to #start()
-//		stop() => exception - e.g. two calls to #stop()
-//		synchronizeCanStart() => no change - called before #start() called or after #stop() called
-//		synchronizeMustRunAgain() => no change - clear 'executing' flag again
-//	
-//	executing=F again=T stop=F
-//	NOT POSSIBLE - if all synchronizations occur on the same thread - 'again' will only be set true when 'executing' is true
-//	
-//	executing=F again=T stop=T
-//	NOT POSSIBLE on same thread - whenever 'stop' is true, 'again' is false
-//	
-//	executing=T again=F stop=F
-//	final execution before quiescing
-//		start() => exception - called during single (or final) execution
-//		stop() => executing=F stop=T - called during single (or final) execution
-//		synchronizeCanStart() => again=T - first call to #synchronize() *during* execution
-//		synchronizeMustRunAgain() => executing=F - single (or final) execution with no recursive calls, quiesce
-//	
-//	executing=T again=F stop=T
-//	will stop at completion of current execution
-//		start() => not possible on same thread
-//		stop() => exception - two calls to #stop() during single execution
-//		synchronizeCanStart() => no change - #stop() called during execution that is still executing
-//		synchronizeMustRunAgain() => executing=F - #stop() called during execution that just completed
-//	
-//	executing=T again=T stop=F
-//	will execute again at completion of current execution
-//		start() => exception - called during intermediate execution
-//		stop() => executing=F again=F stop=T - called during intermediate execution, wait for execution to complete to set 'executing' to false
-//		synchronizeCanStart() => no change (set 'again' flag again)
-//		synchronizeMustRunAgain() => again=F - #synchronize() called during execution that just completed
-//	
-//	executing=T again=T stop=T
-//	NOT POSSIBLE on same thread - whenever 'stop' is true, 'again' is false

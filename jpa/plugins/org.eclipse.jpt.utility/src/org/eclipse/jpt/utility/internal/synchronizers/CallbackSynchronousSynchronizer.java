@@ -33,7 +33,7 @@ public class CallbackSynchronousSynchronizer
 	extends SynchronousSynchronizer
 	implements CallbackSynchronizer
 {
-	protected final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 
 
 	// ********** construction **********
@@ -44,15 +44,6 @@ public class CallbackSynchronousSynchronizer
 	 */
 	public CallbackSynchronousSynchronizer(Command command) {
 		super(command);
-	}
-
-	/**
-	 * Build a set of flags that allows us to query when the synchronization
-	 * has quiesced.
-	 */
-	@Override
-	protected CallbackFlags buildFlags() {
-		return new CallbackFlags();
 	}
 
 
@@ -69,7 +60,7 @@ public class CallbackSynchronousSynchronizer
 	/**
 	 * Notify our listeners.
 	 */
-	protected void synchronizationQuiesced() {
+	private void synchronizationQuiesced() {
 		for (Listener listener : this.listenerList.getListeners()) {
 			listener.synchronizationQuiesced(this);
 		}
@@ -79,41 +70,13 @@ public class CallbackSynchronousSynchronizer
 	// ********** override **********
 
 	@Override
-	protected void execute() {
+	void execute() {
 		super.execute();
-		if ( ! this.again()) {
-			this.synchronizationQuiesced();
-		}
-	}
-
-	protected boolean again() {
-		return ((CallbackFlags) this.flags).again();
-	}
-
-
-	// ********** synchronized flags **********
-
-	/**
-	 * Extend {@link SynchronousSynchronizer.Flags} so the synchronizer can query
-	 * whether the synchronization has quiesced (i.e. the command has finished
-	 * executing and there are no further requests for synchronization).
-	 */
-	protected class CallbackFlags
-		extends Flags
-	{
-		protected CallbackFlags() {
-			super();
-		}
-
-		/**
-		 * Just peek at the 'again' flag; no side-effects.
-		 */
-		protected synchronized boolean again() {
+		if (this.state.getValue() != State.REPEAT) {
 			// hmmm - we will notify listeners even when we are "stopped";
 			// that seems ok...  ~bjv
-			return ! this.again;
+			this.synchronizationQuiesced();
 		}
-
 	}
 
 }

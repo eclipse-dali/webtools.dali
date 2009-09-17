@@ -9,29 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.synchronizers;
 
+import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.ExceptionHandler;
-import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.synchronizers.AsynchronousSynchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
-
-import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class AsynchronousSynchronizerTests extends TestCase {
 	PrimaryModel1 primaryModel1;
 	SecondaryModel1 secondaryModel1;
 	Command command1;
-	SynchronizedBoolean startFlag1 = new SynchronizedBoolean(false);
-	SynchronizedBoolean completeFlag1 = new SynchronizedBoolean(false);
 	Synchronizer synchronizer1;
 
 	PrimaryModel2 primaryModel2;
 	SecondaryModel2 secondaryModel2;
 	Command command2;
-	SynchronizedBoolean startFlag2 = new SynchronizedBoolean(false);
-	SynchronizedBoolean completeFlag2 = new SynchronizedBoolean(false);
 	Synchronizer synchronizer2;
 
 	public AsynchronousSynchronizerTests(String name) {
@@ -44,13 +39,13 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		this.primaryModel1 = new PrimaryModel1();
 		this.secondaryModel1 = new SecondaryModel1(this.primaryModel1);
 		this.command1 = new SynchronizeSecondaryModelCommand1(this.secondaryModel1);
-		this.synchronizer1 = new TestAsynchronousSynchronizer(this.command1, this.startFlag1, this.completeFlag1);
+		this.synchronizer1 = new AsynchronousSynchronizer(this.command1);
 		this.primaryModel1.setSynchronizer(this.synchronizer1);
 
 		this.primaryModel2 = new PrimaryModel2();
 		this.secondaryModel2 = new SecondaryModel2(this.primaryModel2);
 		this.command2 = new SynchronizeSecondaryModelCommand2(this.primaryModel2, this.secondaryModel2);
-		this.synchronizer2 = new TestAsynchronousSynchronizer(this.command2, this.startFlag2, this.completeFlag2);
+		this.synchronizer2 = new AsynchronousSynchronizer(this.command2);
 		this.primaryModel2.setSynchronizer(this.synchronizer2);
 	}
 
@@ -79,9 +74,9 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		assertEquals(4, this.secondaryModel1.getDoubleCount());
 		this.primaryModel1.setCount(7);
 
-		this.startFlag1.waitUntilTrue();
+		delay(1);
 		this.synchronizer1.stop();
-		this.completeFlag1.waitUntilTrue();
+		delay(1);
 
 		assertEquals(14, this.secondaryModel1.getDoubleCount());
 	}
@@ -97,9 +92,9 @@ public class AsynchronousSynchronizerTests extends TestCase {
 
 		this.primaryModel1.setCount(8);
 
-		this.startFlag1.waitUntilTrue();
+		delay(1);
 		this.synchronizer1.stop();
-		this.completeFlag1.waitUntilTrue();
+		delay(1);
 
 		assertEquals(16, this.secondaryModel1.getDoubleCount());
 	}
@@ -123,9 +118,9 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		assertTrue(exCaught);
 		this.primaryModel1.setCount(7);
 
-		this.startFlag1.waitUntilTrue();
+		delay(1);
 		this.synchronizer1.stop();
-		this.completeFlag1.waitUntilTrue();
+		delay(1);
 
 		assertEquals(14, this.secondaryModel1.getDoubleCount());
 	}
@@ -414,47 +409,6 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		while (remaining > 0L) {
 			Thread.sleep(remaining);
 			remaining = stop - System.currentTimeMillis();
-		}
-	}
-
-
-	// ********** custom async synchronizer **********
-
-	/**
-	 * Hopefully, we don't modify the behavior too much....
-	 */
-	public static class TestAsynchronousSynchronizer extends AsynchronousSynchronizer {
-		public TestAsynchronousSynchronizer(Command command, SynchronizedBoolean startFlag, SynchronizedBoolean completeFlag) {
-			super(command);
-			((TestRunnableSynchronization) this.runnable).setStartFlag(startFlag);
-			((TestRunnableSynchronization) this.runnable).setCompleteFlag(completeFlag);
-		}
-		@Override
-		protected Runnable buildRunnable(Command command) {
-			return new TestRunnableSynchronization(command, this.synchronizeFlag);
-		}
-		protected static class TestRunnableSynchronization extends RunnableSynchronization {
-			private SynchronizedBoolean startFlag;
-			private SynchronizedBoolean completeFlag;
-			protected TestRunnableSynchronization(Command command, SynchronizedBoolean synchronizeFlag) {
-				super(command, synchronizeFlag);
-			}
-			public void setStartFlag(SynchronizedBoolean startFlag) {
-				this.startFlag = startFlag;
-			}
-			public void setCompleteFlag(SynchronizedBoolean completeFlag) {
-				this.completeFlag = completeFlag;
-			}
-			@Override
-			public void run() {
-				super.run();
-				this.completeFlag.setTrue();
-			}
-			@Override
-			protected void execute() {
-				this.startFlag.setTrue();
-				super.execute();
-			}
 		}
 	}
 

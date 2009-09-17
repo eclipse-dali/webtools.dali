@@ -39,7 +39,7 @@ public class JobSynchronizer
 	 * The synchronization is performed by this job. The same job is used
 	 * for every start/stop cycle (since a job can be re-started).
 	 */
-	protected final SynchronizationJob job;
+	private final SynchronizationJob job;
 
 
 	// ********** construction **********
@@ -63,7 +63,7 @@ public class JobSynchronizer
 		this.job = this.buildJob(jobName, command, schedulingRule);
 	}
 
-	protected SynchronizationJob buildJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
+	SynchronizationJob buildJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
 		return new SynchronizationJob(jobName, command, schedulingRule);
 	}
 
@@ -104,22 +104,22 @@ public class JobSynchronizer
 	 * This is the job that gets scheduled by the job synchronizer.
 	 * When the job is run it executes the client-supplied job command.
 	 */
-	protected static class SynchronizationJob extends Job {
+	static class SynchronizationJob extends Job {
 		/**
 		 * The client-supplied job command that executes every time the job
 		 * runs.
 		 */
-		protected final JobCommand command;
+		private final JobCommand command;
 
 		/**
 		 * When this flag is set to false, the job does not stop immediately;
 		 * but it will not be scheduled to run again.
 		 */
 		// use 'volatile' because synchronization isn't really required
-		protected volatile boolean shouldSchedule;
+		volatile boolean shouldSchedule;
 
 
-		protected SynchronizationJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
+		SynchronizationJob(String jobName, JobCommand command, ISchedulingRule schedulingRule) {
 			super(jobName);
 			if (command == null) {
 				throw new NullPointerException();
@@ -133,7 +133,7 @@ public class JobSynchronizer
 		 * Just set the "should schedule" flag so the job <em>can</em> be
 		 * scheduled; but don't actually schedule it.
 		 */
-		protected void start() {
+		void start() {
 			if (this.shouldSchedule) {
 				throw new IllegalStateException("The Synchronizer was not stopped."); //$NON-NLS-1$
 			}
@@ -146,7 +146,7 @@ public class JobSynchronizer
 		 * This should minimize the number of times the job is re-executed
 		 * (recursively and otherwise).
 		 */
-		protected void synchronize() {
+		void synchronize() {
 			this.schedule();
 		}
 
@@ -159,7 +159,7 @@ public class JobSynchronizer
 		 * Prevent the job from running again and wait for the current
 		 * execution, if there is any, to end before returning.
 		 */
-		protected void stop() {
+		void stop() {
 			if ( ! this.shouldSchedule) {
 				throw new IllegalStateException("The Synchronizer was not started."); //$NON-NLS-1$
 			}

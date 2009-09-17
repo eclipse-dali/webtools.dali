@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.synchronizers;
 
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ListenerList;
-import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**
  * Extend the asynchronous synchronizer to notify listeners
@@ -29,7 +28,7 @@ public class CallbackAsynchronousSynchronizer
 	extends AsynchronousSynchronizer
 	implements CallbackSynchronizer
 {
-	protected final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 
 
 	// ********** construction **********
@@ -57,8 +56,8 @@ public class CallbackAsynchronousSynchronizer
 	 * quiesced.
 	 */
 	@Override
-	protected Runnable buildRunnable(Command command) {
-		return new RunnableCallbackSynchronization(command, this.synchronizeFlag);
+	Runnable buildRunnable(Command command) {
+		return new RunnableCallbackSynchronization(command);
 	}
 
 
@@ -75,7 +74,7 @@ public class CallbackAsynchronousSynchronizer
 	/**
 	 * Notify our listeners.
 	 */
-	protected void synchronizationQuiesced() {
+	void synchronizationQuiesced() {
 		for (Listener listener : this.listenerList.getListeners()) {
 			listener.synchronizationQuiesced(this);
 		}
@@ -97,19 +96,19 @@ public class CallbackAsynchronousSynchronizer
 	 * but this synchronization will not occur until <em>after</em> all the
 	 * listeners have been notified.
 	 */
-	protected class RunnableCallbackSynchronization
+	class RunnableCallbackSynchronization
 		extends RunnableSynchronization
 	{
-		protected RunnableCallbackSynchronization(Command command, SynchronizedBoolean synchronizeFlag) {
-			super(command, synchronizeFlag);
+		RunnableCallbackSynchronization(Command command) {
+			super(command);
 		}
 
 		@Override
-		protected void execute() {
+		void execute() {
 			super.execute();
 			// hmmm - we will notify listeners even when we our thread is "interrupted";
 			// that seems ok...  ~bjv
-			if (this.synchronizeFlag.isFalse()) {
+			if (CallbackAsynchronousSynchronizer.this.synchronizeFlag.isFalse()) {
 				CallbackAsynchronousSynchronizer.this.synchronizationQuiesced();
 			}
 		}
