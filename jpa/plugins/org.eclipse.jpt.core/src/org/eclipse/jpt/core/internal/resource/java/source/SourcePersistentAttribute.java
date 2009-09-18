@@ -179,7 +179,7 @@ final class SourcePersistentAttribute
 	
 	@Override
 	public Annotation buildNullAnnotation(String annotationName) {
-		return (annotationName == null) ? null : this.buildNullAnnotation(annotationName);
+		return (annotationName == null) ? null : this.buildNullAnnotation_(annotationName);
 	}
 	
 	public boolean isField() {
