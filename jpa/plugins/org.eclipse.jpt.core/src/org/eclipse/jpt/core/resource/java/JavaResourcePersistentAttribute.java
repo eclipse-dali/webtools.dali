@@ -40,7 +40,7 @@ public interface JavaResourcePersistentAttribute
 	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember,
 	 * org.eclipse.jpt.core.utility.jdt.Member)}
 	 */
-	Annotation getNullAnnotation(String annotationName);
+	Annotation buildNullAnnotation(String annotationName);
 	
 	/**
 	 * Whether the Java resource persistent attribute is a field does not change.

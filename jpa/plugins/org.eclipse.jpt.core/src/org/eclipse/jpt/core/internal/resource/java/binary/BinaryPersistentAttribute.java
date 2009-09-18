@@ -121,8 +121,7 @@ final class BinaryPersistentAttribute
 		return this.getAnnotationProvider().buildAttributeAnnotation(this, jdtAnnotation);
 	}
 	
-	@Override
-	Annotation buildNullAnnotation(String annotationName) {
+	Annotation buildNullAnnotation_(String annotationName) {
 		return this.getAnnotationProvider().buildNullAttributeAnnotation(this, annotationName);
 	}
 	
@@ -133,7 +132,8 @@ final class BinaryPersistentAttribute
 		return this.getAdapter().getAttributeName();
 	}
 	
-	public Annotation getNullAnnotation(String annotationName) {
+	@Override
+	public Annotation buildNullAnnotation(String annotationName) {
 		return (annotationName == null) ? null : this.buildNullAnnotation(annotationName);
 	}
 	

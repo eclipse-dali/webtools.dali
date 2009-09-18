@@ -370,7 +370,7 @@ public abstract class AbstractJavaPersistentAttribute
 	
 	protected JavaAttributeMapping buildDefaultMapping(JavaAttributeMappingDefinition mappingDefinition) {
 		Annotation annotation = this.resourcePersistentAttribute.
-				getNullAnnotation(mappingDefinition.getAnnotationName());
+				buildNullAnnotation(mappingDefinition.getAnnotationName());
 		JavaAttributeMapping mapping = mappingDefinition.buildMapping(this, getJpaFactory());
 		mapping.initialize(annotation);
 		return mapping;
@@ -397,7 +397,7 @@ public abstract class AbstractJavaPersistentAttribute
 		String mappingKey = mappingDefinition.getKey();
 		if (this.valuesAreEqual(this.defaultMapping.getKey(), mappingKey)) {
 			this.defaultMapping.update(this.resourcePersistentAttribute.
-					getNullAnnotation(mappingDefinition.getAnnotationName()));
+					buildNullAnnotation(mappingDefinition.getAnnotationName()));
 		} 
 		else {
 			setDefaultMapping(buildDefaultMapping(mappingDefinition));
