@@ -51,6 +51,7 @@ public class EclipseLink2_0JpaFactory
 		return new GenericJavaDerivedId2_0(parent);
 	}
 	
+	//The 2.0 JPA spec supports association overrides on an embedded mapping while the 1.0 spec did not
 	@Override
 	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, Owner owner) {
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
