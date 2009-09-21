@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -68,8 +68,11 @@ public abstract class AbstractJavaVersionMapping
 		return VersionAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
+	
+	@Override
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
 			JPA.COLUMN,
 			JPA.TEMPORAL);
 	}

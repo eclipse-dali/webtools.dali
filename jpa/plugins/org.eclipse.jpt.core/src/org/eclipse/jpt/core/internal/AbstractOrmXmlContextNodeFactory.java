@@ -72,7 +72,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAssociationOverride;
@@ -133,6 +132,11 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
@@ -171,7 +175,7 @@ import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
-public abstract class AbstractOrmXmlContextNodeFactory implements OrmXmlContextNodeFactory
+public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0ContextNodeFactory
 {
 	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
 		return new GenericOrmXml(parent, resource);
@@ -355,6 +359,10 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXmlContextN
 	
 	public OrmConverter buildOrmNullConverter(OrmAttributeMapping parent) {
 		return new GenericOrmNullConverter(parent);
+	}
+	
+	public OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource) {
+		return new NullOrmDerivedId2_0(parent);
 	}
 	
 	

@@ -21,8 +21,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -40,13 +39,12 @@ public class JavaEclipseLinkIdMapping
 	//************** JavaAttributeMapping implementation ***************
 	
 	@Override
-	public Iterator<String> supportingAnnotationNames() {
-		return new CompositeIterator<String>(
-			super.supportingAnnotationNames(),
-			new ArrayIterator<String>(
-				EclipseLink.MUTABLE,
-				EclipseLink.CONVERT));
-	}
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
+			EclipseLink.MUTABLE,
+			EclipseLink.CONVERT);
+	}		
 
 	
 	//************** AbstractJavaIdMapping overrides ***************

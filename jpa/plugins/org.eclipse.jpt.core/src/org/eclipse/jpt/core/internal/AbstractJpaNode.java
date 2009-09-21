@@ -113,6 +113,10 @@ public abstract class AbstractJpaNode
 	protected JpaPlatform getJpaPlatform() {
 		return this.getJpaProject().getJpaPlatform();
 	}
+	
+	protected JpaPlatform.Version getJpaPlatformVersion() {
+		return this.getJpaPlatform().getJpaVersion();
+	}
 
 	protected JpaFactory getJpaFactory() {
 		return this.getJpaPlatform().getJpaFactory();

@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 
 public abstract class AbstractJavaOneToManyMapping
@@ -33,11 +32,10 @@ public abstract class AbstractJavaOneToManyMapping
 		return OneToManyAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
-			JPA.ORDER_BY,
-			JPA.MAP_KEY,
-			JPA.JOIN_TABLE,
+	@Override
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
 			JPA.JOIN_COLUMN,
 			JPA.JOIN_COLUMNS);
 	}

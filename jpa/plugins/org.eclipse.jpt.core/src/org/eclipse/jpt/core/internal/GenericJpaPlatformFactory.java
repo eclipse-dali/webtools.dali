@@ -31,12 +31,25 @@ public class GenericJpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
+			this.buildJpaVersion(),
 			new GenericJpaFactory(), 
 			new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()),
 			GenericJpaPlatformProvider.instance(), 
 			this.buildJpaPlatformVariation());
 	}
 	
+	
+	private JpaPlatform.Version buildJpaVersion() {
+		return new JpaPlatform.Version() {
+			public boolean is2_0Compatible() {
+				return false;
+			}
+			
+			public int getJpaVersion() {
+				return 1;
+			}
+		};
+	}
 	
 	protected JpaPlatformVariation buildJpaPlatformVariation() {
 		return new JpaPlatformVariation() {

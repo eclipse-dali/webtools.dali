@@ -9,19 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public abstract class AbstractJavaManyToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<ManyToOneAnnotation>
-	implements JavaManyToOneMapping
+	implements JavaManyToOneMapping2_0
 {
 	protected AbstractJavaManyToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
@@ -35,14 +32,6 @@ public abstract class AbstractJavaManyToOneMapping
 	
 	public String getAnnotationName() {
 		return ManyToOneAnnotation.ANNOTATION_NAME;
-	}
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
-						JPA.JOIN_COLUMN,
-						JPA.JOIN_COLUMNS,
-						JPA.JOIN_TABLE
-					);
 	}
 	
 	@Override

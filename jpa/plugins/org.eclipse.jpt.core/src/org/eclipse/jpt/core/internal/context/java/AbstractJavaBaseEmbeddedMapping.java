@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -54,11 +54,13 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	
 	//****************** JavaAttributeMapping implementation *******************
 
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
+	@Override
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
 			JPA.ATTRIBUTE_OVERRIDE,
 			JPA.ATTRIBUTE_OVERRIDES);
-	}		
+	}
 
 	public Embeddable getEmbeddable() {
 		return this.embeddable;

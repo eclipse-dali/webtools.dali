@@ -45,6 +45,8 @@ public class GenericJpaPlatform
 {
 	private final String id;
 	
+	private final Version jpaVersion;
+	
 	private final JpaFactory jpaFactory;
 	
 	private final JpaAnnotationProvider annotationProvider;
@@ -54,9 +56,10 @@ public class GenericJpaPlatform
 	private final JpaPlatformVariation jpaVariation;
 	
 	
-	public GenericJpaPlatform(String id, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
+	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
 		super();
 		this.id = id;
+		this.jpaVersion = jpaVersion;
 		this.jpaFactory = jpaFactory;
 		this.annotationProvider = jpaAnnotationProvider;
 		this.jpaVariation = jpaVariation;
@@ -67,8 +70,11 @@ public class GenericJpaPlatform
 	public String getId() {
 		return this.id;
 	}
-
-
+	
+	public Version getJpaVersion() {
+		return this.jpaVersion;
+	}
+	
 	// ********** factory **********
 
 	public JpaFactory getJpaFactory() {

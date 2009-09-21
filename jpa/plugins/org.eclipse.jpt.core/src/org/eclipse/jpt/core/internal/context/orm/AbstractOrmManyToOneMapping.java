@@ -11,17 +11,17 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 
 
 public abstract class AbstractOrmManyToOneMapping<T extends XmlManyToOne>
 	extends AbstractOrmSingleRelationshipMapping<T>
-	implements OrmManyToOneMapping
+	implements OrmManyToOneMapping2_0
 {
 	protected AbstractOrmManyToOneMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);

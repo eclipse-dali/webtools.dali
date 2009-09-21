@@ -9,20 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 
 
 public abstract class AbstractJavaOneToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
-	implements JavaOneToOneMapping
+	implements JavaOneToOneMapping2_0
 {
 	protected AbstractJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
@@ -43,13 +42,12 @@ public abstract class AbstractJavaOneToOneMapping
 		return super.getMappingAnnotation();
 	}
 	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
+	@Override
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
 			JPA.PRIMARY_KEY_JOIN_COLUMN,
-			JPA.PRIMARY_KEY_JOIN_COLUMNS,
-			JPA.JOIN_COLUMN,
-			JPA.JOIN_COLUMNS,
-			JPA.JOIN_TABLE);
+			JPA.PRIMARY_KEY_JOIN_COLUMNS);
 	}
 	
 	public String getKey() {

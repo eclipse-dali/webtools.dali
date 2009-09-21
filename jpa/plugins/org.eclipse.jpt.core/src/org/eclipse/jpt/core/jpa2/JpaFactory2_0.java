@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.jpa2;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 
 /**
  * JPA 2.0 factory
@@ -32,6 +34,11 @@ public interface JpaFactory2_0
 	StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject);
 
 	PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType);
+
+	
+	// ********** Java Context Model **********
+	
+	JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent);
 
 
 }

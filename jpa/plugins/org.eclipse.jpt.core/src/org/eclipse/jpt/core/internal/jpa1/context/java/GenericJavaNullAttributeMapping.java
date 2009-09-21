@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -34,10 +32,6 @@ public class GenericJavaNullAttributeMapping
 	
 	public String getAnnotationName() {
 		return null;
-	}
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return EmptyIterator.instance();
 	}
 	
 	@Override

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaBasicMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
 
-public class TestJavaBasicMapping extends GenericJavaBasicMapping
+public class TestJavaBasicMapping extends AbstractJavaBasicMapping
 {
 	public TestJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);

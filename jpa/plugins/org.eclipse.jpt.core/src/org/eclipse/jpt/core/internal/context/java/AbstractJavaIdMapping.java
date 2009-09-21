@@ -31,9 +31,9 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -97,8 +97,10 @@ public abstract class AbstractJavaIdMapping
 		return IdAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
+	@Override
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
 			JPA.COLUMN,
 			JPA.GENERATED_VALUE,
 			JPA.TEMPORAL,

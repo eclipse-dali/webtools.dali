@@ -20,8 +20,6 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipRefe
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
@@ -32,14 +30,14 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.internal.jpa2.context.GenericRootContextNode2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddedMapping2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaManyToOneMapping2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericClassRef2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericJarFileRef2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericMappingFileRef2_0;
@@ -52,11 +50,16 @@ import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.ClassRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
+import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -89,10 +92,12 @@ public class GenericJpaFactory2_0
 		return new GenericJpaProject2_0(config);
 	}
 	
+	@Override
 	public StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject) {
 		return new GenericStaticMetamodelSynchronizer(jpaProject);
 	}
 	
+	@Override
 	public PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
 		return new GenericPersistentTypeStaticMetamodelSynchronizer(staticMetamodelSynchronizer, persistentType);
 	}
@@ -170,16 +175,6 @@ public class GenericJpaFactory2_0
 	public JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaPersistentAttribute parent) {
 		return new GenericJavaEmbeddedMapping2_0(parent);
 	}
-	
-	@Override
-	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
-		return new GenericJavaManyToOneMapping2_0(parent);
-	}
-	
-	@Override
-	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
-		return new GenericJavaOneToOneMapping2_0(parent);
-	}
 
 	@Override
 	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
@@ -194,6 +189,18 @@ public class GenericJpaFactory2_0
 	@Override
 	public AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy) {
 		return new VirtualAssociationOverride2_0Annotation(jrpm, name, joiningStrategy);
+	}
+	
+	@Override
+	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
+		return new GenericJavaDerivedId2_0(parent);
+	}
+
+	
+	// ********** Orm Context Model **********
+	
+	public OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource) {
+		return new GenericOrmDerivedId2_0(parent, resource);
 	}
 
 }

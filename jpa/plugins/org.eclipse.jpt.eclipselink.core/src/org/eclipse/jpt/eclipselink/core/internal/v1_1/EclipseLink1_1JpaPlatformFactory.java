@@ -37,6 +37,7 @@ public class EclipseLink1_1JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
+			buildJpaVersion(),
 			new EclipseLinkJpaFactory(), 
 			buildJpaAnnotationProvider(),
 			EclipseLink1_1JpaPlatformProvider.instance(), 
@@ -56,6 +57,18 @@ public class EclipseLink1_1JpaPlatformFactory
 			}
 			public boolean isJoinTableOverridable() {
 				return false;
+			}
+		};
+	}
+	
+	private JpaPlatform.Version buildJpaVersion() {
+		return new JpaPlatform.Version() {
+			public boolean is2_0Compatible() {
+				return false;
+			}
+			
+			public int getJpaVersion() {
+				return 1;
 			}
 		};
 	}

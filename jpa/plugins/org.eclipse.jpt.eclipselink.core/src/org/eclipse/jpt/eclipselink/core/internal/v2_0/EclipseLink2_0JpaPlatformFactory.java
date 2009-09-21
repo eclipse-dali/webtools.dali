@@ -35,12 +35,25 @@ public class EclipseLink2_0JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
+			buildJpaVersion(),
 			new EclipseLink2_0JpaFactory(), 
 			this.buildJpaAnnotationProvider(),
 			EclipseLink2_0JpaPlatformProvider.instance(), 
 			this.buildJpaVariation());
 	}
-
+	
+	private JpaPlatform.Version buildJpaVersion() {
+		return new JpaPlatform.Version() {
+			public boolean is2_0Compatible() {
+				return true;
+			}
+			
+			public int getJpaVersion() {
+				return 2;
+			}
+		};
+	}
+	
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
 		return new GenericJpaAnnotationProvider(
 			Generic2_0JpaAnnotationDefinitionProvider.instance(),

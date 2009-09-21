@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 public class JavaTestAttributeMapping extends AbstractJavaAttributeMapping<Annotation>
 {
@@ -31,9 +29,5 @@ public class JavaTestAttributeMapping extends AbstractJavaAttributeMapping<Annot
 
 	public String getAnnotationName() {
 		return JavaTestAttributeMapping.TEST_ATTRIBUTE_ANNOTATION_NAME;
-	}
-
-	public Iterator<String> supportingAnnotationNames() {
-		return EmptyListIterator.instance();
 	}
 }

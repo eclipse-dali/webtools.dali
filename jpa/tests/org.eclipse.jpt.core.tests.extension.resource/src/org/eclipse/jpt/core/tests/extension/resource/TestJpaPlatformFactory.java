@@ -34,10 +34,23 @@ public class TestJpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
+			buildJpaVersion(),
 			new TestJpaFactory(), 
 			new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()), 
 			TestJpaPlatformProvider.instance(),
 			buildJpaPlatformVariation());
+	}
+	
+	private JpaPlatform.Version buildJpaVersion() {
+		return new JpaPlatform.Version() {
+			public boolean is2_0Compatible() {
+				return false;
+			}
+			
+			public int getJpaVersion() {
+				return 1;
+			}
+		};
 	}
 	
 	protected JpaPlatformVariation buildJpaPlatformVariation() {

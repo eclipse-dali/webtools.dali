@@ -50,7 +50,12 @@ public interface JpaPlatform
 	 * Get the ID for this platform
 	 */
 	String getId();
-
+	
+	/**
+	 * Get the version object for this platform. 
+	 */
+	Version getJpaVersion();
+	
 	// ********** factory **********
 
 	/**
@@ -177,4 +182,16 @@ public interface JpaPlatform
 	 */
 	JpaPlatformVariation getJpaVariation();
 
+	
+	interface Version {
+		/**
+		 * Return the highest JPA specification version supported by this platform.
+		 */
+		int getJpaVersion();
+		
+		/**
+		 * Return whether this platform is compatible with the 2.0 JPA specification.
+		 */
+		boolean is2_0Compatible();
+	}
 }

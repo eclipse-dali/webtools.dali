@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public abstract class AbstractJavaManyToManyMapping
@@ -35,13 +32,6 @@ public abstract class AbstractJavaManyToManyMapping
 		
 	public String getAnnotationName() {
 		return ManyToManyAnnotation.ANNOTATION_NAME;
-	}
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
-			JPA.ORDER_BY,
-			JPA.MAP_KEY,
-			JPA.JOIN_TABLE);
 	}
 	
 	@Override

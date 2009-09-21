@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -17,7 +16,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaManyToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -34,11 +33,10 @@ public class JavaEclipseLinkManyToOneMapping
 	}
 	
 	@Override
-	public Iterator<String> supportingAnnotationNames() {
-		return new CompositeIterator<String>(
-						super.supportingAnnotationNames(),
-						EclipseLink.JOIN_FETCH
-					);
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
+			EclipseLink.JOIN_FETCH);
 	}
 	
 	public EclipseLinkJoinFetch getJoinFetch() {

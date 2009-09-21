@@ -11,6 +11,9 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLinkPersistenceUnit2_0;
@@ -31,6 +34,14 @@ public class EclipseLink2_0JpaFactory
 	@Override
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		return new EclipseLinkPersistenceUnit2_0(parent, xmlPersistenceUnit);
+	}
+	
+	
+	// ********** Java Context Model **********
+	
+	@Override
+	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
+		return new GenericJavaDerivedId2_0(parent);
 	}
 
 }

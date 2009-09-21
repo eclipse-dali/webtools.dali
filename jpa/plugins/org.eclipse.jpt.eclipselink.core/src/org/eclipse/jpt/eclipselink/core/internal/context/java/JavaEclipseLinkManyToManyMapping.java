@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaManyToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -34,11 +35,11 @@ public class JavaEclipseLinkManyToManyMapping
 	}
 	
 	@Override
-	public Iterator<String> supportingAnnotationNames() {
-		return new CompositeIterator<String>(
-			super.supportingAnnotationNames(),
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
 			EclipseLink.JOIN_FETCH);
-	}
+	}		
 	
 	public EclipseLinkJoinFetch getJoinFetch() {
 		return this.joinFetch;

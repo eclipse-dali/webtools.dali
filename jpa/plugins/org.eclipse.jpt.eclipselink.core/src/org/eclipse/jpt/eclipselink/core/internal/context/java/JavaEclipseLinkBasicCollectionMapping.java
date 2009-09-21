@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkBasicCollectionAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaEclipseLinkBasicCollectionMapping
 	extends AbstractJavaAttributeMapping<EclipseLinkBasicCollectionAnnotation>
@@ -32,9 +30,5 @@ public class JavaEclipseLinkBasicCollectionMapping
 	
 	public String getAnnotationName() {
 		return EclipseLinkBasicCollectionAnnotation.ANNOTATION_NAME;
-	}
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return EmptyIterator.instance();
 	}
 }

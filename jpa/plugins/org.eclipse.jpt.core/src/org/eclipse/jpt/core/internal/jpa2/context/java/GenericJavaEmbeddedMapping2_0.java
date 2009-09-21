@@ -17,7 +17,9 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddedMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -55,6 +57,14 @@ public class GenericJavaEmbeddedMapping2_0
 	public void postUpdate() {
 		super.postUpdate();
 		this.associationOverrideContainer.postUpdate();
+	}
+	
+	@Override
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
+			JPA.ASSOCIATION_OVERRIDE,
+			JPA.ASSOCIATION_OVERRIDES);
 	}
 	
 	public Iterator<String> allOverridableAssociationNames() {

@@ -33,11 +33,23 @@ public class Generic2_0JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
+			this.buildJpaVersion(),
 			new GenericJpaFactory2_0(),
-			new GenericJpaAnnotationProvider(
-					Generic2_0JpaAnnotationDefinitionProvider.instance()),
+			new GenericJpaAnnotationProvider(Generic2_0JpaAnnotationDefinitionProvider.instance()),
 			Generic2_0JpaPlatformProvider.instance(),
-			buildJpaPlatformVariation());
+			this.buildJpaPlatformVariation());
+	}
+	
+	private JpaPlatform.Version buildJpaVersion() {
+		return new JpaPlatform.Version() {
+			public boolean is2_0Compatible() {
+				return true;
+			}
+			
+			public int getJpaVersion() {
+				return 2;
+			}
+		};
 	}
 	
 	protected JpaPlatformVariation buildJpaPlatformVariation() {

@@ -7,11 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.orm;
+package org.eclipse.jpt.core.internal.jpa2;
 
-import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
 
-public class GenericOrmXmlContextNodeFactory extends AbstractOrmXmlContextNodeFactory
+/**
+ * 
+ */
+public class NullPersistentTypeStaticMetamodelSynchronizer
+	implements PersistentTypeStaticMetamodelSynchronizer
 {
 
+
+	public NullPersistentTypeStaticMetamodelSynchronizer() {
+		super();
+	}
+
+	public void synchronize() {
+		//no-op
+	}
 }

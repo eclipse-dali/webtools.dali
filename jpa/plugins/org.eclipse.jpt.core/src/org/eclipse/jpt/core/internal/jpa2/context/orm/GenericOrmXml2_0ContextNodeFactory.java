@@ -26,8 +26,6 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -35,8 +33,11 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddedId;
@@ -72,20 +73,15 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
 		return new GenericOrmSequenceGenerator2_0(parent, (XmlSequenceGenerator) resourceSequenceGenerator);
 	}
-		
-	@Override
-	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlManyToOne resourceMapping) {
-		return new GenericOrmManyToOneMapping2_0(parent, (XmlManyToOne) resourceMapping);
-	}
-	
-	@Override
-	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlOneToOne resourceMapping) {
-		return new GenericOrmOneToOneMapping2_0(parent, (XmlOneToOne) resourceMapping);
-	}
 	
 	@Override
 	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlEmbedded resourceMapping) {
 		return new GenericOrmEmbeddedMapping2_0(parent, (XmlEmbedded) resourceMapping);
+	}
+	
+	@Override
+	public OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource) {
+		return new GenericOrmDerivedId2_0(parent, resource);
 	}
 	
 	// ********** ORM Virtual Resource Model **********

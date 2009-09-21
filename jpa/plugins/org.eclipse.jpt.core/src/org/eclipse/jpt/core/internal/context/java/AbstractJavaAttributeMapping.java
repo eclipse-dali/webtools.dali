@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -35,6 +36,8 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	protected final JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
 	protected T mappingAnnotation;
+	
+	private String[] supportingAnnotationNames;
 	
 
 	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
@@ -102,6 +105,24 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	public boolean isOwnedBy(RelationshipMapping mapping) {
 		return false;
 	}
+	
+	// ********** supporting annotation names **********
+	
+	public Iterator<String> supportingAnnotationNames() {
+		return new ArrayListIterator<String>(getSupportingAnnotationNames());
+	}
+	
+	protected synchronized String[] getSupportingAnnotationNames() {
+		if (this.supportingAnnotationNames == null) {
+			this.supportingAnnotationNames = this.buildSupportingAnnotationNames();
+		}
+		return this.supportingAnnotationNames;
+	}
+	
+	protected String[] buildSupportingAnnotationNames() {
+		return new String[0];
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public void initialize(Annotation annotation) {

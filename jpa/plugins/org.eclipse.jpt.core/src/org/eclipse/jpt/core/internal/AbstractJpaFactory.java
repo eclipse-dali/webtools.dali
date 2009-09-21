@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaDataSource;
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
@@ -137,6 +136,15 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistence
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnitProperty;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
+import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeStaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.NullStaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -155,7 +163,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * various Dali interfaces.
  */
 public abstract class AbstractJpaFactory
-	implements JpaFactory
+	implements JpaFactory2_0
 {
 	protected AbstractJpaFactory() {
 		super();
@@ -166,6 +174,14 @@ public abstract class AbstractJpaFactory
 	
 	public JpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
 		return new GenericJpaProject(config);
+	}
+	
+	public StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject) {
+		return new NullStaticMetamodelSynchronizer(jpaProject);
+	}
+	
+	public PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
+		return new NullPersistentTypeStaticMetamodelSynchronizer();
 	}
 	
 	public JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
@@ -400,6 +416,11 @@ public abstract class AbstractJpaFactory
 	public JavaConverter buildJavaNullConverter(JavaAttributeMapping parent) {
 		return new GenericJavaNullConverter(parent);
 	}
+	
+	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
+		return new NullJavaDerivedId2_0(parent);
+	}
+	
 	
 	// ********** JAR Context Model **********
 

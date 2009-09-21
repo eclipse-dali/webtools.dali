@@ -15,10 +15,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
@@ -58,6 +60,17 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.updateMapKey();
 	}
 
+	// ********** AbstractJavaAttributeMapping implementation **********  
+
+	@Override
+	protected String[] buildSupportingAnnotationNames() {
+		return ArrayTools.addAll(
+			super.buildSupportingAnnotationNames(),
+			JPA.JOIN_TABLE,
+			JPA.MAP_KEY,
+			JPA.ORDER_BY
+			);
+	}
 
 	// ********** AbstractJavaRelationshipMapping implementation **********  
 
