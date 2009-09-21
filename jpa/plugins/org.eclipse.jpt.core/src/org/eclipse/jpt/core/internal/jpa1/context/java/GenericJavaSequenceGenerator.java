@@ -10,18 +10,34 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaSequenceGenerator;
 
 /**
  * 
  */
 public class GenericJavaSequenceGenerator extends AbstractJavaSequenceGenerator
-	implements JavaSequenceGenerator
 {
 
 	public GenericJavaSequenceGenerator(JavaJpaContextNode parent) {
 		super(parent);
+	}
+
+	// ********** database stuff **********
+
+	/**
+	 * The JPA spec does not allow a sequence to have a schema.
+	 */
+	@Override
+	protected String getSchema() {
+		return this.getContextDefaultSchema();
+	}
+
+	/**
+	 * The JPA spec does not allow a sequence to have a catalog.
+	 */
+	@Override
+	protected String getCatalog() {
+		return this.getContextDefaultCatalog();
 	}
 
 }

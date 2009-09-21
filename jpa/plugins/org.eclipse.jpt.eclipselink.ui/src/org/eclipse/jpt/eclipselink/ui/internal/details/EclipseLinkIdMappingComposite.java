@@ -9,21 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
-import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.IdMapping;
-import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.IdMappingGenerationComposite;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.TemporalTypeComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -64,7 +62,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.1
  */
-public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
+public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<IdMapping>
                                 implements JpaComposite
 {
 	/**
@@ -79,15 +77,6 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 	                          WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	protected PropertyValueModel<? extends Column> buildColumnHolder() {
-		return new TransformationPropertyValueModel<IdMapping, Column>(getSubjectHolder())  {
-			@Override
-			protected Column transform_(IdMapping value) {
-				return value.getColumn();
-			}
-		};
 	}
 
 	@Override
@@ -112,6 +101,7 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}	
 	
+	@Override
 	protected void initializeTypePane(Composite container) {
 
 		container = addCollapsableSection(
@@ -156,47 +146,11 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.NO_CONVERTER);
-				}
-			}
-		};
-	}
-
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
 			@Override
 			protected EclipseLinkConvert transform_(Converter converter) {
 				return (converter != null && converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) ? (EclipseLinkConvert) converter : null;
-			}
-		};
-	}
-
-	protected WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
-				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-				}
 			}
 		};
 	}
@@ -220,25 +174,6 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 			}
 		};
 	}
-	
-	protected PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
-		return new PropertyAspectAdapter<IdMapping, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
-			@Override
-			protected Converter buildValue_() {
-				return this.subject.getSpecifiedConverter();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
-			@Override
-			protected TemporalConverter transform_(Converter converter) {
-				return (converter != null && converter.getType() == Converter.TEMPORAL_CONVERTER) ? (TemporalConverter) converter : null;
-			}
-		};
-	}
-	
 	
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
 		return new PropertyAspectAdapter<IdMapping, EclipseLinkMutable>(getSubjectHolder()) {

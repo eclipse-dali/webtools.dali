@@ -86,24 +86,5 @@ public abstract class AbstractOrmSequenceGenerator
 		this.setSpecifiedSequenceName_(sequenceGenerator.getSequenceName());
 		//TODO default sequence name
 	}
-	
-
-	// ********** database stuff **********
-
-	/**
-	 * The JPA spec does not allow a sequence to have a schema.
-	 */
-	@Override
-	protected String getSchema() {
-		return this.getContextDefaultSchema();
-	}
-
-	/**
-	 * The JPA spec does not allow a sequence to have a catalog.
-	 */
-	@Override
-	protected String getCatalog() {
-		return this.getContextDefaultCatalog();
-	}
 
 }

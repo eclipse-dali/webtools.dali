@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsDetailsPage;
+import org.eclipse.jpt.ui.internal.details.orm.AbstractEntityMappingsDetailsPage;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  EntityMappings2_0DetailsPage
  */
-public class EntityMappings2_0DetailsPage extends EntityMappingsDetailsPage
+public class EntityMappings2_0DetailsPage extends AbstractEntityMappingsDetailsPage
 {
 	/**
 	 * Creates a new <code>EntityMappings2_0DetailsPage</code>.

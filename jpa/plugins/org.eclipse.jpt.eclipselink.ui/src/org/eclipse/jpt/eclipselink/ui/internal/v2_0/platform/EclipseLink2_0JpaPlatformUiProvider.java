@@ -11,6 +11,9 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.platform;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm.EclipseLinkEntityMappings2_0DetailsProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm.OrmEclipseLinkEntity2_0UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm.OrmEclipseLinkIdMapping2_0UiProvider;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
@@ -48,7 +51,7 @@ public class EclipseLink2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	
 	@Override
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
-		//none specific to EclipseLink 2.0
+		providers.add(EclipseLinkEntityMappings2_0DetailsProvider.instance());
 	}
 	
 	// ********** structure providers **********
@@ -63,7 +66,7 @@ public class EclipseLink2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 
 	@Override
 	protected void addTypeMappingUiProvidersTo(List<TypeMappingUiProvider<?>> providers) {
-		//none specific to EclipseLink 2.0
+		providers.add(OrmEclipseLinkEntity2_0UiProvider.instance());
 	}
 	
 	@Override
@@ -76,7 +79,7 @@ public class EclipseLink2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	
 	@Override
 	protected void addAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
-		//none specific to EclipseLink 2.0
+		providers.add(OrmEclipseLinkIdMapping2_0UiProvider.instance());
 	}
 	
 	@Override

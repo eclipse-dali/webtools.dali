@@ -110,7 +110,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
 	}
 
-	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
+	protected WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -126,8 +126,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		};
 	}
 
-
-	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
+	protected WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -147,7 +146,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		};
 	}
 
-	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
+	protected PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
 		return new PropertyAspectAdapter<T, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
@@ -156,7 +155,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		};
 	}
 	
-	private PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+	protected PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {

@@ -51,9 +51,9 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.1
  */
 
-//Temporary to remove the Define Converters section from orm basic, id, version mapping.
+//Removes the Define Converters section from orm basic, id, version mapping.
 //This is supported in EclipseLink in version 1.1, but not 1.0
-public class OrmEclipseLinkConvertComposite extends FormPane<EclipseLinkConvert>
+public class OrmEclipseLinkConvert1_0Composite extends FormPane<EclipseLinkConvert>
 {
 
 	/**
@@ -72,7 +72,7 @@ public class OrmEclipseLinkConvertComposite extends FormPane<EclipseLinkConvert>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmEclipseLinkConvertComposite(PropertyValueModel<? extends EclipseLinkConvert> subjectHolder,
+	public OrmEclipseLinkConvert1_0Composite(PropertyValueModel<? extends EclipseLinkConvert> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 

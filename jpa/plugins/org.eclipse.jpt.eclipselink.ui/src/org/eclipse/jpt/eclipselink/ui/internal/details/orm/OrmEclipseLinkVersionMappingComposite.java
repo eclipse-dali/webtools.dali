@@ -18,7 +18,7 @@ import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-//Temporary to remove the Converters section from orm basic mapping.
+//Remove the Converters section from 1.0 orm version mappings.
 //This is supported in EclipseLink in version 1.1, but not 1.0
 public class OrmEclipseLinkVersionMappingComposite extends EclipseLinkVersionMappingComposite implements JpaComposite
 {
@@ -40,6 +40,6 @@ public class OrmEclipseLinkVersionMappingComposite extends EclipseLinkVersionMap
 	@Override
 	//everything but the 'Defaine Converter' section.  This is not supported in eclipselink 1.0, but is in 1.1
 	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
-		return new OrmEclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
+		return new OrmEclipseLinkConvert1_0Composite(convertHolder, container, getWidgetFactory());
 	}
 }
