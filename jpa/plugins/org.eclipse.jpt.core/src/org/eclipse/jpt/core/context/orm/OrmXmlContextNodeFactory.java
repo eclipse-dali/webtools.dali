@@ -100,7 +100,7 @@ public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
 	
 	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, OrmAttributeOverrideContainer.Owner owner, XmlAttributeOverrideContainer resourceAttributeOverrideContainer);
 
-	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
+	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEntity parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
 
 	OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	

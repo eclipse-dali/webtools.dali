@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.orm;
 
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 
 public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 {
@@ -20,6 +22,7 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 	// ********** ORM Context Model **********
 
 	OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource);
-	
+
+	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
 
 }

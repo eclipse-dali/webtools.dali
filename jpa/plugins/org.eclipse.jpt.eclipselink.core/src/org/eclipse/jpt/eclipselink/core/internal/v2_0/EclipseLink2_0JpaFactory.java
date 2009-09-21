@@ -9,10 +9,14 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 
+import org.eclipse.jpt.core.context.AssociationOverrideContainer.Owner;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
@@ -42,6 +46,11 @@ public class EclipseLink2_0JpaFactory
 	@Override
 	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
 		return new GenericJavaDerivedId2_0(parent);
+	}
+	
+	@Override
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, Owner owner) {
+		return new GenericJavaAssociationOverrideContainer(parent, owner);
 	}
 
 }

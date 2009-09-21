@@ -127,6 +127,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTemporalConver
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericClassRef;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericJarFileRef;
@@ -144,6 +145,7 @@ import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -361,8 +363,12 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaAttributeOverrideContainer(parent, owner);
 	}
 	
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent, AssociationOverrideContainer.Owner owner) {
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEntity parent, AssociationOverrideContainer.Owner owner) {
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
+	}
+	
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, AssociationOverrideContainer.Owner owner) {
+		return new NullJavaAssociationOverrideContainer(parent, owner);
 	}
 	
 	public JavaAttributeOverride buildJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {

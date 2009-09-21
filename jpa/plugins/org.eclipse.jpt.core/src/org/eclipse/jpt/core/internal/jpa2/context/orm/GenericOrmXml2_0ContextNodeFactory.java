@@ -23,17 +23,20 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer.Owner;
 import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
@@ -49,6 +52,7 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
 public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNodeFactory
@@ -75,14 +79,15 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	}
 	
 	@Override
-	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlEmbedded resourceMapping) {
-		return new GenericOrmEmbeddedMapping2_0(parent, (XmlEmbedded) resourceMapping);
-	}
-	
-	@Override
 	public OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource) {
 		return new GenericOrmDerivedId2_0(parent, resource);
 	}
+	
+	@Override
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+		return new GenericOrmAssociationOverrideContainer(parent, owner, resourceAssociationOverrideContainer);
+	}
+	
 	
 	// ********** ORM Virtual Resource Model **********
 

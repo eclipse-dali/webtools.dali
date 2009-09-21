@@ -74,6 +74,7 @@ import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.context.orm.NullOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAssociationOverride;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlBasic;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbedded;
@@ -134,6 +135,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefa
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
@@ -237,8 +239,12 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		return new GenericOrmAttributeOverrideContainer(parent, owner, resourceAttributeOverrideContainer);
 	}
 	
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEntity parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
 		return new GenericOrmAssociationOverrideContainer(parent, owner, resourceAssociationOverrideContainer);
+	}
+	
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+		return new NullOrmAssociationOverrideContainer(parent, owner);
 	}
 	
 	public OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
