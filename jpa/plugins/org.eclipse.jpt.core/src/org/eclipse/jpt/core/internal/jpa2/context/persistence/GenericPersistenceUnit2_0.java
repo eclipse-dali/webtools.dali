@@ -24,7 +24,8 @@ import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.jpt.core.jpa2.resource.persistence.XmlPersistenceUnit;
 
 /**
  * JPA 2.0 persistence-unit
@@ -33,14 +34,55 @@ public class GenericPersistenceUnit2_0
 	extends AbstractPersistenceUnit
 	implements PersistenceUnit2_0
 {
+	protected ValidationMode specifiedValidationMode;
+	protected ValidationMode defaultValidationMode;
+	
 	private JpaConnection2_0 connection;
 	private JpaOptions2_0 options;
 
 	// ********** constructors **********
-	public GenericPersistenceUnit2_0(Persistence2_0 parent, XmlPersistenceUnit xmlPersistenceUnit) {
+	public GenericPersistenceUnit2_0(Persistence2_0 parent, org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
+
+		this.defaultValidationMode = this.buildDefaultValidationMode();
+	}
+	
+	protected ValidationMode buildDefaultValidationMode() {
+		return JpaOptions2_0.DEFAULT_VALIDATION_MODE; 
 	}
 
+	@Override
+	protected XmlPersistenceUnit getXmlPersistenceUnit() {
+		return (XmlPersistenceUnit) this.xmlPersistenceUnit;
+	}
+
+	// ********** validation mode **********
+
+	public ValidationMode getValidationMode() {
+		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
+	}
+
+	public ValidationMode getSpecifiedValidationMode() {
+		return this.specifiedValidationMode;
+	}
+
+	public void setSpecifiedValidationMode(ValidationMode specifiedValidationMode) {
+		ValidationMode old = this.specifiedValidationMode;
+		this.specifiedValidationMode = specifiedValidationMode;
+		this.getXmlPersistenceUnit().setValidationMode(ValidationMode.toXmlResourceModel(specifiedValidationMode));
+		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, specifiedValidationMode);
+	}
+
+	public ValidationMode getDefaultValidationMode() {
+		return this.defaultValidationMode;
+	}
+
+	protected void setDefaultValidationMode(ValidationMode defaultValidationMode) {
+		ValidationMode old = this.defaultValidationMode;
+		this.defaultValidationMode = defaultValidationMode;
+		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
+	}
+	
 	// ********** properties **********
 	@Override
 	protected void initializeProperties() {

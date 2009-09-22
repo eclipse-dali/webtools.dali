@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -204,6 +205,10 @@ public abstract class AbstractPersistenceUnit
 		this.defaultCatalog = this.buildDefaultCatalog(defaults);
 		this.defaultSchema = this.buildDefaultSchema(defaults);
 		this.defaultCascadePersist = this.buildDefaultCascadePersist(defaults);
+	}
+
+	protected XmlPersistenceUnit getXmlPersistenceUnit() {
+		return this.xmlPersistenceUnit;
 	}
 
 

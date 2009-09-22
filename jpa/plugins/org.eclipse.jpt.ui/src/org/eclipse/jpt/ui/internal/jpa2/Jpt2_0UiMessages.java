@@ -48,6 +48,12 @@ public class Jpt2_0UiMessages
 	public static String TransactionTypeComposite_jta;
 	public static String TransactionTypeComposite_resource_local;
 	
+	public static String ValidationModeComposite_validationModeLabel;
+	
+	public static String ValidationModeComposite_auto;
+	public static String ValidationModeComposite_callback;
+	public static String ValidationModeComposite_none;
+
 	public static String ValidationConfigurationComposite_groupPrePersistLabel;
 	public static String ValidationConfigurationComposite_groupPreUpdateLabel;
 	public static String ValidationConfigurationComposite_groupPreRemoveLabel;

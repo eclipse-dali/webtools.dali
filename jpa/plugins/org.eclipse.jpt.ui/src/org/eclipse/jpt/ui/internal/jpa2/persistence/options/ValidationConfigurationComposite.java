@@ -39,6 +39,9 @@ public class ValidationConfigurationComposite extends FormPane<JpaOptions2_0>
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		// ValidationMode
+		new ValidationModeComposite(this, container);
+		
 		// GroupPrePersist
 		this.addLabeledText(
 			container,

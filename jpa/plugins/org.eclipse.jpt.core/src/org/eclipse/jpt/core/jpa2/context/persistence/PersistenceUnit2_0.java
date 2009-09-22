@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 
 /**
  * JPA 2.0 <code>persistence-unit</code>
@@ -26,6 +27,45 @@ import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 public interface PersistenceUnit2_0
 	extends PersistenceUnit, StaticMetamodelGenerator
 {
+
+	// ********** validation mode **********
+
+	/** 
+	 * Return the persistence unit's validation mode,
+	 * whether specified or defaulted.
+	 */
+	ValidationMode getValidationMode();
+
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * specified validation mode
+	 */
+	String SPECIFIED_VALIDATION_MODE_PROPERTY = "specifiedValidationMode"; //$NON-NLS-1$
+
+	/** 
+	 * Return the persistence unit's specified validation mode.
+	 */
+	ValidationMode getSpecifiedValidationMode();
+
+	/** 
+	 * Set the persistence unit's specified validation mode.
+	 */
+	void setSpecifiedValidationMode(ValidationMode validationMode);
+
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * default validation mode (not typically changed).
+	 */
+	String DEFAULT_VALIDATION_MODE_PROPERTY = "defaultValidationMode"; //$NON-NLS-1$
+
+	/** 
+	 * Return the persistence unit's default validation mode.
+	 */
+	ValidationMode getDefaultValidationMode();
+
+
+	// ********** properties **********
+
 	JpaConnection2_0 getConnection();
 
 	JpaOptions2_0 getOptions();

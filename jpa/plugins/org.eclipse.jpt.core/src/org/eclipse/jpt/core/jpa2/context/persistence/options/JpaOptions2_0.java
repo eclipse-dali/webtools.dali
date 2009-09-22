@@ -20,7 +20,7 @@ public interface JpaOptions2_0 extends PersistenceUnitProperties
 	Integer getLockTimeout();
 	void setLockTimeout(Integer newLockTimeout);
 		static final String LOCK_TIMEOUT_PROPERTY = "lockTimeout"; //$NON-NLS-1$
-		// EclipseLink key string
+		// Property key
 		static final String PERSISTENCE_LOCK_TIMEOUT = "javax.persistence.lock.timeout"; //$NON-NLS-1$
 		static final Integer DEFAULT_LOCK_TIMEOUT = Integer.valueOf(5);
 
@@ -28,9 +28,17 @@ public interface JpaOptions2_0 extends PersistenceUnitProperties
 	Integer getQueryTimeout();
 	void setQueryTimeout(Integer newQueryTimeout);
 		static final String QUERY_TIMEOUT_PROPERTY = "queryTimeout"; //$NON-NLS-1$
-		// EclipseLink key string
+		// Property key
 		static final String PERSISTENCE_QUERY_TIMEOUT = "javax.persistence.query.timeout"; //$NON-NLS-1$
 		static final Integer DEFAULT_QUERY_TIMEOUT = Integer.valueOf(5);
+
+	ValidationMode getDefaultValidationMode();
+	ValidationMode getValidationMode();
+	void setValidationMode(ValidationMode validationMode);
+		static final String VALIDATION_MODE_PROPERTY = "validationMode"; //$NON-NLS-1$
+		// Property key
+		static final String PERSISTENCE_VALIDATION_MODE = "javax.persistence.validation.mode"; //$NON-NLS-1$
+		static final ValidationMode DEFAULT_VALIDATION_MODE = ValidationMode.auto;
 
 	String getDefaultValidationGroupPrePersist();
 	String getValidationGroupPrePersist();

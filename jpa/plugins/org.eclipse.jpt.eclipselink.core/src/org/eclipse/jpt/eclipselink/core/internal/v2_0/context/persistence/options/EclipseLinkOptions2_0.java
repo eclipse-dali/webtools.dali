@@ -12,6 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.optio
 import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 
@@ -46,12 +48,22 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 			this.getIntegerValue(PERSISTENCE_LOCK_TIMEOUT);
 		this.queryTimeout = 
 			this.getIntegerValue(PERSISTENCE_QUERY_TIMEOUT);
+
+		this.initializeValidationMode();
 		this.validationGroupPrePersist = 
 			this.getStringValue(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST);
 		this.validationGroupPreUpdate = 
 			this.getStringValue(PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE);
 		this.validationGroupPreRemove = 
 			this.getStringValue(PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE);
+	}
+
+	private void initializeValidationMode() {
+		ValidationMode validationMode = this.getEnumValue(PERSISTENCE_VALIDATION_MODE, ValidationMode.values());
+		this.getPersistenceUnit().setSpecifiedValidationMode(validationMode);
+		if(validationMode != null) {
+			this.getPersistenceUnit().removeProperty(PERSISTENCE_VALIDATION_MODE);
+		}
 	}
 
 	// ********** behavior **********
@@ -65,6 +77,9 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 		}
 		else if (propertyName.equals(PERSISTENCE_QUERY_TIMEOUT)) {
 			this.queryTimeoutChanged(newValue);
+		}
+		else if (propertyName.equals(PERSISTENCE_VALIDATION_MODE)) {
+			this.validationModeChanged(newValue);
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST)) {
 			this.validationGroupPrePersistChanged(newValue);
@@ -86,6 +101,9 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 		}
 		else if (propertyName.equals(PERSISTENCE_QUERY_TIMEOUT)) {
 			this.queryTimeoutChanged(null);
+		}
+		else if (propertyName.equals(PERSISTENCE_VALIDATION_MODE)) {
+			this.validationModeChanged(null);
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST)) {
 			this.validationGroupPrePersistChanged(null);
@@ -114,6 +132,9 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 			PERSISTENCE_QUERY_TIMEOUT,
 			QUERY_TIMEOUT_PROPERTY);
 		propertyNames.put(
+			PERSISTENCE_VALIDATION_MODE,
+			VALIDATION_MODE_PROPERTY);
+		propertyNames.put(
 			PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST,
 			VALIDATION_GROUP_PRE_PERSIST_PROPERTY);
 		propertyNames.put(
@@ -122,6 +143,11 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 		propertyNames.put(
 			PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE,
 			VALIDATION_GROUP_PRE_REMOVE_PROPERTY);
+	}
+
+	@Override
+	public PersistenceUnit2_0 getPersistenceUnit() {
+		return (PersistenceUnit2_0) super.getPersistenceUnit();
 	}
 
 	// ********** LockTimeout **********
@@ -170,6 +196,27 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 
 	public Integer getDefaultQueryTimeout() {
 		return DEFAULT_QUERY_TIMEOUT;
+	}
+
+	// ********** ValidationMode **********
+
+	public ValidationMode getValidationMode() {
+		return this.getPersistenceUnit().getValidationMode();
+	}
+	
+	public void setValidationMode(ValidationMode newValidationMode) {
+		ValidationMode old = this.getValidationMode();
+		this.getPersistenceUnit().setSpecifiedValidationMode(newValidationMode);
+		this.firePropertyChanged(VALIDATION_MODE_PROPERTY, old, newValidationMode);
+	}
+
+	private void validationModeChanged(String stringValue) {
+		ValidationMode newValue = getEnumValueOf(stringValue, ValidationMode.values());
+		this.setValidationMode(newValue);
+	}
+	
+	public ValidationMode getDefaultValidationMode() {
+		return DEFAULT_VALIDATION_MODE;
 	}
 
 	// ********** ValidationGroupPrePersist **********
