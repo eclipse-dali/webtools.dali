@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.jpa2.resource.persistence;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
+import org.eclipse.jpt.core.resource.persistence.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistencePackage;
 import org.eclipse.jpt.core.resource.xml.XML;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
@@ -58,7 +59,7 @@ public class XmlPersistence extends org.eclipse.jpt.core.resource.persistence.Xm
 
 	private static Translator buildRootTranslator() {
 		return new SimpleRootTranslator(
-				JPA2_0.PERSISTENCE,
+				JPA.PERSISTENCE,
 				Persistence2_0Package.eINSTANCE.getXmlPersistence(),
 				buildTranslatorChildren()
 			);
@@ -70,7 +71,7 @@ public class XmlPersistence extends org.eclipse.jpt.core.resource.persistence.Xm
 				buildNamespaceTranslator(),
 				buildSchemaNamespaceTranslator(),
 				buildSchemaLocationTranslator(),
-				XmlPersistenceUnit.buildTranslator(JPA2_0.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
+				XmlPersistenceUnit.buildTranslator(JPA.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
 			};
 	}
 	

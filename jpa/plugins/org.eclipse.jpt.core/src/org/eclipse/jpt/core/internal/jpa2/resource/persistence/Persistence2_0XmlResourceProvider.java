@@ -57,7 +57,7 @@ public class Persistence2_0XmlResourceProvider
 	}
 		
 	public Persistence2_0XmlResourceProvider(IProject project, IPath filePath) {
-		super(project, filePath, JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
+		super(project, filePath, JptCorePlugin.PERSISTENCE2_0_XML_CONTENT_TYPE);
 	}
 	
 	@Override

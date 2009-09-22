@@ -31,6 +31,8 @@ import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassDefinition
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.jpa2.Orm2_0ResourceModelProvider;
+import org.eclipse.jpt.core.internal.jpa2.Persistence2_0ResourceModelProvider;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingDefinition;
@@ -83,7 +85,9 @@ public class EclipseLink2_0JpaPlatformProvider
 			JavaResourceModelProvider.instance(),
 			JarResourceModelProvider.instance(),
 			PersistenceResourceModelProvider.instance(),
+			Persistence2_0ResourceModelProvider.instance(),
 			OrmResourceModelProvider.instance(),
+			Orm2_0ResourceModelProvider.instance(),
 			EclipseLinkOrmResourceModelProvider.instance(),
 			EclipseLink1_1OrmResourceModelProvider.instance(),
 			EclipseLink2_0OrmResourceModelProvider.instance()};

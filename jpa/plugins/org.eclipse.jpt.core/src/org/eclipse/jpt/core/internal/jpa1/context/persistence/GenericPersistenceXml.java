@@ -44,7 +44,7 @@ public class GenericPersistenceXml
 	
 	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
 		super(parent);
-		if (!resource.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
+		if (!resource.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_FILE_CONTENT_TYPE)) {
 			throw new IllegalArgumentException("Resource " + resource + " must have persistence xml content type"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		this.persistenceXmlResource = resource;
