@@ -15,14 +15,12 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 public class GenericJavaPersistentType2_0
 	extends AbstractJavaPersistentType
-	implements JavaPersistentType2_0
 {
 	public GenericJavaPersistentType2_0(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent, jrpt);
@@ -78,10 +76,6 @@ public class GenericJavaPersistentType2_0
 
 	protected AccessType getResourceAccess() {
 		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
-	}
-	
-	public void synchronizeStaticMetamodel() {
-		this.getJpaProject().synchronizeStaticMetamodel(this);
 	}
 
 }

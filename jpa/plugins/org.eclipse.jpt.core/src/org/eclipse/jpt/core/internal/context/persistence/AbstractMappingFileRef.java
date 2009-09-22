@@ -17,12 +17,12 @@ import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractMappingFileRef
 	extends AbstractXmlContextNode
-	implements MappingFileRef
+	implements MappingFileRef2_0
 {
 	protected String fileName;
 
@@ -118,6 +118,14 @@ public abstract class AbstractMappingFileRef
 		this.firePropertyChanged(MAPPING_FILE_PROPERTY, old, mappingFile);
 	}
 
+	
+	// ********** 2.0 static metamodel **********
+
+	public void synchronizeStaticMetamodel() {
+		if (this.mappingFile != null) {
+			this.mappingFile.synchronizeStaticMetamodel();
+		}
+	}
 
 	// ********** updating **********
 

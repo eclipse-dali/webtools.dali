@@ -26,11 +26,12 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -51,7 +52,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaPersistentType
 	extends AbstractJavaJpaContextNode
-	implements JavaPersistentType
+	implements JavaPersistentType2_0
 {
 	protected JavaResourcePersistentType resourcePersistentType;
 	
@@ -419,6 +420,12 @@ public abstract class AbstractJavaPersistentType
 	
 	public boolean hasAnyAnnotatedAttributes() {
 		return this.resourcePersistentType.hasAnyAnnotatedAttributes();
+	}
+	
+	// **************** 2.0 static metamodel *****************************
+	
+	public void synchronizeStaticMetamodel() {
+		((JpaProject2_0) this.getJpaProject()).synchronizeStaticMetamodel(this);
 	}
 	
 	// **************** initialization / updating *****************************

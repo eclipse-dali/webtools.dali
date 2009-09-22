@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
 
 /**
  * JPA 2.0 context model root.
@@ -25,9 +24,6 @@ import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
 public interface JpaRootContextNode2_0
 	extends JpaRootContextNode, StaticMetamodelGenerator
 {
-	/**
-	 * Covariant override.
-	 */
-	public PersistenceXml2_0 getPersistenceXml();
+	//nothing yet
 
 }

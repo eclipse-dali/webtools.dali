@@ -28,11 +28,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -44,11 +46,16 @@ import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -69,6 +76,7 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -88,7 +96,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJpaProject
 	extends AbstractJpaNode
-	implements JpaProject
+	implements JpaProject2_0
 {
 	/**
 	 * The Eclipse project corresponding to the JPA project.
@@ -172,6 +180,11 @@ public abstract class AbstractJpaProject
 	 */
 	protected final ThreadLocalCommandExecutor modifySharedDocumentCommandExecutor;
 
+	
+	//********* 2.0 static metamodel **************
+	protected final StaticMetamodelSynchronizer staticMetamodelSynchronizer;
+	protected final Job staticMetamodelSynchronizationJob;
+	protected boolean generatesStaticMetamodel = false;
 
 	// ********** constructor/initialization **********
 
@@ -196,6 +209,9 @@ public abstract class AbstractJpaProject
 		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
 
 		this.rootContextNode = this.buildRootContextNode();
+
+		this.staticMetamodelSynchronizer = this.buildStaticMetamodelSynchronizer();
+		this.staticMetamodelSynchronizationJob = this.buildStaticMetamodelSynchronizationJob();
 
 		// "update" the project before returning
 		this.setUpdater_(new SynchronousJpaProjectUpdater(this));
@@ -233,6 +249,23 @@ public abstract class AbstractJpaProject
 
 	protected JpaRootContextNode buildRootContextNode() {
 		return this.getJpaFactory().buildRootContextNode(this);
+	}
+
+	protected StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer() {
+		return ((JpaFactory2_0) this.getJpaFactory()).buildStaticMetamodelSynchronizer(this);
+	}
+
+	protected Job buildStaticMetamodelSynchronizationJob() {
+		String jobName = NLS.bind(JptCoreMessages.SYNCHRONIZE_STATIC_METAMODEL_JOB_NAME, this.getName());
+		Job job = new Job(jobName) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				AbstractJpaProject.this.synchronizeStaticMetamodel_();
+				return Status.OK_STATUS;
+			}
+		};
+		job.setRule(this.project);
+		return job;
 	}
 
 	// ***** inner class
@@ -883,6 +916,33 @@ public abstract class AbstractJpaProject
 		return this.getJpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
 	}
 
+	// ********** Static Metamodel **********
+
+	/**
+	 * Will only synchronize the static metamodel for 2.0 compatible projects 
+	 */
+	public void synchronizeStaticMetamodel() {
+		if (this.generatesStaticMetamodel) {
+			if (getJpaPlatformVersion().is2_0Compatible()) {
+				if (this.staticMetamodelSynchronizationJob != null) {
+					this.staticMetamodelSynchronizationJob.schedule();
+				}
+			}
+		}
+	}
+
+	protected void synchronizeStaticMetamodel_() {
+		((JpaRootContextNode2_0) this.getRootContextNode()).synchronizeStaticMetamodel();
+	}
+
+	public void synchronizeStaticMetamodel(PersistentType persistentType) {
+		this.staticMetamodelSynchronizer.synchronize(persistentType);
+	}
+
+	// TODO
+	public IPackageFragmentRoot getStaticMetaModelSourceFolder() {
+		return this.getJavaProject().getPackageFragmentRoot(this.getProject().getFolder("src"));
+	}
 
 	// ********** Java events **********
 
@@ -1344,7 +1404,7 @@ public abstract class AbstractJpaProject
 	 * Also called by the updater.
 	 */
 	public void updateQuiesced() {
-		// do nothing by default
+		this.synchronizeStaticMetamodel();
 	}
 
 }

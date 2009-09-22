@@ -19,12 +19,13 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JarFile;
-import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.JarFileRef2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -38,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJarFileRef
 	extends AbstractXmlContextNode
-	implements JarFileRef
+	implements JarFileRef2_0
 {
 	protected XmlJarFileRef xmlJarFileRef;
 	
@@ -244,6 +245,16 @@ public abstract class AbstractJarFileRef
 
 	protected IProject getProject() {
 		return this.getJpaProject().getProject();
+	}
+	
+	
+	// **************** 2.0 static metamodel ********************
+
+	public void synchronizeStaticMetamodel() {
+		JarFile2_0 jf = (JarFile2_0) this.getJarFile();
+		if (jf != null) {
+			jf.synchronizeStaticMetamodel();
+		}
 	}
 	
 	

@@ -24,19 +24,5 @@ import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
 public interface Persistence2_0
 	extends Persistence, StaticMetamodelGenerator
 {
-	/**
-	 * Covariant override.
-	 */
-	PersistenceXml2_0 getParent();
-	
-	/**
-	 * Covariant override.
-	 */
-	PersistenceUnit2_0 addPersistenceUnit();
-
-	/**
-	 * Covariant override.
-	 */
-	PersistenceUnit2_0 addPersistenceUnit(int index);
-
+	//nothing yet
 }

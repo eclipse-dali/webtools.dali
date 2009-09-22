@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
-import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
 
 /**
  * JPA 2.0 <code>jar-file</code>
@@ -25,5 +24,5 @@ import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
 public interface JarFileRef2_0
 	extends JarFileRef, StaticMetamodelGenerator
 {
-	JarFile2_0 getJarFile();
+	//nothing yet
 }

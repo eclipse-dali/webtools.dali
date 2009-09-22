@@ -10,12 +10,45 @@
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.AbstractImpliedMappingFileRef;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public class ImpliedMappingFileRef
-	extends AbstractImpliedMappingFileRef
+	extends AbstractMappingFileRef
 {
+	
+	// ********** construction/initialization **********
+
 	public ImpliedMappingFileRef(PersistenceUnit parent, String resourceFileName) {
 		super(parent, resourceFileName);
 	}
+		
+	public boolean isImplied() {
+		return true;
+	}
+
+	public void setFileName(String fileName) {
+		throw new UnsupportedOperationException("Cannot set an implied mapping file ref's 'fileName'"); //$NON-NLS-1$
+	}
+
+	public TextRange getSelectionTextRange() {
+		return null;
+	}
+	
+	public TextRange getValidationTextRange() {
+		return this.getPersistenceUnit().getValidationTextRange();
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		return false;
+	}
+	
+	public void update(XmlMappingFileRef mappingFileRef) {
+		if (mappingFileRef != null) {
+			throw new IllegalArgumentException("mappingFileRef should be null for an implied mapping file"); //$NON-NLS-1$
+		}
+		super.update();
+	}
+
 }
