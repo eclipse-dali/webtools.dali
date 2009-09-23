@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.synch;
 
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -45,7 +47,8 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	
 	public SynchronizeClassesJob(IFile file) {
 		super(JptCoreMessages.SYNCHRONIZE_CLASSES_JOB);
-		setRule(file.getProject());
+		IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+		setRule(ruleFactory.createRule(file));
 		this.persistenceXmlFile = file;
 	}
 	

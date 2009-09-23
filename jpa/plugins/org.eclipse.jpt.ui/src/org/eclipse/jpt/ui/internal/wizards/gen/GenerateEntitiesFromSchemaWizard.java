@@ -12,12 +12,12 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -243,7 +243,8 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			super(JptUiMessages.EntitiesGenerator_jobName);
 			this.customizer = customizer;
 			this.jpaProject = jpaProject ;
-			this.setRule(jpaProject.getProject());
+			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+			this.setRule(ruleFactory.modifyRule(jpaProject.getProject()));
 		}
 
 		@Override
