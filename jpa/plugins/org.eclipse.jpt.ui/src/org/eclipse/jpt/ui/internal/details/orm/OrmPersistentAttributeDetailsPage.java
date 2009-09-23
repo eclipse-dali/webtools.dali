@@ -10,13 +10,10 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import java.util.ArrayList;
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeMapAsComposite;
@@ -100,11 +97,6 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 				return Boolean.valueOf(!value.isVirtual());
 			}
 		};
-	}
-
-	@Override
-	protected DefaultAttributeMappingUiProvider<AttributeMapping> getDefaultAttributeMappingUiProvider(String key, IContentType contentType) {
-		throw new UnsupportedOperationException("Xml attributeMappings should not be default"); //$NON-NLS-1$
 	}
 
 	private PropertyValueModel<OrmAttributeMapping> getMappingHolder() {

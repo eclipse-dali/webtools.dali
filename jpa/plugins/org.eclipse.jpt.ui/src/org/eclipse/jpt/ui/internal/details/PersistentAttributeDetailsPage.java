@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
@@ -123,7 +122,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	                                                               String mappingKey, IContentType contentType) {
 
 		AttributeMappingUiProvider<AttributeMapping> uiProvider =
-			(AttributeMappingUiProvider<AttributeMapping>) getMappingUIProvider(mappingKey, contentType);
+			(AttributeMappingUiProvider<AttributeMapping>) getMappingUiProvider(mappingKey, contentType);
 
 		return uiProvider.buildAttributeMappingComposite(
 			getJpaUiFactory(),
@@ -157,23 +156,8 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return new MappingFilter(mappingKey);
 	}
 
-	private AttributeMappingUiProvider<? extends AttributeMapping> getMappingUIProvider(String key, IContentType contentType) {
-
-		if (this.getSubject().getMapping() == null ||
-		    this.getSubject().getMapping().isDefault()) {
-
-			return getDefaultAttributeMappingUiProvider(key, contentType);
-		}
-
-		return getAttributeMappingUiProvider(key, contentType);
-	}
-
-	protected AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key, IContentType contentType) {
+	protected AttributeMappingUiProvider<? extends AttributeMapping> getMappingUiProvider(String key, IContentType contentType) {
 		return getJpaPlatformUi().getAttributeMappingUiProvider(key, contentType);
-	}
-
-	protected DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key, IContentType contentType) {
-		return getJpaPlatformUi().getDefaultAttributeMappingUiProvider(key, contentType);
 	}
 
 	@Override
