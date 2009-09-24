@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -47,7 +46,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see OneToManyMapping
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see CascadeComposite
  * @see FetchTypeComposite
  * @see JoinTableComposite

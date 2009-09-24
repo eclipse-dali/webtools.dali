@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.jpa2.details.java;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EntityNameComposite;
@@ -29,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
  * The pane used for a Java entity.
  *
  * @see JavaEntity
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see JavaSecondaryTablesComposite
  *
  * @version 2.0

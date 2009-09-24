@@ -19,11 +19,11 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkBasicMa
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.structure.EclipseLink1_1OrmResourceModelStructureProvider;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
-import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmXmlUiDefinition;
+import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmBasicMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddableUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddedIdMappingUiDefinition;
@@ -39,15 +39,15 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmTransientMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
-public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlUiDefinition
+public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
-	private static final FileUiDefinition INSTANCE = new EclipseLinkOrmXml2_0UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_0UiDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static FileUiDefinition instance() {
+	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 

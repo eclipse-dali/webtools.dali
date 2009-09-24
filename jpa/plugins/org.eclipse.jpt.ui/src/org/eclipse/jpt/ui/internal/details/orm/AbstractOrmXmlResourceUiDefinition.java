@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.MappingResourceUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -32,8 +33,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * All the state in the definition should be "static" (i.e. unchanging once it is initialized).
  */
-public abstract class AbstractOrmXmlUiDefinition
-	implements FileUiDefinition
+public abstract class AbstractOrmXmlResourceUiDefinition
+	implements ResourceUiDefinition, MappingResourceUiDefinition
 {
 	
 	private OrmTypeMappingUiDefinition<? extends TypeMapping>[] ormTypeMappingUiDefintions;
@@ -46,7 +47,7 @@ public abstract class AbstractOrmXmlUiDefinition
 	/**
 	 * zero-argument constructor
 	 */
-	protected AbstractOrmXmlUiDefinition() {
+	protected AbstractOrmXmlResourceUiDefinition() {
 		super();
 		this.factory = buildOrmXmlUiFactory();
 	}

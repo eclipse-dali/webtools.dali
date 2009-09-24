@@ -7,7 +7,6 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.OneToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
-import org.eclipse.jpt.ui.internal.jpa2.Generic2_0JpaUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.DerivedId2_0Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -50,7 +49,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link JavaOneToOneMapping2_0}
- * @see {@link Generic2_0JpaUiFactory}
  * @see {@link TargetEntityComposite}
  * @see {@link DerivedId2_0Pane}
  * @see {@link OneToOneJoiningStrategyPane}

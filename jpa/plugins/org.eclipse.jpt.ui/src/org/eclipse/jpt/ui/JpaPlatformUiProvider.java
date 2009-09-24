@@ -41,6 +41,6 @@ public interface JpaPlatformUiProvider
 	/**
 	 * Return the file ui definitions that apply to this platform.
 	 */
-	ListIterator<FileUiDefinition> fileUiDefinitions();
+	ListIterator<ResourceUiDefinition> fileUiDefinitions();
 	
 }

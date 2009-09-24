@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
@@ -40,13 +39,8 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The default implementation of the UI factory required to show the information
+ * The default implementation of the Orm Xml UI factory required to show the information
  * related to a JPA mapping (type or attribute).
- *
- * @see JpaUiFactory
- *
- * @version 2.0
- * @since 1.0
  */
 public abstract class BaseOrmXmlUiFactory implements OrmXmlUiFactory
 {

@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.jpa2;
 
 import java.util.List;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.details.java.JavaPersistentAttributeDetailsProvider;
@@ -20,9 +20,11 @@ import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.Generic2_0JavaFileUiDefinition;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.Generic2_0JavaResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.EntityMappings2_0DetailsProvider;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.PersistenceXml2_0UiDefinition;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiDefinition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -65,9 +67,11 @@ public class Generic2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiProvid
 	// ********** file ui definitions **********
 	
 	@Override
-	protected void addFileUiDefinitionsTo(List<FileUiDefinition> providers) {
-		providers.add(Generic2_0JavaFileUiDefinition.instance());
-		providers.add(OrmXmlUiDefinition.instance());
-		providers.add(OrmXml2_0UiDefinition.instance());
+	protected void addFileUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
+		definitions.add(Generic2_0JavaResourceUiDefinition.instance());
+		definitions.add(OrmXmlUiDefinition.instance());
+		definitions.add(OrmXml2_0UiDefinition.instance());
+		definitions.add(PersistenceXmlUiDefinition.instance());
+		definitions.add(PersistenceXml2_0UiDefinition.instance());
 	}
 }

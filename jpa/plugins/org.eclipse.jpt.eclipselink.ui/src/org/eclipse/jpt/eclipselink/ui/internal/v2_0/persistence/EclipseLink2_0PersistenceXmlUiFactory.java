@@ -7,12 +7,12 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.v2_0;
+package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLinkPersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
-import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
+import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options.PersistenceXmlOptions2_0Tab;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -20,12 +20,9 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- *  EclipseLink2_0JpaUiFactory
- */
-public class EclipseLink2_0JpaUiFactory extends EclipseLinkJpaUiFactory  //TODO just extend for now, but we need to change this to match the JpaPlatform
+public class EclipseLink2_0PersistenceXmlUiFactory extends EclipseLinkPersistenceXmlUiFactory
 {
-	public EclipseLink2_0JpaUiFactory() {
+	public EclipseLink2_0PersistenceXmlUiFactory() {
 		super();
 	}
 

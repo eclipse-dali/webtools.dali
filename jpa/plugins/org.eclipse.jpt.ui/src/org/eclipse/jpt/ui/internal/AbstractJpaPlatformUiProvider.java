@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
@@ -25,7 +25,7 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 {
 	private JpaDetailsProvider[] detailsProviders;
 
-	private FileUiDefinition[] fileUiDefinitions;
+	private ResourceUiDefinition[] fileUiDefinitions;
 	
 	/**
 	 * zero-argument constructor
@@ -63,26 +63,26 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 	
 	// ********** structure providers **********
 
-	public ListIterator<FileUiDefinition> fileUiDefinitions() {
-		return new ArrayListIterator<FileUiDefinition>(getFileUiDefinitions());
+	public ListIterator<ResourceUiDefinition> fileUiDefinitions() {
+		return new ArrayListIterator<ResourceUiDefinition>(getFileUiDefinitions());
 	}
 	
-	protected synchronized FileUiDefinition[] getFileUiDefinitions() {
+	protected synchronized ResourceUiDefinition[] getFileUiDefinitions() {
 		if (this.fileUiDefinitions == null) {
 			this.fileUiDefinitions = this.buildFileUiDefinitions();
 		}
 		return this.fileUiDefinitions;
 	}
 
-	protected FileUiDefinition[] buildFileUiDefinitions() {
-		ArrayList<FileUiDefinition> definitions = new ArrayList<FileUiDefinition>();
+	protected ResourceUiDefinition[] buildFileUiDefinitions() {
+		ArrayList<ResourceUiDefinition> definitions = new ArrayList<ResourceUiDefinition>();
 		this.addFileUiDefinitionsTo(definitions);
-		return definitions.toArray(new FileUiDefinition[definitions.size()]);
+		return definitions.toArray(new ResourceUiDefinition[definitions.size()]);
 	}
 
 	/**
 	 * Implement this to specify JPA mapping file ui definitions.
 	 */
-	protected abstract void addFileUiDefinitionsTo(List<FileUiDefinition> definitions);
+	protected abstract void addFileUiDefinitionsTo(List<ResourceUiDefinition> definitions);
 	
 }

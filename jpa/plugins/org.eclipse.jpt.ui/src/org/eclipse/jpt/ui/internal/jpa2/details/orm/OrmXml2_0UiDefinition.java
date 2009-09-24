@@ -14,11 +14,11 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
-import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmXmlUiDefinition;
+import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmBasicMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddableUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddedIdMappingUiDefinition;
@@ -36,15 +36,15 @@ import org.eclipse.jpt.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.structure.Orm2_0ResourceModelStructureProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
-public class OrmXml2_0UiDefinition extends AbstractOrmXmlUiDefinition
+public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
-	private static final FileUiDefinition INSTANCE = new OrmXml2_0UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new OrmXml2_0UiDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static FileUiDefinition instance() {
+	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 

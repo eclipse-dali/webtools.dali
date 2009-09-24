@@ -12,11 +12,13 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.platform;
 import java.util.List;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.EclipseLinkEntityMappingsDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition;
+import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.EclipseLinkOrmXml1_1UiDefinition;
-import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java.EclipseLink2_0JavaFileUiDefinition;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java.EclipseLink2_0JavaResourceUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm.EclipseLinkEntityMappings2_0DetailsProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.EclipseLinkPersistenceXml2_0UiDefinition;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.details.java.JavaPersistentAttributeDetailsProvider;
@@ -69,11 +71,13 @@ public class EclipseLink2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	// ********** mapping file ui definitions **********
 	
 	@Override
-	protected void addFileUiDefinitionsTo(List<FileUiDefinition> definitions) {
-		definitions.add(EclipseLink2_0JavaFileUiDefinition.instance());
+	protected void addFileUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
+		definitions.add(EclipseLink2_0JavaResourceUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
 		definitions.add(OrmXml2_0UiDefinition.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml1_1UiDefinition.instance());
+		definitions.add(EclipseLinkPersistenceXmlUiDefinition.instance());
+		definitions.add(EclipseLinkPersistenceXml2_0UiDefinition.instance());
 	}
 }

@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -52,7 +51,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see BasicMapping
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see EnumTypeComposite
  * @see FetchTypeComposite

@@ -17,7 +17,6 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEmbeddableAdva
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.orm.MetadataCompleteComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmJavaClassChooser;
@@ -30,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
  * This pane does not have any widgets.
  *
  * @see Embeddable
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see EmbeddableUiProvider
  *
  * @version 2.1

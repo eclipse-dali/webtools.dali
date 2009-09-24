@@ -7,17 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.jpa2.details.java;
+package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.ui.internal.details.java.AbstractJavaFileUiDefinition;
+import org.eclipse.jpt.ui.internal.details.java.AbstractJavaResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.DefaultBasicMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaBasicMappingUiDefinition;
@@ -35,15 +35,15 @@ import org.eclipse.jpt.ui.internal.details.java.JavaTransientMappingUiDefinition
 import org.eclipse.jpt.ui.internal.details.java.JavaVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 
-public class Generic2_0JavaFileUiDefinition extends AbstractJavaFileUiDefinition
+public class EclipseLinkJavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final FileUiDefinition INSTANCE = new Generic2_0JavaFileUiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkJavaResourceUiDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static FileUiDefinition instance() {
+	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -51,18 +51,17 @@ public class Generic2_0JavaFileUiDefinition extends AbstractJavaFileUiDefinition
 	/**
 	 * zero-argument constructor
 	 */
-	protected Generic2_0JavaFileUiDefinition() {
+	protected EclipseLinkJavaResourceUiDefinition() {
 		super();
 	}
 	
 	@Override
 	protected JavaUiFactory buildJavaUiFactory() {
-		return new Generic2_0JavaUiFactory();
+		return new EclipseLinkJavaUiFactory();
 	}
 	
 	@Override
 	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
-//		definitions.add(JavaElementCollectionMappingUiProvider.instance());
 		definitions.add(JavaIdMappingUiDefinition.instance());
 		definitions.add(JavaEmbeddedIdMappingUDefinition.instance());
 		definitions.add(JavaBasicMappingUiDefinition.instance());
@@ -73,6 +72,10 @@ public class Generic2_0JavaFileUiDefinition extends AbstractJavaFileUiDefinition
 		definitions.add(JavaManyToManyMappingUiDefinition.instance());
 		definitions.add(JavaEmbeddedMappingUiDefinition.instance());
 		definitions.add(JavaTransientMappingUiDefinition.instance());
+		definitions.add(JavaEclipseLinkBasicCollectionMappingUiDefinition.instance());
+		definitions.add(JavaEclipseLinkBasicMapMappingUiDefinition.instance());
+		definitions.add(JavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
+		definitions.add(JavaEclipseLinkTransformationMappingUiDefinition.instance());
 	}
 	
 	@Override
@@ -80,6 +83,9 @@ public class Generic2_0JavaFileUiDefinition extends AbstractJavaFileUiDefinition
 		definitions.add(DefaultBasicMappingUiDefinition.instance());
 		definitions.add(DefaultEmbeddedMappingUiDefinition.instance());
 		definitions.add(NullJavaAttributeMappingUiDefinition.instance());
+		definitions.add(DefaultJavaEclipseLinkOneToOneMappingUiDefinition.instance());
+		definitions.add(DefaultJavaEclipseLinkOneToManyMappingUiDefinition.instance());
+		definitions.add(DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
 	}
 	
 	@Override

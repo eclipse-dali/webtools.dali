@@ -12,8 +12,6 @@ package org.eclipse.jpt.ui.internal.platform.generic;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
 import org.eclipse.jpt.ui.internal.GenericJpaPlatformUiProvider;
-import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
-import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 
 public class GenericJpaPlatformUiFactory implements JpaPlatformUiFactory
 {
@@ -27,9 +25,7 @@ public class GenericJpaPlatformUiFactory implements JpaPlatformUiFactory
 
 	public JpaPlatformUi buildJpaPlatformUi() {
 		return new GenericJpaPlatformUi(
-			new GenericJpaUiFactory(),
 			new GenericNavigatorProvider(),
-			PersistenceResourceModelStructureProvider.instance(),
 			GenericJpaPlatformUiProvider.instance()
 		);
 	}

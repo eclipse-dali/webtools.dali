@@ -19,10 +19,10 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.JpaUiFactory;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -41,32 +41,20 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class BaseJpaPlatformUi
 	implements JpaPlatformUi
 {
-	private final JpaUiFactory jpaUiFactory;
-	
 	private final JpaNavigatorProvider navigatorProvider;
 	
 	private final JpaPlatformUiProvider platformUiProvider;
 
-	private JpaStructureProvider persistenceStructureProvider;
-
 	protected BaseJpaPlatformUi(
-		JpaUiFactory jpaUiFactory,
 		JpaNavigatorProvider navigatorProvider,
-		JpaStructureProvider persistenceStructureProvider,
 		JpaPlatformUiProvider platformUiProvider) {
 		super();
-		this.jpaUiFactory = jpaUiFactory;
 		this.navigatorProvider = navigatorProvider;
-		this.persistenceStructureProvider = persistenceStructureProvider;
 		this.platformUiProvider = platformUiProvider;
 	}
 
 
-	// ********** factory **********
-
-	public JpaUiFactory getJpaUiFactory() {
-		return this.jpaUiFactory;
-	}
+	// ********** navigator provider **********
 
 	public JpaNavigatorProvider getNavigatorProvider() {
 		return this.navigatorProvider;
@@ -113,29 +101,33 @@ public abstract class BaseJpaPlatformUi
 	// ********** mapping ui definitions **********
 
 	public JpaComposite buildTypeMappingComposite(IContentType contentType, String key, Composite parent, PropertyValueModel<TypeMapping> mappingHolder, WidgetFactory widgetFactory) {
-		FileUiDefinition fileUiDefinition = getFileUiDefinition(contentType);
-		return fileUiDefinition.buildTypeMappingComposite(key, mappingHolder, parent, widgetFactory);
+		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
+		return definition.buildTypeMappingComposite(key, mappingHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite buildAttributeMappingComposite(IContentType contentType, String key, Composite parent, PropertyValueModel<AttributeMapping> mappingHolder, WidgetFactory widgetFactory) {
-		FileUiDefinition fileUiDefinition = getFileUiDefinition(contentType);
-		return fileUiDefinition.buildAttributeMappingComposite(key, mappingHolder, parent, widgetFactory);
+		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
+		return definition.buildAttributeMappingComposite(key, mappingHolder, parent, widgetFactory);
 	}
 	
 	public DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(IContentType contentType, String key) {
-		return getFileUiDefinition(contentType).getDefaultAttributeMappingUiDefinition(key);
+		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
+		return definition.getDefaultAttributeMappingUiDefinition(key);
 	}
 	
 	public Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(IContentType contentType) {
-		return getFileUiDefinition(contentType).attributeMappingUiDefinitions();
+		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
+		return definition.attributeMappingUiDefinitions();
 	}
 	
 	public DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(IContentType contentType) {
-		return getFileUiDefinition(contentType).getDefaultTypeMappingUiDefinition();
+		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
+		return definition.getDefaultTypeMappingUiDefinition();
 	}
 	
 	public Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(IContentType contentType) {
-		return getFileUiDefinition(contentType).typeMappingUiDefinitions();
+		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
+		return definition.typeMappingUiDefinitions();
 	}
 
 
@@ -147,21 +139,18 @@ public abstract class BaseJpaPlatformUi
 	}
 	
 	protected JpaStructureProvider getStructureProvider(IContentType contentType) {
-	if (this.persistenceStructureProvider.getContentType().isKindOf(contentType)) {
-			return this.persistenceStructureProvider;
-		}
 		return getFileUiDefinition(contentType).getStructureProvider();
 	}
 	
 	
 	// ********** mapping file ui definitions **********
 
-	protected ListIterator<FileUiDefinition> fileUiDefinitions() {
+	protected ListIterator<ResourceUiDefinition> fileUiDefinitions() {
 		return this.platformUiProvider.fileUiDefinitions();
 	}
 
-	public FileUiDefinition getFileUiDefinition(IContentType contentType) {
-		for (FileUiDefinition definition : CollectionTools.iterable(this.fileUiDefinitions())) {
+	public ResourceUiDefinition getFileUiDefinition(IContentType contentType) {
+		for (ResourceUiDefinition definition : CollectionTools.iterable(this.fileUiDefinitions())) {
 			if (definition.getContentType().equals(contentType)) {
 				return definition;
 			}

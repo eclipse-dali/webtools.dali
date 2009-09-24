@@ -47,11 +47,6 @@ import org.eclipse.swt.widgets.Composite;
 public interface JpaPlatformUi
 {
 
-	// ********** factory **********
-
-	JpaUiFactory getJpaUiFactory();
-
-
 	// ********** details providers **********
 
 	JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(
@@ -73,7 +68,7 @@ public interface JpaPlatformUi
 	/**
 	 * Return a file ui definition for the specified content type.
 	 */
-	FileUiDefinition getFileUiDefinition(IContentType contentType);
+	ResourceUiDefinition getFileUiDefinition(IContentType contentType);
 
 	
 	// ********** navigator provider **********

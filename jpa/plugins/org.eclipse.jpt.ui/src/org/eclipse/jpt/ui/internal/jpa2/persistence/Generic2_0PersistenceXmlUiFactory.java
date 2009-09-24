@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.jpa2;
+package org.eclipse.jpt.ui.internal.jpa2.persistence;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -17,10 +17,9 @@ import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
-import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.connection.GenericPersistenceUnit2_0ConnectionTab;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.options.GenericPersistenceUnit2_0OptionsTab;
+import org.eclipse.jpt.ui.internal.persistence.details.BasePersistenceXmlUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -31,12 +30,12 @@ import org.eclipse.swt.widgets.Composite;
  * The default implementation of the UI factory required to show the information
  * related to a JPA mapping (type or attribute).
  *
- * @see GenericJpaUiFactory
+ * @see GenericPersistenceXmlUiFactory
  *
  * @version 1.0
  * @since 1.0
  */
-public class Generic2_0JpaUiFactory extends BaseJpaUiFactory
+public class Generic2_0PersistenceXmlUiFactory extends BasePersistenceXmlUiFactory
 {
 	
 	// **************** persistence unit composites ****************************

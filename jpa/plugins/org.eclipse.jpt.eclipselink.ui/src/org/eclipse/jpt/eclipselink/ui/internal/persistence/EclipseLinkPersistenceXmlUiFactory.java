@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal;
+package org.eclipse.jpt.eclipselink.ui.internal.persistence;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -29,15 +29,15 @@ import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXm
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
+import org.eclipse.jpt.ui.internal.persistence.details.BasePersistenceXmlUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
+public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFactory
 {
-	public EclipseLinkJpaUiFactory() {
+	public EclipseLinkPersistenceXmlUiFactory() {
 		super();
 	}
 	

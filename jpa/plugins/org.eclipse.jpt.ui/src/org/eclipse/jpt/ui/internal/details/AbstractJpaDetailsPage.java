@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
@@ -48,10 +47,6 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 	protected JpaPlatformUi getJpaPlatformUi() {
 		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
 		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
-	}
-
-	protected JpaUiFactory getJpaUiFactory() {
-		return getJpaPlatformUi().getJpaUiFactory();
 	}
 
 	/**

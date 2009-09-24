@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.ui.JpaPlatformUi;
-import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.PersistenceXmlResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
@@ -116,7 +116,7 @@ public class PersistenceEditor extends FormEditor
 	 */
 	private void addPersistenceUnitPages() {
 
-		JpaProject jpaProject = jpaProject();
+		JpaProject jpaProject = getJpaProject();
 
 		// The project doesn't have JPA
 		if (jpaProject == null) {
@@ -125,9 +125,10 @@ public class PersistenceEditor extends FormEditor
 
 		String platformId = jpaProject.getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
-		JpaUiFactory uiFactory = jpaPlatformUI.getJpaUiFactory();
+		PersistenceXmlResourceUiDefinition definition = 
+			(PersistenceXmlResourceUiDefinition) jpaPlatformUI.getFileUiDefinition(jpaProject.getRootContextNode().getPersistenceXml().getContentType());
 
-		ListIterator<JpaPageComposite> pages = uiFactory.createPersistenceUnitComposites(
+		ListIterator<JpaPageComposite> pages = definition.buildPersistenceUnitComposites(
 			buildPersistenceUnitHolder(),
 			getContainer(),
 			widgetFactory
@@ -299,7 +300,7 @@ public class PersistenceEditor extends FormEditor
 	 *
 	 * @return The JPA project
 	 */
-	protected JpaProject jpaProject() {
+	protected JpaProject getJpaProject() {
 		return JptCorePlugin.getJpaProject(getEditorInput().getFile().getProject());
 	}
 

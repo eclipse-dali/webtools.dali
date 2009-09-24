@@ -9,17 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.ui.JpaUiFactory;
-
-/**
- * The default implementation of the UI factory required to show the information
- * related to a JPA mapping (type or attribute).
- *
- * @see JpaUiFactory
- *
- * @version 3.0
- * @since 1.0
- */
 public class GenericOrmXmlUiFactory extends BaseOrmXmlUiFactory
 {
 	//nothing

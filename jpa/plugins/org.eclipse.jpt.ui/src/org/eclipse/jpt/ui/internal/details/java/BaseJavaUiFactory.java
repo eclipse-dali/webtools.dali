@@ -25,7 +25,6 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
@@ -51,11 +50,6 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * The default implementation of the UI factory required to show the information
  * related to a JPA mapping (type or attribute).
- *
- * @see JpaUiFactory
- *
- * @version 2.0
- * @since 1.0
  */
 public abstract class BaseJavaUiFactory implements JavaUiFactory
 {	

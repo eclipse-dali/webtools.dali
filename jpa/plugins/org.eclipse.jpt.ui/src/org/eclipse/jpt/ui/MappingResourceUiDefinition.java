@@ -10,13 +10,11 @@
 package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,33 +26,8 @@ import org.eclipse.swt.widgets.Composite;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface FileUiDefinition
+public interface MappingResourceUiDefinition extends ResourceUiDefinition
 {
-	/**
-	 * Return the associated mapping file content type.
-	 */
-	IContentType getContentType();
-	
-	/**
-	 * Return the structure provider association with this mapping file type.
-	 */
-	JpaStructureProvider getStructureProvider();
-	
-	/**
-	 * 
-	 */
-	JpaComposite buildTypeMappingComposite(String key, PropertyValueModel<TypeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory);
-
-	/**
-	 * 
-	 */
-	Iterator<MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions();
-
-	/**
-	 * Return a default type mapping ui provider or null
-	 */
-	DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition();
-
 	
 	/**
 	 * 
@@ -71,5 +44,21 @@ public interface FileUiDefinition
 	 * Return a default attribute mapping ui definition for the given key or null
 	 */
 	DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String key);
+
+	
+	/**
+	 * 
+	 */
+	JpaComposite buildTypeMappingComposite(String key, PropertyValueModel<TypeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory);
+
+	/**
+	 * 
+	 */
+	Iterator<MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions();
+
+	/**
+	 * Return a default type mapping ui provider or null
+	 */
+	DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition();
 
 }

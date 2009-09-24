@@ -11,15 +11,16 @@ package org.eclipse.jpt.ui.internal;
 
 import java.util.List;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.ui.internal.details.java.GenericJavaFileUiDefinition;
+import org.eclipse.jpt.ui.internal.details.java.GenericJavaResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.java.JavaPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiDefinition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -61,8 +62,9 @@ public class GenericJpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
 	// ********** mapping file ui definitions **********
 	
 	@Override
-	protected void addFileUiDefinitionsTo(List<FileUiDefinition> defintions) {
-		defintions.add(GenericJavaFileUiDefinition.instance());
+	protected void addFileUiDefinitionsTo(List<ResourceUiDefinition> defintions) {
+		defintions.add(GenericJavaResourceUiDefinition.instance());
 		defintions.add(OrmXmlUiDefinition.instance());
+		defintions.add(PersistenceXmlUiDefinition.instance());
 	}
 }

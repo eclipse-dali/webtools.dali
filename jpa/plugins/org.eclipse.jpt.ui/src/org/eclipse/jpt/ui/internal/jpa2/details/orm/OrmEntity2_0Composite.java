@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
@@ -23,7 +22,6 @@ import org.eclipse.swt.widgets.Composite;
  * The pane used for an ORM entity 2.0.
  *
  * @see OrmEntity
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see Entity2_0OverridesComposite
  */
 public class OrmEntity2_0Composite extends AbstractOrmEntityComposite

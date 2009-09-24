@@ -7,12 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal;
+package org.eclipse.jpt.ui.internal.persistence.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
@@ -22,15 +21,9 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The default implementation of the UI factory required to show the information
- * related to a JPA mapping (type or attribute).
- *
- * @see JpaUiFactory
- *
- * @version 2.0
- * @since 1.0
+ * The default implementation of the Persistence Xml UI factory.
  */
-public abstract class BaseJpaUiFactory implements JpaUiFactory
+public abstract class BasePersistenceXmlUiFactory implements PersistenceXmlUiFactory
 {
 	// **************** persistence unit composites ****************************
 	

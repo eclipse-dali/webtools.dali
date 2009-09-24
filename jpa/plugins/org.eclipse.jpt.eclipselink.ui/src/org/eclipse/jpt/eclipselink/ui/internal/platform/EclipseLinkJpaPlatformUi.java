@@ -13,21 +13,17 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
-import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class EclipseLinkJpaPlatformUi
 	extends BaseJpaPlatformUi
 {
 	public EclipseLinkJpaPlatformUi(
-		JpaUiFactory jpaUiFactory,
 		JpaNavigatorProvider navigatorProvider,
-		JpaStructureProvider persistenceStructureProvider,
 		JpaPlatformUiProvider platformUiProvider) 
 	{
-		super(jpaUiFactory, navigatorProvider, persistenceStructureProvider, platformUiProvider);
+		super(navigatorProvider, platformUiProvider);
 	}
 
 	// ********** DDL generation **********

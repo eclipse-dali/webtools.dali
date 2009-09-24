@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -52,7 +51,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link ManyToManyMapping}
- * @see {@link BaseJpaUiFactory} - The factory creating this pane
  * @see {@link TargetEntityComposite}
  * @see {@link ManyToManyJoiningStrategyPane}
  * @see {@link FetchTypeComposite}

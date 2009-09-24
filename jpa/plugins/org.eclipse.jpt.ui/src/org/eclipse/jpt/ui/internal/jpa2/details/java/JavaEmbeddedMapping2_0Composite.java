@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -31,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EmbeddedMapping
- * @see BaseJpaUiFactory - The factory creating this pane
  *
  * @version 2.0
  * @since 1.0

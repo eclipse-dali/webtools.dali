@@ -12,10 +12,11 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.platform;
 import java.util.List;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.EclipseLinkEntityMappingsDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.EclipseLinkOrmXmlUiDefinition;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java.EclipseLink1_1JavaFileUiDefinition;
+import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiDefinition;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java.EclipseLink1_1JavaResourceUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.EclipseLinkOrmXml1_1UiDefinition;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.details.java.JavaPersistentAttributeDetailsProvider;
@@ -62,10 +63,11 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	// ********** mapping file ui definitions **********
 	
 	@Override
-	protected void addFileUiDefinitionsTo(List<FileUiDefinition> definitions) {
-		definitions.add(EclipseLink1_1JavaFileUiDefinition.instance());
+	protected void addFileUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
+		definitions.add(EclipseLink1_1JavaResourceUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml1_1UiDefinition.instance());
+		definitions.add(EclipseLinkPersistenceXmlUiDefinition.instance());
 	}
 }

@@ -19,12 +19,12 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkBasic
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkBasicMapMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkVariableOneToOneMappingUiDefinition;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.ui.internal.details.java.AbstractJavaFileUiDefinition;
+import org.eclipse.jpt.ui.internal.details.java.AbstractJavaResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.DefaultBasicMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaBasicMappingUiDefinition;
@@ -42,15 +42,15 @@ import org.eclipse.jpt.ui.internal.details.java.JavaTransientMappingUiDefinition
 import org.eclipse.jpt.ui.internal.details.java.JavaVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 
-public class EclipseLink2_0JavaFileUiDefinition extends AbstractJavaFileUiDefinition
+public class EclipseLink2_0JavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final FileUiDefinition INSTANCE = new EclipseLink2_0JavaFileUiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLink2_0JavaResourceUiDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static FileUiDefinition instance() {
+	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -58,7 +58,7 @@ public class EclipseLink2_0JavaFileUiDefinition extends AbstractJavaFileUiDefini
 	/**
 	 * zero-argument constructor
 	 */
-	protected EclipseLink2_0JavaFileUiDefinition() {
+	protected EclipseLink2_0JavaResourceUiDefinition() {
 		super();
 	}
 	

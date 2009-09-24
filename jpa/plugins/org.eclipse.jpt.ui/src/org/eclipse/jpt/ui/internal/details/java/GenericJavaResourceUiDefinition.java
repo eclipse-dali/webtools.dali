@@ -12,21 +12,21 @@ package org.eclipse.jpt.ui.internal.details.java;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.FileUiDefinition;
+import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 
-public class GenericJavaFileUiDefinition extends AbstractJavaFileUiDefinition
+public class GenericJavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final FileUiDefinition INSTANCE = new GenericJavaFileUiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new GenericJavaResourceUiDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static FileUiDefinition instance() {
+	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -34,7 +34,7 @@ public class GenericJavaFileUiDefinition extends AbstractJavaFileUiDefinition
 	/**
 	 * zero-argument constructor
 	 */
-	protected GenericJavaFileUiDefinition() {
+	protected GenericJavaResourceUiDefinition() {
 		super();
 	}
 	
