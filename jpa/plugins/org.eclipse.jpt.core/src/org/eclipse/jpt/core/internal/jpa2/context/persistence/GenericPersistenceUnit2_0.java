@@ -46,6 +46,12 @@ public class GenericPersistenceUnit2_0
 
 		this.defaultValidationMode = this.buildDefaultValidationMode();
 	}
+
+	// ********** behavior **********
+
+	protected ValidationMode buildSpecifiedValidationMode() {
+		return ValidationMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getValidationMode());
+	}
 	
 	protected ValidationMode buildDefaultValidationMode() {
 		return JpaOptions2_0.DEFAULT_VALIDATION_MODE; 
@@ -87,6 +93,11 @@ public class GenericPersistenceUnit2_0
 	@Override
 	protected void initializeProperties() {
 		super.initializeProperties();
+
+		// ValidationMode may be specified with an element or a property
+		// the element need to be initialized first.
+		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
+		
 		this.connection = new GenericConnection2_0(this);
 		this.options = new GenericOptions2_0(this);
 	}
@@ -113,6 +124,15 @@ public class GenericPersistenceUnit2_0
 		return this.options;
 	}
 
+	// ********** updating **********
+
+	@Override
+	public void update(org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xpu) {
+		super.update(xpu);
+		
+		this.xmlPersistenceUnit = xpu;
+		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
+	}
 
 	// ********** JPA 2.0 Static Metamodel **********
 

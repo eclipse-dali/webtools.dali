@@ -41,6 +41,12 @@ public class EclipseLinkPersistenceUnit2_0
 
 		this.defaultValidationMode = this.buildDefaultValidationMode();
 	}
+
+	// ********** behavior **********
+
+	protected ValidationMode buildSpecifiedValidationMode() {
+		return ValidationMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getValidationMode());
+	}
 	
 	protected ValidationMode buildDefaultValidationMode() {
 		return Options2_0.DEFAULT_VALIDATION_MODE; 
@@ -68,6 +74,25 @@ public class EclipseLinkPersistenceUnit2_0
 	@Override
 	public Options2_0 getOptions() {
 		return (Options2_0) this.options;
+	}
+	
+	@Override
+	protected void initializeProperties() {
+		super.initializeProperties();
+
+		// ValidationMode may be specified with an element or a property
+		// the element need to initialize first.
+		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
+	}
+
+	// ********** updating **********
+
+	@Override
+	public void update(org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xpu) {
+		super.update(xpu);
+		
+		this.xmlPersistenceUnit = xpu;
+		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
 	}
 
 	// ********** validation mode **********

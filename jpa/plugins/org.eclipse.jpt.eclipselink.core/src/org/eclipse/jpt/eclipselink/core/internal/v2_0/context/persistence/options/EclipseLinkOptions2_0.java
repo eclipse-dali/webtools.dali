@@ -60,8 +60,9 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 
 	private void initializeValidationMode() {
 		ValidationMode validationMode = this.getEnumValue(PERSISTENCE_VALIDATION_MODE, ValidationMode.values());
-		this.getPersistenceUnit().setSpecifiedValidationMode(validationMode);
-		if(validationMode != null) {
+		// the element definition has precedence over the property definition
+		if(validationMode != null && this.getPersistenceUnit().getSpecifiedValidationMode() == null) {
+			this.getPersistenceUnit().setSpecifiedValidationMode(validationMode);
 			this.getPersistenceUnit().removeProperty(PERSISTENCE_VALIDATION_MODE);
 		}
 	}
@@ -203,16 +204,20 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	public ValidationMode getValidationMode() {
 		return this.getPersistenceUnit().getValidationMode();
 	}
+
+	public ValidationMode getSpecifiedValidationMode() {
+		return this.getPersistenceUnit().getSpecifiedValidationMode();
+	}
 	
-	public void setValidationMode(ValidationMode newValidationMode) {
-		ValidationMode old = this.getValidationMode();
+	public void setSpecifiedValidationMode(ValidationMode newValidationMode) {
+		ValidationMode old = this.getSpecifiedValidationMode();
 		this.getPersistenceUnit().setSpecifiedValidationMode(newValidationMode);
 		this.firePropertyChanged(VALIDATION_MODE_PROPERTY, old, newValidationMode);
 	}
 
 	private void validationModeChanged(String stringValue) {
 		ValidationMode newValue = getEnumValueOf(stringValue, ValidationMode.values());
-		this.setValidationMode(newValue);
+		this.setSpecifiedValidationMode(newValue);
 	}
 	
 	public ValidationMode getDefaultValidationMode() {

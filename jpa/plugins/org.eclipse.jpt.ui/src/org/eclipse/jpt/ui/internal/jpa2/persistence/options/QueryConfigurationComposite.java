@@ -39,12 +39,12 @@ public class QueryConfigurationComposite extends FormPane<JpaOptions2_0>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		this.addQueryTimeoutCombo(container);
+	protected void initializeLayout(Composite parent) {
+		this.addQueryTimeoutCombo(parent);
 	}
 	
-	private void addQueryTimeoutCombo(Composite container) {
-		new IntegerCombo<JpaOptions2_0>(this, container) {
+	private void addQueryTimeoutCombo(Composite parent) {
+		new IntegerCombo<JpaOptions2_0>(this, parent) {
 			
 			@Override
 			protected String getLabelText() {

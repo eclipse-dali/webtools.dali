@@ -11,17 +11,18 @@ package org.eclipse.jpt.ui.internal.jpa2.persistence.options;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  ValidationModeComposite
  */
-public class ValidationModeComposite extends FormPane<JpaOptions2_0>
+public class ValidationModeComposite extends FormPane<PersistenceUnit2_0>
 {
 	/**
 	 * Creates a new <code>ValidationModeComposite</code>.
@@ -32,20 +33,33 @@ public class ValidationModeComposite extends FormPane<JpaOptions2_0>
 	 *            The parent container
 	 */
 	public ValidationModeComposite(
-				FormPane<? extends JpaOptions2_0> parentComposite, 
-				Composite parent) {
-		
-		super(parentComposite, parent);
+					FormPane<?> parentPane,
+			        PropertyValueModel<? extends PersistenceUnit2_0> subjectHolder,
+			        Composite parent) {
+
+	super(parentPane, subjectHolder, parent);
 	}
 
-	private EnumFormComboViewer<JpaOptions2_0, ValidationMode> addValidationModeCombo(Composite container) {
-		return new EnumFormComboViewer<JpaOptions2_0, ValidationMode>(this, container) {
+	@Override
+	protected void initializeLayout(Composite parent) {
+		
+		this.addLabeledComposite(
+			parent,
+			Jpt2_0UiMessages.ValidationModeComposite_validationModeLabel,
+			this.addValidationModeCombo(parent),
+			null			// TODO
+		);
+	}
+	
+	private EnumFormComboViewer<PersistenceUnit2_0, ValidationMode> addValidationModeCombo(Composite parent) {
+		
+		return new EnumFormComboViewer<PersistenceUnit2_0, ValidationMode>(this, this.getSubjectHolder(), parent) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(JpaOptions2_0.VALIDATION_MODE_PROPERTY);
+				propertyNames.add(PersistenceUnit2_0.SPECIFIED_VALIDATION_MODE_PROPERTY);
 			}
-
+			
 			@Override
 			protected ValidationMode[] getChoices() {
 				return ValidationMode.values();
@@ -68,23 +82,13 @@ public class ValidationModeComposite extends FormPane<JpaOptions2_0>
 
 			@Override
 			protected ValidationMode getValue() {
-				return this.getSubject().getValidationMode();
+				return this.getSubject().getSpecifiedValidationMode();
 			}
 
 			@Override
 			protected void setValue(ValidationMode value) {
-				this.getSubject().setValidationMode(value);
+				this.getSubject().setSpecifiedValidationMode(value);
 			}
 		};
-	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-		this.addLabeledComposite(
-				container,
-				Jpt2_0UiMessages.ValidationModeComposite_validationModeLabel,
-				this.addValidationModeCombo(container),
-				null			// TODO
-		);
 	}
 }

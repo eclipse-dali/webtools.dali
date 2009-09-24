@@ -22,9 +22,10 @@ import org.eclipse.swt.widgets.Composite;
 public class GenericPersistenceUnit2_0OptionsComposite extends FormPane<JpaOptions2_0>
 {
 	public GenericPersistenceUnit2_0OptionsComposite(
-		FormPane<JpaOptions2_0> subjectHolder,
-		Composite container) {
-		super(subjectHolder, container, false);
+					FormPane<JpaOptions2_0> subjectHolder,
+					Composite parent) {
+					
+		super(subjectHolder, parent, false);
 	}
 
 	@Override
@@ -47,6 +48,7 @@ public class GenericPersistenceUnit2_0OptionsComposite extends FormPane<JpaOptio
 		new LockingConfigurationComposite(this, composite);
 		new QueryConfigurationComposite(this, composite);
 		new ValidationConfigurationComposite(this, composite);
+
 	}
 
 	private void updateGridData(Composite container) {

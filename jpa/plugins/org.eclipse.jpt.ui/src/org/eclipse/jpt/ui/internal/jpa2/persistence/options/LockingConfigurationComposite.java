@@ -39,12 +39,12 @@ public class LockingConfigurationComposite extends FormPane<JpaOptions2_0>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		addLockTimeoutCombo(container);
+	protected void initializeLayout(Composite parent) {
+		this.addLockTimeoutCombo(parent);
 	}
 	
-	private void addLockTimeoutCombo(Composite container) {
-		new IntegerCombo<JpaOptions2_0>(this, container) {
+	private void addLockTimeoutCombo(Composite parent) {
+		new IntegerCombo<JpaOptions2_0>(this, parent) {
 			
 			@Override
 			protected String getLabelText() {

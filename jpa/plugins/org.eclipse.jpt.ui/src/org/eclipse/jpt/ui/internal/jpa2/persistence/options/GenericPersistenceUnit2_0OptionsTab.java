@@ -44,8 +44,9 @@ public class GenericPersistenceUnit2_0OptionsTab extends FormPane<JpaOptions2_0>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		new GenericPersistenceUnit2_0OptionsComposite(this, container);
+	protected void initializeLayout(Composite parent) {
+		new GenericPersistenceUnit2_0OptionsComposite(this, parent);
+
 	}
 
 	// ********** Layout **********

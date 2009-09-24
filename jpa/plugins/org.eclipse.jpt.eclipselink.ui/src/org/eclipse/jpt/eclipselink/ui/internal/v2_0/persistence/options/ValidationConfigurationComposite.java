@@ -9,10 +9,13 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options;
 
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -37,31 +40,40 @@ public class ValidationConfigurationComposite extends FormPane<Options2_0>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeLayout(Composite parent) {
 
 		// ValidationMode
-		new ValidationModeComposite(this, container);
+		new ValidationModeComposite(this, this.buildPersistenceUnit2_0Holder(), parent);
 
 		// GroupPrePersist
 		this.addLabeledText(
-			container,
+			parent,
 			Jpt2_0UiMessages.ValidationConfigurationComposite_groupPrePersistLabel,
 			this.buildValidationGroupPrePersistHolder()
 		);
 
 		// ValidationGroupPreUpdate
 		this.addLabeledText(
-			container,
+			parent,
 			Jpt2_0UiMessages.ValidationConfigurationComposite_groupPreUpdateLabel,
 			this.buildValidationGroupPreUpdateHolder()
 		);
 
 		// ValidationGroupPreRemove
 		this.addLabeledText(
-			container,
+			parent,
 			Jpt2_0UiMessages.ValidationConfigurationComposite_groupPreRemoveLabel,
 			this.buildValidationGroupPreRemoveHolder()
 		);
+	}
+	
+	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Holder() {
+		return new TransformationPropertyValueModel<Options2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
+			@Override
+			protected PersistenceUnit2_0 transform_(Options2_0 value) {
+				return (PersistenceUnit2_0) value.getPersistenceUnit();
+			}
+		};
 	}
 
 	private WritablePropertyValueModel<String> buildValidationGroupPrePersistHolder() {

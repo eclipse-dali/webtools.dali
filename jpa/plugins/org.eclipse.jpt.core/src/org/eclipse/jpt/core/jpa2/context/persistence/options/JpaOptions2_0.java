@@ -34,7 +34,8 @@ public interface JpaOptions2_0 extends PersistenceUnitProperties
 
 	ValidationMode getDefaultValidationMode();
 	ValidationMode getValidationMode();
-	void setValidationMode(ValidationMode validationMode);
+	ValidationMode getSpecifiedValidationMode();
+	void setSpecifiedValidationMode(ValidationMode validationMode);
 		static final String VALIDATION_MODE_PROPERTY = "validationMode"; //$NON-NLS-1$
 		// Property key
 		static final String PERSISTENCE_VALIDATION_MODE = "javax.persistence.validation.mode"; //$NON-NLS-1$
