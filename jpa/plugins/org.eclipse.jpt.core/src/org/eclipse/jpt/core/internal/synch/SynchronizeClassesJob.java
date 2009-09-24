@@ -48,7 +48,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	public SynchronizeClassesJob(IFile file) {
 		super(JptCoreMessages.SYNCHRONIZE_CLASSES_JOB);
 		IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
-		setRule(ruleFactory.createRule(file));
+		setRule(ruleFactory.modifyRule(file.getProject()));
 		this.persistenceXmlFile = file;
 	}
 	
