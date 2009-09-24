@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
@@ -91,12 +90,8 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 
 		return this.typeMappingPageBook;
 	}
-
-	private TypeMappingUiProvider<? extends TypeMapping> getTypeMappingUiProvider(String key) {
-		return getJpaPlatformUi().getTypeMappingUiProvider(key, getSubject().getContentType());
-	}
-
-	private PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
+	
+	protected PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
 		return new FilteringPropertyValueModel<TypeMapping>(
 			buildGenericMappingHolder(),
 			buildMappingFilter(key)
@@ -215,19 +210,15 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 		return mappingComposite;
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected JpaComposite buildMappingComposite(PageBook pageBook,
-	                                                            String key)  {
-		TypeMappingUiProvider<TypeMapping> uiProvider =
-			(TypeMappingUiProvider<TypeMapping>) getTypeMappingUiProvider(key);
-
-		return uiProvider.buildPersistentTypeMappingComposite(
-			getJpaUiFactory(),
-			buildMappingHolder(key),
-			pageBook,
-			getWidgetFactory()
-		);
-	}	
+	protected JpaComposite buildMappingComposite(PageBook pageBook, String key) {
+		return getJpaPlatformUi().
+			buildTypeMappingComposite(
+				getSubject().getContentType(), 
+				key, 
+				pageBook, 
+				buildMappingHolder(key), 
+				getWidgetFactory());
+	}
 
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {

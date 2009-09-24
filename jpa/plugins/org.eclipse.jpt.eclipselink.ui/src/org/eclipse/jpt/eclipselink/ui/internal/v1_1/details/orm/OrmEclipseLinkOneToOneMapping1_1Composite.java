@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedComposite;
@@ -72,7 +73,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see OneToOneMapping
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see AccessTypeComposite
  * @see CascadeComposite
  * @see EclipseLinkJoinFetchComposite
@@ -86,7 +86,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.2
  */
-public class OrmEclipseLinkOneToOneMapping1_1Composite extends EclipseLinkOneToOneMappingComposite
+public class OrmEclipseLinkOneToOneMapping1_1Composite<T extends EclipseLinkOneToOneMapping>
+extends EclipseLinkOneToOneMappingComposite<T>
 {
 	/**
 	 * Creates a new <code>Eclipselink1_1OneToOneMappingComposite</code>.
@@ -95,7 +96,7 @@ public class OrmEclipseLinkOneToOneMapping1_1Composite extends EclipseLinkOneToO
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkOneToOneMapping1_1Composite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
+	public OrmEclipseLinkOneToOneMapping1_1Composite(PropertyValueModel<? extends T> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 

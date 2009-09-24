@@ -14,10 +14,8 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.commands.PersistentAttributeMapAsHandler;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
@@ -52,28 +50,28 @@ public class PersistentAttributeMapAsContribution extends MapAsContribution
 	}
 	
 	@Override
-	protected CommandContributionItemParameter createParameter(MappingUiProvider<?> mappingUiProvider) {
+	protected CommandContributionItemParameter createParameter(MappingUiDefinition<?> mappingUiProvider) {
 		CommandContributionItemParameter parameter = super.createParameter(mappingUiProvider);
 		String defaultKey = null;
-		if (mappingUiProvider instanceof DefaultMappingUiProvider<?>) {
-			defaultKey = ((DefaultMappingUiProvider<?>) mappingUiProvider).getDefaultKey();
+		if (mappingUiProvider instanceof DefaultMappingUiDefinition<?>) {
+			defaultKey = ((DefaultMappingUiDefinition<?>) mappingUiProvider).getDefaultKey();
 		}
 		parameter.parameters.put(PersistentAttributeMapAsHandler.DEFAULT_MAPPING_COMMAND_PARAMETER_ID, defaultKey);
 		return parameter;
 	}
 	
 	@Override
-	protected Iterator<? extends AttributeMappingUiProvider<?>> 
-			mappingUiProviders(JpaPlatformUi jpaPlatformUi, IContentType contentType) {
-		return jpaPlatformUi.attributeMappingUiProviders(contentType);
+	protected Iterator<? extends MappingUiDefinition<?>> 
+			mappingUiDefinitions(JpaPlatformUi jpaPlatformUi, IContentType contentType) {
+		return jpaPlatformUi.attributeMappingUiDefinitions(contentType);
 	}
 	
 	@Override
-	protected DefaultAttributeMappingUiProvider<?> getDefaultProvider(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
-		return getDefaultProvider(jpaPlatformUi, ((PersistentAttribute) node).getDefaultMappingKey(), node.getContentType());
+	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
+		return getDefaultMappingUiDefinition(jpaPlatformUi, ((PersistentAttribute) node).getDefaultMappingKey(), node.getContentType());
 	}
 	
-	protected DefaultAttributeMappingUiProvider<?> getDefaultProvider(JpaPlatformUi jpaPlatformUi, String defaultKey, IContentType contentType) {
-		return jpaPlatformUi.getDefaultAttributeMappingUiProvider(defaultKey, contentType);
+	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUi, String defaultKey, IContentType contentType) {
+		return jpaPlatformUi.getDefaultAttributeMappingUiDefinition(contentType, defaultKey);
 	}
 }

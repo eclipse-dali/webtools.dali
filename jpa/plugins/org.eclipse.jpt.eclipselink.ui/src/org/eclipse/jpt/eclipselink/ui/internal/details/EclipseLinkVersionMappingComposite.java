@@ -55,7 +55,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see VersionMapping
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see TemporalTypeComposite
  *

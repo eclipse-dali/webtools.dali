@@ -11,12 +11,10 @@ package org.eclipse.jpt.ui.internal.jpa2.platform.generic;
 
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
-import org.eclipse.jpt.ui.internal.GenericJpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.jpa2.Generic2_0JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.jpa2.Generic2_0JpaUiFactory;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorProvider;
-import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 
 public class Generic2_0JpaPlatformUiFactory implements JpaPlatformUiFactory
@@ -33,9 +31,7 @@ public class Generic2_0JpaPlatformUiFactory implements JpaPlatformUiFactory
 		return new GenericJpaPlatformUi(
 			new Generic2_0JpaUiFactory(),
 			new GenericNavigatorProvider(),
-			JavaResourceModelStructureProvider.instance(), 
 			PersistenceResourceModelStructureProvider.instance(),
-			GenericJpaPlatformUiProvider.instance(),
 			Generic2_0JpaPlatformUiProvider.instance()
 		);
 	}

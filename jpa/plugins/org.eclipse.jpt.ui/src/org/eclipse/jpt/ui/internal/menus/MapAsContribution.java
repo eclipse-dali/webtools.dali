@@ -21,8 +21,8 @@ import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.jface.ImageImageDescriptor;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -86,9 +86,9 @@ public abstract class MapAsContribution extends CompoundContributionItem
 		
 		return 
 			ArrayTools.array(
-				new TransformationIterator<MappingUiProvider<?>, IContributionItem>(mappingUiProviders(node)) {
+				new TransformationIterator<MappingUiDefinition<?>, IContributionItem>(mappingUiDefinitions(node)) {
 					@Override
-					protected IContributionItem transform(MappingUiProvider<?> next) {
+					protected IContributionItem transform(MappingUiDefinition<?> next) {
 						return createContributionItem(next);
 					}
 				},
@@ -96,9 +96,9 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	}
 	
 
-	protected Comparator<MappingUiProvider<?>> getProvidersComparator() {
-		return new Comparator<MappingUiProvider<?>>() {
-			public int compare(MappingUiProvider<?> item1, MappingUiProvider<?> item2) {
+	protected Comparator<MappingUiDefinition<?>> getDefinitionsComparator() {
+		return new Comparator<MappingUiDefinition<?>>() {
+			public int compare(MappingUiDefinition<?> item1, MappingUiDefinition<?> item2) {
 				String displayString1 = item1.getLabel();
 				String displayString2 = item2.getLabel();
 				return Collator.getInstance().compare(displayString1, displayString2);
@@ -107,41 +107,41 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	}
 
 	/**
-	 * Retrieves the registered {@link MappingUiProvider}s from the given node, 
+	 * Retrieves the registered {@link MappingUiDefinition}s from the given node, 
 	 * using its {@link JpaPlatformUi}.
 	 *
 	 * @param node A test node to determine the {@link JpaPlatformUi} and type 
 	 * of providers to return
-	 * @return The list of registered {@link MappingUiProvider}s
+	 * @return The list of registered {@link MappingUiDefinition}s
 	 */
-	protected Iterator<? extends MappingUiProvider<?>> mappingUiProviders(JpaStructureNode node) {
+	protected Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions(JpaStructureNode node) {
 		JpaPlatform jpaPlatform = node.getJpaProject().getJpaPlatform();
 		JpaPlatformUi jpaPlatformUi = JptUiPlugin.instance().getJpaPlatformUi(jpaPlatform);
 		
-		Iterator<? extends MappingUiProvider<?>> sortedMappingUiProviders = 
+		Iterator<? extends MappingUiDefinition<?>> sortedMappingUiDefinitions = 
 			CollectionTools.sort(
-				mappingUiProviders(jpaPlatformUi, node.getContentType()), 
-				getProvidersComparator());
+				mappingUiDefinitions(jpaPlatformUi, node.getContentType()), 
+				getDefinitionsComparator());
 		
-		DefaultMappingUiProvider<?> defaultProvider = getDefaultProvider(jpaPlatformUi, node);
-		if (defaultProvider != null) {
-			return new CompositeIterator<MappingUiProvider<?>>(defaultProvider, sortedMappingUiProviders);
+		DefaultMappingUiDefinition<?> defaultDefinition = getDefaultMappingUiDefinition(jpaPlatformUi, node);
+		if (defaultDefinition != null) {
+			return new CompositeIterator<MappingUiDefinition<?>>(defaultDefinition, sortedMappingUiDefinitions);
 		}
-		return sortedMappingUiProviders;
+		return sortedMappingUiDefinitions;
 	}
 
 	/**
-	* Retrieves the registered {@link MappingUiProvider}s from the given 
+	* Retrieves the registered {@link MappingUiDefinition}s from the given 
 	* {@link JpaPlatformUi} and {@link JpaStructureNode} (to determine type of 
 	* mapping providers to retrieve).
 	*
 	* @param jpaPlatformUi The active {@link JpaPlatformUi} from where the
 	* provider can be retrieved
 	* @param node A test node to determine type of providers to return
-	* @return The list of registered {@link MappingUiProvider}s
+	* @return The list of registered {@link MappingUiDefinition}s
 	*/
-	protected abstract Iterator<? extends MappingUiProvider<?>> 
-		mappingUiProviders(JpaPlatformUi platformUi, IContentType contentType);
+	protected abstract Iterator<? extends MappingUiDefinition<?>> 
+		mappingUiDefinitions(JpaPlatformUi platformUi, IContentType contentType);
 	
 	/**
 	* Creates the default provider responsible for clearing the mapping type.
@@ -149,24 +149,24 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	*
 	* @return A provider that acts as a default mapping provider
 	*/
-	protected abstract DefaultMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node);
+	protected abstract DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(JpaPlatformUi platformUi, JpaStructureNode node);
 			
-	protected IContributionItem createContributionItem(MappingUiProvider<?> mappingUiProvider) {
+	protected IContributionItem createContributionItem(MappingUiDefinition<?> mappingUiProvider) {
 		return new CommandContributionItem(createParameter(mappingUiProvider));
 	}
 	
-	protected CommandContributionItemParameter createParameter(MappingUiProvider<?> mappingUiProvider) {
+	protected CommandContributionItemParameter createParameter(MappingUiDefinition<?> mappingUiDefinition) {
 		CommandContributionItemParameter parameter =
 			new CommandContributionItemParameter(
-					serviceLocator, 
-					createCommandContributionItemId(mappingUiProvider),
+					this.serviceLocator, 
+					createCommandContributionItemId(mappingUiDefinition),
 					getCommandId(),
 					CommandContributionItem.STYLE_CHECK);
-		parameter.label = mappingUiProvider.getLabel();
+		parameter.label = mappingUiDefinition.getLabel();
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put(getCommandParameterId(), mappingUiProvider.getKey());
+		parameters.put(getCommandParameterId(), mappingUiDefinition.getKey());
 		parameter.parameters = parameters;
-		parameter.icon = new ImageImageDescriptor(mappingUiProvider.getImage());
+		parameter.icon = new ImageImageDescriptor(mappingUiDefinition.getImage());
 		parameter.visibleEnabled = true;
 		return parameter;
 	}
@@ -192,7 +192,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 * "<commandId>.<mappingKey>"  
 	 * (for example "org.eclipse.jpt.core.ui.persistentTypeMapAs.entity")
 	 */
-	protected String createCommandContributionItemId(MappingUiProvider<?> mappingUiProvider) {
-		return getCommandId() + "." + mappingUiProvider.getKey();
+	protected String createCommandContributionItemId(MappingUiDefinition<?> mappingUiDefinition) {
+		return getCommandId() + "." + mappingUiDefinition.getKey();
 	}
 }

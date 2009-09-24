@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -69,7 +68,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see OneToOneMapping
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see CascadeComposite
  * @see EclipseLinkJoinFetchComposite
  * @see EclipseLinkJoinFetchComposite
@@ -81,8 +79,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkOneToManyMappingComposite 
-	extends FormPane<EclipseLinkOneToManyMapping>
+public class EclipseLinkOneToManyMappingComposite<T extends EclipseLinkOneToManyMapping> 
+	extends FormPane<T>
     implements JpaComposite
 {
 	/**
@@ -92,7 +90,7 @@ public class EclipseLinkOneToManyMappingComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkOneToManyMappingComposite(PropertyValueModel<? extends EclipseLinkOneToManyMapping> subjectHolder,
+	public EclipseLinkOneToManyMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
@@ -117,36 +115,36 @@ public class EclipseLinkOneToManyMappingComposite
 	}
 
 	protected PropertyValueModel<EclipseLinkOneToManyRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkOneToManyMapping, EclipseLinkOneToManyRelationshipReference>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<T, EclipseLinkOneToManyRelationshipReference>(getSubjectHolder()) {
 			@Override
-			protected EclipseLinkOneToManyRelationshipReference transform_(EclipseLinkOneToManyMapping value) {
+			protected EclipseLinkOneToManyRelationshipReference transform_(T value) {
 				return value.getRelationshipReference();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, EclipseLinkPrivateOwned>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkPrivateOwned>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPrivateOwned buildValue_() {
-				return ((EclipseLinkOneToManyMapping) this.subject).getPrivateOwned();
+				return this.subject.getPrivateOwned();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return ((EclipseLinkOneToManyMapping) this.subject).getJoinFetch();
+				return this.subject.getJoinFetch();
 			}
 		};
 	}
 
 	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<OneToManyMapping, Cascade>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
 			@Override
-			protected Cascade transform_(OneToManyMapping value) {
+			protected Cascade transform_(T value) {
 				return value.getCascade();
 			}
 		};

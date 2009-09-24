@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -29,8 +28,9 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 
-public class EclipseLinkOneToOneMappingComposite extends FormPane<OneToOneMapping>
-                                      implements JpaComposite
+public class EclipseLinkOneToOneMappingComposite<T extends EclipseLinkOneToOneMapping>
+	extends FormPane<T>
+	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EclipselinkOneToOneMappingComposite</code>.
@@ -39,7 +39,7 @@ public class EclipseLinkOneToOneMappingComposite extends FormPane<OneToOneMappin
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkOneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
+	public EclipseLinkOneToOneMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
@@ -64,38 +64,38 @@ public class EclipseLinkOneToOneMappingComposite extends FormPane<OneToOneMappin
 	}
 	
 	protected PropertyValueModel<OneToOneRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<OneToOneMapping, OneToOneRelationshipReference>(
+		return new TransformationPropertyValueModel<T, OneToOneRelationshipReference>(
 				getSubjectHolder()) {
 			@Override
-			protected OneToOneRelationshipReference transform_(OneToOneMapping value) {
+			protected OneToOneRelationshipReference transform_(T value) {
 				return value.getRelationshipReference();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return ((EclipseLinkOneToOneMapping) this.subject).getJoinFetch();
+				return this.subject.getJoinFetch();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, EclipseLinkPrivateOwned>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkPrivateOwned>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPrivateOwned buildValue_() {
-				return ((EclipseLinkOneToOneMapping) this.subject).getPrivateOwned();
+				return this.subject.getPrivateOwned();
 			}
 		};
 	}
 
 	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<OneToOneMapping, Cascade>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
 		
 			@Override
-			protected Cascade transform_(OneToOneMapping value) {
+			protected Cascade transform_(T value) {
 				return value.getCascade();
 			}
 		};

@@ -10,14 +10,8 @@
 package org.eclipse.jpt.ui;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
-import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -45,26 +39,8 @@ public interface JpaPlatformUiProvider
 	ListIterator<JpaDetailsProvider> detailsProviders();
 	
 	/**
-	 * Return the mapping file structure providers that apply to this platform.
-	 * these should have a contentType "isKindOf" mappingFile contentType
-	 * 
-	 * @see org.eclipse.jpt.core.JptCorePlugin#MAPPING_FILE_CONTENT_TYPE
+	 * Return the file ui definitions that apply to this platform.
 	 */
-	ListIterator<JpaStructureProvider> mappingFileStructureProviders();
-	
-	/**
-	 * Return the type mapping ui providers that apply to this platform.
-	 */
-	ListIterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders();
-	
-	/**
-	 * Return the type mapping ui providers that apply to this platform.
-	 */
-	ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> defaultTypeMappingUiProviders();
-
-	
-	ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders();
-
-	ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders();
+	ListIterator<FileUiDefinition> fileUiDefinitions();
 	
 }

@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
+import org.eclipse.jpt.ui.internal.GenericJpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorProvider;
-import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 
 public class TestJpaPlatformUiFactory implements JpaPlatformUiFactory
@@ -30,7 +30,7 @@ public class TestJpaPlatformUiFactory implements JpaPlatformUiFactory
 		return new GenericJpaPlatformUi(
 			new TestJpaUiFactory(),
 			new GenericNavigatorProvider(),
-			JavaResourceModelStructureProvider.instance(), 
-			PersistenceResourceModelStructureProvider.instance());
+			PersistenceResourceModelStructureProvider.instance(),
+			GenericJpaPlatformUiProvider.instance());
 	}
 }

@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.TableItem;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see BaseJpaUiFactory - The invoker
+ * @see BaseJavaUiFactory - The invoker
  * @see AddRemoveTablePane
  *
  * @version 2.0

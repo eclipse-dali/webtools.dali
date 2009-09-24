@@ -10,31 +10,19 @@
 package org.eclipse.jpt.ui.internal.jpa2;
 
 import java.util.List;
-
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
+import org.eclipse.jpt.ui.FileUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
+import org.eclipse.jpt.ui.internal.details.java.JavaPersistentAttributeDetailsProvider;
+import org.eclipse.jpt.ui.internal.details.java.JavaPersistentTypeDetailsProvider;
+import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsDetailsProvider;
+import org.eclipse.jpt.ui.internal.details.orm.OrmXmlUiDefinition;
+import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
+import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.Generic2_0JavaFileUiDefinition;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.EntityMappings2_0DetailsProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmBasicMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddable2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedIdMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEntity2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmIdMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmManyToManyMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmManyToOneMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmMappedSuperclass2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToManyMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToOneMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmTransientMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmVersionMapping2_0UiProvider;
-import org.eclipse.jpt.ui.internal.jpa2.structure.Orm2_0ResourceModelStructureProvider;
-import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -65,52 +53,21 @@ public class Generic2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiProvid
 	
 	@Override
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(JavaPersistentTypeDetailsProvider.instance());
+		providers.add(JavaPersistentAttributeDetailsProvider.instance());
+		providers.add(EntityMappingsDetailsProvider.instance());
+		providers.add(OrmPersistentTypeDetailsProvider.instance());
+		providers.add(OrmPersistentAttributeDetailsProvider.instance());
 		providers.add(EntityMappings2_0DetailsProvider.instance());
 	}
 	
 	
-	// ********** structure providers **********
+	// ********** file ui definitions **********
 	
 	@Override
-	protected void addMappingFileStructureProvidersTo(List<JpaStructureProvider> providers) {
-		providers.add(Orm2_0ResourceModelStructureProvider.instance());
-	}
-
-	
-	// ********** type mapping ui providers **********
-
-	@Override
-	protected void addTypeMappingUiProvidersTo(List<TypeMappingUiProvider<?>> providers) {
-		providers.add(OrmEntity2_0UiProvider.instance());
-		providers.add(OrmMappedSuperclass2_0UiProvider.instance());
-		providers.add(OrmEmbeddable2_0UiProvider.instance());
-	}
-	
-	@Override
-	protected void addDefaultTypeMappingUiProvidersTo(List<DefaultTypeMappingUiProvider<?>> providers) {
-	}
-	
-	
-	// ********** attribute mapping ui providers **********
-	
-	@Override
-	protected void addAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
-//		providers.add(JavaElementCollectionMappingUiProvider.instance());
-		
-		providers.add(OrmIdMapping2_0UiProvider.instance());
-		providers.add(OrmEmbeddedIdMapping2_0UiProvider.instance());
-		providers.add(OrmBasicMapping2_0UiProvider.instance());
-		providers.add(OrmVersionMapping2_0UiProvider.instance());
-		providers.add(OrmManyToOneMapping2_0UiProvider.instance());
-		providers.add(OrmOneToManyMapping2_0UiProvider.instance());
-		providers.add(OrmEmbeddedMapping2_0UiProvider.instance());
-		providers.add(OrmOneToOneMapping2_0UiProvider.instance());
-		providers.add(OrmManyToManyMapping2_0UiProvider.instance());
-//		providers.add(OrmElementCollectionMappingUiProvider.instance());
-		providers.add(OrmTransientMapping2_0UiProvider.instance());
-	}
-	
-	@Override
-	protected void addDefaultAttributeMappingUiProvidersTo(List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+	protected void addFileUiDefinitionsTo(List<FileUiDefinition> providers) {
+		providers.add(Generic2_0JavaFileUiDefinition.instance());
+		providers.add(OrmXmlUiDefinition.instance());
+		providers.add(OrmXml2_0UiDefinition.instance());
 	}
 }

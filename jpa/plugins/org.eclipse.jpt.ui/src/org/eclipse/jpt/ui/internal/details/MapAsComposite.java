@@ -23,8 +23,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -111,12 +111,12 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * Return null if there is not a default provider
 	 * @return A provider that acts as a default mapping provider
 	 */
-	protected abstract DefaultMappingUiProvider<?> getDefaultProvider();
+	protected abstract DefaultMappingUiDefinition<?> getDefaultDefinition();
 
-	protected abstract DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey);
+	protected abstract DefaultMappingUiDefinition<?> getDefaultDefinition(String mappingKey);
 	
-	protected MappingUiProvider<?> getProvider(String mappingKey) {
-		for (MappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.providers())) {
+	protected MappingUiDefinition<?> getMappingUiDefinition(String mappingKey) {
+		for (MappingUiDefinition<?> provider : CollectionTools.iterable(this.mappingChangeHandler.mappingUiDefinitions())) {
 			if (provider.getKey() == mappingKey) {
 				return provider;
 			}
@@ -202,8 +202,8 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 			public void execute(MappingSelectionDialog dialog) {
 
 				if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
-					MappingUiProvider<?> provider = (MappingUiProvider<?>) dialog.getFirstResult();
-					morphMapping(provider);
+					MappingUiDefinition<?> definition = (MappingUiDefinition<?>) dialog.getFirstResult();
+					morphMapping(definition);
 				}
 			}
 		};
@@ -289,19 +289,19 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	}
 
 	/**
-	 * Retreive the <code>MappingUiProvider</code> that provides the UI for the
+	 * Retreive the <code>MappingUiDefinition</code> that provides the UI for the
 	 * current mapping.
 	 *
 	 * @return The <code>MappingUiProvider</code> representing the type of the
 	 * mapping being edited
 	 */
-	protected MappingUiProvider<?> initialSelection() {
+	protected MappingUiDefinition<?> initialSelection() {
 
-		for (Iterator<? extends MappingUiProvider<?>> iter = mappingChangeHandler.providers(); iter.hasNext(); ) {
-			MappingUiProvider<?> provider = iter.next();
+		for (Iterator<? extends MappingUiDefinition<?>> iter = this.mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
+			MappingUiDefinition<?> definition = iter.next();
 
-			if (getMappingKey() == provider.getKey()) {
-				return provider;
+			if (getMappingKey() == definition.getKey()) {
+				return definition;
 			}
 		}
 
@@ -331,13 +331,13 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 	/**
 	 * Aks the <code>MappingChangeHandler</code> to change the mapping type using
-	 * the given <code>MappingUiProvider</code>.
+	 * the given <code>MappingUiDefinition</code>.
 	 *
 	 * @param provider The provider used to determine the mapping type used for
 	 * morphing the mapping being edited
 	 */
-	protected void morphMapping(MappingUiProvider<?> provider) {
-		mappingChangeHandler.morphMapping(provider);
+	protected void morphMapping(MappingUiDefinition<?> definition) {
+		mappingChangeHandler.morphMapping(definition);
 	}
 
 	/**
@@ -442,9 +442,9 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		/**
 		 * Morphes the current mapping into a new type by using the given provider.
 		 *
-		 * @param provider The provider that was selected for changing the mapping
+		 * @param provider The definition that was selected for changing the mapping
 		 */
-		void morphMapping(MappingUiProvider<?> provider);
+		void morphMapping(MappingUiDefinition<?> definition);
 
 		/**
 		 * Returns the name of the current mapping.
@@ -454,11 +454,11 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		String getName();
 
 		/**
-		 * Returns the list of providers that are registered with the JPT plugin.
+		 * Returns the list of mapping UI definitions that are registered with the JPT plugin.
 		 *
 		 * @return The supported types of mapping
 		 */
-		Iterator<? extends MappingUiProvider<?>> providers();
+		Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions();
 	}
 
 	/**
@@ -467,7 +467,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 */
 	protected class MappingSelectionDialog extends FilteredItemsSelectionDialog {
 
-		private MappingUiProvider<?> defaultProvider;
+		private MappingUiDefinition<?> defaultDefinition;
 
 		/**
 		 * Creates a new <code>MappingSelectionDialog</code>.
@@ -490,8 +490,8 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 						return null;
 					}
 
-					MappingUiProvider<?> provider = (MappingUiProvider<?>) element;
-					return provider.getImage();
+					MappingUiDefinition<?> definition = (MappingUiDefinition<?>) element;
+					return definition.getImage();
 				}
 
 				@Override
@@ -501,31 +501,22 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 						return "";
 					}
 
-					MappingUiProvider<?> provider = (MappingUiProvider<?>) element;
-					return provider.getLabel();
+					MappingUiDefinition<?> definition = (MappingUiDefinition<?>) element;
+					return definition.getLabel();
 				}
 			};
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected Control createExtendedContentArea(Composite parent) {
 			return null;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected ItemsFilter createFilter() {
 			return new MappingTypeItemsFilter();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected void fillContentProvider(AbstractContentProvider provider,
 		                                   ItemsFilter itemsFilter,
@@ -535,16 +526,16 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 			try {
 				// Add the default provider
-				defaultProvider = getDefaultProvider();
+				defaultDefinition = getDefaultDefinition();
 
-				if (defaultProvider != null) {
-					provider.add(defaultProvider, itemsFilter);
+				if (defaultDefinition != null) {
+					provider.add(defaultDefinition, itemsFilter);
 				}
 
 				// Add the registered mapping providers to the dialog
-				for (Iterator<? extends MappingUiProvider<?>> iter = mappingChangeHandler.providers(); iter.hasNext(); ) {
-					MappingUiProvider<?> mappingProvider = iter.next();
-					provider.add(mappingProvider, itemsFilter);
+				for (Iterator<? extends MappingUiDefinition<?>> iter = mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
+					MappingUiDefinition<?> mappingDefinition = iter.next();
+					provider.add(mappingDefinition, itemsFilter);
 				}
 			}
 			finally {
@@ -552,9 +543,6 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected IDialogSettings getDialogSettings() {
 
@@ -568,28 +556,22 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 			return settings;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		public String getElementName(Object object) {
-			MappingUiProvider<?> provider = (MappingUiProvider<?>) object;
-			return provider.getLabel();
+			MappingUiDefinition<?> definition = (MappingUiDefinition<?>) object;
+			return definition.getLabel();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
-		protected Comparator<MappingUiProvider<?>> getItemsComparator() {
-			return new Comparator<MappingUiProvider<?>>() {
-				public int compare(MappingUiProvider<?> item1, MappingUiProvider<?> item2) {
+		protected Comparator<MappingUiDefinition<?>> getItemsComparator() {
+			return new Comparator<MappingUiDefinition<?>>() {
+				public int compare(MappingUiDefinition<?> item1, MappingUiDefinition<?> item2) {
 
-					if (item1 == defaultProvider) {
+					if (item1 == defaultDefinition) {
 						return -1;
 					}
 
-					if (item2 == defaultProvider) {
+					if (item2 == defaultDefinition) {
 						return 1;
 					}
 
@@ -600,9 +582,6 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 			};
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected IStatus validateItem(Object item) {
 
@@ -633,21 +612,15 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 				}
 			}
 
-			/*
-			 * (non-Javadoc)
-			 */
 			@Override
 			public boolean isConsistentItem(Object item) {
 				return true;
 			}
 
-			/*
-			 * (non-Javadoc)
-			 */
 			@Override
 			public boolean matchItem(Object item) {
-				MappingUiProvider<?> provider = (MappingUiProvider<?>) item;
-				return matches(provider.getLabel());
+				MappingUiDefinition<?> definition = (MappingUiDefinition<?>) item;
+				return matches(definition.getLabel());
 			}
 		}
 	}

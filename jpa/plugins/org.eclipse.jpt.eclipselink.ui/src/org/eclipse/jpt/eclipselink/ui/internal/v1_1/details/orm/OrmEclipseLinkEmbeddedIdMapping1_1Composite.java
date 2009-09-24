@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EmbeddedIdMapping
- * @see BaseJpaUiFactory - The factory creating this pane
  *
  * @version 2.2
  * @since 2.2

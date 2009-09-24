@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * This pane does not have any widgets.
  *
  * @see Embeddable
- * @see BaseJpaUiFactory - The factory creating this pane
+ * @see JavaUiFactory - The factory creating this pane
  * @see EmbeddableUiProvider
  *
  * @version 2.1

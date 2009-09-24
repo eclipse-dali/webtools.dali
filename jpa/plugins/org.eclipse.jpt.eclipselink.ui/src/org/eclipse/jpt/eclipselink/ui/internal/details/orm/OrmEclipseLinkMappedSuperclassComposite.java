@@ -27,10 +27,12 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkMappedSuperclassComposite extends FormPane<OrmEclipseLinkMappedSuperclass> implements JpaComposite
+public class OrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMappedSuperclass> 
+	extends FormPane<T> 
+	implements JpaComposite
 {
 	public OrmEclipseLinkMappedSuperclassComposite(
-			PropertyValueModel<? extends OrmEclipseLinkMappedSuperclass> subjectHolder,
+			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -52,7 +54,7 @@ public class OrmEclipseLinkMappedSuperclassComposite extends FormPane<OrmEclipse
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, AccessHolder>(
+		return new PropertyAspectAdapter<T, AccessHolder>(
 			getSubjectHolder())
 		{
 			@Override
@@ -72,8 +74,8 @@ public class OrmEclipseLinkMappedSuperclassComposite extends FormPane<OrmEclipse
 		new OrmEclipseLinkCachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, EclipseLinkCaching>(
+	private PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<T, EclipseLinkCaching>(
 			getSubjectHolder())
 		{
 			@Override
@@ -94,7 +96,7 @@ public class OrmEclipseLinkMappedSuperclassComposite extends FormPane<OrmEclipse
 	}
 	
 	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<OrmEclipseLinkMappedSuperclass, EclipseLinkConverterHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterHolder buildValue_() {
 				return this.subject.getConverterHolder();

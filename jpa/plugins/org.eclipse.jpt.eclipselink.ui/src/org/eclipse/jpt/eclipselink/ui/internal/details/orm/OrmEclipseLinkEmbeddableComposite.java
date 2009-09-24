@@ -36,8 +36,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class OrmEclipseLinkEmbeddableComposite extends FormPane<OrmEclipseLinkEmbeddable>
-                                 implements JpaComposite
+public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddable> 
+	extends FormPane<T>
+	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EmbeddableComposite</code>.
@@ -46,7 +47,7 @@ public class OrmEclipseLinkEmbeddableComposite extends FormPane<OrmEclipseLinkEm
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkEmbeddableComposite(PropertyValueModel<? extends OrmEclipseLinkEmbeddable> subjectHolder,
+	public OrmEclipseLinkEmbeddableComposite(PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent,
 	                           WidgetFactory widgetFactory) {
 
@@ -67,7 +68,7 @@ public class OrmEclipseLinkEmbeddableComposite extends FormPane<OrmEclipseLinkEm
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<OrmEclipseLinkEmbeddable, AccessHolder>(
+		return new PropertyAspectAdapter<T, AccessHolder>(
 			getSubjectHolder())
 		{
 			@Override
@@ -88,7 +89,7 @@ public class OrmEclipseLinkEmbeddableComposite extends FormPane<OrmEclipseLinkEm
 	}
 	
 	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<OrmEclipseLinkEmbeddable, EclipseLinkConverterHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkConverterHolder buildValue_() {
 				return this.subject.getConverterHolder();

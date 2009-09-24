@@ -37,11 +37,11 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddableUiProvider;
-import org.eclipse.jpt.ui.internal.details.orm.OrmEntityUiProvider;
-import org.eclipse.jpt.ui.internal.details.orm.OrmMappedSuperclassUiProvider;
+import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddableUiDefinition;
+import org.eclipse.jpt.ui.internal.details.orm.OrmEntityUiDefinition;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappedSuperclassUiDefinition;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -121,9 +121,9 @@ public class AddPersistentClassDialog extends StatusDialog
 				
 				public Object[] getElements(Object inputElement) {
 					return new Object[] {
-						OrmMappedSuperclassUiProvider.instance(), 
-						OrmEntityUiProvider.instance(), 
-						OrmEmbeddableUiProvider.instance()
+						OrmMappedSuperclassUiDefinition.instance(), 
+						OrmEntityUiDefinition.instance(), 
+						OrmEmbeddableUiDefinition.instance()
 					};
 				}
 				
@@ -133,7 +133,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((TypeMappingUiProvider<?>) element).getLabel();
+					return ((MappingUiDefinition<?>) element).getLabel();
 				}
 			});
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -223,7 +223,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) this.mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((TypeMappingUiProvider<?>) selection.getFirstElement()).getKey();
+		return (selection.isEmpty()) ? null : ((MappingUiDefinition<?>) selection.getFirstElement()).getKey();
 	}
 	
 	protected IType chooseType() {

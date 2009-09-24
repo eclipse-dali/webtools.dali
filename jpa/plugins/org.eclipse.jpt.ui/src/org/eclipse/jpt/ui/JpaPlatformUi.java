@@ -17,13 +17,13 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -58,43 +58,7 @@ public interface JpaPlatformUi
 		Composite parent,
 		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory);
-	
-	/**
-	 * Return an iterator of type mapping ui providers appropriate for the given content type
-	 */
-	Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(IContentType contentType);
-	
-	/**
-	 * Return a default type mapping ui provider for the given content type or null
-	 */
-	DefaultTypeMappingUiProvider<? extends TypeMapping> getDefaultTypeMappingUiProvider(IContentType contentType);
 
-	/**
-	 * Return an type mapping ui provider for the given content type
-	 */
-	TypeMappingUiProvider<? extends TypeMapping> getTypeMappingUiProvider(String key, IContentType contentType);
-
-	/**
-	 * Return an iterator of mapping ui providers appropriate for the given persistent attribute
-	 */
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(IContentType contentType);
-
-
-
-	// ********** default Java attribute mapping UI providers **********
-
-	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders(IContentType contentType);
-
-	/**
-	 * Return a default attribute mapping ui provider for the given content type or null
-	 */
-	DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key, IContentType contentType);
-
-	/**
-	 * Return an attribute mapping ui provider for the given content type
-	 */
-	AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key, IContentType contentType);
-	
 	
 	// ********** structure providers **********
 
@@ -103,7 +67,15 @@ public interface JpaPlatformUi
 	 */
 	JpaStructureProvider getStructureProvider(JpaFile jpaFile);
 
+	
+	// ********** file ui definitions **********
 
+	/**
+	 * Return a file ui definition for the specified content type.
+	 */
+	FileUiDefinition getFileUiDefinition(IContentType contentType);
+
+	
 	// ********** navigator provider **********
 
 	/**
@@ -111,6 +83,34 @@ public interface JpaPlatformUi
 	 * which determines Project Explorer content and look
 	 */
 	JpaNavigatorProvider getNavigatorProvider();
+
+	
+	// ********** type mappings **********
+	
+	JpaComposite buildTypeMappingComposite(
+		IContentType contentType, 
+		String key, 
+		Composite parent, 
+		PropertyValueModel<TypeMapping> mappingHolder,
+		WidgetFactory widgetFactory);
+	
+	DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(IContentType contentType);
+	
+	Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(IContentType contentType);
+
+	
+	// ********** attribute mappings **********
+
+	JpaComposite buildAttributeMappingComposite(
+		IContentType contentType, 
+		String key, 
+		Composite parent,
+		PropertyValueModel<AttributeMapping> mappingHolder,
+		WidgetFactory widgetFactory);
+	
+	DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(IContentType contentType, String key);
+
+	Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(IContentType contentType);
 
 
 	// ********** entity generation **********

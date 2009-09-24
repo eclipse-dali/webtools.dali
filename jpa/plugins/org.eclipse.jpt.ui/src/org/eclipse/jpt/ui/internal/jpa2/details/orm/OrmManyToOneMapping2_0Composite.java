@@ -80,7 +80,7 @@ public class OrmManyToOneMapping2_0Composite<T extends OrmManyToOneMapping2_0>
 	extends AbstractManyToOneMapping2_0Composite<T>
 {
 	public OrmManyToOneMapping2_0Composite(
-			PropertyValueModel<T> subjectHolder,
+			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
 	        WidgetFactory widgetFactory) {
 		

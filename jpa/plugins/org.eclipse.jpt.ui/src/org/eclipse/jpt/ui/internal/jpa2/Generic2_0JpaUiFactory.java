@@ -11,28 +11,14 @@ package org.eclipse.jpt.ui.internal.jpa2;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEmbeddable2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEmbeddedMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEntity2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaIdMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaManyToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaMappedSuperclass2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.connection.GenericPersistenceUnit2_0ConnectionTab;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.options.GenericPersistenceUnit2_0OptionsTab;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
@@ -50,62 +36,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 1.0
  */
-public class Generic2_0JpaUiFactory extends GenericJpaUiFactory
+public class Generic2_0JpaUiFactory extends BaseJpaUiFactory
 {
-	
-	@Override
-	public JpaComposite createJavaMappedSuperclassComposite(
-			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		return new JavaMappedSuperclass2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createJavaEntityComposite(
-			PropertyValueModel<JavaEntity> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		return new JavaEntity2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createJavaEmbeddableComposite(
-			PropertyValueModel<JavaEmbeddable> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		return new JavaEmbeddable2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-
-	@Override
-	public JpaComposite createJavaIdMappingComposite(
-			PropertyValueModel<JavaIdMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new JavaIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-
-	@Override
-	public JpaComposite createJavaEmbeddedMappingComposite(
-			PropertyValueModel<JavaEmbeddedMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new JavaEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createJavaManyToOneMappingComposite(
-			PropertyValueModel<JavaManyToOneMapping> subjectHolder, 
-			Composite parent, 
-			WidgetFactory widgetFactory) {
-		return new JavaManyToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-	
-	@Override
-	public JpaComposite createJavaOneToOneMappingComposite(
-			PropertyValueModel<JavaOneToOneMapping> subjectHolder, 
-			Composite parent, 
-			WidgetFactory widgetFactory) {
-		return new JavaOneToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
-	}
-	
 	
 	// **************** persistence unit composites ****************************
 	@Override

@@ -24,11 +24,10 @@ public class EclipseLinkJpaPlatformUi
 	public EclipseLinkJpaPlatformUi(
 		JpaUiFactory jpaUiFactory,
 		JpaNavigatorProvider navigatorProvider,
-		JpaStructureProvider persistenceStructureProvider, 
-		JpaStructureProvider javaStructureProvider,
-		JpaPlatformUiProvider... platformUiProviders) 
+		JpaStructureProvider persistenceStructureProvider,
+		JpaPlatformUiProvider platformUiProvider) 
 	{
-		super(jpaUiFactory, navigatorProvider, persistenceStructureProvider, javaStructureProvider, platformUiProviders);
+		super(jpaUiFactory, navigatorProvider, persistenceStructureProvider, platformUiProvider);
 	}
 
 	// ********** DDL generation **********

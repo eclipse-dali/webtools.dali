@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see MappedSuperclass
- * @see BaseJpaUiFactory - The factory creating this pane
+ * @see JavaUiFactory - The factory creating this pane
  * @see IdClassComposite
  *
  * @version 2.0

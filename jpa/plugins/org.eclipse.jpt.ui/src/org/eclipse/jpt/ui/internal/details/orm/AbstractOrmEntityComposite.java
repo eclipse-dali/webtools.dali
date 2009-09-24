@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * The pane used for an ORM entity.
  *
  * @see OrmEntity
- * @see BaseJpaUiFactory - The factory creating this pane
+ * @see BaseJavaUiFactory - The factory creating this pane
  *
  * @version 23.0
  * @since 1.0

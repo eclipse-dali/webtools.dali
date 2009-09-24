@@ -11,13 +11,10 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.platform;
 
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUi;
-import org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkNavigatorProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkPersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
-import org.eclipse.jpt.ui.internal.GenericJpaPlatformUiProvider;
-import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 
 public class EclipseLink1_1JpaPlatformUiFactory implements JpaPlatformUiFactory
 {
@@ -36,10 +33,7 @@ public class EclipseLink1_1JpaPlatformUiFactory implements JpaPlatformUiFactory
 										   //EclipseLink has backed out its JPA 2.0 annotation support until 
 										   //it is released or licensing issues are cleared up
 			new EclipseLinkNavigatorProvider(),
-			JavaResourceModelStructureProvider.instance(), 
 			EclipseLinkPersistenceResourceModelStructureProvider.instance(),
-			GenericJpaPlatformUiProvider.instance(),
-			EclipseLinkJpaPlatformUiProvider.instance(),
 			EclipseLink1_1JpaPlatformUiProvider.instance()
 		);
 	}

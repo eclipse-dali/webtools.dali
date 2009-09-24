@@ -22,20 +22,18 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.FileUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -47,24 +45,20 @@ public abstract class BaseJpaPlatformUi
 	
 	private final JpaNavigatorProvider navigatorProvider;
 	
-	private final JpaPlatformUiProvider[] platformUiProviders;
+	private final JpaPlatformUiProvider platformUiProvider;
 
 	private JpaStructureProvider persistenceStructureProvider;
-	
-	private JpaStructureProvider javaStructureProvider;
 
 	protected BaseJpaPlatformUi(
 		JpaUiFactory jpaUiFactory,
 		JpaNavigatorProvider navigatorProvider,
-		JpaStructureProvider persistenceStructureProvider, 
-		JpaStructureProvider javaStructureProvider,
-		JpaPlatformUiProvider... platformUiProviders) {
+		JpaStructureProvider persistenceStructureProvider,
+		JpaPlatformUiProvider platformUiProvider) {
 		super();
 		this.jpaUiFactory = jpaUiFactory;
 		this.navigatorProvider = navigatorProvider;
 		this.persistenceStructureProvider = persistenceStructureProvider;
-		this.javaStructureProvider = javaStructureProvider;
-		this.platformUiProviders = platformUiProviders;
+		this.platformUiProvider = platformUiProvider;
 	}
 
 
@@ -78,12 +72,6 @@ public abstract class BaseJpaPlatformUi
 		return this.navigatorProvider;
 	}
 	
-	// ********** platform ui providers **********
-	
-	protected ListIterator<JpaPlatformUiProvider> platformUiProviders() {
-		return new ArrayListIterator<JpaPlatformUiProvider>(this.platformUiProviders);
-	}
-
 	
 	// ********** details providers **********
 
@@ -118,134 +106,40 @@ public abstract class BaseJpaPlatformUi
 	}
 
 	protected ListIterator<JpaDetailsProvider> detailsProviders() {
-		return new CompositeListIterator<JpaDetailsProvider> ( 
-			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<JpaDetailsProvider>>(this.platformUiProviders()) {
-				@Override
-				protected ListIterator<JpaDetailsProvider> transform(JpaPlatformUiProvider platformProvider) {
-					return platformProvider.detailsProviders();
-				}
-			}
-		);
+		return this.platformUiProvider.detailsProviders();
 	}
 
 
-	// ********** Java type mapping UI providers **********
+	// ********** mapping ui definitions **********
 
-	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(final IContentType contentType) {
-		return new FilteringIterator<TypeMappingUiProvider<? extends TypeMapping>, TypeMappingUiProvider<? extends TypeMapping>>(typeMappingUiProviders()) {
-			@Override
-			protected boolean accept(TypeMappingUiProvider<? extends TypeMapping> provider) {
-				return contentType.equals(provider.getContentType());
-			}
-		};
-	}
-
-	protected ListIterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		return new CompositeListIterator<TypeMappingUiProvider<? extends TypeMapping>> ( 
-			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<TypeMappingUiProvider<? extends TypeMapping>>>(this.platformUiProviders()) {
-				@Override
-				protected ListIterator<TypeMappingUiProvider<? extends TypeMapping>> transform(JpaPlatformUiProvider platformProvider) {
-					return platformProvider.typeMappingUiProviders();
-				}
-			}
-		);
+	public JpaComposite buildTypeMappingComposite(IContentType contentType, String key, Composite parent, PropertyValueModel<TypeMapping> mappingHolder, WidgetFactory widgetFactory) {
+		FileUiDefinition fileUiDefinition = getFileUiDefinition(contentType);
+		return fileUiDefinition.buildTypeMappingComposite(key, mappingHolder, parent, widgetFactory);
 	}
 	
-	public DefaultTypeMappingUiProvider<? extends TypeMapping> getDefaultTypeMappingUiProvider(IContentType contentType) {
-		for (DefaultTypeMappingUiProvider<? extends TypeMapping> provider : CollectionTools.iterable(defaultTypeMappingUiProviders())) {
-			if (provider.getContentType().equals(contentType)) {
-				return provider;
-			}
-		}
-		return null;
-
+	public JpaComposite buildAttributeMappingComposite(IContentType contentType, String key, Composite parent, PropertyValueModel<AttributeMapping> mappingHolder, WidgetFactory widgetFactory) {
+		FileUiDefinition fileUiDefinition = getFileUiDefinition(contentType);
+		return fileUiDefinition.buildAttributeMappingComposite(key, mappingHolder, parent, widgetFactory);
 	}
 	
-	public TypeMappingUiProvider<? extends TypeMapping> getTypeMappingUiProvider(String key, IContentType contentType) {
-		for (TypeMappingUiProvider<? extends TypeMapping> provider : CollectionTools.iterable(typeMappingUiProviders(contentType))) {
-			if (key == provider.getKey()) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("Unsupported type mapping UI provider key: " + key); //$NON-NLS-1$
+	public DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(IContentType contentType, String key) {
+		return getFileUiDefinition(contentType).getDefaultAttributeMappingUiDefinition(key);
 	}
 	
-	
-	
-	protected ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> defaultTypeMappingUiProviders() {
-		return new CompositeListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> ( 
-			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>>>(this.platformUiProviders()) {
-				@Override
-				protected ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> transform(JpaPlatformUiProvider platformProvider) {
-					return platformProvider.defaultTypeMappingUiProviders();
-				}
-			}
-		);
-	}
-
-	// ********** Java attribute mapping UI providers **********
-
-	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(final IContentType contentType) {
-		return new FilteringIterator<AttributeMappingUiProvider<? extends AttributeMapping>, AttributeMappingUiProvider<? extends AttributeMapping>>(attributeMappingUiProviders()) {
-			@Override
-			protected boolean accept(AttributeMappingUiProvider<? extends AttributeMapping> provider) {
-				return contentType.equals(provider.getContentType());
-			}
-		};
-	}
-
-	protected ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
-		return new CompositeListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> ( 
-			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>>(this.platformUiProviders()) {
-				@Override
-				protected ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> transform(JpaPlatformUiProvider platformProvider) {
-					return platformProvider.attributeMappingUiProviders();
-				}
-			}
-		);
-	}
-
-	// ********** default Java attribute mapping UI providers **********
-
-	public Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders(final IContentType contentType) {
-		return new FilteringIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>, DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(defaultAttributeMappingUiProviders()) {
-			@Override
-			protected boolean accept(DefaultAttributeMappingUiProvider<? extends AttributeMapping> provider) {
-				return provider.getContentType().equals(contentType);
-			}
-		};
+	public Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(IContentType contentType) {
+		return getFileUiDefinition(contentType).attributeMappingUiDefinitions();
 	}
 	
-	public DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key, IContentType contentType) {
-		for (DefaultAttributeMappingUiProvider<?> provider : CollectionTools.iterable(defaultAttributeMappingUiProviders(contentType))) {
-			if (key == provider.getDefaultKey()) {
-				return provider;
-			}
-		}
-		return null;
+	public DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(IContentType contentType) {
+		return getFileUiDefinition(contentType).getDefaultTypeMappingUiDefinition();
 	}
 	
-	public AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key, IContentType contentType) {
-		for (AttributeMappingUiProvider<?> provider : CollectionTools.iterable(attributeMappingUiProviders(contentType))) {
-			if (key == provider.getKey()) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("Unsupported attribute mapping UI provider key: "); //$NON-NLS-1$
-	}
-
-	protected ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
-		return new CompositeListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> ( 
-			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>>(this.platformUiProviders()) {
-				@Override
-				protected ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> transform(JpaPlatformUiProvider platformProvider) {
-					return platformProvider.defaultAttributeMappingUiProviders();
-				}
-			}
-		);
+	public Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(IContentType contentType) {
+		return getFileUiDefinition(contentType).typeMappingUiDefinitions();
 	}
 
 
+	
 	// ********** structure providers **********
 
 	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
@@ -253,34 +147,29 @@ public abstract class BaseJpaPlatformUi
 	}
 	
 	protected JpaStructureProvider getStructureProvider(IContentType contentType) {
-		for (JpaStructureProvider provider : CollectionTools.iterable(this.structureProviders())) {
-			if (provider.getContentType().isKindOf(contentType)) {
-				return provider;
+	if (this.persistenceStructureProvider.getContentType().isKindOf(contentType)) {
+			return this.persistenceStructureProvider;
+		}
+		return getFileUiDefinition(contentType).getStructureProvider();
+	}
+	
+	
+	// ********** mapping file ui definitions **********
+
+	protected ListIterator<FileUiDefinition> fileUiDefinitions() {
+		return this.platformUiProvider.fileUiDefinitions();
+	}
+
+	public FileUiDefinition getFileUiDefinition(IContentType contentType) {
+		for (FileUiDefinition definition : CollectionTools.iterable(this.fileUiDefinitions())) {
+			if (definition.getContentType().equals(contentType)) {
+				return definition;
 			}
 		}
-		if (contentType.getBaseType() != null) {
-			return getStructureProvider(contentType.getBaseType());
-		}
-		throw new IllegalArgumentException("No structure provider for the contentType: " + contentType); //$NON-NLS-1$
+		throw new IllegalArgumentException("No file ui definition for the contentType: " + contentType); //$NON-NLS-1$
 	}
-
-	protected ListIterator<JpaStructureProvider> structureProviders() {
-		return 
-			new CompositeListIterator<JpaStructureProvider> (this.persistenceStructureProvider,
-				new CompositeListIterator<JpaStructureProvider> (this.javaStructureProvider,
-					new CompositeListIterator<JpaStructureProvider> ( 
-						new TransformationListIterator<JpaPlatformUiProvider, ListIterator<JpaStructureProvider>>(this.platformUiProviders()) {
-							@Override
-							protected ListIterator<JpaStructureProvider> transform(JpaPlatformUiProvider platformUiProvider) {
-								return platformUiProvider.mappingFileStructureProviders();
-							}
-						}
-					)
-				)
-			);
-	}
-
 	
+
 	// ********** entity generation **********
 
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {

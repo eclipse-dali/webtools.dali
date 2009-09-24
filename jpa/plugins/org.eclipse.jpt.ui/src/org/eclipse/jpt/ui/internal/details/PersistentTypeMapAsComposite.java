@@ -11,12 +11,10 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
@@ -70,40 +68,40 @@ public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 					return JptUiDetailsMessages.MapAsComposite_changeMappingType;
 				}
 
-				return getProvider(mappingKey).getLinkLabel();
+				return getMappingUiDefinition(mappingKey).getLinkLabel();
 			}
 
-			public void morphMapping(MappingUiProvider<?> provider) {
-				getSubject().setMappingKey(provider.getKey());
+			public void morphMapping(MappingUiDefinition<?> definition) {
+				getSubject().setMappingKey(definition.getKey());
 			}
 
 			public String getName() {
 				return getSubject().getShortName();
 			}
 
-			public Iterator<? extends MappingUiProvider<?>> providers() {
-				return typeMappingUiProviders(getSubject().getContentType());
+			public Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions() {
+				return typeMappingUiDefinitions();
 			}
 		};
 	}
 
 	/**
-	 * Retrieves the list of providers that are registered with the JPT plugin.
+	 * Retrieves the list of definitions that are registered with the JPT plugin.
 	 *
 	 * @return The supported types of mapping
 	 */
-	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(IContentType contentType) {
-		return getJpaPlatformUi().typeMappingUiProviders(contentType);
+	protected Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions() {
+		return getJpaPlatformUi().typeMappingUiDefinitions(getSubject().getContentType());
 	}
 	
 	@Override
-	protected DefaultMappingUiProvider<?> getDefaultProvider() {
-		return getJpaPlatformUi().getDefaultTypeMappingUiProvider(getSubject().getContentType());
+	protected DefaultMappingUiDefinition<?> getDefaultDefinition() {
+		return getJpaPlatformUi().getDefaultTypeMappingUiDefinition(getSubject().getContentType());
 	}
 	
 	@Override
-	protected DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey) {
-		return getDefaultProvider();
+	protected DefaultMappingUiDefinition<?> getDefaultDefinition(String mappingKey) {
+		return getDefaultDefinition();
 	}
 	
 	@Override

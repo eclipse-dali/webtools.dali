@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IdMapping
- * @see BaseJpaUiFactory - The factory creating this pane
+ * @see JavaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see TemporalTypeComposite
  * @see IdMappingGenerationComposite

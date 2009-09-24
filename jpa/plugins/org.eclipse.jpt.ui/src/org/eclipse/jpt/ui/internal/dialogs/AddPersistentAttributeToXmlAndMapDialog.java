@@ -24,8 +24,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -85,7 +84,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public Object[] getElements(Object inputElement) {
 					return ArrayTools.array(
 						CollectionTools.sort(
-							((JpaPlatformUi) inputElement).attributeMappingUiProviders(unmappedPersistentAttribute.getContentType()),
+							((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(unmappedPersistentAttribute.getContentType()),
 							getProvidersComparator()));
 				}
 				
@@ -95,7 +94,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((AttributeMappingUiProvider) element).getLabel();
+					return ((MappingUiDefinition<?>) element).getLabel();
 				}
 			});
 		mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -118,9 +117,9 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		return dialogArea;
 	}
 	
-	protected Comparator<MappingUiProvider<?>> getProvidersComparator() {
-		return new Comparator<MappingUiProvider<?>>() {
-			public int compare(MappingUiProvider<?> item1, MappingUiProvider<?> item2) {
+	protected Comparator<MappingUiDefinition<?>> getProvidersComparator() {
+		return new Comparator<MappingUiDefinition<?>>() {
+			public int compare(MappingUiDefinition<?> item1, MappingUiDefinition<?> item2) {
 				String displayString1 = item1.getLabel();
 				String displayString2 = item2.getLabel();
 				return Collator.getInstance().compare(displayString1, displayString2);
@@ -160,7 +159,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((AttributeMappingUiProvider) selection.getFirstElement()).getKey();
+		return (selection.isEmpty()) ? null : ((MappingUiDefinition<?>) selection.getFirstElement()).getKey();
 	}
 
 	private void validate() {

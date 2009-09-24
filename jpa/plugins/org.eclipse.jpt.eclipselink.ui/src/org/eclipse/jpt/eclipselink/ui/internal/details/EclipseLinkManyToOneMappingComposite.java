@@ -59,7 +59,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link ManyToOneMapping}
- * @see {@link BaseJpaUiFactory} - The factory creating this pane
  * @see {@link TargetEntityComposite}
  * @see {@link ManyToOneJoiningStrategyPane}
  * @see {@link FetchTypeComposite}

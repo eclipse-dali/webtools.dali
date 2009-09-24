@@ -12,12 +12,10 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
@@ -108,7 +106,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 			return composite;
 		}
 
-		composite = buildMappingComposite(this.mappingPageBook, key, getSubject().getContentType());
+		composite = buildMappingComposite(this.mappingPageBook, key);
 
 		if (composite != null) {
 			this.mappingComposites.put(key, composite);
@@ -117,19 +115,14 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return composite;
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected JpaComposite buildMappingComposite(PageBook pageBook,
-	                                                               String mappingKey, IContentType contentType) {
-
-		AttributeMappingUiProvider<AttributeMapping> uiProvider =
-			(AttributeMappingUiProvider<AttributeMapping>) getMappingUiProvider(mappingKey, contentType);
-
-		return uiProvider.buildAttributeMappingComposite(
-			getJpaUiFactory(),
-			buildMappingHolder(mappingKey),
-			pageBook,
-			getWidgetFactory()
-		);
+	protected JpaComposite buildMappingComposite(PageBook pageBook, String mappingKey) {
+		return getJpaPlatformUi().
+					buildAttributeMappingComposite(
+						getSubject().getContentType(),
+						mappingKey,
+						pageBook,
+						buildMappingHolder(mappingKey),
+						getWidgetFactory());
 	}
 	
 	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {
@@ -139,8 +132,8 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		);
 	}
 
-	private PropertyAspectAdapter<PersistentAttribute, AttributeMapping> buildGenericMappingHolder() {
-		return new PropertyAspectAdapter<PersistentAttribute, AttributeMapping>(
+	private PropertyAspectAdapter<T, AttributeMapping> buildGenericMappingHolder() {
+		return new PropertyAspectAdapter<T, AttributeMapping>(
 			getSubjectHolder(),
 			PersistentAttribute.DEFAULT_MAPPING_PROPERTY,
 			PersistentAttribute.SPECIFIED_MAPPING_PROPERTY)
@@ -156,9 +149,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return new MappingFilter(mappingKey);
 	}
 
-	protected AttributeMappingUiProvider<? extends AttributeMapping> getMappingUiProvider(String key, IContentType contentType) {
-		return getJpaPlatformUi().getAttributeMappingUiProvider(key, contentType);
-	}
 
 	@Override
 	protected void doPopulate() {

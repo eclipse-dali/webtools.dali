@@ -14,10 +14,8 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
@@ -75,53 +73,44 @@ public class PersistentAttributeMapAsComposite extends MapAsComposite<Persistent
 				}
 
 				if (getSubject().getSpecifiedMapping() == null) {
-					return getDefaultProvider(getSubject().getDefaultMappingKey()).getLinkLabel();
+					return getDefaultDefinition(getSubject().getDefaultMappingKey()).getLinkLabel();
 				}
 
-				return getProvider(mappingKey).getLinkLabel();
+				return getMappingUiDefinition(mappingKey).getLinkLabel();
 			}
 
-			public void morphMapping(MappingUiProvider<?> provider) {
-				getSubject().setSpecifiedMappingKey(provider.getKey());
+			public void morphMapping(MappingUiDefinition<?> definition) {
+				getSubject().setSpecifiedMappingKey(definition.getKey());
 			}
 
 			public String getName() {
 				return getSubject().getName();
 			}
 
-			public Iterator<? extends MappingUiProvider<?>> providers() {
-				return attributeMappingUiProviders();
+			public Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions() {
+				return attributeMappingUiDefinitions();
 			}
 		};
 	}
 	
 	/**
-	 * Retrieves the list of providers that are registered with the JPT plugin.
+	 * Retrieves the list of definitions that are registered with the JPT plugin.
 	 *
 	 * @return The supported types of mapping
 	 */
-	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
-		return getJpaPlatformUi().attributeMappingUiProviders(getSubject().getContentType());
+	protected Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions() {
+		return getJpaPlatformUi().attributeMappingUiDefinitions(getSubject().getContentType());
 	}
 
 	@Override
-	protected DefaultMappingUiProvider<?> getDefaultProvider() {
-		return getDefaultProvider(getSubject().getDefaultMappingKey());
+	protected DefaultMappingUiDefinition<?> getDefaultDefinition() {
+		return getDefaultDefinition(getSubject().getDefaultMappingKey());
 
 	}
 	
 	@Override
-	protected DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey) {
-		return getJpaPlatformUi().getDefaultAttributeMappingUiProvider(mappingKey, getSubject().getContentType());
-	}
-	
-	/**
-	 * Returns the list of providers that are registered with the JPT plugin.
-	 *
-	 * @return The supported default types of mapping
-	 */
-	protected Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
-		return getJpaPlatformUi().defaultAttributeMappingUiProviders(getSubject().getContentType());
+	protected DefaultMappingUiDefinition<?> getDefaultDefinition(String mappingKey) {
+		return getJpaPlatformUi().getDefaultAttributeMappingUiDefinition(getSubject().getContentType(), mappingKey);
 	}
 
 
