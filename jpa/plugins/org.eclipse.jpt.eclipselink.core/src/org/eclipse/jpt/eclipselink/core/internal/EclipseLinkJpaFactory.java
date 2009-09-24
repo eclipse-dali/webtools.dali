@@ -22,13 +22,8 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
@@ -47,8 +42,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkPer
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVersionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJarFileRef;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 
 public class EclipseLinkJpaFactory
 	extends AbstractJpaFactory
@@ -64,18 +57,6 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkJpaProjectImpl(config);
 	}
 	
-	
-	// ********** Persistence Context Model **********
-	
-	@Override
-	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		return new EclipseLinkPersistenceUnit(parent, xmlPersistenceUnit);
-	}
-	
-	@Override
-	public JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
-		return new EclipseLinkJarFileRef(parent, xmlJarFileRef);
-	}
 	
 	
 	// ********** Java Context Model **********

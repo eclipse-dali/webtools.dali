@@ -7,39 +7,39 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.orm;
+package org.eclipse.jpt.core.internal.context.persistence;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
-import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
+import org.eclipse.jpt.core.context.persistence.PersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 
 /**
  * Use this abstract class for context nodes that are part of an OrmXml file.
  * This will not work for purely MappingFile implementations
  */
-public abstract class AbstractOrmXmlContextNode
+public abstract class AbstractPersistenceXmlContextNode
 	extends AbstractXmlContextNode
 	implements XmlContextNode
 {
 
 	// ********** constructor **********
 
-	protected AbstractOrmXmlContextNode(JpaContextNode parent) {
+	protected AbstractPersistenceXmlContextNode(JpaContextNode parent) {
 		super(parent);
 	}
 	
-	public OrmXmlDefinition getMappingFileDefinition() {
-		return (OrmXmlDefinition) getJpaPlatform().getResourceDefinition(getContentType());
+	public PersistenceXmlDefinition getPersistenceXmlDefinition() {
+		return (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(getContentType());
 	}
 	
 	public EFactory getResourceNodeFactory() {
-		return getMappingFileDefinition().getResourceNodeFactory();
+		return getPersistenceXmlDefinition().getResourceNodeFactory();
 	}
 	
-	public OrmXmlContextNodeFactory getXmlContextNodeFactory() {
-		return getMappingFileDefinition().getContextNodeFactory();
+	public PersistenceXmlContextNodeFactory getContextNodeFactory() {
+		return getPersistenceXmlDefinition().getContextNodeFactory();
 	}
 }

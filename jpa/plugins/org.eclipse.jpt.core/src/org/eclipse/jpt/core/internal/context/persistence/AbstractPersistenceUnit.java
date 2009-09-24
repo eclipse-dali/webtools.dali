@@ -34,7 +34,6 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -62,7 +61,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * persistence-unit
  */
 public abstract class AbstractPersistenceUnit
-	extends AbstractXmlContextNode
+	extends AbstractPersistenceXmlContextNode
 	implements PersistenceUnit
 {
 	protected XmlPersistenceUnit xmlPersistenceUnit;
@@ -432,7 +431,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected MappingFileRef buildImpliedMappingFileRef() {
-		return this.getJpaFactory().buildImpliedMappingFileRef(this);
+		return this.getContextNodeFactory().buildImpliedMappingFileRef(this);
 	}
 
 	protected void unsetImpliedMappingFileRef() {
@@ -574,7 +573,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ClassRef buildClassRef(String className) {
-		return this.getJpaFactory().buildClassRef(this, className);
+		return this.getContextNodeFactory().buildClassRef(this, className);
 	}
 
 	protected void removeImpliedClassRef(ClassRef classRef) {
@@ -675,7 +674,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Property buildProperty(XmlProperty xmlProperty) {
-		return this.getJpaFactory().buildProperty(this, xmlProperty);
+		return this.getContextNodeFactory().buildProperty(this, xmlProperty);
 	}
 
 	protected XmlProperties buildXmlProperties() {
@@ -1002,7 +1001,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected JarFileRef buildJarFileRef(XmlJarFileRef xmlJarFileRef) {
-		return this.getJpaFactory().buildJarFileRef(this, xmlJarFileRef);
+		return this.getContextNodeFactory().buildJarFileRef(this, xmlJarFileRef);
 	}
 
 	/**
@@ -1029,7 +1028,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ClassRef buildClassRef(XmlJavaClassRef xmlClassRef) {
-		return this.getJpaFactory().buildClassRef(this, xmlClassRef);
+		return this.getContextNodeFactory().buildClassRef(this, xmlClassRef);
 	}
 
 	/**
@@ -1075,7 +1074,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected MappingFileRef buildSpecifiedMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
-		return this.getJpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
+		return this.getContextNodeFactory().buildMappingFileRef(this, xmlMappingFileRef);
 	}
 
 	protected boolean impliedMappingFileIsSpecified() {

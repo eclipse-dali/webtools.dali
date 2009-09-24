@@ -7,17 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context;
+package org.eclipse.jpt.core;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.emf.ecore.EFactory;
 
 /**
- * A JpaPlatform can support multiple mapping files.  Each will
- * have a unique content type and must be defined with a mapping file definition.
- * The mapping file object will be built using the buildMappingFile() method.  
- * Use the xml context node factory to build the objects that are a 
- * part of the mapping file.
+ * A JpaPlatform can support multiple resources.  Each will
+ * have a unique content type and must be defined with a resource definition.
  *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,20 +21,10 @@ import org.eclipse.emf.ecore.EFactory;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappingFileDefinition
+public interface ResourceDefinition
 {
 	/**
-	 * Return the associated mapping file content type.
+	 * Return the associated resource content type.
 	 */
 	IContentType getContentType();
-	
-	/**
-	 * Return the factory for building xml resource nodes
-	 */
-	EFactory getResourceNodeFactory();
-	
-	/**
-	 * Return the factory for building xml context nodes
-	 */
-	XmlContextNodeFactory getContextNodeFactory();
 }

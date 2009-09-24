@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 
@@ -41,9 +40,9 @@ public interface JpaPlatformProvider
 	ListIterator<JpaResourceModelProvider> resourceModelProviders();
 
 	/**
-	 * Return the mapping file definitions supported by this platform.
+	 * Return the resource definitions supported by this platform.
 	 */
-	ListIterator<MappingFileDefinition> mappingFileDefinitions();
+	ListIterator<ResourceDefinition> resourceDefinitions();
 
 	/**
 	 * Return the java type mapping definitions that apply to this platform.

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2;
 
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
+import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.AbstractJpaPlatformProvider;
@@ -32,8 +32,10 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
+import org.eclipse.jpt.core.internal.jpa2.context.persistence.Generic2_0PersistenceXmlDefinition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -105,7 +107,7 @@ public class Generic2_0JpaPlatformProvider
 	
 	@Override
 	protected JavaAttributeMappingDefinition[] buildNonNullSpecifiedJavaAttributeMappingDefinitions() {
-		// order determined by analyzing order that reference implementation (toplink) uses
+		// order determined by analyzing order that reference implementation (eclipselink) uses
 		return new JavaAttributeMappingDefinition[] {
 			JavaTransientMappingDefinition.instance(),
 			//JavaElementCollectionMappingProvider.instance(),
@@ -124,8 +126,10 @@ public class Generic2_0JpaPlatformProvider
 	// ********** Mapping Files **********
 	
 	@Override
-	protected MappingFileDefinition[] buildMappingFileDefinitions() {
-		return new MappingFileDefinition[] {
+	protected ResourceDefinition[] buildResourceDefinitions() {
+		return new ResourceDefinition[] {
+			GenericPersistenceXmlDefinition.instance(),
+			Generic2_0PersistenceXmlDefinition.instance(),
 			GenericOrmXmlDefinition.instance(),
 			GenericOrmXml2_0Definition.instance()};
 	}

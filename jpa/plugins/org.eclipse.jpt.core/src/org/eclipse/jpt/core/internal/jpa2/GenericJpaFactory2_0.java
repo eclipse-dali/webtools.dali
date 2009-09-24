@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
-import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
@@ -30,24 +29,16 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttr
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmDerivedId2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.GenericPersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
 
 /**
@@ -72,14 +63,6 @@ public class GenericJpaFactory2_0
 	@Override
 	public PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
 		return new GenericPersistentTypeStaticMetamodelSynchronizer(staticMetamodelSynchronizer, persistentType);
-	}
-	
-	
-	// ********** Persistence Context Model **********
-	
-	@Override
-	public PersistenceUnit2_0 buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		return new GenericPersistenceUnit2_0((Persistence2_0) parent, xmlPersistenceUnit);
 	}
 	
 	
@@ -125,12 +108,4 @@ public class GenericJpaFactory2_0
 	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
 		return new GenericJavaDerivedId2_0(parent);
 	}
-
-	
-	// ********** Orm Context Model **********
-	
-	public OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource) {
-		return new GenericOrmDerivedId2_0(parent, resource);
-	}
-
 }

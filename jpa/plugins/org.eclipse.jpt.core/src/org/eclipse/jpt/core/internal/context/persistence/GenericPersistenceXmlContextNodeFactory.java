@@ -7,10 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.orm;
+package org.eclipse.jpt.core.internal.context.persistence;
 
 
-public class GenericOrmXmlContextNodeFactory extends AbstractOrmXmlContextNodeFactory
+public class GenericPersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextNodeFactory
 {
 
 }

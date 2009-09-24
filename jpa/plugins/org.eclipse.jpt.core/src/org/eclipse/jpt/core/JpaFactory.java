@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
-import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
@@ -70,24 +69,11 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
-import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * Use a JPA factory to build any core (e.g. {@link JpaProject})
@@ -145,40 +131,7 @@ public interface JpaFactory
 	 * @see JpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
-	
-	
-	// ********** Persistence Context Model **********
-	
-	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource);
-	
-	Persistence buildPersistence(PersistenceXml parent, XmlPersistence resourcePersistence);
-	
-	PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit resourcePersistenceUnit);
-	
-	JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef);
-
-	/**
-	 * Build a "specified" mapping file ref.
-	 */
-	MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef);
-
-	/**
-	 * Build a "implied" mapping file ref.
-	 */
-	MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent);
-
-	/**
-	 * Build a "specified" class ref.
-	 */
-	ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef xmlClassRef);
-	
-	/**
-	 * Build an "implied" class ref.
-	 */
-	ClassRef buildClassRef(PersistenceUnit parent, String className);
-	
-	PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty property);
-		
+			
 	
 	// ********** Java Context Model **********
 	
@@ -269,10 +222,5 @@ public interface JpaFactory
 	JavaConverter buildJavaNullConverter(JavaAttributeMapping parent);
 	
 	AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy);
-	
-
-	// ********** JAR Context Model **********
-
-	JarFile buildJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot);
 	
 }

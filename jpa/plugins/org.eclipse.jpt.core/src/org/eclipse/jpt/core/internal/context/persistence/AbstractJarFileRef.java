@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
@@ -38,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJarFileRef
-	extends AbstractXmlContextNode
+	extends AbstractPersistenceXmlContextNode
 	implements JarFileRef2_0
 {
 	protected XmlJarFileRef xmlJarFileRef;
@@ -240,7 +239,7 @@ public abstract class AbstractJarFileRef
 
 
 	protected JarFile buildJarFile(JavaResourcePackageFragmentRoot jrpfr) {
-		return this.getJpaFactory().buildJarFile(this, jrpfr);
+		return this.getContextNodeFactory().buildJarFile(this, jrpfr);
 	}
 
 	protected IProject getProject() {

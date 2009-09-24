@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -24,7 +23,6 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
-import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
@@ -73,18 +71,11 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaFile;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaProject;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericRootContextNode;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJarFile;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideRelationshipReference;
@@ -129,14 +120,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstrai
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericClassRef;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericJarFileRef;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericMappingFileRef;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistence;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnit;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnitProperty;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeStaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.NullStaticMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
@@ -148,17 +131,9 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
-import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -201,44 +176,6 @@ public abstract class AbstractJpaFactory
 		return new GenericRootContextNode(parent);
 	}
 
-	
-	// ********** Persistence Context Model **********
-	
-	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
-		return new GenericPersistenceXml(parent, resource);
-	}
-	
-	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
-		return new GenericPersistence(parent, xmlPersistence);
-	}
-	
-	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		return new GenericPersistenceUnit(parent, xmlPersistenceUnit);
-	}
-	
-	public JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
-		return new GenericJarFileRef(parent, xmlJarFileRef);
-	}
-	
-	public MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
-		return new GenericMappingFileRef(parent, xmlMappingFileRef);
-	}
-	
-	public MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent) {
-		return new ImpliedMappingFileRef(parent, JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH );
-	}
-	
-	public ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
-		return new GenericClassRef(parent, classRef);
-	}
-	
-	public ClassRef buildClassRef(PersistenceUnit parent, String className) {
-		return new GenericClassRef(parent, className);
-	}
-	
-	public PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
-		return new GenericPersistenceUnitProperty(parent, xmlProperty);
-	}
 	
 
 	// ********** Java Context Model **********
@@ -426,12 +363,4 @@ public abstract class AbstractJpaFactory
 	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
 		return new NullJavaDerivedId2_0(parent);
 	}
-	
-	
-	// ********** JAR Context Model **********
-
-	public JarFile buildJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot) {
-		return new GenericJarFile(parent, jarResourcePackageFragmentRoot);
-	}
-	
 }

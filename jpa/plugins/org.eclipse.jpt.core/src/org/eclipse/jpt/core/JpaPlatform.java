@@ -11,7 +11,6 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -142,15 +141,15 @@ public interface JpaPlatform
 	// ********** Mapping Files **********
 	
 	/**
-	 * Return a {@link MappingFileDefinition} to describe the context model for a file of the given
+	 * Return a {@link ResourceDefinition} to describe the context model for a file of the given
 	 * content type.
 	 * Thrown an {@link IllegalArgumentException} if the content type is not supported by the platform.
 	 * 
-	 * @param contentType The content type of a potential mapping file
-	 * @return The mapping file definition that can be used to describe the context model of such
+	 * @param contentType The content type of a potential file
+	 * @return The resource definition that can be used to describe the context model of such
 	 * a file
 	 */
-	MappingFileDefinition getMappingFileDefinition(IContentType contentType);
+	ResourceDefinition getResourceDefinition(IContentType contentType);
 	
 	
 	// ********** database **********

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
+import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingDefinition;
@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -96,7 +97,7 @@ public class GenericJpaPlatformProvider
 	
 	@Override
 	protected JavaAttributeMappingDefinition[] buildNonNullSpecifiedJavaAttributeMappingDefinitions() {
-		// order determined by analyzing order that reference implementation (toplink) uses
+		// order determined by analyzing order that reference implementation (eclipselink) uses
 		return new JavaAttributeMappingDefinition[] {
 			JavaTransientMappingDefinition.instance(),
 			JavaIdMappingDefinition.instance(),
@@ -114,8 +115,9 @@ public class GenericJpaPlatformProvider
 	// ********** Mapping Files **********
 	
 	@Override
-	protected MappingFileDefinition[] buildMappingFileDefinitions() {
-		return new MappingFileDefinition[] {
+	protected ResourceDefinition[] buildResourceDefinitions() {
+		return new ResourceDefinition[] {
+			GenericPersistenceXmlDefinition.instance(),
 			GenericOrmXmlDefinition.instance()};
 	}
 }

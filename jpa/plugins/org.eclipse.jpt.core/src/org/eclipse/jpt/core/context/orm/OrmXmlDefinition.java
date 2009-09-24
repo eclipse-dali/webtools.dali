@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.MappingFileDefinition;
-
 /**
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

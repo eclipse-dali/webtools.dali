@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
+import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingDefinition;
@@ -36,7 +36,7 @@ public abstract class AbstractJpaPlatformProvider
 
 	private JavaAttributeMappingDefinition[] defaultJavaAttributeMappingDefinitions;
 
-	private MappingFileDefinition[] mappingFileDefinitions;
+	private ResourceDefinition[] resourceDefinitions;
 
 
 	/**
@@ -173,16 +173,16 @@ public abstract class AbstractJpaPlatformProvider
 	
 	// ********** Mapping Files **********
 	
-	public ListIterator<MappingFileDefinition> mappingFileDefinitions() {
-		return new ArrayListIterator<MappingFileDefinition>(getMappingFileDefinitions());
+	public ListIterator<ResourceDefinition> resourceDefinitions() {
+		return new ArrayListIterator<ResourceDefinition>(getResourceDefinitions());
 	}
 	
-	protected synchronized MappingFileDefinition[] getMappingFileDefinitions() {
-		if (this.mappingFileDefinitions == null) {
-			this.mappingFileDefinitions = this.buildMappingFileDefinitions();
+	protected synchronized ResourceDefinition[] getResourceDefinitions() {
+		if (this.resourceDefinitions == null) {
+			this.resourceDefinitions = this.buildResourceDefinitions();
 		}
-		return this.mappingFileDefinitions;
+		return this.resourceDefinitions;
 	}
 	
-	protected abstract MappingFileDefinition[] buildMappingFileDefinitions();
+	protected abstract ResourceDefinition[] buildResourceDefinitions();
 }

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
+import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.AbstractJpaPlatformProvider;
@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 
 public class TestJpaPlatformProvider extends AbstractJpaPlatformProvider
 {
@@ -114,8 +115,9 @@ public class TestJpaPlatformProvider extends AbstractJpaPlatformProvider
 	// ********** Mapping Files **********
 	
 	@Override
-	protected MappingFileDefinition[] buildMappingFileDefinitions() {
-		return new MappingFileDefinition[] {
+	protected ResourceDefinition[] buildResourceDefinitions() {
+		return new ResourceDefinition[] {
+			GenericPersistenceXmlDefinition.instance(),
 			GenericOrmXmlDefinition.instance()};
 	}
 }

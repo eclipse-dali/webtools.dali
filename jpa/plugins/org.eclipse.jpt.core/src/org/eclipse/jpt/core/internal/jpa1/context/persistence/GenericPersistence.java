@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericPersistence
-	extends AbstractXmlContextNode
+	extends AbstractPersistenceXmlContextNode
 	implements Persistence2_0
 {	
 	protected XmlPersistence xmlPersistence;
@@ -166,7 +166,7 @@ public class GenericPersistence
 	}
 	
 	protected PersistenceUnit buildPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
-		return this.getJpaFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
+		return this.getContextNodeFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
 	}
 	
 	

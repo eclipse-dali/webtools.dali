@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
+import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.AbstractJpaPlatformProvider;
@@ -42,9 +42,11 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOne
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1Definition;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm.EclipseLink1_1OrmResourceModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm.EclipseLinkOrmXml2_0Definition;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLink2_0PersistenceXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.resource.orm.EclipseLink2_0OrmResourceModelProvider;
 
 /**
@@ -146,9 +148,11 @@ public class EclipseLink2_0JpaPlatformProvider
 	// ********* mapping files *********	
 	
 	@Override
-	protected MappingFileDefinition[] buildMappingFileDefinitions() {
+	protected ResourceDefinition[] buildResourceDefinitions() {
 		// order should not be important here
-		return new MappingFileDefinition[] {
+		return new ResourceDefinition[] {
+			EclipseLinkPersistenceXmlDefinition.instance(),
+			EclipseLink2_0PersistenceXmlDefinition.instance(),
 			GenericOrmXmlDefinition.instance(),
 			GenericOrmXml2_0Definition.instance(),
 			EclipseLinkOrmXmlDefinition.instance(),

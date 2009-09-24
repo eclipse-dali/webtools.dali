@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer.Owner;
-import org.eclipse.jpt.core.internal.AbstractOrmXmlContextNodeFactory;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;

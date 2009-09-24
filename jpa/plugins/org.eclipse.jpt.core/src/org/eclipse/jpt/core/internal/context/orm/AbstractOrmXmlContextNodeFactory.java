@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal;
+package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -74,19 +74,6 @@ import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.context.orm.NullOrmAssociationOverrideContainer;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAssociationOverride;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlBasic;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbedded;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbeddedId;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlId;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToMany;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToOne;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlNullAttributeMapping;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToOne;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlTransient;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlVersion;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;

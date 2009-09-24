@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * Notifies the persistence unit of any changes to the property.
  */
 public class GenericPersistenceUnitProperty
-	extends AbstractXmlContextNode
+	extends AbstractPersistenceXmlContextNode
 	implements PersistenceUnit.Property
 {
 	protected final XmlProperty xmlProperty;

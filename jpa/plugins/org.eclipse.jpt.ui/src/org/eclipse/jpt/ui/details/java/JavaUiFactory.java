@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details.java;
 
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.JpaPlatform;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -25,8 +21,6 @@ import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
@@ -37,13 +31,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Use {@link JpaFactory} to create any {@link JavaTypeMapping} or
- * {@link JavaAttributeMapping}s. This is necessary so that platforms can
- * extend the java model with their own annotations.
- * {@link JavaTypeMappingDefinition} and {@link JavaAttributeMappingDefinition} use
- * this factory. See {@link JpaPlatform#javaTypeMappingDefinitions()} and
- * {@link JpaPlatform#javaAttributeMappingDefinitions() for creating new mappings
- * types.
+ * Use {@link JavaUiFactory} to create any java JPA composites
  * <p>
  * Provisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
@@ -51,10 +39,9 @@ import org.eclipse.swt.widgets.Composite;
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  *
- * @see org.eclipse.jpt.ui.internal.BaseJpaUiFactory
  *
- * @version 2.0
- * @since 1.0
+ * @version 3.0
+ * @since 3.0
  */
 public interface JavaUiFactory
 {	

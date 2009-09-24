@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal;
 
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.context.MappingFileDefinition;
+import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.AbstractJpaPlatformProvider;
@@ -38,6 +38,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOne
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 
 /**
  * EclipseLink platform
@@ -132,9 +133,10 @@ public class EclipseLinkJpaPlatformProvider
 	// ********* mapping files *********	
 	
 	@Override
-	protected MappingFileDefinition[] buildMappingFileDefinitions() {
+	protected ResourceDefinition[] buildResourceDefinitions() {
 		// order should not be important here
-		return new MappingFileDefinition[] {
+		return new ResourceDefinition[] {
+			EclipseLinkPersistenceXmlDefinition.instance(),
 			EclipseLinkOrmXmlDefinition.instance(),
 			GenericOrmXmlDefinition.instance()};
 	}
