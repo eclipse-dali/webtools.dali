@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage;
 
@@ -3221,6 +3222,7 @@ public class EclipseLink2_0OrmPackage extends EPackageImpl
 		EclipseLink1_1OrmPackage theEclipseLink1_1OrmPackage = (EclipseLink1_1OrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLink1_1OrmPackage.eNS_URI);
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
 		Orm2_0Package theOrm2_0Package = (Orm2_0Package)EPackage.Registry.INSTANCE.getEPackage(Orm2_0Package.eNS_URI);
+		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 
 		// Create type parameters
@@ -3238,7 +3240,7 @@ public class EclipseLink2_0OrmPackage extends EPackageImpl
 		attributesEClass.getESuperTypes().add(theEclipseLink1_1OrmPackage.getAttributes());
 		attributesEClass.getESuperTypes().add(theOrm2_0Package.getAttributes());
 		xmlEmbeddedEClass.getESuperTypes().add(theEclipseLink1_1OrmPackage.getXmlEmbedded());
-		xmlEmbeddedEClass.getESuperTypes().add(theOrm2_0Package.getXmlEmbedded());
+		xmlEmbeddedEClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
 		xmlOneToOneEClass.getESuperTypes().add(theEclipseLink1_1OrmPackage.getXmlOneToOne());
 		xmlOneToOneEClass.getESuperTypes().add(theOrm2_0Package.getXmlOneToOne());
 		xmlOneToManyEClass.getESuperTypes().add(theOrm2_0Package.getXmlOneToMany());

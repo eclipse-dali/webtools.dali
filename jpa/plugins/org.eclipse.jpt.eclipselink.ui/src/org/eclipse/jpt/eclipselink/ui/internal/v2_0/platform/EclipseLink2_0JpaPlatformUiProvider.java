@@ -16,6 +16,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenc
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.EclipseLinkOrmXml1_1UiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java.EclipseLink2_0JavaResourceUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm.EclipseLinkEntityMappings2_0DetailsProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm.EclipseLinkOrmXml2_0UiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.EclipseLinkPersistenceXml2_0UiDefinition;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
@@ -77,6 +78,7 @@ public class EclipseLink2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 		definitions.add(OrmXml2_0UiDefinition.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition.instance());
 		definitions.add(EclipseLinkOrmXml1_1UiDefinition.instance());
+		definitions.add(EclipseLinkOrmXml2_0UiDefinition.instance());
 		definitions.add(EclipseLinkPersistenceXmlUiDefinition.instance());
 		definitions.add(EclipseLinkPersistenceXml2_0UiDefinition.instance());
 	}

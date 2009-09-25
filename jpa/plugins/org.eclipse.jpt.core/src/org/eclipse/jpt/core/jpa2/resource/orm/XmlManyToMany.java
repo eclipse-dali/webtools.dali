@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.EnumType;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
@@ -787,15 +788,15 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA2_0.TEMPORAL, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA2_0.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyEnumerated());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyEnumerated());
 	}
 
 } // XmlManyToMany

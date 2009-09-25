@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -37,8 +38,8 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 
 	protected AbstractOrmEmbeddedMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		if (this.resourceAttributeMapping instanceof org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded) {
-			this.associationOverrideContainer = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmAssociationOverrideContainer(this, this, (org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded) this.resourceAttributeMapping);
+		if (resourceMapping instanceof XmlAssociationOverrideContainer) {
+			this.associationOverrideContainer = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmAssociationOverrideContainer(this, this, (XmlAssociationOverrideContainer) this.resourceAttributeMapping);
 		}
 		else {
 			this.associationOverrideContainer = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmAssociationOverrideContainer(this, this, null);

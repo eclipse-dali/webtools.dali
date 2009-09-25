@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyClass;
@@ -30,8 +29,10 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyColumn;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyJoinColumn;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.resource.orm.EnumType;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
@@ -82,14 +83,10 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	protected XmlMapKeyClass mapKeyClass;
 
 	/**
-	 * The default value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = TemporalType.DATE;
+	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
@@ -102,14 +99,10 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = EnumType.ORDINAL;
+	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
@@ -1196,7 +1189,7 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 			buildMapKeyEnumeratedTranslator(),
 			buildMapKeyConvertTranslator(),
 			XmlAttributeOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyAttributeOverrides()),		
-			XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyAssociationOverrides()),		
+			org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyAssociationOverrides()),		
 			XmlColumn.buildTranslator(EclipseLink2_0.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyColumn()),		
 			XmlJoinColumn.buildTranslator(EclipseLink2_0.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyJoinColumns()),		
 			buildJoinTableTranslator(),
@@ -1208,19 +1201,19 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	}
 
 	protected static Translator buildAccessTranslator() {
-		return new Translator(EclipseLink2_0.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(EclipseLink2_0.TEMPORAL, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyTemporal());
+		return new Translator(EclipseLink2_0.MAP_KEY_TEMPORAL, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(EclipseLink2_0.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyEnumerated());
+		return new Translator(EclipseLink2_0.MAP_KEY_ENUMERATED, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyEnumerated());
 	}
 	
 	protected static Translator buildMapKeyConvertTranslator() {
-		return new Translator(EclipseLink2_0.CONVERT, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyConvert());
+		return new Translator(EclipseLink2_0.MAP_KEY_CONVERT, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyConvert());
 	}
 
 } // XmlManyToMany

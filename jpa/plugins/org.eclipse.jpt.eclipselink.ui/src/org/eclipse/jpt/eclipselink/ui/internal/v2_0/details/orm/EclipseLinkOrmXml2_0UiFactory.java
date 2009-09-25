@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.BaseEclipseLinkOrmXmlUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Composite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -35,6 +37,14 @@ public class EclipseLinkOrmXml2_0UiFactory extends BaseEclipseLinkOrmXmlUiFactor
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new OrmEclipseLinkIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmEmbeddedMappingComposite(
+			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 
 }

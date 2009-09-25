@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -41,7 +42,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbedded extends org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbedded
+public class XmlEmbedded extends org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbedded implements XmlAssociationOverrideContainer
 {
 	/**
 	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
@@ -84,7 +85,7 @@ public class XmlEmbedded extends org.eclipse.jpt.eclipselink.core.v1_1.resource.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlEmbedded_AssociationOverrides()
+	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlAssociationOverrideContainer_AssociationOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -189,18 +190,11 @@ public class XmlEmbedded extends org.eclipse.jpt.eclipselink.core.v1_1.resource.
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAttributeMapping.class)
+		if (baseClass == XmlAssociationOverrideContainer.class)
 		{
 			switch (derivedFeatureID)
 			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLink2_0OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES: return Orm2_0Package.XML_EMBEDDED__ASSOCIATION_OVERRIDES;
+				case EclipseLink2_0OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -215,18 +209,11 @@ public class XmlEmbedded extends org.eclipse.jpt.eclipselink.core.v1_1.resource.
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAttributeMapping.class)
+		if (baseClass == XmlAssociationOverrideContainer.class)
 		{
 			switch (baseFeatureID)
 			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded.class)
-		{
-			switch (baseFeatureID)
-			{
-				case Orm2_0Package.XML_EMBEDDED__ASSOCIATION_OVERRIDES: return EclipseLink2_0OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES;
+				case OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES: return EclipseLink2_0OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}

@@ -9,7 +9,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="eclipselink_orm1_1.ecore#//XmlEmbeddable"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="eclipselink_orm1_1.ecore#//XmlMappedSuperclass"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="eclipselink_orm1_1.ecore#//Attributes ../../org.eclipse.jpt.core/model/orm2.ecore#//Attributes"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="eclipselink_orm1_1.ecore#//XmlEmbedded ../../org.eclipse.jpt.core/model/orm2.ecore#//XmlEmbedded"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="eclipselink_orm1_1.ecore#//XmlEmbedded ../../org.eclipse.jpt.core/model/orm.ecore#//XmlAssociationOverrideContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="eclipselink_orm1_1.ecore#//XmlOneToOne ../../org.eclipse.jpt.core/model/orm2.ecore#//XmlOneToOne"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm2.ecore#//XmlOneToMany eclipselink_orm1_1.ecore#//XmlOneToMany eclipselink_orm.ecore#//XmlConverterHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKeyConvert" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

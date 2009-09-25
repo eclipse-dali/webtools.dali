@@ -9,19 +9,26 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 
+import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer.Owner;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
+import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 
@@ -33,8 +40,7 @@ public class EclipseLink2_0JpaFactory
 {
 	protected EclipseLink2_0JpaFactory() {
 		super();
-	}
-		
+	}	
 	
 	// ********** Java Context Model **********
 	@Override
@@ -51,6 +57,16 @@ public class EclipseLink2_0JpaFactory
 	@Override
 	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, Owner owner) {
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
+	}
+	
+	@Override
+	public JavaAssociationOverrideRelationshipReference buildJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent) {
+		return new GenericJavaAssociationOverrideRelationshipReference2_0(parent);
+	}
+	
+	@Override
+	public AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy) {
+		return new VirtualAssociationOverride2_0Annotation(jrpm, name, joiningStrategy);
 	}
 	
 	@Override

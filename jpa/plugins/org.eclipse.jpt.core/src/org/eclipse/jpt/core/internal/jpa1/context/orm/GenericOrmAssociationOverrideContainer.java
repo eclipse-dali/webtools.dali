@@ -284,7 +284,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 	protected XmlAssociationOverride buildResourceAssociationOverride() {
 		return EmfTools.create(
-			getResourceNodeFactory(), 
+			getResourceNodeFactory(),
 			OrmPackage.eINSTANCE.getXmlAssociationOverride(),
 			XmlAssociationOverride.class);
 	}

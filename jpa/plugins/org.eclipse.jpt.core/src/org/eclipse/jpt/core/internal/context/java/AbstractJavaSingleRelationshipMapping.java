@@ -117,11 +117,6 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	// ********** AbstractJavaRelationshipMapping implementation **********
 
 	@Override
-	public boolean isOverridableAssociationMapping() {
-		return true;
-	}
-
-	@Override
 	protected String buildDefaultTargetEntity() {
 		return this.getPersistentAttribute().getSingleReferenceEntityTypeName();
 	}

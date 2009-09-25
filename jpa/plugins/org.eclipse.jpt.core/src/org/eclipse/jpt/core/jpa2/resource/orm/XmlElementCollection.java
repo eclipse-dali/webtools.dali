@@ -1611,11 +1611,11 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA2_0.TEMPORAL, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA2_0.ENUMERATED, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyEnumerated());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, Orm2_0Package.eINSTANCE.getXmlElementCollection_MapKeyEnumerated());
 	}
 
 } // XmlElementCollection
