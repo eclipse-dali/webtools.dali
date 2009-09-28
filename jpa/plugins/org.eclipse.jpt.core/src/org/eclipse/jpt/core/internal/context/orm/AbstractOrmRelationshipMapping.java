@@ -254,10 +254,6 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		Entity targetEntity = this.getResolvedTargetEntity();
 		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
 	}
-
-	public Iterator<String> candidateMappedByAttributeNames() {
-		return this.allTargetEntityAttributeNames();
-	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
