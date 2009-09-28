@@ -120,7 +120,7 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 		else if (propertyName.equals(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY))
 			this.options.setQueryTimeout((Integer) newValue);
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_MODE_PROPERTY))
-			this.options.setSpecifiedValidationMode((ValidationMode) newValue);
+			this.options.setValidationMode((ValidationMode) newValue);
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.setValidationGroupPrePersist((String) newValue);
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
@@ -185,14 +185,17 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 	 * Verify if ValidationMode element is set
 	 */
 	private void verifySetValidationMode(ValidationMode testValue1, ValidationMode testValue2) throws Exception {
-		// Replace
+		
 		this.getPersistenceUnit().setSpecifiedValidationMode(testValue2);
-		assertEquals(testValue2, this.options.getValidationMode());
+		assertEquals(testValue2, this.getPersistenceUnit().getSpecifiedValidationMode());
+		// Replace
+		this.options.setValidationMode(testValue1);
+		assertEquals(testValue1, this.getPersistenceUnit().getSpecifiedValidationMode());
+		assertNull(this.options.getValidationMode());
 		
 		// Replace by setting model object
-		this.clearEvent();
-		this.options.setSpecifiedValidationMode(testValue1);
-		assertEquals(testValue1, this.getPersistenceUnit().getValidationMode());
+		this.options.setValidationMode(testValue2);
+		assertEquals(testValue2, this.getPersistenceUnit().getValidationMode());
 	}
 	
 	/**
@@ -209,11 +212,11 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 		// Add original 
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.options.setSpecifiedValidationMode(testValue1);
+		this.options.setValidationMode(testValue1);
 		assertEquals(testValue1, this.getPersistenceUnit().getValidationMode());
 		
 		// Replace
-		this.options.setSpecifiedValidationMode(testValue2);
+		this.options.setValidationMode(testValue2);
 		assertEquals(testValue2, this.getPersistenceUnit().getValidationMode());
 	}
 

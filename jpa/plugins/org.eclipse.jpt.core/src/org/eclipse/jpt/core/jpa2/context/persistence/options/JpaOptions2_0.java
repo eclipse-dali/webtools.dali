@@ -32,10 +32,9 @@ public interface JpaOptions2_0 extends PersistenceUnitProperties
 		static final String PERSISTENCE_QUERY_TIMEOUT = "javax.persistence.query.timeout"; //$NON-NLS-1$
 		static final Integer DEFAULT_QUERY_TIMEOUT = Integer.valueOf(5);
 
-	ValidationMode getDefaultValidationMode();
 	ValidationMode getValidationMode();
-	ValidationMode getSpecifiedValidationMode();
-	void setSpecifiedValidationMode(ValidationMode validationMode);
+	void removeValidationMode();
+	void setValidationMode(ValidationMode validationMode);
 		static final String VALIDATION_MODE_PROPERTY = "validationMode"; //$NON-NLS-1$
 		// Property key
 		static final String PERSISTENCE_VALIDATION_MODE = "javax.persistence.validation.mode"; //$NON-NLS-1$

@@ -39,6 +39,7 @@ public class EclipseLinkPersistenceUnit2_0
 	public EclipseLinkPersistenceUnit2_0(Persistence parent, org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 
+		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
 		this.defaultValidationMode = this.buildDefaultValidationMode();
 	}
 
@@ -75,15 +76,6 @@ public class EclipseLinkPersistenceUnit2_0
 	public Options2_0 getOptions() {
 		return (Options2_0) this.options;
 	}
-	
-	@Override
-	protected void initializeProperties() {
-		super.initializeProperties();
-
-		// ValidationMode may be specified with an element or a property
-		// the element need to initialize first.
-		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
-	}
 
 	// ********** updating **********
 
@@ -92,7 +84,18 @@ public class EclipseLinkPersistenceUnit2_0
 		super.update(xpu);
 		
 		this.xmlPersistenceUnit = xpu;
-		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
+		this.updateValidationMode();
+	}
+	
+	private void updateValidationMode() {
+		ValidationMode newValidationMode = this.buildSpecifiedValidationMode();
+
+		// update with the property definition if the element is null, and discard the property
+		if(newValidationMode == null && this.getOptions().getValidationMode() != null) {
+			newValidationMode = this.getOptions().getValidationMode();
+			this.getOptions().removeValidationMode();
+		}
+		this.setSpecifiedValidationMode(newValidationMode);
 	}
 
 	// ********** validation mode **********
