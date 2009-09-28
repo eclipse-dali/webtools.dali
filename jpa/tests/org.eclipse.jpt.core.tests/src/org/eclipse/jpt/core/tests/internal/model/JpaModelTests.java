@@ -90,6 +90,19 @@ public class JpaModelTests extends TestCase {
 		return p.getProject().getFile(new Path(path));
 	}
 
+	/**
+	 * make sure the DEBUG constants are 'false' before checking in the code
+	 */
+	public void testDEBUG() {
+		this.verifyDEBUG(JpaModelManager.class);
+		this.verifyDEBUG(GenericJpaModel.class);
+	}
+
+	private void verifyDEBUG(Class<?> clazz) {
+		assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(),
+				((Boolean) ClassTools.staticFieldValue(clazz, "DEBUG")).booleanValue());
+	}
+	
 	public void testJpaModel() {
 		assertNotNull(JptCorePlugin.getJpaModel());
 	}
@@ -211,17 +224,6 @@ public class JpaModelTests extends TestCase {
 		}
 	}
 */
-	/**
-	 * make sure the DEBUG constants are 'false' before checking in the code
-	 */
-	public void testDEBUG() {
-		this.verifyDEBUG(JpaModelManager.class);
-		this.verifyDEBUG(GenericJpaModel.class);
-	}
 
-	private void verifyDEBUG(Class<?> clazz) {
-		assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(),
-				((Boolean) ClassTools.staticFieldValue(clazz, "DEBUG")).booleanValue());
-	}
 
 }
