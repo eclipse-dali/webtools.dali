@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 /**
@@ -23,13 +23,12 @@ import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 public interface ResourceUiDefinition
 {
 	/**
-	 * Return the associated mapping file content type.
+	 * Return whether this definition provides UI for resource of the given type
 	 */
-	IContentType getContentType();
+	boolean providesUi(JpaResourceType resourceType);
 	
 	/**
 	 * Return the structure provider association with this mapping file type.
 	 */
 	JpaStructureProvider getStructureProvider();
-
 }

@@ -51,4 +51,4 @@ public abstract class XmlNullAttributeMapping extends AbstractXmlAttributeMappin
 	{
 		return OrmPackage.Literals.XML_NULL_ATTRIBUTE_MAPPING;
 	}
-} // XmlNullAttributeMapping
+}

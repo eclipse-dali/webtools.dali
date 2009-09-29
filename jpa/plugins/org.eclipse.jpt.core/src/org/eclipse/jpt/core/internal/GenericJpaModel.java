@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -27,11 +28,14 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
 
@@ -223,27 +227,30 @@ public class GenericJpaModel
 		if (buildOrmXml) {
 			this.createOrmXml(project);
 		}
-
 	}
 
 	private void createPersistenceXml(IProject project) {
-		PersistenceXmlResourceProvider resourceProvider =
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(project);
+		IDataModel config =
+			DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
+		config.setProperty(PersistenceFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		// default values for all other properties should suffice
 		try {
-			resourceProvider.createFileAndResource();
+			config.getDefaultOperation().execute(null, null);
 		}
-		catch (CoreException e) {
+		catch (ExecutionException e) {
 			JptCorePlugin.log(e);
 		}
 	}
 
 	private void createOrmXml(IProject project) {
-		OrmXmlResourceProvider resourceProvider =
-			OrmXmlResourceProvider.getDefaultXmlResourceProvider(project);
+		IDataModel config =
+			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		// default values for all other properties should suffice
 		try {
-			resourceProvider.createFileAndResource();
+			config.getDefaultOperation().execute(null, null);
 		}
-		catch (CoreException e) {
+		catch (ExecutionException e) {
 			JptCorePlugin.log(e);
 		}
 	}

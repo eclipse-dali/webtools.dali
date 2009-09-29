@@ -50,12 +50,14 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public PersistentTypeDetailsPage(Composite parent,
-                                    WidgetFactory widgetFactory) {
-
+	public PersistentTypeDetailsPage(
+			Composite parent,
+            WidgetFactory widgetFactory) {
+		
 		super(parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -195,28 +197,24 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 		this.repaintDetailsView(this.typeMappingPageBook);
 	}
 	
-	private JpaComposite getMappingCompositeFor(String key) {
-		JpaComposite mappingComposite = this.mappingComposites.get(key);
+	private JpaComposite getMappingCompositeFor(String mappingKey) {
+		JpaComposite mappingComposite = this.mappingComposites.get(mappingKey);
 		if (mappingComposite != null) {
 			return mappingComposite;
 		}
-
-		mappingComposite = buildMappingComposite(this.typeMappingPageBook, key);
-
+		mappingComposite = buildMappingComposite(this.typeMappingPageBook, mappingKey);
 		if (mappingComposite != null) {
-			this.mappingComposites.put(key, mappingComposite);
+			this.mappingComposites.put(mappingKey, mappingComposite);
 		}
-
 		return mappingComposite;
 	}
 	
-	protected JpaComposite buildMappingComposite(PageBook pageBook, String key) {
-		return getJpaPlatformUi().
-			buildTypeMappingComposite(
-				getSubject().getContentType(), 
-				key, 
+	protected JpaComposite buildMappingComposite(PageBook pageBook, String mappingKey) {
+		return getJpaPlatformUi().buildTypeMappingComposite(
+				getSubject().getResourceType(), 
+				mappingKey, 
 				pageBook, 
-				buildMappingHolder(key), 
+				buildMappingHolder(mappingKey), 
 				getWidgetFactory());
 	}
 

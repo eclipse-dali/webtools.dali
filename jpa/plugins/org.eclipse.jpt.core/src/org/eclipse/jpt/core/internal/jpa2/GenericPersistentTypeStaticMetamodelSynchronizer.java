@@ -18,11 +18,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.Map.Entry;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
@@ -38,7 +36,6 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
-
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.DateFormat;
 

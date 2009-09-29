@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 public class EclipseLink1_1OrmFileCreationDataModelProvider extends OrmFileCreationDataModelProvider
@@ -37,6 +38,21 @@ public class EclipseLink1_1OrmFileCreationDataModelProvider extends OrmFileCreat
 			return new Path(JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH).toPortableString();
 		}
 		return super.getDefaultProperty(propertyName);
+	}
+	
+	@Override
+	protected String getDefaultVersion() {
+		return EclipseLink1_1.SCHEMA_VERSION;
+	}
+	
+	@Override
+	protected boolean fileVersionSupported(String fileVersion) {
+		return fileVersion.equals(EclipseLink1_1.SCHEMA_VERSION);
+	}
+	
+	@Override
+	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
+		return true;
 	}
 	
 	@Override

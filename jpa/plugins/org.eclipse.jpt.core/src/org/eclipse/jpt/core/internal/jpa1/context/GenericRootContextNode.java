@@ -147,7 +147,7 @@ public class GenericRootContextNode
 	}
 	
 	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
-		PersistenceXmlDefinition persistenceXmlDef = (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(resource.getContentType());
+		PersistenceXmlDefinition persistenceXmlDef = (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
 		return (persistenceXmlDef == null) ? null : persistenceXmlDef.getContextNodeFactory().buildPersistenceXml(this, resource);
 	}
 	

@@ -13,11 +13,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -35,7 +34,6 @@ import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.menus.IWorkbenchContribution;
 import org.eclipse.ui.services.IServiceLocator;
-
 import com.ibm.icu.text.Collator;
 
 /**
@@ -120,7 +118,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 		
 		Iterator<? extends MappingUiDefinition<?>> sortedMappingUiDefinitions = 
 			CollectionTools.sort(
-				mappingUiDefinitions(jpaPlatformUi, node.getContentType()), 
+				mappingUiDefinitions(jpaPlatformUi, node.getResourceType()), 
 				getDefinitionsComparator());
 		
 		DefaultMappingUiDefinition<?> defaultDefinition = getDefaultMappingUiDefinition(jpaPlatformUi, node);
@@ -141,7 +139,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	* @return The list of registered {@link MappingUiDefinition}s
 	*/
 	protected abstract Iterator<? extends MappingUiDefinition<?>> 
-		mappingUiDefinitions(JpaPlatformUi platformUi, IContentType contentType);
+		mappingUiDefinitions(JpaPlatformUi platformUi, JpaResourceType resourceType);
 	
 	/**
 	* Creates the default provider responsible for clearing the mapping type.

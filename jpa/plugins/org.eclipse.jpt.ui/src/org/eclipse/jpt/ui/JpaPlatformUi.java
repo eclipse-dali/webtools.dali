@@ -10,10 +10,11 @@
 package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -46,75 +47,77 @@ import org.eclipse.swt.widgets.Composite;
  */
 public interface JpaPlatformUi
 {
-
-	// ********** details providers **********
-
-	JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(
-		Composite parent,
-		JpaStructureNode structureNode,
-		WidgetFactory widgetFactory);
-
-	
-	// ********** structure providers **********
-
-	/**
-	 * Return a structure provider for the specified JPA file.
-	 */
-	JpaStructureProvider getStructureProvider(JpaFile jpaFile);
-
-	
-	// ********** file ui definitions **********
-
-	/**
-	 * Return a file ui definition for the specified content type.
-	 */
-	ResourceUiDefinition getFileUiDefinition(IContentType contentType);
-
-	
 	// ********** navigator provider **********
-
+	
 	/**
 	 * Return the {@link JpaNavigatorProvider} for this platform, 
 	 * which determines Project Explorer content and look
 	 */
 	JpaNavigatorProvider getNavigatorProvider();
-
+	
+	
+	// ********** structure providers **********
+	
+	/**
+	 * Return a structure provider for the specified JPA file.
+	 */
+	JpaStructureProvider getStructureProvider(JpaFile jpaFile);
+	
+	
+	// ********** details providers **********
+	
+	JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(
+			Composite parent,
+			JpaStructureNode structureNode,
+			WidgetFactory widgetFactory);
+	
+	
+	// ********** file ui definitions **********
+	
+	/**
+	 * Return a resource ui definition for the specified resource type.
+	 */
+	ResourceUiDefinition getResourceUiDefinition(JpaResourceType resourceType);
+	
 	
 	// ********** type mappings **********
 	
 	JpaComposite buildTypeMappingComposite(
-		IContentType contentType, 
-		String key, 
-		Composite parent, 
-		PropertyValueModel<TypeMapping> mappingHolder,
-		WidgetFactory widgetFactory);
+			JpaResourceType resourceType, 
+			String mappingKey, 
+			Composite parent, 
+			PropertyValueModel<TypeMapping> mappingHolder,
+			WidgetFactory widgetFactory);
 	
-	DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(IContentType contentType);
+	DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(
+			JpaResourceType resourceType);
 	
-	Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(IContentType contentType);
-
+	Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(
+			JpaResourceType resourceType);
+	
 	
 	// ********** attribute mappings **********
-
-	JpaComposite buildAttributeMappingComposite(
-		IContentType contentType, 
-		String key, 
-		Composite parent,
-		PropertyValueModel<AttributeMapping> mappingHolder,
-		WidgetFactory widgetFactory);
 	
-	DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(IContentType contentType, String key);
-
-	Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(IContentType contentType);
-
-
+	JpaComposite buildAttributeMappingComposite(
+			JpaResourceType resourceType, 
+			String mappingKey, 
+			Composite parent,
+			PropertyValueModel<AttributeMapping> mappingHolder,
+			WidgetFactory widgetFactory);
+	
+	DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(
+			JpaResourceType resourceType, String mappingKey);
+	
+	Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(
+			JpaResourceType resourceType);
+	
+	
 	// ********** entity generation **********
-
+	
 	void generateEntities(JpaProject project, IStructuredSelection selection);
-
-
+	
+	
 	// ********** DDL generation **********
-
+	
 	void generateDDL(JpaProject project, IStructuredSelection selection);
-
 }

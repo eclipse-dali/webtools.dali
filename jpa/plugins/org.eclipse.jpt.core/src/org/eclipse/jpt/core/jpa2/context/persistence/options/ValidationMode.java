@@ -9,22 +9,23 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.persistence.options;
 
-import org.eclipse.jpt.core.jpa2.resource.persistence.XmlPersistenceUnitValidationModeType;
+import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0;
 
 /**
  *  ValidationMode
  */
-public enum ValidationMode {
+public enum ValidationMode 
+{
 	auto,
 	callback,
 	none; 
-
+	
 	// JPA value string
 	public static final String AUTO = "AUTO";
 	public static final String CALLBACK = "CALLBACK";
 	public static final String NONE = "NONE";
-
-	public static ValidationMode fromXmlResourceModel(XmlPersistenceUnitValidationModeType validationMode) {
+	
+	public static ValidationMode fromXmlResourceModel(XmlPersistenceUnitValidationModeType_2_0 validationMode) {
 		if (validationMode == null) {
 			return null;
 		}
@@ -40,20 +41,19 @@ public enum ValidationMode {
 		}
 	}
 	
-	public static XmlPersistenceUnitValidationModeType toXmlResourceModel(ValidationMode validationMode) {
+	public static XmlPersistenceUnitValidationModeType_2_0 toXmlResourceModel(ValidationMode validationMode) {
 		if (validationMode == null) {
 			return null;
 		}
 		switch (validationMode) {
 			case auto:
-				return XmlPersistenceUnitValidationModeType.AUTO;
+				return XmlPersistenceUnitValidationModeType_2_0.AUTO;
 			case callback:
-				return XmlPersistenceUnitValidationModeType.CALLBACK;
+				return XmlPersistenceUnitValidationModeType_2_0.CALLBACK;
 			case none:
-				return XmlPersistenceUnitValidationModeType.NONE;
+				return XmlPersistenceUnitValidationModeType_2_0.NONE;
 			default:
 				throw new IllegalArgumentException("unknown validation mode: " + validationMode); //$NON-NLS-1$
 		}
 	}
 }
-

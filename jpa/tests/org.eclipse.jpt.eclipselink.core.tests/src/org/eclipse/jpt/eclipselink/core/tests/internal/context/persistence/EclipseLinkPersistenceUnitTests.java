@@ -10,14 +10,12 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.orm.EclipseLinkOrmContextModelTestCase;
@@ -35,8 +33,7 @@ public class EclipseLinkPersistenceUnitTests
 	
 	@Override
 	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetDataModelProvider());		
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLinkJpaPlatformProvider.ID);
+		IDataModel dataModel = super.buildJpaConfigDataModel();
 		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}

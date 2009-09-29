@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.structure;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.structure.PersistenceItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
@@ -21,31 +19,29 @@ public class EclipseLinkPersistenceResourceModelStructureProvider
 {
 	// singleton
 	private static final JpaStructureProvider INSTANCE = new EclipseLinkPersistenceResourceModelStructureProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaStructureProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLinkPersistenceResourceModelStructureProvider() {
 		super();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
-	}
-
+	
 	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new EclipseLinkPersistenceItemContentProviderFactory();
 	}
-
+	
 	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new PersistenceItemLabelProviderFactory();
 	}
-
 }

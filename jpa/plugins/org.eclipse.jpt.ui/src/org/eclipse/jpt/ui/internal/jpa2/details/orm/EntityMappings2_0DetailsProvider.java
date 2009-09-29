@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -26,29 +26,33 @@ public class EntityMappings2_0DetailsProvider
 {
 	// singleton
 	private static final JpaDetailsProvider INSTANCE = new EntityMappings2_0DetailsProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaDetailsProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EntityMappings2_0DetailsProvider() {
 		super();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM2_0_XML_CONTENT_TYPE;
+	
+	@Override
+	protected boolean providesDetails(JpaResourceType resourceType) {
+		return resourceType.equals(JptCorePlugin.ORM_XML_2_0_RESOURCE_TYPE);
 	}
 	
 	public JpaDetailsPage<EntityMappings> buildDetailsPage(
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		return new EntityMappings2_0DetailsPage(parent, widgetFactory);
 	}
 }

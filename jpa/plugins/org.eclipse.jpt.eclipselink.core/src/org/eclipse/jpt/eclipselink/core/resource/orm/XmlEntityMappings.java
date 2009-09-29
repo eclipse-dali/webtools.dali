@@ -10,20 +10,25 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EnumeratedValueTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.core.resource.xml.XML;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -475,6 +480,19 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 		};
 	}
 	
+	protected static Translator buildVersionTranslator() {
+		return new EnumeratedValueTranslator(
+				JPA.ENTITY_MAPPINGS__VERSION, 
+				CommonPackage.eINSTANCE.getJpaRootEObject_Version(),
+				Translator.DOM_ATTRIBUTE) {
+			
+			@Override
+			protected Iterator enumeratedObjectValues() {
+				return new ArrayIterator(new Object[] { EclipseLink.SCHEMA_VERSION });
+			}
+		};
+	}
+	
 	private static Translator buildNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE, EclipseLink.SCHEMA_NAMESPACE);
 	}
@@ -482,4 +500,4 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	private static Translator buildSchemaLocationTranslator() {
 		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, EclipseLink.SCHEMA_NAMESPACE + ' ' + EclipseLink.SCHEMA_LOCATION);
 	}
-} // XmlEntityMappings
+}

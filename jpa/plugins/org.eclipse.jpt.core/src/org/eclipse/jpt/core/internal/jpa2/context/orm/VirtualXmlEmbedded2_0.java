@@ -13,9 +13,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbedded;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**

@@ -14,7 +14,6 @@ import java.util.Hashtable;
 import java.util.Set;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
@@ -26,22 +25,6 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml EObject</b></em>'.
- * 
- * Provisional API: This interface is part of an interim API that is still
- * under development and expected to change significantly before reaching
- * stability. It is available at this early stage to solicit feedback from
- * pioneering adopters on the understanding that any code that uses this API
- * will almost certainly be broken (repeatedly) as the API evolves.
- * <!-- end-user-doc -->
- *
- *
- * @see org.eclipse.jpt.core.resource.common.CommonPackage#getXmlEObject()
- * @model kind="class" abstract="true"
- * @generated
- */
 public abstract class AbstractJpaEObject
 	extends EObjectImpl
 	implements JpaEObject

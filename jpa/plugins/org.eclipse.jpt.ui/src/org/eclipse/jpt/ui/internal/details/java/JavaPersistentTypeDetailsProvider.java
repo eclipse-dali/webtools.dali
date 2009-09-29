@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -26,37 +27,35 @@ import org.eclipse.swt.widgets.Composite;
 public class JavaPersistentTypeDetailsProvider
 	implements JpaDetailsProvider
 {
-
 	// singleton
 	private static final JpaDetailsProvider INSTANCE = new JavaPersistentTypeDetailsProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaDetailsProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private JavaPersistentTypeDetailsProvider() {
 		super();
 	}
 	
-	public String getId() {
-		return JavaStructureNodes.PERSISTENT_TYPE_ID;
-	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
+	public boolean providesDetails(JpaStructureNode structureNode) {
+			return StringTools.stringsAreEqual(structureNode.getId(), JavaStructureNodes.PERSISTENT_TYPE_ID)
+				&& structureNode.getResourceType().getContentType().equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 	
 	public JpaDetailsPage<PersistentType> buildDetailsPage(
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		return new PersistentTypeDetailsPage(parent, widgetFactory);
 	}
-
 }

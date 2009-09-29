@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
@@ -61,17 +61,25 @@ public class PersistentAttributeMapAsContribution extends MapAsContribution
 	}
 	
 	@Override
-	protected Iterator<? extends MappingUiDefinition<?>> 
-			mappingUiDefinitions(JpaPlatformUi jpaPlatformUi, IContentType contentType) {
-		return jpaPlatformUi.attributeMappingUiDefinitions(contentType);
+	protected Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions(
+			JpaPlatformUi jpaPlatformUi, JpaResourceType resourceType) {
+		
+		return jpaPlatformUi.attributeMappingUiDefinitions(resourceType);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
-		return getDefaultMappingUiDefinition(jpaPlatformUi, ((PersistentAttribute) node).getDefaultMappingKey(), node.getContentType());
+	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(
+			JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
+		
+		return getDefaultMappingUiDefinition(
+				jpaPlatformUi, 
+				((PersistentAttribute) node).getDefaultMappingKey(), 
+				node.getResourceType());
 	}
 	
-	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUi, String defaultKey, IContentType contentType) {
-		return jpaPlatformUi.getDefaultAttributeMappingUiDefinition(contentType, defaultKey);
+	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(
+			JpaPlatformUi jpaPlatformUi, String defaultMappingKey, JpaResourceType resourceType) {
+		
+		return jpaPlatformUi.getDefaultAttributeMappingUiDefinition(resourceType, defaultMappingKey);
 	}
 }

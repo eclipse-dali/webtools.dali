@@ -15,7 +15,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -347,6 +346,7 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 			buildNameTranslator(),
 //			buildFetchTranslator(),
 //			buildOptionalTranslator(),
+			buildAccessTranslator(),
 //			buildMutableTranslator(),
 //			buildReadTransformerTranslator(),
 //			buildWriteTransformerTranslator(),
@@ -362,4 +362,4 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
-} // XmlTransformationImpl
+}

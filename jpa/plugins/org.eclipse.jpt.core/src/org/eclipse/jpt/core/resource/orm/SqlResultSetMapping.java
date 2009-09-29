@@ -20,8 +20,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSqlResultSetMapping_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -46,11 +48,30 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSqlResultSetMapping()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObject
+public class SqlResultSetMapping extends AbstractJpaEObject implements XmlSqlResultSetMapping_2_0
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -110,6 +131,41 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.SQL_RESULT_SET_MAPPING;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSqlResultSetMapping_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.SqlResultSetMapping#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SQL_RESULT_SET_MAPPING__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -221,6 +277,8 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 	{
 		switch (featureID)
 		{
+			case OrmPackage.SQL_RESULT_SET_MAPPING__DESCRIPTION:
+				return getDescription();
 			case OrmPackage.SQL_RESULT_SET_MAPPING__NAME:
 				return getName();
 			case OrmPackage.SQL_RESULT_SET_MAPPING__ENTITY_RESULTS:
@@ -242,6 +300,9 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 	{
 		switch (featureID)
 		{
+			case OrmPackage.SQL_RESULT_SET_MAPPING__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case OrmPackage.SQL_RESULT_SET_MAPPING__NAME:
 				setName((String)newValue);
 				return;
@@ -267,6 +328,9 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 	{
 		switch (featureID)
 		{
+			case OrmPackage.SQL_RESULT_SET_MAPPING__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case OrmPackage.SQL_RESULT_SET_MAPPING__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -290,6 +354,8 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 	{
 		switch (featureID)
 		{
+			case OrmPackage.SQL_RESULT_SET_MAPPING__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.SQL_RESULT_SET_MAPPING__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.SQL_RESULT_SET_MAPPING__ENTITY_RESULTS:
@@ -311,7 +377,9 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (description: ");
+		result.append(description);
+		result.append(", name: ");
 		result.append(name);
 		result.append(')');
 		return result.toString();
@@ -326,6 +394,7 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildDescriptionTranslator(),
 			buildEntityResultTranslator(),
 			buildColumnResultTranslator()
 		};
@@ -335,6 +404,10 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getSqlResultSetMapping_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlSqlResultSetMapping_2_0_Description());
+	}
+	
 	protected static Translator buildEntityResultTranslator() {
 		return EntityResult.buildTranslator(JPA.ENTITY_RESULT, OrmPackage.eINSTANCE.getSqlResultSetMapping_EntityResults());
 	}
@@ -342,5 +415,4 @@ public class SqlResultSetMapping extends AbstractJpaEObject implements JpaEObjec
 	protected static Translator buildColumnResultTranslator() {
 		return ColumnResult.buildTranslator(JPA.COLUMN_RESULT, OrmPackage.eINSTANCE.getSqlResultSetMapping_ColumnResults());
 	}
-
-} // SqlResultSetMapping
+}

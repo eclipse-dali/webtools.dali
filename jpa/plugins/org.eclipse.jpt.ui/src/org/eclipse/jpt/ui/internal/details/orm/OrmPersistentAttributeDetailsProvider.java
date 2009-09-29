@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -28,33 +29,33 @@ public class OrmPersistentAttributeDetailsProvider
 {
 	// singleton
 	private static final JpaDetailsProvider INSTANCE = new OrmPersistentAttributeDetailsProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaDetailsProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private OrmPersistentAttributeDetailsProvider() {
 		super();
 	}
-
-	public String getId() {
-		return OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID;
-	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
+	
+	public boolean providesDetails(JpaStructureNode structureNode) {
+			return StringTools.stringsAreEqual(structureNode.getId(), OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID)
+				&& structureNode.getResourceType().getContentType().equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
 	}
 	
 	public JpaDetailsPage<OrmPersistentAttribute> buildDetailsPage(
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		return new OrmPersistentAttributeDetailsPage(parent, widgetFactory);
 	}
 }

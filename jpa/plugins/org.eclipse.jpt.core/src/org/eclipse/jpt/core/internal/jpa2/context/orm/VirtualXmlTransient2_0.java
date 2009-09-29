@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlTransient;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**

@@ -429,7 +429,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0OrmContextM
 		JoinTableJoiningStrategy joiningStrategy = ((AssociationOverrideRelationshipReference2_0) associationOverride.getRelationshipReference()).getJoinTableJoiningStrategy();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride xmlAssociationOverride = (org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride) entityResource.getAssociationOverrides().get(0);
+		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 
 		
 		JoinTable joinTable = joiningStrategy.getJoinTable();
@@ -452,7 +452,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0OrmContextM
 		JoinTableJoiningStrategy joiningStrategy = ((AssociationOverrideRelationshipReference2_0) associationOverride.getRelationshipReference()).getJoinTableJoiningStrategy();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride xmlAssociationOverride = (org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride) entityResource.getAssociationOverrides().get(0);
+		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 	
 		xmlAssociationOverride.getJoinTable().setName("MY_JOIN_TABLE");
 		assertEquals("MY_JOIN_TABLE", joiningStrategy.getJoinTable().getSpecifiedName());

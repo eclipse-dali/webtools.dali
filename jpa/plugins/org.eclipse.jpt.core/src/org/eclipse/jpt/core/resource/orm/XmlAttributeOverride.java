@@ -16,8 +16,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlAttributeOverride_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -41,11 +43,30 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObject
+public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttributeOverride_2_0
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -95,6 +116,41 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_ATTRIBUTE_OVERRIDE;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -218,6 +274,8 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
+				return getDescription();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				return getColumn();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
@@ -236,6 +294,9 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
@@ -256,6 +317,9 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
@@ -276,6 +340,8 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				return column != null;
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
@@ -295,7 +361,9 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (description: ");
+		result.append(description);
+		result.append(", name: ");
 		result.append(name);
 		result.append(')');
 		return result.toString();
@@ -310,6 +378,7 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildDescriptionTranslator(),
 			buildColumnTranslator()
 		};
 	}
@@ -318,8 +387,11 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements JpaEObje
 		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlAttributeOverride_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlAttributeOverride_2_0_Description());
+	}
+	
 	protected static Translator buildColumnTranslator() {
 		return XmlColumn.buildTranslator(JPA.COLUMN, OrmPackage.eINSTANCE.getXmlAttributeOverride_Column());
 	}
-
-} // AttributeOverride
+}

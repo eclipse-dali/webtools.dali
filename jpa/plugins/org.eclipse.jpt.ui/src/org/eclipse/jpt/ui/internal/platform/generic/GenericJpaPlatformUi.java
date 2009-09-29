@@ -19,18 +19,16 @@ import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 public class GenericJpaPlatformUi
 	extends BaseJpaPlatformUi
 {
-
 	public GenericJpaPlatformUi(
-		JpaNavigatorProvider navigatorProvider,
-		JpaPlatformUiProvider platformUiProvider) 
-	{
+			JpaNavigatorProvider navigatorProvider, JpaPlatformUiProvider platformUiProvider) {
+		
 		super(navigatorProvider, platformUiProvider);
 	}
-
+	
+	
 	// ********** DDL generation **********
-
+	
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
 		this.displayMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
 	}
-
 }

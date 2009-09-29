@@ -9,19 +9,24 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.utility.internal.StringTools;
 
-/**
- *  AbstractEntityMappingsDetailsProvider
- */
 public abstract class AbstractEntityMappingsDetailsProvider
 	implements JpaDetailsProvider
 {
-	protected AbstractEntityMappingsDetailsProvider() {}
-
-	public String getId() {
-		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
+	protected AbstractEntityMappingsDetailsProvider() {
+		super();
 	}
 	
+	
+	public final boolean providesDetails(JpaStructureNode structureNode) {
+		return StringTools.stringsAreEqual(structureNode.getId(), OrmStructureNodes.ENTITY_MAPPINGS_ID)
+				&& providesDetails(structureNode.getResourceType());
+	}
+	
+	protected abstract boolean providesDetails(JpaResourceType resourceType);
 }

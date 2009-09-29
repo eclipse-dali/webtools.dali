@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa2.context.persistence;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -25,7 +24,6 @@ import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
-import org.eclipse.jpt.core.jpa2.resource.persistence.XmlPersistenceUnit;
 
 /**
  * JPA 2.0 persistence-unit
@@ -57,12 +55,8 @@ public class GenericPersistenceUnit2_0
 	protected ValidationMode buildDefaultValidationMode() {
 		return JpaOptions2_0.DEFAULT_VALIDATION_MODE; 
 	}
-
-	@Override
-	protected XmlPersistenceUnit getXmlPersistenceUnit() {
-		return (XmlPersistenceUnit) this.xmlPersistenceUnit;
-	}
-
+	
+	
 	// ********** validation mode **********
 
 	public ValidationMode getValidationMode() {

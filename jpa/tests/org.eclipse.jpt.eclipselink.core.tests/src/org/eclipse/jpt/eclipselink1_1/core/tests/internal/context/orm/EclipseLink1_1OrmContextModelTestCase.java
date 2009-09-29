@@ -10,12 +10,10 @@
 package org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.operations.EclipseLink1_1OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.operations.EclipseLink1_1OrmFileCreationOperation;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
@@ -40,8 +38,8 @@ public abstract class EclipseLink1_1OrmContextModelTestCase
 	}
 	@Override
 	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetDataModelProvider());		
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLink1_1JpaPlatformProvider.ID);
+		IDataModel dataModel = super.buildJpaConfigDataModel();
+		// don't create default orm.xml - instead build eclipselink-orm.xml
 		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.FALSE);
 		return dataModel;
 	}

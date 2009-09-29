@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -20,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see JpaDetailsPage
  *
- * @version 2.2
+ * @version 3.0
  * @since 2.0
  *
  * Provisional API: This interface is part of an interim API that is still
@@ -32,6 +31,11 @@ import org.eclipse.swt.widgets.Composite;
 public interface JpaDetailsProvider
 {
 	/**
+	 * Return whether this provider returns a details page for the given structure node
+	 */
+	boolean providesDetails(JpaStructureNode structureNode);
+	
+	/**
 	 * Creates a new details page based on the given content node id.
 	 *
 	 * @param parent The parent container
@@ -41,16 +45,6 @@ public interface JpaDetailsProvider
 	 */
 	//TODO Should we pass in JpaUiFactory so these pages can be built using the factory and overriden?
 	JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
-		Composite parent,
-		WidgetFactory widgetFactory);
-	
-	/**
-	 * Return the id of the corresponding JpaStructureNode.
-	 */
-	String getId();
-	
-	/**
-	 * Return the content type of the reosurce
-	 */
-	IContentType getContentType();
+			Composite parent,
+			WidgetFactory widgetFactory);
 }

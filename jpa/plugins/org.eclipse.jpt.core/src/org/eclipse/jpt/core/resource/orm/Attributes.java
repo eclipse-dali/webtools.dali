@@ -12,17 +12,20 @@ package org.eclipse.jpt.core.resource.orm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlAttributes_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -55,11 +58,40 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributes()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class Attributes extends AbstractJpaEObject implements JpaEObject
+public class Attributes extends AbstractJpaEObject implements XmlAttributes_2_0
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getElementCollections() <em>Element Collections</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getElementCollections()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlElementCollection> elementCollections;
+
 	/**
 	 * The cached value of the '{@link #getIds() <em>Ids</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -179,6 +211,64 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.ATTRIBUTES;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributes_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.Attributes#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ATTRIBUTES__DESCRIPTION, oldDescription, description));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Element Collections</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlElementCollection}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Element Collections</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Element Collections</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributes_2_0_ElementCollections()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlElementCollection> getElementCollections()
+	{
+		if (elementCollections == null)
+		{
+			elementCollections = new EObjectContainmentEList<XmlElementCollection>(XmlElementCollection.class, this, OrmPackage.ATTRIBUTES__ELEMENT_COLLECTIONS);
+		}
+		return elementCollections;
 	}
 
 	/**
@@ -421,6 +511,8 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ATTRIBUTES__ELEMENT_COLLECTIONS:
+				return ((InternalEList<?>)getElementCollections()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__IDS:
 				return ((InternalEList<?>)getIds()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
@@ -455,6 +547,10 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ATTRIBUTES__DESCRIPTION:
+				return getDescription();
+			case OrmPackage.ATTRIBUTES__ELEMENT_COLLECTIONS:
+				return getElementCollections();
 			case OrmPackage.ATTRIBUTES__IDS:
 				return getIds();
 			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
@@ -490,6 +586,13 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ATTRIBUTES__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
+			case OrmPackage.ATTRIBUTES__ELEMENT_COLLECTIONS:
+				getElementCollections().clear();
+				getElementCollections().addAll((Collection<? extends XmlElementCollection>)newValue);
+				return;
 			case OrmPackage.ATTRIBUTES__IDS:
 				getIds().clear();
 				getIds().addAll((Collection<? extends XmlId>)newValue);
@@ -544,6 +647,12 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ATTRIBUTES__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
+			case OrmPackage.ATTRIBUTES__ELEMENT_COLLECTIONS:
+				getElementCollections().clear();
+				return;
 			case OrmPackage.ATTRIBUTES__IDS:
 				getIds().clear();
 				return;
@@ -588,6 +697,10 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ATTRIBUTES__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
+			case OrmPackage.ATTRIBUTES__ELEMENT_COLLECTIONS:
+				return elementCollections != null && !elementCollections.isEmpty();
 			case OrmPackage.ATTRIBUTES__IDS:
 				return ids != null && !ids.isEmpty();
 			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
@@ -610,6 +723,23 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 				return transients != null && !transients.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (description: ");
+		result.append(description);
+		result.append(')');
+		return result.toString();
 	}
 
 	public List<XmlAttributeMapping> getAttributeMappings() {
@@ -653,9 +783,9 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 			XmlOneToMany.buildTranslator(JPA.ONE_TO_MANY, OrmPackage.eINSTANCE.getAttributes_OneToManys()),
 			XmlOneToOne.buildTranslator(JPA.ONE_TO_ONE, OrmPackage.eINSTANCE.getAttributes_OneToOnes()),
 			XmlManyToMany.buildTranslator(JPA.MANY_TO_MANY, OrmPackage.eINSTANCE.getAttributes_ManyToManys()),
+			XmlElementCollection.buildTranslator(JPA2_0.ELEMENT_COLLECTION, OrmV2_0Package.eINSTANCE.getXmlAttributes_2_0_ElementCollections()),
 			XmlEmbedded.buildTranslator(JPA.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
 			XmlTransient.buildTranslator(JPA.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
 		};
 	}
-
-} // Attributes
+}

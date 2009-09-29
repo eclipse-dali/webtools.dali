@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlQuery_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -35,10 +35,9 @@ import org.eclipse.jpt.core.utility.TextRange;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlQuery extends JpaEObject
+public interface XmlQuery extends XmlQuery_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

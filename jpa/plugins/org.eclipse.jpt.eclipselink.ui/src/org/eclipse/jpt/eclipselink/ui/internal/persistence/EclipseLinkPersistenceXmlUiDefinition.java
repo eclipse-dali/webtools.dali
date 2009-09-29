@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkPersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
@@ -22,30 +22,33 @@ public class EclipseLinkPersistenceXmlUiDefinition extends AbstractPersistenceXm
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXmlUiDefinition();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLinkPersistenceXmlUiDefinition() {
 		super();
 	}
+	
 	
 	@Override
 	protected PersistenceXmlUiFactory buildPersistenceXmlUiFactory() {
 		return new EclipseLinkPersistenceXmlUiFactory();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
+	public boolean providesUi(JpaResourceType resourceType) {
+		return resourceType.equals(JptCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE);
 	}
-
+	
 	public JpaStructureProvider getStructureProvider() {
 		return EclipseLinkPersistenceResourceModelStructureProvider.instance();
 	}

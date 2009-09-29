@@ -18,8 +18,13 @@ package org.eclipse.jpt.core;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaResourceModel {
-
+public interface JpaResourceModel 
+{
+	/**
+	 * Return the resource type of the model.  This may potentially change.
+	 */
+	JpaResourceType getResourceType();
+	
 	/**
 	 * Changes to the resource model result in events.
 	 * In particular, the JPA project performs an "update" whenever a resource
@@ -31,5 +36,4 @@ public interface JpaResourceModel {
 	 * @see #addResourceModelListener(ResourceModelListener)
 	 */
 	void removeResourceModelListener(JpaResourceModelListener listener);
-
 }

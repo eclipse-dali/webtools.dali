@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import org.eclipse.core.runtime.content.IContentType;
-
 /**
  * A JpaPlatform can support multiple resources.  Each will
- * have a unique content type and must be defined with a resource definition.
+ * have a unique resource type and must be defined with a resource definition.
  *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +22,7 @@ import org.eclipse.core.runtime.content.IContentType;
 public interface ResourceDefinition
 {
 	/**
-	 * Return the associated resource content type.
+	 * Return the associated resource type.
 	 */
-	IContentType getContentType();
+	JpaResourceType getResourceType();
 }

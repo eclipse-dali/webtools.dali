@@ -11,7 +11,7 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import java.util.List;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -26,30 +26,33 @@ public class OrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new OrmXmlUiDefinition();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private OrmXmlUiDefinition() {
 		super();
 	}
+	
 	
 	@Override
 	protected OrmXmlUiFactory buildOrmXmlUiFactory() {
 		return new GenericOrmXmlUiFactory();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
+	public boolean providesUi(JpaResourceType resourceType) {
+		return resourceType.equals(JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
 	}
-
+	
 	public JpaStructureProvider getStructureProvider() {
 		return OrmResourceModelStructureProvider.instance();
 	}

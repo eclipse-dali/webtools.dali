@@ -184,17 +184,17 @@ public class EntityListeners extends AbstractJpaEObject implements JpaEObject
 		}
 		return super.eIsSet(featureID);
 	}
-
+	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			EntityListener.buildTranslator(JPA.ENTITY_LISTENER, OrmPackage.eINSTANCE.getEntityListeners_EntityListeners())
 		};
 	}
-
-} // EntityListeners
+}

@@ -7,7 +7,7 @@
     editorPluginClass="" updateClasspath="false" rootExtendsInterface="org.eclipse.jpt.core.resource.xml.JpaEObject"
     rootExtendsClass="org.eclipse.jpt.core.resource.xml.AbstractJpaEObject" suppressInterfaces="true"
     testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.core/model/jpaResourceModels.genmodel#//orm eclipseLinkResourceModels.genmodel#//orm">
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.core/model/jpaResourceModels.genmodel#//orm eclipseLinkResourceModels.genmodel#//orm ../../org.eclipse.jpt.core/model/jpaResourceModels.genmodel#//xml">
   <foreignModel>eclipselink_orm1_1.ecore</foreignModel>
   <genPackages prefix="EclipseLink1_1Orm" basePackage="org.eclipse.jpt.eclipselink.core.v1_1.resource"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm1_1.ecore#/">

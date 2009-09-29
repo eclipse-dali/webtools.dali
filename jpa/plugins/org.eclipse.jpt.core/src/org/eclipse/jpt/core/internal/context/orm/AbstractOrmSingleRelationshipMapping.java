@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping;
+import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -84,11 +84,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	// **************** 2.0 derived id ***********************************************
 
 	protected OrmDerivedId2_0 buildDerivedId() {
-		//TODO ORM this can change once we collapse the orm resource model
-		if (this.resourceAttributeMapping instanceof XmlDerivedId) {
-			return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmDerivedId(this, (XmlDerivedId) this.resourceAttributeMapping);
-		}
-		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmDerivedId(this, null);
+		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmDerivedId(this, (XmlDerivedId) this.resourceAttributeMapping);
 	}
 	
 	

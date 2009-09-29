@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
 /**
  *  Generic2_0OrmSequenceGenerator2_0Tests

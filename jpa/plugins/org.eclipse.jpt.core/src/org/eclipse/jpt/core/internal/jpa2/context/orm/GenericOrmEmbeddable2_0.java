@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
 

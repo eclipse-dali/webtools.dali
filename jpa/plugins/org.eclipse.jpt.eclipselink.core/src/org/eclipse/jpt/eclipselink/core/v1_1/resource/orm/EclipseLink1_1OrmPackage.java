@@ -13,12 +13,9 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 
 /**
@@ -81,6 +78,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_MAPPINGS = 0;
 
 	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS__VERSION = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VERSION;
+
+	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -106,15 +112,6 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY_MAPPINGS__ACCESS = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS;
-
-	/**
-	 * The feature id for the '<em><b>Version</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY_MAPPINGS__VERSION = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VERSION;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -424,6 +421,33 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__POST_LOAD = EclipseLinkOrmPackage.XML_ENTITY__POST_LOAD;
 
 	/**
+	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ATTRIBUTE_OVERRIDES = EclipseLinkOrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__CACHEABLE = EclipseLinkOrmPackage.XML_ENTITY__CACHEABLE;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -530,24 +554,6 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY__ENTITY_LISTENERS = EclipseLinkOrmPackage.XML_ENTITY__ENTITY_LISTENERS;
-
-	/**
-	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ATTRIBUTE_OVERRIDES = EclipseLinkOrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES;
-
-	/**
-	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
 
 	/**
 	 * The feature id for the '<em><b>Read Only</b></em>' attribute.
@@ -930,67 +936,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__ATTRIBUTES = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Pre Persist</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__PRE_PERSIST = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST;
-
-	/**
-	 * The feature id for the '<em><b>Post Persist</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_PERSIST = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST;
-
-	/**
-	 * The feature id for the '<em><b>Pre Remove</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__PRE_REMOVE = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE;
-
-	/**
-	 * The feature id for the '<em><b>Post Remove</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_REMOVE = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE;
-
-	/**
-	 * The feature id for the '<em><b>Pre Update</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__PRE_UPDATE = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE;
-
-	/**
-	 * The feature id for the '<em><b>Post Update</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_UPDATE = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE;
-
-	/**
-	 * The feature id for the '<em><b>Post Load</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_LOAD = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD;
+	public static final int XML_MAPPED_SUPERCLASS__CACHEABLE = EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE;
 
 	/**
 	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
@@ -1192,6 +1144,24 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int ATTRIBUTES = 4;
 
 	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__DESCRIPTION = EclipseLinkOrmPackage.ATTRIBUTES__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Element Collections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__ELEMENT_COLLECTIONS = EclipseLinkOrmPackage.ATTRIBUTES__ELEMENT_COLLECTIONS;
+
+	/**
 	 * The feature id for the '<em><b>Ids</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1337,6 +1307,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ATTRIBUTE_MAPPING = 5;
 
 	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ATTRIBUTE_MAPPING__ACCESS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ACCESS;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1364,22 +1343,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ATTRIBUTE_MAPPING__PROPERTIES = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ATTRIBUTE_MAPPING__ACCESS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Attribute Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ATTRIBUTE_MAPPING_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_ATTRIBUTE_MAPPING_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlId <em>Xml Id</em>}' class.
@@ -1390,6 +1360,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_ID = 6;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID__ACCESS = EclipseLinkOrmPackage.XML_ID__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1536,22 +1515,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ID__CONVERT = EclipseLinkOrmPackage.XML_ID__CONVERT;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID__ACCESS = EclipseLinkOrmPackage.XML_ID_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Id</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ID_FEATURE_COUNT + 1;
+	public static final int XML_ID_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ID_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbeddedId <em>Xml Embedded Id</em>}' class.
@@ -1562,6 +1532,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_EMBEDDED_ID = 7;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDED_ID__ACCESS = EclipseLinkOrmPackage.XML_EMBEDDED_ID__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1600,22 +1579,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_EMBEDDED_ID__PROPERTIES = EclipseLinkOrmPackage.XML_EMBEDDED_ID__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED_ID__ACCESS = EclipseLinkOrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Embedded Id</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDED_ID_FEATURE_COUNT = EclipseLinkOrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 1;
+	public static final int XML_EMBEDDED_ID_FEATURE_COUNT = EclipseLinkOrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbedded <em>Xml Embedded</em>}' class.
@@ -1626,6 +1596,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_EMBEDDED = 8;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDED__ACCESS = EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1646,6 +1625,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_EMBEDDED__ATTRIBUTE_OVERRIDES = EclipseLinkOrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES;
 
 	/**
+	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDED__ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES;
+
+	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1664,22 +1652,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_EMBEDDED__PROPERTIES = EclipseLinkOrmPackage.XML_EMBEDDED__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED__ACCESS = EclipseLinkOrmPackage.XML_EMBEDDED_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Embedded</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDED_FEATURE_COUNT = EclipseLinkOrmPackage.XML_EMBEDDED_FEATURE_COUNT + 1;
+	public static final int XML_EMBEDDED_FEATURE_COUNT = EclipseLinkOrmPackage.XML_EMBEDDED_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasic <em>Xml Basic</em>}' class.
@@ -1690,6 +1669,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_BASIC = 9;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC__ACCESS = EclipseLinkOrmPackage.XML_BASIC__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1827,22 +1815,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_BASIC__CONVERT = EclipseLinkOrmPackage.XML_BASIC__CONVERT;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC__ACCESS = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 1;
+	public static final int XML_BASIC__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -1851,7 +1830,7 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__TABLE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 2;
+	public static final int XML_BASIC__TABLE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
@@ -1860,7 +1839,7 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__GENERATED_VALUE = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 3;
+	public static final int XML_BASIC__GENERATED_VALUE = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Xml Basic</em>' class.
@@ -1869,7 +1848,7 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 4;
+	public static final int XML_BASIC_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlVersion <em>Xml Version</em>}' class.
@@ -1880,6 +1859,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_VERSION = 10;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VERSION__ACCESS = EclipseLinkOrmPackage.XML_VERSION__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1999,22 +1987,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_VERSION__CONVERT = EclipseLinkOrmPackage.XML_VERSION__CONVERT;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION__ACCESS = EclipseLinkOrmPackage.XML_VERSION_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Version</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VERSION_FEATURE_COUNT = EclipseLinkOrmPackage.XML_VERSION_FEATURE_COUNT + 1;
+	public static final int XML_VERSION_FEATURE_COUNT = EclipseLinkOrmPackage.XML_VERSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
@@ -2025,6 +2004,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_ONE_TO_ONE = 11;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__ACCESS = EclipseLinkOrmPackage.XML_ONE_TO_ONE__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2099,6 +2087,33 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__MAPPED_BY = EclipseLinkOrmPackage.XML_ONE_TO_ONE__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__ID = EclipseLinkOrmPackage.XML_ONE_TO_ONE__ID;
+
+	/**
+	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__ORPHAN_REMOVAL = EclipseLinkOrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL;
+
+	/**
+	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__MAPPED_BY_ID = EclipseLinkOrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID;
+
+	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2144,22 +2159,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__JOIN_FETCH = EclipseLinkOrmPackage.XML_ONE_TO_ONE__JOIN_FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_ONE__ACCESS = EclipseLinkOrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml One To One</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -2170,6 +2176,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_ONE_TO_MANY = 12;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__ACCESS = EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2253,6 +2268,78 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__JOIN_COLUMNS = EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS;
 
 	/**
+	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__ORDER_COLUMN = EclipseLinkOrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_CLASS = EclipseLinkOrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_TEMPORAL = EclipseLinkOrmPackage.XML_ONE_TO_MANY__MAP_KEY_TEMPORAL;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_ENUMERATED = EclipseLinkOrmPackage.XML_ONE_TO_MANY__MAP_KEY_ENUMERATED;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = EclipseLinkOrmPackage.XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_COLUMN = EclipseLinkOrmPackage.XML_ONE_TO_MANY__MAP_KEY_COLUMN;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS = EclipseLinkOrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__ORPHAN_REMOVAL = EclipseLinkOrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL;
+
+	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2289,22 +2376,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__JOIN_FETCH = EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__ACCESS = EclipseLinkOrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml One To Many</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_MANY_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
@@ -2315,6 +2393,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_MANY_TO_ONE = 13;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE__ACCESS = EclipseLinkOrmPackage.XML_MANY_TO_ONE__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2380,6 +2467,24 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__OPTIONAL = EclipseLinkOrmPackage.XML_MANY_TO_ONE__OPTIONAL;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE__ID = EclipseLinkOrmPackage.XML_MANY_TO_ONE__ID;
+
+	/**
+	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE__MAPPED_BY_ID = EclipseLinkOrmPackage.XML_MANY_TO_ONE__MAPPED_BY_ID;
+
+	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2407,22 +2512,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__JOIN_FETCH = EclipseLinkOrmPackage.XML_MANY_TO_ONE__JOIN_FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_ONE__ACCESS = EclipseLinkOrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Many To One</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
@@ -2433,6 +2529,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_MANY_TO_MANY = 14;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__ACCESS = EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2507,6 +2612,69 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__MAP_KEY = EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY;
 
 	/**
+	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__ORDER_COLUMN = EclipseLinkOrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_CLASS = EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_TEMPORAL = EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_ENUMERATED = EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_COLUMN = EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS = EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS;
+
+	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2534,22 +2702,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__JOIN_FETCH = EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__ACCESS = EclipseLinkOrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Many To Many</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasicCollection <em>Xml Basic Collection</em>}' class.
@@ -2560,6 +2719,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_BASIC_COLLECTION = 15;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_COLLECTION__ACCESS = EclipseLinkOrmPackage.XML_BASIC_COLLECTION__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2589,22 +2757,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_BASIC_COLLECTION__PROPERTIES = EclipseLinkOrmPackage.XML_BASIC_COLLECTION__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC_COLLECTION__ACCESS = EclipseLinkOrmPackage.XML_BASIC_COLLECTION_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Basic Collection</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_COLLECTION_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BASIC_COLLECTION_FEATURE_COUNT + 1;
+	public static final int XML_BASIC_COLLECTION_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BASIC_COLLECTION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasicMap <em>Xml Basic Map</em>}' class.
@@ -2615,6 +2774,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_BASIC_MAP = 16;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_MAP__ACCESS = EclipseLinkOrmPackage.XML_BASIC_MAP__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2644,22 +2812,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_BASIC_MAP__PROPERTIES = EclipseLinkOrmPackage.XML_BASIC_MAP__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC_MAP__ACCESS = EclipseLinkOrmPackage.XML_BASIC_MAP_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Basic Map</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_MAP_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BASIC_MAP_FEATURE_COUNT + 1;
+	public static final int XML_BASIC_MAP_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BASIC_MAP_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlTransformation <em>Xml Transformation</em>}' class.
@@ -2670,6 +2829,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_TRANSFORMATION = 17;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSFORMATION__ACCESS = EclipseLinkOrmPackage.XML_TRANSFORMATION__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2699,22 +2867,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_TRANSFORMATION__PROPERTIES = EclipseLinkOrmPackage.XML_TRANSFORMATION__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_TRANSFORMATION__ACCESS = EclipseLinkOrmPackage.XML_TRANSFORMATION_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Transformation</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TRANSFORMATION_FEATURE_COUNT = EclipseLinkOrmPackage.XML_TRANSFORMATION_FEATURE_COUNT + 1;
+	public static final int XML_TRANSFORMATION_FEATURE_COUNT = EclipseLinkOrmPackage.XML_TRANSFORMATION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlVariableOneToOne <em>Xml Variable One To One</em>}' class.
@@ -2725,6 +2884,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_VARIABLE_ONE_TO_ONE = 18;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VARIABLE_ONE_TO_ONE__ACCESS = EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2754,22 +2922,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_VARIABLE_ONE_TO_ONE__PROPERTIES = EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__ACCESS = EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Variable One To One</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT = EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT + 1;
+	public static final int XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT = EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlTransient <em>Xml Transient</em>}' class.
@@ -2780,6 +2939,15 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_TRANSIENT = 19;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSIENT__ACCESS = EclipseLinkOrmPackage.XML_TRANSIENT__ACCESS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2809,22 +2977,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_TRANSIENT__PROPERTIES = EclipseLinkOrmPackage.XML_TRANSIENT__PROPERTIES;
 
 	/**
-	 * The feature id for the '<em><b>Access</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_TRANSIENT__ACCESS = EclipseLinkOrmPackage.XML_TRANSIENT_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Transient</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TRANSIENT_FEATURE_COUNT = EclipseLinkOrmPackage.XML_TRANSIENT_FEATURE_COUNT + 1;
+	public static final int XML_TRANSIENT_FEATURE_COUNT = EclipseLinkOrmPackage.XML_TRANSIENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlPrimaryKey <em>Xml Primary Key</em>}' class.

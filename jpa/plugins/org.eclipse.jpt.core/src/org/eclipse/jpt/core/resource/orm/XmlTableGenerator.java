@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -54,6 +56,26 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerator
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -263,6 +285,41 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_TABLE_GENERATOR;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlTableGenerator#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_TABLE_GENERATOR__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -629,6 +686,8 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_TABLE_GENERATOR__DESCRIPTION:
+				return getDescription();
 			case OrmPackage.XML_TABLE_GENERATOR__NAME:
 				return getName();
 			case OrmPackage.XML_TABLE_GENERATOR__INITIAL_VALUE:
@@ -664,6 +723,9 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_TABLE_GENERATOR__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case OrmPackage.XML_TABLE_GENERATOR__NAME:
 				setName((String)newValue);
 				return;
@@ -709,6 +771,9 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_TABLE_GENERATOR__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case OrmPackage.XML_TABLE_GENERATOR__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -753,6 +818,8 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_TABLE_GENERATOR__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_TABLE_GENERATOR__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_TABLE_GENERATOR__INITIAL_VALUE:
@@ -788,7 +855,9 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (description: ");
+		result.append(description);
+		result.append(", name: ");
 		result.append(name);
 		result.append(", initialValue: ");
 		result.append(initialValue);
@@ -835,7 +904,8 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 			buildPkColumnValueTranslator(),
 			buildInitialValueTranslator(),
 			buildAllocationSizeTranslator(),
-			XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints())
+			buildDescriptionTranslator(),
+			XmlUniqueConstraint.buildTranslator(JPA2_0.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints())
 		};
 	}
 	
@@ -874,5 +944,8 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	protected static Translator buildAllocationSizeTranslator() {
 		return new Translator(JPA.ALLOCATION_SIZE, OrmPackage.eINSTANCE.getXmlGenerator_AllocationSize(), Translator.DOM_ATTRIBUTE);
 	}
-
+	
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlGenerator_2_0_Description());
+	}
 }

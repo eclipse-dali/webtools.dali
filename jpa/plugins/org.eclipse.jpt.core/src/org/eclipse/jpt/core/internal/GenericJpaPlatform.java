@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -207,13 +208,13 @@ public class GenericJpaPlatform
 	
 	// ********** Mapping Files **********
 	
-	public ResourceDefinition getResourceDefinition(IContentType contentType) {
+	public ResourceDefinition getResourceDefinition(JpaResourceType resourceType) {
 		for (ResourceDefinition resourceDefinition : CollectionTools.iterable(resourceDefinitions())) {
-			if (resourceDefinition.getContentType().isKindOf(contentType)) {
+			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return resourceDefinition;
 			}
 		}
-		throw new IllegalArgumentException("Illegal mapping file content type: " + contentType); //$NON-NLS-1$
+		throw new IllegalArgumentException("Illegal mapping file resource type: " + resourceType); //$NON-NLS-1$
 	}
 	
 	protected ListIterator<ResourceDefinition> resourceDefinitions() {

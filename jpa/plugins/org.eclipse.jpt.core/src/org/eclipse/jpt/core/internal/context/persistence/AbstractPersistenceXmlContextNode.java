@@ -32,7 +32,7 @@ public abstract class AbstractPersistenceXmlContextNode
 	}
 	
 	public PersistenceXmlDefinition getPersistenceXmlDefinition() {
-		return (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(getContentType());
+		return (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(getResourceType());
 	}
 	
 	public EFactory getResourceNodeFactory() {

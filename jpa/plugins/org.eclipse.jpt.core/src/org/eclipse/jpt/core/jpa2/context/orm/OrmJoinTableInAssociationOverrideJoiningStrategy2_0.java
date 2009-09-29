@@ -11,14 +11,12 @@ package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
 public interface OrmJoinTableInAssociationOverrideJoiningStrategy2_0 
 	extends 
 		XmlContextNode,
 		OrmJoinTableJoiningStrategy
 {
-	
 	void update(XmlAssociationOverride resourceAssociationOverride);
-
 }

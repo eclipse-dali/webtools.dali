@@ -15,14 +15,20 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
+import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class EclipseLink2_0OrmXmlResourceProvider
 	extends AbstractXmlResourceProvider
+	implements OrmFileCreationDataModelProperties
 {
 	/**
 	 * (Convenience method) Returns an EclipseLink ORM resource model provider for 
@@ -67,10 +73,19 @@ public class EclipseLink2_0OrmXmlResourceProvider
 	
 	
 	@Override
-	protected void populateRoot() {
-		XmlEntityMappings entityMappings = 
-			EclipseLink2_0OrmFactory.eINSTANCE.createXmlEntityMappings();
-		entityMappings.setVersion(EclipseLink2_0.SCHEMA_VERSION);
+	protected void populateRoot(Object config) {
+		IDataModel dataModel = (IDataModel) config;
+		XmlEntityMappings entityMappings = EclipseLink2_0OrmFactory.eINSTANCE.createXmlEntityMappings();
+		entityMappings.setVersion(dataModel.getStringProperty(VERSION));
 		getResourceContents().add(entityMappings);
+		
+		AccessType defaultAccess = (AccessType) dataModel.getProperty(DEFAULT_ACCESS); 
+		if (defaultAccess != null) {
+			XmlPersistenceUnitMetadata puMetadata = EclipseLink2_0OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
+			entityMappings.setPersistenceUnitMetadata(puMetadata);
+			XmlPersistenceUnitDefaults puDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+			puMetadata.setPersistenceUnitDefaults(puDefaults);
+			puDefaults.setAccess(defaultAccess);
+		}
 	}
 }

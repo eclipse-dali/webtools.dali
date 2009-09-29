@@ -25,6 +25,9 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -35,6 +38,8 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
@@ -79,7 +84,14 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected IDataModel buildJpaConfigDataModel() {
-		return null;
+		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetDataModelProvider());		
+		// default facet version is 2.0 - most tests use 1.0
+		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "1.0"); //$NON-NLS-1$
+		// most tests use the basic generic platform
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericJpaPlatformProvider.ID);
+		// most tests do use an orm.xml
+		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
+		return dataModel;
 	}
 	
 	protected JpaProject getJpaProject() {

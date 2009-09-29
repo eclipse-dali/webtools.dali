@@ -17,24 +17,14 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeOverride;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyClass;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyColumn;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyJoinColumn;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn;
-import org.eclipse.jpt.core.resource.orm.EnumType;
-import org.eclipse.jpt.core.resource.orm.JPA;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverterHolder;
@@ -62,88 +52,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlManyToMany implements XmlConverterHolder
 {
-	/**
-	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlOrderColumn orderColumn;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlMapKeyClass mapKeyClass;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 * @ordered
-	 */
-	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 * @ordered
-	 */
-	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyAttributeOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyColumn() <em>Map Key Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlMapKeyColumn mapKeyColumn;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyJoinColumns() <em>Map Key Join Columns</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyJoinColumns()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlMapKeyJoinColumn> mapKeyJoinColumns;
-
 	/**
 	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -233,308 +141,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	protected EClass eStaticClass()
 	{
 		return EclipseLink2_0OrmPackage.Literals.XML_MANY_TO_MANY;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order Column</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order Column</em>' containment reference.
-	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlManyToMany_OrderColumn()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlOrderColumn getOrderColumn()
-	{
-		return orderColumn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetOrderColumn(XmlOrderColumn newOrderColumn, NotificationChain msgs)
-	{
-		XmlOrderColumn oldOrderColumn = orderColumn;
-		orderColumn = newOrderColumn;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, oldOrderColumn, newOrderColumn);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlManyToMany#getOrderColumn <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order Column</em>' containment reference.
-	 * @see #getOrderColumn()
-	 * @generated
-	 */
-	public void setOrderColumn(XmlOrderColumn newOrderColumn)
-	{
-		if (newOrderColumn != orderColumn)
-		{
-			NotificationChain msgs = null;
-			if (orderColumn != null)
-				msgs = ((InternalEObject)orderColumn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, null, msgs);
-			if (newOrderColumn != null)
-				msgs = ((InternalEObject)newOrderColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, null, msgs);
-			msgs = basicSetOrderColumn(newOrderColumn, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, newOrderColumn, newOrderColumn));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Class</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Class</em>' containment reference.
-	 * @see #setMapKeyClass(XmlMapKeyClass)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlManyToMany_MapKeyClass()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlMapKeyClass getMapKeyClass()
-	{
-		return mapKeyClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetMapKeyClass(XmlMapKeyClass newMapKeyClass, NotificationChain msgs)
-	{
-		XmlMapKeyClass oldMapKeyClass = mapKeyClass;
-		mapKeyClass = newMapKeyClass;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS, oldMapKeyClass, newMapKeyClass);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlManyToMany#getMapKeyClass <em>Map Key Class</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Map Key Class</em>' containment reference.
-	 * @see #getMapKeyClass()
-	 * @generated
-	 */
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass)
-	{
-		if (newMapKeyClass != mapKeyClass)
-		{
-			NotificationChain msgs = null;
-			if (mapKeyClass != null)
-				msgs = ((InternalEObject)mapKeyClass).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS, null, msgs);
-			if (newMapKeyClass != null)
-				msgs = ((InternalEObject)newMapKeyClass).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS, null, msgs);
-			msgs = basicSetMapKeyClass(newMapKeyClass, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS, newMapKeyClass, newMapKeyClass));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Temporal</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.TemporalType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Temporal</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #setMapKeyTemporal(TemporalType)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlManyToMany_MapKeyTemporal()
-	 * @model
-	 * @generated
-	 */
-	public TemporalType getMapKeyTemporal()
-	{
-		return mapKeyTemporal;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlManyToMany#getMapKeyTemporal <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Map Key Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 */
-	public void setMapKeyTemporal(TemporalType newMapKeyTemporal)
-	{
-		TemporalType oldMapKeyTemporal = mapKeyTemporal;
-		mapKeyTemporal = newMapKeyTemporal == null ? MAP_KEY_TEMPORAL_EDEFAULT : newMapKeyTemporal;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL, oldMapKeyTemporal, mapKeyTemporal));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Enumerated</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.EnumType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Enumerated</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Enumerated</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.EnumType
-	 * @see #setMapKeyEnumerated(EnumType)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlManyToMany_MapKeyEnumerated()
-	 * @model
-	 * @generated
-	 */
-	public EnumType getMapKeyEnumerated()
-	{
-		return mapKeyEnumerated;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlManyToMany#getMapKeyEnumerated <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Map Key Enumerated</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.EnumType
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 */
-	public void setMapKeyEnumerated(EnumType newMapKeyEnumerated)
-	{
-		EnumType oldMapKeyEnumerated = mapKeyEnumerated;
-		mapKeyEnumerated = newMapKeyEnumerated == null ? MAP_KEY_ENUMERATED_EDEFAULT : newMapKeyEnumerated;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED, oldMapKeyEnumerated, mapKeyEnumerated));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Attribute Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlManyToMany_MapKeyAttributeOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides()
-	{
-		if (mapKeyAttributeOverrides == null)
-		{
-			mapKeyAttributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES);
-		}
-		return mapKeyAttributeOverrides;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Column</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Column</em>' containment reference.
-	 * @see #setMapKeyColumn(XmlMapKeyColumn)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlManyToMany_MapKeyColumn()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlMapKeyColumn getMapKeyColumn()
-	{
-		return mapKeyColumn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetMapKeyColumn(XmlMapKeyColumn newMapKeyColumn, NotificationChain msgs)
-	{
-		XmlMapKeyColumn oldMapKeyColumn = mapKeyColumn;
-		mapKeyColumn = newMapKeyColumn;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN, oldMapKeyColumn, newMapKeyColumn);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlManyToMany#getMapKeyColumn <em>Map Key Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Map Key Column</em>' containment reference.
-	 * @see #getMapKeyColumn()
-	 * @generated
-	 */
-	public void setMapKeyColumn(XmlMapKeyColumn newMapKeyColumn)
-	{
-		if (newMapKeyColumn != mapKeyColumn)
-		{
-			NotificationChain msgs = null;
-			if (mapKeyColumn != null)
-				msgs = ((InternalEObject)mapKeyColumn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN, null, msgs);
-			if (newMapKeyColumn != null)
-				msgs = ((InternalEObject)newMapKeyColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN, null, msgs);
-			msgs = basicSetMapKeyColumn(newMapKeyColumn, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN, newMapKeyColumn, newMapKeyColumn));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Join Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.jpa2.resource.orm.XmlMapKeyJoinColumn}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Join Columns</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlManyToMany_MapKeyJoinColumns()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlMapKeyJoinColumn> getMapKeyJoinColumns()
-	{
-		if (mapKeyJoinColumns == null)
-		{
-			mapKeyJoinColumns = new EObjectContainmentEList<XmlMapKeyJoinColumn>(XmlMapKeyJoinColumn.class, this, EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS);
-		}
-		return mapKeyJoinColumns;
 	}
 
 	/**
@@ -779,7 +385,7 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Association Overrides</b></em>' reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride}.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Map Key Association Overrides</em>' reference list isn't clear,
@@ -845,16 +451,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				return basicSetOrderColumn(null, msgs);
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
-				return basicSetMapKeyClass(null, msgs);
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return ((InternalEList<?>)getMapKeyAttributeOverrides()).basicRemove(otherEnd, msgs);
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN:
-				return basicSetMapKeyColumn(null, msgs);
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS:
-				return ((InternalEList<?>)getMapKeyJoinColumns()).basicRemove(otherEnd, msgs);
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				return basicSetConverter(null, msgs);
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
@@ -877,20 +473,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				return getOrderColumn();
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
-				return getMapKeyClass();
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL:
-				return getMapKeyTemporal();
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED:
-				return getMapKeyEnumerated();
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return getMapKeyAttributeOverrides();
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN:
-				return getMapKeyColumn();
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS:
-				return getMapKeyJoinColumns();
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				return getConverter();
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
@@ -918,29 +500,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
-				setMapKeyClass((XmlMapKeyClass)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL:
-				setMapKeyTemporal((TemporalType)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED:
-				setMapKeyEnumerated((EnumType)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				getMapKeyAttributeOverrides().clear();
-				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN:
-				setMapKeyColumn((XmlMapKeyColumn)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS:
-				getMapKeyJoinColumns().clear();
-				getMapKeyJoinColumns().addAll((Collection<? extends XmlMapKeyJoinColumn>)newValue);
-				return;
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				setConverter((XmlConverter)newValue);
 				return;
@@ -974,27 +533,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)null);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
-				setMapKeyClass((XmlMapKeyClass)null);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL:
-				setMapKeyTemporal(MAP_KEY_TEMPORAL_EDEFAULT);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED:
-				setMapKeyEnumerated(MAP_KEY_ENUMERATED_EDEFAULT);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				getMapKeyAttributeOverrides().clear();
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN:
-				setMapKeyColumn((XmlMapKeyColumn)null);
-				return;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS:
-				getMapKeyJoinColumns().clear();
-				return;
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				setConverter((XmlConverter)null);
 				return;
@@ -1027,20 +565,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				return orderColumn != null;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
-				return mapKeyClass != null;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL:
-				return mapKeyTemporal != MAP_KEY_TEMPORAL_EDEFAULT;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED:
-				return mapKeyEnumerated != MAP_KEY_ENUMERATED_EDEFAULT;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN:
-				return mapKeyColumn != null;
-			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS:
-				return mapKeyJoinColumns != null && !mapKeyJoinColumns.isEmpty();
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				return converter != null;
 			case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
@@ -1065,27 +589,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAttributeMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToMany.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN: return Orm2_0Package.XML_MANY_TO_MANY__ORDER_COLUMN;
-				case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS: return Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_CLASS;
-				case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL: return Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL;
-				case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED: return Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED;
-				case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES: return Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES;
-				case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN: return Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_COLUMN;
-				case EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS: return Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -1108,27 +611,6 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAttributeMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToMany.class)
-		{
-			switch (baseFeatureID)
-			{
-				case Orm2_0Package.XML_MANY_TO_MANY__ORDER_COLUMN: return EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN;
-				case Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_CLASS: return EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS;
-				case Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL: return EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL;
-				case Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED: return EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED;
-				case Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES: return EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES;
-				case Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_COLUMN: return EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_COLUMN;
-				case Orm2_0Package.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS: return EclipseLink2_0OrmPackage.XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (baseFeatureID)
@@ -1154,11 +636,7 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (mapKeyTemporal: ");
-		result.append(mapKeyTemporal);
-		result.append(", mapKeyEnumerated: ");
-		result.append(mapKeyEnumerated);
-		result.append(", mapKeyConvert: ");
+		result.append(" (mapKeyConvert: ");
 		result.append(mapKeyConvert);
 		result.append(')');
 		return result.toString();
@@ -1184,14 +662,14 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 			buildMappedByTranslator(),
 			buildOrderByTranslator(),
 			buildMapKeyTranslator(),
-			XmlMapKeyClass.buildTranslator(EclipseLink2_0.MAP_KEY_CLASS, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyClass()),		
+			XmlMapKeyClass.buildTranslator(EclipseLink2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyClass()),		
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
 			buildMapKeyConvertTranslator(),
-			XmlAttributeOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyAttributeOverrides()),		
-			org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyAssociationOverrides()),		
-			XmlColumn.buildTranslator(EclipseLink2_0.MAP_KEY_COLUMN, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyColumn()),		
-			XmlJoinColumn.buildTranslator(EclipseLink2_0.MAP_KEY_JOIN_COLUMN, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyJoinColumns()),		
+			XmlAttributeOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyAttributeOverrides()),		
+			XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyAssociationOverrides()),		
+			XmlColumn.buildTranslator(EclipseLink2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyColumn()),		
+			XmlJoinColumn.buildTranslator(EclipseLink2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyJoinColumns()),		
 			buildJoinTableTranslator(),
 			buildCascadeTranslator(),
 			buildJoinFetchTranslator(),
@@ -1200,20 +678,7 @@ public class XmlManyToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resourc
 		};
 	}
 
-	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
-	}
-	
-	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(EclipseLink2_0.MAP_KEY_TEMPORAL, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyTemporal());
-	}
-	
-	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(EclipseLink2_0.MAP_KEY_ENUMERATED, Orm2_0Package.eINSTANCE.getXmlManyToMany_MapKeyEnumerated());
-	}
-	
 	protected static Translator buildMapKeyConvertTranslator() {
-		return new Translator(EclipseLink2_0.MAP_KEY_CONVERT, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyConvert());
+		return new Translator(EclipseLink2_0.CONVERT, EclipseLink2_0OrmPackage.eINSTANCE.getXmlManyToMany_MapKeyConvert());
 	}
-
-} // XmlManyToMany
+}

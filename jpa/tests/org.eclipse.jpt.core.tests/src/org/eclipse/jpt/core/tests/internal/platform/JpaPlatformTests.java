@@ -34,6 +34,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 
@@ -71,6 +72,7 @@ public class JpaPlatformTests extends ContextModelTestCase
 	protected IDataModel buildConfig() throws Exception {
 		IActionConfigFactory configFactory = new JpaFacetDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
+		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "1.0"); //$NON-NLS-1$
 		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TestJpaPlatformProvider.ID);
 		return config;
 	}

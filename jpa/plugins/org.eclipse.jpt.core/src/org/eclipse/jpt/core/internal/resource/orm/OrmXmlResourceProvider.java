@@ -14,13 +14,18 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
-import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class OrmXmlResourceProvider
 	extends AbstractXmlResourceProvider
+	implements OrmFileCreationDataModelProperties
 {
 	/**
 	 * (Convenience method) Returns an ORM resource model provider for 
@@ -60,9 +65,19 @@ public class OrmXmlResourceProvider
 	}
 	
 	@Override
-	protected void populateRoot() {
+	protected void populateRoot(Object config) {
+		IDataModel dataModel = (IDataModel) config;
 		XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-		entityMappings.setVersion(JPA.SCHEMA_VERSION);
+		entityMappings.setVersion(dataModel.getStringProperty(VERSION));
 		getResourceContents().add(entityMappings);
+		
+		AccessType defaultAccess = (AccessType) dataModel.getProperty(DEFAULT_ACCESS); 
+		if (defaultAccess != null) {
+			XmlPersistenceUnitMetadata puMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
+			entityMappings.setPersistenceUnitMetadata(puMetadata);
+			XmlPersistenceUnitDefaults puDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+			puMetadata.setPersistenceUnitDefaults(puDefaults);
+			puDefaults.setAccess(defaultAccess);
+		}
 	}
 }

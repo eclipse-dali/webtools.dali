@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmSequenceGenerator;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
 /**
  *  Generic2_0OrmSequenceGenerator

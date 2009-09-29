@@ -9,14 +9,18 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.v1_1.resource.orm;
 
+import java.util.Iterator;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EnumeratedValueTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.core.resource.xml.XML;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
@@ -25,6 +29,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -104,6 +109,19 @@ public class XmlEntityMappings extends org.eclipse.jpt.eclipselink.core.resource
 		};
 	}
 	
+	protected static Translator buildVersionTranslator() {
+		return new EnumeratedValueTranslator(
+				JPA.ENTITY_MAPPINGS__VERSION, 
+				CommonPackage.eINSTANCE.getJpaRootEObject_Version(),
+				Translator.DOM_ATTRIBUTE) {
+			
+			@Override
+			protected Iterator enumeratedObjectValues() {
+				return new ArrayIterator(new Object[] { EclipseLink1_1.SCHEMA_VERSION });
+			}
+		};
+	}
+	
 	private static Translator buildNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE, EclipseLink1_1.SCHEMA_NAMESPACE);
 	}
@@ -111,4 +129,4 @@ public class XmlEntityMappings extends org.eclipse.jpt.eclipselink.core.resource
 	private static Translator buildSchemaLocationTranslator() {
 		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, EclipseLink1_1.SCHEMA_NAMESPACE + ' ' + EclipseLink1_1.SCHEMA_LOCATION);
 	}
-} // XmlEntityMappings
+}

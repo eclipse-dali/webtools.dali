@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.resource.persistence;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -22,8 +21,12 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.BooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.persistence.v2_0.PersistenceV2_0Package;
+import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitCachingType_2_0;
+import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0;
+import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnit_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -56,11 +59,50 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnit()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
+public class XmlPersistenceUnit extends AbstractJpaEObject implements XmlPersistenceUnit_2_0
 {
+	/**
+	 * The default value of the '{@link #getSharedCacheMode() <em>Shared Cache Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSharedCacheMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final XmlPersistenceUnitCachingType_2_0 SHARED_CACHE_MODE_EDEFAULT = XmlPersistenceUnitCachingType_2_0.UNSPECIFIED;
+
+	/**
+	 * The cached value of the '{@link #getSharedCacheMode() <em>Shared Cache Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSharedCacheMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlPersistenceUnitCachingType_2_0 sharedCacheMode = SHARED_CACHE_MODE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getValidationMode() <em>Validation Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getValidationMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final XmlPersistenceUnitValidationModeType_2_0 VALIDATION_MODE_EDEFAULT = XmlPersistenceUnitValidationModeType_2_0.AUTO;
+
+	/**
+	 * The cached value of the '{@link #getValidationMode() <em>Validation Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getValidationMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlPersistenceUnitValidationModeType_2_0 validationMode = VALIDATION_MODE_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -256,6 +298,84 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	protected EClass eStaticClass()
 	{
 		return PersistencePackage.Literals.XML_PERSISTENCE_UNIT;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Shared Cache Mode</b></em>' attribute.
+	 * The default value is <code>"UNSPECIFIED"</code>.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitCachingType_2_0}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Shared Cache Mode</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Shared Cache Mode</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitCachingType_2_0
+	 * @see #setSharedCacheMode(XmlPersistenceUnitCachingType_2_0)
+	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnit_2_0_SharedCacheMode()
+	 * @model default="UNSPECIFIED" unique="false"
+	 * @generated
+	 */
+	public XmlPersistenceUnitCachingType_2_0 getSharedCacheMode()
+	{
+		return sharedCacheMode;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getSharedCacheMode <em>Shared Cache Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Shared Cache Mode</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitCachingType_2_0
+	 * @see #getSharedCacheMode()
+	 * @generated
+	 */
+	public void setSharedCacheMode(XmlPersistenceUnitCachingType_2_0 newSharedCacheMode)
+	{
+		XmlPersistenceUnitCachingType_2_0 oldSharedCacheMode = sharedCacheMode;
+		sharedCacheMode = newSharedCacheMode == null ? SHARED_CACHE_MODE_EDEFAULT : newSharedCacheMode;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE, oldSharedCacheMode, sharedCacheMode));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Validation Mode</b></em>' attribute.
+	 * The default value is <code>"AUTO"</code>.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Validation Mode</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Validation Mode</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0
+	 * @see #setValidationMode(XmlPersistenceUnitValidationModeType_2_0)
+	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnit_2_0_ValidationMode()
+	 * @model default="AUTO" unique="false"
+	 * @generated
+	 */
+	public XmlPersistenceUnitValidationModeType_2_0 getValidationMode()
+	{
+		return validationMode;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getValidationMode <em>Validation Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Validation Mode</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0
+	 * @see #getValidationMode()
+	 * @generated
+	 */
+	public void setValidationMode(XmlPersistenceUnitValidationModeType_2_0 newValidationMode)
+	{
+		XmlPersistenceUnitValidationModeType_2_0 oldValidationMode = validationMode;
+		validationMode = newValidationMode == null ? VALIDATION_MODE_EDEFAULT : newValidationMode;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__VALIDATION_MODE, oldValidationMode, validationMode));
 	}
 
 	/**
@@ -668,6 +788,10 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case PersistencePackage.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				return getSharedCacheMode();
+			case PersistencePackage.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
+				return getValidationMode();
 			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				return getDescription();
 			case PersistencePackage.XML_PERSISTENCE_UNIT__PROVIDER:
@@ -705,6 +829,12 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case PersistencePackage.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				setSharedCacheMode((XmlPersistenceUnitCachingType_2_0)newValue);
+				return;
+			case PersistencePackage.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
+				setValidationMode((XmlPersistenceUnitValidationModeType_2_0)newValue);
+				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
@@ -755,6 +885,12 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case PersistencePackage.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				setSharedCacheMode(SHARED_CACHE_MODE_EDEFAULT);
+				return;
+			case PersistencePackage.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
+				setValidationMode(VALIDATION_MODE_EDEFAULT);
+				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
@@ -802,6 +938,10 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case PersistencePackage.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				return sharedCacheMode != SHARED_CACHE_MODE_EDEFAULT;
+			case PersistencePackage.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
+				return validationMode != VALIDATION_MODE_EDEFAULT;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case PersistencePackage.XML_PERSISTENCE_UNIT__PROVIDER:
@@ -839,7 +979,11 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (description: ");
+		result.append(" (sharedCacheMode: ");
+		result.append(sharedCacheMode);
+		result.append(", validationMode: ");
+		result.append(validationMode);
+		result.append(", description: ");
 		result.append(description);
 		result.append(", provider: ");
 		result.append(provider);
@@ -856,14 +1000,14 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 		result.append(')');
 		return result.toString();
 	}
-
-
+	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		PersistencePackage pkg = PersistencePackage.eINSTANCE;
 		return new Translator[] {
@@ -877,59 +1021,64 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 				XmlJarFileRef.buildTranslator(JPA.JAR_FILE, pkg.getXmlPersistenceUnit_JarFiles()),
 				XmlJavaClassRef.buildTranslator(JPA.CLASS, pkg.getXmlPersistenceUnit_Classes()),
 				buildExcludeUnlistedClassesTranslator(),
-				XmlProperties.buildTranslator(JPA.PROPERTIES, pkg.getXmlPersistenceUnit_Properties())
-			};
+				buildCachingTranslator(),
+				buildValidationModeTranslator(),
+				XmlProperties.buildTranslator(JPA.PROPERTIES, pkg.getXmlPersistenceUnit_Properties())};
 	}
-
+	
 	protected static Translator buildNameTranslator() {
 		return new Translator(
 				JPA.PERSISTENCE_UNIT__NAME,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Name(),
-				Translator.DOM_ATTRIBUTE
-			);
+				Translator.DOM_ATTRIBUTE);
 	}
-
+	
 	protected static Translator buildTransactionTypeTranslator() {
 		return new Translator(
 				JPA.PERSISTENCE_UNIT__TRANSACTION_TYPE,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_TransactionType(),
-				Translator.DOM_ATTRIBUTE | Translator.UNSET_IF_NULL
-			);
+				Translator.DOM_ATTRIBUTE | Translator.UNSET_IF_NULL);
 	}
-
+	
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(
 				JPA.DESCRIPTION,
-				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Description()
-			);
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Description());
 	}
-
+	
 	protected static Translator buildProviderTranslator() {
 		return new Translator(
 				JPA.PROVIDER,
-				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Provider()
-			);
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Provider());
 	}
-
+	
 	protected static Translator buildJtaDataSourceTranslator() {
 		return new Translator(
 				JPA.JTA_DATA_SOURCE,
-				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_JtaDataSource()
-			);
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_JtaDataSource());
 	}
-
+	
 	protected static Translator buildNonJtaDataSourceTranslator() {
 		return new Translator(
 				JPA.NON_JTA_DATA_SOURCE,
-				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_NonJtaDataSource()
-			);
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_NonJtaDataSource());
 	}
-
+	
 	protected static Translator buildExcludeUnlistedClassesTranslator() {
 		return new BooleanTranslator(
 				JPA.EXCLUDE_UNLISTED_CLASSES,
-				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_ExcludeUnlistedClasses()
-			);
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_ExcludeUnlistedClasses());
 	}
-
+	
+	protected static Translator buildCachingTranslator() {
+		return new Translator(
+				JPA2_0.PERSISTENCE_UNIT__SHARED_CACHE_MODE,
+				PersistenceV2_0Package.eINSTANCE.getXmlPersistenceUnit_2_0_SharedCacheMode());
+	}
+	
+	protected static Translator buildValidationModeTranslator() {
+		return new Translator(
+				JPA2_0.PERSISTENCE_UNIT__VALIDATION_MODE,
+				PersistenceV2_0Package.eINSTANCE.getXmlPersistenceUnit_2_0_ValidationMode());
+	}
 }

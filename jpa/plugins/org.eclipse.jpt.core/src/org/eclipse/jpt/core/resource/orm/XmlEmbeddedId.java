@@ -67,8 +67,8 @@ public class XmlEmbeddedId extends AbstractXmlEmbedded
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator(),
 			buildAttributeOverrideTranslator()
 		};
 	}
-
-} // EmbeddedId
+}

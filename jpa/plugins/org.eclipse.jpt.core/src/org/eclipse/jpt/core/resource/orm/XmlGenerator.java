@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlGenerator_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -34,10 +34,9 @@ import org.eclipse.jpt.core.utility.TextRange;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlGenerator extends JpaEObject
+public interface XmlGenerator extends XmlGenerator_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

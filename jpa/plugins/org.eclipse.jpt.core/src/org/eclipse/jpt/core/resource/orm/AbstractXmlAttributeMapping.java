@@ -37,6 +37,22 @@ public abstract class AbstractXmlAttributeMapping
 	implements XmlAttributeMapping
 {
 	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final AccessType ACCESS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccess()
+	 * @generated
+	 * @ordered
+	 */
+	protected AccessType access = ACCESS_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -75,6 +91,44 @@ public abstract class AbstractXmlAttributeMapping
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.ABSTRACT_XML_ATTRIBUTE_MAPPING;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Access</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Access</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.AccessType
+	 * @see #setAccess(AccessType)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAccessHolder_Access()
+	 * @model
+	 * @generated
+	 */
+	public AccessType getAccess()
+	{
+		return access;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlAttributeMapping#getAccess <em>Access</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Access</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.AccessType
+	 * @see #getAccess()
+	 * @generated
+	 */
+	public void setAccess(AccessType newAccess)
+	{
+		AccessType oldAccess = access;
+		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -122,6 +176,8 @@ public abstract class AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__ACCESS:
+				return getAccess();
 			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME:
 				return getName();
 		}
@@ -138,6 +194,9 @@ public abstract class AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__ACCESS:
+				setAccess((AccessType)newValue);
+				return;
 			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME:
 				setName((String)newValue);
 				return;
@@ -155,6 +214,9 @@ public abstract class AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__ACCESS:
+				setAccess(ACCESS_EDEFAULT);
+				return;
 			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -172,6 +234,8 @@ public abstract class AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__ACCESS:
+				return access != ACCESS_EDEFAULT;
 			case OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
@@ -189,11 +253,16 @@ public abstract class AbstractXmlAttributeMapping
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (access: ");
+		result.append(access);
+		result.append(", name: ");
 		result.append(name);
 		result.append(')');
 		return result.toString();
 	}
+	
+	
+	// ********** validation ***********
 	
 	public TextRange getNameTextRange() {
 		return getAttributeTextRange(JPA.NAME);
@@ -204,5 +273,8 @@ public abstract class AbstractXmlAttributeMapping
 	protected static Translator buildNameTranslator() {
 		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlAttributeMapping_Name(), Translator.DOM_ATTRIBUTE);
 	}
-
-} // AbstractXmlAttributeMapping
+	
+	protected static Translator buildAccessTranslator() {
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+	}
+}

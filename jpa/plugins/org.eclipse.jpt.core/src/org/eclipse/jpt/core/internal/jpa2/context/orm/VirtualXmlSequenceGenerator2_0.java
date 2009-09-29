@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlSequenceGenerator;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**

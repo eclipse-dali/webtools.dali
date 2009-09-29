@@ -44,28 +44,6 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		assertEquals(2, getJpaProject().jpaFilesSize());	
 	}
 	
-	public void testModifyAddPersistence() {
-		JpaXmlResource prm = getPersistenceXmlResource();
-		prm.getContents().remove(getXmlPersistence());
-		assertNull(getXmlPersistence());
-		
-		PersistenceXml persistenceXml = getPersistenceXml();
-		
-		persistenceXml.addPersistence();
-		
-		assertNotNull(persistenceXml.getPersistence());
-		
-		boolean exceptionThrown = false;
-		try {
-			persistenceXml.addPersistence();
-		}
-		catch (IllegalStateException ise) {
-			exceptionThrown = true;
-		}
-		
-		assertTrue(exceptionThrown);
-	}
-	
 	public void testUpdateRemovePersistence() throws Exception {
 		JpaXmlResource prm = getPersistenceXmlResource();
 		
@@ -74,25 +52,5 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		prm.getContents().clear();
 		
 		assertNull(getPersistenceXml().getPersistence());
-	}
-	
-	public void testModifyRemovePersistence() {
-		PersistenceXml persistenceXml = getPersistenceXml();
-		
-		assertNotNull(persistenceXml.getPersistence());
-		
-		persistenceXml.removePersistence();
-		
-		assertNull(persistenceXml.getPersistence());
-		
-		boolean exceptionThrown = false;
-		try {
-			persistenceXml.removePersistence();
-		}
-		catch (IllegalStateException ise) {
-			exceptionThrown = true;
-		}
-		
-		assertTrue(exceptionThrown);
 	}
 }

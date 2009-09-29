@@ -163,7 +163,7 @@ public abstract class AbstractMappingFileRef
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		MappingFileDefinition mappingFileDef = (MappingFileDefinition) getJpaPlatform().getResourceDefinition(resource.getContentType());
+		MappingFileDefinition mappingFileDef = (MappingFileDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
 		return (mappingFileDef == null) ? null : mappingFileDef.getContextNodeFactory().buildMappingFile(this, resource);
 	}
 	

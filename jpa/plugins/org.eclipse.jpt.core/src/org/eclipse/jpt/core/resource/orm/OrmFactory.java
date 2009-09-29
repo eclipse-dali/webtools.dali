@@ -1,12 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
+ *  Copyright (c) 2009  Oracle. 
+ *  All rights reserved.  This program and the accompanying materials are 
+ *  made available under the terms of the Eclipse Public License v1.0 which 
+ *  accompanies this distribution, and is available at 
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.Enumerator;
@@ -21,12 +23,6 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * <!-- begin-user-doc -->
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
- * 
- * Provisional API: This interface is part of an interim API that is still
- * under development and expected to change significantly before reaching
- * stability. It is available at this early stage to solicit feedback from
- * pioneering adopters on the understanding that any code that uses this API
- * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage
  * @generated
@@ -85,42 +81,44 @@ public class OrmFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
-			case OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
-			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
-			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
-			case OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
-			case OrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
-			case OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
-			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
-			case OrmPackage.XML_ID: return (EObject)createXmlId();
-			case OrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
-			case OrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
-			case OrmPackage.XML_BASIC: return (EObject)createXmlBasic();
-			case OrmPackage.XML_VERSION: return (EObject)createXmlVersion();
-			case OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
-			case OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
-			case OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
-			case OrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
-			case OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE: return (EObject)createXmlAttributeOverride();
+			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
+			case OrmPackage.XML_BASIC: return (EObject)createXmlBasic();
 			case OrmPackage.CASCADE_TYPE: return (EObject)createCascadeType();
+			case OrmPackage.XML_COLLECTION_TABLE: return (EObject)createXmlCollectionTable();
 			case OrmPackage.XML_COLUMN: return (EObject)createXmlColumn();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN: return (EObject)createXmlDiscriminatorColumn();
-			case OrmPackage.ENTITY_LISTENERS: return (EObject)createEntityListeners();
+			case OrmPackage.XML_ELEMENT_COLLECTION: return (EObject)createXmlElementCollection();
+			case OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
+			case OrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
+			case OrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
+			case OrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case OrmPackage.ENTITY_LISTENER: return (EObject)createEntityListener();
+			case OrmPackage.ENTITY_LISTENERS: return (EObject)createEntityListeners();
+			case OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case OrmPackage.ENTITY_RESULT: return (EObject)createEntityResult();
 			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
 			case OrmPackage.XML_GENERATED_VALUE: return (EObject)createXmlGeneratedValue();
+			case OrmPackage.XML_ID: return (EObject)createXmlId();
 			case OrmPackage.XML_ID_CLASS: return (EObject)createXmlIdClass();
 			case OrmPackage.INHERITANCE: return (EObject)createInheritance();
 			case OrmPackage.XML_JOIN_COLUMN: return (EObject)createXmlJoinColumn();
 			case OrmPackage.XML_JOIN_TABLE: return (EObject)createXmlJoinTable();
 			case OrmPackage.LOB: return (EObject)createLob();
+			case OrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case OrmPackage.MAP_KEY: return (EObject)createMapKey();
+			case OrmPackage.XML_MAP_KEY_CLASS: return (EObject)createXmlMapKeyClass();
+			case OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY: return (EObject)createXmlNamedNativeQuery();
 			case OrmPackage.XML_NAMED_QUERY: return (EObject)createXmlNamedQuery();
+			case OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
+			case OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
+			case OrmPackage.XML_ORDER_COLUMN: return (EObject)createXmlOrderColumn();
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
 			case OrmPackage.POST_LOAD: return (EObject)createPostLoad();
 			case OrmPackage.POST_PERSIST: return (EObject)createPostPersist();
 			case OrmPackage.POST_REMOVE: return (EObject)createPostRemove();
@@ -130,12 +128,14 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.PRE_UPDATE: return (EObject)createPreUpdate();
 			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN: return (EObject)createXmlPrimaryKeyJoinColumn();
 			case OrmPackage.XML_QUERY_HINT: return (EObject)createXmlQueryHint();
-			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case OrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
 			case OrmPackage.XML_SEQUENCE_GENERATOR: return (EObject)createXmlSequenceGenerator();
 			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
+			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case OrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
+			case OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			case OrmPackage.XML_UNIQUE_CONSTRAINT: return (EObject)createXmlUniqueConstraint();
+			case OrmPackage.XML_VERSION: return (EObject)createXmlVersion();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -171,8 +171,6 @@ public class OrmFactory extends EFactoryImpl
 				return createEnumeratedFromString(eDataType, initialValue);
 			case OrmPackage.ORDER_BY:
 				return createOrderByFromString(eDataType, initialValue);
-			case OrmPackage.VERSION_TYPE:
-				return createVersionTypeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -208,198 +206,9 @@ public class OrmFactory extends EFactoryImpl
 				return convertEnumeratedToString(eDataType, instanceValue);
 			case OrmPackage.ORDER_BY:
 				return convertOrderByToString(eDataType, instanceValue);
-			case OrmPackage.VERSION_TYPE:
-				return convertVersionTypeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEntityMappings createXmlEntityMappings()
-	{
-		XmlEntityMappings xmlEntityMappings = new XmlEntityMappings();
-		return xmlEntityMappings;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlPersistenceUnitMetadata createXmlPersistenceUnitMetadata()
-	{
-		XmlPersistenceUnitMetadata xmlPersistenceUnitMetadata = new XmlPersistenceUnitMetadata();
-		return xmlPersistenceUnitMetadata;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlPersistenceUnitDefaults createXmlPersistenceUnitDefaults()
-	{
-		XmlPersistenceUnitDefaults xmlPersistenceUnitDefaults = new XmlPersistenceUnitDefaults();
-		return xmlPersistenceUnitDefaults;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlMappedSuperclass createXmlMappedSuperclass()
-	{
-		XmlMappedSuperclass xmlMappedSuperclass = new XmlMappedSuperclass();
-		return xmlMappedSuperclass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEntity createXmlEntity()
-	{
-		XmlEntity xmlEntity = new XmlEntity();
-		return xmlEntity;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEmbeddable createXmlEmbeddable()
-	{
-		XmlEmbeddable xmlEmbeddable = new XmlEmbeddable();
-		return xmlEmbeddable;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Attributes createAttributes()
-	{
-		Attributes attributes = new Attributes();
-		return attributes;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlId createXmlId()
-	{
-		XmlId xmlId = new XmlId();
-		return xmlId;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEmbeddedId createXmlEmbeddedId()
-	{
-		XmlEmbeddedId xmlEmbeddedId = new XmlEmbeddedId();
-		return xmlEmbeddedId;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEmbedded createXmlEmbedded()
-	{
-		XmlEmbedded xmlEmbedded = new XmlEmbedded();
-		return xmlEmbedded;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlBasic createXmlBasic()
-	{
-		XmlBasic xmlBasic = new XmlBasic();
-		return xmlBasic;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlVersion createXmlVersion()
-	{
-		XmlVersion xmlVersion = new XmlVersion();
-		return xmlVersion;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlManyToOne createXmlManyToOne()
-	{
-		XmlManyToOne xmlManyToOne = new XmlManyToOne();
-		return xmlManyToOne;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlOneToMany createXmlOneToMany()
-	{
-		XmlOneToMany xmlOneToMany = new XmlOneToMany();
-		return xmlOneToMany;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlOneToOne createXmlOneToOne()
-	{
-		XmlOneToOne xmlOneToOne = new XmlOneToOne();
-		return xmlOneToOne;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlManyToMany createXmlManyToMany()
-	{
-		XmlManyToMany xmlManyToMany = new XmlManyToMany();
-		return xmlManyToMany;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlTransient createXmlTransient()
-	{
-		XmlTransient xmlTransient = new XmlTransient();
-		return xmlTransient;
 	}
 
 	/**
@@ -429,10 +238,43 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Attributes createAttributes()
+	{
+		Attributes attributes = new Attributes();
+		return attributes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlBasic createXmlBasic()
+	{
+		XmlBasic xmlBasic = new XmlBasic();
+		return xmlBasic;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CascadeType createCascadeType()
 	{
 		CascadeType cascadeType = new CascadeType();
 		return cascadeType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlCollectionTable createXmlCollectionTable()
+	{
+		XmlCollectionTable xmlCollectionTable = new XmlCollectionTable();
+		return xmlCollectionTable;
 	}
 
 	/**
@@ -473,10 +315,54 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EntityListeners createEntityListeners()
+	public XmlElementCollection createXmlElementCollection()
 	{
-		EntityListeners entityListeners = new EntityListeners();
-		return entityListeners;
+		XmlElementCollection xmlElementCollection = new XmlElementCollection();
+		return xmlElementCollection;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbeddable createXmlEmbeddable()
+	{
+		XmlEmbeddable xmlEmbeddable = new XmlEmbeddable();
+		return xmlEmbeddable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbedded createXmlEmbedded()
+	{
+		XmlEmbedded xmlEmbedded = new XmlEmbedded();
+		return xmlEmbedded;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbeddedId createXmlEmbeddedId()
+	{
+		XmlEmbeddedId xmlEmbeddedId = new XmlEmbeddedId();
+		return xmlEmbeddedId;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEntity createXmlEntity()
+	{
+		XmlEntity xmlEntity = new XmlEntity();
+		return xmlEntity;
 	}
 
 	/**
@@ -488,6 +374,28 @@ public class OrmFactory extends EFactoryImpl
 	{
 		EntityListener entityListener = new EntityListener();
 		return entityListener;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EntityListeners createEntityListeners()
+	{
+		EntityListeners entityListeners = new EntityListeners();
+		return entityListeners;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEntityMappings createXmlEntityMappings()
+	{
+		XmlEntityMappings xmlEntityMappings = new XmlEntityMappings();
+		return xmlEntityMappings;
 	}
 
 	/**
@@ -521,6 +429,17 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlGeneratedValue xmlGeneratedValue = new XmlGeneratedValue();
 		return xmlGeneratedValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlId createXmlId()
+	{
+		XmlId xmlId = new XmlId();
+		return xmlId;
 	}
 
 	/**
@@ -583,10 +502,54 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlManyToMany createXmlManyToMany()
+	{
+		XmlManyToMany xmlManyToMany = new XmlManyToMany();
+		return xmlManyToMany;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlManyToOne createXmlManyToOne()
+	{
+		XmlManyToOne xmlManyToOne = new XmlManyToOne();
+		return xmlManyToOne;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public MapKey createMapKey()
 	{
 		MapKey mapKey = new MapKey();
 		return mapKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlMapKeyClass createXmlMapKeyClass()
+	{
+		XmlMapKeyClass xmlMapKeyClass = new XmlMapKeyClass();
+		return xmlMapKeyClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlMappedSuperclass createXmlMappedSuperclass()
+	{
+		XmlMappedSuperclass xmlMappedSuperclass = new XmlMappedSuperclass();
+		return xmlMappedSuperclass;
 	}
 
 	/**
@@ -609,6 +572,61 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlNamedQuery xmlNamedQuery = new XmlNamedQuery();
 		return xmlNamedQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlOneToMany createXmlOneToMany()
+	{
+		XmlOneToMany xmlOneToMany = new XmlOneToMany();
+		return xmlOneToMany;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlOneToOne createXmlOneToOne()
+	{
+		XmlOneToOne xmlOneToOne = new XmlOneToOne();
+		return xmlOneToOne;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlOrderColumn createXmlOrderColumn()
+	{
+		XmlOrderColumn xmlOrderColumn = new XmlOrderColumn();
+		return xmlOrderColumn;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPersistenceUnitDefaults createXmlPersistenceUnitDefaults()
+	{
+		XmlPersistenceUnitDefaults xmlPersistenceUnitDefaults = new XmlPersistenceUnitDefaults();
+		return xmlPersistenceUnitDefaults;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPersistenceUnitMetadata createXmlPersistenceUnitMetadata()
+	{
+		XmlPersistenceUnitMetadata xmlPersistenceUnitMetadata = new XmlPersistenceUnitMetadata();
+		return xmlPersistenceUnitMetadata;
 	}
 
 	/**
@@ -715,17 +733,6 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTable createXmlTable()
-	{
-		XmlTable xmlTable = new XmlTable();
-		return xmlTable;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public XmlSecondaryTable createXmlSecondaryTable()
 	{
 		XmlSecondaryTable xmlSecondaryTable = new XmlSecondaryTable();
@@ -759,6 +766,17 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlTable createXmlTable()
+	{
+		XmlTable xmlTable = new XmlTable();
+		return xmlTable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlTableGenerator createXmlTableGenerator()
 	{
 		XmlTableGenerator xmlTableGenerator = new XmlTableGenerator();
@@ -770,10 +788,32 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlTransient createXmlTransient()
+	{
+		XmlTransient xmlTransient = new XmlTransient();
+		return xmlTransient;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlUniqueConstraint createXmlUniqueConstraint()
 	{
 		XmlUniqueConstraint xmlUniqueConstraint = new XmlUniqueConstraint();
 		return xmlUniqueConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlVersion createXmlVersion()
+	{
+		XmlVersion xmlVersion = new XmlVersion();
+		return xmlVersion;
 	}
 
 	/**
@@ -986,26 +1026,6 @@ public class OrmFactory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertOrderByToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String createVersionTypeFromString(EDataType eDataType, String initialValue)
-	{
-		return (String)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertVersionTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return super.convertToString(eDataType, instanceValue);
 	}

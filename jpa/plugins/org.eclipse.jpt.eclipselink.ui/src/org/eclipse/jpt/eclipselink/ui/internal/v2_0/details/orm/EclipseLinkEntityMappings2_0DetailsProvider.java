@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -31,23 +31,27 @@ public class EclipseLinkEntityMappings2_0DetailsProvider
 {
 	// singleton
 	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappings2_0DetailsProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaDetailsProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLinkEntityMappings2_0DetailsProvider() {
 		super();
 	}
 	
-	public IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK2_0_ORM_XML_CONTENT_TYPE;
+	
+	@Override
+	protected boolean providesDetails(JpaResourceType resourceType) {
+		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE);
 	}
 	
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
@@ -56,5 +60,4 @@ public class EclipseLinkEntityMappings2_0DetailsProvider
 
 		return new EclipseLinkEntityMappings2_0DetailsPage(parent, widgetFactory);
 	}
-
 }

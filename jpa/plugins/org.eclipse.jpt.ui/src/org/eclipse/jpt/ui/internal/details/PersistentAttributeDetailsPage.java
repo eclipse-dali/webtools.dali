@@ -51,12 +51,14 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	protected PersistentAttributeDetailsPage(Composite parent,
-                                            WidgetFactory widgetFactory) {
-
+	protected PersistentAttributeDetailsPage(
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -116,13 +118,12 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 	
 	protected JpaComposite buildMappingComposite(PageBook pageBook, String mappingKey) {
-		return getJpaPlatformUi().
-					buildAttributeMappingComposite(
-						getSubject().getContentType(),
-						mappingKey,
-						pageBook,
-						buildMappingHolder(mappingKey),
-						getWidgetFactory());
+		return getJpaPlatformUi().buildAttributeMappingComposite(
+				getSubject().getResourceType(),
+				mappingKey,
+				pageBook,
+				buildMappingHolder(mappingKey),
+				getWidgetFactory());
 	}
 	
 	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {

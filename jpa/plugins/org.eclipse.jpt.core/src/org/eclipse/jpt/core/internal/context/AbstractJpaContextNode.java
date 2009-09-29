@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -43,11 +43,11 @@ public abstract class AbstractJpaContextNode
 
 
 	// ********** JpaContextNode implementation **********
-
-	public IContentType getContentType() {
-		return getParent().getContentType();
+	
+	public JpaResourceType getResourceType() {
+		return getParent().getResourceType();
 	}
-
+	
 	/**
 	 * Overridden in GenericPersistence and GenericPersistenceXml to throw
 	 * UnsupportedOperationException.

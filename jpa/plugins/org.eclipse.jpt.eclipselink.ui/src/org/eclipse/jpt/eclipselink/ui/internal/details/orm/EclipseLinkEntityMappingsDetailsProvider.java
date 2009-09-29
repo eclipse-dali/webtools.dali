@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -31,30 +31,34 @@ public class EclipseLinkEntityMappingsDetailsProvider
 {
 	// singleton
 	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappingsDetailsProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaDetailsProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLinkEntityMappingsDetailsProvider() {
 		super();
 	}
 	
-	public IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+	
+	@Override
+	protected boolean providesDetails(JpaResourceType resourceType) {
+		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_0_RESOURCE_TYPE)
+				|| resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_1_RESOURCE_TYPE);
 	}
 	
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		return new EclipseLinkEntityMappingsDetailsPage(parent, widgetFactory);
 	}
-
 }

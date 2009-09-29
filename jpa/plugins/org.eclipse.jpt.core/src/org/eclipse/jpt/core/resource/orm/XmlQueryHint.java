@@ -14,8 +14,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlQueryHint_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -39,11 +41,30 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryHint()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
+public class XmlQueryHint extends AbstractJpaEObject implements XmlQueryHint_2_0
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -103,6 +124,41 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_QUERY_HINT;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryHint_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlQueryHint#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_QUERY_HINT__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -185,6 +241,8 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_QUERY_HINT__DESCRIPTION:
+				return getDescription();
 			case OrmPackage.XML_QUERY_HINT__NAME:
 				return getName();
 			case OrmPackage.XML_QUERY_HINT__VALUE:
@@ -203,6 +261,9 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_QUERY_HINT__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case OrmPackage.XML_QUERY_HINT__NAME:
 				setName((String)newValue);
 				return;
@@ -223,6 +284,9 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_QUERY_HINT__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case OrmPackage.XML_QUERY_HINT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -243,6 +307,8 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_QUERY_HINT__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_QUERY_HINT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_QUERY_HINT__VALUE:
@@ -262,7 +328,9 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (description: ");
+		result.append(description);
+		result.append(", name: ");
 		result.append(name);
 		result.append(", value: ");
 		result.append(value);
@@ -279,7 +347,8 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
-			buildValueTranslator()
+			buildValueTranslator(),
+			buildDescriptionTranslator()
 		};
 	}
 	
@@ -291,4 +360,7 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 		return new Translator(JPA.VALUE, OrmPackage.eINSTANCE.getXmlQueryHint_Value(), Translator.DOM_ATTRIBUTE);
 	}
 
-} // QueryHint
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlQueryHint_2_0_Description());
+	}
+}

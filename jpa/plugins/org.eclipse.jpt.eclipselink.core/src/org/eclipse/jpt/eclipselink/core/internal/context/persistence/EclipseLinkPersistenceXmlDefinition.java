@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.PersistenceXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.persistence.PersistenceXmlDefinition;
@@ -50,8 +50,7 @@ public class EclipseLinkPersistenceXmlDefinition
 		return new EclipseLinkPersistenceXmlContextNodeFactory();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
+	public JpaResourceType getResourceType() {
+		return JptCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE;
 	}
-	
 }

@@ -77,9 +77,7 @@ public class Generic2_0JpaPlatformProvider
 			JavaResourceModelProvider.instance(),
 			JarResourceModelProvider.instance(),
 			PersistenceResourceModelProvider.instance(),
-			OrmResourceModelProvider.instance(),
-			Persistence2_0ResourceModelProvider.instance(),
-			Orm2_0ResourceModelProvider.instance()};
+			OrmResourceModelProvider.instance()};
 	}
 	
 	

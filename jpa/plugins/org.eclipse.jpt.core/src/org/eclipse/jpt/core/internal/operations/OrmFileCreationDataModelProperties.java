@@ -11,22 +11,8 @@
 package org.eclipse.jpt.core.internal.operations;
 
 public interface OrmFileCreationDataModelProperties
+	extends JpaFileCreationDataModelProperties
 {
-	/**
-	 * Required, type String, identifies the name of the project in which to create the file
-	 */
-	public static final String PROJECT_NAME = "OrmFileCreationDataModelProperties.PROJECT_NAME";
-	
-	/**
-	 * Required, type String, identifies the fully pathed source folder in which to create the file
-	 */
-	public static final String SOURCE_FOLDER = "OrmFileCreationDataModelProperties.SOURCE_FOLDER";
-	
-	/**
-	 * Required, type String, identifies the file path relative to the source folder
-	 */
-	public static final String FILE_PATH = "OrmFileCreationDataModelProperties.FILE_PATH";
-	
 	/**
 	 * Optional, type AccessType, specifies the default access type (or null)
 	 */

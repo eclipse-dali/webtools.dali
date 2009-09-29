@@ -17,8 +17,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlPersistenceUnitMetadata_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -42,11 +44,30 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitMetadata()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements JpaEObject
+public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements XmlPersistenceUnitMetadata_2_0
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #isXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -96,6 +117,41 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_PERSISTENCE_UNIT_METADATA;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitMetadata_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_METADATA__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -219,6 +275,8 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__DESCRIPTION:
+				return getDescription();
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				return isXmlMappingMetadataComplete();
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
@@ -237,6 +295,9 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				setXmlMappingMetadataComplete((Boolean)newValue);
 				return;
@@ -257,6 +318,9 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				setXmlMappingMetadataComplete(XML_MAPPING_METADATA_COMPLETE_EDEFAULT);
 				return;
@@ -277,6 +341,8 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				return xmlMappingMetadataComplete != XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
@@ -296,7 +362,9 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (xmlMappingMetadataComplete: ");
+		result.append(" (description: ");
+		result.append(description);
+		result.append(", xmlMappingMetadataComplete: ");
 		result.append(xmlMappingMetadataComplete);
 		result.append(')');
 		return result.toString();
@@ -310,9 +378,14 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
+			buildDescriptionTranslator(),
 			buildXmlMappingMetadataCompleteTranslator(),
-			buildXmlPersistenceUnitDefaultsTranslator()
+			XmlPersistenceUnitDefaults.buildTranslator(JPA2_0.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
 		};
+	}
+	
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlPersistenceUnitMetadata_2_0_Description());
 	}
 
 	protected static Translator buildXmlPersistenceUnitDefaultsTranslator() {
@@ -322,4 +395,4 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	protected static Translator buildXmlMappingMetadataCompleteTranslator() {
 		return new EmptyTagBooleanTranslator(JPA.XML_MAPPING_METADATA_COMPLETE, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_XmlMappingMetadataComplete());
 	}
-} // PersistenceUnitMetadata
+}

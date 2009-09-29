@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
@@ -39,7 +39,8 @@ public class EclipseLinkOrmXmlDefinition
 	// singleton
 	private static final OrmXmlDefinition INSTANCE = 
 			new EclipseLinkOrmXmlDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
@@ -64,8 +65,8 @@ public class EclipseLinkOrmXmlDefinition
 		return new EclipseLinkOrmXmlContextNodeFactory();
 	}
 
-	public IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+	public JpaResourceType getResourceType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_0_RESOURCE_TYPE;
 	}
 	
 	

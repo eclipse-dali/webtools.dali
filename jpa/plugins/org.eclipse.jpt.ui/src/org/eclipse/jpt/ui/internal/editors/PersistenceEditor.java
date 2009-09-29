@@ -126,7 +126,7 @@ public class PersistenceEditor extends FormEditor
 		String platformId = jpaProject.getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 		PersistenceXmlResourceUiDefinition definition = 
-			(PersistenceXmlResourceUiDefinition) jpaPlatformUI.getFileUiDefinition(jpaProject.getRootContextNode().getPersistenceXml().getContentType());
+			(PersistenceXmlResourceUiDefinition) jpaPlatformUI.getResourceUiDefinition(jpaProject.getRootContextNode().getPersistenceXml().getResourceType());
 
 		ListIterator<JpaPageComposite> pages = definition.buildPersistenceUnitComposites(
 			buildPersistenceUnitHolder(),

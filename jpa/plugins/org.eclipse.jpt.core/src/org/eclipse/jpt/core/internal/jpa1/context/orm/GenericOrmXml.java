@@ -10,10 +10,8 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFileRoot;
@@ -22,9 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.core.resource.xml.EmfTools;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -78,8 +74,8 @@ public class GenericOrmXml
 	}
 
 	@Override
-	public IContentType getContentType() {
-		return this.xmlResource.getContentType();
+	public JpaResourceType getResourceType() {
+		return this.xmlResource.getResourceType();
 	}
 	
 	
@@ -116,39 +112,6 @@ public class GenericOrmXml
 		EntityMappings old = this.entityMappings;
 		this.entityMappings = entityMappings;
 		this.firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, old, entityMappings);
-	}
-
-	public EntityMappings addEntityMappings() {
-		if (this.entityMappings != null) {
-			throw new IllegalStateException();
-		}
-		
-		XmlEntityMappings xmlEntityMappings = this.buildEntityMappingsResource();
-		this.entityMappings = this.buildEntityMappings(xmlEntityMappings);
-		this.xmlResource.getContents().add(xmlEntityMappings);
-		this.firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
-		return this.entityMappings;
-	}
-	
-	protected XmlEntityMappings buildEntityMappingsResource() {
-		return EmfTools.create(
-			getResourceNodeFactory(), 
-			OrmPackage.eINSTANCE.getXmlEntityMappings(), 
-			XmlEntityMappings.class);
-	}
-	
-	public void removeEntityMappings() {
-		if (this.entityMappings == null) {
-			throw new IllegalStateException();
-		}
-		this.getJpaFile(this.xmlResource.getFile()).removeRootStructureNode(this.xmlResource);
-		this.entityMappings.dispose();
-		EntityMappings old = this.entityMappings;
-		
-		this.entityMappings = null;
-		EObject xmlEntityMappings = this.xmlResource.getRootObject(); //TODO helper removeEntityMappings method on ormResource??
-		this.xmlResource.getContents().remove(xmlEntityMappings);
-		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, old, null);
 	}
 	
 	

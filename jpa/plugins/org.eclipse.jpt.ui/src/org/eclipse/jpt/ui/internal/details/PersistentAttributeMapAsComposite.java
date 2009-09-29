@@ -25,24 +25,24 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see JavaPersistentAttributeMapAsComposite
  * @see OrmPersistentAttributeMapAsComposite
- *
- * @version 2.2
- * @since 2.0
  */
-public class PersistentAttributeMapAsComposite extends MapAsComposite<PersistentAttribute> {
-
+public class PersistentAttributeMapAsComposite 
+	extends MapAsComposite<PersistentAttribute>
+{
 	/**
 	 * Creates a new <code>PersistentAttributeMapAsComposite</code>.
 	 *
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistentAttributeMapAsComposite(Pane<? extends PersistentAttribute> parentPane,
-                                            Composite parent) {
-
+	public PersistentAttributeMapAsComposite(
+			Pane<? extends PersistentAttribute> parentPane,
+            Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
+	
 	@Override
 	protected String getMappingKey() {
 		return getSubject().getMappingKey();
@@ -93,24 +93,18 @@ public class PersistentAttributeMapAsComposite extends MapAsComposite<Persistent
 		};
 	}
 	
-	/**
-	 * Retrieves the list of definitions that are registered with the JPT plugin.
-	 *
-	 * @return The supported types of mapping
-	 */
 	protected Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions() {
-		return getJpaPlatformUi().attributeMappingUiDefinitions(getSubject().getContentType());
+		return getJpaPlatformUi().attributeMappingUiDefinitions(getSubject().getResourceType());
 	}
-
+	
 	@Override
 	protected DefaultMappingUiDefinition<?> getDefaultDefinition() {
 		return getDefaultDefinition(getSubject().getDefaultMappingKey());
-
 	}
 	
 	@Override
 	protected DefaultMappingUiDefinition<?> getDefaultDefinition(String mappingKey) {
-		return getJpaPlatformUi().getDefaultAttributeMappingUiDefinition(getSubject().getContentType(), mappingKey);
+		return getJpaPlatformUi().getDefaultAttributeMappingUiDefinition(getSubject().getResourceType(), mappingKey);
 	}
 
 

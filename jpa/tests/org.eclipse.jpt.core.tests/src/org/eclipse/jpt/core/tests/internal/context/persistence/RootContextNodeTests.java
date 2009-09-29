@@ -10,10 +10,12 @@
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class RootContextNodeTests extends ContextModelTestCase
 {
@@ -22,18 +24,17 @@ public class RootContextNodeTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateAddPersistenceXml() throws Exception {
-		JpaXmlResource pr = getPersistenceXmlResource();
-		deleteResource(pr);
-		
-		assertFalse(pr.fileExists());
-		
+		deleteResource(getPersistenceXmlResource());
 		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContextNode();
+		
+		assertFalse(getPersistenceXmlResource().fileExists());
 		assertNull(baseJpaContent.getPersistenceXml());
 		
-		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		xmlPersistence.setVersion("1.0");
-		pr.getContents().add(xmlPersistence);
-		pr.save(null);
+		IDataModel config =
+			DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
+		config.setProperty(PersistenceFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.getDefaultOperation().execute(null, null);
+		
 		assertNotNull(baseJpaContent.getPersistenceXml());
 	}
 	

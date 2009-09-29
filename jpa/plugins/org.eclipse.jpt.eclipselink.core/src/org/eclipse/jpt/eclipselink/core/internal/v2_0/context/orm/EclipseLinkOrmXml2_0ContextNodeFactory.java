@@ -23,16 +23,13 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverr
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlAssociationOverride2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlContextNodeFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded;
 
-
 public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlContextNodeFactory
 {	
-
 	@Override
 	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
 		return new GenericOrmAssociationOverrideContainer(parent, owner, resourceAssociationOverrideContainer);
@@ -40,12 +37,12 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 	
 	@Override
 	public OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent, org.eclipse.jpt.core.resource.orm.XmlAssociationOverride associationOverride) {
-		return new GenericOrmAssociationOverrideRelationshipReference2_0(parent, (XmlAssociationOverride) associationOverride);
+		return new GenericOrmAssociationOverrideRelationshipReference2_0(parent, associationOverride);
 	}
 	
 	@Override
 	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
-		return new GenericOrmSequenceGenerator2_0(parent, (XmlSequenceGenerator) resourceSequenceGenerator);
+		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
 	}
 	
 //TODO support derived ids in eclipselink orm 2.0
@@ -53,7 +50,7 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 //	public OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource) {
 //		return new GenericOrmDerivedId2_0(parent, resource);
 //	}
-
+	
 	
 	// ********** ORM Virtual Resource Model **********
 	
@@ -61,10 +58,9 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 	public XmlEmbedded buildVirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
 		return new VirtualEclipseLinkXmlEmbedded2_0(ormTypeMapping, javaEmbeddedMapping);
 	}
-
+	
 	@Override
 	public XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmTypeMapping parent, JoiningStrategy joiningStrategy) {
 		return new VirtualXmlAssociationOverride2_0(name, parent, joiningStrategy);		
 	}
-
 }

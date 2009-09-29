@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import java.util.List;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -43,28 +43,31 @@ public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDe
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_0UiDefinition();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLinkOrmXml2_0UiDefinition() {
 		super();
 	}
-
+	
+	
 	@Override
 	protected OrmXmlUiFactory buildOrmXmlUiFactory() {
 		return new EclipseLinkOrmXml2_0UiFactory();
 	}
 	
-	public IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK2_0_ORM_XML_CONTENT_TYPE;
+	public boolean providesUi(JpaResourceType resourceType) {
+		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE);
 	}
 	
 	public JpaStructureProvider getStructureProvider() {
@@ -97,5 +100,4 @@ public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDe
 		definitions.add(OrmMappedSuperclassUiDefinition.instance());
 		definitions.add(OrmEmbeddableUiDefinition.instance());
 	}
-
 }

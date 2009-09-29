@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.structure;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.structure.PersistenceItemContentProviderFactory;
 import org.eclipse.jpt.ui.internal.structure.PersistenceItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
@@ -22,25 +20,24 @@ public class Persistence2_0ResourceModelStructureProvider
 {
 	// singleton
 	private static final JpaStructureProvider INSTANCE = new Persistence2_0ResourceModelStructureProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaStructureProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singelton usage
 	 */
 	private Persistence2_0ResourceModelStructureProvider() {
 		super();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.PERSISTENCE2_0_XML_CONTENT_TYPE;
-	}
-
+	
 	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new PersistenceItemContentProviderFactory();
 	}
@@ -48,5 +45,4 @@ public class Persistence2_0ResourceModelStructureProvider
 	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new PersistenceItemLabelProviderFactory();
 	}
-
 }

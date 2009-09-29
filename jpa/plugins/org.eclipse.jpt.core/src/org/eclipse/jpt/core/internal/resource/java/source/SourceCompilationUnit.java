@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -21,9 +20,11 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaResourceModelListener;
+import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutor;
@@ -198,6 +199,10 @@ public final class SourceCompilationUnit
 
 
 	// ********** JpaResourceModel implementation **********
+	
+	public JpaResourceType getResourceType() {
+		return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+	}
 
 	public void addResourceModelListener(JpaResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);

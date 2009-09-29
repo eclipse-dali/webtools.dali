@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -31,6 +30,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -71,7 +71,17 @@ public class JptCorePlugin extends Plugin {
 	 * (value <code>"jpt.jpa"</code>).
 	 */
 	public static final String FACET_ID = "jpt.jpa";  //$NON-NLS-1$
-
+	
+	/**
+	 * Version string for JPA facet version 1.0
+	 */
+	public static final String JPA_FACET_VERSION_1_0 = "1.0";  //$NON-NLS-1$
+	
+	/**
+	 * Version string for JPA facet version 2.0
+	 */
+	public static final String JPA_FACET_VERSION_2_0 = "2.0";  //$NON-NLS-1$
+	
 	/**
 	 * The key for storing a JPA project's platform ID in the Eclipse
 	 * project's preferences.
@@ -121,42 +131,61 @@ public class JptCorePlugin extends Plugin {
 	 * The content type for Java source code files.
 	 */
 	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
-
+	
 	/**
-	 * The base content type for all persistence.xml files.
+	 * The resource type for Java source code files
 	 */
-	public static final IContentType PERSISTENCE_FILE_CONTENT_TYPE = getJpaContentType("persistenceFile"); //$NON-NLS-1$
-
+	public static final JpaResourceType JAVA_SOURCE_RESOURCE_TYPE = new JpaResourceType(JAVA_SOURCE_CONTENT_TYPE);
+	
 	/**
-	 * The content type for persistence.xml 1.0 (based on the persistence 1.0 schema) files.
+	 * The content type for persistence.xml files.
 	 */
 	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
-
+	
 	/**
-	 * The content type for persistence.xml 2.0 (based on the persistence 2.0 schema) files.
+	 * The resource type for persistence.xml version 1.0 files
 	 */
-	public static final IContentType PERSISTENCE2_0_XML_CONTENT_TYPE = getJpaContentType("persistence2_0"); //$NON-NLS-1$
-
+	public static final JpaResourceType PERSISTENCE_XML_1_0_RESOURCE_TYPE = 
+			new JpaResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.JPA.SCHEMA_VERSION);
+	
+	/**
+	 * The resource type for persistence.xml version 2.0 files
+	 */
+	public static final JpaResourceType PERSISTENCE_XML_2_0_RESOURCE_TYPE = 
+			new JpaResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0.SCHEMA_VERSION);
+	
 	/**
 	 * The base content type for all mapping files.
 	 */
 	public static final IContentType MAPPING_FILE_CONTENT_TYPE = getJpaContentType("mappingFile"); //$NON-NLS-1$
 
 	/**
-	 * The content type for orm.xml 1.0 (based on the orm 1.0 schema) mapping files.
+	 * The content type for orm.xml mapping files.
 	 */
 	public static final IContentType ORM_XML_CONTENT_TYPE = getJpaContentType("orm"); //$NON-NLS-1$
-
+	
 	/**
-	 * The content type for orm.xml 2.0 (based on the orm 2.0 schema) mapping files.
+	 * The resource type for orm.xml version 1.0 mapping files
 	 */
-	public static final IContentType ORM2_0_XML_CONTENT_TYPE = getJpaContentType("orm2_0"); //$NON-NLS-1$
-
+	public static final JpaResourceType ORM_XML_1_0_RESOURCE_TYPE = 
+			new JpaResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.JPA.SCHEMA_VERSION);
+	
+	/**
+	 * The resource type for orm.xml version 2.0 mapping files
+	 */
+	public static final JpaResourceType ORM_XML_2_0_RESOURCE_TYPE = 
+			new JpaResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0.SCHEMA_VERSION);
+	
 	/**
 	 * The content type for Java archives (JARs).
 	 */
 	public static final IContentType JAR_CONTENT_TYPE = getJpaContentType("jar"); //$NON-NLS-1$
-
+	
+	/**
+	 * The resource type for Java archives (JARs)
+	 */
+	public static final JpaResourceType JAR_RESOURCE_TYPE = new JpaResourceType(JAR_CONTENT_TYPE);
+	
 	/**
 	 * Web projects have some special exceptions.
 	 */
@@ -170,17 +199,20 @@ public class JptCorePlugin extends Plugin {
 	public static final String DEFAULT_PERSISTENCE_XML_FILE_PATH = "META-INF/persistence.xml"; //$NON-NLS-1$
 
 	public static final String DEFAULT_ORM_XML_FILE_PATH = "META-INF/orm.xml"; //$NON-NLS-1$
-
+	
 	private static IContentType getJpaContentType(String jpaContentType) {
 		return getContentType(CONTENT_PREFIX_ + jpaContentType);
 	}
+	
 	public static final String CONTENT_PREFIX = PLUGIN_ID_ + "content"; //$NON-NLS-1$
+	
 	public static final String CONTENT_PREFIX_ = CONTENT_PREFIX + '.';
-
+	
 	private static IContentType getContentType(String contentType) {
 		return Platform.getContentTypeManager().getContentType(contentType);
 	}
-
+	
+	
 	private ServiceTracker parserTracker;
 
 	// ********** singleton **********

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.resource.orm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -20,10 +21,15 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EnumeratedValueTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.xml.CommonPackage;
+import org.eclipse.jpt.core.resource.xml.JpaRootEObject;
 import org.eclipse.jpt.core.resource.xml.XML;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -41,7 +47,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getDescription <em>Description</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPackage <em>Package</em>}</li>
@@ -60,8 +65,37 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryContainer, XmlAccessHolder
+public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObject, XmlQueryContainer, XmlAccessHolder
 {
+	/**
+	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String VERSION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected String version = VERSION_EDEFAULT;
+
+	/**
+	 * This is true if the Version attribute has been set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean versionESet;
+
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -97,35 +131,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	 * @ordered
 	 */
 	protected AccessType access = ACCESS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String VERSION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected String version = VERSION_EDEFAULT;
-
-	/**
-	 * This is true if the Version attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean versionESet;
 
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -356,15 +361,15 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	 * @see #isSetVersion()
 	 * @see #unsetVersion()
 	 * @see #setVersion(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Version()
-	 * @model unsettable="true" dataType="org.eclipse.jpt.core.resource.orm.VersionType" required="true"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJpaRootEObject_Version()
+	 * @model unsettable="true" required="true"
 	 * @generated
 	 */
 	public String getVersion()
 	{
 		return version;
 	}
-
+	
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -837,14 +842,14 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
+				return getVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return getNamedQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return getNamedNativeQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				return getAccess();
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				return getVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				return getDescription();
 			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
@@ -882,6 +887,9 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
+				setVersion((String)newValue);
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
@@ -892,9 +900,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				setAccess((AccessType)newValue);
-				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				setVersion((String)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription((String)newValue);
@@ -949,6 +954,9 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
+				unsetVersion();
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				return;
@@ -957,9 +965,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
-				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				unsetVersion();
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
@@ -1008,14 +1013,14 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
+				return isSetVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return namedQueries != null && !namedQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				return access != ACCESS_EDEFAULT;
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				return isSetVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
@@ -1051,6 +1056,15 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES: return OrmPackage.XML_QUERY_CONTAINER__NAMED_QUERIES;
+				case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES: return OrmPackage.XML_QUERY_CONTAINER__NAMED_NATIVE_QUERIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -1070,6 +1084,15 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_QUERY_CONTAINER__NAMED_QUERIES: return OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES;
+				case OrmPackage.XML_QUERY_CONTAINER__NAMED_NATIVE_QUERIES: return OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessHolder.class)
 		{
 			switch (baseFeatureID)
@@ -1094,10 +1117,10 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (access: ");
-		result.append(access);
-		result.append(", version: ");
+		result.append(" (version: ");
 		if (versionESet) result.append(version); else result.append("<unset>");
+		result.append(", access: ");
+		result.append(access);
 		result.append(", description: ");
 		result.append(description);
 		result.append(", package: ");
@@ -1144,40 +1167,47 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 			buildSchemaNamespaceTranslator(),
 			buildSchemaLocationTranslator(),
 			buildDescriptionTranslator(),
-			XmlPersistenceUnitMetadata.buildTranslator(JPA.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
+			XmlPersistenceUnitMetadata.buildTranslator(JPA2_0.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
 			buildSchemaTranslator(),
 			buildCatalogTranslator(),
 			buildAccessTranslator(),
-			XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
-			XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
-			XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
-			XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
-			SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
-			XmlMappedSuperclass.buildTranslator(JPA.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
-			XmlEntity.buildTranslator(JPA.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
-			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
+			XmlSequenceGenerator.buildTranslator(JPA2_0.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
+			XmlTableGenerator.buildTranslator(JPA2_0.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
+			XmlNamedQuery.buildTranslator(JPA2_0.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
+			XmlNamedNativeQuery.buildTranslator(JPA2_0.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
+			SqlResultSetMapping.buildTranslator(JPA2_0.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
+			XmlMappedSuperclass.buildTranslator(JPA2_0.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
+			XmlEntity.buildTranslator(JPA2_0.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
+			XmlEmbeddable.buildTranslator(JPA2_0.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
 	}
 
+	protected static Translator buildVersionTranslator() {
+		return new EnumeratedValueTranslator(
+				JPA.ENTITY_MAPPINGS__VERSION, 
+				CommonPackage.eINSTANCE.getJpaRootEObject_Version(),
+				Translator.DOM_ATTRIBUTE) {
+			
+			@Override
+			protected Iterator enumeratedObjectValues() {
+				return new ArrayIterator(new Object[] { JPA.SCHEMA_VERSION, JPA2_0.SCHEMA_VERSION });
+			}
+		};
+	}
+	
 	private static Translator buildNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.SCHEMA_NAMESPACE);
 	}
-
+	
 	protected static Translator buildSchemaNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE_XSI, XML.XSI_NAMESPACE_URL);
 	}
-
+	
 	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.SCHEMA_NAMESPACE + ' ' + JPA.SCHEMA_LOCATION);
-	}
-
-	protected static Translator buildVersionTranslator() {
-		return new Translator(
-				JPA.ENTITY_MAPPINGS__VERSION,
-				OrmPackage.eINSTANCE.getXmlEntityMappings_Version(),
-				Translator.DOM_ATTRIBUTE
-			);
+		return new ConstantAttributeTranslator(
+				XML.XSI_SCHEMA_LOCATION, 
+				JPA.SCHEMA_NAMESPACE + ' ' + JPA.SCHEMA_LOCATION);
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
@@ -1199,5 +1229,4 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	protected static Translator buildAccessTranslator() {
 		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access());
 	}
-	
 }

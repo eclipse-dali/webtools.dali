@@ -12,9 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v1_1.operations;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationOperation;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
-import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm.EclipseLink1_1OrmXmlResourceProvider;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class EclipseLink1_1OrmFileCreationOperation extends OrmFileCreationOperation
@@ -23,14 +21,9 @@ public class EclipseLink1_1OrmFileCreationOperation extends OrmFileCreationOpera
 		super(dataModel);
 	}
 	
+	
 	@Override
 	protected AbstractXmlResourceProvider getXmlResourceProvider(IFile file) {
 		return EclipseLink1_1OrmXmlResourceProvider.getXmlResourceProvider(file);
 	}
-	
-	@Override
-	protected XmlPersistenceUnitMetadata createXmlPersistenceUnitMetadata() {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
-	}
-
 }

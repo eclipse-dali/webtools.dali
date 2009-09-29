@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAssociationOverride;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlJoinTable;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 

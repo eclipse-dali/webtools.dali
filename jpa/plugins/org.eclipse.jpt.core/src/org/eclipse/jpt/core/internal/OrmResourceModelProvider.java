@@ -47,5 +47,4 @@ public class OrmResourceModelProvider
 	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {
 		return OrmXmlResourceProvider.getXmlResourceProvider(file).getXmlResource();
 	}
-
 }

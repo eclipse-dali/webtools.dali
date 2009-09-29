@@ -348,4 +348,4 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 		};
 	}
 
-} // XmlBasicMapImpl
+}

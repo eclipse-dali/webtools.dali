@@ -32,7 +32,7 @@ public abstract class AbstractOrmXmlContextNode
 	}
 	
 	public OrmXmlDefinition getMappingFileDefinition() {
-		return (OrmXmlDefinition) getJpaPlatform().getResourceDefinition(getContentType());
+		return (OrmXmlDefinition) getJpaPlatform().getResourceDefinition(getResourceType());
 	}
 	
 	public EFactory getResourceNodeFactory() {

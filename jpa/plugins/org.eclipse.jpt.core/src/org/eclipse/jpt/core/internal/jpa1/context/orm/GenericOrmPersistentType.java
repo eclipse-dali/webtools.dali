@@ -180,10 +180,10 @@ public class GenericOrmPersistentType
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
-		OrmTypeMappingDefinition mappingDefintion = 
+		OrmTypeMappingDefinition mappingDefinition = 
 				getMappingFileDefinition().getOrmTypeMappingDefinition(newMappingKey);
 		XmlTypeMapping resourceTypeMapping = 
-			mappingDefintion.buildResourceMapping(getResourceNodeFactory());
+			mappingDefinition.buildResourceMapping(getResourceNodeFactory());
 		this.typeMapping = buildTypeMapping(resourceTypeMapping);
 		this.getEntityMappings().changeMapping(this, oldMapping, this.typeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);

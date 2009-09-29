@@ -18,6 +18,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -45,78 +48,28 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEventMethodContainer
+public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlMappedSuperclass_2_0
 {
 
 	/**
-	 * The cached value of the '{@link #getPrePersist() <em>Pre Persist</em>}' containment reference.
+	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPrePersist()
+	 * @see #getCacheable()
 	 * @generated
 	 * @ordered
 	 */
-	protected PrePersist prePersist;
+	protected static final Boolean CACHEABLE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getPostPersist() <em>Post Persist</em>}' containment reference.
+	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPostPersist()
+	 * @see #getCacheable()
 	 * @generated
 	 * @ordered
 	 */
-	protected PostPersist postPersist;
-
-	/**
-	 * The cached value of the '{@link #getPreRemove() <em>Pre Remove</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPreRemove()
-	 * @generated
-	 * @ordered
-	 */
-	protected PreRemove preRemove;
-
-	/**
-	 * The cached value of the '{@link #getPostRemove() <em>Post Remove</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPostRemove()
-	 * @generated
-	 * @ordered
-	 */
-	protected PostRemove postRemove;
-
-	/**
-	 * The cached value of the '{@link #getPreUpdate() <em>Pre Update</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPreUpdate()
-	 * @generated
-	 * @ordered
-	 */
-	protected PreUpdate preUpdate;
-
-	/**
-	 * The cached value of the '{@link #getPostUpdate() <em>Post Update</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPostUpdate()
-	 * @generated
-	 * @ordered
-	 */
-	protected PostUpdate postUpdate;
-
-	/**
-	 * The cached value of the '{@link #getPostLoad() <em>Post Load</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPostLoad()
-	 * @generated
-	 * @ordered
-	 */
-	protected PostLoad postLoad;
+	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
@@ -205,6 +158,41 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_MAPPED_SUPERCLASS;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cacheable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cacheable</em>' attribute.
+	 * @see #setCacheable(Boolean)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_2_0_Cacheable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCacheable()
+	{
+		return cacheable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getCacheable <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cacheable</em>' attribute.
+	 * @see #getCacheable()
+	 * @generated
+	 */
+	public void setCacheable(Boolean newCacheable)
+	{
+		Boolean oldCacheable = cacheable;
+		cacheable = newCacheable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE, oldCacheable, cacheable));
 	}
 
 	/**
@@ -398,426 +386,6 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Pre Persist</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Pre Persist</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Pre Persist</em>' containment reference.
-	 * @see #setPrePersist(PrePersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PrePersist()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public PrePersist getPrePersist()
-	{
-		return prePersist;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetPrePersist(PrePersist newPrePersist, NotificationChain msgs)
-	{
-		PrePersist oldPrePersist = prePersist;
-		prePersist = newPrePersist;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST, oldPrePersist, newPrePersist);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPrePersist <em>Pre Persist</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Pre Persist</em>' containment reference.
-	 * @see #getPrePersist()
-	 * @generated
-	 */
-	public void setPrePersist(PrePersist newPrePersist)
-	{
-		if (newPrePersist != prePersist)
-		{
-			NotificationChain msgs = null;
-			if (prePersist != null)
-				msgs = ((InternalEObject)prePersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST, null, msgs);
-			if (newPrePersist != null)
-				msgs = ((InternalEObject)newPrePersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST, null, msgs);
-			msgs = basicSetPrePersist(newPrePersist, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST, newPrePersist, newPrePersist));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Post Persist</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Post Persist</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Post Persist</em>' containment reference.
-	 * @see #setPostPersist(PostPersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostPersist()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public PostPersist getPostPersist()
-	{
-		return postPersist;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetPostPersist(PostPersist newPostPersist, NotificationChain msgs)
-	{
-		PostPersist oldPostPersist = postPersist;
-		postPersist = newPostPersist;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST, oldPostPersist, newPostPersist);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostPersist <em>Post Persist</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Post Persist</em>' containment reference.
-	 * @see #getPostPersist()
-	 * @generated
-	 */
-	public void setPostPersist(PostPersist newPostPersist)
-	{
-		if (newPostPersist != postPersist)
-		{
-			NotificationChain msgs = null;
-			if (postPersist != null)
-				msgs = ((InternalEObject)postPersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST, null, msgs);
-			if (newPostPersist != null)
-				msgs = ((InternalEObject)newPostPersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST, null, msgs);
-			msgs = basicSetPostPersist(newPostPersist, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST, newPostPersist, newPostPersist));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Pre Remove</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Pre Remove</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Pre Remove</em>' containment reference.
-	 * @see #setPreRemove(PreRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreRemove()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public PreRemove getPreRemove()
-	{
-		return preRemove;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetPreRemove(PreRemove newPreRemove, NotificationChain msgs)
-	{
-		PreRemove oldPreRemove = preRemove;
-		preRemove = newPreRemove;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE, oldPreRemove, newPreRemove);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreRemove <em>Pre Remove</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Pre Remove</em>' containment reference.
-	 * @see #getPreRemove()
-	 * @generated
-	 */
-	public void setPreRemove(PreRemove newPreRemove)
-	{
-		if (newPreRemove != preRemove)
-		{
-			NotificationChain msgs = null;
-			if (preRemove != null)
-				msgs = ((InternalEObject)preRemove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE, null, msgs);
-			if (newPreRemove != null)
-				msgs = ((InternalEObject)newPreRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE, null, msgs);
-			msgs = basicSetPreRemove(newPreRemove, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE, newPreRemove, newPreRemove));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Post Remove</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Post Remove</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Post Remove</em>' containment reference.
-	 * @see #setPostRemove(PostRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostRemove()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public PostRemove getPostRemove()
-	{
-		return postRemove;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetPostRemove(PostRemove newPostRemove, NotificationChain msgs)
-	{
-		PostRemove oldPostRemove = postRemove;
-		postRemove = newPostRemove;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE, oldPostRemove, newPostRemove);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostRemove <em>Post Remove</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Post Remove</em>' containment reference.
-	 * @see #getPostRemove()
-	 * @generated
-	 */
-	public void setPostRemove(PostRemove newPostRemove)
-	{
-		if (newPostRemove != postRemove)
-		{
-			NotificationChain msgs = null;
-			if (postRemove != null)
-				msgs = ((InternalEObject)postRemove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE, null, msgs);
-			if (newPostRemove != null)
-				msgs = ((InternalEObject)newPostRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE, null, msgs);
-			msgs = basicSetPostRemove(newPostRemove, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE, newPostRemove, newPostRemove));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Pre Update</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Pre Update</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Pre Update</em>' containment reference.
-	 * @see #setPreUpdate(PreUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreUpdate()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public PreUpdate getPreUpdate()
-	{
-		return preUpdate;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetPreUpdate(PreUpdate newPreUpdate, NotificationChain msgs)
-	{
-		PreUpdate oldPreUpdate = preUpdate;
-		preUpdate = newPreUpdate;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE, oldPreUpdate, newPreUpdate);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreUpdate <em>Pre Update</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Pre Update</em>' containment reference.
-	 * @see #getPreUpdate()
-	 * @generated
-	 */
-	public void setPreUpdate(PreUpdate newPreUpdate)
-	{
-		if (newPreUpdate != preUpdate)
-		{
-			NotificationChain msgs = null;
-			if (preUpdate != null)
-				msgs = ((InternalEObject)preUpdate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE, null, msgs);
-			if (newPreUpdate != null)
-				msgs = ((InternalEObject)newPreUpdate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE, null, msgs);
-			msgs = basicSetPreUpdate(newPreUpdate, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE, newPreUpdate, newPreUpdate));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Post Update</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Post Update</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Post Update</em>' containment reference.
-	 * @see #setPostUpdate(PostUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostUpdate()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public PostUpdate getPostUpdate()
-	{
-		return postUpdate;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetPostUpdate(PostUpdate newPostUpdate, NotificationChain msgs)
-	{
-		PostUpdate oldPostUpdate = postUpdate;
-		postUpdate = newPostUpdate;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE, oldPostUpdate, newPostUpdate);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostUpdate <em>Post Update</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Post Update</em>' containment reference.
-	 * @see #getPostUpdate()
-	 * @generated
-	 */
-	public void setPostUpdate(PostUpdate newPostUpdate)
-	{
-		if (newPostUpdate != postUpdate)
-		{
-			NotificationChain msgs = null;
-			if (postUpdate != null)
-				msgs = ((InternalEObject)postUpdate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE, null, msgs);
-			if (newPostUpdate != null)
-				msgs = ((InternalEObject)newPostUpdate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE, null, msgs);
-			msgs = basicSetPostUpdate(newPostUpdate, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE, newPostUpdate, newPostUpdate));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Post Load</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Post Load</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Post Load</em>' containment reference.
-	 * @see #setPostLoad(PostLoad)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostLoad()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public PostLoad getPostLoad()
-	{
-		return postLoad;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetPostLoad(PostLoad newPostLoad, NotificationChain msgs)
-	{
-		PostLoad oldPostLoad = postLoad;
-		postLoad = newPostLoad;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD, oldPostLoad, newPostLoad);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostLoad <em>Post Load</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Post Load</em>' containment reference.
-	 * @see #getPostLoad()
-	 * @generated
-	 */
-	public void setPostLoad(PostLoad newPostLoad)
-	{
-		if (newPostLoad != postLoad)
-		{
-			NotificationChain msgs = null;
-			if (postLoad != null)
-				msgs = ((InternalEObject)postLoad).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD, null, msgs);
-			if (newPostLoad != null)
-				msgs = ((InternalEObject)newPostLoad).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD, null, msgs);
-			msgs = basicSetPostLoad(newPostLoad, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD, newPostLoad, newPostLoad));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -827,20 +395,6 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
-				return basicSetPrePersist(null, msgs);
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
-				return basicSetPostPersist(null, msgs);
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE:
-				return basicSetPreRemove(null, msgs);
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE:
-				return basicSetPostRemove(null, msgs);
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE:
-				return basicSetPreUpdate(null, msgs);
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE:
-				return basicSetPostUpdate(null, msgs);
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
-				return basicSetPostLoad(null, msgs);
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
 				return basicSetIdClass(null, msgs);
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
@@ -859,20 +413,8 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
-				return getPrePersist();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
-				return getPostPersist();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE:
-				return getPreRemove();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE:
-				return getPostRemove();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE:
-				return getPreUpdate();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE:
-				return getPostUpdate();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
-				return getPostLoad();
+			case OrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return getCacheable();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
 				return getIdClass();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
@@ -895,26 +437,8 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
-				setPrePersist((PrePersist)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
-				setPostPersist((PostPersist)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE:
-				setPreRemove((PreRemove)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE:
-				setPostRemove((PostRemove)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE:
-				setPreUpdate((PreUpdate)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE:
-				setPostUpdate((PostUpdate)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
-				setPostLoad((PostLoad)newValue);
+			case OrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable((Boolean)newValue);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
 				setIdClass((XmlIdClass)newValue);
@@ -942,26 +466,8 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
-				setPrePersist((PrePersist)null);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
-				setPostPersist((PostPersist)null);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE:
-				setPreRemove((PreRemove)null);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE:
-				setPostRemove((PostRemove)null);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE:
-				setPreUpdate((PreUpdate)null);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE:
-				setPostUpdate((PostUpdate)null);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
-				setPostLoad((PostLoad)null);
+			case OrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable(CACHEABLE_EDEFAULT);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
 				setIdClass((XmlIdClass)null);
@@ -989,20 +495,8 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
-				return prePersist != null;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
-				return postPersist != null;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE:
-				return preRemove != null;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE:
-				return postRemove != null;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE:
-				return preUpdate != null;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE:
-				return postUpdate != null;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
-				return postLoad != null;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
 				return idClass != null;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
@@ -1023,17 +517,11 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlEventMethodContainer.class)
+		if (baseClass == XmlMappedSuperclass_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_PERSIST;
-				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_PERSIST;
-				case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_REMOVE;
-				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_REMOVE;
-				case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_UPDATE;
-				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_UPDATE;
-				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_LOAD;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE: return OrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHEABLE;
 				default: return -1;
 			}
 		}
@@ -1048,17 +536,11 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlEventMethodContainer.class)
+		if (baseClass == XmlMappedSuperclass_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_PERSIST: return OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST;
-				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_PERSIST: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST;
-				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_REMOVE: return OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE;
-				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_REMOVE: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE;
-				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_UPDATE: return OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE;
-				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_UPDATE: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE;
-				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_LOAD: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD;
+				case OrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHEABLE: return OrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE;
 				default: return -1;
 			}
 		}
@@ -1076,7 +558,9 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (excludeDefaultListeners: ");
+		result.append(" (cacheable: ");
+		result.append(cacheable);
+		result.append(", excludeDefaultListeners: ");
 		result.append(excludeDefaultListeners);
 		result.append(", excludeSuperclassListeners: ");
 		result.append(excludeSuperclassListeners);
@@ -1094,25 +578,30 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 		return new Translator[] {
 			buildClassTranslator(),
 			buildAccessTranslator(),
+			buildCacheableTranslator(),
 			buildMetadataCompleteTranslator(),
 			buildDescriptionTranslator(),
 			buildIdClassTranslator(),
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
-			buildPrePersistTranslator(),
-			buildPostPersistTranslator(),
-			buildPreRemoveTranslator(),
-			buildPostRemoveTranslator(),
-			buildPreUpdateTranslator(),
-			buildPostUpdateTranslator(),
-			buildPostLoadTranslator(),
-			buildAttributesTranslator()
+			PrePersist.buildTranslator(),
+			PostPersist.buildTranslator(),
+			PreRemove.buildTranslator(),
+			PostRemove.buildTranslator(),
+			PreUpdate.buildTranslator(),
+			PostUpdate.buildTranslator(),
+			PostLoad.buildTranslator(),
+			Attributes.buildTranslator()
 		};
 	}
 	
 	protected static Translator buildAccessTranslator() {
 		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildCacheableTranslator() {
+		return new Translator(JPA2_0.CACHEABLE, OrmV2_0Package.eINSTANCE.getXmlMappedSuperclass_2_0_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildIdClassTranslator() {
@@ -1158,5 +647,4 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEv
 	protected static Translator buildPostLoadTranslator() {
 		return PostLoad.buildTranslator();
 	}
-
-} // MappedSuperclass
+}

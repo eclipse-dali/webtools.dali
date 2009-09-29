@@ -49,11 +49,10 @@ import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReferenc
 import org.eclipse.jpt.core.jpa2.context.java.JavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -891,14 +890,14 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 		XmlEmbedded embeddedResource = (XmlEmbedded) getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		
 		//add an annotation to the resource model and verify the context model is updated
-		XmlAssociationOverride associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		XmlAssociationOverride associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(associationOverride);
 		associationOverride.setName("FOO");
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
-		associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(1, associationOverride);
 		associationOverride.setName("BAR");
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
@@ -907,7 +906,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 
-		associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(0, associationOverride);
 		associationOverride.setName("BAZ");
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
@@ -1023,10 +1022,10 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 		assertEquals(0, overrideContainer.specifiedAssociationOverridesSize());
 
 		//add an annotation to the resource model and verify the context model is updated
-		XmlAssociationOverride associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		XmlAssociationOverride associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(associationOverride);
 		associationOverride.setName("FOO");
-		associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(0, associationOverride);
 		associationOverride.setName("BAR");
 
@@ -1075,7 +1074,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 		
 		XmlEmbedded embeddedResource = (XmlEmbedded) getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 
-		XmlAssociationOverride associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		XmlAssociationOverride associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(associationOverride);
 		associationOverride.setName("bar");	
 		assertEquals(3, overrideContainer.associationOverridesSize());
@@ -1209,13 +1208,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 
 		XmlEmbedded embeddedResource = (XmlEmbedded) getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 	
-		XmlAssociationOverride associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		XmlAssociationOverride associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(0, associationOverride);
 		associationOverride.setName("FOO");
-		associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(1, associationOverride);
 		associationOverride.setName("BAR");
-		associationOverride = Orm2_0Factory.eINSTANCE.createXmlAssociationOverride();
+		associationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		embeddedResource.getAssociationOverrides().add(2, associationOverride);
 		associationOverride.setName("BAZ");
 			

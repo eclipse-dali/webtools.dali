@@ -43,18 +43,4 @@ public interface OrmXml
 	 * This may be null.
 	 */
 	EntityMappings getEntityMappings();
-
-	/**
-	 * Add a entity-mappings node to the orm.xml file and return the object 
-	 * representing it.
-	 * Throws {@link IllegalStateException} if a entity-mappings node already exists.
-	 */
-	EntityMappings addEntityMappings();
-
-	/**
-	 * Remove the entity-mappings node from the orm.xml file.
-	 * Throws {@link IllegalStateException} if a persistence node does not exist.
-	 */
-	void removeEntityMappings();
-
 }

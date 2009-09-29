@@ -145,13 +145,13 @@ public abstract class AbstractXmlResourceProvider
 		}
 	}
 	
-	protected void createResourceAndUnderlyingFile() {
+	protected void createResourceAndUnderlyingFile(Object config) {
 		this.resource = createResource();
 		if (this.resource.fileExists()) { //always possible that the file already exists when the jpa facet is added
 			loadResource();
 		}
 		else {
-			populateRoot();
+			populateRoot(config);
 			try {
 				this.resource.saveIfNecessary(); //this writes out the file
 			}
@@ -161,16 +161,16 @@ public abstract class AbstractXmlResourceProvider
 		}
 	}
 	
-	
 	/**
 	 * This will actually create the underlying file and the JpaXmlResource that corresponds to it.
 	 * It also populates the root of the file.
+	 * @param config - A configuration object used to specify options for creation of the resource
 	 */
-	public JpaXmlResource createFileAndResource() throws CoreException {
+	public JpaXmlResource createFileAndResource(final Object config) throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) {
-				createResourceAndUnderlyingFile();
+				createResourceAndUnderlyingFile(config);
 			}
 		};
 		workspace.run(runnable, workspace.getRoot(), IWorkspace.AVOID_UPDATE, new NullProgressMonitor());
@@ -188,7 +188,7 @@ public abstract class AbstractXmlResourceProvider
 	 * Used to optionally fill in the root information of a resource if it does not 
 	 * exist as a file
 	 */
-	protected void populateRoot() {
+	protected void populateRoot(Object config) {
 		//TODO potentially call resource.populateRoot() instead of the resourceProvider doing this
 	}
 	

@@ -12,18 +12,10 @@ package org.eclipse.jpt.core.internal.operations;
 
 import java.util.Iterator;
 import java.util.Set;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -31,23 +23,20 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.resource.orm.AccessType;
-import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 
-public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
+public class OrmFileCreationDataModelProvider
+	extends AbstractJpaFileCreationDataModelProvider
 	implements OrmFileCreationDataModelProperties
 {
 	/**
@@ -67,9 +56,6 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	public Set<String> getPropertyNames() {
 		@SuppressWarnings("unchecked")
 		Set<String> propertyNames = super.getPropertyNames();
-		propertyNames.add(PROJECT_NAME);
-		propertyNames.add(SOURCE_FOLDER);
-		propertyNames.add(FILE_PATH);
 		propertyNames.add(DEFAULT_ACCESS);
 		propertyNames.add(ADD_TO_PERSISTENCE_UNIT);
 		propertyNames.add(PERSISTENCE_UNIT);
@@ -86,16 +72,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	@Override
 	public Object getDefaultProperty(String propertyName) {
-		if (propertyName.equals(SOURCE_FOLDER)) {
-			IFolder sourceFolder = getDefaultSourceFolder();
-			if (sourceFolder != null && sourceFolder.exists()) {
-				return sourceFolder.getFullPath().toPortableString();
-			}
-		}
-		else if (propertyName.equals(FILE_PATH)) {
-			return new Path(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH).toPortableString();
-		}
-		else if (propertyName.equals(DEFAULT_ACCESS)) {
+		if (propertyName.equals(DEFAULT_ACCESS)) {
 			return null;
 		}
 		else if (propertyName.equals(ADD_TO_PERSISTENCE_UNIT)) {
@@ -111,10 +88,47 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	}
 	
 	@Override
+	protected String getDefaultFilePath() {
+		return new Path(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH).toPortableString();
+	}
+	
+	@Override
+	protected String getDefaultVersion() {
+		try {
+			String facetVersion = getJpaFacetVersion(getProject());
+			if (facetVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)) {
+				return JPA.SCHEMA_VERSION;
+			}
+		}
+		catch (CoreException ce) {
+			// fall through to final return
+		}
+		return JPA2_0.SCHEMA_VERSION;
+	}
+	
+	protected PersistenceUnit getDefaultPersistenceUnit() {
+		JpaProject jpaProject = getJpaProject();
+		if (jpaProject == null) {
+			return null;
+		}
+		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+		if (persistenceXml == null) {
+			return null;
+		}
+		Persistence persistence = persistenceXml.getPersistence();
+		if (persistence == null) {
+			return null;
+		}
+		if (persistence.persistenceUnitsSize() == 0) {
+			return null;
+		}
+		return persistence.persistenceUnits().next();
+	}
+	
+	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
 		if (propertyName.equals(PROJECT_NAME)) {
-			this.model.notifyPropertyChange(SOURCE_FOLDER, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(PERSISTENCE_UNIT, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(PERSISTENCE_UNIT, IDataModel.VALID_VALUES_CHG);
 		}
@@ -126,17 +140,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
-		if (propertyName.equals(PROJECT_NAME)) {
-			return ArrayTools.array(
-				new TransformationIterator<IProject, DataModelPropertyDescriptor>(jpaIProjects()) {
-					@Override
-					protected DataModelPropertyDescriptor transform(IProject next) {
-						return new DataModelPropertyDescriptor(next.getName());
-					}
-				},
-				new DataModelPropertyDescriptor[0]);
-		}
-		else if (propertyName.equals(DEFAULT_ACCESS)) {
+		if (propertyName.equals(DEFAULT_ACCESS)) {
 			DataModelPropertyDescriptor[] accessTypes = new DataModelPropertyDescriptor[3];
 			accessTypes[0] = accessPropertyDescriptor(null);
 			accessTypes[1] = accessPropertyDescriptor(AccessType.FIELD);
@@ -152,20 +156,13 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 					}
 				},
 				new DataModelPropertyDescriptor[0]);
-				
 		}
 		return super.getValidPropertyDescriptors(propertyName);
 	}
 	
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
-		if (propertyName.equals(PROJECT_NAME)) {
-			return new DataModelPropertyDescriptor(getStringProperty(PROJECT_NAME));
-		}
-		else if (propertyName.equals(DEFAULT_ACCESS)) {
-			return accessPropertyDescriptor((AccessType) getProperty(DEFAULT_ACCESS)); 
-		}
-		else if (propertyName.equals(PERSISTENCE_UNIT)) {
+		if (propertyName.equals(PERSISTENCE_UNIT)) {
 			return persistenceUnitPropertyDescriptor(getStringProperty(PERSISTENCE_UNIT));
 		}
 		return super.getPropertyDescriptor(propertyName);
@@ -190,65 +187,35 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	@Override
 	public IStatus validate(String propertyName) {
-		if (propertyName.equals(PROJECT_NAME)
-				|| propertyName.equals(SOURCE_FOLDER)
-				|| propertyName.equals(FILE_PATH)) {
-			return validateProjectSourceFolderAndFilePath();
+		IStatus status = super.validate(propertyName);
+		if (! status.isOK()) {
+			return status;
 		}
-		else if (propertyName.equals(ADD_TO_PERSISTENCE_UNIT)
+		
+		if (propertyName.equals(ADD_TO_PERSISTENCE_UNIT)
 				|| propertyName.equals(PERSISTENCE_UNIT)) {
-			return validatePersistenceUnit();
+			status = validatePersistenceUnit();
 		}
-		return super.validate(propertyName);
+		if (! status.isOK()) {
+			return status;
+		}
+		
+		return Status.OK_STATUS;
 	}
 	
-	protected IStatus validateProjectSourceFolderAndFilePath() {
-		String projectName = (String) getProperty(PROJECT_NAME);
-		if (StringTools.stringIsEmpty(projectName)) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID, 
-				JptCoreMessages.VALIDATE_PROJECT_NOT_SPECIFIED);
+	@Override
+	protected boolean fileVersionSupported(String fileVersion) {
+		return (fileVersion.equals(JPA.SCHEMA_VERSION)
+				|| fileVersion.equals(JPA2_0.SCHEMA_VERSION));
+	}
+	
+	@Override
+	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
+		if (jpaFacetVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)
+				&& fileVersion.equals(JPA2_0.SCHEMA_VERSION)) {
+			return false;
 		}
-		String sourceFolderPath = getStringProperty(SOURCE_FOLDER);
-		if (StringTools.stringIsEmpty(sourceFolderPath)) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SPECIFIED);
-		}
-		if (sourceFolderIsIllegal(sourceFolderPath)) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.VALIDATE_SOURCE_FOLDER_ILLEGAL);
-		}
-		if (sourceFolderNotInProject(sourceFolderPath)) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				NLS.bind(
-					JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT, 
-					sourceFolderPath, projectName));
-		}
-		if (getVerifiedSourceFolder() == null) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST, sourceFolderPath));
-		}
-		if (getVerifiedJavaSourceFolder() == null) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER, sourceFolderPath));
-		}
-		String filePath = getStringProperty(FILE_PATH);
-		if (StringTools.stringIsEmpty(filePath)) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.VALIDATE_FILE_PATH_NOT_SPECIFIED);
-		}
-		if (getExistingOrmFile() != null) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.VALIDATE_ORM_FILE_ALREADY_EXISTS);
-		}
-		return Status.OK_STATUS;
+		return true;
 	}
 	
 	protected IStatus validatePersistenceUnit() {
@@ -273,154 +240,6 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	// **************** helper methods *****************************************
 	
-	// Copied from ArtifactEditOperationDataModelProvider
-	protected IProject getProject() {
-		String projectName = (String) model.getProperty(PROJECT_NAME);
-		if (StringTools.stringIsEmpty(projectName)) {
-			return null;
-		}
-		return ProjectUtilities.getProject(projectName);
-	}
-	
-	protected JpaProject getJpaProject() {
-		IProject project = getProject();
-		if (project == null) {
-			return null;
-		}
-		return JptCorePlugin.getJpaProject(project);
-	}
-	
-	/**
-	 * Return a best guess java source folder for the specified project
-	 */
-	// Copied from NewJavaClassDataModelProvider
-	protected IFolder getDefaultSourceFolder() {
-		IProject project = getProject();
-		if (project == null) {
-			return null;
-		}
-		IPackageFragmentRoot[] sources = J2EEProjectUtilities.getSourceContainers(project);
-		// Try and return the first source folder
-		if (sources.length > 0) {
-			try {
-				return (IFolder) sources[0].getCorrespondingResource();
-			} catch (Exception e) {
-				return null;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Return whether the path provided can not be a valid IFolder path
-	 */
-	protected boolean sourceFolderIsIllegal(String folderPath) {
-		IProject project = getProject();
-		if (project == null) {
-			return false;
-		}
-		try {
-			project.getWorkspace().getRoot().getFolder(new Path(folderPath));
-		}
-		catch (IllegalArgumentException e) {
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Return whether the path provided is in the current project
-	 */
-	protected boolean sourceFolderNotInProject(String folderPath) {
-		IProject project = getProject();
-		if (project == null) {
-			return false;
-		}
-		IFolder folder;
-		try {
-			folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
-		}
-		catch (IllegalArgumentException e) {
-			return false;
-		}
-		return ! project.equals(folder.getProject());
-	}
-	
-	/**
-	 * Return an IFolder represented by the SOURCE_FOLDER property, verified
-	 * to exist
-	 */
-	protected IFolder getVerifiedSourceFolder() {
-		String folderPath = getStringProperty(SOURCE_FOLDER);
-		IProject project = getProject();
-		if (project == null) {
-			return null;
-		}
-		IFolder folder;
-		try {
-			folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
-		}
-		catch (IllegalArgumentException e) {
-			return null;
-		}
-		if (folder == null || ! folder.exists()) {
-			return null;
-		}
-		return folder;
-	}
-	
-	/**
-	 * Return the source folder, provided it is verified to be an actual java
-	 * source folder
-	 */
-	protected IFolder getVerifiedJavaSourceFolder() {
-		IFolder folder = getVerifiedSourceFolder();
-		if (folder == null) {
-			return null;
-		}
-		IJavaProject jProject = JavaCore.create(getProject());
-		if (jProject == null) {
-			return null;
-		}
-		IPackageFragmentRoot packageFragmentRoot = jProject.getPackageFragmentRoot(folder);
-		if (packageFragmentRoot == null || ! packageFragmentRoot.exists()) {
-			return null;
-		}
-		return folder;
-	}
-	
-	protected IFile getExistingOrmFile() {
-		IFolder folder = getVerifiedSourceFolder();
-		if (folder == null) {
-			return null;
-		}
-		String filePath = getStringProperty(FILE_PATH);
-		IFile existingFile = folder.getFile(new Path(filePath));
-		if (! existingFile.exists()) {
-			return null;
-		}
-		return existingFile;
-	}
-	
-	protected PersistenceUnit getDefaultPersistenceUnit() {
-		JpaProject jpaProject = getJpaProject();
-		if (jpaProject == null) {
-			return null;
-		}
-		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
-		if (persistenceXml == null) {
-			return null;
-		}
-		Persistence persistence = persistenceXml.getPersistence();
-		if (persistence == null) {
-			return null;
-		}
-		if (persistence.persistenceUnitsSize() == 0) {
-			return null;
-		}
-		return persistence.persistenceUnits().next();
-	}
-	
 	protected PersistenceUnit getPersistenceUnit() {
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		JpaProject jpaProject = 
@@ -438,44 +257,6 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 			}
 		}
 		return null;
-	}
-	
-	protected Iterator<IProject> jpaIProjects() {
-		return new FilteringIterator<IProject, IProject>(this.allIProjects(), this.buildJpaIProjectsFilter());
-	}
-
-	protected Iterator<IProject> allIProjects() {
-		return CollectionTools.iterator(ProjectUtilities.getAllProjects());
-	}
-
-	protected Filter<IProject> buildJpaIProjectsFilter() {
-		return new JpaIProjectsFilter();
-	}
-
-	protected class JpaIProjectsFilter implements Filter<IProject> {
-		public boolean accept(IProject project) {
-			try {
-				return this.accept_(project);
-			} catch (CoreException ex) {
-				return false;
-			}
-		}
-		protected boolean accept_(IProject project) throws CoreException {
-			return hasJpaFacet(project) && hasSupportedPlatformId(project);
-		}
-	}
-	
-	protected boolean hasJpaFacet(IProject project) throws CoreException {
-		return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
-	}
-	
-	protected boolean hasSupportedPlatformId(IProject project) {
-		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
-		return (jpaProject != null) && isSupportedPlatformId(jpaProject.getJpaPlatform().getId());
-	}
-	
-	protected boolean isSupportedPlatformId(String id) {
-		return true;
 	}
 	
 	protected Iterator<PersistenceUnit> persistenceUnits() {

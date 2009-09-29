@@ -21,8 +21,7 @@ public class Generic2_0PersistenceContextModelTests extends TestCase
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(Generic2_0ConnectionTests.class.getName());
-// Temporary comment out until we can build a 2.0 resource for PersistenceXml
-//		suite.addTestSuite(Generic2_0OptionsTests.class);
+		suite.addTestSuite(Generic2_0OptionsTests.class);
 		return suite;
 	}
 

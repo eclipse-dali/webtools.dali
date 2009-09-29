@@ -78,13 +78,8 @@ public class XmlEmbeddable extends AbstractXmlTypeMapping
 			buildAttributesTranslator()
 		};
 	}
-
-	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlEntity_Name(), Translator.DOM_ATTRIBUTE);
-	}
 	
 	protected static Translator buildAccessTranslator() {
 		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
-
-} // Embeddable
+}

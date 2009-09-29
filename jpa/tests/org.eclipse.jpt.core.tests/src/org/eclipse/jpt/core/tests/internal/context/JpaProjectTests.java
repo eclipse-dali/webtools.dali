@@ -12,10 +12,14 @@ package org.eclipse.jpt.core.tests.internal.context;
 import junit.framework.TestCase;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
 public class JpaProjectTests extends TestCase
@@ -66,11 +70,12 @@ public class JpaProjectTests extends TestCase
 	}
 	
 	private void createPersistenceXmlFile() throws Exception {
-		PersistenceXmlResourceProvider resourceProvider = 
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(this.jpaProject.getProject());
-		resourceProvider.createFileAndResource();
+		IDataModel config =
+			DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
+		config.setProperty(PersistenceFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.getDefaultOperation().execute(null, null);
 	}
-
+	
 	public void testGetDefaultOrmXmlResource() throws Exception {
 		JpaXmlResource resource = this.getJpaProject().getDefaultOrmXmlResource();
 		assertNotNull(resource);
@@ -91,15 +96,18 @@ public class JpaProjectTests extends TestCase
 	}
 	
 	private void createDefaultOrmXmlFile() throws Exception {
-		OrmXmlResourceProvider resourceProvider = 
-			OrmXmlResourceProvider.getDefaultXmlResourceProvider(this.jpaProject.getProject());
-		resourceProvider.createFileAndResource();
+		IDataModel config =
+			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.getDefaultOperation().execute(null, null);
 	}
 	
 	private void createOrmXmlFile(String filePath) throws Exception {
-		OrmXmlResourceProvider resourceProvider = 
-			OrmXmlResourceProvider.getXmlResourceProvider(this.jpaProject.getProject(), filePath);
-		resourceProvider.createFileAndResource();
+		IDataModel config =
+			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(OrmFileCreationDataModelProperties.FILE_PATH, filePath);
+		config.getDefaultOperation().execute(null, null);
 	}
 
 	public void testGetMappingFileResource() throws Exception {

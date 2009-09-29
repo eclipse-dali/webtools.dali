@@ -21,19 +21,13 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverterHolder;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPropertyContainer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -55,68 +49,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToMany implements XmlConverterHolder
+public class XmlOneToMany extends org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToMany implements XmlConverterHolder
 {
-	/**
-	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccessMethods()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlAccessMethods accessMethods;
-
-	/**
-	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProperties()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlProperty> properties;
-
-	/**
-	 * The default value of the '{@link #isPrivateOwned() <em>Private Owned</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isPrivateOwned()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean PRIVATE_OWNED_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isPrivateOwned() <em>Private Owned</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isPrivateOwned()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean privateOwned = PRIVATE_OWNED_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getJoinFetch() <em>Join Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinFetch()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final XmlJoinFetchType JOIN_FETCH_EDEFAULT = XmlJoinFetchType.INNER;
-
-	/**
-	 * The cached value of the '{@link #getJoinFetch() <em>Join Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinFetch()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlJoinFetchType joinFetch = JOIN_FETCH_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -206,162 +140,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	protected EClass eStaticClass()
 	{
 		return EclipseLink2_0OrmPackage.Literals.XML_ONE_TO_MANY;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Access Methods</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Access Methods</em>' containment reference.
-	 * @see #setAccessMethods(XmlAccessMethods)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlAccessMethodsHolder_AccessMethods()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlAccessMethods getAccessMethods()
-	{
-		return accessMethods;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetAccessMethods(XmlAccessMethods newAccessMethods, NotificationChain msgs)
-	{
-		XmlAccessMethods oldAccessMethods = accessMethods;
-		accessMethods = newAccessMethods;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS, oldAccessMethods, newAccessMethods);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlOneToMany#getAccessMethods <em>Access Methods</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Access Methods</em>' containment reference.
-	 * @see #getAccessMethods()
-	 * @generated
-	 */
-	public void setAccessMethods(XmlAccessMethods newAccessMethods)
-	{
-		if (newAccessMethods != accessMethods)
-		{
-			NotificationChain msgs = null;
-			if (accessMethods != null)
-				msgs = ((InternalEObject)accessMethods).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS, null, msgs);
-			if (newAccessMethods != null)
-				msgs = ((InternalEObject)newAccessMethods).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS, null, msgs);
-			msgs = basicSetAccessMethods(newAccessMethods, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS, newAccessMethods, newAccessMethods));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Properties</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlPropertyContainer_Properties()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlProperty> getProperties()
-	{
-		if (properties == null)
-		{
-			properties = new EObjectContainmentEList<XmlProperty>(XmlProperty.class, this, EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES);
-		}
-		return properties;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Private Owned</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Private Owned</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Private Owned</em>' attribute.
-	 * @see #setPrivateOwned(boolean)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlPrivateOwned_PrivateOwned()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	public boolean isPrivateOwned()
-	{
-		return privateOwned;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlOneToMany#isPrivateOwned <em>Private Owned</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Private Owned</em>' attribute.
-	 * @see #isPrivateOwned()
-	 * @generated
-	 */
-	public void setPrivateOwned(boolean newPrivateOwned)
-	{
-		boolean oldPrivateOwned = privateOwned;
-		privateOwned = newPrivateOwned;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED, oldPrivateOwned, privateOwned));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Join Fetch</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Join Fetch</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Fetch</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType
-	 * @see #setJoinFetch(XmlJoinFetchType)
-	 * @see org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmPackage#getXmlJoinFetch_JoinFetch()
-	 * @model
-	 * @generated
-	 */
-	public XmlJoinFetchType getJoinFetch()
-	{
-		return joinFetch;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlOneToMany#getJoinFetch <em>Join Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Join Fetch</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType
-	 * @see #getJoinFetch()
-	 * @generated
-	 */
-	public void setJoinFetch(XmlJoinFetchType newJoinFetch)
-	{
-		XmlJoinFetchType oldJoinFetch = joinFetch;
-		joinFetch = newJoinFetch == null ? JOIN_FETCH_EDEFAULT : newJoinFetch;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__JOIN_FETCH, oldJoinFetch, joinFetch));
 	}
 
 	/**
@@ -641,7 +419,7 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride}.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Map Key Association Overrides</em>' containment reference list isn't clear,
@@ -672,10 +450,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
-				return basicSetAccessMethods(null, msgs);
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__CONVERTER:
 				return basicSetConverter(null, msgs);
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__TYPE_CONVERTER:
@@ -700,14 +474,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
-				return getAccessMethods();
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES:
-				return getProperties();
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
-				return isPrivateOwned();
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__JOIN_FETCH:
-				return getJoinFetch();
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__CONVERTER:
 				return getConverter();
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__TYPE_CONVERTER:
@@ -735,19 +501,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
-				setPrivateOwned((Boolean)newValue);
-				return;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__JOIN_FETCH:
-				setJoinFetch((XmlJoinFetchType)newValue);
-				return;
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__CONVERTER:
 				setConverter((XmlConverter)newValue);
 				return;
@@ -781,18 +534,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)null);
-				return;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES:
-				getProperties().clear();
-				return;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
-				setPrivateOwned(PRIVATE_OWNED_EDEFAULT);
-				return;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__JOIN_FETCH:
-				setJoinFetch(JOIN_FETCH_EDEFAULT);
-				return;
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__CONVERTER:
 				setConverter((XmlConverter)null);
 				return;
@@ -825,14 +566,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	{
 		switch (featureID)
 		{
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
-				return accessMethods != null;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES:
-				return properties != null && !properties.isEmpty();
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
-				return privateOwned != PRIVATE_OWNED_EDEFAULT;
-			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__JOIN_FETCH:
-				return joinFetch != JOIN_FETCH_EDEFAULT;
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__CONVERTER:
 				return converter != null;
 			case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__TYPE_CONVERTER:
@@ -857,66 +590,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlPropertyContainer.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES: return EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlAttributeMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlPrivateOwned.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED: return EclipseLinkOrmPackage.XML_PRIVATE_OWNED__PRIVATE_OWNED;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlJoinFetch.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__JOIN_FETCH: return EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH;
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany.class)
-		{
-			switch (derivedFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToMany.class)
-		{
-			switch (derivedFeatureID)
-			{
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -939,66 +612,6 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlPropertyContainer.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PROPERTIES;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlAttributeMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlPrivateOwned.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_PRIVATE_OWNED__PRIVATE_OWNED: return EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlJoinFetch.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH: return EclipseLink2_0OrmPackage.XML_ONE_TO_MANY__JOIN_FETCH;
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany.class)
-		{
-			switch (baseFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToMany.class)
-		{
-			switch (baseFeatureID)
-			{
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (baseFeatureID)
@@ -1024,11 +637,7 @@ public class XmlOneToMany extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOneT
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (privateOwned: ");
-		result.append(privateOwned);
-		result.append(", joinFetch: ");
-		result.append(joinFetch);
-		result.append(", mapKeyConvert: ");
+		result.append(" (mapKeyConvert: ");
 		result.append(mapKeyConvert);
 		result.append(')');
 		return result.toString();

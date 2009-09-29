@@ -7,6 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
+
 package org.eclipse.jpt.core.resource.xml;
 
 import org.eclipse.emf.ecore.EObject;
@@ -25,6 +26,11 @@ public interface JpaEObject
 	extends EObject
 {
 	/**
+	 * Return whether all the object's EMF features are "unset".
+	 */
+	boolean isUnset();
+	
+	/**
 	 * Return true if this object's text representation contains the text offset
 	 */
 	boolean containsOffset(int textOffset);
@@ -40,10 +46,4 @@ public interface JpaEObject
 	 * range that will be highlighted when selecting in the structure view.
 	 */
 	TextRange getSelectionTextRange();
-
-	/**
-	 * Return whether all the object's EMF features are "unset".
-	 */
-	boolean isUnset();
-
 }

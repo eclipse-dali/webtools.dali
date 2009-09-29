@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.PersistenceXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlDefinition;
-import org.eclipse.jpt.core.jpa2.resource.persistence.Persistence2_0Factory;
+import org.eclipse.jpt.core.resource.persistence.v2_0.PersistenceV2_0Factory;
 
 public class EclipseLink2_0PersistenceXmlDefinition
 	extends AbstractPersistenceXmlDefinition
@@ -42,7 +42,7 @@ public class EclipseLink2_0PersistenceXmlDefinition
 	
 	
 	public EFactory getResourceNodeFactory() {
-		return Persistence2_0Factory.eINSTANCE;
+		return PersistenceV2_0Factory.eINSTANCE;
 	}
 	
 	@Override
@@ -50,8 +50,7 @@ public class EclipseLink2_0PersistenceXmlDefinition
 		return new EclipseLink2_0PersistenceXmlContextNodeFactory();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.PERSISTENCE2_0_XML_CONTENT_TYPE;
+	public JpaResourceType getResourceType() {
+		return JptCorePlugin.PERSISTENCE_XML_2_0_RESOURCE_TYPE;
 	}
-	
 }

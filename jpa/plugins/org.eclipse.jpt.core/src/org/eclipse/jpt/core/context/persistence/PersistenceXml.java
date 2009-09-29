@@ -31,30 +31,18 @@ public interface PersistenceXml
 	 * String constant associated with changes to the persistence property
 	 */
 	public final static String PERSISTENCE_PROPERTY = "persistence"; //$NON-NLS-1$
-
+	
 	/**
 	 * Return the content represented by the root of the persistence.xml file.
 	 * This may be null.
 	 */
 	Persistence getPersistence();
-
-	/**
-	 * Add a persistence node to the persistence.xml file and return the object 
-	 * representing it.
-	 * Throws {@link IllegalStateException} if a persistence node already exists.
-	 */
-	Persistence addPersistence();
-	
-	/**
-	 * Remove the persistence node from the persistence.xml file.
-	 * Throws {@link IllegalStateException} if a persistence node does not exist.
-	 */
-	void removePersistence();
 	
 	/**
 	 * Return the resource model object
 	 */
 	JpaXmlResource getXmlResource();
+	
 	
 	// **************** updating **********************************************
 	

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.dialogs;
 
 import java.util.Comparator;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.StatusDialog;
@@ -37,7 +36,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
 import com.ibm.icu.text.Collator;
 
 public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
@@ -84,7 +82,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public Object[] getElements(Object inputElement) {
 					return ArrayTools.array(
 						CollectionTools.sort(
-							((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(unmappedPersistentAttribute.getContentType()),
+							((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(unmappedPersistentAttribute.getResourceType()),
 							getProvidersComparator()));
 				}
 				

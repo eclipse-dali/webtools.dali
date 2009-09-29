@@ -10,7 +10,7 @@ package org.eclipse.jpt.ui.internal.views;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -44,10 +44,10 @@ public class JpaDetailsView extends AbstractJpaView
 
 	//TODO this is crap, a Map of Maps of Maps. Needs to be done differently, the factory/platform should handle caching instead
 	// key1 platform id
-	// key2 IContentType
+	// key2 JpaResourceType
 	// key3 structure node type
 	// value Composite page
-	private Map<String, Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>> detailsPages;
+	private Map<String, Map<JpaResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>> detailsPages;
 
 	/**
 	 * Creates a new <code>JpaDetailsView</code>.
@@ -61,7 +61,7 @@ public class JpaDetailsView extends AbstractJpaView
 		super.initialize();
 
 		this.currentSelection = JpaSelection.NULL_SELECTION;
-		this.detailsPages     = new HashMap<String, Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>>();
+		this.detailsPages = new HashMap<String, Map<JpaResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>>();
 	}
 
 	private JpaPlatformUi getJpaPlatformUi(JpaStructureNode structureNode) {
@@ -76,8 +76,8 @@ public class JpaDetailsView extends AbstractJpaView
 	private JpaDetailsPage<? extends JpaStructureNode> getDetailsPage(JpaStructureNode structureNode) {
 		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
 		if (this.detailsPages.containsKey(platformId)) {
-			Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
-			Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(structureNode.getContentType());
+			Map<JpaResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
+			Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(structureNode.getResourceType());
 			if (contentTypeDetailsPages != null) {
 				JpaDetailsPage<? extends JpaStructureNode> page =  contentTypeDetailsPages.get(structureNode.getId());
 				if (page != null) {
@@ -104,16 +104,16 @@ public class JpaDetailsView extends AbstractJpaView
 		}
 
 		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
-		Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
+		Map<JpaResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
 		if (platformDetailsPages == null) {
-			platformDetailsPages = new HashMap<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>();
+			platformDetailsPages = new HashMap<JpaResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>();
 			this.detailsPages.put(platformId, platformDetailsPages);
 		}
-		IContentType contentType = structureNode.getContentType();
-		Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(contentType);
+		JpaResourceType resourceType = structureNode.getResourceType();
+		Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(resourceType);
 		if (contentTypeDetailsPages == null) {
 			contentTypeDetailsPages = new HashMap<String, JpaDetailsPage<? extends JpaStructureNode>>();
-			platformDetailsPages.put(contentType, contentTypeDetailsPages);
+			platformDetailsPages.put(resourceType, contentTypeDetailsPages);
 		}
 		contentTypeDetailsPages.put(structureNode.getId(), page);
 

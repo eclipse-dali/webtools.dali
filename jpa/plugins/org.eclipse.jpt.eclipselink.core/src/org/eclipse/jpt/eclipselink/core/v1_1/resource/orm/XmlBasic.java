@@ -10,18 +10,14 @@
 package org.eclipse.jpt.eclipselink.core.v1_1.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
@@ -46,22 +42,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic implements XmlAttributeMapping, XmlGeneratorContainer
 {
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
-	 */
-	protected AccessType access = ACCESS_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -111,44 +91,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	protected EClass eStaticClass()
 	{
 		return EclipseLink1_1OrmPackage.Literals.XML_BASIC;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.AccessType
-	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage#getXmlAccessHolder_Access()
-	 * @model
-	 * @generated
-	 */
-	public AccessType getAccess()
-	{
-		return access;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasic#getAccess <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.AccessType
-	 * @see #getAccess()
-	 * @generated
-	 */
-	public void setAccess(AccessType newAccess)
-	{
-		AccessType oldAccess = access;
-		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLink1_1OrmPackage.XML_BASIC__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -361,8 +303,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_BASIC__ACCESS:
-				return getAccess();
 			case EclipseLink1_1OrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
 				return getSequenceGenerator();
 			case EclipseLink1_1OrmPackage.XML_BASIC__TABLE_GENERATOR:
@@ -383,9 +323,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_BASIC__ACCESS:
-				setAccess((AccessType)newValue);
-				return;
 			case EclipseLink1_1OrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
 				setSequenceGenerator((XmlSequenceGenerator)newValue);
 				return;
@@ -409,9 +346,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_BASIC__ACCESS:
-				setAccess(ACCESS_EDEFAULT);
-				return;
 			case EclipseLink1_1OrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
 				setSequenceGenerator((XmlSequenceGenerator)null);
 				return;
@@ -435,8 +369,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_BASIC__ACCESS:
-				return access != ACCESS_EDEFAULT;
 			case EclipseLink1_1OrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
 				return sequenceGenerator != null;
 			case EclipseLink1_1OrmPackage.XML_BASIC__TABLE_GENERATOR:
@@ -455,14 +387,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLink1_1OrmPackage.XML_BASIC__ACCESS: return OrmPackage.XML_ACCESS_HOLDER__ACCESS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlAttributeMapping.class)
 		{
 			switch (derivedFeatureID)
@@ -490,14 +414,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessHolder.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmPackage.XML_ACCESS_HOLDER__ACCESS: return EclipseLink1_1OrmPackage.XML_BASIC__ACCESS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlAttributeMapping.class)
 		{
 			switch (baseFeatureID)
@@ -517,23 +433,6 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString()
-	{
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (access: ");
-		result.append(access);
-		result.append(')');
-		return result.toString();
-	}
-	
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {

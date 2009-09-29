@@ -20,6 +20,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlNamedQuery_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -40,8 +44,28 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
+public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery, XmlNamedQuery_2_0
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -93,6 +117,26 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	protected EList<XmlQueryHint> hints;
 
 	/**
+	 * The default value of the '{@link #getLockMode() <em>Lock Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLockMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final LockModeType_2_0 LOCK_MODE_EDEFAULT = LockModeType_2_0.READ;
+
+	/**
+	 * The cached value of the '{@link #getLockMode() <em>Lock Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLockMode()
+	 * @generated
+	 * @ordered
+	 */
+	protected LockModeType_2_0 lockMode = LOCK_MODE_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -111,6 +155,41 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_NAMED_QUERY;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlNamedQuery#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_NAMED_QUERY__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -207,6 +286,44 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Lock Mode</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Lock Mode</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Lock Mode</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0
+	 * @see #setLockMode(LockModeType_2_0)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedQuery_2_0_LockMode()
+	 * @model
+	 * @generated
+	 */
+	public LockModeType_2_0 getLockMode()
+	{
+		return lockMode;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlNamedQuery#getLockMode <em>Lock Mode</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Lock Mode</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0
+	 * @see #getLockMode()
+	 * @generated
+	 */
+	public void setLockMode(LockModeType_2_0 newLockMode)
+	{
+		LockModeType_2_0 oldLockMode = lockMode;
+		lockMode = newLockMode == null ? LOCK_MODE_EDEFAULT : newLockMode;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_NAMED_QUERY__LOCK_MODE, oldLockMode, lockMode));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -232,12 +349,16 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_NAMED_QUERY__DESCRIPTION:
+				return getDescription();
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				return getName();
 			case OrmPackage.XML_NAMED_QUERY__QUERY:
 				return getQuery();
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				return getHints();
+			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
+				return getLockMode();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -253,6 +374,9 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_NAMED_QUERY__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				setName((String)newValue);
 				return;
@@ -262,6 +386,9 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				getHints().clear();
 				getHints().addAll((Collection<? extends XmlQueryHint>)newValue);
+				return;
+			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
+				setLockMode((LockModeType_2_0)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -277,6 +404,9 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_NAMED_QUERY__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -285,6 +415,9 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 				return;
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				getHints().clear();
+				return;
+			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
+				setLockMode(LOCK_MODE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -300,14 +433,56 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_NAMED_QUERY__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_NAMED_QUERY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_NAMED_QUERY__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				return hints != null && !hints.isEmpty();
+			case OrmPackage.XML_NAMED_QUERY__LOCK_MODE:
+				return lockMode != LOCK_MODE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlNamedQuery_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_NAMED_QUERY__LOCK_MODE: return OrmV2_0Package.XML_NAMED_QUERY_20__LOCK_MODE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlNamedQuery_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_NAMED_QUERY_20__LOCK_MODE: return OrmPackage.XML_NAMED_QUERY__LOCK_MODE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -321,10 +496,14 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (description: ");
+		result.append(description);
+		result.append(", name: ");
 		result.append(name);
 		result.append(", query: ");
 		result.append(query);
+		result.append(", lockMode: ");
+		result.append(lockMode);
 		result.append(')');
 		return result.toString();
 	}
@@ -342,8 +521,10 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildDescriptionTranslator(),
 			buildQueryTranslator(),
-			XmlQueryHint.buildTranslator(JPA.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints()),
+			buildLockModeTranslator(),
+			XmlQueryHint.buildTranslator(JPA2_0.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints()),
 		};
 	}
 
@@ -351,8 +532,15 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlQuery_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlQuery_2_0_Description());
+	}
+	
 	protected static Translator buildQueryTranslator() {
 		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlQuery_Query());
 	}
 	
+	protected static Translator buildLockModeTranslator() {
+		return new Translator(JPA2_0.NAMED_QUERY__LOCK_MODE, OrmV2_0Package.eINSTANCE.getXmlNamedQuery_2_0_LockMode());
+	}
 }

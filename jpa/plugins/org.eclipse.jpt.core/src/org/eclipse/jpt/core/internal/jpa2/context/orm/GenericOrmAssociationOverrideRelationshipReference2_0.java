@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAssociationOverrideR
 import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmJoinTableInAssociationOverrideJoiningStrategy2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

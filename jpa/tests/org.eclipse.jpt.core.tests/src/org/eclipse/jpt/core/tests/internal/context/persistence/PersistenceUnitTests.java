@@ -23,7 +23,8 @@ import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -37,6 +38,8 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
 public class PersistenceUnitTests extends ContextModelTestCase
@@ -1139,10 +1142,11 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	protected void createOrm2XmlFile() throws Exception {
-		OrmXmlResourceProvider resourceProvider = 
-			OrmXmlResourceProvider.getXmlResourceProvider(getJavaProject().getProject(), "META-INF/orm2.xml");
-		resourceProvider.createFileAndResource();
-
+		IDataModel config =
+			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(OrmFileCreationDataModelProperties.FILE_PATH, "META-INF/orm2.xml");
+		config.getDefaultOperation().execute(null, null);
 		
 		addXmlMappingFileRef("META-INF/orm2.xml");
 		getPersistenceXmlResource().save(null);

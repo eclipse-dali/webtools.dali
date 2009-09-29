@@ -17,30 +17,25 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
 public class EclipseLink1_1OrmPersistentTypeTests extends EclipseLink1_1OrmContextModelTestCase
 {
-
-	@Override
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetDataModelProvider());		
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLink1_1JpaPlatformProvider.ID);
-		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
-		return dataModel;
-	}	
-	
-
 	public EclipseLink1_1OrmPersistentTypeTests(String name) {
 		super(name);
 	}
-
+	
+	
+	@Override
+	protected IDataModel buildJpaConfigDataModel() {
+		IDataModel dataModel = super.buildJpaConfigDataModel();
+		// create both orm.xml and eclipselink-orm.xml
+		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
+		return dataModel;
+	}
 	
 	private ICompilationUnit createTestEntityIdMapping() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {

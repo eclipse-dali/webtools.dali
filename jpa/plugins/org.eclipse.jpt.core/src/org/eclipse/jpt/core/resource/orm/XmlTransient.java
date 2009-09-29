@@ -69,5 +69,4 @@ public class XmlTransient extends AbstractXmlAttributeMapping
 			buildNameTranslator()
 		};
 	}
-
-} // Transient
+}

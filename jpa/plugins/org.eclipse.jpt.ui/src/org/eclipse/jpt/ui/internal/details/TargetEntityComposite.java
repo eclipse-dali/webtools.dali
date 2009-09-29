@@ -53,7 +53,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * -----------------------------------------------------------------------------
  * |                -------------------------------------------- ------------- |
  * | Target Entity: | I                                      |v| | Browse... | |
- * | ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ -------------------------------------------- ------------- |
+ * |                -------------------------------------------- ------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see RelationshipMapping
@@ -61,9 +61,6 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * @see ManyToOneMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
  * @see OneToOneMappingComposite - A container of this pane
- *
- * @version 2.0
- * @since 1.0
  */
 @SuppressWarnings("nls")
 public class TargetEntityComposite extends FormPane<RelationshipMapping>

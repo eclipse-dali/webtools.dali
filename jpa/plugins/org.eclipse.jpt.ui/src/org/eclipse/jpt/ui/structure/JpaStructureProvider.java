@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.structure;
 
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 /**
  * This provider is responsible to create the JPA Structure view contents and 
  * labels for a given JPA resource.
+ *
+ * @version 3.0
+ * @since 2.0
  *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,21 +27,15 @@ import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaStructureProvider {
-
-	/**
-	 * Return the type of content supported by the structure provider.
-	 */
-	IContentType getContentType();
-
+public interface JpaStructureProvider 
+{
 	/**
 	 * Build an factory to create {@link TreeItemContentProvider}s
 	 */
 	TreeItemContentProviderFactory getTreeItemContentProviderFactory();
-
+	
 	/**
 	 * Build a factory to create {@link ItemLabelProvider}s
 	 */
 	ItemLabelProviderFactory getItemLabelProviderFactory();
-
 }

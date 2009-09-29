@@ -391,7 +391,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected void updateDefaultMapping() {
-		// There will always be a mapping definition, even if it is a "null" mapping provider ...
+		// There will always be a mapping definition, even if it is a "null" mapping definition ...
 		JavaAttributeMappingDefinition mappingDefinition = 
 				getJpaPlatform().getDefaultJavaAttributeMappingDefinition(this);
 		String mappingKey = mappingDefinition.getKey();

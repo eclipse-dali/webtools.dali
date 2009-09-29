@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.v2_0.resource.orm;
 
-import org.eclipse.jpt.core.jpa2.resource.orm.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1;
 

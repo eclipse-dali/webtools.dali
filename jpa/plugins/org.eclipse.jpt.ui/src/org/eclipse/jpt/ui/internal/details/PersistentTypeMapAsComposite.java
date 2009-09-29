@@ -36,12 +36,14 @@ public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistentTypeMapAsComposite(Pane<? extends PersistentType> parentPane,
-	                                    Composite parent) {
-
+	public PersistentTypeMapAsComposite(
+			Pane<? extends PersistentType> parentPane,
+	        Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
+	
 	@Override
 	protected String getMappingKey() {
 		return getSubject().getMappingKey();
@@ -91,12 +93,12 @@ public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 	 * @return The supported types of mapping
 	 */
 	protected Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions() {
-		return getJpaPlatformUi().typeMappingUiDefinitions(getSubject().getContentType());
+		return getJpaPlatformUi().typeMappingUiDefinitions(getSubject().getResourceType());
 	}
 	
 	@Override
 	protected DefaultMappingUiDefinition<?> getDefaultDefinition() {
-		return getJpaPlatformUi().getDefaultTypeMappingUiDefinition(getSubject().getContentType());
+		return getJpaPlatformUi().getDefaultTypeMappingUiDefinition(getSubject().getResourceType());
 	}
 	
 	@Override

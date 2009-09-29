@@ -21,8 +21,8 @@ import org.eclipse.core.runtime.content.IContentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaResourceModelProvider {
-
+public interface JpaResourceModelProvider 
+{
 	/**
 	 * Return the file content type the provider is for.
 	 */
@@ -35,5 +35,4 @@ public interface JpaResourceModelProvider {
 	 * same content.
 	 */
 	JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file);
-
 }

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.persistence;
 
 import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -19,10 +20,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EnumeratedValueTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
+import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.resource.xml.CommonPackage;
+import org.eclipse.jpt.core.resource.xml.JpaRootEObject;
 import org.eclipse.jpt.core.resource.xml.XML;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -41,27 +46,15 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistence#getPersistenceUnits <em>Persistence Units</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistence#getVersion <em>Version</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistence()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
+public class XmlPersistence extends AbstractJpaEObject implements JpaRootEObject
 {
-	/**
-	 * The cached value of the '{@link #getPersistenceUnits() <em>Persistence Units</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPersistenceUnits()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlPersistenceUnit> persistenceUnits;
-
 	/**
 	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -81,6 +74,25 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	 * @ordered
 	 */
 	protected String version = VERSION_EDEFAULT;
+
+	/**
+	 * This is true if the Version attribute has been set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean versionESet;
+
+	/**
+	 * The cached value of the '{@link #getPersistenceUnits() <em>Persistence Units</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPersistenceUnits()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPersistenceUnit> persistenceUnits;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -122,9 +134,11 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Version</em>' attribute.
+	 * @see #isSetVersion()
+	 * @see #unsetVersion()
 	 * @see #setVersion(String)
-	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistence_Version()
-	 * @model unique="false" dataType="org.eclipse.jpt.core.resource.persistence.XmlVersion" required="true"
+	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getJpaRootEObject_Version()
+	 * @model unsettable="true" required="true"
 	 * @generated
 	 */
 	public String getVersion()
@@ -137,6 +151,8 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Version</em>' attribute.
+	 * @see #isSetVersion()
+	 * @see #unsetVersion()
 	 * @see #getVersion()
 	 * @generated
 	 */
@@ -144,8 +160,44 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	{
 		String oldVersion = version;
 		version = newVersion;
+		boolean oldVersionESet = versionESet;
+		versionESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE__VERSION, oldVersion, version));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE__VERSION, oldVersion, version, !oldVersionESet));
+	}
+
+	/**
+	 * Unsets the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistence#getVersion <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetVersion()
+	 * @see #getVersion()
+	 * @see #setVersion(String)
+	 * @generated
+	 */
+	public void unsetVersion()
+	{
+		String oldVersion = version;
+		boolean oldVersionESet = versionESet;
+		version = VERSION_EDEFAULT;
+		versionESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, PersistencePackage.XML_PERSISTENCE__VERSION, oldVersion, VERSION_EDEFAULT, oldVersionESet));
+	}
+
+	/**
+	 * Returns whether the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistence#getVersion <em>Version</em>}' attribute is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Version</em>' attribute is set.
+	 * @see #unsetVersion()
+	 * @see #getVersion()
+	 * @see #setVersion(String)
+	 * @generated
+	 */
+	public boolean isSetVersion()
+	{
+		return versionESet;
 	}
 
 	/**
@@ -197,10 +249,10 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.XML_PERSISTENCE__PERSISTENCE_UNITS:
-				return getPersistenceUnits();
 			case PersistencePackage.XML_PERSISTENCE__VERSION:
 				return getVersion();
+			case PersistencePackage.XML_PERSISTENCE__PERSISTENCE_UNITS:
+				return getPersistenceUnits();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -216,12 +268,12 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case PersistencePackage.XML_PERSISTENCE__VERSION:
+				setVersion((String)newValue);
+				return;
 			case PersistencePackage.XML_PERSISTENCE__PERSISTENCE_UNITS:
 				getPersistenceUnits().clear();
 				getPersistenceUnits().addAll((Collection<? extends XmlPersistenceUnit>)newValue);
-				return;
-			case PersistencePackage.XML_PERSISTENCE__VERSION:
-				setVersion((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -237,11 +289,11 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case PersistencePackage.XML_PERSISTENCE__VERSION:
+				unsetVersion();
+				return;
 			case PersistencePackage.XML_PERSISTENCE__PERSISTENCE_UNITS:
 				getPersistenceUnits().clear();
-				return;
-			case PersistencePackage.XML_PERSISTENCE__VERSION:
-				setVersion(VERSION_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -257,10 +309,10 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case PersistencePackage.XML_PERSISTENCE__VERSION:
+				return isSetVersion();
 			case PersistencePackage.XML_PERSISTENCE__PERSISTENCE_UNITS:
 				return persistenceUnits != null && !persistenceUnits.isEmpty();
-			case PersistencePackage.XML_PERSISTENCE__VERSION:
-				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -280,7 +332,7 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (version: ");
-		result.append(version);
+		if (versionESet) result.append(version); else result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
@@ -310,7 +362,20 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 				XmlPersistenceUnit.buildTranslator(JPA.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
 			};
 	}
-
+	
+	protected static Translator buildVersionTranslator() {
+		return new EnumeratedValueTranslator(
+				JPA.PERSISTENCE__VERSION, 
+				CommonPackage.eINSTANCE.getJpaRootEObject_Version(),
+				Translator.DOM_ATTRIBUTE) {
+			
+			@Override
+			protected Iterator enumeratedObjectValues() {
+				return new ArrayIterator(new Object[] { JPA.SCHEMA_VERSION, JPA2_0.SCHEMA_VERSION });
+			}
+		};
+	}
+	
 	protected static Translator buildNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.SCHEMA_NAMESPACE);
 	}
@@ -321,13 +386,5 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 
 	private static Translator buildSchemaLocationTranslator() {
 		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.SCHEMA_NAMESPACE + ' ' + JPA.SCHEMA_LOCATION);
-	}
-
-	protected static Translator buildVersionTranslator() {
-		return new Translator(
-				JPA.PERSISTENCE__VERSION,
-				PersistencePackage.eINSTANCE.getXmlPersistence_Version(),
-				Translator.DOM_ATTRIBUTE
-			);
 	}
 }

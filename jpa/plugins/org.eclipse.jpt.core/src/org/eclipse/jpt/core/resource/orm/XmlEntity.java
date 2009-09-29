@@ -22,6 +22,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlEntity_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -58,7 +61,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlEntity_2_0
 {
 
 	/**
@@ -190,6 +193,26 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected EList<XmlAssociationOverride> associationOverrides;
+
+	/**
+	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CACHEABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -1522,6 +1545,41 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cacheable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cacheable</em>' attribute.
+	 * @see #setCacheable(Boolean)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_2_0_Cacheable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCacheable()
+	{
+		return cacheable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getCacheable <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cacheable</em>' attribute.
+	 * @see #getCacheable()
+	 * @generated
+	 */
+	public void setCacheable(Boolean newCacheable)
+	{
+		Boolean oldCacheable = cacheable;
+		cacheable = newCacheable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__CACHEABLE, oldCacheable, cacheable));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1613,6 +1671,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getAttributeOverrides();
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				return getAssociationOverrides();
+			case OrmPackage.XML_ENTITY__CACHEABLE:
+				return getCacheable();
 			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1694,6 +1754,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__CACHEABLE:
+				setCacheable((Boolean)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
@@ -1787,6 +1850,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				return;
+			case OrmPackage.XML_ENTITY__CACHEABLE:
+				setCacheable(CACHEABLE_EDEFAULT);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -1863,6 +1929,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				return associationOverrides != null && !associationOverrides.isEmpty();
+			case OrmPackage.XML_ENTITY__CACHEABLE:
+				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
 			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1947,6 +2015,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEntity_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__CACHEABLE: return OrmV2_0Package.XML_ENTITY_20__CACHEABLE;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -2006,6 +2082,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEntity_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ENTITY_20__CACHEABLE: return OrmPackage.XML_ENTITY__CACHEABLE;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -2020,7 +2104,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (cacheable: ");
+		result.append(cacheable);
+		result.append(", name: ");
 		result.append(name);
 		result.append(", discriminatorValue: ");
 		result.append(discriminatorValue);
@@ -2051,6 +2137,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			buildNameTranslator(),
 			buildClassTranslator(),
 			buildAccessTranslator(),
+			buildCacheableTranslator(),
 			buildMetadataCompleteTranslator(),
 			buildDescriptionTranslator(),
 			buildTableTranslator(),
@@ -2068,16 +2155,16 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
-			buildPrePersistTranslator(),
-			buildPostPersistTranslator(),
-			buildPreRemoveTranslator(),
-			buildPostRemoveTranslator(),
-			buildPreUpdateTranslator(),
-			buildPostUpdateTranslator(),
-			buildPostLoadTranslator(),
+			PrePersist.buildTranslator(),
+			PostPersist.buildTranslator(),
+			PreRemove.buildTranslator(),
+			PostRemove.buildTranslator(),
+			PreUpdate.buildTranslator(),
+			PostUpdate.buildTranslator(),
+			PostLoad.buildTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
-			buildAttributesTranslator()
+			Attributes.buildTranslator()
 		};
 	}
 
@@ -2087,6 +2174,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	
 	protected static Translator buildAccessTranslator() {
 		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildCacheableTranslator() {
+		return new Translator(JPA2_0.CACHEABLE, OrmV2_0Package.eINSTANCE.getXmlEntity_2_0_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildTableTranslator() {
@@ -2184,5 +2275,4 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	protected static Translator buildAssociationOverrideTranslator() {
 		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
-
-} // Entity
+}

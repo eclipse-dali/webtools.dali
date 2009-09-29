@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -21,11 +22,13 @@ public class VirtualXmlAttributeMapping extends AbstractJpaEObject implements Xm
 	
 	protected final JavaAttributeMapping javaAttributeMapping;
 	
+	
 	public VirtualXmlAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaAttributeMapping;
 	}
+	
 	
 	protected boolean isOrmMetadataComplete() {
 		return this.ormTypeMapping.isMetadataComplete();
@@ -41,7 +44,7 @@ public class VirtualXmlAttributeMapping extends AbstractJpaEObject implements Xm
 	public String getName() {
 		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
-
+	
 	public void setName(String newName) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
@@ -49,5 +52,13 @@ public class VirtualXmlAttributeMapping extends AbstractJpaEObject implements Xm
 	public TextRange getNameTextRange() {
 		return null;
 	}
-
+	
+	public AccessType getAccess() {
+		return org.eclipse.jpt.core.context.AccessType.toOrmResourceModel(
+				this.javaAttributeMapping.getPersistentAttribute().getAccess());
+	}
+	
+	public void setAccess(AccessType value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
 }

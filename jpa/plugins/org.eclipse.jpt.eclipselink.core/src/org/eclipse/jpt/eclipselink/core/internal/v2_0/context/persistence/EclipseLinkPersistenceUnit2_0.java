@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -20,7 +19,7 @@ import org.eclipse.jpt.core.jpa2.context.persistence.JarFileRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
-import org.eclipse.jpt.core.jpa2.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.options.EclipseLinkOptions2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection.Connection2_0;

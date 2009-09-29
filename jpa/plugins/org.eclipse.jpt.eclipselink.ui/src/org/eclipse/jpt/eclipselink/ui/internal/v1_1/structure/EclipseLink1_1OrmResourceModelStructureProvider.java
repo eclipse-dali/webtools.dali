@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v1_1.structure;
 
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.ui.internal.structure.OrmItemContentProviderFactory;
 import org.eclipse.jpt.ui.internal.structure.OrmItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
@@ -22,25 +20,24 @@ public class EclipseLink1_1OrmResourceModelStructureProvider
 {
 	// singleton
 	private static final JpaStructureProvider INSTANCE = new EclipseLink1_1OrmResourceModelStructureProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaStructureProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLink1_1OrmResourceModelStructureProvider() {
 		super();
 	}
 	
-	public IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK1_1_ORM_XML_CONTENT_TYPE;
-	}
-
+	
 	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new OrmItemContentProviderFactory();
 	}
@@ -48,5 +45,4 @@ public class EclipseLink1_1OrmResourceModelStructureProvider
 	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new OrmItemLabelProviderFactory();
 	}
-
 }

@@ -10,21 +10,15 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
@@ -353,7 +347,7 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator()
 		};
 	}
-	
-} // XmlVariableOneToOneImpl
+}

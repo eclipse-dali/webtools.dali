@@ -11,17 +11,17 @@ package org.eclipse.jpt.ui.internal.platform.base;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
+import org.eclipse.jpt.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
@@ -32,7 +32,6 @@ import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -44,134 +43,136 @@ public abstract class BaseJpaPlatformUi
 	private final JpaNavigatorProvider navigatorProvider;
 	
 	private final JpaPlatformUiProvider platformUiProvider;
-
+	
+	
 	protected BaseJpaPlatformUi(
-		JpaNavigatorProvider navigatorProvider,
-		JpaPlatformUiProvider platformUiProvider) {
+			JpaNavigatorProvider navigatorProvider, JpaPlatformUiProvider platformUiProvider) {
+		
 		super();
 		this.navigatorProvider = navigatorProvider;
 		this.platformUiProvider = platformUiProvider;
 	}
-
-
+	
+	
 	// ********** navigator provider **********
-
+	
 	public JpaNavigatorProvider getNavigatorProvider() {
 		return this.navigatorProvider;
 	}
 	
 	
+	// ********** structure providers **********
+	
+	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
+		return getStructureProvider(jpaFile.getResourceModel().getResourceType());
+	}
+	
+	protected JpaStructureProvider getStructureProvider(JpaResourceType resourceType) {
+		return getResourceUiDefinition(resourceType).getStructureProvider();
+	}
+	
+	
 	// ********** details providers **********
-
-	public JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory) {
+	
+	public JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(
+			Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory) {
+		
 		JpaDetailsProvider jpaDetailsProvider = getDetailsProvider(structureNode);
 		return jpaDetailsProvider == null ? null : jpaDetailsProvider.buildDetailsPage(parent, widgetFactory);
 	}
 	
 	protected JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
-		return getDetailsProvider(structureNode.getContentType(), structureNode.getId());
-	}
-	
-	protected JpaDetailsProvider getDetailsProvider(IContentType contentType, String id) {
-		for (JpaDetailsProvider provider : CollectionTools.iterable(this.detailsProviders(id))) {
-			if (provider.getContentType().isKindOf(contentType)) {
+		for (JpaDetailsProvider provider : CollectionTools.iterable(this.detailsProviders())) {
+			if (provider.providesDetails(structureNode)) {
 				return provider;
 			}
-		}
-		if (contentType.getBaseType() != null) {
-			return getDetailsProvider(contentType.getBaseType(), id);
 		}
 		return null;//return null, some structure nodes do not have a details page
 	}
 	
-	protected Iterator<JpaDetailsProvider> detailsProviders(final String id) {
-		return new FilteringIterator<JpaDetailsProvider, JpaDetailsProvider>(detailsProviders()) {
-			@Override
-			protected boolean accept(JpaDetailsProvider o) {
-				return o.getId() == id;
-			}
-		};
-	}
-
 	protected ListIterator<JpaDetailsProvider> detailsProviders() {
 		return this.platformUiProvider.detailsProviders();
 	}
-
-
+	
+	
 	// ********** mapping ui definitions **********
-
-	public JpaComposite buildTypeMappingComposite(IContentType contentType, String key, Composite parent, PropertyValueModel<TypeMapping> mappingHolder, WidgetFactory widgetFactory) {
-		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
-		return definition.buildTypeMappingComposite(key, mappingHolder, parent, widgetFactory);
+	
+	public JpaComposite buildTypeMappingComposite(
+			JpaResourceType resourceType, 
+			String mappingKey, 
+			Composite parent, 
+			PropertyValueModel<TypeMapping> mappingHolder, 
+			WidgetFactory widgetFactory) {
+		
+		return getMappingResourceUiDefinition(resourceType).buildTypeMappingComposite(
+				mappingKey, mappingHolder, parent, widgetFactory);
 	}
 	
-	public JpaComposite buildAttributeMappingComposite(IContentType contentType, String key, Composite parent, PropertyValueModel<AttributeMapping> mappingHolder, WidgetFactory widgetFactory) {
-		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
-		return definition.buildAttributeMappingComposite(key, mappingHolder, parent, widgetFactory);
+	public JpaComposite buildAttributeMappingComposite(
+			JpaResourceType resourceType, 
+			String mappingKey, 
+			Composite parent, 
+			PropertyValueModel<AttributeMapping> mappingHolder, 
+			WidgetFactory widgetFactory) {
+		
+		return getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(
+				mappingKey, mappingHolder, parent, widgetFactory);
 	}
 	
-	public DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(IContentType contentType, String key) {
-		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
-		return definition.getDefaultAttributeMappingUiDefinition(key);
+	public DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey) {
+		return getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
 	}
 	
-	public Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(IContentType contentType) {
-		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
-		return definition.attributeMappingUiDefinitions();
+	public Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(JpaResourceType resourceType) {
+		return getMappingResourceUiDefinition(resourceType).attributeMappingUiDefinitions();
 	}
 	
-	public DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(IContentType contentType) {
-		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
-		return definition.getDefaultTypeMappingUiDefinition();
+	public DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(JpaResourceType resourceType) {
+		return getMappingResourceUiDefinition(resourceType).getDefaultTypeMappingUiDefinition();
 	}
 	
-	public Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(IContentType contentType) {
-		MappingResourceUiDefinition definition = (MappingResourceUiDefinition) getFileUiDefinition(contentType);
-		return definition.typeMappingUiDefinitions();
-	}
-
-
-	
-	// ********** structure providers **********
-
-	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
-		return this.getStructureProvider(jpaFile.getContentType());
-	}
-	
-	protected JpaStructureProvider getStructureProvider(IContentType contentType) {
-		return getFileUiDefinition(contentType).getStructureProvider();
+	public Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(JpaResourceType resourceType) {
+		return getMappingResourceUiDefinition(resourceType).typeMappingUiDefinitions();
 	}
 	
 	
-	// ********** mapping file ui definitions **********
-
-	protected ListIterator<ResourceUiDefinition> fileUiDefinitions() {
+	// ********** resource ui definitions **********
+	
+	protected ListIterator<ResourceUiDefinition> resourceUiDefinitions() {
 		return this.platformUiProvider.fileUiDefinitions();
 	}
-
-	public ResourceUiDefinition getFileUiDefinition(IContentType contentType) {
-		for (ResourceUiDefinition definition : CollectionTools.iterable(this.fileUiDefinitions())) {
-			if (definition.getContentType().equals(contentType)) {
+	
+	public ResourceUiDefinition getResourceUiDefinition(JpaResourceType resourceType) {
+		for (ResourceUiDefinition definition : CollectionTools.iterable(this.resourceUiDefinitions())) {
+			if (definition.providesUi(resourceType)) {
 				return definition;
 			}
 		}
-		throw new IllegalArgumentException("No file ui definition for the contentType: " + contentType); //$NON-NLS-1$
+		throw new IllegalArgumentException("No resource ui definition for the resource type: " + resourceType); //$NON-NLS-1$
 	}
 	
-
+	public MappingResourceUiDefinition getMappingResourceUiDefinition(JpaResourceType resourceType) {
+		try {
+			return (MappingResourceUiDefinition) getResourceUiDefinition(resourceType);
+		}
+		catch (ClassCastException cce) {
+			throw new IllegalArgumentException("No mapping resource ui definition for the resource type: " + resourceType, cce); //$NON-NLS-1$
+		}
+	}
+	
+	
 	// ********** entity generation **********
-
+	
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {
 		//EntitiesGenerator.generate(project, selection);
 		EntitiesGenerator2.generate(project, selection);
 	}
-
-
+	
+	
 	// ********** convenience methods **********
-
+	
 	protected void displayMessage(String title, String message) {
 	    Shell currentShell = Display.getCurrent().getActiveShell();
 	    MessageDialog.openInformation(currentShell, title, message);
 	}
-
 }

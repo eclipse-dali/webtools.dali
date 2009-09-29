@@ -10,11 +10,14 @@
 package org.eclipse.jpt.eclipselink1_1.core.tests.internal.context;
 
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm.EclipseLink1_1OrmXmlResourceProvider;
+import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.operations.EclipseLink1_1OrmFileCreationDataModelProvider;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
 public class EclipseLink1_1JpaProjectTests extends EclipseLink1_1ContextModelTestCase
@@ -30,12 +33,10 @@ public class EclipseLink1_1JpaProjectTests extends EclipseLink1_1ContextModelTes
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());	
 		
-		
 		//delete the orm.xml file and verify it is not returned from getDefaultOrmXmlResource()
 		resource.delete(null);
 		resource = this.getJpaProject().getDefaultOrmXmlResource();
 		assertNull(resource);
-		
 		
 		//add the orm.xml file with eclipselink 1.1 orm content type
 		createDefaultOrmXmlFileWithEclipseLink1_1ContentType();
@@ -91,34 +92,35 @@ public class EclipseLink1_1JpaProjectTests extends EclipseLink1_1ContextModelTes
 		assertNull(resource);
 	}
 	
+	private void createDefaultOrmXmlFile() throws Exception {
+		IDataModel config =
+			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.getDefaultOperation().execute(null, null);
+	}
+	
 	private void createDefaultOrmXmlFileWithEclipseLinkContentType() throws Exception {
-		EclipseLinkOrmXmlResourceProvider resourceProvider = 
-			EclipseLinkOrmXmlResourceProvider.getXmlResourceProvider(this.getJavaProject().getProject(), JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		resourceProvider.createFileAndResource();
+		IDataModel config =
+			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());
+		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(OrmFileCreationDataModelProperties.FILE_PATH, JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		config.getDefaultOperation().execute(null, null);
 	}
 	
 	private void createDefaultOrmXmlFileWithEclipseLink1_1ContentType() throws Exception {
-		EclipseLink1_1OrmXmlResourceProvider resourceProvider = 
-			EclipseLink1_1OrmXmlResourceProvider.getXmlResourceProvider(this.getJavaProject().getProject(), JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		resourceProvider.createFileAndResource();
-	}
-
-	private void createDefaultOrmXmlFile() throws Exception {
-		OrmXmlResourceProvider resourceProvider = 
-			OrmXmlResourceProvider.getDefaultXmlResourceProvider(this.getJavaProject().getProject());
-		resourceProvider.createFileAndResource();
+		createEclipseLink1_1OrmXmlFile(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 	}
 	
 	private void createDefaultEclipseLink1_1OrmXmlFile() throws Exception {
-		EclipseLink1_1OrmXmlResourceProvider resourceProvider = 
-			EclipseLink1_1OrmXmlResourceProvider.getDefaultXmlResourceProvider(this.getJavaProject().getProject());
-		resourceProvider.createFileAndResource();
+		createEclipseLink1_1OrmXmlFile(JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH);
 	}
 	
 	private void createEclipseLink1_1OrmXmlFile(String filePath) throws Exception {
-		EclipseLink1_1OrmXmlResourceProvider resourceProvider = 
-			EclipseLink1_1OrmXmlResourceProvider.getXmlResourceProvider(this.getJavaProject().getProject(), filePath);
-		resourceProvider.createFileAndResource();
+		IDataModel config =
+			DataModelFactory.createDataModel(new EclipseLink1_1OrmFileCreationDataModelProvider());
+		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(OrmFileCreationDataModelProperties.FILE_PATH, filePath);
+		config.getDefaultOperation().execute(null, null);
 	}
 
 	public void testGetMappingFileResource() throws Exception {

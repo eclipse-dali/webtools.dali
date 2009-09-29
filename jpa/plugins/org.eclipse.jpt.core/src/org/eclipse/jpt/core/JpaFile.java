@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 
@@ -31,18 +30,18 @@ public interface JpaFile
 	 * Return the JPA file's Eclipse file.
 	 */
 	IFile getFile();
-
+	
 	/**
 	 * Return the JPA file's content type.
 	 */
 	IContentType getContentType();
-
+	
 	/**
 	 * Return the resource model corresponding to the JPA file; typically a JPA
 	 * compilation unit, a JPA XML resource, or a JPA package fragment root (JAR).
 	 */
 	JpaResourceModel getResourceModel();
-
+	
 	/**
 	 * Convenience method. Return the resource model corresponding to the JPA
 	 * file if the file's content is a "kind-of" the specified content type;
@@ -51,8 +50,8 @@ public interface JpaFile
 	 * @see #getResourceModel()
 	 */
 	JpaResourceModel getResourceModel(IContentType contentType);
-
-
+	
+	
 	// ********** root structure nodes **********
 
 	/**

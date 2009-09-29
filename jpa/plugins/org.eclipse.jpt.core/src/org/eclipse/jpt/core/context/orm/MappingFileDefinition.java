@@ -15,10 +15,9 @@ import org.eclipse.jpt.core.context.XmlContextNodeFactory;
 
 /**
  * A JpaPlatform can support multiple mapping files.  Each will
- * have a unique content type and must be defined with a mapping file definition.
- * The mapping file object will be built using the buildMappingFile() method.  
- * Use the xml context node factory to build the objects that are a 
- * part of the mapping file.
+ * have a unique resource type and must be defined with a mapping file definition.
+ * Use the xml context node factory to build the mapping file itself as well as 
+ * the objects that are a part of the mapping file.
  *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,7 +27,6 @@ import org.eclipse.jpt.core.context.XmlContextNodeFactory;
  */
 public interface MappingFileDefinition extends ResourceDefinition
 {
-	
 	/**
 	 * Return the factory for building xml resource nodes
 	 */

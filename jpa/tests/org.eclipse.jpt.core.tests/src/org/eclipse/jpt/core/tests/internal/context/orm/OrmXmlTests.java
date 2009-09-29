@@ -58,29 +58,6 @@ public class OrmXmlTests extends ContextModelTestCase
 		assertEquals(2, getJpaProject().jpaFilesSize());
 	}
 	
-	public void testModifyAddEntityMappings() {
-		JpaXmlResource ormResource = getOrmXmlResource();
-		ormResource.getContents().remove(getXmlEntityMappings());
-		assertNull(getXmlEntityMappings());
-		
-		OrmXml ormXml = getOrmXml();
-		assertNull(ormXml.getRoot());
-		
-		ormXml.addEntityMappings();
-		
-		assertNotNull(ormXml.getRoot());
-		
-		boolean exceptionThrown = false;
-		try {
-			ormXml.addEntityMappings();
-		}
-		catch (IllegalStateException ise) {
-			exceptionThrown = true;
-		}
-		
-		assertTrue("IllegalStateException was not thrown", exceptionThrown);
-	}
-	
 	public void testUpdateRemoveEntityMappings() throws Exception {
 		JpaXmlResource ormResource = getOrmXmlResource();
 		
@@ -89,25 +66,5 @@ public class OrmXmlTests extends ContextModelTestCase
 		ormResource.getContents().clear();
 		
 		assertNull(getOrmXml().getRoot());
-	}
-	
-	public void testModifyRemoveEntityMappings() {
-		OrmXml ormXml = getOrmXml();
-		
-		assertNotNull(ormXml.getRoot());
-		
-		ormXml.removeEntityMappings();
-		
-		assertNull(ormXml.getRoot());
-		
-		boolean exceptionThrown = false;
-		try {
-			ormXml.removeEntityMappings();
-		}
-		catch (IllegalStateException ise) {
-			exceptionThrown = true;
-		}
-		
-		assertTrue("IllegalStateException was not thrown", exceptionThrown);
 	}
 }

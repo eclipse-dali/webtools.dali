@@ -32,7 +32,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOrderColumn extends org.eclipse.jpt.core.jpa2.resource.orm.XmlOrderColumn
+public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderColumn
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

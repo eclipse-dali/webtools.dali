@@ -21,6 +21,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -46,7 +50,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements XmlMappedByMapping
+public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements XmlMappedByMapping, XmlOneToOne_2_0
 {
 
 	/**
@@ -67,6 +71,60 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @ordered
 	 */
 	protected String mappedBy = MAPPED_BY_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean ID_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean id = ID_EDEFAULT;
+	/**
+	 * The default value of the '{@link #isOrphanRemoval() <em>Orphan Removal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isOrphanRemoval()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean ORPHAN_REMOVAL_EDEFAULT = false;
+	/**
+	 * The cached value of the '{@link #isOrphanRemoval() <em>Orphan Removal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isOrphanRemoval()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean orphanRemoval = ORPHAN_REMOVAL_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getMappedById() <em>Mapped By Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMappedById()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String MAPPED_BY_ID_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getMappedById() <em>Mapped By Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMappedById()
+	 * @generated
+	 * @ordered
+	 */
+	protected String mappedById = MAPPED_BY_ID_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getPrimaryKeyJoinColumns() <em>Primary Key Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -134,6 +192,111 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(Boolean)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlDerivedId_2_0_Id()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getId()
+	{
+		return id;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	public void setId(Boolean newId)
+	{
+		Boolean oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__ID, oldId, id));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Orphan Removal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Orphan Removal</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Orphan Removal</em>' attribute.
+	 * @see #setOrphanRemoval(boolean)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_2_0_OrphanRemoval()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @generated
+	 */
+	public boolean isOrphanRemoval()
+	{
+		return orphanRemoval;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne#isOrphanRemoval <em>Orphan Removal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Orphan Removal</em>' attribute.
+	 * @see #isOrphanRemoval()
+	 * @generated
+	 */
+	public void setOrphanRemoval(boolean newOrphanRemoval)
+	{
+		boolean oldOrphanRemoval = orphanRemoval;
+		orphanRemoval = newOrphanRemoval;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL, oldOrphanRemoval, orphanRemoval));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Mapped By Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Mapped By Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Mapped By Id</em>' attribute.
+	 * @see #setMappedById(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_2_0_MappedById()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getMappedById()
+	{
+		return mappedById;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne#getMappedById <em>Mapped By Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Mapped By Id</em>' attribute.
+	 * @see #getMappedById()
+	 * @generated
+	 */
+	public void setMappedById(String newMappedById)
+	{
+		String oldMappedById = mappedById;
+		mappedById = newMappedById;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID, oldMappedById, mappedById));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn}.
 	 * <!-- begin-user-doc -->
@@ -184,6 +347,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				return getMappedBy();
+			case OrmPackage.XML_ONE_TO_ONE__ID:
+				return getId();
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				return isOrphanRemoval();
+			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID:
+				return getMappedById();
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				return getPrimaryKeyJoinColumns();
 		}
@@ -203,6 +372,15 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				setMappedBy((String)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__ID:
+				setId((Boolean)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				setOrphanRemoval((Boolean)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID:
+				setMappedById((String)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
@@ -225,6 +403,15 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
+			case OrmPackage.XML_ONE_TO_ONE__ID:
+				setId(ID_EDEFAULT);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID:
+				setMappedById(MAPPED_BY_ID_EDEFAULT);
+				return;
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				return;
@@ -244,6 +431,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
+			case OrmPackage.XML_ONE_TO_ONE__ID:
+				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				return orphanRemoval != ORPHAN_REMOVAL_EDEFAULT;
+			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID:
+				return MAPPED_BY_ID_EDEFAULT == null ? mappedById != null : !MAPPED_BY_ID_EDEFAULT.equals(mappedById);
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
 		}
@@ -266,6 +459,30 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlDerivedId_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE__ID: return OrmV2_0Package.XML_DERIVED_ID_20__ID;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlDerivedId.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOneToOne_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL: return OrmV2_0Package.XML_ONE_TO_ONE_20__ORPHAN_REMOVAL;
+				case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID: return OrmV2_0Package.XML_ONE_TO_ONE_20__MAPPED_BY_ID;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -285,6 +502,30 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlDerivedId_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_DERIVED_ID_20__ID: return OrmPackage.XML_ONE_TO_ONE__ID;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlDerivedId.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOneToOne_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ONE_TO_ONE_20__ORPHAN_REMOVAL: return OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL;
+				case OrmV2_0Package.XML_ONE_TO_ONE_20__MAPPED_BY_ID: return OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -301,17 +542,34 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (mappedBy: ");
 		result.append(mappedBy);
+		result.append(", id: ");
+		result.append(id);
+		result.append(", orphanRemoval: ");
+		result.append(orphanRemoval);
+		result.append(", mappedById: ");
+		result.append(mappedById);
 		result.append(')');
 		return result.toString();
 	}
+	
+	
+	// **************** XmlAttributeMapping impl ******************************
 
+	public String getMappingKey() {
+		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	
+	// **************** validation support ************************************
+	
+	public TextRange getDerivedIdTextRange() {
+		return getAttributeTextRange(JPA2_0.ID);
+	}
+	
 	public TextRange getMappedByTextRange() {
 		return getAttributeTextRange(JPA.MAPPED_BY);
 	}
 	
-	public String getMappingKey() {
-		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
-	}
 	
 	// ********** translators **********
 
@@ -325,7 +583,11 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			buildTargetEntityTranslator(),
 			buildFetchTranslator(),
 			buildOptionalTranslator(),
+			buildAccessTranslator(),
 			buildMappedByTranslator(),
+			buildOrphanRemovalTranslator(),
+			buildMappedByIdTranslator(),
+			buildIdTranslator(),
 			buildPrimaryKeyJoinColumnTranslator(),
 			buildJoinColumnTranslator(),
 			buildJoinTableTranslator(),
@@ -335,6 +597,18 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	
 	protected static Translator buildMappedByTranslator() {
 		return new Translator(JPA.MAPPED_BY, OrmPackage.eINSTANCE.getXmlMappedByMapping_MappedBy(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildOrphanRemovalTranslator() {
+		return new Translator(JPA2_0.ORPHAN_REMOVAL, OrmV2_0Package.eINSTANCE.getXmlOneToOne_2_0_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildMappedByIdTranslator() {
+		return new Translator(JPA2_0.MAPPED_BY_ID, OrmV2_0Package.eINSTANCE.getXmlOneToOne_2_0_MappedById(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildIdTranslator() {
+		return new Translator(JPA2_0.ID, OrmV2_0Package.eINSTANCE.getXmlDerivedId_2_0_Id(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildPrimaryKeyJoinColumnTranslator() {
@@ -348,5 +622,4 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	protected static Translator buildJoinTableTranslator() {
 		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
 	}
-
-} // OneToOne
+}

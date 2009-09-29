@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlNullAttributeMapping;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingDefinition;
-import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 
 public class GenericOrmXml2_0Definition
 	extends AbstractOrmXmlDefinition
@@ -58,7 +58,7 @@ public class GenericOrmXml2_0Definition
 	
 	
 	public EFactory getResourceNodeFactory() {
-		return Orm2_0Factory.eINSTANCE;
+		return OrmFactory.eINSTANCE;
 	}
 	
 	@Override
@@ -66,8 +66,8 @@ public class GenericOrmXml2_0Definition
 		return new GenericOrmXml2_0ContextNodeFactory();
 	}
 	
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM2_0_XML_CONTENT_TYPE;
+	public JpaResourceType getResourceType() {
+		return JptCorePlugin.ORM_XML_2_0_RESOURCE_TYPE;
 	}
 	
 	

@@ -10,9 +10,8 @@
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -23,16 +22,12 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
-import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
 public class GenericPersistenceXml
 	extends AbstractPersistenceXmlContextNode
 	implements PersistenceXml2_0
@@ -44,7 +39,7 @@ public class GenericPersistenceXml
 	
 	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
 		super(parent);
-		if (!resource.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_FILE_CONTENT_TYPE)) {
+		if (! resource.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
 			throw new IllegalArgumentException("Resource " + resource + " must have persistence xml content type"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		this.persistenceXmlResource = resource;
@@ -73,8 +68,8 @@ public class GenericPersistenceXml
 	}
 	
 	@Override
-	public IContentType getContentType() {
-		return this.persistenceXmlResource.getContentType();
+	public JpaResourceType getResourceType() {
+		return this.persistenceXmlResource.getResourceType();
 	}
 	
 	
@@ -82,31 +77,6 @@ public class GenericPersistenceXml
 	
 	public Persistence getPersistence() {
 		return this.persistence;
-	}
-	
-	public Persistence addPersistence() {
-		if (this.persistence != null) {
-			throw new IllegalStateException();
-		}
-		
-		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		this.persistence = buildPersistence(xmlPersistence);
-		this.persistenceXmlResource.getContents().add(xmlPersistence);
-		firePropertyChanged(PERSISTENCE_PROPERTY, null, this.persistence);
-		return this.persistence;
-	}
-	
-	public void removePersistence() {
-		if (this.persistence == null) {
-			throw new IllegalStateException();
-		}
-		getJpaFile(this.persistenceXmlResource.getFile()).removeRootStructureNode(this.persistenceXmlResource);
-		this.persistence.dispose();
-		Persistence oldPersistence = this.persistence;
-		this.persistence = null;
-		XmlPersistence xmlPersistence = (XmlPersistence) this.persistenceXmlResource.getRootObject();
-		this.persistenceXmlResource.getContents().remove(xmlPersistence);
-		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, null);
 	}
 	
 	protected void setPersistence(Persistence newPersistence) {

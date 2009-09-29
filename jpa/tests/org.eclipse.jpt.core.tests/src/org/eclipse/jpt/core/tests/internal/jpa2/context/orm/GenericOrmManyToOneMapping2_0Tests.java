@@ -16,9 +16,9 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToOneMapping2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 

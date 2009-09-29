@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaResourceModelListener;
+import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.ListenerList;
 
@@ -64,6 +66,10 @@ abstract class RootBinaryNode
 
 
 	// ********** JpaResourceModel implementation **********
+	
+	public JpaResourceType getResourceType() {
+		return JptCorePlugin.JAR_RESOURCE_TYPE;
+	}
 
 	public void addResourceModelListener(JpaResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);

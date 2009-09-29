@@ -38,22 +38,22 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlBasic;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlDerivedId;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddedId;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlId;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlManyToOne;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlSequenceGenerator;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlTransient;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
+import org.eclipse.jpt.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
+import org.eclipse.jpt.core.resource.orm.XmlId;
+import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTransient;
+import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
 public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNodeFactory
 {	

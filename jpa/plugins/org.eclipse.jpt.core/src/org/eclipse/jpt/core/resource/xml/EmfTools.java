@@ -8,6 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.jpt.core.resource.xml;
 
 import org.eclipse.emf.ecore.EClass;

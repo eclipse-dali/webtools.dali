@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**

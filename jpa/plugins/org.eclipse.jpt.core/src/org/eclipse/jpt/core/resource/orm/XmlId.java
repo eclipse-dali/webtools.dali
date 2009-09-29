@@ -774,6 +774,7 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator(),
 			buildColumnTranslator(),
 			buildGeneratedValueTranslator(),
 			buildTemporalTranslator(),
@@ -801,4 +802,4 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 	protected static Translator buildSequenceGeneratorTranslator() {
 		return XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
 	}
-} // Id
+}

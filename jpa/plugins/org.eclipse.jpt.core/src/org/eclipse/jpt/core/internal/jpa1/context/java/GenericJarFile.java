@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -84,8 +83,8 @@ public class GenericJarFile
 	}
 	
 	@Override
-	public IContentType getContentType() {
-		return JptCorePlugin.JAR_CONTENT_TYPE;
+	public JpaResourceType getResourceType() {
+		return JptCorePlugin.JAR_RESOURCE_TYPE;
 	}
 	
 	public TextRange getSelectionTextRange() {

@@ -507,6 +507,7 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator(),
 			buildColumnTranslator(), 
 			buildTemporalTranslator(),
 		};
@@ -519,4 +520,4 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	protected static Translator buildTemporalTranslator() {
 		return new Translator(JPA.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
 	}
-} // Version
+}

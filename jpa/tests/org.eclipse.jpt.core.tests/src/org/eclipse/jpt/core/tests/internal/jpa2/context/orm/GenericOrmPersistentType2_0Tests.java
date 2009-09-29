@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;

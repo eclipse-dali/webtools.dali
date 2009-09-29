@@ -14,6 +14,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSequenceGenerator_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -40,8 +43,28 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGenerator
+public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGenerator, XmlSequenceGenerator_2_0
 {
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -103,6 +126,46 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	protected Integer allocationSize = ALLOCATION_SIZE_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getCatalog() <em>Catalog</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCatalog()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CATALOG_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCatalog() <em>Catalog</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCatalog()
+	 * @generated
+	 * @ordered
+	 */
+	protected String catalog = CATALOG_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getSchema() <em>Schema</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSchema()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String SCHEMA_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getSchema() <em>Schema</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSchema()
+	 * @generated
+	 * @ordered
+	 */
+	protected String schema = SCHEMA_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getSequenceName() <em>Sequence Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -141,6 +204,41 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_SEQUENCE_GENERATOR;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_2_0_Description()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	public void setDescription(String newDescription)
+	{
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SEQUENCE_GENERATOR__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -284,6 +382,76 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Catalog</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Catalog</em>' attribute.
+	 * @see #setCatalog(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator_2_0_Catalog()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getCatalog()
+	{
+		return catalog;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator#getCatalog <em>Catalog</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Catalog</em>' attribute.
+	 * @see #getCatalog()
+	 * @generated
+	 */
+	public void setCatalog(String newCatalog)
+	{
+		String oldCatalog = catalog;
+		catalog = newCatalog;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SEQUENCE_GENERATOR__CATALOG, oldCatalog, catalog));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Schema</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Schema</em>' attribute.
+	 * @see #setSchema(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator_2_0_Schema()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getSchema()
+	{
+		return schema;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator#getSchema <em>Schema</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Schema</em>' attribute.
+	 * @see #getSchema()
+	 * @generated
+	 */
+	public void setSchema(String newSchema)
+	{
+		String oldSchema = schema;
+		schema = newSchema;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SEQUENCE_GENERATOR__SCHEMA, oldSchema, schema));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -293,12 +461,18 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_SEQUENCE_GENERATOR__DESCRIPTION:
+				return getDescription();
 			case OrmPackage.XML_SEQUENCE_GENERATOR__NAME:
 				return getName();
 			case OrmPackage.XML_SEQUENCE_GENERATOR__INITIAL_VALUE:
 				return getInitialValue();
 			case OrmPackage.XML_SEQUENCE_GENERATOR__ALLOCATION_SIZE:
 				return getAllocationSize();
+			case OrmPackage.XML_SEQUENCE_GENERATOR__CATALOG:
+				return getCatalog();
+			case OrmPackage.XML_SEQUENCE_GENERATOR__SCHEMA:
+				return getSchema();
 			case OrmPackage.XML_SEQUENCE_GENERATOR__SEQUENCE_NAME:
 				return getSequenceName();
 		}
@@ -315,6 +489,9 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_SEQUENCE_GENERATOR__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case OrmPackage.XML_SEQUENCE_GENERATOR__NAME:
 				setName((String)newValue);
 				return;
@@ -323,6 +500,12 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 				return;
 			case OrmPackage.XML_SEQUENCE_GENERATOR__ALLOCATION_SIZE:
 				setAllocationSize((Integer)newValue);
+				return;
+			case OrmPackage.XML_SEQUENCE_GENERATOR__CATALOG:
+				setCatalog((String)newValue);
+				return;
+			case OrmPackage.XML_SEQUENCE_GENERATOR__SCHEMA:
+				setSchema((String)newValue);
 				return;
 			case OrmPackage.XML_SEQUENCE_GENERATOR__SEQUENCE_NAME:
 				setSequenceName((String)newValue);
@@ -341,6 +524,9 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_SEQUENCE_GENERATOR__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case OrmPackage.XML_SEQUENCE_GENERATOR__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -349,6 +535,12 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 				return;
 			case OrmPackage.XML_SEQUENCE_GENERATOR__ALLOCATION_SIZE:
 				setAllocationSize(ALLOCATION_SIZE_EDEFAULT);
+				return;
+			case OrmPackage.XML_SEQUENCE_GENERATOR__CATALOG:
+				setCatalog(CATALOG_EDEFAULT);
+				return;
+			case OrmPackage.XML_SEQUENCE_GENERATOR__SCHEMA:
+				setSchema(SCHEMA_EDEFAULT);
 				return;
 			case OrmPackage.XML_SEQUENCE_GENERATOR__SEQUENCE_NAME:
 				setSequenceName(SEQUENCE_NAME_EDEFAULT);
@@ -367,16 +559,62 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_SEQUENCE_GENERATOR__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_SEQUENCE_GENERATOR__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_SEQUENCE_GENERATOR__INITIAL_VALUE:
 				return INITIAL_VALUE_EDEFAULT == null ? initialValue != null : !INITIAL_VALUE_EDEFAULT.equals(initialValue);
 			case OrmPackage.XML_SEQUENCE_GENERATOR__ALLOCATION_SIZE:
 				return ALLOCATION_SIZE_EDEFAULT == null ? allocationSize != null : !ALLOCATION_SIZE_EDEFAULT.equals(allocationSize);
+			case OrmPackage.XML_SEQUENCE_GENERATOR__CATALOG:
+				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
+			case OrmPackage.XML_SEQUENCE_GENERATOR__SCHEMA:
+				return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
 			case OrmPackage.XML_SEQUENCE_GENERATOR__SEQUENCE_NAME:
 				return SEQUENCE_NAME_EDEFAULT == null ? sequenceName != null : !SEQUENCE_NAME_EDEFAULT.equals(sequenceName);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlSequenceGenerator_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_SEQUENCE_GENERATOR__CATALOG: return OrmV2_0Package.XML_SEQUENCE_GENERATOR_20__CATALOG;
+				case OrmPackage.XML_SEQUENCE_GENERATOR__SCHEMA: return OrmV2_0Package.XML_SEQUENCE_GENERATOR_20__SCHEMA;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlSequenceGenerator_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_SEQUENCE_GENERATOR_20__CATALOG: return OrmPackage.XML_SEQUENCE_GENERATOR__CATALOG;
+				case OrmV2_0Package.XML_SEQUENCE_GENERATOR_20__SCHEMA: return OrmPackage.XML_SEQUENCE_GENERATOR__SCHEMA;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -390,12 +628,18 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (description: ");
+		result.append(description);
+		result.append(", name: ");
 		result.append(name);
 		result.append(", initialValue: ");
 		result.append(initialValue);
 		result.append(", allocationSize: ");
 		result.append(allocationSize);
+		result.append(", catalog: ");
+		result.append(catalog);
+		result.append(", schema: ");
+		result.append(schema);
 		result.append(", sequenceName: ");
 		result.append(sequenceName);
 		result.append(')');
@@ -426,6 +670,9 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 			buildSequenceNameTranslator(),
 			buildInitialValueTranslator(),
 			buildAllocationSizeTranslator(),
+			buildDescriptionTranslator(),
+			buildCatalogTranslator(),
+			buildSchemaTranslator(),
 		};
 	}
 	
@@ -443,5 +690,17 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	
 	protected static Translator buildAllocationSizeTranslator() {
 		return new Translator(JPA.ALLOCATION_SIZE, OrmPackage.eINSTANCE.getXmlGenerator_AllocationSize(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlGenerator_2_0_Description());
+	}
+
+	protected static Translator buildCatalogTranslator() {
+		return new Translator(JPA2_0.CATALOG, OrmV2_0Package.eINSTANCE.getXmlSequenceGenerator_2_0_Catalog());
+	}
+
+	protected static Translator buildSchemaTranslator() {
+		return new Translator(JPA2_0.SCHEMA, OrmV2_0Package.eINSTANCE.getXmlSequenceGenerator_2_0_Schema());
 	}
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import java.util.List;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -40,30 +40,33 @@ public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new OrmXml2_0UiDefinition();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private OrmXml2_0UiDefinition() {
 		super();
 	}
 	
+	
 	@Override
 	protected OrmXmlUiFactory buildOrmXmlUiFactory() {
 		return new GenericOrmXml2_0UiFactory();
 	}
-
-	public IContentType getContentType() {
-		return JptCorePlugin.ORM2_0_XML_CONTENT_TYPE;
+	
+	public boolean providesUi(JpaResourceType resourceType) {
+		return resourceType.equals(JptCorePlugin.ORM_XML_2_0_RESOURCE_TYPE);
 	}
-
+	
 	public JpaStructureProvider getStructureProvider() {
 		return Orm2_0ResourceModelStructureProvider.instance();
 	}
@@ -81,7 +84,7 @@ public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 		definitions.add(OrmEmbeddedMappingUiDefinition.instance());
 		definitions.add(OrmTransientMappingUiDefinition.instance());
 	}
-
+	
 	@Override
 	protected void addOrmTypeMappingUiDefinitionsTo(List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
 		definitions.add(OrmEntityUiDefinition.instance());

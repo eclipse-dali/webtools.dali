@@ -16,7 +16,6 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.MappingResourceUiDefinition;
-import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * All the state in the definition should be "static" (i.e. unchanging once it is initialized).
  */
 public abstract class AbstractOrmXmlResourceUiDefinition
-	implements ResourceUiDefinition, MappingResourceUiDefinition
+	implements MappingResourceUiDefinition
 {
 	
 	private OrmTypeMappingUiDefinition<? extends TypeMapping>[] ormTypeMappingUiDefintions;
