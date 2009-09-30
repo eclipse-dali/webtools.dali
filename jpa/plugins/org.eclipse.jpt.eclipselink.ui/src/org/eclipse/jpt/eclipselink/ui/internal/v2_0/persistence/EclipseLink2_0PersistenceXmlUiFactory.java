@@ -10,9 +10,12 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLinkPersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiFactory;
+import org.eclipse.jpt.eclipselink.ui.internal.persistence.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options.PersistenceXmlOptions2_0Tab;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -22,27 +25,53 @@ import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLink2_0PersistenceXmlUiFactory extends EclipseLinkPersistenceXmlUiFactory
 {
+	// ********** constructors **********
+	
 	public EclipseLink2_0PersistenceXmlUiFactory() {
 		super();
 	}
 
+	// ********** persistence unit tabs **********
+
+	@Override
+	protected PersistenceXmlConnectionTab<? extends Connection> buildConnectionTab(
+				PropertyValueModel<PersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Connection2_0> connection2_0Holder = this.buildConnection2_0Holder(subjectHolder);
+
+		return new PersistenceXmlConnectionTab<Connection2_0>(connection2_0Holder, parent, widgetFactory);
+	}
+	
 	@Override
 	protected PersistenceXmlOptionsTab<Options2_0> buildOptionsTab(
 				PropertyValueModel<PersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
-		PropertyValueModel<Options2_0> optionsHolder = this.buildOptionsHolder(subjectHolder);
+		PropertyValueModel<Options2_0> options2_0Holder = this.buildOptions2_0Holder(subjectHolder);
 
-		return new PersistenceXmlOptions2_0Tab(optionsHolder, parent, widgetFactory);
+		return new PersistenceXmlOptions2_0Tab(options2_0Holder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<Options2_0> buildOptionsHolder(
+	// ********** private methods **********
+
+	private PropertyValueModel<Connection2_0> buildConnection2_0Holder(
+				PropertyValueModel<PersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Connection2_0>(subjectHolder) {
+			@Override
+			protected Connection2_0 transform_(PersistenceUnit value) {
+				return (Connection2_0) ((PersistenceUnit2_0)value).getConnection();
+			}
+		};
+	}
+
+	private PropertyValueModel<Options2_0> buildOptions2_0Holder(
 				PropertyValueModel<PersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<PersistenceUnit, Options2_0>(subjectHolder) {
 			@Override
 			protected Options2_0 transform_(PersistenceUnit value) {
 
-				return ((EclipseLinkPersistenceUnit2_0)value).getOptions();
+				return (Options2_0) ((PersistenceUnit2_0)value).getOptions();
 			}
 		};
 	}

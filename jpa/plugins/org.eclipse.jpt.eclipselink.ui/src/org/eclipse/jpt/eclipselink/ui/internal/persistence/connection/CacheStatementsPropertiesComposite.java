@@ -25,9 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  CacheStatementsPropertiesComposite
  */
-public class CacheStatementsPropertiesComposite extends Pane<Connection>
+public class CacheStatementsPropertiesComposite<T extends Connection> 
+	extends Pane<T>
 {
-	public CacheStatementsPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
+	public CacheStatementsPropertiesComposite(
+						Pane<T> parentComposite, 
+						Composite parent) {
 
 		super(parentComposite, parent);
 	}

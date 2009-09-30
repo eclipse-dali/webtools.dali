@@ -24,7 +24,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * ReadConnectionsSharedComposite
  */
-public class JdbcReadConnectionsSharedComposite extends Pane<Connection>
+public class JdbcReadConnectionsSharedComposite<T extends Connection> 
+	extends Pane<T>
 {
 	/**
 	 * Creates a new <code>ReadConnectionsSharedComposite</code>.
@@ -35,8 +36,8 @@ public class JdbcReadConnectionsSharedComposite extends Pane<Connection>
 	 *            The parent container
 	 */
 	public JdbcReadConnectionsSharedComposite(
-					Pane<? extends Connection> parentComposite,
-					Composite parent) {
+								Pane<T> parentComposite,
+								Composite parent) {
 
 		super(parentComposite, parent);
 	}

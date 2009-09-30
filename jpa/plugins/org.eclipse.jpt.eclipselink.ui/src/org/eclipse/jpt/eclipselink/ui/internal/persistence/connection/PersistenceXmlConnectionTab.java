@@ -25,13 +25,13 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * PersistenceXmlConnectionTab
  */
-public class PersistenceXmlConnectionTab
-	extends FormPane<Connection>
+public class PersistenceXmlConnectionTab<T extends Connection>
+	extends FormPane<T>
 	implements JpaPageComposite
 {
 	// ********** constructors/initialization **********
 	public PersistenceXmlConnectionTab(
-				PropertyValueModel<Connection> subjectHolder, 
+				PropertyValueModel<T> subjectHolder, 
 				Composite parent, 
 				WidgetFactory widgetFactory) {
 		
@@ -40,7 +40,7 @@ public class PersistenceXmlConnectionTab
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		new EclipseLinkConnectionComposite(this, container);
+		new EclipseLinkConnectionComposite<T>(this, container);
 	}
 
 	// ********** JpaPageComposite implementation **********

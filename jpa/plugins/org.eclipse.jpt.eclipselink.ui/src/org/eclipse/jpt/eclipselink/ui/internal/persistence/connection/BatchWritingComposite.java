@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * BatchWritingComposite
  */
-public class BatchWritingComposite extends FormPane<Connection>
+public class BatchWritingComposite<T extends Connection>
+		extends FormPane<T>
 {
 	/**
 	 * Creates a new <code>BatchWritingComposite</code>.
@@ -33,7 +34,7 @@ public class BatchWritingComposite extends FormPane<Connection>
 	 *            The parent container
 	 */
 	public BatchWritingComposite(
-					FormPane<? extends Connection> parentComposite, 
+					FormPane<T> parentComposite, 
 					Composite parent) {
 
 		super( parentComposite, parent);

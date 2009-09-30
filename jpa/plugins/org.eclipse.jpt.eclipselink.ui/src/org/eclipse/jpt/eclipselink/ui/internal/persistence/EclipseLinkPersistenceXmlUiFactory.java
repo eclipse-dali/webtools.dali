@@ -37,11 +37,12 @@ import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFactory
 {
+	// ********** constructors **********
+	
 	public EclipseLinkPersistenceXmlUiFactory() {
 		super();
 	}
-	
-	
+
 	// **************** persistence unit composites ****************************
 	
 	@Override
@@ -49,49 +50,97 @@ public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFact
 						PropertyValueModel<PersistenceUnit> subjectHolder,
 						Composite parent,
 						WidgetFactory widgetFactory) {
-		
+
+		ArrayList<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(8);
+
 		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
 			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
-		ArrayList<JpaPageComposite> pages = 
-			new ArrayList<JpaPageComposite>(8);
 
-		pages.add(new EclipseLinkPersistenceUnitGeneralComposite(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Connection> connectionHolder = 
-			this.buildConnectionHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlConnectionTab(connectionHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Customization> customizationHolder = 
-			this.buildCustomizationHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Caching> cachingHolder = 
-			this.buildCachingHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlCachingTab(cachingHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Logging> loggingHolder = 
-			this.buildLoggingHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory));
-
+		pages.add(this.buildGeneralTab(subjectHolder, parent, widgetFactory));
+		pages.add(this.buildConnectionTab(subjectHolder, parent, widgetFactory));
+		pages.add(this.buildCustomizationTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
+		pages.add(this.buildCachingTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
+		pages.add(this.buildLoggingTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
 		pages.add(this.buildOptionsTab(subjectHolder, parent, widgetFactory));
+		pages.add(this.buildSchemaGenerationTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
+		pages.add(this.buildPropertiesTab(subjectHolder, parent, widgetFactory));
 
-		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
-			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
-		
-		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
-		
 		return pages.listIterator();
 	}
+
+	// ********** persistence unit tabs **********
 	
-	protected PersistenceXmlOptionsTab buildOptionsTab(
+	protected EclipseLinkPersistenceUnitGeneralComposite buildGeneralTab(
+				PropertyValueModel<PersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+
+		return new EclipseLinkPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	protected PersistenceXmlConnectionTab<? extends Connection> buildConnectionTab(
+				PropertyValueModel<PersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Connection> connectionHolder = this.buildConnectionHolder(subjectHolder);
+
+		return new PersistenceXmlConnectionTab<Connection>(connectionHolder, parent, widgetFactory);
+	}
+	
+	protected PersistenceXmlCustomizationTab buildCustomizationTab(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Customization> customizationHolder = this.buildCustomizationHolder(subjectHolder);
+
+		return new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory);
+	}
+	
+	protected PersistenceXmlCachingTab buildCachingTab(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Caching> cachingHolder = this.buildCachingHolder(subjectHolder);
+
+		return new PersistenceXmlCachingTab(cachingHolder, parent, widgetFactory);
+	}
+	
+	protected PersistenceXmlLoggingTab buildLoggingTab(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Logging> loggingHolder = this.buildLoggingHolder(subjectHolder);
+
+		return new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory);
+	}
+	
+	protected PersistenceXmlOptionsTab<? extends Options> buildOptionsTab(
 				PropertyValueModel<PersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
 		PropertyValueModel<Options> optionsHolder = this.buildOptionsHolder(subjectHolder);
 
-		return new PersistenceXmlOptionsTab(optionsHolder, parent, widgetFactory);
+		return new PersistenceXmlOptionsTab<Options>(optionsHolder, parent, widgetFactory);
 	}
+	
+	protected PersistenceXmlSchemaGenerationTab buildSchemaGenerationTab(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<SchemaGeneration> schemaGenHolder = this.buildSchemaGenerationHolder(subjectHolder);
+
+		return new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory);
+	}
+	
+	protected PersistenceUnitPropertiesComposite buildPropertiesTab(
+				PropertyValueModel<PersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+
+		return new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory);
+	}
+
+	// ********** private methods **********
 	
 	private PropertyValueModel<EclipseLinkPersistenceUnit> buildEclipseLinkPersistenceUnitHolder(
 				PropertyValueModel<PersistenceUnit> subjectHolder) {
@@ -104,11 +153,12 @@ public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFact
 	}
 	
 	private PropertyValueModel<Connection> buildConnectionHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Connection>(subjectHolder) {
+				PropertyValueModel<PersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Connection>(subjectHolder) {
 			@Override
-			protected Connection transform_(EclipseLinkPersistenceUnit value) {
-				return value.getConnection();
+			protected Connection transform_(PersistenceUnit value) {
+
+				return ((EclipseLinkPersistenceUnit)value).getConnection();
 			}
 		};
 	}

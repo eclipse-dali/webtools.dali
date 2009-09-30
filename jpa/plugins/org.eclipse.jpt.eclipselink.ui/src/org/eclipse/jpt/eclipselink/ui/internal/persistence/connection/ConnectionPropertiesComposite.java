@@ -17,9 +17,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  ConnectionPropertiesComposite
  */
-public class ConnectionPropertiesComposite extends Pane<Connection>
+public class ConnectionPropertiesComposite<T extends Connection> 
+	extends Pane<T>
 {
-	public ConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
+	public ConnectionPropertiesComposite(
+					Pane<T> parentComposite, 
+					Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -32,7 +35,7 @@ public class ConnectionPropertiesComposite extends Pane<Connection>
 			EclipseLinkUiMessages.ConnectionPropertiesComposite_Database_GroupBox
 		);
 
-		new DataSourcePropertiesComposite(this, container);
-		new JdbcPropertiesComposite(this, container);
+		new DataSourcePropertiesComposite<T>(this, container);
+		new JdbcPropertiesComposite<T>(this, container);
 	}
 }

@@ -39,14 +39,17 @@ import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
  *  JdbcConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcConnectionPropertiesComposite extends Pane<Connection>
+public class JdbcConnectionPropertiesComposite<T extends Connection> 
+	extends Pane<T>
 {
 	/**
 	 * The constant ID used to retrieve the dialog settings.
 	 */
 	private static final String DIALOG_SETTINGS = "org.eclipse.jpt.eclipselink.ui.dialogs.ConnectionDialog";
 
-	public JdbcConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
+	public JdbcConnectionPropertiesComposite(
+					Pane<T> parentComposite, 
+					Composite parent) {
 
 		super(parentComposite, parent);
 	}

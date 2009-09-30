@@ -25,7 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * TransactionTypeComposite
  */
-public class TransactionTypeComposite extends FormPane<Connection>
+public class TransactionTypeComposite<T extends Connection>
+	extends FormPane<T>
 {
 	/**
 	 * Creates a new <code>TransactionTypeComposite</code>.
@@ -36,7 +37,7 @@ public class TransactionTypeComposite extends FormPane<Connection>
 	 *            The parent container
 	 */
 	public TransactionTypeComposite(
-					FormPane<? extends Connection> parentComposite,
+					FormPane<T> parentComposite,
 					Composite parent) {
 
 		super( parentComposite, parent);

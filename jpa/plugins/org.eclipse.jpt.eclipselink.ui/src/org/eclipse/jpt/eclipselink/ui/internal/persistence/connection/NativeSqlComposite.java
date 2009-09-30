@@ -24,7 +24,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * NativeSqlComposite
  */
-public class NativeSqlComposite extends Pane<Connection>
+public class NativeSqlComposite<T extends Connection> 
+	extends Pane<T>
 {
 	/**
 	 * Creates a new <code>NativeSqlComposite</code>.
@@ -35,7 +36,7 @@ public class NativeSqlComposite extends Pane<Connection>
 	 *            The parent container
 	 */
 	public NativeSqlComposite(
-					Pane<? extends Connection> parentComposite,
+					Pane<T> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);

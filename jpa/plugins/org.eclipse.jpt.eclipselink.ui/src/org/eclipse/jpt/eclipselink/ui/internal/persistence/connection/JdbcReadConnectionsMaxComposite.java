@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * JdbcReadConnectionsMaxComposite
  */
-public class JdbcReadConnectionsMaxComposite extends Pane<Connection>
+public class JdbcReadConnectionsMaxComposite<T extends Connection> 
+	extends Pane<T>
 {
 	/**
 	 * Creates a new <code>JdbcReadConnectionsMaxComposite</code>.
@@ -32,8 +33,9 @@ public class JdbcReadConnectionsMaxComposite extends Pane<Connection>
 	 * @param parent
 	 *            The parent container
 	 */
-	public JdbcReadConnectionsMaxComposite(Pane<Connection> parentComposite,
-	                                 Composite parent) {
+	public JdbcReadConnectionsMaxComposite(
+								Pane<T> parentComposite,
+								Composite parent) {
 
 		super(parentComposite, parent);
 	}

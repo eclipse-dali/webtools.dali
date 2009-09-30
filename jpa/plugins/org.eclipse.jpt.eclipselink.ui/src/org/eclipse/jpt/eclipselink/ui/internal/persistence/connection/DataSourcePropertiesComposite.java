@@ -28,16 +28,18 @@ import org.eclipse.swt.widgets.Text;
  * @version 2.0
  * @since 2.0
  */
-public class DataSourcePropertiesComposite extends Pane<Connection> {
-
+public class DataSourcePropertiesComposite<T extends Connection> 
+	extends Pane<T>
+{
 	/**
 	 * Creates a new <code>DataSourcePropertiesComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public DataSourcePropertiesComposite(Pane<Connection> parentComposite,
-	                                      Composite parent) {
+	public DataSourcePropertiesComposite(
+							Pane<T> parentComposite,
+							Composite parent) {
 
 		super(parentComposite, parent);
 	}

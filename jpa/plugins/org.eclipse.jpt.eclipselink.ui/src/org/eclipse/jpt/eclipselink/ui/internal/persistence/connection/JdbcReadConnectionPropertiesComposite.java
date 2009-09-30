@@ -19,9 +19,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JdbcReadConnectionPropertiesComposite
  */
-public class JdbcReadConnectionPropertiesComposite extends Pane<Connection>
+public class JdbcReadConnectionPropertiesComposite<T extends Connection> 
+	extends Pane<T>
 {
-	public JdbcReadConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
+	public JdbcReadConnectionPropertiesComposite(
+					Pane<T> parentComposite, 
+					Composite parent) {
 
 		super(parentComposite, parent, false);
 	}
@@ -41,12 +44,12 @@ public class JdbcReadConnectionPropertiesComposite extends Pane<Connection>
 		data.verticalAlignment = SWT.TOP;
 
 		// Read Connections Shared
-		new JdbcReadConnectionsSharedComposite(this, container);
+		new JdbcReadConnectionsSharedComposite<T>(this, container);
 
 		// Read Connections Minimum
-		new JdbcReadConnectionsMinComposite(this, container);
+		new JdbcReadConnectionsMinComposite<T>(this, container);
 
 		// Read Connections Maximum
-		new JdbcReadConnectionsMaxComposite(this, container);
+		new JdbcReadConnectionsMaxComposite<T>(this, container);
 	}
 }

@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * JdbcReadConnectionsMinComposite
  */
-public class JdbcReadConnectionsMinComposite extends Pane<Connection>
+public class JdbcReadConnectionsMinComposite<T extends Connection> 
+	extends Pane<T>
 {
 	/**
 	 * Creates a new <code>JdbcReadConnectionsMinComposite</code>.
@@ -32,8 +33,9 @@ public class JdbcReadConnectionsMinComposite extends Pane<Connection>
 	 * @param parent
 	 *            The parent container
 	 */
-	public JdbcReadConnectionsMinComposite(Pane<Connection> parentComposite,
-	                                 Composite parent) {
+	public JdbcReadConnectionsMinComposite(
+							Pane<T> parentComposite,
+							Composite parent) {
 
 		super(parentComposite, parent);
 	}

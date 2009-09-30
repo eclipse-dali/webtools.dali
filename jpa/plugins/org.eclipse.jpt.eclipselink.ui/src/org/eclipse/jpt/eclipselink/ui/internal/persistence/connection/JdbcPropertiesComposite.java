@@ -24,9 +24,10 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JdbcPropertiesComposite
  */
-public class JdbcPropertiesComposite extends Pane<Connection>
+public class JdbcPropertiesComposite<T extends Connection> 
+	extends Pane<T>
 {
-	public JdbcPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
+	public JdbcPropertiesComposite(Pane<T> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -70,12 +71,12 @@ public class JdbcPropertiesComposite extends Pane<Connection>
 			EclipseLinkUiMessages.JdbcPropertiesComposite_EclipseLinkConnectionPool_GroupBox
 		);
 
-		new JdbcConnectionPropertiesComposite(this, container);
+		new JdbcConnectionPropertiesComposite<T>(this, container);
 
 		container = addPane(container, new GridLayout(2, true));
 
-		new JdbcReadConnectionPropertiesComposite(this, container);
-		new JdbcWriteConnectionPropertiesComposite(this, container);
+		new JdbcReadConnectionPropertiesComposite<T>(this, container);
+		new JdbcWriteConnectionPropertiesComposite<T>(this, container);
 
 		this.installPaneEnabler();
 	}

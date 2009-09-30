@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.general;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitGeneralComposite;
@@ -24,7 +24,7 @@ public class EclipseLinkPersistenceUnitGeneralComposite
 {
 	// ********** constructors **********
 	public EclipseLinkPersistenceUnitGeneralComposite(
-		PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+		PropertyValueModel<PersistenceUnit> subjectHolder,
 					Composite container,
 					WidgetFactory widgetFactory) {
 		super(subjectHolder, container, widgetFactory);

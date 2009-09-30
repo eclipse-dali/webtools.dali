@@ -22,9 +22,12 @@ import org.eclipse.swt.widgets.Composite;
  *  JdbcWriteConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcWriteConnectionPropertiesComposite extends Pane<Connection>
+public class JdbcWriteConnectionPropertiesComposite<T extends Connection> 
+	extends Pane<T>
 {
-	public JdbcWriteConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
+	public JdbcWriteConnectionPropertiesComposite(
+							Pane<T> parentComposite, 
+							Composite parent) {
 
 		super(parentComposite, parent, false);
 	}
@@ -50,9 +53,9 @@ public class JdbcWriteConnectionPropertiesComposite extends Pane<Connection>
 		space.dispose();
 
 		// Write Connections Minimum
-		new JdbcWriteConnectionsMinComposite(this, container);
+		new JdbcWriteConnectionsMinComposite<T>(this, container);
 
 		// Write Connections Maximum
-		new JdbcWriteConnectionsMaxComposite(this, container);
+		new JdbcWriteConnectionsMaxComposite<T>(this, container);
 	}
 }

@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * JdbcWriteConnectionsMaxComposite
  */
-public class JdbcWriteConnectionsMaxComposite extends Pane<Connection>
+public class JdbcWriteConnectionsMaxComposite<T extends Connection> 
+	extends Pane<T>
 {
 	/**
 	 * Creates a new <code>JdbcWriteConnectionsMaxComposite</code>.
@@ -32,8 +33,9 @@ public class JdbcWriteConnectionsMaxComposite extends Pane<Connection>
 	 * @param parent
 	 *            The parent container
 	 */
-	public JdbcWriteConnectionsMaxComposite(Pane<Connection> parentComposite,
-	                                 Composite parent) {
+	public JdbcWriteConnectionsMaxComposite(
+								Pane<T> parentComposite,
+	                            Composite parent) {
 
 		super(parentComposite, parent);
 	}

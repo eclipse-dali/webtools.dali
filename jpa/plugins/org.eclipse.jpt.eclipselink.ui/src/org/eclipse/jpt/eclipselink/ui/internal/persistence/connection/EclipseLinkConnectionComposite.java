@@ -17,11 +17,11 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * EclipseLinkConnectionComposite
  */
-public class EclipseLinkConnectionComposite
-	extends FormPane<Connection>
+public class EclipseLinkConnectionComposite<T extends Connection>
+	extends FormPane<T>
 {
 	public EclipseLinkConnectionComposite(
-					FormPane<Connection> subjectHolder,
+					FormPane<T> subjectHolder,
 					Composite container) {
 		super(subjectHolder, container, false);
 	}
@@ -42,14 +42,14 @@ public class EclipseLinkConnectionComposite
 			0, groupBoxMargin, 10, groupBoxMargin
 		);
 
-		new TransactionTypeComposite(this, subPane);
+		new TransactionTypeComposite<T>(this, subPane);
 
-		new BatchWritingComposite(this, subPane);
+		new BatchWritingComposite<T>(this, subPane);
 
-		new CacheStatementsPropertiesComposite(this, subPane);
+		new CacheStatementsPropertiesComposite<T>(this, subPane);
 
-		new NativeSqlComposite(this, subPane);
+		new NativeSqlComposite<T>(this, subPane);
 
-		new ConnectionPropertiesComposite(this, container);
+		new ConnectionPropertiesComposite<T>(this, container);
 	}
 }
