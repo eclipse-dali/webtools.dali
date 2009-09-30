@@ -115,8 +115,6 @@ public class JptUiMessages {
 	public static String PackageChooserPane_dialogMessage;
 	public static String PackageChooserPane_dialogTitle;
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
-	public static String PersistentAttributePage_mapAs;
-	public static String PersistentTypePage_mapAs;
 	public static String EntitiesGenerator_jobName;
 
 	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
