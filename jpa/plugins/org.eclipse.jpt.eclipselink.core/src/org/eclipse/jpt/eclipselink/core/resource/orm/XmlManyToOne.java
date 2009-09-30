@@ -436,8 +436,9 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 		return getElementTextRange(EclipseLink.JOIN_FETCH);
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -445,13 +446,16 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 			EclipseLinkOrmPackage.eINSTANCE.getXmlManyToOne(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
 			buildTargetEntityTranslator(),
 			buildFetchTranslator(),
 			buildOptionalTranslator(),
+			buildAccessTranslator(),
+			buildMappedByIdTranslator(),
+			buildIdTranslator(),
 			buildJoinColumnTranslator(),
 			buildJoinTableTranslator(),
 			buildCascadeTranslator(),
@@ -476,4 +480,4 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
-} // XmlManyToOne
+}

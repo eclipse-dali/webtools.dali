@@ -861,14 +861,15 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {
 		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlOneToMany_2_0_MapKeyAttributeOverrides());
 	}
-
+	
 	protected static Translator buildMapKeyColumnTranslator() {
 		return XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOneToMany_2_0_MapKeyColumn());
 	}
-
+	
 	protected static Translator buildMapKeyJoinColumnTranslator() {
 		return XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOneToMany_2_0_MapKeyJoinColumns());
 	}
+	
 	protected static Translator buildJoinTableTranslator() {
 		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
 	}

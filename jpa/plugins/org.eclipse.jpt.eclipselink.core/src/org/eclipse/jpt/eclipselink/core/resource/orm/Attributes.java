@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -23,6 +22,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -371,20 +372,21 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			XmlId.buildTranslator(EclipseLink.ID, OrmPackage.eINSTANCE.getAttributes_Ids()),
-			XmlEmbeddedId.buildTranslator(EclipseLink.EMBEDDED_ID, OrmPackage.eINSTANCE.getAttributes_EmbeddedIds()),
-			XmlBasic.buildTranslator(EclipseLink.BASIC, OrmPackage.eINSTANCE.getAttributes_Basics()),
-			XmlBasicCollection.buildTranslator(EclipseLink.BASIC_COLLECTION, EclipseLinkOrmPackage.eINSTANCE.getAttributes_BasicCollections()),
-			XmlBasicMap.buildTranslator(EclipseLink.BASIC_MAP, EclipseLinkOrmPackage.eINSTANCE.getAttributes_BasicMaps()),
-			XmlVersion.buildTranslator(EclipseLink.VERSION, OrmPackage.eINSTANCE.getAttributes_Versions()),
-			XmlManyToOne.buildTranslator(EclipseLink.MANY_TO_ONE, OrmPackage.eINSTANCE.getAttributes_ManyToOnes()),
-			XmlOneToMany.buildTranslator(EclipseLink.ONE_TO_MANY, OrmPackage.eINSTANCE.getAttributes_OneToManys()),
-			XmlOneToOne.buildTranslator(EclipseLink.ONE_TO_ONE, OrmPackage.eINSTANCE.getAttributes_OneToOnes()),
-			XmlVariableOneToOne.buildTranslator(EclipseLink.VARIABLE_ONE_TO_ONE, EclipseLinkOrmPackage.eINSTANCE.getAttributes_VariableOneToOnes()),
-			XmlManyToMany.buildTranslator(EclipseLink.MANY_TO_MANY, OrmPackage.eINSTANCE.getAttributes_ManyToManys()),
-			XmlEmbedded.buildTranslator(EclipseLink.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
-			XmlTransformation.buildTranslator(EclipseLink.TRANSFORMATION, EclipseLinkOrmPackage.eINSTANCE.getAttributes_Transformations()),
-			XmlTransient.buildTranslator(EclipseLink.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
+			XmlId.buildTranslator(EclipseLink2_0.ID, OrmPackage.eINSTANCE.getAttributes_Ids()),
+			XmlEmbeddedId.buildTranslator(EclipseLink2_0.EMBEDDED_ID, OrmPackage.eINSTANCE.getAttributes_EmbeddedIds()),
+			XmlBasic.buildTranslator(EclipseLink2_0.BASIC, OrmPackage.eINSTANCE.getAttributes_Basics()),
+			XmlBasicCollection.buildTranslator(EclipseLink2_0.BASIC_COLLECTION, EclipseLinkOrmPackage.eINSTANCE.getAttributes_BasicCollections()),
+			XmlBasicMap.buildTranslator(EclipseLink2_0.BASIC_MAP, EclipseLinkOrmPackage.eINSTANCE.getAttributes_BasicMaps()),
+			XmlVersion.buildTranslator(EclipseLink2_0.VERSION, OrmPackage.eINSTANCE.getAttributes_Versions()),
+			XmlManyToOne.buildTranslator(EclipseLink2_0.MANY_TO_ONE, OrmPackage.eINSTANCE.getAttributes_ManyToOnes()),
+			XmlOneToMany.buildTranslator(EclipseLink2_0.ONE_TO_MANY, OrmPackage.eINSTANCE.getAttributes_OneToManys()),
+			XmlOneToOne.buildTranslator(EclipseLink2_0.ONE_TO_ONE, OrmPackage.eINSTANCE.getAttributes_OneToOnes()),
+			XmlVariableOneToOne.buildTranslator(EclipseLink2_0.VARIABLE_ONE_TO_ONE, EclipseLinkOrmPackage.eINSTANCE.getAttributes_VariableOneToOnes()),
+			XmlManyToMany.buildTranslator(EclipseLink2_0.MANY_TO_MANY, OrmPackage.eINSTANCE.getAttributes_ManyToManys()),
+			XmlElementCollection.buildTranslator(EclipseLink2_0.ELEMENT_COLLECTION, OrmV2_0Package.eINSTANCE.getXmlAttributes_2_0_ElementCollections()),
+			XmlEmbedded.buildTranslator(EclipseLink2_0.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
+			XmlTransformation.buildTranslator(EclipseLink2_0.TRANSFORMATION, EclipseLinkOrmPackage.eINSTANCE.getAttributes_Transformations()),
+			XmlTransient.buildTranslator(EclipseLink2_0.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
 		};
 	}
-} // Attributes
+}

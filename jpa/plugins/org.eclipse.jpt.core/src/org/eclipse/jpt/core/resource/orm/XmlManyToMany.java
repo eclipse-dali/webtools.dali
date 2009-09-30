@@ -692,12 +692,12 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 			buildOrderByTranslator(),
 			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_OrderColumn()),		
 			buildMapKeyTranslator(),
-			XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyClass()),		
+			buildMapKeyClassTranslator(),
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyAttributeOverrides()),		
-			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyColumn()),		
-			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyJoinColumns()),		
+			buildMapKeyAttributeOverrideTranslator(),
+			buildMapKeyColumnTranslator(),
+			buildMapKeyJoinColumnTranslator(),
 			buildJoinTableTranslator(),
 			buildCascadeTranslator()
 		};
@@ -707,12 +707,28 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 		return new Translator(JPA.MAPPED_BY, OrmPackage.eINSTANCE.getXmlMappedByMapping_MappedBy(), Translator.DOM_ATTRIBUTE);
 	}
 	
+	protected static Translator buildMapKeyClassTranslator() {
+		return XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyClass());
+	}
+	
 	protected static Translator buildMapKeyTemporalTranslator() {
 		return new Translator(JPA2_0.TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
 		return new Translator(JPA2_0.ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyEnumerated());
+	}
+	
+	protected static Translator buildMapKeyAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyAttributeOverrides());
+	}
+	
+	protected static Translator buildMapKeyColumnTranslator() {
+		return XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyColumn());
+	}
+	
+	protected static Translator buildMapKeyJoinColumnTranslator() {
+		return XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyJoinColumns());
 	}
 	
 	protected static Translator buildJoinTableTranslator() {

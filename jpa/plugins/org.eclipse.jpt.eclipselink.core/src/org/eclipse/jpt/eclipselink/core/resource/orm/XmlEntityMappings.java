@@ -28,6 +28,8 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.core.resource.xml.XML;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -459,24 +461,24 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 			buildSchemaNamespaceTranslator(),
 			buildSchemaLocationTranslator(),
 			buildDescriptionTranslator(),
-			XmlPersistenceUnitMetadata.buildTranslator(EclipseLink.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
+			XmlPersistenceUnitMetadata.buildTranslator(EclipseLink2_0.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
 			buildSchemaTranslator(),
 			buildCatalogTranslator(),
 			buildAccessTranslator(),
-			XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters()),
-			XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters()),
-			XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters()),
-			XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters()),
-			XmlSequenceGenerator.buildTranslator(EclipseLink.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
-			XmlTableGenerator.buildTranslator(EclipseLink.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
-			XmlNamedQuery.buildTranslator(EclipseLink.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
-			XmlNamedNativeQuery.buildTranslator(EclipseLink.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
-			XmlNamedStoredProcedureQuery.buildTranslator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY, EclipseLinkOrmPackage.eINSTANCE.getXmlQueryContainer_NamedStoredProcedureQueries()),
-			SqlResultSetMapping.buildTranslator(EclipseLink.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
-			XmlMappedSuperclass.buildTranslator(EclipseLink.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
-			XmlEntity.buildTranslator(EclipseLink.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
-			XmlEmbeddable.buildTranslator(EclipseLink.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
+			XmlConverter.buildTranslator(EclipseLink2_0.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters()),
+			XmlTypeConverter.buildTranslator(EclipseLink2_0.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters()),
+			XmlObjectTypeConverter.buildTranslator(EclipseLink2_0.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters()),
+			XmlStructConverter.buildTranslator(EclipseLink2_0.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters()),
+			XmlSequenceGenerator.buildTranslator(EclipseLink2_0.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
+			XmlTableGenerator.buildTranslator(EclipseLink2_0.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
+			XmlNamedQuery.buildTranslator(EclipseLink2_0.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
+			XmlNamedNativeQuery.buildTranslator(EclipseLink2_0.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
+			XmlNamedStoredProcedureQuery.buildTranslator(EclipseLink2_0.NAMED_STORED_PROCEDURE_QUERY, EclipseLinkOrmPackage.eINSTANCE.getXmlQueryContainer_NamedStoredProcedureQueries()),
+			SqlResultSetMapping.buildTranslator(EclipseLink2_0.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
+			XmlMappedSuperclass.buildTranslator(EclipseLink2_0.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
+			XmlEntity.buildTranslator(EclipseLink2_0.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
+			XmlEmbeddable.buildTranslator(EclipseLink2_0.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
 	}
 	
@@ -488,7 +490,10 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 			
 			@Override
 			protected Iterator enumeratedObjectValues() {
-				return new ArrayIterator(new Object[] { EclipseLink.SCHEMA_VERSION });
+				return new ArrayIterator(new Object[] { 
+						EclipseLink.SCHEMA_VERSION,
+						EclipseLink1_1.SCHEMA_VERSION,
+						EclipseLink2_0.SCHEMA_VERSION });
 			}
 		};
 	}

@@ -873,8 +873,9 @@ public class XmlVersion extends org.eclipse.jpt.core.resource.orm.XmlVersion imp
 		return getElementTextRange(EclipseLink.CONVERT);
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -882,10 +883,11 @@ public class XmlVersion extends org.eclipse.jpt.core.resource.orm.XmlVersion imp
 			EclipseLinkOrmPackage.eINSTANCE.getXmlVersion(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator(),
 			buildMutableTranslator(),
 			buildColumnTranslator(), 
 			buildTemporalTranslator(),

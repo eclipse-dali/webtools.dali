@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;

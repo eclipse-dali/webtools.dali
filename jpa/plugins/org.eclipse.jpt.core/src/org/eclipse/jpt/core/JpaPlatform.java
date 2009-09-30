@@ -181,11 +181,19 @@ public interface JpaPlatform
 	JpaPlatformVariation getJpaVariation();
 
 	
-	interface Version {
+	interface Version 
+	{
+		/**
+		 * Return the version of this particular platform
+		 */
+		String getVersion();
+		
 		/**
 		 * Return the highest JPA specification version supported by this platform.
+		 * @see {@link JptCorePlugin#JPA_FACET_VERSION_1_0}
+		 * @see {@link JptCorePlugin#JPA_FACET_VERSION_2_0}
 		 */
-		int getJpaVersion();
+		String getJpaVersion();
 		
 		/**
 		 * Return whether this platform is compatible with the 2.0 JPA specification.

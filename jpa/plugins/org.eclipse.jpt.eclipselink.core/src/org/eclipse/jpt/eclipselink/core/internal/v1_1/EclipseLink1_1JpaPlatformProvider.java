@@ -41,7 +41,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVar
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1Definition;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm.EclipseLink1_1OrmResourceModelProvider;
 
 /**
  * EclipseLink platform
@@ -82,8 +81,7 @@ public class EclipseLink1_1JpaPlatformProvider
 			JarResourceModelProvider.instance(),
 			PersistenceResourceModelProvider.instance(),
 			OrmResourceModelProvider.instance(),
-			EclipseLinkOrmResourceModelProvider.instance(),
-			EclipseLink1_1OrmResourceModelProvider.instance()};
+			EclipseLinkOrmResourceModelProvider.instance()};
 	}
 
 	

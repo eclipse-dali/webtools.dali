@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaFactory;
 
 /**
@@ -41,12 +42,16 @@ public class GenericJpaPlatformFactory
 	
 	private JpaPlatform.Version buildJpaVersion() {
 		return new JpaPlatform.Version() {
-			public boolean is2_0Compatible() {
-				return false;
+			public String getVersion() {
+				return getJpaVersion();
 			}
 			
-			public int getJpaVersion() {
-				return 1;
+			public String getJpaVersion() {
+				return JptCorePlugin.JPA_FACET_VERSION_1_0;
+			}
+			
+			public boolean is2_0Compatible() {
+				return false;
 			}
 		};
 	}

@@ -523,8 +523,9 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		return getElementTextRange(EclipseLink.JOIN_FETCH);
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -532,14 +533,18 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 			EclipseLinkOrmPackage.eINSTANCE.getXmlOneToOne(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
 			buildTargetEntityTranslator(),
 			buildFetchTranslator(),
 			buildOptionalTranslator(),
+			buildAccessTranslator(),
 			buildMappedByTranslator(),
+			buildOrphanRemovalTranslator(),
+			buildMappedByIdTranslator(),
+			buildIdTranslator(),
 			buildPrimaryKeyJoinColumnTranslator(),
 			buildJoinColumnTranslator(),
 			buildJoinTableTranslator(),

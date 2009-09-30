@@ -873,8 +873,9 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		return getElementTextRange(EclipseLink.CONVERT);
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -882,10 +883,11 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			EclipseLinkOrmPackage.eINSTANCE.getXmlId(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator(),
 			buildMutableTranslator(),
 			buildColumnTranslator(),
 			buildGeneratedValueTranslator(),
@@ -925,7 +927,7 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	protected static Translator buildStructConverterTranslator() {
 		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter());
 	}
-		
+	
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}

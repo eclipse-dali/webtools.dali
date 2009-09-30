@@ -15,7 +15,10 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreationDataModelProvider
@@ -43,21 +46,38 @@ public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreation
 	
 	@Override
 	protected String getDefaultVersion() {
-		return EclipseLink.SCHEMA_VERSION;
+		String platformVersion = getJpaProject().getJpaPlatform().getJpaVersion().getVersion();
+		if (platformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0)) {
+			return EclipseLink.SCHEMA_VERSION;
+		}
+		else if (platformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_1)) {
+			return EclipseLink1_1.SCHEMA_VERSION;
+		}
+		else if (platformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_0)) {
+			return EclipseLink2_0.SCHEMA_VERSION;
+		}
+		else {
+			throw new IllegalStateException("Illegal EclipseLink platform version: " + platformVersion);
+		}
 	}
 	
 	@Override
 	protected boolean fileVersionSupported(String fileVersion) {
-		return fileVersion.equals(EclipseLink.SCHEMA_VERSION);
+		return fileVersion.equals(EclipseLink.SCHEMA_VERSION)
+				|| fileVersion.equals(EclipseLink1_1.SCHEMA_VERSION)
+				|| fileVersion.equals(EclipseLink2_0.SCHEMA_VERSION);
 	}
 	
 	@Override
 	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
+		// assume that platform has been policed for facet version already
 		return true;
 	}
 	
 	@Override
 	protected boolean isSupportedPlatformId(String id) {
-		return id.equals(EclipseLinkJpaPlatformProvider.ID) || id.equals(EclipseLink1_1JpaPlatformProvider.ID);
+		return id.equals(EclipseLinkJpaPlatformProvider.ID) 
+				|| id.equals(EclipseLink1_1JpaPlatformProvider.ID)
+				|| id.equals(EclipseLink2_0JpaPlatformProvider.ID);
 	}
 }

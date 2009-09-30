@@ -16,6 +16,7 @@ import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationOperation;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -57,6 +58,7 @@ public abstract class EclipseLinkOrmContextModelTestCase
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
 		dataModel.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, testJpaProject.getProject().getName());
+		dataModel.setProperty(OrmFileCreationDataModelProperties.VERSION, EclipseLink.SCHEMA_VERSION);
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.TRUE);
 		return dataModel;
 	}

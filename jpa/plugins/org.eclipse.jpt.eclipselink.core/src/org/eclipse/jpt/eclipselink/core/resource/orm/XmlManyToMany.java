@@ -20,7 +20,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -44,7 +48,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMany implements XmlAttributeMapping, XmlJoinFetch
+public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMany implements XmlAttributeMapping, XmlJoinFetch, XmlCollectionMapping_2_0
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -81,6 +85,36 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	 * @ordered
 	 */
 	protected XmlJoinFetchType joinFetch = JOIN_FETCH_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMapKeyConvert() <em>Map Key Convert</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String MAP_KEY_CONVERT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyConvert() <em>Map Key Convert</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected String mapKeyConvert = MAP_KEY_CONVERT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyAssociationOverrides() <em>Map Key Association Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyAssociationOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAssociationOverride> mapKeyAssociationOverrides;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -139,6 +173,64 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 		joinFetch = newJoinFetch == null ? JOIN_FETCH_EDEFAULT : newJoinFetch;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH, oldJoinFetch, joinFetch));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Map Key Convert</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key Convert</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key Convert</em>' attribute.
+	 * @see #setMapKeyConvert(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCollectionMapping_2_0_MapKeyConvert()
+	 * @model
+	 * @generated
+	 */
+	public String getMapKeyConvert()
+	{
+		return mapKeyConvert;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany#getMapKeyConvert <em>Map Key Convert</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Map Key Convert</em>' attribute.
+	 * @see #getMapKeyConvert()
+	 * @generated
+	 */
+	public void setMapKeyConvert(String newMapKeyConvert)
+	{
+		String oldMapKeyConvert = mapKeyConvert;
+		mapKeyConvert = newMapKeyConvert;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT, oldMapKeyConvert, mapKeyConvert));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key Association Overrides</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key Association Overrides</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCollectionMapping_2_0_MapKeyAssociationOverrides()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlAssociationOverride> getMapKeyAssociationOverrides()
+	{
+		if (mapKeyAssociationOverrides == null)
+		{
+			mapKeyAssociationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES);
+		}
+		return mapKeyAssociationOverrides;
 	}
 
 	/**
@@ -238,6 +330,8 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
+				return ((InternalEList<?>)getMapKeyAssociationOverrides()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -258,6 +352,10 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return getProperties();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				return getJoinFetch();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
+				return getMapKeyConvert();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
+				return getMapKeyAssociationOverrides();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -283,6 +381,13 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				setJoinFetch((XmlJoinFetchType)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
+				setMapKeyConvert((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
+				getMapKeyAssociationOverrides().clear();
+				getMapKeyAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -306,6 +411,12 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				setJoinFetch(JOIN_FETCH_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
+				setMapKeyConvert(MAP_KEY_CONVERT_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
+				getMapKeyAssociationOverrides().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -326,6 +437,10 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				return joinFetch != JOIN_FETCH_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
+				return MAP_KEY_CONVERT_EDEFAULT == null ? mapKeyConvert != null : !MAP_KEY_CONVERT_EDEFAULT.equals(mapKeyConvert);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
+				return mapKeyAssociationOverrides != null && !mapKeyAssociationOverrides.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -366,6 +481,15 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH: return EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlCollectionMapping_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT: return EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT;
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -411,6 +535,15 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlCollectionMapping_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT;
+				case EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -427,6 +560,8 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (joinFetch: ");
 		result.append(joinFetch);
+		result.append(", mapKeyConvert: ");
+		result.append(mapKeyConvert);
 		result.append(')');
 		return result.toString();
 	}
@@ -435,8 +570,9 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 		return getElementTextRange(EclipseLink.JOIN_FETCH);
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -444,21 +580,58 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			EclipseLinkOrmPackage.eINSTANCE.getXmlManyToMany(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
 			buildTargetEntityTranslator(),
 			buildFetchTranslator(),
+			buildAccessTranslator(),
 			buildMappedByTranslator(),
 			buildOrderByTranslator(),
 			buildMapKeyTranslator(),
+			buildMapKeyClassTranslator(),
+			buildMapKeyTemporalTranslator(),
+			buildMapKeyEnumeratedTranslator(),
+			buildMapKeyConvertTranslator(),
+			buildMapKeyAttributeOverrideTranslator(),
+			buildMapKeyAssociationOverrideTranslator(),
+			buildMapKeyColumnTranslator(),
+			buildMapKeyJoinColumnTranslator(),
+			buildConverterTranslator(),
+			buildTypeConverterTranslator(),
+			buildObjectTypeConverterTranslator(),
+			buildStructConverterTranslator(),
 			buildJoinTableTranslator(),
 			buildCascadeTranslator(),
 			buildJoinFetchTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator()
 		};
+	}
+	
+	protected static Translator buildMapKeyConvertTranslator() {
+		return new Translator(EclipseLink2_0.MAP_KEY_CONVERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert());
+	}
+	
+	protected static Translator buildMapKeyAssociationOverrideTranslator() {
+		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyAssociationOverrides());
+	}
+	
+	protected static Translator buildConverterTranslator() {
+		return XmlConverter.buildTranslator(EclipseLink2_0.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter());
+	}
+	
+	protected static Translator buildTypeConverterTranslator() {
+		return XmlTypeConverter.buildTranslator(EclipseLink2_0.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter());
+	}
+	
+	protected static Translator buildObjectTypeConverterTranslator() {
+		return XmlObjectTypeConverter.buildTranslator(EclipseLink2_0.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter());
+	}
+	
+	protected static Translator buildStructConverterTranslator() {
+		return XmlStructConverter.buildTranslator(EclipseLink2_0.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter());
 	}
 	
 	protected static Translator buildJoinFetchTranslator() {
@@ -472,5 +645,4 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
-
-} // XmlManyToMany
+}

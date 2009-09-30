@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasicMap;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 

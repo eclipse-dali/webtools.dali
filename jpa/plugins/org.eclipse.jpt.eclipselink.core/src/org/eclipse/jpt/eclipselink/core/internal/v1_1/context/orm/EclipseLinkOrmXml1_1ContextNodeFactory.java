@@ -30,21 +30,21 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOne
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlContextNodeFactory;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasic;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasicCollection;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlBasicMap;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlEmbeddedId;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlId;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlManyToOne;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlTransformation;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlTransient;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlVariableOneToOne;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlVersion;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransient;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 
 
 public class EclipseLinkOrmXml1_1ContextNodeFactory extends EclipseLinkOrmXmlContextNodeFactory
@@ -134,5 +134,4 @@ public class EclipseLinkOrmXml1_1ContextNodeFactory extends EclipseLinkOrmXmlCon
 	public XmlNullAttributeMapping buildVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		return new VirtuaEclipseLinklXmlNullAttributeMapping1_1(ormTypeMapping, javaAttributeMapping);
 	}
-
 }

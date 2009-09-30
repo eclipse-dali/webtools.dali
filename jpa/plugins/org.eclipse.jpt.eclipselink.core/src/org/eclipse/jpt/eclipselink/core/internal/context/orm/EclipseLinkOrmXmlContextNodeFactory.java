@@ -36,7 +36,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
@@ -73,7 +72,7 @@ public class EclipseLinkOrmXmlContextNodeFactory extends AbstractOrmXmlContextNo
 	}
 	
 	@Override
-	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
+	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, org.eclipse.jpt.core.resource.orm.XmlAttributeMapping resourceMapping) {
 		return new OrmEclipseLinkPersistentAttribute(parent, owner, resourceMapping);
 	}
 
@@ -217,5 +216,4 @@ public class EclipseLinkOrmXmlContextNodeFactory extends AbstractOrmXmlContextNo
 	public XmlNullAttributeMapping buildVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		return new VirtualEclipseLinkXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
 	}
-
 }

@@ -20,7 +20,15 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlBasic_1_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -44,7 +52,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
+public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlBasic_1_1
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -138,6 +146,34 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	protected String convert = CONVERT_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSequenceGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlSequenceGenerator sequenceGenerator;
+	/**
+	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTableGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlTableGenerator tableGenerator;
+	/**
+	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGeneratedValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlGeneratedValue generatedValue;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -226,6 +262,186 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 		convert = newConvert;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__CONVERT, oldConvert, convert));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Sequence Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
+	 * @see #setSequenceGenerator(XmlSequenceGenerator)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer_SequenceGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlSequenceGenerator getSequenceGenerator()
+	{
+		return sequenceGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetSequenceGenerator(XmlSequenceGenerator newSequenceGenerator, NotificationChain msgs)
+	{
+		XmlSequenceGenerator oldSequenceGenerator = sequenceGenerator;
+		sequenceGenerator = newSequenceGenerator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic#getSequenceGenerator <em>Sequence Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Sequence Generator</em>' containment reference.
+	 * @see #getSequenceGenerator()
+	 * @generated
+	 */
+	public void setSequenceGenerator(XmlSequenceGenerator newSequenceGenerator)
+	{
+		if (newSequenceGenerator != sequenceGenerator)
+		{
+			NotificationChain msgs = null;
+			if (sequenceGenerator != null)
+				msgs = ((InternalEObject)sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR, null, msgs);
+			if (newSequenceGenerator != null)
+				msgs = ((InternalEObject)newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR, null, msgs);
+			msgs = basicSetSequenceGenerator(newSequenceGenerator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Table Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Table Generator</em>' containment reference.
+	 * @see #setTableGenerator(XmlTableGenerator)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer_TableGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlTableGenerator getTableGenerator()
+	{
+		return tableGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTableGenerator(XmlTableGenerator newTableGenerator, NotificationChain msgs)
+	{
+		XmlTableGenerator oldTableGenerator = tableGenerator;
+		tableGenerator = newTableGenerator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic#getTableGenerator <em>Table Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Table Generator</em>' containment reference.
+	 * @see #getTableGenerator()
+	 * @generated
+	 */
+	public void setTableGenerator(XmlTableGenerator newTableGenerator)
+	{
+		if (newTableGenerator != tableGenerator)
+		{
+			NotificationChain msgs = null;
+			if (tableGenerator != null)
+				msgs = ((InternalEObject)tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR, null, msgs);
+			if (newTableGenerator != null)
+				msgs = ((InternalEObject)newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR, null, msgs);
+			msgs = basicSetTableGenerator(newTableGenerator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Generated Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Generated Value</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Generated Value</em>' containment reference.
+	 * @see #setGeneratedValue(XmlGeneratedValue)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_1_1_GeneratedValue()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlGeneratedValue getGeneratedValue()
+	{
+		return generatedValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetGeneratedValue(XmlGeneratedValue newGeneratedValue, NotificationChain msgs)
+	{
+		XmlGeneratedValue oldGeneratedValue = generatedValue;
+		generatedValue = newGeneratedValue;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE, oldGeneratedValue, newGeneratedValue);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic#getGeneratedValue <em>Generated Value</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Generated Value</em>' containment reference.
+	 * @see #getGeneratedValue()
+	 * @generated
+	 */
+	public void setGeneratedValue(XmlGeneratedValue newGeneratedValue)
+	{
+		if (newGeneratedValue != generatedValue)
+		{
+			NotificationChain msgs = null;
+			if (generatedValue != null)
+				msgs = ((InternalEObject)generatedValue).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE, null, msgs);
+			if (newGeneratedValue != null)
+				msgs = ((InternalEObject)newGeneratedValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE, null, msgs);
+			msgs = basicSetGeneratedValue(newGeneratedValue, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE, newGeneratedValue, newGeneratedValue));
 	}
 
 	/**
@@ -573,6 +789,12 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return basicSetObjectTypeConverter(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__STRUCT_CONVERTER:
 				return basicSetStructConverter(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				return basicSetSequenceGenerator(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				return basicSetTableGenerator(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				return basicSetGeneratedValue(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -603,6 +825,12 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return getStructConverter();
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				return getConvert();
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				return getSequenceGenerator();
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				return getTableGenerator();
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				return getGeneratedValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -643,6 +871,15 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				setConvert((String)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -681,6 +918,15 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				setConvert(CONVERT_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -711,6 +957,12 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return structConverter != null;
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				return sequenceGenerator != null;
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				return tableGenerator != null;
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				return generatedValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -770,6 +1022,23 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_BASIC__CONVERT: return EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
+				case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_1_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE: return EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE;
 				default: return -1;
 			}
 		}
@@ -834,6 +1103,23 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_1_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE: return EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -879,8 +1165,10 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			buildNameTranslator(),
 			buildFetchTranslator(),
 			buildOptionalTranslator(),
+			buildAccessTranslator(),
 			buildMutableTranslator(),
 			buildColumnTranslator(), 
+			buildGeneratedValueTranslator(), 
 			buildLobTranslator(),
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
@@ -889,6 +1177,8 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			buildTypeConverterTranslator(),
 			buildObjectTypeConverterTranslator(),
 			buildStructConverterTranslator(),
+			buildTableGeneratorTranslator(),
+			buildSequenceGeneratorTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator()
 		};
@@ -896,6 +1186,10 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	
 	protected static Translator buildMutableTranslator() {
 		return new Translator(EclipseLink.MUTABLE, EclipseLinkOrmPackage.eINSTANCE.getXmlMutable_Mutable(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildGeneratedValueTranslator() {
+		return XmlGeneratedValue.buildTranslator(EclipseLink1_1.GENERATED_VALUE, EclipseLinkOrmV1_1Package.eINSTANCE.getXmlBasic_1_1_GeneratedValue());
 	}
 	
 	protected static Translator buildConvertTranslator() {
@@ -918,6 +1212,14 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter());
 	}
 		
+	protected static Translator buildTableGeneratorTranslator() {
+		return XmlTableGenerator.buildTranslator(EclipseLink1_1.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+	}
+	
+	protected static Translator buildSequenceGeneratorTranslator() {
+		return XmlSequenceGenerator.buildTranslator(EclipseLink1_1.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
+	}
+	
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}

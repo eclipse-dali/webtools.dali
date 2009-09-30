@@ -42,7 +42,6 @@ Export-Package: org.eclipse.jpt.eclipselink.ui,
  org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;x-internal:=true,
  org.eclipse.jpt.eclipselink.ui.internal.v1_1.platform;x-internal:=true,
  org.eclipse.jpt.eclipselink.ui.internal.v1_1.structure;x-internal:=true,
- org.eclipse.jpt.eclipselink.ui.internal.v1_1.wizards;x-internal:=true,
  org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options,
  org.eclipse.jpt.eclipselink.ui.internal.v2_0.platform,
  org.eclipse.jpt.eclipselink.ui.internal.wizards;x-internal:=true

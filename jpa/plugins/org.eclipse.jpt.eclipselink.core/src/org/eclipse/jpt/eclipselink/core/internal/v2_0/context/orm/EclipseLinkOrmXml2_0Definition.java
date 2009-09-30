@@ -36,7 +36,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasic
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkTransformationMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkVariableOneToOneMappingDefinition;
-import org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.EclipseLink2_0OrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 
 public class EclipseLinkOrmXml2_0Definition
 	extends AbstractOrmXmlDefinition
@@ -63,7 +63,7 @@ public class EclipseLinkOrmXml2_0Definition
 	
 	
 	public EFactory getResourceNodeFactory() {
-		return EclipseLink2_0OrmFactory.eINSTANCE;
+		return EclipseLinkOrmFactory.eINSTANCE;
 	}
 	
 	@Override

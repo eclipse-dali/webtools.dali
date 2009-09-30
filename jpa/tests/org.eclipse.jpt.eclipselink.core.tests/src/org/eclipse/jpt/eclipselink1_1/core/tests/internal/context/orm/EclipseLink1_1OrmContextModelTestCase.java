@@ -14,9 +14,10 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperti
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.operations.EclipseLink1_1OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.operations.EclipseLink1_1OrmFileCreationOperation;
+import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
+import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationOperation;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.EclipseLink1_1ContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -48,8 +49,8 @@ public abstract class EclipseLink1_1OrmContextModelTestCase
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws Exception {
 		TestJpaProject testJpaProject = super.buildJpaProject(projectName, autoBuild, jpaConfig);
 		
-		EclipseLink1_1OrmFileCreationOperation operation = 
-			new EclipseLink1_1OrmFileCreationOperation(buildEclipseLinkOrmConfig(testJpaProject));
+		EclipseLinkOrmFileCreationOperation operation = 
+			new EclipseLinkOrmFileCreationOperation(buildEclipseLinkOrmConfig(testJpaProject));
 		operation.execute(null, null);
 		
 		return testJpaProject;
@@ -57,8 +58,9 @@ public abstract class EclipseLink1_1OrmContextModelTestCase
 	
 	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
 		IDataModel dataModel = 
-			DataModelFactory.createDataModel(new EclipseLink1_1OrmFileCreationDataModelProvider());		
+			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
 		dataModel.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, testJpaProject.getProject().getName());
+		dataModel.setProperty(OrmFileCreationDataModelProperties.VERSION, EclipseLink1_1.SCHEMA_VERSION);
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.TRUE);
 		return dataModel;
 	}

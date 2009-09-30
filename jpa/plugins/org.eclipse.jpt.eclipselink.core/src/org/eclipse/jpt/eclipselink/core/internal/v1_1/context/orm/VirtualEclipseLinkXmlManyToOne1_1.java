@@ -21,8 +21,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlManyToOne;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlManyToOne;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -30,7 +30,6 @@ import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlManyToOne;
  */
 public class VirtualEclipseLinkXmlManyToOne1_1 extends XmlManyToOne
 {
-		
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected final JavaManyToOneMapping javaAttributeMapping;

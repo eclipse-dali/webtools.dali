@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlEmbedded1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlEmbedded;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -26,7 +26,6 @@ import org.eclipse.jpt.eclipselink.core.v2_0.resource.orm.XmlEmbedded;
  */
 public class VirtualEclipseLinkXmlEmbedded2_0 extends XmlEmbedded
 {
-		
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected final JavaEmbeddedMapping javaAttributeMapping;

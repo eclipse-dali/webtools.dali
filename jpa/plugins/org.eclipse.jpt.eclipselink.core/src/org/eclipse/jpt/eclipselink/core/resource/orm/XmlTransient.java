@@ -2,23 +2,18 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlTransient.java,v 1.5 2009/06/17 16:45:57 kmoore Exp $
+ * $Id: XmlTransient.java,v 1.6 2009/09/30 23:17:52 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
@@ -324,8 +319,9 @@ public class XmlTransient extends org.eclipse.jpt.core.resource.orm.XmlTransient
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -333,10 +329,10 @@ public class XmlTransient extends org.eclipse.jpt.core.resource.orm.XmlTransient
 			EclipseLinkOrmPackage.eINSTANCE.getXmlTransient(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator()
 		};
 	}
-} // XmlTransient
+}

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
 
@@ -42,12 +43,16 @@ public class Generic2_0JpaPlatformFactory
 	
 	private JpaPlatform.Version buildJpaVersion() {
 		return new JpaPlatform.Version() {
-			public boolean is2_0Compatible() {
-				return true;
+			public String getVersion() {
+				return getJpaVersion();
 			}
 			
-			public int getJpaVersion() {
-				return 2;
+			public String getJpaVersion() {
+				return JptCorePlugin.JPA_FACET_VERSION_2_0;
+			}
+			
+			public boolean is2_0Compatible() {
+				return true;
 			}
 		};
 	}

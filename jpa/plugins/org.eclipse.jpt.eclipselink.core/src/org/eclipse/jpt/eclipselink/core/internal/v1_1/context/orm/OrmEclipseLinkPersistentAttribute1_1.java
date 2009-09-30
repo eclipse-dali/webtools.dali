@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 
 public class OrmEclipseLinkPersistentAttribute1_1 

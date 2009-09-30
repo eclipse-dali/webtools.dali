@@ -12,12 +12,10 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -337,12 +335,13 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator()
 		};
 	}
-		
+	
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
@@ -350,5 +349,4 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
-	
-} // XmlEmbeddedIdImpl
+}

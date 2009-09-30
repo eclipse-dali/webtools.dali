@@ -21,6 +21,9 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlMappedSuperclass_1_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -54,7 +57,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
+public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer, XmlMappedSuperclass_1_1
 {
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -171,6 +174,16 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlPrimaryKey primaryKey;
 
 	/**
 	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
@@ -863,6 +876,66 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Primary Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Primary Key</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Primary Key</em>' containment reference.
+	 * @see #setPrimaryKey(XmlPrimaryKey)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_1_1_PrimaryKey()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlPrimaryKey getPrimaryKey()
+	{
+		return primaryKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetPrimaryKey(XmlPrimaryKey newPrimaryKey, NotificationChain msgs)
+	{
+		XmlPrimaryKey oldPrimaryKey = primaryKey;
+		primaryKey = newPrimaryKey;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY, oldPrimaryKey, newPrimaryKey);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getPrimaryKey <em>Primary Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Primary Key</em>' containment reference.
+	 * @see #getPrimaryKey()
+	 * @generated
+	 */
+	public void setPrimaryKey(XmlPrimaryKey newPrimaryKey)
+	{
+		if (newPrimaryKey != primaryKey)
+		{
+			NotificationChain msgs = null;
+			if (primaryKey != null)
+				msgs = ((InternalEObject)primaryKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY, null, msgs);
+			if (newPrimaryKey != null)
+				msgs = ((InternalEObject)newPrimaryKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY, null, msgs);
+			msgs = basicSetPrimaryKey(newPrimaryKey, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY, newPrimaryKey, newPrimaryKey));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -923,6 +996,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				return basicSetPrimaryKey(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return basicSetOptimisticLocking(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -965,6 +1040,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return getStructConverters();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				return getPrimaryKey();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return getOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1025,6 +1102,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				setPrimaryKey((XmlPrimaryKey)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)newValue);
 				return;
@@ -1084,6 +1164,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				setPrimaryKey((XmlPrimaryKey)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)null);
 				return;
@@ -1133,6 +1216,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return structConverters != null && !structConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				return primaryKey != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1207,6 +1292,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMappedSuperclass_1_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY: return EclipseLinkOrmV1_1Package.XML_MAPPED_SUPERCLASS_11__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1270,6 +1363,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMappedSuperclass_1_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV1_1Package.XML_MAPPED_SUPERCLASS_11__PRIMARY_KEY: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1298,8 +1399,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		return getAttributeTextRange(EclipseLink.READ_ONLY);
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -1307,11 +1409,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildClassTranslator(),
 			buildAccessTranslator(),
+			buildCacheableTranslator(),
 			buildMetadataCompleteTranslator(),
 			buildReadOnlyTranslator(),
 			buildExistenceCheckingTranslator(),
@@ -1320,6 +1423,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			buildIdClassTranslator(),
+			buildPrimaryKeyTranslator(),
+			buildOptimisticLockingTranslator(),
 			buildCacheTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
@@ -1350,57 +1455,60 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	protected static Translator buildExistenceCheckingTranslator() {
 		return new Translator(EclipseLink.EXISTENCE_CHECKING, EclipseLinkOrmPackage.eINSTANCE.getXmlCacheHolder_ExistenceChecking(), Translator.DOM_ATTRIBUTE);
 	}
-
+	
 	protected static Translator buildExcludeDefaultMappingsTranslator() {
 		return new Translator(EclipseLink.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass_ExcludeDefaultMappings(), Translator.DOM_ATTRIBUTE);
 	}
-
+	
 	protected static Translator buildCustomizerTranslator() {
 		return XmlCustomizer.buildTranslator(EclipseLink.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
 	}
-
+	
 	protected static Translator buildChangeTrackingTranslator() {
 		return XmlChangeTracking.buildTranslator(EclipseLink.CHANGE_TRACKING, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking());
 	}
-
+	
+	protected static Translator buildPrimaryKeyTranslator() {
+		return XmlPrimaryKey.buildTranslator(EclipseLink1_1.PRIMARY_KEY, EclipseLinkOrmV1_1Package.eINSTANCE.getXmlMappedSuperclass_1_1_PrimaryKey());
+	}
+	
 	protected static Translator buildOptimisticLockingTranslator() {
 		return XmlOptimisticLocking.buildTranslator(EclipseLink.OPTIMISTIC_LOCKING, EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass_OptimisticLocking());
 	}
-
+	
 	protected static Translator buildCacheTranslator() {
 		return XmlCache.buildTranslator(EclipseLink.CACHE, EclipseLinkOrmPackage.eINSTANCE.getXmlCacheHolder_Cache());
 	}
-
+	
 	protected static Translator buildConverterTranslator() {
 		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters());
 	}
-
+	
 	protected static Translator buildTypeConverterTranslator() {
 		return XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters());
 	}
-
+	
 	protected static Translator buildObjectTypeConverterTranslator() {
 		return XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters());
 	}
-
+	
 	protected static Translator buildStructConverterTranslator() {
 		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters());
 	}
-
+	
 	protected static Translator buildCopyPolicyTranslator() {
 		return XmlCopyPolicy.buildTranslator(EclipseLink.COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass_CopyPolicy());
 	}
-
+	
 	protected static Translator buildInstantiationCoypPolicyTranslator() {
 		return XmlInstantiationCopyPolicy.buildTranslator(EclipseLink.INSTANTIATION_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass_InstantiationCopyPolicy());
 	}
-
+	
 	protected static Translator buildCloneCopyPolicyTranslator() {
 		return XmlCloneCopyPolicy.buildTranslator(EclipseLink.CLONE_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass_CloneCopyPolicy());
 	}
-
+	
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
-
-} // XmlMappedSuperclass
+}

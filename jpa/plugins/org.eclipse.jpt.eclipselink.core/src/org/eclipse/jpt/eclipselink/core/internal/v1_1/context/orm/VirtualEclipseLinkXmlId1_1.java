@@ -23,11 +23,11 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlId;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 

@@ -24,27 +24,29 @@ public class EclipseLinkOrmResourceModelProvider
 {
 	// singleton
 	private static final JpaResourceModelProvider INSTANCE = new EclipseLinkOrmResourceModelProvider();
-
+	
+	
 	/**
-	 * Return the singleton.
+	 * Return the singleton
 	 */
 	public static JpaResourceModelProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
-	 * Ensure single instance.
+	 * Enforce singleton usage
 	 */
 	private EclipseLinkOrmResourceModelProvider() {
 		super();
 	}
-
+	
+	
 	public IContentType getContentType() {
 		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
-
+	
 	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {
 		return EclipseLinkOrmXmlResourceProvider.getXmlResourceProvider(file).getXmlResource();
 	}
-
 }

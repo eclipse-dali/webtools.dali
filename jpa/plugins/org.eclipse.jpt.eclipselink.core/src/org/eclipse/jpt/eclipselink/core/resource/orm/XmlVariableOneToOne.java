@@ -338,16 +338,17 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 		return EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 	
+	
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
-			buildAccessTranslator()
+			buildAccessTranslator(),
 		};
 	}
 }

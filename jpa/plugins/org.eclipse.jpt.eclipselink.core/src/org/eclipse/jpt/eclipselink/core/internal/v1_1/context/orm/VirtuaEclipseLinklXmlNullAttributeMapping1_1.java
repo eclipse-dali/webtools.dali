@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlNullAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping;
 
 /**
  * VirtualVersion is an implementation of Version used when there is 
@@ -26,8 +26,7 @@ import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlAttributeMapping;
 public class VirtuaEclipseLinklXmlNullAttributeMapping1_1
 	extends XmlNullAttributeMapping 
 	implements XmlAttributeMapping
-{
-	
+{	
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected final JavaAttributeMapping javaAttributeMapping;

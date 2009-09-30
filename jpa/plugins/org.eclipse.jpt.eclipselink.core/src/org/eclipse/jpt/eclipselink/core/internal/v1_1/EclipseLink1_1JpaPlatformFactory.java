@@ -13,11 +13,13 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -63,12 +65,16 @@ public class EclipseLink1_1JpaPlatformFactory
 	
 	private JpaPlatform.Version buildJpaVersion() {
 		return new JpaPlatform.Version() {
-			public boolean is2_0Compatible() {
-				return false;
+			public String getVersion() {
+				return JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_1;
 			}
 			
-			public int getJpaVersion() {
-				return 1;
+			public String getJpaVersion() {
+				return JptCorePlugin.JPA_FACET_VERSION_1_0;
+			}
+			
+			public boolean is2_0Compatible() {
+				return false;
 			}
 		};
 	}

@@ -22,8 +22,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOne
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToMany;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -31,7 +31,6 @@ import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.XmlOneToMany;
  */
 public class VirtualEclipseLinkXmlOneToMany1_1 extends XmlOneToMany
 {
-		
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected final JavaEclipseLinkOneToManyMapping javaAttributeMapping;

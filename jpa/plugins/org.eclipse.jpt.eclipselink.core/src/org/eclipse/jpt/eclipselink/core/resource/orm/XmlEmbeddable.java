@@ -962,7 +962,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	}
 		
 	// ********** translators **********
-
+	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
@@ -970,7 +970,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable(), 
 			buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildClassTranslator(),
@@ -991,48 +991,48 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			buildCloneCopyPolicyTranslator(),
 		};
 	}
-
+	
 	protected static Translator buildExcludeDefaultMappingsTranslator() {
 		return new Translator(EclipseLink.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_ExcludeDefaultMappings(), Translator.DOM_ATTRIBUTE);
 	}
-
+	
 	protected static Translator buildCustomizerTranslator() {
 		return XmlCustomizer.buildTranslator(EclipseLink.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
 	}
-
+	
 	protected static Translator buildChangeTrackingTranslator() {
 		return XmlChangeTracking.buildTranslator(EclipseLink.CHANGE_TRACKING, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking());
 	}
+	
 	protected static Translator buildConverterTranslator() {
 		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters());
 	}
-
+	
 	protected static Translator buildTypeConverterTranslator() {
 		return XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters());
 	}
-
+	
 	protected static Translator buildObjectTypeConverterTranslator() {
 		return XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters());
 	}
-
+	
 	protected static Translator buildStructConverterTranslator() {
 		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters());
 	}
-
+	
 	protected static Translator buildCopyPolicyTranslator() {
 		return XmlCopyPolicy.buildTranslator(EclipseLink.COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CopyPolicy());
 	}
-
+	
 	protected static Translator buildInstantiationCoypPolicyTranslator() {
 		return XmlInstantiationCopyPolicy.buildTranslator(EclipseLink.INSTANTIATION_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_InstantiationCopyPolicy());
 	}
-
+	
 	protected static Translator buildCloneCopyPolicyTranslator() {
 		return XmlCloneCopyPolicy.buildTranslator(EclipseLink.CLONE_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CloneCopyPolicy());
 	}
-
+	
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
-
-} // XmlEmbeddable
+}

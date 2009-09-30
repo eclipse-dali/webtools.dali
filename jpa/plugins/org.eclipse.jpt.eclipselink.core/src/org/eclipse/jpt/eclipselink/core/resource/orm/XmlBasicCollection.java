@@ -344,6 +344,7 @@ public class XmlBasicCollection extends AbstractXmlAttributeMapping implements X
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildAccessTranslator()
 		};
 	}
 }
