@@ -40,7 +40,7 @@ public class PersistenceXmlOptionsTab<T extends Options>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		new EclipseLinkOptionsComposite(this, container);
+		new EclipseLinkOptionsComposite<T>(this, container);
 	}
 
 	// ********** JpaPageComposite implementation **********
