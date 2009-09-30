@@ -64,14 +64,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class XmlPersistenceUnit extends AbstractJpaEObject implements XmlPersistenceUnit_2_0
 {
 	/**
-	 * The default value of the '{@link #getSharedCacheMode() <em>Shared Cache Mode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSharedCacheMode()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final XmlPersistenceUnitCachingType_2_0 SHARED_CACHE_MODE_EDEFAULT = XmlPersistenceUnitCachingType_2_0.UNSPECIFIED;
+	protected static final XmlPersistenceUnitCachingType_2_0 SHARED_CACHE_MODE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getSharedCacheMode() <em>Shared Cache Mode</em>}' attribute.
@@ -84,14 +80,10 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements XmlPersist
 	protected XmlPersistenceUnitCachingType_2_0 sharedCacheMode = SHARED_CACHE_MODE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getValidationMode() <em>Validation Mode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getValidationMode()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final XmlPersistenceUnitValidationModeType_2_0 VALIDATION_MODE_EDEFAULT = XmlPersistenceUnitValidationModeType_2_0.AUTO;
+	protected static final XmlPersistenceUnitValidationModeType_2_0 VALIDATION_MODE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getValidationMode() <em>Validation Mode</em>}' attribute.
