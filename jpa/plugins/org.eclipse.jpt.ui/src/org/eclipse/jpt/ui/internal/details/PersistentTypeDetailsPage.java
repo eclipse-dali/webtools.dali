@@ -9,22 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.Tracing;
+import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
 /**
@@ -39,10 +40,8 @@ import org.eclipse.ui.part.PageBook;
 @SuppressWarnings("nls")
 public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<PersistentType>
 {
-	private JpaComposite currentMappingComposite;
-	private String currentMappingKey;
 	private Map<String, JpaComposite> mappingComposites;
-	private PageBook typeMappingPageBook;
+	private PageBook mappingPageBook;
 
 	/**
 	 * Creates a new <code>PersistentTypeDetailsPage</code>.
@@ -50,14 +49,12 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public PersistentTypeDetailsPage(
-			Composite parent,
-            WidgetFactory widgetFactory) {
-		
+	public PersistentTypeDetailsPage(Composite parent,
+                                    WidgetFactory widgetFactory) {
+
 		super(parent, widgetFactory);
 	}
-	
-	
+
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -74,13 +71,13 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 		);
 
 		// Type properties page
-		buildTypeMappingPageBook(container);
+		buildMappingPageBook(container);
 	}
 
-	protected PageBook buildTypeMappingPageBook(Composite parent) {
+	protected PageBook buildMappingPageBook(Composite parent) {
 
-		this.typeMappingPageBook = new PageBook(parent, SWT.NONE);
-		this.typeMappingPageBook.showPage(this.addLabel(this.typeMappingPageBook, ""));
+		this.mappingPageBook = new PageBook(parent, SWT.NONE);
+		this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = SWT.FILL;
@@ -88,19 +85,32 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace   = true;
 
-		this.typeMappingPageBook.setLayoutData(gridData);
+		this.mappingPageBook.setLayoutData(gridData);
+		
+		new ControlSwitcher(this.buildMappingHolder(), this.buildPaneTransformer(), this.mappingPageBook);
 
-		return this.typeMappingPageBook;
+		return this.mappingPageBook;
+	}
+	
+	private Transformer<TypeMapping, Control> buildPaneTransformer() {
+		return new Transformer<TypeMapping, Control>() {
+			public Control transform(TypeMapping typeMapping) {
+				if (typeMapping == null) {
+					return null;
+				}
+				return getMappingComposite(typeMapping.getKey()).getControl();
+			}
+		};
 	}
 	
 	protected PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
 		return new FilteringPropertyValueModel<TypeMapping>(
-			buildGenericMappingHolder(),
+			buildMappingHolder(),
 			buildMappingFilter(key)
 		);
 	}
 
-	private PropertyAspectAdapter<PersistentType, TypeMapping> buildGenericMappingHolder() {
+	private PropertyAspectAdapter<PersistentType, TypeMapping> buildMappingHolder() {
 		return new PropertyAspectAdapter<PersistentType, TypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
 			@Override
 			protected TypeMapping buildValue_() {
@@ -117,135 +127,35 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 		};
 	}
 
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		updateMappingPage();
-	}
-
-	private void populateMappingPage(String mappingKey) {
-
-		// Nothing to update
-		if (this.currentMappingKey == mappingKey) {
-			return;
-		}
-		// Dispose the existing mapping pane
-		else if (this.currentMappingComposite != null) {
-			this.log(
-				Tracing.UI_DETAILS_VIEW,
-				"PersistentTypeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey
-			);
-
-			try {
-				this.currentMappingComposite.dispose();
-				this.currentMappingComposite = null;
-			}
-			catch (Exception e) {
-				JptUiPlugin.log(e);
-			}
-		}
-
-		this.currentMappingKey = mappingKey;
-
-		// Change the current mapping pane with the new one
-		if (this.currentMappingKey != null) {
-			this.currentMappingComposite = getMappingCompositeFor(mappingKey);
-
-			// Show the new mapping pane
-			try {
-				this.log(
-					Tracing.UI_DETAILS_VIEW,
-					"PersistentTypeDetailsPage.populateMappingPage() populating new page: " + this.currentMappingKey
-				);
-
-				this.currentMappingComposite.populate();
-				this.typeMappingPageBook.showPage(this.currentMappingComposite.getControl());
-			}
-			catch (Exception e) {
-				JptUiPlugin.log(e);
-
-				this.log(
-					Tracing.UI_DETAILS_VIEW,
-					"PersistentTypeDetailsPage.populateMappingPage() error encountered"
-				);
-
-				// An error was encountered either during the population, dispose it
-				try {
-					this.currentMappingComposite.dispose();
-				}
-				catch (Exception exception) {
-					JptUiPlugin.log(e);
-				}
-
-				this.mappingComposites.remove(this.currentMappingComposite);
-				this.currentMappingComposite = null;
-
-				// Show an error message
-				// TODO: Replace the blank label with the error page
-				this.typeMappingPageBook.showPage(this.addLabel(this.typeMappingPageBook, ""));
-			}
-		}
-		// Clear the mapping pane and show a blank page
-		else {
-			this.log(
-				Tracing.UI_DETAILS_VIEW,
-				"PersistentTypeDetailsPage.populateMappingPage() no page to show"
-			);
-
-			this.typeMappingPageBook.showPage(this.addLabel(this.typeMappingPageBook, ""));
-		}
-		this.repaintDetailsView(this.typeMappingPageBook);
-	}
 	
-	private JpaComposite getMappingCompositeFor(String mappingKey) {
-		JpaComposite mappingComposite = this.mappingComposites.get(mappingKey);
+	private JpaComposite getMappingComposite(String key) {
+		JpaComposite mappingComposite = this.mappingComposites.get(key);
 		if (mappingComposite != null) {
 			return mappingComposite;
 		}
-		mappingComposite = buildMappingComposite(this.typeMappingPageBook, mappingKey);
+
+		mappingComposite = buildMappingComposite(this.mappingPageBook, key);
+
 		if (mappingComposite != null) {
-			this.mappingComposites.put(mappingKey, mappingComposite);
+			this.mappingComposites.put(key, mappingComposite);
 		}
+
 		return mappingComposite;
 	}
 	
-	protected JpaComposite buildMappingComposite(PageBook pageBook, String mappingKey) {
-		return getJpaPlatformUi().buildTypeMappingComposite(
+	protected JpaComposite buildMappingComposite(PageBook pageBook, String key) {
+		return getJpaPlatformUi().
+			buildTypeMappingComposite(
 				getSubject().getResourceType(), 
-				mappingKey, 
+				key, 
 				pageBook, 
-				buildMappingHolder(mappingKey), 
+				buildMappingHolder(key), 
 				getWidgetFactory());
-	}
-
-	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(PersistentType.MAPPING_PROPERTY);
-	}
-
-	@Override
-	protected void propertyChanged(String propertyName) {
-		super.propertyChanged(propertyName);
-
-		if (propertyName == PersistentType.MAPPING_PROPERTY) {
-			updateMappingPage();
-		}
-	}
-
-	private void updateMappingPage() {
-		TypeMapping mapping = (this.getSubject() != null) ? this.getSubject().getMapping() : null;
-		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
 
 	@Override
 	protected void doDispose() {
 		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.doDispose()");
-
-		if (this.currentMappingComposite != null) {
-			this.currentMappingComposite.dispose();
-			this.currentMappingComposite = null;
-		}
 
 		this.mappingComposites.clear();
 		super.doDispose();

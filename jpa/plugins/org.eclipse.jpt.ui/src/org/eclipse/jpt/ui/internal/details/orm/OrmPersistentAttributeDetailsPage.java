@@ -107,11 +107,13 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 			}
 		};
 	}
-
+	
+	//TODO this probably needs to change and use a PaneEnabler instead.
 	@Override
-	protected void mappingPageChanged(JpaComposite mappingComposite) {
+	protected JpaComposite getMappingComposite(String key) {
+		JpaComposite mappingComposite = super.getMappingComposite(key);
 		if (mappingComposite == null) {
-			return;
+			return null;
 		}
 		boolean enabled = false;
 
@@ -120,5 +122,6 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		}
 
 		mappingComposite.enableWidgets(enabled);
+		return mappingComposite;
 	}
 }
