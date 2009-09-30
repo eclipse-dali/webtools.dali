@@ -45,12 +45,12 @@ public class Generic2_0PersistenceXmlUiFactory extends BasePersistenceXmlUiFacto
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
+		ArrayList<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(4);
+		
 		PropertyValueModel<JpaConnection2_0> connection2_0Holder = 
 			this.buildJpaConnection2_0Holder(subjectHolder);
 		PropertyValueModel<JpaOptions2_0> options2_0Holder = 
 			this.buildJpaOptions2_0Holder(subjectHolder);
-		ArrayList<JpaPageComposite> pages =
-			new ArrayList<JpaPageComposite>(1);
 		
 		pages.add(new GenericPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
 		pages.add(new GenericPersistenceUnit2_0ConnectionTab(connection2_0Holder, parent, widgetFactory));
@@ -59,6 +59,8 @@ public class Generic2_0PersistenceXmlUiFactory extends BasePersistenceXmlUiFacto
 
 		return pages.listIterator();
 	}
+
+	// ********** private methods **********
 	
 	private PropertyValueModel<JpaConnection2_0> buildJpaConnection2_0Holder(
 				PropertyValueModel<PersistenceUnit> subjectHolder) {

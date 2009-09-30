@@ -32,8 +32,7 @@ public abstract class BasePersistenceXmlUiFactory implements PersistenceXmlUiFac
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
-		ArrayList<JpaPageComposite> pages =
-			new ArrayList<JpaPageComposite>(1);
+		ArrayList<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(3);
 
 		pages.add(new GenericPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
 		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));
