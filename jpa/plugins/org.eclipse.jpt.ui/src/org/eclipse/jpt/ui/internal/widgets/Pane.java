@@ -3783,17 +3783,6 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Determines whether this pane should be repopulate even if the subject if
-	 * <code>null</code>.
-	 *
-	 * @return <code>true</code> is returned by default
-	 * @category Populate
-	 */
-	protected boolean repopulateWithNullSubject() {
-		return true;
-	}
-
-	/**
 	 * Sets the internal flag that is used to determine whether the pane is being
 	 * populated or not. During population, it is required to not update the
 	 * widgets when the model is updated nor to update the model when the widgets
@@ -3856,12 +3845,7 @@ public abstract class Pane<T extends Model>
 			this.log(Tracing.UI_LAYOUT, "subjectChanged()");
 			this.disengageListeners(oldSubject);
 
-			// Only repopulate if it is allowed when the subject is null
-			if (newSubject != null ||
-			   (newSubject == null && repopulateWithNullSubject()))
-			{
-				this.repopulate();
-			}
+			this.repopulate();
 
 			this.engageListeners(newSubject);
 		}
