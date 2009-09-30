@@ -158,12 +158,21 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			TEMPORAL_MUTABLE_PROPERTY);
 	}
 
+	/**
+     * Does all pre-treatment in this method before the property is set
+	 */
+	protected void preSetProperty() {
+		// do nothing by default
+	}
+
 	// ********** SessionName **********
 	public String getSessionName() {
 		return this.sessionName;
 	}
 
 	public void setSessionName(String newSessionName) {
+		this.preSetProperty();
+		
 		String old = this.sessionName;
 		this.sessionName = newSessionName;
 		this.putProperty(SESSION_NAME_PROPERTY, newSessionName);
@@ -186,6 +195,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setSessionsXml(String newSessionsXml) {
+		this.preSetProperty();
+		
 		String old = this.sessionsXml;
 		this.sessionsXml = newSessionsXml;
 		this.putProperty(SESSIONS_XML_PROPERTY, newSessionsXml);
@@ -208,6 +219,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setIncludeDescriptorQueries(Boolean newIncludeDescriptorQueries) {
+		this.preSetProperty();
+		
 		Boolean old = this.includeDescriptorQueries;
 		this.includeDescriptorQueries = newIncludeDescriptorQueries;
 		this.putProperty(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, newIncludeDescriptorQueries);
@@ -242,6 +255,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	 * @param newTargetDatabase - TargetDatabase
 	 */
 	public void setTargetDatabase(TargetDatabase newTargetDatabase) {
+		this.preSetProperty();
+		
 		if( newTargetDatabase == null) {
 			this.setTargetDatabase_((String) null);
 			return;
@@ -257,6 +272,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	 *            a fully qualified class name of a custom targetDatabase.
 	 */
 	public void setTargetDatabase(String newTargetDatabase) {
+		this.preSetProperty();
+		
 		if( newTargetDatabase == null) {
 			this.setTargetDatabase_((String) null);
 			return;
@@ -303,6 +320,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	 * @param newTargetServer - TargetServer
 	 */
 	public void setTargetServer(TargetServer newTargetServer) {
+		this.preSetProperty();
+		
 		if( newTargetServer == null) {
 			this.setTargetServer_((String) null);
 			return;
@@ -318,6 +337,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	 *            a fully qualified class name of a custom targetServer.
 	 */
 	public void setTargetServer(String newTargetServer) {
+		this.preSetProperty();
+		
 		if( newTargetServer == null) {
 			this.setTargetServer_((String) null);
 			return;
@@ -354,6 +375,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setEventListener(String newEventListener) {
+		this.preSetProperty();
+		
 		String old = this.eventListener;
 		this.eventListener = newEventListener;
 		this.putProperty(SESSION_EVENT_LISTENER_PROPERTY, newEventListener);
@@ -377,6 +400,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setTemporalMutable(Boolean newTemporalMutable) {
+		this.preSetProperty();
+		
 		Boolean old = this.temporalMutable;
 		this.temporalMutable = newTemporalMutable;
 		this.putProperty(TEMPORAL_MUTABLE_PROPERTY, newTemporalMutable);

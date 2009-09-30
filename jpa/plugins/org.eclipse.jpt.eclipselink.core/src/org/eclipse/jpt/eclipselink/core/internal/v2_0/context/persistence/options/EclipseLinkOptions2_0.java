@@ -143,10 +143,19 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	}
 	
 	/**
-	 * Migrate properties names to EclipseLink 2.0 names.
+	 * Dali supports the persistence unit element only, the property is removed if it exist.
 	 */
 	private void migrateProperties() {
 		this.removeValidationMode();
+	}
+
+	/**
+     * Migrate properties names before the property is set
+	 */
+	@Override
+	protected void preSetProperty() {
+		
+		this.migrateProperties();
 	}
 
 	// ********** LockTimeout **********
@@ -155,7 +164,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	}
 
 	public void setLockTimeout(Integer newLockTimeout) {
-		this.migrateProperties();
+		this.preSetProperty();
 		
 		Integer old = this.lockTimeout;
 		this.lockTimeout = newLockTimeout;
@@ -181,7 +190,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	}
 
 	public void setQueryTimeout(Integer newQueryTimeout) {
-		this.migrateProperties();
+		this.preSetProperty();
 		
 		Integer old = this.queryTimeout;
 		this.queryTimeout = newQueryTimeout;
@@ -221,7 +230,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	 */
 	public void setValidationMode(ValidationMode newValidationMode) {
 		if(newValidationMode != null) {
-			this.migrateProperties();
+			this.preSetProperty();
 
 			this.getPersistenceUnit().setSpecifiedValidationMode(newValidationMode);
 			this.firePropertyChanged(VALIDATION_MODE_PROPERTY, null, newValidationMode);
@@ -239,7 +248,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	}
 
 	public void setValidationGroupPrePersist(String newValidationGroupPrePersist) {
-		this.migrateProperties();
+		this.preSetProperty();
 		
 		String old = this.validationGroupPrePersist;
 		this.validationGroupPrePersist = newValidationGroupPrePersist;
@@ -263,7 +272,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	}
 
 	public void setValidationGroupPreUpdate(String newValidationGroupPreUpdate) {
-		this.migrateProperties();
+		this.preSetProperty();
 		
 		String old = this.validationGroupPreUpdate;
 		this.validationGroupPreUpdate = newValidationGroupPreUpdate;
@@ -287,7 +296,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	}
 
 	public void setValidationGroupPreRemove(String newValidationGroupPreRemove) {
-		this.migrateProperties();
+		this.preSetProperty();
 		
 		String old = this.validationGroupPreRemove;
 		this.validationGroupPreRemove = newValidationGroupPreRemove;

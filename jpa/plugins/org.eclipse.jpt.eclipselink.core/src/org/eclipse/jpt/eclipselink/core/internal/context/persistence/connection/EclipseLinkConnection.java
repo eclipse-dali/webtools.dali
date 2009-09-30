@@ -234,12 +234,21 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 			PASSWORD_PROPERTY);
 	}
 
+	/**
+     * Does all pre-treatment in this method before the property is set
+	 */
+	protected void preSetProperty() {
+		// do nothing by default
+	}
+
 	// ********** NativeSql **********
 	public Boolean getNativeSql() {
 		return this.nativeSql;
 	}
 
 	public void setNativeSql(Boolean newNativeSql) {
+		this.preSetProperty();
+		
 		Boolean old = this.nativeSql;
 		this.nativeSql = newNativeSql;
 		this.putProperty(NATIVE_SQL_PROPERTY, newNativeSql);
@@ -265,6 +274,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 	
 	public void setBatchWriting(BatchWriting newBatchWriting) {
+		this.preSetProperty();
+		
 		BatchWriting old = this.batchWriting;
 		this.batchWriting = newBatchWriting;
 		this.putProperty(BATCH_WRITING_PROPERTY, newBatchWriting);
@@ -288,6 +299,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setCacheStatements(Boolean newCacheStatements) {
+		this.preSetProperty();
+		
 		Boolean old = this.cacheStatements;
 		this.cacheStatements = newCacheStatements;
 		this.putProperty(CACHE_STATEMENTS_PROPERTY, newCacheStatements);
@@ -312,6 +325,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setCacheStatementsSize(Integer newCacheStatementsSize) {
+		this.preSetProperty();
+		
 		Integer old = this.cacheStatementsSize;
 		this.cacheStatementsSize = newCacheStatementsSize;
 		this.putProperty(CACHE_STATEMENTS_SIZE_PROPERTY, newCacheStatementsSize);
@@ -336,6 +351,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setDriver(String newDriver) {
+		this.preSetProperty();
+		
 		String old = this.driver;
 		this.driver = newDriver;
 		this.putProperty(DRIVER_PROPERTY, newDriver);
@@ -358,6 +375,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setUrl(String newUrl) {
+		this.preSetProperty();
+		
 		String old = this.url;
 		this.url = newUrl;
 		this.putProperty(URL_PROPERTY, newUrl);
@@ -380,6 +399,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setUser(String newUser) {
+		this.preSetProperty();
+		
 		String old = this.user;
 		this.user = newUser;
 		this.putProperty(USER_PROPERTY, newUser);
@@ -402,6 +423,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setPassword(String newPassword) {
+		this.preSetProperty();
+		
 		String old = this.password;
 		this.password = newPassword;
 		this.putProperty(PASSWORD_PROPERTY, newPassword);
@@ -424,6 +447,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setBindParameters(Boolean newBindParameters) {
+		this.preSetProperty();
+		
 		Boolean old = this.bindParameters;
 		this.bindParameters = newBindParameters;
 		this.putProperty(BIND_PARAMETERS_PROPERTY, newBindParameters);
@@ -448,6 +473,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setReadConnectionsShared(Boolean newReadConnectionsShared) {
+		this.preSetProperty();
+		
 		Boolean old = this.readConnectionsShared;
 		this.readConnectionsShared = newReadConnectionsShared;
 		this.putProperty(READ_CONNECTIONS_SHARED_PROPERTY, newReadConnectionsShared);
@@ -472,6 +499,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setReadConnectionsMin(Integer newReadConnectionsMin) {
+		this.preSetProperty();
+		
 		Integer old = this.readConnectionsMin;
 		this.readConnectionsMin = newReadConnectionsMin;
 		this.putProperty(READ_CONNECTIONS_MIN_PROPERTY, newReadConnectionsMin);
@@ -496,6 +525,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setReadConnectionsMax(Integer newReadConnectionsMax) {
+		this.preSetProperty();
+		
 		Integer old = this.readConnectionsMax;
 		this.readConnectionsMax = newReadConnectionsMax;
 		this.putProperty(READ_CONNECTIONS_MAX_PROPERTY, newReadConnectionsMax);
@@ -520,6 +551,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setWriteConnectionsMin(Integer newWriteConnectionsMin) {
+		this.preSetProperty();
+		
 		Integer old = this.writeConnectionsMin;
 		this.writeConnectionsMin = newWriteConnectionsMin;
 		this.putProperty(WRITE_CONNECTIONS_MIN_PROPERTY, newWriteConnectionsMin);
@@ -544,6 +577,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public void setWriteConnectionsMax(Integer newWriteConnectionsMax) {
+		this.preSetProperty();
+		
 		Integer old = this.writeConnectionsMax;
 		this.writeConnectionsMax = newWriteConnectionsMax;
 		this.putProperty(WRITE_CONNECTIONS_MAX_PROPERTY, newWriteConnectionsMax);

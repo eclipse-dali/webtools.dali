@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.conne
 import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection.Connection2_0;
@@ -128,128 +127,24 @@ public class EclipseLinkConnection2_0 extends EclipseLinkConnection
 	 * Migrate properties names to EclipseLink 2.0 names.
 	 */
 	private void migrateProperties() {
-		this.migrateStringProperty(ECLIPSELINK_DRIVER, ECLIPSELINK2_0_DRIVER);
-		this.migrateStringProperty(ECLIPSELINK_URL, ECLIPSELINK2_0_URL);
-		this.migrateStringProperty(ECLIPSELINK_USER, ECLIPSELINK2_0_USER);
-		this.migrateStringProperty(ECLIPSELINK_PASSWORD, ECLIPSELINK2_0_PASSWORD);
+		this.migrateStringProperty(ECLIPSELINK_DRIVER, ECLIPSELINK2_0_DRIVER, this.driver);
+		this.migrateStringProperty(ECLIPSELINK_URL, ECLIPSELINK2_0_URL, this.url);
+		this.migrateStringProperty(ECLIPSELINK_USER, ECLIPSELINK2_0_USER, this.user);
+		this.migrateStringProperty(ECLIPSELINK_PASSWORD, ECLIPSELINK2_0_PASSWORD, this.password);
 	}
 	
-	private void migrateStringProperty(String oldKey, String newKey) {
+	private void migrateStringProperty(String oldKey, String newKey, String value) {
 		if(this.persistenceUnitKeyExists(oldKey)) {
-			String stringValue = this.getStringValue(oldKey);
 			this.getPersistenceUnit().removeProperty(oldKey);
-			this.getPersistenceUnit().setProperty(newKey, stringValue);
+			this.getPersistenceUnit().setProperty(newKey, value);
 		}
 	}
 
-	// ********** NativeSql **********
+	/**
+     * Migrate all properties names before the property is set
+	 */
 	@Override
-	public void setNativeSql(Boolean newNativeSql) {
-		super.setNativeSql(newNativeSql);
-		
-		this.migrateProperties();
-	}
-
-	// ********** BatchWriting **********
-	@Override
-	public void setBatchWriting(BatchWriting newBatchWriting) {
-		super.setBatchWriting(newBatchWriting);
-		
-		this.migrateProperties();
-	}
-
-	// ********** CacheStatements **********
-	@Override
-	public void setCacheStatements(Boolean newCacheStatements) {
-		super.setCacheStatements(newCacheStatements);
-		
-		this.migrateProperties();
-	}
-
-	// ********** CacheStatementsSize **********
-	@Override
-	public void setCacheStatementsSize(Integer newCacheStatementsSize) {
-		super.setCacheStatementsSize(newCacheStatementsSize);
-		
-		this.migrateProperties();
-	}
-
-	// ********** Driver **********
-	@Override
-	public void setDriver(String newDriver) {
-		super.setDriver(newDriver);
-		
-		this.migrateProperties();
-	}
-
-	// ********** Url **********
-	@Override
-	public void setUrl(String newUrl) {
-		super.setUrl(newUrl);
-		
-		this.migrateProperties();
-	}
-
-	// ********** User **********
-	@Override
-	public void setUser(String newUser) {
-		super.setUser(newUser);
-		
-		this.migrateProperties();
-	}
-
-	// ********** Password **********
-	@Override
-	public void setPassword(String newPassword) {
-		super.setPassword(newPassword);
-		
-		this.migrateProperties();
-	}
-
-	// ********** BindParameters **********
-	@Override
-	public void setBindParameters(Boolean newBindParameters) {
-		super.setBindParameters(newBindParameters);
-		
-		this.migrateProperties();
-	}
-
-	// ********** ReadConnectionsShared **********
-	@Override
-	public void setReadConnectionsShared(Boolean newReadConnectionsShared) {
-		super.setReadConnectionsShared(newReadConnectionsShared);
-		
-		this.migrateProperties();
-	}
-
-	// ********** ReadConnectionsMin **********
-	@Override
-	public void setReadConnectionsMin(Integer newReadConnectionsMin) {
-		super.setReadConnectionsMin(newReadConnectionsMin);
-		
-		this.migrateProperties();
-	}
-
-	// ********** ReadConnectionsMax **********
-	@Override
-	public void setReadConnectionsMax(Integer newReadConnectionsMax) {
-		super.setReadConnectionsMax(newReadConnectionsMax);
-		
-		this.migrateProperties();
-	}
-
-	// ********** WriteConnectionsMin **********
-	@Override
-	public void setWriteConnectionsMin(Integer newWriteConnectionsMin) {
-		super.setWriteConnectionsMin(newWriteConnectionsMin);
-		
-		this.migrateProperties();
-	}
-
-	// ********** WriteConnectionsMax **********
-	@Override
-	public void setWriteConnectionsMax(Integer newWriteConnectionsMax) {
-		super.setWriteConnectionsMax(newWriteConnectionsMax);
+	protected void preSetProperty() {
 		
 		this.migrateProperties();
 	}
