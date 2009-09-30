@@ -49,25 +49,25 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	public static final Integer CACHE_STATEMENTS_SIZE_TEST_VALUE = 100;
 	public static final Integer CACHE_STATEMENTS_SIZE_TEST_VALUE_2 = 200;
 	
-	public static final String DRIVER_KEY = Connection.ECLIPSELINK2_0_DRIVER;
+	public static final String DRIVER_KEY = Connection.ECLIPSELINK_DRIVER;
 	public static final String DRIVER_TEST_VALUE = "connection.driver";
 	public static final String DRIVER_TEST_VALUE_2 = "connection.driver.2";
 	public static final String LEGACY_DRIVER_KEY = Connection.ECLIPSELINK_DRIVER;
 	public static final String LEGACY_DRIVER_TEST_VALUE = "legacy.connection.driver";
 	
-	public static final String URL_KEY = Connection.ECLIPSELINK2_0_URL;
+	public static final String URL_KEY = Connection.ECLIPSELINK_URL;
 	public static final String URL_TEST_VALUE = "test";
 	public static final String URL_TEST_VALUE_2 = "test_2";
 	public static final String LEGACY_URL_KEY = Connection.ECLIPSELINK_URL;
 	public static final String LEGACY_URL_TEST_VALUE = "legacy.connection.url";
 
-	public static final String USER_KEY = Connection.ECLIPSELINK2_0_USER;
+	public static final String USER_KEY = Connection.ECLIPSELINK_USER;
 	public static final String USER_TEST_VALUE = "test";
 	public static final String USER_TEST_VALUE_2 = "test_2";
 	public static final String LEGACY_USER_KEY = Connection.ECLIPSELINK_USER;
 	public static final String LEGACY_USER_TEST_VALUE = "legacy.connection.user";
 
-	public static final String PASSWORD_KEY = Connection.ECLIPSELINK2_0_PASSWORD;
+	public static final String PASSWORD_KEY = Connection.ECLIPSELINK_PASSWORD;
 	public static final String PASSWORD_TEST_VALUE = "test";
 	public static final String PASSWORD_TEST_VALUE_2 = "test_2";
 	public static final String LEGACY_PASSWORD_KEY = Connection.ECLIPSELINK_PASSWORD;
@@ -130,7 +130,7 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 18; // EclipseLink properties
+		this.modelPropertiesSizeOriginal = 14; // EclipseLink properties
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -141,13 +141,13 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.persistenceUnitSetProperty(CACHE_STATEMENTS_KEY, CACHE_STATEMENTS_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(CACHE_STATEMENTS_SIZE_KEY, CACHE_STATEMENTS_SIZE_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(DRIVER_KEY, DRIVER_TEST_VALUE.toString());
-		this.persistenceUnitSetProperty(LEGACY_DRIVER_KEY, LEGACY_DRIVER_TEST_VALUE.toString());
+//		this.persistenceUnitSetProperty(LEGACY_DRIVER_KEY, LEGACY_DRIVER_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(URL_KEY, URL_TEST_VALUE.toString());
-		this.persistenceUnitSetProperty(LEGACY_URL_KEY, LEGACY_URL_TEST_VALUE.toString());
+//		this.persistenceUnitSetProperty(LEGACY_URL_KEY, LEGACY_URL_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(USER_KEY, USER_TEST_VALUE.toString());
-		this.persistenceUnitSetProperty(LEGACY_USER_KEY, LEGACY_USER_TEST_VALUE.toString());
+//		this.persistenceUnitSetProperty(LEGACY_USER_KEY, LEGACY_USER_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(PASSWORD_KEY, PASSWORD_TEST_VALUE.toString());
-		this.persistenceUnitSetProperty(LEGACY_PASSWORD_KEY, LEGACY_PASSWORD_TEST_VALUE.toString());
+//		this.persistenceUnitSetProperty(LEGACY_PASSWORD_KEY, LEGACY_PASSWORD_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(BIND_PARAMETERS_KEY, BIND_PARAMETERS_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty("misc.property.2", "value.2");
 		this.persistenceUnitSetProperty("misc.property.3", "value.3");
@@ -254,44 +254,6 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			DRIVER_KEY,
 			DRIVER_TEST_VALUE,
 			DRIVER_TEST_VALUE_2);
-	}
-
-	// ********** Properties Name Migration tests **********
-	public void testDriverPropertyNameMigration() throws Exception {
-
-		// Verify legacy driver exists
-		assertTrue("Legacy driver not exists", this.propertyValueEquals(LEGACY_DRIVER_KEY, LEGACY_DRIVER_TEST_VALUE));
-		
-		// Verify driver read in
-		assertEquals("Incorrect driver read", this.connection.getDriver(), DRIVER_TEST_VALUE);
-
-		// Change driver value
-		this.connection.setDriver(DRIVER_TEST_VALUE_2);
-		// Verify driver value changed
-		assertEquals("Driver not set", this.connection.getDriver(), DRIVER_TEST_VALUE_2);
-		assertTrue("PersistenceUnit property not set", this.propertyValueEquals(DRIVER_KEY, DRIVER_TEST_VALUE_2));
-		
-		// Verify legacy entry has been deleted
-		this.verifyPuHasNotProperty(LEGACY_DRIVER_KEY,  "Legacy property has not been deleted");
-	}
-
-	public void testPropertiesNamesMigration() throws Exception {
-		// connection.initializeProperties() occurred before test.puPopulate() therefore
-		// we cannot test the case where there are legacy properties only exist in the xml
-		// Verify that User & Password exist in both forms
-		this.verifyPuHasProperty(USER_KEY,  "Property not exists");
-		this.verifyPuHasProperty(PASSWORD_KEY,  "Property not exists");
-		this.verifyPuHasProperty(LEGACY_USER_KEY,  "Legacy property not exists");
-		this.verifyPuHasProperty(LEGACY_PASSWORD_KEY,  "Legacy property not exists");
-		
-		// Change a property value to trigger migration routine
-		this.connection.setCacheStatements(CACHE_STATEMENTS_TEST_VALUE);
-		
-		// Verify that all legacy entry has been deleted
-		this.verifyPuHasNotProperty(LEGACY_DRIVER_KEY,  "Legacy property has not been deleted");
-		this.verifyPuHasNotProperty(LEGACY_URL_KEY,  "Legacy property has not been deleted");
-		this.verifyPuHasNotProperty(LEGACY_USER_KEY,  "Legacy property has not been deleted");
-		this.verifyPuHasNotProperty(LEGACY_PASSWORD_KEY,  "Legacy property has not been deleted");
 	}
 
 	// ********** Url tests **********
