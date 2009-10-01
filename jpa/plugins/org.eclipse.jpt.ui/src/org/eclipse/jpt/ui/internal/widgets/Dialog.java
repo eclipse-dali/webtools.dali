@@ -207,7 +207,6 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 
 		// Initialize the content pane
 		pane = buildLayout(container);
-		pane.populate();
 
 		// Initialize the UI part, which requires the widgets being created
 		initializeUI();

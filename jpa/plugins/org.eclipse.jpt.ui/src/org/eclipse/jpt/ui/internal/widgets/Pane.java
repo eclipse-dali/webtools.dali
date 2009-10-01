@@ -310,18 +310,11 @@ public abstract class Pane<T extends Model>
 		super();
 
 		this.initialize(subjectHolder, widgetFactory);
-
-		try {
-			this.populating = true;
-
-			this.container = this.addContainer(parent);
-			this.initializeLayout(this.container);
-		}
-		finally {
-			this.populating = false;
-		}
+		this.container = this.addContainer(parent);
+		this.initializeLayout(this.container);
 		this.engageSubjectHolder();
 		this.engageListeners(getSubject());
+		this.populate();
 	}
 	
 	/**
@@ -3580,7 +3573,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Populate
 	 */
-	public final void populate() {
+	private void populate() {
 		if (!this.container.isDisposed()) {
 			this.log(Tracing.UI_LAYOUT, "populate()");
 			this.repopulate();
