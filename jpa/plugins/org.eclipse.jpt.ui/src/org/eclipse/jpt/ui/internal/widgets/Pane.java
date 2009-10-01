@@ -320,6 +320,8 @@ public abstract class Pane<T extends Model>
 		finally {
 			this.populating = false;
 		}
+		this.engageSubjectHolder();
+		this.engageListeners(getSubject());
 	}
 	
 	/**
@@ -386,7 +388,7 @@ public abstract class Pane<T extends Model>
 		this.rightControlAligner   = new ControlAligner();
 		this.subjectChangeListener = this.buildSubjectChangeListener();
 		this.aspectChangeListener  = this.buildAspectChangeListener();
-
+		
 		this.initialize();
 	}
 
@@ -3387,31 +3389,6 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Notifies this pane is should dispose itself.
-	 *
-	 * @category Populate
-	 */
-	public final void dispose() {
-		if (!this.container.isDisposed()) {
-			this.log(Tracing.UI_LAYOUT, "dispose()");
-			this.performDispose();
-			this.disengageListeners();
-		}
-	}
-
-	/**
-	 * Requests this pane to dispose itself.
-	 *
-	 * @category Populate
-	 */
-	protected void doDispose() {
-		this.log(Tracing.UI_LAYOUT, "   ->doDispose()");
-
-		this.leftControlAligner.dispose();
-		this.rightControlAligner.dispose();
-	}
-
-	/**
 	 * Requests this pane to populate its widgets with the subject's values.
 	 *
 	 * @category Populate
@@ -3453,23 +3430,6 @@ public abstract class Pane<T extends Model>
 		}
 	}
 
-	/**
-	 * Installs the listeners on the subject in order to be notified from changes
-	 * made outside of this panes and notifies the sub-panes to do the same.
-	 *
-	 * @category Populate
-	 */
-	protected void engageListeners() {
-		this.log(Tracing.UI_LAYOUT, "   ->engageListeners()");
-
-		this.engageSubjectHolder();
-		this.engageListeners(this.getSubject());
-
-		for (Pane<?> subPane : this.subPanes) {
-			subPane.engageListeners();
-		}
-	}
-
 	private void engageSubjectHolder() {
 		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 	}
@@ -3492,23 +3452,6 @@ public abstract class Pane<T extends Model>
 		for (String propertyName : this.getPropertyNames()) {
 			subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
 		}
-	}
-
-	/**
-	 * Uninstalls any listeners from the subject in order to stop being notified
-	 * for changes made outside of this panes.
-	 *
-	 * @category Populate
-	 */
-	protected void disengageListeners() {
-		this.log(Tracing.UI_LAYOUT, "   ->disengageListeners()");
-
-		for (Pane<?> subPane : this.subPanes) {
-			subPane.disengageListeners();
-		}
-
-		this.disengageListeners(this.getSubject());
-		this.disengageSubjectHolder();
 	}
 
 	/**
@@ -3633,23 +3576,6 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Notifies this pane is should dispose itself.
-	 *
-	 * @category Populate
-	 */
-	protected void performDispose() {
-		this.log(Tracing.UI_LAYOUT, "   ->performDispose()");
-
-		// Dispose this pane
-		doDispose();
-
-		// Ask the sub-panes to perform the dispose themselves
-		for (Pane<?> subPane : this.subPanes) {
-			subPane.performDispose();
-		}
-	}
-
-	/**
 	 * Notifies this pane to populate itself using the subject's information.
 	 *
 	 * @category Populate
@@ -3657,7 +3583,6 @@ public abstract class Pane<T extends Model>
 	public final void populate() {
 		if (!this.container.isDisposed()) {
 			this.log(Tracing.UI_LAYOUT, "populate()");
-			this.engageListeners();
 			this.repopulate();
 		}
 	}
@@ -3890,4 +3815,21 @@ public abstract class Pane<T extends Model>
 			}
 		}
 	}
+	
+	public void dispose() {
+		this.log(Tracing.UI_LAYOUT, "dispose()");
+
+		// Dispose this pane
+		this.disengageListeners(getSubject());
+		this.disengageSubjectHolder();
+
+		this.leftControlAligner.dispose();
+		this.rightControlAligner.dispose();
+
+		// Ask the sub-panes to dispose themselves
+		for (Pane<?> subPane : this.subPanes) {
+			subPane.dispose();
+		}
+	}
+
 }

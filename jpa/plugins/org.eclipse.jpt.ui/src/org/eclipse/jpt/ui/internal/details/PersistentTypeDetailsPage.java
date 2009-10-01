@@ -154,11 +154,14 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	}
 
 	@Override
-	protected void doDispose() {
-		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.doDispose()");
+	public void dispose() {
+		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.dispose()");
 
+		for (JpaComposite mappingComposite : this.mappingComposites.values()) {
+			mappingComposite.dispose();
+		}
 		this.mappingComposites.clear();
-		super.doDispose();
+		super.dispose();
 	}
 
 }

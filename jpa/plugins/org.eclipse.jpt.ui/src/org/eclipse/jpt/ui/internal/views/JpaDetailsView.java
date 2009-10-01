@@ -16,7 +16,6 @@ import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.swt.SWT;
@@ -121,21 +120,35 @@ public class JpaDetailsView extends AbstractJpaView
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void select(JpaSelection jpaSelection) {
 		if (jpaSelection.equals(this.currentSelection)) {
 			return;
 		}
 
 		this.currentSelection = jpaSelection;
-
+		JpaDetailsPage<JpaStructureNode> newPage = null;
 		if (jpaSelection != JpaSelection.NULL_SELECTION) {
 			JpaStructureNode newNode = jpaSelection.getSelectedNode();
-			JpaDetailsPage<? extends JpaStructureNode> newPage = getDetailsPage(newNode);
-			setCurrentPage(newPage);
+			newPage = (JpaDetailsPage<JpaStructureNode>) getDetailsPage(newNode);
+			if (this.currentPage != null && this.currentPage != newPage){
+				try {
+					this.currentPage.setSubject(null);
+				} catch (Exception e) {
+					JptUiPlugin.log(e);
+				}
+			}
+			if (newPage != null) {
+				try {
+					newPage.setSubject(newNode);
+				} catch (Exception e) {
+					// Show error page
+					newPage = null;
+					JptUiPlugin.log(e);
+				}
+			}
 		}
-		else {
-			setCurrentPage(null);
-		}
+		setCurrentPage(newPage);
 	}
 
 	/**
@@ -143,57 +156,27 @@ public class JpaDetailsView extends AbstractJpaView
 	 *
 	 * @param newPage The new page to display
 	 */
-	@SuppressWarnings("unchecked")
-	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> page) {
-
-		// Unpopulate old page
-		if (this.currentPage != null) {
-			try {
-				log("JpaDetailsView.setCurrentPage() : disposing of current page"); //$NON-NLS-1$
-
-				this.currentPage.setSubject(null);
-			}
-			catch (Exception e) {
-				JptUiPlugin.log(e);
-			}
-		}
-
-		JpaDetailsPage<JpaStructureNode> newPage = (JpaDetailsPage<JpaStructureNode>) page;
-
-		// Populate new page
-		if (page != null) {
-			try {
-				log("JpaDetailsView.setCurrentPage() : populating new page"); //$NON-NLS-1$
-				newPage.setSubject(this.currentSelection.getSelectedNode());
-			}
-			catch (Exception e) {
-				// Show error page
-				page = null;
-				JptUiPlugin.log(e);
-			}
-		}
-		else {
-			log("JpaDetailsView.setCurrentPage() : No page to populate"); //$NON-NLS-1$
-		}
-
-		//no need to show the page again if it is still the same
-		if (newPage != null && this.currentPage == newPage) {
-			return;
-		}
+	private void setCurrentPage(JpaDetailsPage<JpaStructureNode> newPage) {
 		this.currentPage = newPage;
 
 		// Show new page
-		if (page == null) {
+		if (newPage == null) {
 			showDefaultPage();
 		}
 		else {
-			showPage(page.getControl());
+			showPage(newPage.getControl());
 		}
 	}
 
 	@Override
 	public void dispose() {
-
+		for (Map<JpaResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> resourceTypeMap : this.detailsPages.values()) {
+			for (Map<String, JpaDetailsPage<? extends JpaStructureNode>> detailsPageMap : resourceTypeMap.values()) {
+				for (JpaDetailsPage<? extends JpaStructureNode> detailsPage : detailsPageMap.values()) {
+					detailsPage.dispose();
+				}
+			}
+		}
 		this.detailsPages.clear();
 
 		this.currentSelection = JpaSelection.NULL_SELECTION;
@@ -201,11 +184,4 @@ public class JpaDetailsView extends AbstractJpaView
 
 		super.dispose();
 	}
-
-	private void log(String message) {
-		if (Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW)) {
-			Tracing.log(message);
-		}
-	}
-
 }

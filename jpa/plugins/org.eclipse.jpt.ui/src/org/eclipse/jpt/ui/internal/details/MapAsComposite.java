@@ -355,6 +355,9 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * Updates the description by recreating the label.
 	 */
 	protected void updateDescription() {
+		if (getSubject() == null) {
+			return;
+		}
 
 		clearStyleRange();
 		updateText();

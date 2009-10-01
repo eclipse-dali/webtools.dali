@@ -141,11 +141,14 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 
 	@Override
-	protected void doDispose() {
-		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.doDispose()"); //$NON-NLS-1$
+	public void dispose() {
+		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.dispose()"); //$NON-NLS-1$
 
+		for (JpaComposite mappingComposite : this.mappingComposites.values()) {
+			mappingComposite.dispose();
+		}
 		this.mappingComposites.clear();
-		super.doDispose();
+		super.dispose();
 	}
 
 	@Override
