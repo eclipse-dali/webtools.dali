@@ -54,7 +54,6 @@ public final class PaneEnablerTest {
 			}
 		};
 
-		pane.populate();
 		new PaneEnabler(booleanHolder, pane);
 
 		assertTrue(

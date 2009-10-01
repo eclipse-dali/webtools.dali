@@ -24,14 +24,6 @@ import org.eclipse.swt.widgets.Control;
 public interface JpaComposite {
 
 	/**
-	 * Notifies this composite it should populates its widgets using the given
-	 * model object.
-	 *
-	 * @param model The model used to retrieve the information to be displayed
-	 */
-	void populate();
-
-	/**
 	 * Returns the actual <code>Composite</code>.
 	 *
 	 * @return This composite's actual widget

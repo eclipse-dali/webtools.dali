@@ -54,7 +54,6 @@ public final class PaneVisibilityEnablerTest {
 			}
 		};
 
-		pane.populate();
 		new PaneVisibilityEnabler(booleanHolder, pane);
 
 		assertTrue(

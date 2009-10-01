@@ -348,9 +348,6 @@ public class PersistenceEditor extends FormEditor
 			// This will finish the initialization of the buttons
 			updateHelpButton();
 			form.updateToolBar();
-
-			// Populate the page
-			page.populate();
 		}
 
 		/**
