@@ -64,14 +64,10 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	 */
 	protected XmlMapKeyClass mapKeyClass;
 	/**
-	 * The default value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = TemporalType.DATE;
+	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -82,14 +78,10 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	 */
 	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
 	/**
-	 * The default value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = EnumType.ORDINAL;
+	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -712,11 +704,11 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA2_0.TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA2_0.ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyEnumerated());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlManyToMany_2_0_MapKeyEnumerated());
 	}
 	
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {

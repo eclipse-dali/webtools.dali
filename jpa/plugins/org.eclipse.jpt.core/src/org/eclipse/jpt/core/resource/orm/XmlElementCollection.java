@@ -64,14 +64,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected boolean lob = LOB_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTemporal()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.DATE;
+	protected static final TemporalType TEMPORAL_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
@@ -194,14 +190,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected XmlMapKeyClass mapKeyClass;
 
 	/**
-	 * The default value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = TemporalType.DATE;
+	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
@@ -214,14 +206,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = EnumType.ORDINAL;
+	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
@@ -1522,38 +1510,38 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildFetchTranslator() {
-		return new Translator(JPA2_0.FETCH, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Fetch(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.FETCH, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Fetch(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildOrderByTranslator() {
-		return new BooleanTranslator(JPA2_0.ORDER_BY, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_OrderBy());
+		return new BooleanTranslator(JPA.ORDER_BY, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_OrderBy());
 	}
 	
 	protected static Translator buildColumnTranslator() {
-		return XmlColumn.buildTranslator(JPA2_0.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column());
+		return XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column());
 	}
 	
 	protected static Translator buildLobTranslator() {
-		return new EmptyTagBooleanTranslator(JPA2_0.LOB, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Lob());
+		return new EmptyTagBooleanTranslator(JPA.LOB, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Lob());
 	}
 	
 	protected static Translator buildTemporalTranslator() {
-		return new Translator(JPA2_0.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
+		return new Translator(JPA.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
 	}
 	
 	protected static Translator buildEnumeratedTranslator() {
-		return new Translator(JPA2_0.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
+		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
 	}
 	
 	protected static Translator buildMapKeyTranslator() {
-		return new EmptyTagBooleanTranslator(JPA2_0.MAP_KEY, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKey());
+		return new EmptyTagBooleanTranslator(JPA.MAP_KEY, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKey());
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA2_0.TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA2_0.ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyEnumerated());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyEnumerated());
 	}
 }

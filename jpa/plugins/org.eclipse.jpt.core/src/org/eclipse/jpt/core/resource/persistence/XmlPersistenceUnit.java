@@ -1013,7 +1013,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements XmlPersist
 				XmlJarFileRef.buildTranslator(JPA.JAR_FILE, pkg.getXmlPersistenceUnit_JarFiles()),
 				XmlJavaClassRef.buildTranslator(JPA.CLASS, pkg.getXmlPersistenceUnit_Classes()),
 				buildExcludeUnlistedClassesTranslator(),
-				buildCachingTranslator(),
+				buildSharedCacheModeTranslator(),
 				buildValidationModeTranslator(),
 				XmlProperties.buildTranslator(JPA.PROPERTIES, pkg.getXmlPersistenceUnit_Properties())};
 	}
@@ -1062,7 +1062,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements XmlPersist
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_ExcludeUnlistedClasses());
 	}
 	
-	protected static Translator buildCachingTranslator() {
+	protected static Translator buildSharedCacheModeTranslator() {
 		return new Translator(
 				JPA2_0.PERSISTENCE_UNIT__SHARED_CACHE_MODE,
 				PersistenceV2_0Package.eINSTANCE.getXmlPersistenceUnit_2_0_SharedCacheMode());
