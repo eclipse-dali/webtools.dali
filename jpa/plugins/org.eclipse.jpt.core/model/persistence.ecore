@@ -18,7 +18,7 @@
         unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
         defaultValueLiteral=""/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistence" eSuperTypes="common.ecore#//JpaRootEObject">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistence" eSuperTypes="common.ecore#//AbstractJpaRootEObject">
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnits" upperBound="-1"
         eType="#//XmlPersistenceUnit" containment="true" resolveProxies="false"/>
   </eClassifiers>

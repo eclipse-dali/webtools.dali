@@ -7,6 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
+
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -2086,6 +2087,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY_MAPPINGS__VERSION = OrmPackage.XML_ENTITY_MAPPINGS__VERSION;
+	/**
+	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS__SCHEMA_LOCATION = OrmPackage.XML_ENTITY_MAPPINGS__SCHEMA_LOCATION;
 	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->

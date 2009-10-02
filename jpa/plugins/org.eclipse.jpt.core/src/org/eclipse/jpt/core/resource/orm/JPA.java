@@ -45,8 +45,6 @@ public interface JPA
 	String ENTITY_LISTENER = "entity-listener";
 	String ENTITY_LISTENERS = "entity-listeners";
 	String ENTITY_MAPPINGS = "entity-mappings";
-		String ENTITY_MAPPINGS__VERSION = "version";
-		
 	String ENTITY_RESULT = "entity-result";
 	String ENUMERATED = "enumerated";
 	String EXCLUDE_DEFAULT_LISTENERS = "exclude-default-listeners";

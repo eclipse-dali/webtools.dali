@@ -166,7 +166,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" upperBound="-1"
         eType="#//EntityListener" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="common.ecore#//JpaRootEObject #//XmlQueryContainer #//XmlAccessHolder">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="common.ecore#//AbstractJpaRootEObject #//XmlQueryContainer #//XmlAccessHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitMetadata"
         eType="#//XmlPersistenceUnitMetadata" containment="true" resolveProxies="false"/>

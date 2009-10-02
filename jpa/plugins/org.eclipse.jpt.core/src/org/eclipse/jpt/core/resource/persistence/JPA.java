@@ -7,6 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
+
 package org.eclipse.jpt.core.resource.persistence;
 
 /**
@@ -40,8 +41,7 @@ public interface JPA
 	String NON_JTA_DATA_SOURCE = "non-jta-data-source";
 
 	String PERSISTENCE = "persistence";
-		String PERSISTENCE__VERSION = "version";
-
+	
 	String PERSISTENCE_UNIT = "persistence-unit";
 		String PERSISTENCE_UNIT__NAME = "name";
 		String PERSISTENCE_UNIT__TRANSACTION_TYPE = "transaction-type";

@@ -13,8 +13,10 @@
   <foreignModel>persistence.ecore</foreignModel>
   <genPackages prefix="Common" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"
       adapterFactory="false" ecorePackage="common.ecore#/">
+    <genClasses image="false" ecoreClass="common.ecore#//AbstractJpaRootEObject"/>
     <genClasses image="false" ecoreClass="common.ecore#//JpaRootEObject">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute common.ecore#//JpaRootEObject/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute common.ecore#//JpaRootEObject/schemaLocation"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"

@@ -21,12 +21,12 @@ package org.eclipse.jpt.core.resource.xml;
 @SuppressWarnings("nls")
 public interface XML
 {
-
+	String VERSION = "version";
+	
 	String NAMESPACE = "xmlns";
 
 	String NAMESPACE_XSI = "xmlns:xsi";
 	String XSI_NAMESPACE_URL = "http://www.w3.org/2001/XMLSchema-instance";
 
 	String XSI_SCHEMA_LOCATION = "xsi:schemaLocation";
-
 }

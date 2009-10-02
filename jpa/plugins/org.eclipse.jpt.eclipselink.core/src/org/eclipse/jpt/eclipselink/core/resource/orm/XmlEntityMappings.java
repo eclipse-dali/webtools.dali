@@ -7,31 +7,27 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
+
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.xml.translators.EnumeratedValueTranslator;
-import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
-import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
-import org.eclipse.jpt.core.resource.xml.CommonPackage;
-import org.eclipse.jpt.core.resource.xml.XML;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -438,28 +434,54 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
-
-	// ********** translators **********
-
+	
+	
+	// **************** version -> schema location mapping ********************
+	
+	private static String namespace = EclipseLink.SCHEMA_NAMESPACE;
+	
+	@Override
+	protected String getNamespace() {
+		return namespace;
+	}
+	
+	private static Map<String, String> versionsToSchemaLocations = buildVersionsToSchemaLocations();
+	
+	private static Map<String, String> buildVersionsToSchemaLocations() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(EclipseLink.SCHEMA_VERSION, EclipseLink.SCHEMA_LOCATION);
+		map.put(EclipseLink1_1.SCHEMA_VERSION, EclipseLink1_1.SCHEMA_LOCATION);
+		map.put(EclipseLink2_0.SCHEMA_VERSION, EclipseLink2_0.SCHEMA_LOCATION);
+		return map;
+	}
+	
+	@Override
+	protected String getSchemaLocationForVersion(String version) {
+		return versionsToSchemaLocations.get(version);
+	}
+	
+	
+	// **************** translators *******************************************
+	
+	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
+	
 	public static Translator getRootTranslator() {
 		return ROOT_TRANSLATOR;
 	}
-	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
-
+	
 	private static Translator buildRootTranslator() {
 		return new SimpleRootTranslator(
 				EclipseLink.ENTITY_MAPPINGS,
 				EclipseLinkOrmPackage.eINSTANCE.getXmlEntityMappings(),
-				buildTranslatorChildren()
-			);
+				buildTranslatorChildren());
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			buildVersionTranslator(),
-			buildNamespaceTranslator(),
+			buildVersionTranslator(versionsToSchemaLocations),
+			buildNamespaceTranslator(namespace),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(),
+			buildSchemaLocationTranslator(namespace, versionsToSchemaLocations),
 			buildDescriptionTranslator(),
 			XmlPersistenceUnitMetadata.buildTranslator(EclipseLink2_0.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
@@ -480,29 +502,5 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 			XmlEntity.buildTranslator(EclipseLink2_0.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
 			XmlEmbeddable.buildTranslator(EclipseLink2_0.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
-	}
-	
-	protected static Translator buildVersionTranslator() {
-		return new EnumeratedValueTranslator(
-				JPA.ENTITY_MAPPINGS__VERSION, 
-				CommonPackage.eINSTANCE.getJpaRootEObject_Version(),
-				Translator.DOM_ATTRIBUTE) {
-			
-			@Override
-			protected Iterator enumeratedObjectValues() {
-				return new ArrayIterator(new Object[] { 
-						EclipseLink.SCHEMA_VERSION,
-						EclipseLink1_1.SCHEMA_VERSION,
-						EclipseLink2_0.SCHEMA_VERSION });
-			}
-		};
-	}
-	
-	private static Translator buildNamespaceTranslator() {
-		return new ConstantAttributeTranslator(XML.NAMESPACE, EclipseLink.SCHEMA_NAMESPACE);
-	}
-	
-	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, EclipseLink.SCHEMA_NAMESPACE + ' ' + EclipseLink.SCHEMA_LOCATION);
 	}
 }

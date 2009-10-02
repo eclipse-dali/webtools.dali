@@ -11,8 +11,9 @@ package org.eclipse.jpt.core.resource.orm;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -21,16 +22,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.xml.translators.EnumeratedValueTranslator;
-import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
+import org.eclipse.jpt.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.CommonPackage;
-import org.eclipse.jpt.core.resource.xml.JpaRootEObject;
-import org.eclipse.jpt.core.resource.xml.XML;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaRootEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -65,37 +60,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObject, XmlQueryContainer, XmlAccessHolder
+public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQueryContainer, XmlAccessHolder
 {
-	/**
-	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String VERSION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected String version = VERSION_EDEFAULT;
-
-	/**
-	 * This is true if the Version attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean versionESet;
-
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -347,81 +313,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES);
 		}
 		return namedNativeQueries;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Version</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Version</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Version</em>' attribute.
-	 * @see #isSetVersion()
-	 * @see #unsetVersion()
-	 * @see #setVersion(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJpaRootEObject_Version()
-	 * @model unsettable="true" required="true"
-	 * @generated
-	 */
-	public String getVersion()
-	{
-		return version;
-	}
-	
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Version</em>' attribute.
-	 * @see #isSetVersion()
-	 * @see #unsetVersion()
-	 * @see #getVersion()
-	 * @generated
-	 */
-	public void setVersion(String newVersion)
-	{
-		String oldVersion = version;
-		version = newVersion;
-		boolean oldVersionESet = versionESet;
-		versionESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__VERSION, oldVersion, version, !oldVersionESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetVersion()
-	 * @see #getVersion()
-	 * @see #setVersion(String)
-	 * @generated
-	 */
-	public void unsetVersion()
-	{
-		String oldVersion = version;
-		boolean oldVersionESet = versionESet;
-		version = VERSION_EDEFAULT;
-		versionESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.XML_ENTITY_MAPPINGS__VERSION, oldVersion, VERSION_EDEFAULT, oldVersionESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Version</em>' attribute is set.
-	 * @see #unsetVersion()
-	 * @see #getVersion()
-	 * @see #setVersion(String)
-	 * @generated
-	 */
-	public boolean isSetVersion()
-	{
-		return versionESet;
 	}
 
 	/**
@@ -842,8 +733,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				return getVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return getNamedQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
@@ -887,9 +776,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				setVersion((String)newValue);
-				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
@@ -954,9 +840,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				unsetVersion();
-				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				return;
@@ -1013,8 +896,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
-				return isSetVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return namedQueries != null && !namedQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
@@ -1117,9 +998,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (version: ");
-		if (versionESet) result.append(version); else result.append("<unset>");
-		result.append(", access: ");
+		result.append(" (access: ");
 		result.append(access);
 		result.append(", description: ");
 		result.append(description);
@@ -1143,15 +1022,40 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 	}
 	
 	private static final XmlTypeMapping[] EMPTY_XML_TYPE_MAPPING_ARRAY = new XmlTypeMapping[0];
-
 	
-	// ********** translators **********
-
+	
+	// **************** version -> schema location mapping ********************
+	
+	private static String namespace = JPA.SCHEMA_NAMESPACE;
+	
+	@Override
+	protected String getNamespace() {
+		return namespace;
+	}
+	
+	private static Map<String, String> versionsToSchemaLocations = buildVersionsToSchemaLocations();
+	
+	private static Map<String, String> buildVersionsToSchemaLocations() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_LOCATION);
+		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_LOCATION);
+		return map;
+	}
+	
+	@Override
+	protected String getSchemaLocationForVersion(String version) {
+		return versionsToSchemaLocations.get(version);
+	}
+	
+	
+	// **************** translators *******************************************
+	
 	public static Translator getRootTranslator() {
 		return ROOT_TRANSLATOR;
 	}
+	
 	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
-
+	
 	private static Translator buildRootTranslator() {
 		return new SimpleRootTranslator(
 				JPA.ENTITY_MAPPINGS,
@@ -1159,13 +1063,13 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 				buildTranslatorChildren()
 			);
 	}
-
+	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			buildVersionTranslator(),
-			buildNamespaceTranslator(),
+			buildVersionTranslator(versionsToSchemaLocations),
+			buildNamespaceTranslator(namespace),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(),
+			buildSchemaLocationTranslator(namespace, versionsToSchemaLocations),
 			buildDescriptionTranslator(),
 			XmlPersistenceUnitMetadata.buildTranslator(JPA2_0.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
@@ -1182,34 +1086,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaRootEObj
 			XmlEmbeddable.buildTranslator(JPA2_0.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
 	}
-
-	protected static Translator buildVersionTranslator() {
-		return new EnumeratedValueTranslator(
-				JPA.ENTITY_MAPPINGS__VERSION, 
-				CommonPackage.eINSTANCE.getJpaRootEObject_Version(),
-				Translator.DOM_ATTRIBUTE) {
-			
-			@Override
-			protected Iterator enumeratedObjectValues() {
-				return new ArrayIterator(new Object[] { JPA.SCHEMA_VERSION, JPA2_0.SCHEMA_VERSION });
-			}
-		};
-	}
-	
-	private static Translator buildNamespaceTranslator() {
-		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.SCHEMA_NAMESPACE);
-	}
-	
-	protected static Translator buildSchemaNamespaceTranslator() {
-		return new ConstantAttributeTranslator(XML.NAMESPACE_XSI, XML.XSI_NAMESPACE_URL);
-	}
-	
-	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(
-				XML.XSI_SCHEMA_LOCATION, 
-				JPA.SCHEMA_NAMESPACE + ' ' + JPA.SCHEMA_LOCATION);
-	}
-	
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(JPA.DESCRIPTION, OrmPackage.eINSTANCE.getXmlEntityMappings_Description());
 	}

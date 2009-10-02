@@ -6,6 +6,7 @@
  * 
  * Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.jpt.eclipselink.core.resource.orm.v1_1;
 
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;

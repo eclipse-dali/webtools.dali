@@ -21,6 +21,7 @@ package org.eclipse.jpt.core.resource.xml;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject#getVersion <em>Version</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject#getSchemaLocation <em>Schema Location</em>}</li>
  * </ul>
  * </p>
  *
@@ -40,11 +41,9 @@ public interface JpaRootEObject extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Version</em>' attribute.
-	 * @see #isSetVersion()
-	 * @see #unsetVersion()
 	 * @see #setVersion(String)
 	 * @see org.eclipse.jpt.core.resource.xml.CommonPackage#getJpaRootEObject_Version()
-	 * @model unsettable="true" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
 	String getVersion();
@@ -54,33 +53,34 @@ public interface JpaRootEObject extends JpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Version</em>' attribute.
-	 * @see #isSetVersion()
-	 * @see #unsetVersion()
 	 * @see #getVersion()
 	 * @generated
 	 */
 	void setVersion(String value);
 
 	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject#getVersion <em>Version</em>}' attribute.
+	 * Returns the value of the '<em><b>Schema Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Schema Location</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #isSetVersion()
-	 * @see #getVersion()
-	 * @see #setVersion(String)
+	 * @return the value of the '<em>Schema Location</em>' attribute.
+	 * @see #setSchemaLocation(String)
+	 * @see org.eclipse.jpt.core.resource.xml.CommonPackage#getJpaRootEObject_SchemaLocation()
+	 * @model required="true"
 	 * @generated
 	 */
-	void unsetVersion();
+	String getSchemaLocation();
 
 	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject#getVersion <em>Version</em>}' attribute is set.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject#getSchemaLocation <em>Schema Location</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Version</em>' attribute is set.
-	 * @see #unsetVersion()
-	 * @see #getVersion()
-	 * @see #setVersion(String)
+	 * @param value the new value of the '<em>Schema Location</em>' attribute.
+	 * @see #getSchemaLocation()
 	 * @generated
 	 */
-	boolean isSetVersion();
+	void setSchemaLocation(String value);
 }

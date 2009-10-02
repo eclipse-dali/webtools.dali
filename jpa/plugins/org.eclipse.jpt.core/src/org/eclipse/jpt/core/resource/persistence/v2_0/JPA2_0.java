@@ -7,6 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
+
 package org.eclipse.jpt.core.resource.persistence.v2_0;
 
 import org.eclipse.jpt.core.resource.persistence.JPA;

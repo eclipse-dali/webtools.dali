@@ -78,7 +78,7 @@ public class CommonPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.xml.CommonPackage#getJpaRootEObject()
 	 * @generated
 	 */
-	public static final int JPA_ROOT_EOBJECT = 0;
+	public static final int JPA_ROOT_EOBJECT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute.
@@ -90,13 +90,66 @@ public class CommonPackage extends EPackageImpl
 	public static final int JPA_ROOT_EOBJECT__VERSION = 0;
 
 	/**
+	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JPA_ROOT_EOBJECT__SCHEMA_LOCATION = 1;
+
+	/**
 	 * The number of structural features of the '<em>Jpa Root EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JPA_ROOT_EOBJECT_FEATURE_COUNT = 1;
+	public static final int JPA_ROOT_EOBJECT_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.xml.AbstractJpaRootEObject <em>Abstract Jpa Root EObject</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.xml.AbstractJpaRootEObject
+	 * @see org.eclipse.jpt.core.resource.xml.CommonPackage#getAbstractJpaRootEObject()
+	 * @generated
+	 */
+	public static final int ABSTRACT_JPA_ROOT_EOBJECT = 0;
+
+	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_JPA_ROOT_EOBJECT__VERSION = JPA_ROOT_EOBJECT__VERSION;
+
+	/**
+	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_JPA_ROOT_EOBJECT__SCHEMA_LOCATION = JPA_ROOT_EOBJECT__SCHEMA_LOCATION;
+
+	/**
+	 * The number of structural features of the '<em>Abstract Jpa Root EObject</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT = JPA_ROOT_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass abstractJpaRootEObjectEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -187,6 +240,20 @@ public class CommonPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.xml.AbstractJpaRootEObject <em>Abstract Jpa Root EObject</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Abstract Jpa Root EObject</em>'.
+	 * @see org.eclipse.jpt.core.resource.xml.AbstractJpaRootEObject
+	 * @generated
+	 */
+	public EClass getAbstractJpaRootEObject()
+	{
+		return abstractJpaRootEObjectEClass;
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject <em>Jpa Root EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -212,6 +279,21 @@ public class CommonPackage extends EPackageImpl
 	{
 		return (EAttribute)jpaRootEObjectEClass.getEStructuralFeatures().get(0);
 	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject#getSchemaLocation <em>Schema Location</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Schema Location</em>'.
+	 * @see org.eclipse.jpt.core.resource.xml.JpaRootEObject#getSchemaLocation()
+	 * @see #getJpaRootEObject()
+	 * @generated
+	 */
+	public EAttribute getJpaRootEObject_SchemaLocation()
+	{
+		return (EAttribute)jpaRootEObjectEClass.getEStructuralFeatures().get(1);
+	}
+
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -245,8 +327,11 @@ public class CommonPackage extends EPackageImpl
 		isCreated = true;
 
 		// Create classes and their features
+		abstractJpaRootEObjectEClass = createEClass(ABSTRACT_JPA_ROOT_EOBJECT);
+
 		jpaRootEObjectEClass = createEClass(JPA_ROOT_EOBJECT);
 		createEAttribute(jpaRootEObjectEClass, JPA_ROOT_EOBJECT__VERSION);
+		createEAttribute(jpaRootEObjectEClass, JPA_ROOT_EOBJECT__SCHEMA_LOCATION);
 	}
 
 	/**
@@ -278,10 +363,14 @@ public class CommonPackage extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		abstractJpaRootEObjectEClass.getESuperTypes().add(this.getJpaRootEObject());
 
 		// Initialize classes and features; add operations and parameters
+		initEClass(abstractJpaRootEObjectEClass, AbstractJpaRootEObject.class, "AbstractJpaRootEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(jpaRootEObjectEClass, JpaRootEObject.class, "JpaRootEObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getJpaRootEObject_Version(), ecorePackage.getEString(), "version", null, 1, 1, JpaRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJpaRootEObject_Version(), ecorePackage.getEString(), "version", null, 1, 1, JpaRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJpaRootEObject_SchemaLocation(), ecorePackage.getEString(), "schemaLocation", null, 1, 1, JpaRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -302,6 +391,16 @@ public class CommonPackage extends EPackageImpl
 	public interface Literals
 	{
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.xml.AbstractJpaRootEObject <em>Abstract Jpa Root EObject</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.xml.AbstractJpaRootEObject
+		 * @see org.eclipse.jpt.core.resource.xml.CommonPackage#getAbstractJpaRootEObject()
+		 * @generated
+		 */
+		public static final EClass ABSTRACT_JPA_ROOT_EOBJECT = eINSTANCE.getAbstractJpaRootEObject();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.xml.JpaRootEObject <em>Jpa Root EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -318,6 +417,14 @@ public class CommonPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute JPA_ROOT_EOBJECT__VERSION = eINSTANCE.getJpaRootEObject_Version();
+
+		/**
+		 * The meta object literal for the '<em><b>Schema Location</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute JPA_ROOT_EOBJECT__SCHEMA_LOCATION = eINSTANCE.getJpaRootEObject_SchemaLocation();
 
 	}
 

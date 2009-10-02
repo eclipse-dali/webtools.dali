@@ -174,7 +174,16 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE__VERSION = CommonPackage.JPA_ROOT_EOBJECT__VERSION;
+	public static final int XML_PERSISTENCE__VERSION = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT__VERSION;
+
+	/**
+	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PERSISTENCE__SCHEMA_LOCATION = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT__SCHEMA_LOCATION;
 
 	/**
 	 * The feature id for the '<em><b>Persistence Units</b></em>' containment reference list.
@@ -183,7 +192,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE__PERSISTENCE_UNITS = CommonPackage.JPA_ROOT_EOBJECT_FEATURE_COUNT + 0;
+	public static final int XML_PERSISTENCE__PERSISTENCE_UNITS = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Persistence</em>' class.
@@ -192,7 +201,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE_FEATURE_COUNT = CommonPackage.JPA_ROOT_EOBJECT_FEATURE_COUNT + 1;
+	public static final int XML_PERSISTENCE_FEATURE_COUNT = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit <em>Xml Persistence Unit</em>}' class.
@@ -1005,7 +1014,7 @@ public class PersistencePackage extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		xmlPersistenceEClass.getESuperTypes().add(theCommonPackage.getJpaRootEObject());
+		xmlPersistenceEClass.getESuperTypes().add(theCommonPackage.getAbstractJpaRootEObject());
 		xmlPersistenceUnitEClass.getESuperTypes().add(thePersistenceV2_0Package.getXmlPersistenceUnit_2_0());
 
 		// Initialize classes and features; add operations and parameters
