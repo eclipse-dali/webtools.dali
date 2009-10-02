@@ -52,26 +52,18 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	public static final String DRIVER_KEY = Connection.ECLIPSELINK_DRIVER;
 	public static final String DRIVER_TEST_VALUE = "connection.driver";
 	public static final String DRIVER_TEST_VALUE_2 = "connection.driver.2";
-	public static final String LEGACY_DRIVER_KEY = Connection.ECLIPSELINK_DRIVER;
-	public static final String LEGACY_DRIVER_TEST_VALUE = "legacy.connection.driver";
 	
 	public static final String URL_KEY = Connection.ECLIPSELINK_URL;
 	public static final String URL_TEST_VALUE = "test";
 	public static final String URL_TEST_VALUE_2 = "test_2";
-	public static final String LEGACY_URL_KEY = Connection.ECLIPSELINK_URL;
-	public static final String LEGACY_URL_TEST_VALUE = "legacy.connection.url";
 
 	public static final String USER_KEY = Connection.ECLIPSELINK_USER;
 	public static final String USER_TEST_VALUE = "test";
 	public static final String USER_TEST_VALUE_2 = "test_2";
-	public static final String LEGACY_USER_KEY = Connection.ECLIPSELINK_USER;
-	public static final String LEGACY_USER_TEST_VALUE = "legacy.connection.user";
 
 	public static final String PASSWORD_KEY = Connection.ECLIPSELINK_PASSWORD;
 	public static final String PASSWORD_TEST_VALUE = "test";
 	public static final String PASSWORD_TEST_VALUE_2 = "test_2";
-	public static final String LEGACY_PASSWORD_KEY = Connection.ECLIPSELINK_PASSWORD;
-	public static final String LEGACY_PASSWORD_TEST_VALUE = "legacy.connection.password";
 	
 	public static final String BIND_PARAMETERS_KEY = Connection.ECLIPSELINK_BIND_PARAMETERS;
 	public static final Boolean BIND_PARAMETERS_TEST_VALUE = false;
@@ -141,13 +133,9 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.persistenceUnitSetProperty(CACHE_STATEMENTS_KEY, CACHE_STATEMENTS_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(CACHE_STATEMENTS_SIZE_KEY, CACHE_STATEMENTS_SIZE_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(DRIVER_KEY, DRIVER_TEST_VALUE.toString());
-//		this.persistenceUnitSetProperty(LEGACY_DRIVER_KEY, LEGACY_DRIVER_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(URL_KEY, URL_TEST_VALUE.toString());
-//		this.persistenceUnitSetProperty(LEGACY_URL_KEY, LEGACY_URL_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(USER_KEY, USER_TEST_VALUE.toString());
-//		this.persistenceUnitSetProperty(LEGACY_USER_KEY, LEGACY_USER_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(PASSWORD_KEY, PASSWORD_TEST_VALUE.toString());
-//		this.persistenceUnitSetProperty(LEGACY_PASSWORD_KEY, LEGACY_PASSWORD_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(BIND_PARAMETERS_KEY, BIND_PARAMETERS_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty("misc.property.2", "value.2");
 		this.persistenceUnitSetProperty("misc.property.3", "value.3");
@@ -164,7 +152,6 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.getPersistenceUnit().setNonJtaDataSource(NON_JTA_DATA_SOURCE_TEST_VALUE);
 		return;
 	}
-	
 
 	// ********** NativeSql tests **********
 	public void testSetNativeSql() throws Exception {

@@ -20,6 +20,7 @@ public class JptEclipseLink2_0CorePersistenceContextModelTests
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptEclipseLink2_0CorePersistenceContextModelTests.class.getPackage().getName());
 
+		suite.addTestSuite(EclipseLink2_0ConnectionTests.class);
 		suite.addTestSuite(EclipseLink2_0OptionsTests.class);
 		
 		return suite;
