@@ -396,29 +396,21 @@
 			
 			<public
 				publicId="http://java.sun.com/xml/ns/persistence/orm"
-				uri="platform:/plugin/org.eclipse.jst.standard.schemas/dtdsAndSchemas/orm_1_0.xsd"/>
+				uri="schema/orm_2_0.xsd"/>
 			
 			<public
 				publicId="http://java.sun.com/xml/ns/persistence"
-				uri="platform:/plugin/org.eclipse.jst.standard.schemas/dtdsAndSchemas/persistence_1_0.xsd"/>
-
+				uri="schema/persistence_2_0.xsd"/>
+			
 		<!-- move these schemas to org.eclipse.jst.standard.schemas -->
 			
 			<uri
 				name="http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
 				uri="schema/orm_2_0.xsd" />
 			
-			<public
-				publicId="http://java.sun.com/xml/ns/persistence/orm"
-				uri="schema/orm_2_0.xsd"/>
-			
 			<uri
 				name="http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 				uri="schema/persistence_2_0.xsd" />
-			
-			<public
-				publicId="http://java.sun.com/xml/ns/persistence"
-				uri="schema/persistence_2_0.xsd"/>
 			
 		</catalogContribution>
 		
