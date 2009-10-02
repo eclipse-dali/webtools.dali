@@ -25,4 +25,4 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
  */
 public interface XmlEmbedded_2_0 extends XmlAssociationOverrideContainer
 {
-} // XmlEmbedded_2_0
+}

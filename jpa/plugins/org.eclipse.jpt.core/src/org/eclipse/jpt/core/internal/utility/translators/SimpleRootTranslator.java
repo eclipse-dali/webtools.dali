@@ -7,67 +7,30 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.xml.translators;
+package org.eclipse.jpt.core.internal.utility.translators;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.wst.common.internal.emf.resource.RootTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
-import org.eclipse.wst.common.internal.emf.resource.TranslatorPath;
 
 /**
- * Translator that contains a list of child translators and no special
+ * Root translator that contains a list of child translators and no special
  * behavior.
  */
-public class SimpleTranslator
-	extends Translator
+public class SimpleRootTranslator
+	extends RootTranslator
 {
 	protected Translator[] children;
 
-
-	// ********** constructors **********
-
-	public SimpleTranslator(String domPathAndNames, EClass eClass) {
+	public SimpleRootTranslator(String domPathAndNames, EClass eClass) {
 		super(domPathAndNames, eClass);
 	}
 
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature) {
-		super(domPathAndNames, eStructuralFeature);
-	}
-
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, Translator[] children) {
-		super(domPathAndNames, eStructuralFeature);
+	public SimpleRootTranslator(String domPathAndNames, EClass eClass, Translator[] children) {
+		super(domPathAndNames, eClass);
 		this.children = children;
 	}
-
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, EClass eClass) {
-		super(domPathAndNames, eStructuralFeature, eClass);
-	}
-	
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, EClass eClass, Translator[] children) {
-		super(domPathAndNames, eStructuralFeature, eClass);
-		this.children = children;
-	}
-
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, TranslatorPath translatorPath) {
-		super(domPathAndNames, eStructuralFeature, translatorPath);
-	}
-
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, TranslatorPath[] translatorPaths) {
-		super(domPathAndNames, eStructuralFeature, translatorPaths);
-	}
-
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, int style) {
-		super(domPathAndNames, eStructuralFeature, style);
-	}
-
-	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, int style, Translator[] children) {
-		super(domPathAndNames, eStructuralFeature, style);
-		this.children = children;
-	}
-
-
-	// ********** children **********
 
 	/**
 	 * Widen method access to 'public'.
@@ -94,7 +57,7 @@ public class SimpleTranslator
 	 * Add the specified translator to the translator's list of children.
 	 * Return the translator for method chaining.
 	 */
-	public SimpleTranslator addChild(Translator translator) {
+	public SimpleRootTranslator addChild(Translator translator) {
 		this.children = ArrayTools.add(this.getChildren_(), translator);
 		return this;
 	}
@@ -103,7 +66,7 @@ public class SimpleTranslator
 	 * Add the specified translators to the translator's list of children.
 	 * Return the translator for method chaining.
 	 */
-	public SimpleTranslator addChildren(Translator[] translators) {
+	public SimpleRootTranslator addChildren(Translator[] translators) {
 		this.children = ArrayTools.addAll(this.getChildren_(), translators);
 		return this;
 	}
@@ -112,7 +75,7 @@ public class SimpleTranslator
 	 * Remove the specified translator from the translator's list of children.
 	 * Return the translator for method chaining.
 	 */
-	public SimpleTranslator removeChild(Translator translator) {
+	public SimpleRootTranslator removeChild(Translator translator) {
 		this.children = ArrayTools.remove(this.children, translator);
 		return this;
 	}
@@ -121,7 +84,7 @@ public class SimpleTranslator
 	 * Remove the specified translators from the translator's list of children.
 	 * Return the translator for method chaining.
 	 */
-	public SimpleTranslator removeChildren(Translator[] translators) {
+	public SimpleRootTranslator removeChildren(Translator[] translators) {
 		this.children = ArrayTools.removeAll(this.children, (Object[]) translators);
 		return this;
 	}

@@ -7,6 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
+
 package org.eclipse.jpt.core.resource.persistence;
 
 import org.eclipse.emf.common.util.URI;

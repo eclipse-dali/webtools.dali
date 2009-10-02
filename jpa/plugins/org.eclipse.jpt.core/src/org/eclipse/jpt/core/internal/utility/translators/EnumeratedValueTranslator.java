@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.xml.translators;
+package org.eclipse.jpt.core.internal.utility.translators;
 
 import java.util.Iterator;
 import org.eclipse.emf.ecore.EObject;

@@ -1,9 +1,14 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: XmlMappedSuperclass_1_1.java,v 1.1 2009/09/30 23:17:54 pfullbright Exp $
- */
+/*******************************************************************************
+ *  Copyright (c) 2009  Oracle. 
+ *  All rights reserved.  This program and the accompanying materials are 
+ *  made available under the terms of the Eclipse Public License v1.0 which 
+ *  accompanies this distribution, and is available at 
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.jpt.eclipselink.core.resource.orm.v1_1;
 
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
