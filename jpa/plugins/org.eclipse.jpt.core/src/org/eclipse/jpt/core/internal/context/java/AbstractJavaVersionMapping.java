@@ -141,7 +141,7 @@ public abstract class AbstractJavaVersionMapping
 		super.update();
 		this.column.update(this.getResourceColumn());
 		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
-			getSpecifiedConverter().update(this.resourcePersistentAttribute);
+			getSpecifiedConverter().update(this.getResourcePersistentAttribute());
 		}
 		else {
 			JavaConverter javaConverter = buildSpecifiedConverter(getResourceConverterType());
@@ -151,13 +151,13 @@ public abstract class AbstractJavaVersionMapping
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());
 		}
 		return null;
 	}
 	
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+		if (this.getResourcePersistentAttribute().getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		return null;

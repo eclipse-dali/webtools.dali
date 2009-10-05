@@ -34,12 +34,14 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
@@ -102,6 +104,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -115,32 +118,36 @@ public class JpaProjectPropertiesPage
 {
 	public static final String PROP_ID = "org.eclipse.jpt.ui.jpaProjectPropertiesPage"; //$NON-NLS-1$
 
-	private WritablePropertyValueModel<IProject> projectModel;
-	private PropertyValueModel<JpaProject> jpaProjectModel;
-	private BufferedWritablePropertyValueModel.Trigger trigger;
+	private final WritablePropertyValueModel<IProject> projectModel;
+	private final PropertyValueModel<JpaProject> jpaProjectModel;
+	private final BufferedWritablePropertyValueModel.Trigger trigger;
 
-	private BufferedWritablePropertyValueModel<String> platformIdModel;
-	private PropertyChangeListener platformIdListener;
+	private final BufferedWritablePropertyValueModel<String> platformIdModel;
+	private final PropertyChangeListener platformIdListener;
 
-	private BufferedWritablePropertyValueModel<String> connectionModel;
-	private PropertyValueModel<ConnectionProfile> connectionProfileModel;
-	private PropertyValueModel<Boolean> disconnectedModel;
+	private final BufferedWritablePropertyValueModel<String> connectionModel;
+	private final PropertyValueModel<ConnectionProfile> connectionProfileModel;
+	private final PropertyValueModel<Boolean> disconnectedModel;
 	private Link connectLink;
 
-	private BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
-	private BufferedWritablePropertyValueModel<String> userOverrideDefaultCatalogModel;
-	private WritablePropertyValueModel<String> defaultCatalogModel;
-	private ListValueModel<String> catalogChoicesModel;
+	private final BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
+	private final BufferedWritablePropertyValueModel<String> userOverrideDefaultCatalogModel;
+	private final WritablePropertyValueModel<String> defaultCatalogModel;
+	private final ListValueModel<String> catalogChoicesModel;
 
-	private BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModel;
-	private BufferedWritablePropertyValueModel<String> userOverrideDefaultSchemaModel;
-	private WritablePropertyValueModel<String> defaultSchemaModel;
-	private ListValueModel<String> schemaChoicesModel;
+	private final BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModel;
+	private final BufferedWritablePropertyValueModel<String> userOverrideDefaultSchemaModel;
+	private final WritablePropertyValueModel<String> defaultSchemaModel;
+	private final ListValueModel<String> schemaChoicesModel;
 
-	private BufferedWritablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
-	private WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
+	private final BufferedWritablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
+	private final WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
 
-	private ChangeListener validationListener;
+	private final PropertyValueModel<Boolean> jpa2_0ProjectFlagModel;
+
+	private final BufferedWritablePropertyValueModel<Boolean> generateMetamodelModel;
+
+	private final ChangeListener validationListener;
 
 
 	// ************ construction ************
@@ -172,6 +179,9 @@ public class JpaProjectPropertiesPage
 
 		this.discoverAnnotatedClassesModel = this.buildDiscoverAnnotatedClassesModel();
 		this.listAnnotatedClassesModel = this.buildListAnnotatedClassesModel();
+
+		this.jpa2_0ProjectFlagModel = this.buildJpa2_0ProjectFlagModel();
+		this.generateMetamodelModel = this.buildGenerateMetamodelModel();
 
 		this.validationListener = this.buildValidationListener();
 		this.engageValidationListener();
@@ -298,6 +308,16 @@ public class JpaProjectPropertiesPage
 		return new ListAnnotatedClassesModel(this.discoverAnnotatedClassesModel);
 	}
 
+	// ***** JPA 2.0 project flag
+	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
+		return new Jpa2_0ProjectFlagModel(this.jpaProjectModel);
+	}
+
+	// ***** generate metamodel models
+	private BufferedWritablePropertyValueModel<Boolean> buildGenerateMetamodelModel() {
+		return new BufferedWritablePropertyValueModel<Boolean>(new GenerateMetamodelModel(this.jpaProjectModel), this.trigger);
+	}
+
 
 	// ********** convenience methods **********
 
@@ -368,6 +388,7 @@ public class JpaProjectPropertiesPage
 
 		this.buildConnectionGroup(composite);
 		this.buildPersistentClassManagementGroup(composite);
+		this.buildMetamodelGroup(composite);
 
 		Dialog.applyDialogFont(composite);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
@@ -532,13 +553,26 @@ public class JpaProjectPropertiesPage
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
-
 		Button discoverClassesRadioButton = this.buildRadioButton(group, 1, JptUiMessages.JpaFacetWizardPage_discoverClassesButton);
 		SWTTools.bind(this.discoverAnnotatedClassesModel, discoverClassesRadioButton);
 
 		Button listClassesRadioButton = this.buildRadioButton(group, 1, JptUiMessages.JpaFacetWizardPage_listClassesButton);
 		SWTTools.bind(this.listAnnotatedClassesModel, listClassesRadioButton);
+	}
+
+
+	// ********** metamodel group **********
+
+	private void buildMetamodelGroup(Composite composite) {
+		Group group = new Group(composite, SWT.NONE);
+		group.setText(JptUiMessages.JpaFacetWizardPage_metamodelLabel);
+		group.setLayout(new GridLayout());
+		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		Button generateMetamodelCheckBox = this.buildCheckBox(group, 1, JptUiMessages.JpaFacetWizardPage_generateMetamodelLabel);
+		SWTTools.bind(this.generateMetamodelModel, generateMetamodelCheckBox);
+
+		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, generateMetamodelCheckBox);
 	}
 
 
@@ -671,7 +705,8 @@ public class JpaProjectPropertiesPage
 				this.userOverrideDefaultCatalogModel,
 				this.userOverrideDefaultSchemaFlagModel,
 				this.userOverrideDefaultSchemaModel,
-				this.discoverAnnotatedClassesModel
+				this.discoverAnnotatedClassesModel,
+				this.generateMetamodelModel
 		};
 	}
 
@@ -1217,6 +1252,52 @@ public class JpaProjectPropertiesPage
 		}
 	}
 
+
+	/**
+	 * Flag indicating whether the JPA project supports JPA 2.0.
+	 */
+	static class Jpa2_0ProjectFlagModel
+		extends TransformationPropertyValueModel<JpaProject, Boolean>
+	{
+		Jpa2_0ProjectFlagModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
+			super(jpaProjectModel);
+		}
+
+		@Override
+		protected Boolean transform_(JpaProject value) {
+			return Boolean.valueOf(value.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0));
+		}
+	}
+
+
+	/**
+	 * Flag on the JPA (2.0) project indicating whether it should generate the
+	 * Canonical Metamodel.
+	 */
+	static class GenerateMetamodelModel
+		extends PropertyAspectAdapter<JpaProject, Boolean>
+	{
+		GenerateMetamodelModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
+			super(jpaProjectModel, JpaProject2_0.GENERATES_METAMODEL_PROPERTY);
+		}
+
+		@Override
+		protected Boolean buildValue_() {
+			return Boolean.valueOf(this.jpaProjectGeneratesMetamodel());
+		}
+
+		protected boolean jpaProjectGeneratesMetamodel() {
+			return this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0) &&
+					((JpaProject2_0) this.subject).generatesMetamodel();
+		}
+
+		@Override
+		protected void setValue_(Boolean value) {
+			if (this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+				((JpaProject2_0) this.subject).setGeneratesMetamodel(value.booleanValue());
+			}
+		}
+	}
 
 	/**
 	 * Abstract property aspect adapter for DTP connection profile connection/database

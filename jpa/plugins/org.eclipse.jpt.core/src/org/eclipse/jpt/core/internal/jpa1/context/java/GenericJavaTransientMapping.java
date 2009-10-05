@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -40,4 +41,13 @@ public class GenericJavaTransientMapping
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 	}
+
+
+	// ********** metamodel **********  
+
+	@Override
+	public MetamodelField getMetamodelField() {
+		return null;
+	}
+
 }

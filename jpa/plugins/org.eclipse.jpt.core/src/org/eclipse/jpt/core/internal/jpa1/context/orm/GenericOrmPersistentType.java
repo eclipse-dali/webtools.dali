@@ -595,10 +595,10 @@ public class GenericOrmPersistentType
 	 * All orm.xml persistent types must be able to generate a static metamodel
 	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
 	 */
-	public void synchronizeStaticMetamodel() {
+	public void synchronizeMetamodel() {
 		// if we get here, it's safe to assume the JPA project is 2.0
 		if (this.javaPersistentType != null) {
-			((JpaProject2_0) this.getJpaProject()).synchronizeStaticMetamodel(this);
+			((JpaProject2_0) this.getJpaProject()).synchronizeMetamodel(this);
 		}
 	}
 

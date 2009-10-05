@@ -68,15 +68,15 @@ public class JavaEclipseLinkOneToManyMapping
 	}
 	
 	protected EclipseLinkPrivateOwnedAnnotation getResourcePrivateOwned() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getAnnotation(getPrivateOwnedAnnotationName());
+		return (EclipseLinkPrivateOwnedAnnotation) this.getResourcePersistentAttribute().getAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void addResourcePrivateOwned() {
-		this.resourcePersistentAttribute.addAnnotation(getPrivateOwnedAnnotationName());
+		this.getResourcePersistentAttribute().addAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void removeResourcePrivateOwned() {
-		this.resourcePersistentAttribute.removeAnnotation(getPrivateOwnedAnnotationName());
+		this.getResourcePersistentAttribute().removeAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	
@@ -92,15 +92,15 @@ public class JavaEclipseLinkOneToManyMapping
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.joinFetch.initialize(this.resourcePersistentAttribute);
-		this.privateOwned.initialize(this.resourcePersistentAttribute);
+		this.joinFetch.initialize(this.getResourcePersistentAttribute());
+		this.privateOwned.initialize(this.getResourcePersistentAttribute());
 	}
 	
 	@Override
 	protected void update() {
 		super.update();
-		this.joinFetch.update(this.resourcePersistentAttribute);
-		this.privateOwned.update(this.resourcePersistentAttribute);
+		this.joinFetch.update(this.getResourcePersistentAttribute());
+		this.privateOwned.update(this.getResourcePersistentAttribute());
 	}
 	
 	

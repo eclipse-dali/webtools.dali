@@ -66,7 +66,7 @@ public abstract class AbstractJavaIdMapping
 	protected void initialize() {
 		super.initialize();
 		this.column.initialize(this.getResourceColumn());
-		this.generatorContainer.initialize(this.resourcePersistentAttribute);
+		this.generatorContainer.initialize(this.getResourcePersistentAttribute());
 		this.initializeGeneratedValue();
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
@@ -206,10 +206,10 @@ public abstract class AbstractJavaIdMapping
 	protected void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
-		this.generatorContainer.update(this.resourcePersistentAttribute);
+		this.generatorContainer.update(this.getResourcePersistentAttribute());
 		this.updateGeneratedValue();
 		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
-			getSpecifiedConverter().update(this.resourcePersistentAttribute);
+			getSpecifiedConverter().update(this.getResourcePersistentAttribute());
 		}
 		else {
 			JavaConverter javaConverter = buildSpecifiedConverter(getResourceConverterType());
@@ -241,29 +241,29 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected TableGeneratorAnnotation getResourceTableGenerator() {
-		return (TableGeneratorAnnotation) this.resourcePersistentAttribute.
+		return (TableGeneratorAnnotation) this.getResourcePersistentAttribute().
 				getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected SequenceGeneratorAnnotation getResourceSequenceGenerator() {
-		return (SequenceGeneratorAnnotation) this.resourcePersistentAttribute.
+		return (SequenceGeneratorAnnotation) this.getResourcePersistentAttribute().
 				getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected GeneratedValueAnnotation getResourceGeneratedValue() {
-		return (GeneratedValueAnnotation) this.resourcePersistentAttribute.
+		return (GeneratedValueAnnotation) this.getResourcePersistentAttribute().
 				getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());
 		}
 		return null;
 	}
 	
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+		if (this.getResourcePersistentAttribute().getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		

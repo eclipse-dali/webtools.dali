@@ -9,15 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence;
 
-import java.util.Iterator;
-
-import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.jpa2.context.persistence.ClassRef2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.JarFileRef2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -57,7 +49,7 @@ public class EclipseLinkPersistenceUnit2_0
 
 	@Override
 	public XmlPersistenceUnit getXmlPersistenceUnit() {
-		return (XmlPersistenceUnit) this.xmlPersistenceUnit;
+		return this.xmlPersistenceUnit;
 	}
 	
 	// **************** factory methods *********************************************
@@ -132,19 +124,5 @@ public class EclipseLinkPersistenceUnit2_0
 		ValidationMode old = this.defaultValidationMode;
 		this.defaultValidationMode = defaultValidationMode;
 		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
-	}
-
-	// ********** JPA 2.0 Static Metamodel **********
-
-	public void synchronizeStaticMetamodel() {
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			((MappingFileRef2_0) stream.next()).synchronizeStaticMetamodel();
-		}
-		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			((ClassRef2_0) stream.next()).synchronizeStaticMetamodel();
-		}
-		for (Iterator<JarFileRef> stream = this.jarFileRefs(); stream.hasNext(); ) {
-			((JarFileRef2_0) stream.next()).synchronizeStaticMetamodel();
-		}
 	}
 }

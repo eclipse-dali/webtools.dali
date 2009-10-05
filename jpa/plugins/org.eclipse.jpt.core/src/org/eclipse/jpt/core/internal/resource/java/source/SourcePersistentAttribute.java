@@ -336,7 +336,7 @@ final class SourcePersistentAttribute
 
 	private void addInterfaceNamesTo(ITypeBinding typeBinding, HashSet<String> names) {
 		for (ITypeBinding interfaceBinding : typeBinding.getInterfaces()) {
-			names.add(interfaceBinding.getQualifiedName());
+			names.add(interfaceBinding.getTypeDeclaration().getQualifiedName());
 			this.addInterfaceNamesTo(interfaceBinding, names);  // recurse
 		}
 	}

@@ -17,7 +17,6 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
@@ -54,6 +53,7 @@ import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -1417,14 +1417,14 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected Entity calculateRootEntity() {
-		Entity rootEntity = this;
+		Entity root = this;
 		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
 			PersistentType persistentType = stream.next();
 			if (persistentType.getMapping() instanceof Entity) {
-				rootEntity = (Entity) persistentType.getMapping();
+				root = (Entity) persistentType.getMapping();
 			}
 		}
-		return rootEntity;
+		return root;
 	}
 	
 	public void addSubEntity(Entity subEntity) {
@@ -1570,35 +1570,27 @@ public abstract class AbstractOrmEntity
 	// *************************************************************************
 	
 	public String getPrimaryKeyColumnName() {
-		return getPrimaryKeyColumnName(getPersistentType().allAttributes());
+		return AbstractJavaEntity.getPrimaryKeyColumnName(this);
 	}
 	
-	//copied in GenericJavaEntity to avoid an API change for fixing bug 229423 in RC1
-	public String getPrimaryKeyColumnName(Iterator<PersistentAttribute> attributes) {
-		String pkColumnName = null;
-		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
+	public PersistentAttribute getIdAttribute() {
+		Iterator<PersistentAttribute> stream = this.allIdAttributes();
+		if (stream.hasNext()) {
 			PersistentAttribute attribute = stream.next();
-			String name = attribute.getPrimaryKeyColumnName();
-			if (name != null) {
-				//if the attribute is a primary key then we need to check if there is an attribute override
-				//and use its column name instead (bug 229423)
-				AttributeOverride attributeOverride = getAttributeOverrideContainer().getAttributeOverrideNamed(attribute.getName());
-				if (attributeOverride != null) {
-					name = attributeOverride.getColumn().getName();
-				}
-			}
-			if (pkColumnName == null) {
-				pkColumnName = name;
-			}
-			else if (name != null) {
-				// if we encounter a composite primary key, return null
-				return null;
-			}
+			return stream.hasNext() ? null /*more than one*/: attribute;
 		}
-		// if we encounter only a single primary key column name, return it
-		return pkColumnName;
+		return null;
 	}
-	
+
+	protected Iterator<PersistentAttribute> allIdAttributes() {
+		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.getPersistentType().allAttributes()) {
+			@Override
+			protected boolean accept(PersistentAttribute pa) {
+				return pa.isIdAttribute();
+			}
+		};
+	}
+
 	public void addToResourceModel(XmlEntityMappings entityMappings) {
 		entityMappings.getEntities().add(this.resourceTypeMapping);
 	}
@@ -1660,7 +1652,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected void validateId(List<IMessage> messages) {
-		if (this.entityHasNoId()) {
+		if (this.hasNoIdMapping()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -1780,11 +1772,11 @@ public abstract class AbstractOrmEntity
 		return this.resourceTypeMapping.getInheritanceStrategyTextRange();
 	}
 
-	private boolean entityHasNoId() {
-		return ! this.entityHasId();
+	private boolean hasNoIdMapping() {
+		return ! this.hasIdMapping();
 	}
 	
-	private boolean entityHasId() {
+	private boolean hasIdMapping() {
 		for (Iterator<PersistentAttribute> stream = this.getPersistentType().allAttributes(); stream.hasNext(); ) {
 			if (stream.next().isIdAttribute()) {
 				return true;

@@ -101,6 +101,18 @@ public class JptCorePlugin extends Plugin {
 	public static final String DISCOVER_ANNOTATED_CLASSES = PLUGIN_ID_ + "discoverAnnotatedClasses";  //$NON-NLS-1$
 
 	/**
+	 * The key for storing a JPA project's "generate metamodel" flag in the Eclipse
+	 * project's preferences.
+	 */
+	public static final String GENERATE_METAMODEL = PLUGIN_ID_ + "generateMetamodel";  //$NON-NLS-1$
+
+	/**
+	 * The key for storing the name of a JPA project's metamodel source folder
+	 * in the Eclipse project's preferences.
+	 */
+	public static final String METAMODEL_SOURCE_FOLDER_NAME = PLUGIN_ID_ + "metamodelSourceFolderName";  //$NON-NLS-1$
+
+	/**
 	 * The key for storing a JPA project's data source connection profile name
 	 * in the Eclipse project's persistent properties.
 	 */
@@ -469,6 +481,42 @@ public class JptCorePlugin extends Plugin {
 	public static void setDiscoverAnnotatedClasses(IProject project, boolean discoverAnnotatedClasses) {
 		IEclipsePreferences prefs = getProjectPreferences(project);
 		prefs.putBoolean(DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
+		flush(prefs);
+	}
+
+	/**
+	 * Return the JPA "generate metamodel" flag associated with the specified
+	 * Eclipse project.
+	 */
+	public static boolean generateMetamodel(IProject project) {
+		return getProjectPreferences(project).getBoolean(GENERATE_METAMODEL, false);
+	}
+
+	/**
+	 * Set the JPA "generate metamodel" flag associated with the specified
+	 * Eclipse project.
+	 */
+	public static void setGenerateMetamodel(IProject project, boolean generateMetamodel) {
+		IEclipsePreferences prefs = getProjectPreferences(project);
+		prefs.putBoolean(GENERATE_METAMODEL, generateMetamodel);
+		flush(prefs);
+	}
+
+	/**
+	 * Return the name of the metamodel source folder associated with the
+	 * specified Eclipse project.
+	 */
+	public static String getMetamodelSourceFolderName(IProject project) {
+		return getProjectPreferences(project).get(METAMODEL_SOURCE_FOLDER_NAME, "src");
+	}
+
+	/**
+	 * Set the name of the metamodel source folder associated with the
+	 * specified Eclipse project.
+	 */
+	public static void setMetamodelSourceFolderName(IProject project, String metamodelSourceFolderName) {
+		IEclipsePreferences prefs = getProjectPreferences(project);
+		prefs.put(METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
 		flush(prefs);
 	}
 

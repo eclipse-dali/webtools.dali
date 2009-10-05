@@ -85,7 +85,7 @@ public class OrderingComposite extends FormPane<MultiRelationshipMapping>
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(MultiRelationshipMapping.ORDER_BY_PROPERTY);
+		propertyNames.add(MultiRelationshipMapping.SPECIFIED_ORDER_BY_PROPERTY);
 	}
 
 	private ModifyListener buildCustomTextModifyListener() {
@@ -201,8 +201,8 @@ public class OrderingComposite extends FormPane<MultiRelationshipMapping>
 	}
 	private void populateCustomOrdering() {
 
-		if ((getSubject() != null) && getSubject().getOrderBy() != null) {
-			customOrderingText.setText(getSubject().getOrderBy());
+		if ((getSubject() != null) && getSubject().getSpecifiedOrderBy() != null) {
+			customOrderingText.setText(getSubject().getSpecifiedOrderBy());
 		}
 		else  {
 			customOrderingText.setText("");
@@ -216,7 +216,7 @@ public class OrderingComposite extends FormPane<MultiRelationshipMapping>
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == MultiRelationshipMapping.ORDER_BY_PROPERTY) {
+		if (propertyName == MultiRelationshipMapping.SPECIFIED_ORDER_BY_PROPERTY) {
 			populateCustomOrdering();
 		}
 	}
@@ -226,7 +226,7 @@ public class OrderingComposite extends FormPane<MultiRelationshipMapping>
 		setPopulating(true);
 
 		try {
-			getSubject().setOrderBy(value);
+			getSubject().setSpecifiedOrderBy(value);
 		}
 		finally {
 			setPopulating(false);

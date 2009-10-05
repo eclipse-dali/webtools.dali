@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
-import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 /**
  * JPA 2.0 Java persistent attribute (field or property)
@@ -23,10 +21,16 @@ import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaPersistentAttribute2_0
-	extends JavaPersistentAttribute, PersistentAttribute2_0
+	extends JavaPersistentAttribute
 {
-	@SuppressWarnings("nls")
-	Iterable<String> STANDARD_STATIC_METAMODEL_FIELD_MODIFIERS =
-		new ArrayIterable<String>(new String[] { "public", "static", "volatile" });
+	/**
+	 * Return the name of the container type to be used in the metamodel field
+	 * declaration corresponding to the attribute's mapping.
+	 */
+	String getMetamodelContainerFieldTypeName();
 
+	/**
+	 * Return the attribute's type name for the metamodel.
+	 */
+	String getMetamodelTypeName();
 }

@@ -48,8 +48,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 
 	public PersistentType getOverridablePersistentType() {
-		Embeddable embeddable = getEmbeddable();
-		return embeddable == null ? null : embeddable.getPersistentType();
+		return (this.embeddable == null) ? null : this.embeddable.getPersistentType();
 	}
 	
 	//****************** JavaAttributeMapping implementation *******************
@@ -70,7 +69,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.attributeOverrideContainer.initialize(this.resourcePersistentAttribute);
+		this.attributeOverrideContainer.initialize(this.getResourcePersistentAttribute());
 		this.embeddable = this.getPersistentAttribute().getEmbeddable();
 	}
 	
@@ -78,7 +77,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	protected void update() {
 		super.update();
 		this.embeddable = this.getPersistentAttribute().getEmbeddable();
-		this.attributeOverrideContainer.update(this.resourcePersistentAttribute);
+		this.attributeOverrideContainer.update(this.getResourcePersistentAttribute());
 	}
 
 	public Iterator<String> allOverridableAttributeNames() {

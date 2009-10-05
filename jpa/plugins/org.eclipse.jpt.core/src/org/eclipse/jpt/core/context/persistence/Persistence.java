@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context.persistence;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.jpa2.MetamodelGenerator;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 
 /**
@@ -24,7 +25,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Persistence
-	extends XmlContextNode, JpaStructureNode
+	extends XmlContextNode, JpaStructureNode, MetamodelGenerator
 {
 	/**
 	 * Return the resource model object associated with this context model object

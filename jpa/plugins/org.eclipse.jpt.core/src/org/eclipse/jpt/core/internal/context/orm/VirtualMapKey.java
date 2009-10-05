@@ -29,7 +29,7 @@ public class VirtualMapKey extends MapKey
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaMultiRelationshipMapping.getMapKey();
+		return this.javaMultiRelationshipMapping.getSpecifiedMapKey();
 	}
 
 	@Override

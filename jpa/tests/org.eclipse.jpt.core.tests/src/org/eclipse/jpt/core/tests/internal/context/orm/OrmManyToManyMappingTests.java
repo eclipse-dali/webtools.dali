@@ -315,27 +315,27 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getMapKey());
+		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
 		assertNull(manyToMany.getMapKey());
 		
 		//set mapKey in the resource model, verify context model does not change
 		manyToMany.setMapKey(OrmFactory.eINSTANCE.createMapKey());
-		assertNull(ormManyToManyMapping.getMapKey());
+		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
 		assertNotNull(manyToMany.getMapKey());
 				
 		//set mapKey name in the resource model, verify context model updated
 		manyToMany.getMapKey().setName("myMapKey");
-		assertEquals("myMapKey", ormManyToManyMapping.getMapKey());
+		assertEquals("myMapKey", ormManyToManyMapping.getSpecifiedMapKey());
 		assertEquals("myMapKey", manyToMany.getMapKey().getName());
 		
 		//set mapKey name to null in the resource model
 		manyToMany.getMapKey().setName(null);
-		assertNull(ormManyToManyMapping.getMapKey());
+		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
 		assertNull(manyToMany.getMapKey().getName());
 		
 		manyToMany.getMapKey().setName("myMapKey");
 		manyToMany.setMapKey(null);
-		assertNull(ormManyToManyMapping.getMapKey());
+		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
 		assertNull(manyToMany.getMapKey());
 	}
 	
@@ -345,17 +345,17 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getMapKey());
+		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
 		assertNull(manyToMany.getMapKey());
 					
 		//set mapKey  in the context model, verify resource model updated
-		ormManyToManyMapping.setMapKey("myMapKey");
-		assertEquals("myMapKey", ormManyToManyMapping.getMapKey());
+		ormManyToManyMapping.setSpecifiedMapKey("myMapKey");
+		assertEquals("myMapKey", ormManyToManyMapping.getSpecifiedMapKey());
 		assertEquals("myMapKey", manyToMany.getMapKey().getName());
 	
 		//set mapKey to null in the context model
-		ormManyToManyMapping.setMapKey(null);
-		assertNull(ormManyToManyMapping.getMapKey());
+		ormManyToManyMapping.setSpecifiedMapKey(null);
+		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
 		assertNull(manyToMany.getMapKey());
 	}
 	
@@ -365,17 +365,17 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getOrderBy());
+		assertNull(ormManyToManyMapping.getSpecifiedOrderBy());
 		assertNull(manyToMany.getOrderBy());
 				
 		//set orderBy in the resource model, verify context model updated
 		manyToMany.setOrderBy("newOrderBy");
-		assertEquals("newOrderBy", ormManyToManyMapping.getOrderBy());
+		assertEquals("newOrderBy", ormManyToManyMapping.getSpecifiedOrderBy());
 		assertEquals("newOrderBy", manyToMany.getOrderBy());
 	
 		//set orderBy to null in the resource model
 		manyToMany.setOrderBy(null);
-		assertNull(ormManyToManyMapping.getOrderBy());
+		assertNull(ormManyToManyMapping.getSpecifiedOrderBy());
 		assertNull(manyToMany.getOrderBy());
 	}
 	
@@ -385,17 +385,17 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 		
-		assertNull(ormManyToManyMapping.getOrderBy());
+		assertNull(ormManyToManyMapping.getSpecifiedOrderBy());
 		assertNull(manyToMany.getOrderBy());
 				
 		//set mappedBy in the context model, verify resource model updated
-		ormManyToManyMapping.setOrderBy("newOrderBy");
-		assertEquals("newOrderBy", ormManyToManyMapping.getOrderBy());
+		ormManyToManyMapping.setSpecifiedOrderBy("newOrderBy");
+		assertEquals("newOrderBy", ormManyToManyMapping.getSpecifiedOrderBy());
 		assertEquals("newOrderBy", manyToMany.getOrderBy());
 	
 		//set mappedBy to null in the context model
-		ormManyToManyMapping.setOrderBy(null);
-		assertNull(ormManyToManyMapping.getOrderBy());
+		ormManyToManyMapping.setSpecifiedOrderBy(null);
+		assertNull(ormManyToManyMapping.getSpecifiedOrderBy());
 		assertNull(manyToMany.getOrderBy());
 	}
 	
@@ -406,10 +406,10 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		
 		assertTrue(ormManyToManyMapping.isNoOrdering());
 
-		ormManyToManyMapping.setOrderBy("foo");
+		ormManyToManyMapping.setSpecifiedOrderBy("foo");
 		assertFalse(ormManyToManyMapping.isNoOrdering());
 		
-		ormManyToManyMapping.setOrderBy(null);
+		ormManyToManyMapping.setSpecifiedOrderBy(null);
 		assertTrue(ormManyToManyMapping.isNoOrdering());
 	}
 	
@@ -420,12 +420,12 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		
 		assertTrue(ormManyToManyMapping.isNoOrdering());
 
-		ormManyToManyMapping.setOrderBy("foo");
+		ormManyToManyMapping.setSpecifiedOrderBy("foo");
 		assertFalse(ormManyToManyMapping.isNoOrdering());
 		
 		ormManyToManyMapping.setNoOrdering(true);
 		assertTrue(ormManyToManyMapping.isNoOrdering());
-		assertNull(ormManyToManyMapping.getOrderBy());
+		assertNull(ormManyToManyMapping.getSpecifiedOrderBy());
 	}
 //TODO
 //	public boolean isOrderByPk() {
@@ -443,10 +443,10 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		
 		assertFalse(ormManyToManyMapping.isCustomOrdering());
 
-		ormManyToManyMapping.setOrderBy("foo");
+		ormManyToManyMapping.setSpecifiedOrderBy("foo");
 		assertTrue(ormManyToManyMapping.isCustomOrdering());
 		
-		ormManyToManyMapping.setOrderBy(null);
+		ormManyToManyMapping.setSpecifiedOrderBy(null);
 		assertFalse(ormManyToManyMapping.isCustomOrdering());
 	}
 	
@@ -458,8 +458,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		assertFalse(manyToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -477,8 +477,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		assertFalse(manyToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -496,8 +496,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		assertFalse(manyToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -515,8 +515,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		assertFalse(manyToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -534,8 +534,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		assertFalse(manyToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -553,8 +553,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		manyToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().setMappedByAttribute("mappedBy");
 		manyToManyMapping.getCascade().setAll(true);
 		manyToManyMapping.getCascade().setMerge(true);
@@ -586,8 +586,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		manyToManyMapping.getCascade().setAll(true);
 		manyToManyMapping.getCascade().setMerge(true);
 		manyToManyMapping.getCascade().setPersist(true);
@@ -630,8 +630,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		manyToManyMapping.getCascade().setAll(true);
 		manyToManyMapping.getCascade().setMerge(true);
 		manyToManyMapping.getCascade().setPersist(true);
@@ -661,8 +661,8 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isDefault());
 		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
 		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
-		manyToManyMapping.setOrderBy("customOrder");
-		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setSpecifiedOrderBy("customOrder");
+		manyToManyMapping.setSpecifiedMapKey("mapKey");
 		manyToManyMapping.getCascade().setAll(true);
 		manyToManyMapping.getCascade().setMerge(true);
 		manyToManyMapping.getCascade().setPersist(true);

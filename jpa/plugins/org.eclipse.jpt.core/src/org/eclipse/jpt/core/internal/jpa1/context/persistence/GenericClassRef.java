@@ -16,14 +16,13 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.ClassRef2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -36,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericClassRef
 	extends AbstractPersistenceXmlContextNode
-	implements ClassRef2_0
+	implements ClassRef
 {
 	// this is null for an "implied" class ref
 	protected XmlJavaClassRef xmlJavaClassRef;
@@ -194,15 +193,6 @@ public class GenericClassRef
 		return (this.className == null) ? null : this.getJpaProject().getJavaResourcePersistentType(this.className.replace('$', '.'));
 	}
 
-	
-	// ********** 2.0 static metamodel **********
-
-	public void synchronizeStaticMetamodel() {
-		JavaPersistentType2_0 jpt = (JavaPersistentType2_0) this.getJavaPersistentType();
-		if (jpt != null) {
-			jpt.synchronizeStaticMetamodel();
-		}
-	}
 
 	// ********** updating **********
 

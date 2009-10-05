@@ -346,7 +346,7 @@ public abstract class AbstractEntityMappings
 		return new CloneListIterator<OrmPersistentType>(this.persistentTypes);
 	}
 	
-	protected Iterable<OrmPersistentType> getPersistentTypes() {
+	public Iterable<OrmPersistentType> getPersistentTypes() {
 		return new LiveCloneIterable<OrmPersistentType>(this.persistentTypes);
 	}
 	
@@ -548,16 +548,6 @@ public abstract class AbstractEntityMappings
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 
-	/**
-	 * All orm.xml entity mappings must be able to generate a static metamodel
-	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
-	 */
-	public void synchronizeStaticMetamodel() {
-		for (OrmPersistentType opt : this.getPersistentTypes()) {
-			opt.synchronizeStaticMetamodel();
-		}
-	}
-	
 
 	// ********** initialization **********
 	

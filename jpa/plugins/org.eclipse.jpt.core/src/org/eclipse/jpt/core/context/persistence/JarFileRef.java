@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JarFileRef
-	extends XmlContextNode, JpaStructureNode
+	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
 {
 	// **************** file name **********************************************
 	
@@ -71,7 +71,7 @@ public interface JarFileRef
 	
 	
 	// **************** queries ************************************************
-	
+
 	/**
 	 * Return the persistent type, as listed in the JAR file,
 	 * with the specified name. Return null if it does not exists.

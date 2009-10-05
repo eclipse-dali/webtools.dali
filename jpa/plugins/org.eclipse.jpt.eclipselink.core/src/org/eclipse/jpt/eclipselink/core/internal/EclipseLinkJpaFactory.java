@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.internal.AbstractJpaFactory;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
@@ -54,7 +55,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public EclipseLinkJpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
-		return new EclipseLinkJpaProjectImpl(config);
+		return new EclipseLinkJpaProjectImpl((JpaProject2_0.Config) config);
 	}
 	
 	

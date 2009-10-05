@@ -77,9 +77,11 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_description;
 	public static String JpaFacetWizardPage_discoverClassesButton;
 	public static String JpaFacetWizardPage_driverLibraryLabel;
+	public static String JpaFacetWizardPage_generateMetamodelLabel;
 	public static String JpaFacetWizardPage_jpaImplementationLabel;
 	public static String JpaFacetWizardPage_jpaPrefsLink;
 	public static String JpaFacetWizardPage_listClassesButton;
+	public static String JpaFacetWizardPage_metamodelLabel;
 	public static String JpaFacetWizardPage_none;
 	public static String JpaFacetWizardPage_overrideDefaultCatalogLabel;
 	public static String JpaFacetWizardPage_overrideDefaultSchemaLabel;

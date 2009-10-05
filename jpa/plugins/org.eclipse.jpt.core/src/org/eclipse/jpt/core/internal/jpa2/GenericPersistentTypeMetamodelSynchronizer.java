@@ -18,15 +18,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.Map.Entry;
+
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
-import org.eclipse.jpt.core.jpa2.context.StaticMetamodelField;
+import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -36,6 +39,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.DateFormat;
 
@@ -43,17 +47,17 @@ import com.ibm.icu.text.DateFormat;
  * 
  */
 @SuppressWarnings("nls")
-public class GenericPersistentTypeStaticMetamodelSynchronizer
-	implements PersistentTypeStaticMetamodelSynchronizer
+public class GenericPersistentTypeMetamodelSynchronizer
+	implements PersistentTypeMetamodelSynchronizer
 {
-	protected final StaticMetamodelSynchronizer staticMetamodelSynchronizer;
+	protected final MetamodelSynchronizer metamodelSynchronizer;
 	protected final PersistentType persistentType;
 	protected final String metamodelClassName;
 
 
-	public GenericPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
+	public GenericPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
 		super();
-		this.staticMetamodelSynchronizer = staticMetamodelSynchronizer;
+		this.metamodelSynchronizer = staticMetamodelSynchronizer;
 		this.persistentType = persistentType;
 		this.metamodelClassName = this.buildMetamodelClassName();
 	}
@@ -73,7 +77,7 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 	}
 
 	protected IPackageFragment buildPackageFragment() {
-		IPackageFragmentRoot sourceFolder = this.staticMetamodelSynchronizer.getSourceFolder();
+		IPackageFragmentRoot sourceFolder = this.metamodelSynchronizer.getSourceFolder();
 		String pkgName = this.getPackageName();
 		IPackageFragment packageFragment = sourceFolder.getPackageFragment(pkgName);
 		if (packageFragment.exists()) {
@@ -95,12 +99,41 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 	}
 
 	protected void synchronize_() throws JavaModelException {
-		// TODO check for @Generated annotation
-		String fileName = ClassTools.shortNameForClassNamed(this.metamodelClassName) + ".java";
-		String source = this.buildSource();
 		IPackageFragment pkg = this.buildPackageFragment();
-		pkg.createCompilationUnit(fileName, source, true, null);
+		String fileName = ClassTools.shortNameForClassNamed(this.metamodelClassName) + ".java";
+
+		ISourceReference oldSourceRef = pkg.getCompilationUnit(fileName);
+		String oldSource = oldSourceRef.exists() ? oldSourceRef.getSource() : null;
+
+		if (oldSource == null) {  // write a new file
+			pkg.createCompilationUnit(fileName, this.buildSource(), false, null);  // false=no force
+			return;
+		}
+
+		int oldBegin = oldSource.indexOf(DALI_TAG);
+		if (oldBegin == -1) {
+			return;
+		}
+		oldBegin += DALI_TAG_LENGTH;
+
+		int oldEnd = oldSource.indexOf('"', oldBegin);
+		if (oldEnd == -1) {
+			return;
+		}
+		String oldSource2 = oldSource.replace(oldSource.substring(oldBegin, oldEnd), "");
+
+		String newSource = this.buildSource();
+		int newBegin = newSource.indexOf(DALI_TAG) + DALI_TAG_LENGTH;
+		int newEnd = newSource.indexOf('"', newBegin);
+		String newSource2 = newSource.replace(newSource.substring(newBegin, newEnd), "");
+
+		if ( ! newSource2.equals(oldSource2)) {
+			pkg.createCompilationUnit(fileName, newSource, true, null);
+		}
 	}
+
+	protected static final String DALI_TAG = "@Generated(\"Dali";
+	protected static final int DALI_TAG_LENGTH = DALI_TAG.length();
 
 	/**
 	 * build the "body" source first; then build the "package" and "imports" source
@@ -180,13 +213,20 @@ public class GenericPersistentTypeStaticMetamodelSynchronizer
 	}
 
 	protected void printAttributeOn(PersistentAttribute persistentAttribute, BodySourceWriter pw) {
-		StaticMetamodelField field = ((PersistentAttribute2_0) persistentAttribute).getStaticMetamodelField();
+		AttributeMapping attributeMapping = persistentAttribute.getMapping();
+		if (attributeMapping != null) {  // probably shouldn't be null?
+			this.printAttributeMappingOn(attributeMapping, pw);
+		}
+	}
+
+	protected void printAttributeMappingOn(AttributeMapping attributeMapping, BodySourceWriter pw) {
+		MetamodelField field = ((AttributeMapping2_0) attributeMapping).getMetamodelField();
 		if (field != null) {
 			this.printFieldOn(field, pw);
 		}
 	}
 
-	protected void printFieldOn(StaticMetamodelField field, BodySourceWriter pw) {
+	protected void printFieldOn(MetamodelField field, BodySourceWriter pw) {
 		for (String modifier : field.getModifiers()) {
 			pw.print(modifier);
 			pw.print(' ');

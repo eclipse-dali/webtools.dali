@@ -7,13 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.orm;
+package org.eclipse.jpt.core.context.persistence;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
+import org.eclipse.jpt.core.context.PersistentType;
 
 /**
- * JPA 2.0 ORM persistent attribute
+ * Interface used by persistence unit to gather up persistent types.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,8 +20,11 @@ import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmPersistentAttribute2_0
-	extends OrmPersistentAttribute, PersistentAttribute2_0
-{
-	// nothing yet
+public interface PersistentTypeContainer {
+
+	/**
+	 * Return the container's persistent types.
+	 */
+	Iterable<? extends PersistentType> getPersistentTypes();
+
 }

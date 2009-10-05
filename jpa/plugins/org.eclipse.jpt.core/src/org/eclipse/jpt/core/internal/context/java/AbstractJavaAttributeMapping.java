@@ -9,16 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -33,10 +40,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	extends AbstractJavaJpaContextNode
-	implements JavaAttributeMapping
+	implements JavaAttributeMapping, AttributeMapping2_0
 {
-	protected final JavaResourcePersistentAttribute resourcePersistentAttribute;
-	
 	protected T mappingAnnotation;
 	
 	private String[] supportingAnnotationNames;
@@ -44,7 +49,6 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 
 	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.resourcePersistentAttribute = parent.getResourcePersistentAttribute();
 	}
 	
 	@Override
@@ -57,7 +61,7 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	}
 
 	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.resourcePersistentAttribute;
+		return this.getParent().getResourcePersistentAttribute();
 	}
 	
 	public T getMappingAnnotation() {
@@ -160,6 +164,48 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
+	}
+
+
+	// ********** metamodel **********
+
+	public MetamodelField getMetamodelField() {
+		return new SimpleMetamodelField(
+				this.getMetamodelFieldModifiers(),
+				this.getMetamodelFieldTypeName(),
+				this.getMetamodelFieldTypeArgumentNames(),
+				this.getMetamodelFieldName()
+			);
+	}
+
+	protected Iterable<String> getMetamodelFieldModifiers() {
+		return STANDARD_METAMODEL_FIELD_MODIFIERS;
+	}
+
+	/**
+	 * most mappings are "singular"
+	 */
+	protected String getMetamodelFieldTypeName() {
+		return JPA2_0.SINGULAR_ATTRIBUTE;
+	}
+
+	protected final Iterable<String> getMetamodelFieldTypeArgumentNames() {
+		ArrayList<String> typeArgumentNames = new ArrayList<String>(3);
+		typeArgumentNames.add(this.getTypeMapping().getPersistentType().getName());
+		this.addMetamodelFieldTypeArgumentNamesTo(typeArgumentNames);
+		return typeArgumentNames;
+	}
+
+	protected void addMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames) {
+		typeArgumentNames.add(this.getMetamodelTypeName());
+	}
+
+	public String getMetamodelTypeName() {
+		return ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
+	}
+
+	protected String getMetamodelFieldName() {
+		return this.getName();
 	}
 
 

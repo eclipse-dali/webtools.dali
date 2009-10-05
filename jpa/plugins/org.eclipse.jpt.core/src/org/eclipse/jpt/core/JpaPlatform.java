@@ -184,20 +184,23 @@ public interface JpaPlatform
 	interface Version 
 	{
 		/**
-		 * Return the version of this particular platform
+		 * Return the platform's version.
 		 */
 		String getVersion();
 		
 		/**
-		 * Return the highest JPA specification version supported by this platform.
-		 * @see {@link JptCorePlugin#JPA_FACET_VERSION_1_0}
-		 * @see {@link JptCorePlugin#JPA_FACET_VERSION_2_0}
+		 * Return the highest JPA specification version supported by the platform.
+		 * @see JptCorePlugin#JPA_FACET_VERSION_1_0
+		 * @see JptCorePlugin#JPA_FACET_VERSION_2_0
 		 */
 		String getJpaVersion();
 		
 		/**
-		 * Return whether this platform is compatible with the 2.0 JPA specification.
+		 * Return whether the platform is compatible with the specified JPA
+		 * specification version.
+		 * @see JptCorePlugin#JPA_FACET_VERSION_1_0
+		 * @see JptCorePlugin#JPA_FACET_VERSION_2_0
 		 */
-		boolean is2_0Compatible();
+		boolean isCompatibleWithJpaVersion(String jpaVersion);
 	}
 }

@@ -17,14 +17,12 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
-import org.eclipse.jpt.core.jpa2.context.StaticMetamodelField;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -35,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmPersistentAttribute
 	extends AbstractOrmXmlContextNode
-	implements OrmPersistentAttribute2_0
+	implements OrmPersistentAttribute
 {
 	protected final Owner owner;
 
@@ -211,11 +209,6 @@ public abstract class AbstractOrmPersistentAttribute
 			return null;
 		}
 		return this.attributeMapping.getSelectionTextRange();
-	}
-	
-	public StaticMetamodelField getStaticMetamodelField() {
-		return (this.javaPersistentAttribute == null) ? null :
-				((PersistentAttribute2_0) this.javaPersistentAttribute).getStaticMetamodelField();
 	}
 	
 	@Override

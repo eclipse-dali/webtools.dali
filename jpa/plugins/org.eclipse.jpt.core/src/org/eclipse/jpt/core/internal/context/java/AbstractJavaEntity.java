@@ -915,33 +915,53 @@ public abstract class AbstractJavaEntity
 	}
 	
 	public String getPrimaryKeyColumnName() {
-		return getPrimaryKeyColumnName(getPersistentType().allAttributes());
+		return getPrimaryKeyColumnName(this);
 	}
 	
-	//copied in GenericOrmEntity to avoid an API change for fixing bug 229423 in RC1
-	public String getPrimaryKeyColumnName(Iterator<PersistentAttribute> attributes) {
+	/**
+	 * Convenience implementation that is shared with ORM.
+	 */
+	public static String getPrimaryKeyColumnName(Entity entity) {
 		String pkColumnName = null;
-		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
+		for (Iterator<PersistentAttribute> stream = entity.getPersistentType().allAttributes(); stream.hasNext(); ) {
 			PersistentAttribute attribute = stream.next();
-			String name = attribute.getPrimaryKeyColumnName();
-			if (name != null) {
-				//if the attribute is a primary key then we need to check if there is an attribute override
-				//and use its column name instead (bug 229423)
-				AttributeOverride attributeOverride = this.attributeOverrideContainer.getAttributeOverrideNamed(attribute.getName());
+			String current = attribute.getPrimaryKeyColumnName();
+			if (current != null) {
+				// 229423 - if the attribute is a primary key, but it has an attribute override,
+				// use the override column instead
+				AttributeOverride attributeOverride = entity.getAttributeOverrideContainer().getAttributeOverrideNamed(attribute.getName());
 				if (attributeOverride != null) {
-					name = attributeOverride.getColumn().getName();
+					current = attributeOverride.getColumn().getName();
 				}
 			}
 			if (pkColumnName == null) {
-				pkColumnName = name;
+				pkColumnName = current;
 			}
-			else if (name != null) {
+			else if (current != null) {
 				// if we encounter a composite primary key, return null
 				return null;
 			}
 		}
 		// if we encounter only a single primary key column name, return it
 		return pkColumnName;
+	}
+
+	public PersistentAttribute getIdAttribute() {
+		Iterator<PersistentAttribute> stream = this.allIdAttributes();
+		if (stream.hasNext()) {
+			PersistentAttribute attribute = stream.next();
+			return stream.hasNext() ? null /*more than one*/: attribute;
+		}
+		return null;
+	}
+
+	protected Iterator<PersistentAttribute> allIdAttributes() {
+		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.getPersistentType().allAttributes()) {
+			@Override
+			protected boolean accept(PersistentAttribute pa) {
+				return pa.isIdAttribute();
+			}
+		};
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
@@ -1391,7 +1411,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void validateId(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.entityHasNoId()) {
+		if (this.hasNoIdMapping()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -1510,11 +1530,11 @@ public abstract class AbstractJavaEntity
 		return getResourceInheritance().getStrategyTextRange(astRoot);
 	}
 
-	protected boolean entityHasNoId() {
-		return ! this.entityHasId();
+	protected boolean hasNoIdMapping() {
+		return ! this.hasIdMapping();
 	}
 
-	protected boolean entityHasId() {
+	protected boolean hasIdMapping() {
 		for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext(); ) {
 			if (stream.next().isIdAttribute()) {
 				return true;

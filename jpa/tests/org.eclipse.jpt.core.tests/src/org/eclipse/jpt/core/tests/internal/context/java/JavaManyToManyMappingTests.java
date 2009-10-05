@@ -255,7 +255,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -277,7 +277,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -298,7 +298,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -320,7 +320,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -342,7 +342,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -364,7 +364,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -386,7 +386,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -408,7 +408,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -430,7 +430,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -452,7 +452,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
-		manyToManyMapping.setOrderBy("asdf");
+		manyToManyMapping.setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
@@ -778,28 +778,28 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
-		assertNull(manyToManyMapping.getMapKey());
+		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 		
 		//set mapKey in the resource model, verify context model does not change
 		attributeResource.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
-		assertNull(manyToManyMapping.getMapKey());
+		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNotNull(mapKey);
 				
 		//set mapKey name in the resource model, verify context model updated
 		mapKey.setName("myMapKey");
-		assertEquals("myMapKey", manyToManyMapping.getMapKey());
+		assertEquals("myMapKey", manyToManyMapping.getSpecifiedMapKey());
 		assertEquals("myMapKey", mapKey.getName());
 		
 		//set mapKey name to null in the resource model
 		mapKey.setName(null);
-		assertNull(manyToManyMapping.getMapKey());
+		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		assertNull(mapKey.getName());
 		
 		mapKey.setName("myMapKey");
 		attributeResource.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
-		assertNull(manyToManyMapping.getMapKey());
+		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -813,18 +813,18 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
-		assertNull(manyToManyMapping.getMapKey());
+		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 					
 		//set mapKey  in the context model, verify resource model updated
-		manyToManyMapping.setMapKey("myMapKey");
+		manyToManyMapping.setSpecifiedMapKey("myMapKey");
 		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
-		assertEquals("myMapKey", manyToManyMapping.getMapKey());
+		assertEquals("myMapKey", manyToManyMapping.getSpecifiedMapKey());
 		assertEquals("myMapKey", mapKey.getName());
 	
 		//set mapKey to null in the context model
-		manyToManyMapping.setMapKey(null);
-		assertNull(manyToManyMapping.getMapKey());
+		manyToManyMapping.setSpecifiedMapKey(null);
+		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
 
@@ -838,19 +838,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
-		assertNull(manyToManyMapping.getOrderBy());
+		assertNull(manyToManyMapping.getSpecifiedOrderBy());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
 		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
-		assertEquals("newOrderBy", manyToManyMapping.getOrderBy());
+		assertEquals("newOrderBy", manyToManyMapping.getSpecifiedOrderBy());
 		assertEquals("newOrderBy", orderBy.getValue());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		assertNull(manyToManyMapping.getOrderBy());
+		assertNull(manyToManyMapping.getSpecifiedOrderBy());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -864,18 +864,18 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
-		assertNull(manyToManyMapping.getOrderBy());
+		assertNull(manyToManyMapping.getSpecifiedOrderBy());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 		//set mappedBy in the context model, verify resource model updated
-		manyToManyMapping.setOrderBy("newOrderBy");
-		assertEquals("newOrderBy", manyToManyMapping.getOrderBy());
+		manyToManyMapping.setSpecifiedOrderBy("newOrderBy");
+		assertEquals("newOrderBy", manyToManyMapping.getSpecifiedOrderBy());
 		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		assertEquals("newOrderBy", orderBy.getValue());
 	
 		//set mappedBy to null in the context model
-		manyToManyMapping.setOrderBy(null);
-		assertNull(manyToManyMapping.getOrderBy());
+		manyToManyMapping.setSpecifiedOrderBy(null);
+		assertNull(manyToManyMapping.getSpecifiedOrderBy());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	

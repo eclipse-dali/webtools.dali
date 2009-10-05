@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
@@ -82,7 +84,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	//defined within an embedded id class are not supported  by the 2.0 spec.
 	@Override
 	public Iterator<String> allMappingNames() {
-		if (getJpaPlatformVersion().is2_0Compatible()) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			return new CompositeIterator<String>(
 				getName(),
 				embeddableAttributeMappingNames()
@@ -123,7 +125,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 		if (resolvedMappedBy != null) {
 			return resolvedMappedBy;
 		}
-		if (getJpaPlatformVersion().is2_0Compatible()) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = mappedByName.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(mappedByName.substring(0, dotIndex))) {

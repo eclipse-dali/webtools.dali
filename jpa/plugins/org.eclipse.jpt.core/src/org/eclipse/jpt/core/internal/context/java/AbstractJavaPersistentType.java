@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -26,12 +27,12 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -52,7 +53,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaPersistentType
 	extends AbstractJavaJpaContextNode
-	implements JavaPersistentType2_0
+	implements JavaPersistentType
 {
 	protected JavaResourcePersistentType resourcePersistentType;
 	
@@ -262,14 +263,14 @@ public abstract class AbstractJavaPersistentType
 
 	public JavaPersistentAttribute getAttributeNamed(String attributeName) {
 		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
-		return (stream.hasNext()) ? stream.next() : null;
+		return stream.hasNext() ? stream.next() : null;
 	}
 
 	public PersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
 		if (stream.hasNext()) {
 			JavaPersistentAttribute attribute = stream.next();
-			return (stream.hasNext()) ? null /*more than one*/: attribute;
+			return stream.hasNext() ? null /*more than one*/: attribute;
 		}
 		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
 	}
@@ -422,10 +423,10 @@ public abstract class AbstractJavaPersistentType
 		return this.resourcePersistentType.hasAnyAnnotatedAttributes();
 	}
 	
-	// **************** 2.0 static metamodel *****************************
+	// **************** metamodel *****************************
 	
-	public void synchronizeStaticMetamodel() {
-		((JpaProject2_0) this.getJpaProject()).synchronizeStaticMetamodel(this);
+	public void synchronizeMetamodel() {
+		((JpaProject2_0) this.getJpaProject()).synchronizeMetamodel(this);
 	}
 	
 	// **************** initialization / updating *****************************

@@ -23,16 +23,79 @@ import org.eclipse.jpt.core.context.PersistentType;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaProject2_0
-	extends JpaProject, StaticMetamodelGenerator
+	extends JpaProject, MetamodelGenerator
 {
 
-	// ********** Static Metamodel **********
+	// ********** Canonical Metamodel **********
 
 	/**
-	 * 
+	 * ID string used when generatesMetamodel property is changed.
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	void synchronizeStaticMetamodel(PersistentType persistentType);
+	String GENERATES_METAMODEL_PROPERTY = "generatesMetamodel"; //$NON-NLS-1$
 
-	IPackageFragmentRoot getStaticMetaModelSourceFolder();
+	/**
+	 * Return whether the JPA project will generate a Canonical Metamodel
+	 * automatically.
+	 */
+	boolean generatesMetamodel();
+
+	/**
+	 * Set whether the JPA project will generate a Canonical Metamodel
+	 * automatically.
+	 */
+	void setGeneratesMetamodel(boolean generatesMetamodel);
+
+	/**
+	 * ID string used when metamodelSourceFolderName property is changed.
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 */
+	String METAMODEL_SOURCE_FOLDER_NAME_PROPERTY = "metamodelSourceFolderName"; //$NON-NLS-1$
+
+	/**
+	 * Return the name of the folder that holds the generated Canonical
+	 * Metamodel.
+	 */
+	String getMetamodelSourceFolderName();
+
+	/**
+	 * Set the name of the folder that holds the generated Canonical
+	 * Metamodel.
+	 */
+	void setMetamodelSourceFolderName(String metamodelSourceFolderName);
+
+	/**
+	 * Return the package fragment root that holds the generated Canonical
+	 * Metamodel.
+	 */
+	IPackageFragmentRoot getMetamodelPackageFragmentRoot();
+
+	/**
+	 * Synchronize the source for the metamodel class corresponding to the
+	 * specified persistent type.
+	 */
+	void synchronizeMetamodel(PersistentType persistentType);
+
+
+	// ********** construction config **********
+
+	/**
+	 * The settings used to construct a JPA 2.0 project.
+	 */
+	interface Config extends JpaProject.Config {
+
+		/**
+		 * Return whether the new JPA project is to generate a Canonical
+		 * Metamodel.
+		 */
+		boolean generatesMetamodel();
+
+		/**
+		 * Return the name of the folder that holds the generated Canonical
+		 * Metamodel.
+		 */
+		String getMetamodelSourceFolderName();
+
+	}
 
 }

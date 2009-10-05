@@ -9,21 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context;
 
-import org.eclipse.jpt.core.jpa2.context.StaticMetamodelField;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * Straightforward implementation.
  */
-public class SimpleStaticMetamodelField
-	implements StaticMetamodelField
+public class SimpleMetamodelField
+	implements MetamodelField
 {
 	protected final Iterable<String> modifiers;
 	protected final String typeName;
 	protected final Iterable<String> typeArgumentNames;
 	protected final String name;
 
-	public SimpleStaticMetamodelField(
+	public SimpleMetamodelField(
 			Iterable<String> modifiers,
 			String typeName,
 			Iterable<String> typeArgumentNames,
@@ -74,10 +74,10 @@ public class SimpleStaticMetamodelField
 
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof StaticMetamodelField)) {
+		if ( ! (o instanceof MetamodelField)) {
 			return false;
 		}
-		StaticMetamodelField other = (StaticMetamodelField) o;
+		MetamodelField other = (MetamodelField) o;
 		return CollectionTools.elementsAreEqual(this.getModifiers(), other.getModifiers()) &&
 					this.getTypeName().equals(other.getTypeName()) &&
 					CollectionTools.elementsAreEqual(this.getTypeArgumentNames(), other.getTypeArgumentNames()) &&

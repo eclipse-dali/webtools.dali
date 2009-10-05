@@ -15,7 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -53,8 +55,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -179,15 +180,17 @@ public abstract class AbstractJpaProject
 	 */
 	protected final ThreadLocalCommandExecutor modifySharedDocumentCommandExecutor;
 
-	
-	//********* 2.0 static metamodel **************
-	protected final StaticMetamodelSynchronizer staticMetamodelSynchronizer;
-	protected final Job staticMetamodelSynchronizationJob;
-	protected boolean generatesStaticMetamodel = false;
+	// ********** metamodel **********
+
+	protected boolean generatesMetamodel;
+	protected String metamodelSourceFolderName;
+	protected final MetamodelSynchronizer metamodelSynchronizer;
+	protected final Job metamodelSynchronizationJob;
+
 
 	// ********** constructor/initialization **********
 
-	protected AbstractJpaProject(JpaProject.Config config) throws CoreException {
+	protected AbstractJpaProject(JpaProject2_0.Config config) throws CoreException {
 		super(null);  // JPA project is the root of the containment tree
 		if ((config.getProject() == null) || (config.getJpaPlatform() == null)) {
 			throw new NullPointerException();
@@ -209,8 +212,10 @@ public abstract class AbstractJpaProject
 
 		this.rootContextNode = this.buildRootContextNode();
 
-		this.staticMetamodelSynchronizer = this.buildStaticMetamodelSynchronizer();
-		this.staticMetamodelSynchronizationJob = this.buildStaticMetamodelSynchronizationJob();
+		this.generatesMetamodel = config.generatesMetamodel();
+		this.metamodelSourceFolderName = config.getMetamodelSourceFolderName();
+		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
+		this.metamodelSynchronizationJob = this.buildMetamodelSynchronizationJob();
 
 		// "update" the project before returning
 		this.setUpdater_(new SynchronousJpaProjectUpdater(this));
@@ -250,21 +255,30 @@ public abstract class AbstractJpaProject
 		return this.getJpaFactory().buildRootContextNode(this);
 	}
 
-	protected StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer() {
-		return ((JpaFactory2_0) this.getJpaFactory()).buildStaticMetamodelSynchronizer(this);
+	protected boolean isJpa2_0Compatible() {
+		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
 	}
 
-	protected Job buildStaticMetamodelSynchronizationJob() {
-		String jobName = NLS.bind(JptCoreMessages.SYNCHRONIZE_STATIC_METAMODEL_JOB_NAME, this.getName());
-		Job job = new Job(jobName) {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				AbstractJpaProject.this.synchronizeStaticMetamodel_();
-				return Status.OK_STATUS;
-			}
-		};
+	protected MetamodelSynchronizer buildMetamodelSynchronizer() {
+		return this.isJpa2_0Compatible() ?
+					((JpaFactory2_0) this.getJpaFactory()).buildMetamodelSynchronizer(this) :
+					null;
+	}
+
+	protected Job buildMetamodelSynchronizationJob() {
+		return this.isJpa2_0Compatible() ?
+					this.buildMetamodelSynchronizationJob_() :
+					null;
+	}
+
+	protected Job buildMetamodelSynchronizationJob_() {
+		Job job = new MetamodelSynchronizationJob(this.buildMetamodelSynchronizationJobName());
 		job.setRule(this.project);
 		return job;
+	}
+
+	protected String buildMetamodelSynchronizationJobName() {
+		return NLS.bind(JptCoreMessages.SYNCHRONIZE_METAMODEL_JOB_NAME, this.getName());
 	}
 
 	// ***** inner class
@@ -287,6 +301,18 @@ public abstract class AbstractJpaProject
 				default :
 					return false;  // no children
 			}
+		}
+	}
+
+	// ***** inner class
+	protected class MetamodelSynchronizationJob extends Job {
+		protected MetamodelSynchronizationJob(String name) {
+			super(name);
+		}
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			AbstractJpaProject.this.synchronizeMetamodel_();
+			return Status.OK_STATUS;
 		}
 	}
 
@@ -914,33 +940,58 @@ public abstract class AbstractJpaProject
 		return this.getJpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
 	}
 
-	// ********** Static Metamodel **********
+
+	// ********** metamodel **********
+
+	public boolean generatesMetamodel() {
+		return this.generatesMetamodel;
+	}
+
+	public void setGeneratesMetamodel(boolean generatesMetamodel) {
+		boolean old = this.generatesMetamodel;
+		this.generatesMetamodel = generatesMetamodel;
+		JptCorePlugin.setGenerateMetamodel(this.project, generatesMetamodel);
+		this.firePropertyChanged(GENERATES_METAMODEL_PROPERTY, old, generatesMetamodel);
+	}
+
+	public String getMetamodelSourceFolderName() {
+		return this.metamodelSourceFolderName;
+	}
+
+	public void setMetamodelSourceFolderName(String metamodelSourceFolderName) {
+		String old = this.metamodelSourceFolderName;
+		this.metamodelSourceFolderName = metamodelSourceFolderName;
+		JptCorePlugin.setMetamodelSourceFolderName(this.project, metamodelSourceFolderName);
+		this.firePropertyChanged(METAMODEL_SOURCE_FOLDER_NAME_PROPERTY, old, metamodelSourceFolderName);
+	}
 
 	/**
-	 * Will only synchronize the static metamodel for 2.0 compatible projects 
+	 * Synchronize the metamodel for 2.0-compatible JPA projects.
 	 */
-	public void synchronizeStaticMetamodel() {
-		if (this.generatesStaticMetamodel) {
-			if (getJpaPlatformVersion().is2_0Compatible()) {
-				if (this.staticMetamodelSynchronizationJob != null) {
-					this.staticMetamodelSynchronizationJob.schedule();
-				}
+	public void synchronizeMetamodel() {
+		if (this.isJpa2_0Compatible()) {
+			if (this.generatesMetamodel) {
+				this.metamodelSynchronizationJob.schedule();
 			}
 		}
 	}
 
-	protected void synchronizeStaticMetamodel_() {
-		((JpaRootContextNode2_0) this.getRootContextNode()).synchronizeStaticMetamodel();
+	protected void synchronizeMetamodel_() {
+		this.getRootContextNode().synchronizeMetamodel();
 	}
 
-	public void synchronizeStaticMetamodel(PersistentType persistentType) {
-		this.staticMetamodelSynchronizer.synchronize(persistentType);
+	public void synchronizeMetamodel(PersistentType persistentType) {
+		this.metamodelSynchronizer.synchronize(persistentType);
 	}
 
-	// TODO
-	public IPackageFragmentRoot getStaticMetaModelSourceFolder() {
-		return this.getJavaProject().getPackageFragmentRoot(this.getProject().getFolder("src"));
+	public IPackageFragmentRoot getMetamodelPackageFragmentRoot() {
+		return this.getJavaProject().getPackageFragmentRoot(this.getMetaModelSourceFolder());
 	}
+
+	protected IFolder getMetaModelSourceFolder() {
+		return this.getProject().getFolder(this.metamodelSourceFolderName);
+	}
+
 
 	// ********** Java events **********
 
@@ -1402,7 +1453,7 @@ public abstract class AbstractJpaProject
 	 * Also called by the updater.
 	 */
 	public void updateQuiesced() {
-		this.synchronizeStaticMetamodel();
+		this.synchronizeMetamodel();
 	}
 
 }

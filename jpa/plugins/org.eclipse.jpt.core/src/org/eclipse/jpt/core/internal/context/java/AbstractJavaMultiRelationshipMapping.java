@@ -9,12 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
@@ -31,15 +36,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	extends AbstractJavaRelationshipMapping<T> 
 	implements JavaMultiRelationshipMapping
 {
-	protected String orderBy;
-
+	protected String specifiedOrderBy = null;
 	protected boolean noOrdering = false;
-
 	protected boolean pkOrdering = false;
-
 	protected boolean customOrdering = false;
 
-	protected String mapKey;
+	protected String specifiedMapKey;
+	protected boolean noMapKey = false;
+	protected boolean pkMapKey = false;
+	protected boolean customMapKey = false;
 
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
@@ -83,12 +88,25 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	// ********** order by **********  
 
 	public String getOrderBy() {
-		return this.orderBy;
+		if (this.noOrdering) {
+			return null;
+		}
+		if (this.pkOrdering) {
+			return this.getTargetEntityIdAttributeName();
+		}
+		if (this.customOrdering) {
+			return this.specifiedOrderBy;
+		}
+		throw new IllegalStateException("unknown ordering"); //$NON-NLS-1$
 	}
 
-	public void setOrderBy(String orderBy) {
-		String old = this.orderBy;
-		this.orderBy = orderBy;
+	public String getSpecifiedOrderBy() {
+		return this.specifiedOrderBy;
+	}
+
+	public void setSpecifiedOrderBy(String orderBy) {
+		String old = this.specifiedOrderBy;
+		this.specifiedOrderBy = orderBy;
 		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
 		if (orderBy == null) {
 			if (orderByAnnotation != null) { 
@@ -100,13 +118,13 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			}
 			orderByAnnotation.setValue(orderBy);
 		}
-		this.firePropertyChanged(ORDER_BY_PROPERTY, old, orderBy);
+		this.firePropertyChanged(SPECIFIED_ORDER_BY_PROPERTY, old, orderBy);
 	}
 
-	protected void setOrderBy_(String orderBy) {
-		String old = this.orderBy;
-		this.orderBy = orderBy;
-		this.firePropertyChanged(ORDER_BY_PROPERTY, old, orderBy);
+	protected void setSpecifiedOrderBy_(String orderBy) {
+		String old = this.specifiedOrderBy;
+		this.specifiedOrderBy = orderBy;
+		this.firePropertyChanged(SPECIFIED_ORDER_BY_PROPERTY, old, orderBy);
 	}
 
 	protected void initializeOrderBy() {
@@ -114,8 +132,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		if (orderByAnnotation == null) {
 			this.noOrdering = true;
 		} else {
-			this.orderBy = orderByAnnotation.getValue();
-			if (orderByAnnotation.getValue() == null) {
+			this.specifiedOrderBy = orderByAnnotation.getValue();
+			if (this.specifiedOrderBy == null) {
 				this.pkOrdering = true;
 			} else {
 				this.customOrdering = true;
@@ -126,36 +144,29 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	protected void updateOrderBy() {
 		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
 		if (orderByAnnotation == null) {
-			this.setOrderBy_(null);
+			this.setSpecifiedOrderBy_(null);
 			this.setNoOrdering_(true);
 			this.setPkOrdering_(false);
 			this.setCustomOrdering_(false);
 		} else {
 			String ob = orderByAnnotation.getValue();
-			this.setOrderBy_(ob);
-			if (ob == null) {
-				this.setPkOrdering_(true);
-				this.setCustomOrdering_(false);
-				this.setNoOrdering_(false);
-			}
-			else {
-				this.setCustomOrdering_(true);
-				this.setPkOrdering_(false);
-				this.setNoOrdering_(false);
-			}
+			this.setSpecifiedOrderBy_(ob);
+			this.setNoOrdering_(false);
+			this.setPkOrdering_(ob == null);
+			this.setCustomOrdering_(ob != null);
 		}
 	}
 
 	protected OrderByAnnotation getOrderByAnnotation() {
-		return (OrderByAnnotation) this.resourcePersistentAttribute.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		return (OrderByAnnotation) this.getResourcePersistentAttribute().getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 
 	protected OrderByAnnotation addOrderByAnnotation() {
-		return (OrderByAnnotation) this.resourcePersistentAttribute.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		return (OrderByAnnotation) this.getResourcePersistentAttribute().addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void removeOrderByAnnotation() {
-		this.resourcePersistentAttribute.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -228,7 +239,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		boolean old = this.customOrdering;
 		this.customOrdering = customOrdering;
 		if (customOrdering) {
-			this.setOrderBy(""); //$NON-NLS-1$
+			this.setSpecifiedOrderBy(""); //$NON-NLS-1$
 		} else {
 			// the 'customOrdering' flag is cleared as a
 			// side-effect of setting the other flags,
@@ -254,12 +265,25 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	// ********** map key **********  
 
 	public String getMapKey() {
-		return this.mapKey;
+		if (this.noMapKey) {
+			return null;
+		}
+		if (this.pkMapKey) {
+			return this.getTargetEntityIdAttributeName();
+		}
+		if (this.customMapKey) {
+			return this.specifiedMapKey;
+		}
+		throw new IllegalStateException("unknown map key"); //$NON-NLS-1$
 	}
 
-	public void setMapKey(String mapKey) {
-		String old = this.mapKey;
-		this.mapKey = mapKey;
+	public String getSpecifiedMapKey() {
+		return this.specifiedMapKey;
+	}
+
+	public void setSpecifiedMapKey(String mapKey) {
+		String old = this.specifiedMapKey;
+		this.specifiedMapKey = mapKey;
 		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
 		if (mapKey == null) {
 			if (mapKeyAnnotation != null) {
@@ -271,42 +295,145 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			}
 			mapKeyAnnotation.setName(mapKey);
 		}
-		this.firePropertyChanged(MAP_KEY_PROPERTY, old, mapKey);
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_PROPERTY, old, mapKey);
 	}
 
-	protected void setMapKey_(String mapKey) {
-		String old = this.mapKey;
-		this.mapKey = mapKey;
-		this.firePropertyChanged(MAP_KEY_PROPERTY, old, mapKey);
+	protected void setSpecifiedMapKey_(String mapKey) {
+		String old = this.specifiedMapKey;
+		this.specifiedMapKey = mapKey;
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_PROPERTY, old, mapKey);
 	}
 
 	protected void initializeMapKey() {
 		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		if (mapKeyAnnotation != null) {
-			this.mapKey = mapKeyAnnotation.getName();
+		if (mapKeyAnnotation == null) {
+			this.noMapKey = true;
+		} else {
+			this.specifiedMapKey = mapKeyAnnotation.getName();
+			if (this.specifiedMapKey == null) {
+				this.pkMapKey = true;
+			} else {
+				this.customMapKey = true;
+			}
 		}
 	}
 
 	protected void updateMapKey() {
 		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		this.setMapKey_((mapKeyAnnotation == null) ? null : mapKeyAnnotation.getName());
+		if (mapKeyAnnotation == null) {
+			this.setSpecifiedMapKey_(null);
+			this.setNoMapKey_(true);
+			this.setPkMapKey_(false);
+			this.setCustomMapKey_(false);
+		} else {
+			String mk = mapKeyAnnotation.getName();
+			this.setSpecifiedMapKey_(mk);
+			this.setNoMapKey_(false);
+			this.setPkMapKey_(mk == null);
+			this.setCustomMapKey_(mk != null);
+		}
 	}
 
 	protected MapKeyAnnotation getMapKeyAnnotation() {
-		return (MapKeyAnnotation) this.resourcePersistentAttribute.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		return (MapKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected MapKeyAnnotation addMapKeyAnnotation() {
-		return (MapKeyAnnotation) this.resourcePersistentAttribute.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		return (MapKeyAnnotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyAnnotation() {
-		this.resourcePersistentAttribute.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
 		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
 		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
+	}
+
+
+	// ********** no map key **********  
+
+	public boolean isNoMapKey() {
+		return this.noMapKey;
+	}
+
+	public void setNoMapKey(boolean noMapKey) {
+		boolean old = this.noMapKey;
+		this.noMapKey = noMapKey;
+		if (noMapKey) {
+			if (this.getMapKeyAnnotation() != null) {
+				this.removeMapKeyAnnotation();
+			}
+		} else {
+			// the 'noMapKey' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setNoMapKey_(boolean)
+		}
+		this.firePropertyChanged(NO_MAP_KEY_PROPERTY, old, noMapKey);
+	}
+
+	protected void setNoMapKey_(boolean noMapKey) {
+		boolean old = this.noMapKey;
+		this.noMapKey = noMapKey;
+		this.firePropertyChanged(NO_MAP_KEY_PROPERTY, old, noMapKey);	
+	}
+
+
+	// ********** pk map key **********  
+
+	public boolean isPkMapKey() {
+		return this.pkMapKey;
+	}
+
+	public void setPkMapKey(boolean pkMapKey) {
+		boolean old = this.pkMapKey;
+		this.pkMapKey = pkMapKey;
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		if (pkMapKey) {
+			if (mapKeyAnnotation == null) {
+				this.addMapKeyAnnotation();
+			} else {
+				mapKeyAnnotation.setName(null);
+			}
+		} else {
+			// the 'pkMapKey' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setPkMapKey_(boolean)
+		}
+		this.firePropertyChanged(PK_MAP_KEY_PROPERTY, old, pkMapKey);
+	}
+
+	protected void setPkMapKey_(boolean pkMapKey) {
+		boolean old = this.pkMapKey;
+		this.pkMapKey = pkMapKey;
+		this.firePropertyChanged(PK_MAP_KEY_PROPERTY, old, pkMapKey);
+	}
+
+
+	// ********** custom map key **********  
+
+	public boolean isCustomMapKey() {
+		return this.customMapKey;
+	}
+
+	public void setCustomMapKey(boolean customMapKey) {
+		boolean old = this.customMapKey;
+		this.customMapKey = customMapKey;
+		if (customMapKey) {
+			this.setSpecifiedMapKey(""); //$NON-NLS-1$
+		} else {
+			// the 'customMapKey' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setCustomMapKey_(boolean)
+		}
+		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
+	}
+
+	protected void setCustomMapKey_(boolean customMapKey) {
+		boolean old = this.customMapKey;
+		this.customMapKey = customMapKey;
+		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
 	}
 
 
@@ -334,6 +461,45 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	public Iterator<String> candidateMapKeyNames() {
 		return this.allTargetEntityAttributeNames();
+	}
+
+
+	// ********** metamodel **********  
+
+	@Override
+	protected String getMetamodelFieldTypeName() {
+		return ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+	}
+
+	@Override
+	protected void addMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames) {
+		this.addMetamodelFieldMapKeyTypeArgumentNameTo(typeArgumentNames);
+		super.addMetamodelFieldTypeArgumentNamesTo(typeArgumentNames);
+	}
+
+	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
+		String mapKey = this.getMapKey();
+		if (mapKey != null) {
+			typeArgumentNames.add(this.getMetamodelTypeNameForAttributeNamed(mapKey));
+		}
+	}
+
+	/**
+	 * pre-condition: attribute name is non-null
+	 */
+	protected String getMetamodelTypeNameForAttributeNamed(String attributeName) {
+		if (this.resolvedTargetEntity == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		PersistentAttribute pa = this.resolvedTargetEntity.getPersistentType().resolveAttribute(attributeName);
+		if (pa == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		AttributeMapping2_0 am = (AttributeMapping2_0) pa.getMapping();
+		if (am == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		return am.getMetamodelTypeName();
 	}
 
 }

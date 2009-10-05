@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,12 +22,10 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
-import org.eclipse.jpt.core.internal.jpa2.context.SimpleStaticMetamodelField;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.StaticMetamodelField;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -46,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaPersistentAttribute
 	extends AbstractJavaJpaContextNode
-	implements JavaPersistentAttribute2_0
+	implements JavaPersistentAttribute
 {
 	protected String name;
 
@@ -290,11 +287,9 @@ public abstract class AbstractJavaPersistentAttribute
 	protected static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
 
 	// ***** reference entities
-	/**
-	 * 'typeName' may include array brackets ("[]")
-	 * but not generic type arguments (e.g. "<java.lang.String>")
-	 */
 	public String getSingleReferenceEntityTypeName() {
+		// 'typeName' may include array brackets ("[]")
+		// but not generic type arguments (e.g. "<java.lang.String>")
 		String typeName = this.resourcePersistentAttribute.getTypeName();
 		if (typeName == null) {
 			return null;
@@ -309,7 +304,8 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getMultiReferenceEntityTypeName() {
-		// 'typeName' may include array brackets but not generic type arguments
+		// 'typeName' may include array brackets ("[]")
+		// but not generic type arguments (e.g. "<java.lang.String>")
 		String typeName = this.resourcePersistentAttribute.getTypeName();
 		return (typeName == null) ? null :
 				this.getJpaContainer(typeName).getMultiReferenceEntityTypeName(this.resourcePersistentAttribute);
@@ -583,61 +579,6 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 
-	// ********** static metamodel **********
-
-	public StaticMetamodelField getStaticMetamodelField() {
-		return new SimpleStaticMetamodelField(
-				this.getStaticMetamodelFieldModifiers(),
-				this.getStaticMetamodelFieldTypeName(),
-				this.getStaticMetamodelFieldTypeArgumentNames(),
-				this.getStaticMetamodelFieldName()
-			);
-	}
-
-	protected Iterable<String> getStaticMetamodelFieldModifiers() {
-		return STANDARD_STATIC_METAMODEL_FIELD_MODIFIERS;
-	}
-
-	protected String getStaticMetamodelFieldTypeName() {
-		String typeName = this.resourcePersistentAttribute.getTypeName();
-		if (typeName == null) {
-			return JPA2_0.SINGULAR_ATTRIBUTE;
-		}
-		return this.getJpaContainer(typeName).getStaticMetamodelFieldTypeName();
-	}
-
-	protected Iterable<String> getStaticMetamodelFieldTypeArgumentNames() {
-		ArrayList<String> typeArgumentNames = new ArrayList<String>(3);
-		typeArgumentNames.add(this.getPersistentType().getName());
-		this.addStaticMetamodelFieldTypeArgumentNamesTo(typeArgumentNames);
-		return typeArgumentNames;
-	}
-
-	protected void addStaticMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames){
-		String typeName = this.resourcePersistentAttribute.getTypeName();
-		if (typeName == null) {
-			typeArgumentNames.add(OBJECT_CLASS_NAME);  // ???
-			return;
-		}
-		if (ClassTools.classNamedIsPrimitive(typeName)) {
-			typeArgumentNames.add(ClassTools.wrapperClassName(typeName));  // ???
-			return;
-		}
-		JpaContainer jpaContainer = this.getJpaContainer(typeName);
-		if (jpaContainer.isContainer()) {
-			jpaContainer.addStaticMetamodelFieldTypeArgumentNamesTo(typeArgumentNames, this.resourcePersistentAttribute);
-			return;
-		}
-		typeArgumentNames.add(typeName);
-	}
-
-	protected static final String OBJECT_CLASS_NAME = java.lang.Object.class.getName();
-
-	protected String getStaticMetamodelFieldName() {
-		return this.getName();
-	}
-
-
 	// ********** JPA containers **********
 
 	/**
@@ -669,8 +610,7 @@ public abstract class AbstractJavaPersistentAttribute
 		String getTypeName();
 		boolean isContainer();
 		String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
-		String getStaticMetamodelFieldTypeName();
-		void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute);
+		String getMetamodelContainerFieldTypeName();
 
 		final class Null implements JpaContainer {
 			public static final JpaContainer INSTANCE = new Null();
@@ -690,11 +630,8 @@ public abstract class AbstractJavaPersistentAttribute
 			public String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 				return null;
 			}
-			public String getStaticMetamodelFieldTypeName() {
-				return JPA2_0.SINGULAR_ATTRIBUTE;
-			}
-			public void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute) {
-				throw new UnsupportedOperationException();
+			public String getMetamodelContainerFieldTypeName() {
+				return JPA2_0.COLLECTION_ATTRIBUTE;
 			}
 			@Override
 			public String toString() {
@@ -709,19 +646,19 @@ public abstract class AbstractJavaPersistentAttribute
 	 */
 	protected abstract static class AbstractJpaContainer implements JpaContainer {
 		protected final String typeName;
-		protected final String staticMetamodelFieldTypeName;
+		protected final String metamodelContainerFieldTypeName;
 
-		protected AbstractJpaContainer(Class<?> containerClass, String staticMetamodelTypeDeclarationTypeName) {
-			this(containerClass.getName(), staticMetamodelTypeDeclarationTypeName);
+		protected AbstractJpaContainer(Class<?> containerClass, String metamodelContainerFieldTypeName) {
+			this(containerClass.getName(), metamodelContainerFieldTypeName);
 		}
 
-		protected AbstractJpaContainer(String typeName, String staticMetamodelFieldTypeName) {
+		protected AbstractJpaContainer(String typeName, String metamodelContainerFieldTypeName) {
 			super();
-			if ((typeName == null) || (staticMetamodelFieldTypeName == null)) {
+			if ((typeName == null) || (metamodelContainerFieldTypeName == null)) {
 				throw new NullPointerException();
 			}
 			this.typeName = typeName;
-			this.staticMetamodelFieldTypeName = staticMetamodelFieldTypeName;
+			this.metamodelContainerFieldTypeName = metamodelContainerFieldTypeName;
 		}
 
 		public String getTypeName() {
@@ -732,13 +669,8 @@ public abstract class AbstractJavaPersistentAttribute
 			return true;
 		}
 
-		public String getStaticMetamodelFieldTypeName() {
-			return this.staticMetamodelFieldTypeName;
-		}
-
-		public void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute) {
-			String elementType = this.getMultiReferenceEntityTypeName(resourcePersistentAttribute);
-			typeArgumentNames.add((elementType != null) ? elementType : OBJECT_CLASS_NAME);
+		public String getMetamodelContainerFieldTypeName() {
+			return this.metamodelContainerFieldTypeName;
 		}
 
 	}
@@ -771,19 +703,6 @@ public abstract class AbstractJavaPersistentAttribute
 			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
 						resourcePersistentAttribute.getTypeTypeArgumentName(1) :
 						null;
-		}
-
-		private String getMultiKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
-						resourcePersistentAttribute.getTypeTypeArgumentName(0) :
-						null;
-		}
-
-		@Override
-		public void addStaticMetamodelFieldTypeArgumentNamesTo(List<String> typeArgumentNames, JavaResourcePersistentAttribute resourcePersistentAttribute) {
-			String keyType = this.getMultiKeyTypeName(resourcePersistentAttribute);
-			typeArgumentNames.add((keyType != null) ? keyType : OBJECT_CLASS_NAME);
-			super.addStaticMetamodelFieldTypeArgumentNamesTo(typeArgumentNames, resourcePersistentAttribute);
 		}
 
 	}

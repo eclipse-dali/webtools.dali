@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -17,11 +18,10 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericPersistenceXml
 	extends AbstractPersistenceXmlContextNode
-	implements PersistenceXml2_0
+	implements PersistenceXml
 {
 	protected JpaXmlResource persistenceXmlResource;
 	
@@ -86,12 +86,11 @@ public class GenericPersistenceXml
 	}
 	
 	
-	// **************** 2.0 static metamodel ********************
+	// **************** metamodel ********************
 	
-	public void synchronizeStaticMetamodel() {
-		Persistence2_0 p = (Persistence2_0) this.getPersistence();
-		if (p != null) {
-			p.synchronizeStaticMetamodel();
+	public void synchronizeMetamodel() {
+		if (this.persistence != null) {
+			this.persistence.synchronizeMetamodel();
 		}
 	}
 	

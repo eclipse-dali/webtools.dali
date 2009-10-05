@@ -48,13 +48,13 @@ public class JavaEclipseLinkManyToManyMapping
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.joinFetch.initialize(this.resourcePersistentAttribute);
+		this.joinFetch.initialize(this.getResourcePersistentAttribute());
 	}
 	
 	@Override
 	protected void update() {
 		super.update();
-		this.joinFetch.update(this.resourcePersistentAttribute);
+		this.joinFetch.update(this.getResourcePersistentAttribute());
 	}
 	
 	@Override

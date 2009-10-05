@@ -10,12 +10,14 @@
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -24,8 +26,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -37,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericRootContextNode
 	extends AbstractJpaContextNode
-	implements JpaRootContextNode2_0
+	implements JpaRootContextNode
 {
 	/* This object has no parent, so it must point to the JPA project explicitly. */
 	protected final JpaProject jpaProject;
@@ -109,12 +109,11 @@ public class GenericRootContextNode
 		this.firePropertyChanged(PERSISTENCE_XML_PROPERTY, old, persistenceXml);
 	}
 	
-	// **************** 2.0 static metamodel ****************
+	// *************** metamodel ****************
 
-	public void synchronizeStaticMetamodel() {
-		PersistenceXml2_0 p_xml = (PersistenceXml2_0) this.getPersistenceXml();
-		if (p_xml != null) {
-			p_xml.synchronizeStaticMetamodel();
+	public void synchronizeMetamodel() {
+		if (this.persistenceXml != null) {
+			this.persistenceXml.synchronizeMetamodel();
 		}
 	}
 	

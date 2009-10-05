@@ -158,7 +158,7 @@ public class VirtualXmlManyToMany
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaAttributeMapping.getOrderBy();
+		return this.javaAttributeMapping.getSpecifiedOrderBy();
 	}
 	
 	@Override

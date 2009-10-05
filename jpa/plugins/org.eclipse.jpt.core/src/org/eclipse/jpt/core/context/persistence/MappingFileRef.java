@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface MappingFileRef
-	extends XmlContextNode, JpaStructureNode
+	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
 {
 
 	// ********** file name **********

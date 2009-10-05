@@ -120,13 +120,13 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstrai
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
-import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeStaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.internal.jpa2.NullStaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.NullMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -150,15 +150,15 @@ public abstract class AbstractJpaFactory
 	// ********** Core Model **********
 	
 	public JpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
-		return new GenericJpaProject(config);
+		return new GenericJpaProject((JpaProject2_0.Config) config);
 	}
 	
-	public StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject) {
-		return new NullStaticMetamodelSynchronizer(jpaProject);
+	public MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject) {
+		return new NullMetamodelSynchronizer(jpaProject);
 	}
 	
-	public PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
-		return new NullPersistentTypeStaticMetamodelSynchronizer();
+	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer metamodelSynchronizer, PersistentType persistentType) {
+		return new NullPersistentTypeMetamodelSynchronizer();
 	}
 	
 	public JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName) {

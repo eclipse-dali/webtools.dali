@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.jpa2.MetamodelGenerator;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
@@ -35,7 +36,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PersistenceUnit
-	extends XmlContextNode, JpaStructureNode
+	extends XmlContextNode, JpaStructureNode, MetamodelGenerator
 {
 	/**
 	 * Covariant override.

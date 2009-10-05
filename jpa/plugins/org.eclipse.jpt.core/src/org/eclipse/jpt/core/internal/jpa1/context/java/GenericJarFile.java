@@ -13,17 +13,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
-import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -40,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJarFile
 	extends AbstractJpaContextNode
-	implements JarFile2_0, PersistentType.Owner
+	implements JarFile, PersistentType.Owner
 {
 	protected JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot;
 	protected final Vector<JavaPersistentType> javaPersistentTypes = new Vector<JavaPersistentType>();
@@ -134,6 +134,13 @@ public class GenericJarFile
 	}
 
 
+	// ********** PersistentTypeContainer implementation **********
+
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return this.getJavaPersistentTypes();
+	}
+
+
 	// ********** PersistentType.Owner implementation **********
 
 	public AccessType getDefaultPersistentTypeAccess() {
@@ -201,12 +208,4 @@ public class GenericJarFile
 		// TODO validate 'javaPersistentTypes'
 	}
 	
-	
-	// ********** 2.0 static metamodel **********
-
-	public void synchronizeStaticMetamodel() {
-		for (JavaPersistentType jpt : this.getJavaPersistentTypes()) {
-			((JavaPersistentType2_0) jpt).synchronizeStaticMetamodel();
-		}
-	}
 }

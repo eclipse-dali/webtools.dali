@@ -11,34 +11,24 @@ package org.eclipse.jpt.core.internal.jpa2;
 
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 
 /**
  * 
  */
-public class GenericStaticMetamodelSynchronizer
-	implements StaticMetamodelSynchronizer
+public class NullMetamodelSynchronizer
+	implements MetamodelSynchronizer
 {
 	protected final JpaProject2_0 jpaProject;
 
-	public GenericStaticMetamodelSynchronizer(JpaProject2_0 jpaProject) {
+	public NullMetamodelSynchronizer(JpaProject2_0 jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
 	}
 
-	protected JpaFactory2_0 getJpaFactory() {
-		return (JpaFactory2_0) this.jpaProject.getJpaPlatform().getJpaFactory();
-	}
-
 	public void synchronize(PersistentType persistentType) {
-		this.buildPersistentTypeStaticMetamodelSynchronizer(persistentType).synchronize();
-	}
-
-	protected PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(PersistentType persistentType) {
-		return this.getJpaFactory().buildPersistentTypeStaticMetamodelSynchronizer(this, persistentType);
+		//no-op
 	}
 
 	public JpaProject2_0 getJpaProject() {
@@ -46,7 +36,7 @@ public class GenericStaticMetamodelSynchronizer
 	}
 
 	public IPackageFragmentRoot getSourceFolder() {
-		return this.jpaProject.getStaticMetaModelSourceFolder();
+		return this.jpaProject.getMetamodelPackageFragmentRoot();
 	}
 
 }

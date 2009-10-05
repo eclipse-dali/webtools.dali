@@ -9,17 +9,10 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.persistence;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.GenericConnection2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.options.GenericOptions2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.ClassRef2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.JarFileRef2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
@@ -39,7 +32,7 @@ public class GenericPersistenceUnit2_0
 	private JpaOptions2_0 options;
 
 	// ********** constructors **********
-	public GenericPersistenceUnit2_0(Persistence2_0 parent, org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xmlPersistenceUnit) {
+	public GenericPersistenceUnit2_0(Persistence parent, org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 
 		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
@@ -134,20 +127,6 @@ public class GenericPersistenceUnit2_0
 			this.options.removeValidationMode();
 		}
 		this.setSpecifiedValidationMode(newValidationMode);
-	}
-
-	// ********** JPA 2.0 Static Metamodel **********
-
-	public void synchronizeStaticMetamodel() {
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			((MappingFileRef2_0) stream.next()).synchronizeStaticMetamodel();
-		}
-		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			((ClassRef2_0) stream.next()).synchronizeStaticMetamodel();
-		}
-		for (Iterator<JarFileRef> stream = this.jarFileRefs(); stream.hasNext(); ) {
-			((JarFileRef2_0) stream.next()).synchronizeStaticMetamodel();
-		}
 	}
 
 }

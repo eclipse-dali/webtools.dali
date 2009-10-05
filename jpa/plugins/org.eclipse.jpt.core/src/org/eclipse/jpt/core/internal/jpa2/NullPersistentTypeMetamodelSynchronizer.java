@@ -7,13 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.java;
+package org.eclipse.jpt.core.internal.jpa2;
 
-import org.eclipse.jpt.core.context.java.JarFile;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
+import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
 
-public interface JarFile2_0
-	extends JarFile, StaticMetamodelGenerator
+/**
+ * 
+ */
+public class NullPersistentTypeMetamodelSynchronizer
+	implements PersistentTypeMetamodelSynchronizer
 {
-	// nothing yet...
+
+
+	public NullPersistentTypeMetamodelSynchronizer() {
+		super();
+	}
+
+	public void synchronize() {
+		//no-op
+	}
 }

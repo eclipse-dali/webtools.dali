@@ -9,11 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import java.util.Comparator;
+
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaFactory;
+import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -41,19 +44,7 @@ public class GenericJpaPlatformFactory
 	
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new JpaPlatform.Version() {
-			public String getVersion() {
-				return getJpaVersion();
-			}
-			
-			public String getJpaVersion() {
-				return JptCorePlugin.JPA_FACET_VERSION_1_0;
-			}
-			
-			public boolean is2_0Compatible() {
-				return false;
-			}
-		};
+		return new SimpleVersion(JptCorePlugin.JPA_FACET_VERSION_1_0);
 	}
 	
 	protected JpaPlatformVariation buildJpaPlatformVariation() {
@@ -66,4 +57,41 @@ public class GenericJpaPlatformFactory
 			}
 		};
 	}
+
+
+	public static class SimpleVersion implements JpaPlatform.Version {
+		protected final String jpaVersion;
+
+		public static final Comparator<String> JPA_VERSION_COMPARATOR = new DefaultVersionComparator();
+
+		public SimpleVersion(String jpaVersion) {
+			super();
+			this.jpaVersion = jpaVersion;
+		}
+
+		/**
+		 * The generic platform's version is the same as the JPA version.
+		 */
+		public String getVersion() {
+			return this.getJpaVersion();
+		}
+		
+		public String getJpaVersion() {
+			return this.jpaVersion;
+		}
+
+		/**
+		 * For now, generic platforms are backward-compatible.
+		 */
+		public boolean isCompatibleWithJpaVersion(String version) {
+			return JPA_VERSION_COMPARATOR.compare(this.jpaVersion, version) >= 0;
+		}
+		
+		@Override
+		public String toString() {
+			return "JPA version: " + this.getJpaVersion(); //$NON-NLS-1$
+		}
+
+	}
+
 }

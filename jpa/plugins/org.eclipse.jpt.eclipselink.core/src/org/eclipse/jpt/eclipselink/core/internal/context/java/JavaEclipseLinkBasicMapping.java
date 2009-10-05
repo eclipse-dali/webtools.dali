@@ -56,7 +56,7 @@ public class JavaEclipseLinkBasicMapping
 			return javaConverter;
 		}
 		if (converterType == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			return new JavaEclipseLinkConvert(this, this.resourcePersistentAttribute);
+			return new JavaEclipseLinkConvert(this, this.getResourcePersistentAttribute());
 		}
 		return null;
 	}
@@ -64,7 +64,7 @@ public class JavaEclipseLinkBasicMapping
 	@Override
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
-		if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME) != null) {
+		if (this.getResourcePersistentAttribute().getAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();
@@ -82,13 +82,13 @@ public class JavaEclipseLinkBasicMapping
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.mutable.initialize(this.resourcePersistentAttribute);
+		this.mutable.initialize(this.getResourcePersistentAttribute());
 	}
 	
 	@Override
 	protected void update() {
 		super.update();
-		this.mutable.update(this.resourcePersistentAttribute);
+		this.mutable.update(this.getResourcePersistentAttribute());
 	}
 
 	// ********** code assist **********

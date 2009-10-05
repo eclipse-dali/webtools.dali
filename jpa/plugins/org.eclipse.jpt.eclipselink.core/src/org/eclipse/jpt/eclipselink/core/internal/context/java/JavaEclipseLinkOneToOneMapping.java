@@ -55,15 +55,15 @@ public class JavaEclipseLinkOneToOneMapping
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.joinFetch.initialize(this.resourcePersistentAttribute);
-		this.privateOwned.initialize(this.resourcePersistentAttribute);
+		this.joinFetch.initialize(this.getResourcePersistentAttribute());
+		this.privateOwned.initialize(this.getResourcePersistentAttribute());
 	}
 	
 	@Override
 	protected void update() {
 		super.update();
-		this.joinFetch.update(this.resourcePersistentAttribute);
-		this.privateOwned.update(this.resourcePersistentAttribute);
+		this.joinFetch.update(this.getResourcePersistentAttribute());
+		this.privateOwned.update(this.getResourcePersistentAttribute());
 	}
 	
 	@Override

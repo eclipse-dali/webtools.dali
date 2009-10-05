@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -267,7 +269,16 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 				this.resolvedTargetEntity.allAttributeMappings() :
 				EmptyIterator.<AttributeMapping> instance();
 	}
-	
+
+	protected String getTargetEntityIdAttributeName() {
+		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
+		return (attribute == null) ? null : attribute.getName();
+	}
+
+	protected PersistentAttribute getTargetEntityIdAttribute() {
+		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
+	}
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -333,4 +344,14 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	protected TextRange getTargetEntityTextRange() {
 		return this.getTextRange(this.getResourceAttributeMapping().getTargetEntityTextRange());
 	}	
+
+
+	// ********** metamodel ********** 
+
+	@Override
+	public String getMetamodelTypeName() {
+		String targetEntity = this.getTargetEntity();
+		return (targetEntity != null) ? targetEntity : MetamodelField.DEFAULT_TYPE_NAME;
+	}
+
 }

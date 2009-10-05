@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,8 +34,13 @@ import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -45,7 +51,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	extends AbstractOrmXmlContextNode
-	implements OrmAttributeMapping
+	implements OrmAttributeMapping, AttributeMapping2_0
 {
 	protected String name;
 	
@@ -229,6 +235,52 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
+	}
+
+
+	// ********** metamodel **********
+
+	public MetamodelField getMetamodelField() {
+		// if we don't have a name we can't build a metamodel field...
+		String metamodelFieldName = this.getMetamodelFieldName();
+		return (metamodelFieldName == null) ? null :
+					new SimpleMetamodelField(
+						this.getMetamodelFieldModifiers(),
+						this.getMetamodelFieldTypeName(),
+						this.getMetamodelFieldTypeArgumentNames(),
+						metamodelFieldName
+					);
+	}
+
+	protected Iterable<String> getMetamodelFieldModifiers() {
+		return STANDARD_METAMODEL_FIELD_MODIFIERS;
+	}
+
+	/**
+	 * most mappings are "singular"
+	 */
+	protected String getMetamodelFieldTypeName() {
+		return JPA2_0.SINGULAR_ATTRIBUTE;
+	}
+
+	protected final Iterable<String> getMetamodelFieldTypeArgumentNames() {
+		ArrayList<String> typeArgumentNames = new ArrayList<String>(3);
+		typeArgumentNames.add(this.getTypeMapping().getPersistentType().getName());
+		this.addMetamodelFieldTypeArgumentNamesTo(typeArgumentNames);
+		return typeArgumentNames;
+	}
+
+	protected void addMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames) {
+		typeArgumentNames.add(this.getMetamodelTypeName());
+	}
+
+	public String getMetamodelTypeName() {
+		JavaPersistentAttribute2_0 jpa = (JavaPersistentAttribute2_0) this.getPersistentAttribute().getJavaPersistentAttribute();
+		return (jpa == null) ? MetamodelField.DEFAULT_TYPE_NAME : jpa.getMetamodelTypeName();
+	}
+
+	protected String getMetamodelFieldName() {
+		return this.getName();
 	}
 
 

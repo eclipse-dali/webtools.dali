@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -31,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JarFile
-	extends JpaContextNode, JpaStructureNode
+	extends JpaContextNode, JpaStructureNode, PersistentTypeContainer
 {
 	/**
 	 * Return the JAR file's Java persistent types.

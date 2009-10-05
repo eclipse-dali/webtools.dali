@@ -12,14 +12,15 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -33,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericPersistence
 	extends AbstractPersistenceXmlContextNode
-	implements Persistence2_0
+	implements Persistence
 {	
 	protected XmlPersistence xmlPersistence;
 	
@@ -118,11 +119,11 @@ public class GenericPersistence
 		fireItemRemoved(PERSISTENCE_UNITS_LIST, 0, oldPersistenceUnit);
 	}
 	
-	// **************** 2.0 static metamodel **********************************
+	// **************** metamodel **********************************
 
-	public void synchronizeStaticMetamodel() {
+	public void synchronizeMetamodel() {
 		for (Iterator<PersistenceUnit> stream = this.persistenceUnits(); stream.hasNext(); ) {
-			((PersistenceUnit2_0) stream.next()).synchronizeStaticMetamodel();
+			stream.next().synchronizeMetamodel();
 		}
 	}
 

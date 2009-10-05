@@ -10,26 +10,29 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.MappingFileDefinition;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.persistence.MappingFileRef2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractMappingFileRef
 	extends AbstractPersistenceXmlContextNode
-	implements MappingFileRef2_0
+	implements MappingFileRef
 {
 	protected String fileName;
 
@@ -118,12 +121,10 @@ public abstract class AbstractMappingFileRef
 	}
 
 	
-	// ********** 2.0 static metamodel **********
+	// ********** PersistentTypeContainer implementation **********
 
-	public void synchronizeStaticMetamodel() {
-		if (this.mappingFile != null) {
-			this.mappingFile.synchronizeStaticMetamodel();
-		}
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return (this.mappingFile != null) ? this.mappingFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
 	}
 
 	// ********** updating **********

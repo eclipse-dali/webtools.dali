@@ -34,9 +34,9 @@ public interface JpaFactory2_0
 	
 	// ********** Core Model **********
 
-	StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject);
+	MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject);
 
-	PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType);
+	PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer metamodelSynchronizer, PersistentType persistentType);
 
 	
 	// ********** Java Context Model **********

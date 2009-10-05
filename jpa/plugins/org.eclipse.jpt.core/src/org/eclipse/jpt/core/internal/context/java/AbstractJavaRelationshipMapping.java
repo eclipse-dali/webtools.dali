@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -151,6 +153,15 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 				EmptyIterator.<AttributeMapping> instance();
 	}
 
+	protected String getTargetEntityIdAttributeName() {
+		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
+		return (attribute == null) ? null : attribute.getName();
+	}
+
+	protected PersistentAttribute getTargetEntityIdAttribute() {
+		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
+	}
+
 	public char getTargetEntityEnclosingTypeSeparator() {
 		return '.';
 	}
@@ -266,6 +277,15 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	}
+
+
+	// ********** metamodel ********** 
+
+	@Override
+	public String getMetamodelTypeName() {
+		String targetEntity = this.getTargetEntity();
+		return (targetEntity != null) ? targetEntity : MetamodelField.DEFAULT_TYPE_NAME;
 	}
 
 }

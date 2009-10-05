@@ -7,13 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2;
+package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 /**
- * JPA 2.0 Static Metamodel.
+ * JPA 2.0 attribute mapping
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,12 +21,22 @@ import org.eclipse.jpt.core.context.PersistentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface StaticMetamodelSynchronizer {
+public interface AttributeMapping2_0
+	extends AttributeMapping
+{
+	/**
+	 * Return the Canonical Metamodel field corresponding to the mapping.
+	 * Return null if the mapping is not to be part of the Canonical Metamodel.
+	 */
+	MetamodelField getMetamodelField();
 
-	void synchronize(PersistentType persistentType);
+	/**
+	 * Return the name of the mapping's type as used in the Canonical Metamodel.
+	 */
+	String getMetamodelTypeName();
 
-	JpaProject2_0 getJpaProject();
-
-	IPackageFragmentRoot getSourceFolder();
+	@SuppressWarnings("nls")
+	Iterable<String> STANDARD_METAMODEL_FIELD_MODIFIERS =
+		new ArrayIterable<String>(new String[] { "public", "static", "volatile" });
 
 }

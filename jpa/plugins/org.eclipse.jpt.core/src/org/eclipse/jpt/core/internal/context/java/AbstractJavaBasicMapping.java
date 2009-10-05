@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
@@ -37,7 +36,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapping<BasicAnnotation> implements JavaBasicMapping
+public abstract class AbstractJavaBasicMapping
+	extends AbstractJavaAttributeMapping<BasicAnnotation>
+	implements JavaBasicMapping
 {
 	protected FetchType specifiedFetch;
 
@@ -108,7 +109,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	}
 
 	public FetchType getDefaultFetch() {
-		return BasicMapping.DEFAULT_FETCH_TYPE;
+		return DEFAULT_FETCH_TYPE;
 	}
 		
 	public FetchType getSpecifiedFetch() {
@@ -206,7 +207,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 		super.update();
 		this.column.update(this.getResourceColumn());
 		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
-			getSpecifiedConverter().update(this.resourcePersistentAttribute);
+			getSpecifiedConverter().update(this.getResourcePersistentAttribute());
 		}
 		else {
 			JavaConverter javaConverter = buildSpecifiedConverter(getResourceConverterType());
@@ -226,28 +227,27 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
-			return getJpaFactory().buildJavaEnumeratedConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaEnumeratedConverter(this, this.getResourcePersistentAttribute());
 		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());
 		}
 		if (this.valuesAreEqual(converterType, Converter.LOB_CONVERTER)) {
-			return getJpaFactory().buildJavaLobConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaLobConverter(this, this.getResourcePersistentAttribute());
 		}
 		return null;
 	}
 	
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
+		if (this.getResourcePersistentAttribute().getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.ENUMERATED_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+		if (this.getResourcePersistentAttribute().getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
+		if (this.getResourcePersistentAttribute().getAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.LOB_CONVERTER;
 		}
-		
 		return null;
 	}
 

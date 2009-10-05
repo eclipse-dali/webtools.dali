@@ -225,7 +225,6 @@ class TablesSelectorWizardPage extends WizardPage{
 		class DatabasePageListener implements DatabaseGroup.Listener {
 			public void selectedConnectionProfileChanged(ConnectionProfile connectionProfile) {
 				jpaProject.getDataSource().setConnectionProfileName(connectionProfile.getName());
-				JptCorePlugin.setConnectionProfileName(jpaProject.getProject(), connectionProfile.getName());
 			}
 			@SuppressWarnings("unchecked")
 			public void selectedSchemaChanged(Schema schema) {

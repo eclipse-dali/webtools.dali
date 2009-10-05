@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -146,7 +146,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourcePersistentType resourceType = 
 				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
-		JavaPersistentType2_0 contextType = getJavaPersistentType();
+		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
 		
@@ -168,7 +168,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourcePersistentType resourceType = 
 				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
-		JavaPersistentType2_0 contextType = getJavaPersistentType();
+		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
 		
@@ -190,7 +190,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourcePersistentType resourceType = 
 				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
-		JavaPersistentType2_0 contextType = getJavaPersistentType();
+		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));

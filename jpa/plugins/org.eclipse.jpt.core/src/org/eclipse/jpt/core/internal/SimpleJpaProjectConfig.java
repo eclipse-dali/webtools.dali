@@ -11,19 +11,21 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.core.JpaPlatform;
-import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward implementation of the JPA project config.
  */
-public class SimpleJpaProjectConfig implements JpaProject.Config {
+public class SimpleJpaProjectConfig implements JpaProject2_0.Config {
 	protected IProject project;
 	protected JpaPlatform jpaPlatform;
 	protected String connectionProfileName;
 	protected String userOverrideDefaultCatalog;
 	protected String userOverrideDefaultSchema;
 	protected boolean discoverAnnotatedClasses;
+	protected boolean generatesMetamodel;
+	protected String metamodelSourceFolderName;
 
 	public SimpleJpaProjectConfig() {
 		super();
@@ -75,6 +77,22 @@ public class SimpleJpaProjectConfig implements JpaProject.Config {
 
 	public void setDiscoverAnnotatedClasses(boolean discoverAnnotatedClasses) {
 		this.discoverAnnotatedClasses = discoverAnnotatedClasses;
+	}
+
+	public boolean generatesMetamodel() {
+		return this.generatesMetamodel;
+	}
+
+	public void setGeneratesMetamodel(boolean generatesMetamodel) {
+		this.generatesMetamodel = generatesMetamodel;
+	}
+
+	public String getMetamodelSourceFolderName() {
+		return this.metamodelSourceFolderName;
+	}
+
+	public void setMetamodelSourceFolderName(String metamodelSourceFolderName) {
+		this.metamodelSourceFolderName = metamodelSourceFolderName;
 	}
 
 	@Override

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -61,7 +62,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			JPA.JOIN_COLUMNS,
 			JPA.JOIN_TABLE);
 		
-		if (getJpaPlatformVersion().is2_0Compatible()) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			annotationNames = ArrayTools.add(annotationNames, JPA.ID);
 		}
 		return annotationNames;

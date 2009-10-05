@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
+import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -46,7 +48,11 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jpt.utility.internal.NotNullFilter;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -345,8 +351,16 @@ public abstract class AbstractPersistenceUnit
 		return (this.impliedMappingFileRef == null) ? this.specifiedMappingFileRefs() : this.combinedMappingFileRefs();
 	}
 
+	protected Iterable<MappingFileRef> getMappingFileRefs() {
+		return (this.impliedMappingFileRef == null) ? this.getSpecifiedMappingFileRefs() : this.getCombinedMappingFileRefs();
+	}
+
 	protected ListIterator<MappingFileRef> combinedMappingFileRefs() {
 		return new CompositeListIterator<MappingFileRef>(this.specifiedMappingFileRefs(), this.impliedMappingFileRef);
+	}
+
+	protected Iterable<MappingFileRef> getCombinedMappingFileRefs() {
+		return new CompositeIterable<MappingFileRef>(this.getSpecifiedMappingFileRefs(), this.impliedMappingFileRef);
 	}
 
 	public int mappingFileRefsSize() {
@@ -371,6 +385,10 @@ public abstract class AbstractPersistenceUnit
 
 	public ListIterator<MappingFileRef> specifiedMappingFileRefs() {
 		return new CloneListIterator<MappingFileRef>(this.specifiedMappingFileRefs);
+	}
+
+	protected Iterable<MappingFileRef> getSpecifiedMappingFileRefs() {
+		return new LiveCloneIterable<MappingFileRef>(this.specifiedMappingFileRefs);
 	}
 
 	public int specifiedMappingFileRefsSize() {
@@ -451,6 +469,10 @@ public abstract class AbstractPersistenceUnit
 		return new CloneListIterator<JarFileRef>(this.jarFileRefs);
 	}
 
+	protected Iterable<JarFileRef> getJarFileRefs() {
+		return new LiveCloneIterable<JarFileRef>(this.jarFileRefs);
+	}
+
 	public int jarFileRefsSize() {
 		return this.jarFileRefs.size();
 	}
@@ -503,8 +525,29 @@ public abstract class AbstractPersistenceUnit
 					);
 	}
 
+	@SuppressWarnings("unchecked")
+	protected Iterable<ClassRef> getClassRefs() {
+		return new CompositeIterable<ClassRef>(
+						this.getSpecifiedClassRefs(),
+						this.getImpliedClassRefs()
+					);
+	}
+
 	public int classRefsSize() {
 		return this.specifiedClassRefs.size() + this.impliedClassRefs.size();
+	}
+
+	protected Iterable<PersistentType> getNonNullClassRefPersistentTypes() {
+		return new FilteringIterable<PersistentType, PersistentType>(this.getClassRefPersistentTypes(), NotNullFilter.<PersistentType>instance());
+	}
+
+	protected Iterable<PersistentType> getClassRefPersistentTypes() {
+		return new TransformationIterable<ClassRef, PersistentType>(this.getClassRefs()) {
+			@Override
+			protected PersistentType transform(ClassRef classRef) {
+				return classRef.getJavaPersistentType();
+			}
+		};
 	}
 
 
@@ -512,6 +555,10 @@ public abstract class AbstractPersistenceUnit
 
 	public ListIterator<ClassRef> specifiedClassRefs() {
 		return new CloneListIterator<ClassRef>(this.specifiedClassRefs);
+	}
+
+	protected Iterable<ClassRef> getSpecifiedClassRefs() {
+		return new LiveCloneIterable<ClassRef>(this.specifiedClassRefs);
 	}
 
 	public int specifiedClassRefsSize() {
@@ -560,6 +607,10 @@ public abstract class AbstractPersistenceUnit
 
 	public Iterator<ClassRef> impliedClassRefs() {
 		return new CloneIterator<ClassRef>(this.impliedClassRefs);
+	}
+
+	protected Iterable<ClassRef> getImpliedClassRefs() {
+		return new LiveCloneIterable<ClassRef>(this.impliedClassRefs);
 	}
 
 	public int impliedClassRefsSize() {
@@ -1454,6 +1505,35 @@ public abstract class AbstractPersistenceUnit
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(this.name);
+	}
+
+
+	// ********** metamodel **********
+
+	/**
+	 * If we have the same persistent type in multiple locations, the last one
+	 * we encounter wins (i.e. the classes in the orm.xml take precedence).
+	 */
+	public void synchronizeMetamodel() {
+		HashMap<String, PersistentType> persistentTypes = new HashMap<String, PersistentType>();
+		this.addContainerPersistentTypesTo(this.getJarFileRefs(), persistentTypes);
+		this.addPersistentTypesTo(this.getNonNullClassRefPersistentTypes(), persistentTypes);
+		this.addContainerPersistentTypesTo(this.getMappingFileRefs(), persistentTypes);
+		for (PersistentType persistentType : persistentTypes.values()) {
+			persistentType.synchronizeMetamodel();
+		}
+	}
+
+	protected void addContainerPersistentTypesTo(Iterable<? extends PersistentTypeContainer> ptContainers, HashMap<String, PersistentType> persistentTypeMap) {
+		for (PersistentTypeContainer ptContainer : ptContainers) {
+			this.addPersistentTypesTo(ptContainer.getPersistentTypes(), persistentTypeMap);
+		}
+	}
+
+	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType> persistentTypeMap) {
+		for (PersistentType persistentType : persistentTypes) {
+			persistentTypeMap.put(persistentType.getName(), persistentType);
+		}
 	}
 
 }

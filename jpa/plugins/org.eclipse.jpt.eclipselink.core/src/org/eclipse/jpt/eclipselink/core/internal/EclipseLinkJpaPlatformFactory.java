@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -44,19 +45,10 @@ public class EclipseLinkJpaPlatformFactory
 	}
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new JpaPlatform.Version() {
-			public String getVersion() {
-				return JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0;
-			}
-			
-			public String getJpaVersion() {
-				return JptCorePlugin.JPA_FACET_VERSION_1_0;
-			}
-			
-			public boolean is2_0Compatible() {
-				return false;
-			}
-		};
+		return new EclipseLinkVersion(
+				JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0,
+				JptCorePlugin.JPA_FACET_VERSION_1_0
+			);
 	}
 	
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
@@ -75,4 +67,25 @@ public class EclipseLinkJpaPlatformFactory
 			}
 		};
 	}
+
+
+	public static class EclipseLinkVersion extends SimpleVersion {
+		protected final String eclipseLinkVersion;
+
+		public EclipseLinkVersion(String eclipseLinkVersion, String jpaVersion) {
+			super(jpaVersion);
+			this.eclipseLinkVersion = eclipseLinkVersion;
+		}
+
+		@Override
+		public String getVersion() {
+			return this.eclipseLinkVersion;
+		}
+
+		@Override
+		public String toString() {
+			return super.toString() + " EclipseLink version: " + this.getVersion(); //$NON-NLS-1$
+		}
+	}
+
 }

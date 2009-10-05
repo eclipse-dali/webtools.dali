@@ -16,11 +16,13 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
  * it is initialized).
  */
+@SuppressWarnings("nls")
 public class TestJpaPlatformFactory
 	implements JpaPlatformFactory
 {
@@ -43,17 +45,10 @@ public class TestJpaPlatformFactory
 	}
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new JpaPlatform.Version() {
+		return new SimpleVersion(JptCorePlugin.JPA_FACET_VERSION_1_0) {
+			@Override
 			public String getVersion() {
 				return "BOOOYAH!";
-			}
-			
-			public String getJpaVersion() {
-				return JptCorePlugin.JPA_FACET_VERSION_1_0;
-			}
-			
-			public boolean is2_0Compatible() {
-				return false;
 			}
 		};
 	}

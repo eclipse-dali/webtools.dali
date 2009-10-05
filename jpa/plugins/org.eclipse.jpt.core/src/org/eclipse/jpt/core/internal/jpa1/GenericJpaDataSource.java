@@ -97,7 +97,7 @@ public class GenericJpaDataSource
 			this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, connectionProfileName);
 			 // synch the connection profile when the name changes
 			this.setConnectionProfile(this.buildConnectionProfile(connectionProfileName));
-			JptCorePlugin.setConnectionProfileName(getJpaProject().getProject(), connectionProfileName);
+			JptCorePlugin.setConnectionProfileName(this.getJpaProject().getProject(), connectionProfileName);
 		}
 	}
 
@@ -199,9 +199,6 @@ public class GenericJpaDataSource
 			// we just need to synch the name held by the data source
 			if (newName.equals(GenericJpaDataSource.this.connectionProfile.getName())) {
 				GenericJpaDataSource.this.setConnectionProfileName(newName);
-				// bug 232225 - also update project setting when connection profile
-				//   name has changed
-				JptCorePlugin.setConnectionProfileName(getJpaProject().getProject(), newName);
 			}
 		}
 	}

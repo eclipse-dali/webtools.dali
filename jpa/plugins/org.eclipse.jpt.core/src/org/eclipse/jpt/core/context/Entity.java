@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.context;
 import java.util.ListIterator;
 
 /**
- * 
- * 
+ * Entity
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -236,6 +236,8 @@ public interface Entity
 	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 
 
+	// ********** misc **********
+
 	AttributeOverrideContainer getAttributeOverrideContainer();
 
 	AssociationOverrideContainer getAssociationOverrideContainer();
@@ -256,5 +258,11 @@ public interface Entity
 	 * In 2.0 this mappedByName could use dot-notation for nested mappings.
 	 */
 	AttributeMapping resolveMappedBy(String mappedByName);
+
+	/**
+	 * Return the entity's ID attribute.
+	 * Return null if the entity has multiple ID attributes.
+	 */
+	PersistentAttribute getIdAttribute();
 
 }

@@ -58,7 +58,11 @@ public class JpaFacetInstallDelegate
 		
 		// project settings
 		JptCorePlugin.setJpaPlatformId(project, dataModel.getStringProperty(PLATFORM_ID));
-		JptCorePlugin.setConnectionProfileName(project, dataModel.getStringProperty(CONNECTION));
+
+		// do NOT use IDataModel.getStringProperty(String) - or the connection profile name can
+		// be set to an empty string - we want it to be null
+		JptCorePlugin.setConnectionProfileName(project, (String) dataModel.getProperty(CONNECTION));
+
 		if (dataModel.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
 			JptCorePlugin.setUserOverrideDefaultCatalog(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG));
 		}

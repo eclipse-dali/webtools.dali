@@ -7,13 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.persistence;
-
-import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
+package org.eclipse.jpt.core.jpa2.context;
 
 /**
- * JPA 2.0 <code>class<code>
+ * JPA 2.0 Canonical Metamodel field corresponding to a persistent attribute.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,8 +18,16 @@ import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ClassRef2_0
-	extends ClassRef, StaticMetamodelGenerator
-{
-	// nothing yet...
+public interface MetamodelField {
+
+	Iterable<String> getModifiers();
+
+	String getTypeName();
+
+	Iterable<String> getTypeArgumentNames();
+
+	String getName();
+
+	String DEFAULT_TYPE_NAME = java.lang.Object.class.getName();  // ???
+
 }

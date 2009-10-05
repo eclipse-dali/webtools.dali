@@ -30,8 +30,8 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.PersistentTypeStaticMetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -56,13 +56,13 @@ public class GenericJpaFactory2_0
 	// ********** Core Model **********
 	
 	@Override
-	public StaticMetamodelSynchronizer buildStaticMetamodelSynchronizer(JpaProject2_0 jpaProject) {
-		return new GenericStaticMetamodelSynchronizer(jpaProject);
+	public MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject) {
+		return new GenericMetamodelSynchronizer(jpaProject);
 	}
 	
 	@Override
-	public PersistentTypeStaticMetamodelSynchronizer buildPersistentTypeStaticMetamodelSynchronizer(StaticMetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
-		return new GenericPersistentTypeStaticMetamodelSynchronizer(staticMetamodelSynchronizer, persistentType);
+	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer metamodelSynchronizer, PersistentType persistentType) {
+		return new GenericPersistentTypeMetamodelSynchronizer(metamodelSynchronizer, persistentType);
 	}
 	
 	

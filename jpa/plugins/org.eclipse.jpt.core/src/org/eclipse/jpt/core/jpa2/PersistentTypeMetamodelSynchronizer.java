@@ -7,13 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.persistence;
-
-import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
+package org.eclipse.jpt.core.jpa2;
 
 /**
- * The <code>persistence</code> element in the JPA 2.0 <code>persistence.xml</code> file.
+ * JPA 2.0 Canonical Metamodel.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,8 +18,8 @@ import org.eclipse.jpt.core.jpa2.StaticMetamodelGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Persistence2_0
-	extends Persistence, StaticMetamodelGenerator
-{
-	//nothing yet
+public interface PersistentTypeMetamodelSynchronizer {
+
+	void synchronize();
+
 }

@@ -12,14 +12,18 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
- * EclipseLink 1.1 persistent attribute
+ * JPA 2.0 Java persistent attribute
  */
 public class GenericJavaPersistentAttribute2_0
 	extends AbstractJavaPersistentAttribute
+	implements JavaPersistentAttribute2_0
 {
 	protected AccessType specifiedAccess;
 
@@ -62,6 +66,24 @@ public class GenericJavaPersistentAttribute2_0
 	public void update() {
 		super.update();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
+	}
+
+
+	// ********** metamodel **********
+
+	public String getMetamodelContainerFieldTypeName() {
+		return this.getJpaContainer(this.resourcePersistentAttribute.getTypeName()).getMetamodelContainerFieldTypeName();
+	}
+
+	public String getMetamodelTypeName() {
+		String typeName = this.resourcePersistentAttribute.getTypeName();
+		if (typeName == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		if (ClassTools.classNamedIsPrimitive(typeName)) {
+			return ClassTools.wrapperClassName(typeName);  // ???
+		}
+		return typeName;
 	}
 
 }

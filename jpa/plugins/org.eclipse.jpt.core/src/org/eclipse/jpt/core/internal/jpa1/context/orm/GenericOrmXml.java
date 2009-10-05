@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFileRoot;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
@@ -23,6 +25,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -93,12 +96,15 @@ public class GenericOrmXml
 		return (this.entityMappings == null) ? null : this.entityMappings.getPersistentType(fullyQualifiedTypeName);
 	}
 
+	
+	// ********** PersistentTypeContainer implementation **********
+	
 	/**
 	 * All orm.xml mapping files must be able to generate a static metamodel
 	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
 	 */
-	public void synchronizeStaticMetamodel() {
-		this.getEntityMappings().synchronizeStaticMetamodel();
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return (this.entityMappings != null) ? this.entityMappings.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
 	}
 
 	

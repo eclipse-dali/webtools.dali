@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -19,17 +20,18 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JarFile;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.java.JarFile2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.JarFileRef2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -38,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJarFileRef
 	extends AbstractPersistenceXmlContextNode
-	implements JarFileRef2_0
+	implements JarFileRef
 {
 	protected XmlJarFileRef xmlJarFileRef;
 	
@@ -103,7 +105,7 @@ public abstract class AbstractJarFileRef
 	}
 	
 	
-	// **************** JarFileRef impl ****************************************
+	// ********** JarFileRef implementation **********
 	
 	public PersistentType getPersistentType(String typeName) {
 		return (this.jarFile == null) ? null : this.jarFile.getPersistentType(typeName);
@@ -111,6 +113,13 @@ public abstract class AbstractJarFileRef
 	
 	public boolean containsOffset(int textOffset) {
 		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
+	}
+	
+	
+	// ********** PersistentTypeContainer implementation **********
+	
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return (this.jarFile != null) ? this.jarFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
 	}
 	
 	
@@ -244,16 +253,6 @@ public abstract class AbstractJarFileRef
 
 	protected IProject getProject() {
 		return this.getJpaProject().getProject();
-	}
-	
-	
-	// **************** 2.0 static metamodel ********************
-
-	public void synchronizeStaticMetamodel() {
-		JarFile2_0 jf = (JarFile2_0) this.getJarFile();
-		if (jf != null) {
-			jf.synchronizeStaticMetamodel();
-		}
 	}
 	
 	

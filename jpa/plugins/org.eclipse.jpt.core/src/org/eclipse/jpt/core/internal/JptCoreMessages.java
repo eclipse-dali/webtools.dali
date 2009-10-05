@@ -50,7 +50,7 @@ public class JptCoreMessages {
 	public static String REGISTRY_DUPLICATE;
 	public static String REGISTRY_FAILED_INSTANTIATION;
 	public static String UPDATE_JOB_NAME;
-	public static String SYNCHRONIZE_STATIC_METAMODEL_JOB_NAME;
+	public static String SYNCHRONIZE_METAMODEL_JOB_NAME;
 	public static String PLATFORM_ID_DOES_NOT_EXIST;
 	
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$

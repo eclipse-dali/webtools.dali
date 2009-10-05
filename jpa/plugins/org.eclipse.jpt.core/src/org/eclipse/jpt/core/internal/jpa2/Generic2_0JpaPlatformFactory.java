@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -42,19 +43,7 @@ public class Generic2_0JpaPlatformFactory
 	}
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new JpaPlatform.Version() {
-			public String getVersion() {
-				return getJpaVersion();
-			}
-			
-			public String getJpaVersion() {
-				return JptCorePlugin.JPA_FACET_VERSION_2_0;
-			}
-			
-			public boolean is2_0Compatible() {
-				return true;
-			}
-		};
+		return new SimpleVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
 	}
 	
 	protected JpaPlatformVariation buildJpaPlatformVariation() {
