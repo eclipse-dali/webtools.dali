@@ -49,7 +49,7 @@ public class OrmPersistentAttributeDetailsProvider
 	
 	public boolean providesDetails(JpaStructureNode structureNode) {
 			return StringTools.stringsAreEqual(structureNode.getId(), OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID)
-				&& structureNode.getResourceType().getContentType().equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
+				&& structureNode.getResourceType().getContentType().isKindOf(JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 	
 	public JpaDetailsPage<OrmPersistentAttribute> buildDetailsPage(

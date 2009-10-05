@@ -50,7 +50,7 @@ public class OrmPersistentTypeDetailsProvider
 	
 	public boolean providesDetails(JpaStructureNode structureNode) {
 		return StringTools.stringsAreEqual(structureNode.getId(), OrmStructureNodes.PERSISTENT_TYPE_ID)
-				&& structureNode.getResourceType().getContentType().equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
+				&& structureNode.getResourceType().getContentType().isKindOf(JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 	
 	public JpaDetailsPage<PersistentType> buildDetailsPage(
