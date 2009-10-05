@@ -603,20 +603,6 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return the index of the first elements in the specified
-	 * lists that are different, beginning at the end.
-	 * If the lists are identical, return -1.
-	 * If the lists are different sizes, return the index of the
-	 * last element in the longer list.
-	 * Use object identity to compare the elements.
-	 * <p>
-	 * <code>Collections.identityDiffEnd(List list1, List list2)</code>
-	 */
-	public static int identityDiffEnd(List<?> list1, List<?> list2) {
-		return ArrayTools.identityDiffEnd(list1.toArray(), list2.toArray());
-	}
-
-	/**
 	 * Return the range of elements in the specified
 	 * arrays that are different.
 	 * If the arrays are identical, return [size, -1].
@@ -629,20 +615,6 @@ public final class CollectionTools {
 	 */
 	public static Range diffRange(List<?> list1, List<?> list2) {
 		return ArrayTools.diffRange(list1.toArray(), list2.toArray());
-	}
-
-	/**
-	 * Return the range of elements in the specified
-	 * arrays that are different.
-	 * If the arrays are identical, return [size, -1].
-	 * Use object identity to compare the elements.
-	 * <p>
-	 * <code>Collections.identityDiffStart(List list1, List list2)</code>
-	 * @see #identityDiffStart(List, List)
-	 * @see #identityDiffEnd(List, List)
-	 */
-	public static Range identityDiffRange(List<?> list1, List<?> list2) {
-		return ArrayTools.identityDiffRange(list1.toArray(), list2.toArray());
 	}
 
 	/**
@@ -660,6 +632,37 @@ public final class CollectionTools {
 	 */
 	public static int diffStart(List<?> list1, List<?> list2) {
 		return ArrayTools.diffStart(list1.toArray(), list2.toArray());
+	}
+
+
+	// ********** identity diff **********
+
+	/**
+	 * Return the index of the first elements in the specified
+	 * lists that are different, beginning at the end.
+	 * If the lists are identical, return -1.
+	 * If the lists are different sizes, return the index of the
+	 * last element in the longer list.
+	 * Use object identity to compare the elements.
+	 * <p>
+	 * <code>Collections.identityDiffEnd(List list1, List list2)</code>
+	 */
+	public static int identityDiffEnd(List<?> list1, List<?> list2) {
+		return ArrayTools.identityDiffEnd(list1.toArray(), list2.toArray());
+	}
+
+	/**
+	 * Return the range of elements in the specified
+	 * arrays that are different.
+	 * If the arrays are identical, return [size, -1].
+	 * Use object identity to compare the elements.
+	 * <p>
+	 * <code>Collections.identityDiffStart(List list1, List list2)</code>
+	 * @see #identityDiffStart(List, List)
+	 * @see #identityDiffEnd(List, List)
+	 */
+	public static Range identityDiffRange(List<?> list1, List<?> list2) {
+		return ArrayTools.identityDiffRange(list1.toArray(), list2.toArray());
 	}
 
 	/**
@@ -1786,13 +1789,13 @@ public final class CollectionTools {
 	}
 
 
-	// ********** Collections enhancements **********
+	// ********** java.util.Collections enhancements **********
 
 	/**
 	 * Return the destination list after the source list has been copied into it.
 	 * @see Collections#copy(List, List)
 	 */
-	public static <E> List<? super E> copy(List<? super E> dest, List<? extends E> src) {
+	public static <E> List<E> copy(List<E> dest, List<? extends E> src) {
 		Collections.copy(dest, src);
 		return dest;
 	}
@@ -1801,7 +1804,7 @@ public final class CollectionTools {
 	 * Return the list after it has been "filled".
 	 * @see Collections#fill(List, Object)
 	 */
-	public static <E> List<? super E> fill(List<? super E> list, E value) {
+	public static <E> List<E> fill(List<E> list, E value) {
 		Collections.fill(list, value);
 		return list;
 	}

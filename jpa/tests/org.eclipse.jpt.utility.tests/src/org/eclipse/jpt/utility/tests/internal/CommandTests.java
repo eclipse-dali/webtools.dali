@@ -28,6 +28,17 @@ public class CommandTests extends TestCase {
 		command.execute();  // just make sure it doesn't blow up?
 	}
 
+	public void testNullCommand_toString() {
+		Command command = Command.Null.instance();
+		assertNotNull(command.toString());
+	}
+
+	public void testNullCommand_serialization() throws Exception {
+		Command command1 = Command.Null.instance();
+		Command command2 = TestTools.serialize(command1);
+		assertSame(command1, command2);
+	}
+
 	public void testDisabledCommand() {
 		Command command = Command.Disabled.instance();
 		boolean exCaught = false;
@@ -38,6 +49,17 @@ public class CommandTests extends TestCase {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
+	}
+
+	public void testDisabledCommand_toString() {
+		Command command = Command.Disabled.instance();
+		assertNotNull(command.toString());
+	}
+
+	public void testDisabledCommand_serialization() throws Exception {
+		Command command1 = Command.Disabled.instance();
+		Command command2 = TestTools.serialize(command1);
+		assertSame(command1, command2);
 	}
 
 	public void testRunnableCommand() {

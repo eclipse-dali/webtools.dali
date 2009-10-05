@@ -27,11 +27,31 @@ public class FilterTests extends TestCase {
 		assertTrue(filter.accept("bar"));
 	}
 
+	public void testNullFilter_toString() {
+		Filter<String> filter = Filter.Null.instance();
+		assertNotNull(filter.toString());
+	}
+
+	public void testNullFilter_serialization() throws Exception {
+		Filter<String> filter = Filter.Null.instance();
+		assertSame(filter, TestTools.serialize(filter));
+	}
+
 	public void testOpaqueFilter() {
 		Filter<String> filter = Filter.Opaque.instance();
 		assertFalse(filter.accept(""));
 		assertFalse(filter.accept("foo"));
 		assertFalse(filter.accept("bar"));
+	}
+
+	public void testOpaqueFilter_toString() {
+		Filter<String> filter = Filter.Opaque.instance();
+		assertNotNull(filter.toString());
+	}
+
+	public void testOpaqueFilter_serialization() throws Exception {
+		Filter<String> filter = Filter.Opaque.instance();
+		assertSame(filter, TestTools.serialize(filter));
 	}
 
 	public void testDisabledFilter() {
@@ -44,6 +64,16 @@ public class FilterTests extends TestCase {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
+	}
+
+	public void testDisabledFilter_toString() {
+		Filter<String> filter = Filter.Disabled.instance();
+		assertNotNull(filter.toString());
+	}
+
+	public void testDisabledFilter_serialization() throws Exception {
+		Filter<String> filter = Filter.Disabled.instance();
+		assertSame(filter, TestTools.serialize(filter));
 	}
 
 }

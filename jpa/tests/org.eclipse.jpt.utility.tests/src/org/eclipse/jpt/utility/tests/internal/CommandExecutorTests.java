@@ -21,6 +21,17 @@ public class CommandExecutorTests extends TestCase {
 		super(name);
 	}
 
+	public void testDefaultCommandExecutor_toString() throws Exception {
+		CommandExecutor commandExecutor = CommandExecutor.Default.instance();
+		assertNotNull(commandExecutor.toString());
+	}
+
+	public void testDefaultCommandExecutor_serialization() throws Exception {
+		CommandExecutor commandExecutor1 = CommandExecutor.Default.instance();
+		CommandExecutor commandExecutor2 = TestTools.serialize(commandExecutor1);
+		assertSame(commandExecutor1, commandExecutor2);
+	}
+
 	public void testDefaultCommandExecutor() {
 		TestCommand testCommand = new TestCommand();
 		assertEquals(0, testCommand.count);

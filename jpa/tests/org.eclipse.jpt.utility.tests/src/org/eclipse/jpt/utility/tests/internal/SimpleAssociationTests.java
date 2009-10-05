@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.utility.internal.Association;
 import org.eclipse.jpt.utility.internal.SimpleAssociation;
 
+@SuppressWarnings("nls")
 public class SimpleAssociationTests extends TestCase {
 	private SimpleAssociation<String, String> assoc;
 

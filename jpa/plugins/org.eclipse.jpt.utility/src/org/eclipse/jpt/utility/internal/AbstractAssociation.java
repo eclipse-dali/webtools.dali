@@ -26,7 +26,7 @@ public abstract class AbstractAssociation<K, V>
 
 	@Override
 	public synchronized boolean equals(Object o) {
-		if ( ! (o instanceof Association)) {
+		if ( ! (o instanceof Association<?, ?>)) {
 			return false;
 		}
 		Association<?, ?> other = (Association<?, ?>) o;
