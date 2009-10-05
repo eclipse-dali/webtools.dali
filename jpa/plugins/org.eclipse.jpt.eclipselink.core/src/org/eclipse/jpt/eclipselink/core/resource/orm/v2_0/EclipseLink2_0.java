@@ -23,21 +23,5 @@ public interface EclipseLink2_0
 	
 	// EclipseLink 2.0 specific nodes
 	
-	String CACHEABLE = "cacheable";
-	String COLLECTION_TABLE = "collection-table";
-	String DELIMITIED_IDENTIFIERS = "delimited-identifiers";
-	String ELEMENT_COLLECTION = "element-collection";
 	String MAP_KEY_ASSOCIATION_OVERRIDE = "map-key-association-override";
-	String MAP_KEY_ATTRIBUTE_OVERRIDE = "map-key-attribute-override";
-	String MAP_KEY_CLASS = "map-key-class";
-	String MAP_KEY_COLUMN = "map-key-column";
-	String MAP_KEY_CONVERT = "map-key-convert";
-	String MAP_KEY_ENUMERATED = "map-key-enumerated";
-	String MAP_KEY_JOIN_COLUMN = "map-key-join-column";
-	String MAPPED_BY_ID = "mapped-by-id";
-	String NAMED_QUERY__LOCK_MODE = "lock-mode";
-	String ORDER_COLUMN = "order-column";
-	String ORPHAN_REMOVAL = "orphan-removal";
-	String TARGET_CLASS = "target-class";
-	String MAP_KEY_TEMPORAL = "map-key-temporal";
 }
