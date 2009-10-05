@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -31,6 +30,8 @@ import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.osgi.util.NLS;
@@ -449,12 +450,25 @@ public class JpaFacetDataModelProvider
 	}
 
 	private DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
-		List<String> platformIDs = CollectionTools.list(JpaPlatformRegistry.instance().jpaPlatformIds());
-		DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[platformIDs.size()];
-		for (int i = 0; i < descriptors.length; i++) {
-			descriptors[i] = this.buildPlatformIdDescriptor(platformIDs.get(i));
-		}
-		return ArrayTools.sort(descriptors, this.buildDescriptorComparator());
+		final String jpaFacetVersion = getProjectFacetVersion().getVersionString();
+		Iterator<String> enabledPlatformIds = 
+				new FilteringIterator<String, String>(JpaPlatformRegistry.instance().jpaPlatformIds()) {
+					@Override
+					protected boolean accept(String platformId) {
+						return JpaPlatformRegistry.instance().
+								isPlatformEnabledForJpaFacetVersion(platformId, jpaFacetVersion);
+					}
+				};
+		Iterator<DataModelPropertyDescriptor> enabledPlatformDescriptors =
+				new TransformationIterator<String, DataModelPropertyDescriptor>(enabledPlatformIds) {
+					@Override
+					protected DataModelPropertyDescriptor transform(String platformId) {
+						return buildPlatformIdDescriptor(platformId);
+					}
+				};
+		return ArrayTools.sort(
+				ArrayTools.array(enabledPlatformDescriptors, new DataModelPropertyDescriptor[0]),
+				buildDescriptorComparator());
 	}
 
 	/**

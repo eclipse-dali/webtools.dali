@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -52,6 +51,7 @@ public class JpaPlatformRegistry {
 	private static final String ID_ATTRIBUTE_NAME = "id"; //$NON-NLS-1$
 	private static final String LABEL_ATTRIBUTE_NAME = "label"; //$NON-NLS-1$
 	private static final String FACTORY_CLASS_ATTRIBUTE_NAME = "factoryClass"; //$NON-NLS-1$
+	private static final String JPA_FACET_VERSION_ATTRIBUTE_NAME = "jpaFacetVersion"; //$NON-NLS-1$
 	private static final String DEFAULT_ATTRIBUTE_NAME = "default"; //$NON-NLS-1$
 
 
@@ -158,7 +158,18 @@ public class JpaPlatformRegistry {
 	public String getJpaPlatformLabel(String id) {
 		return this.jpaPlatformConfigurationElements.get(id).getAttribute(LABEL_ATTRIBUTE_NAME);
 	}
-
+	
+	/**
+	 * Return whether the JPA platform with the specified id supports the given JPA facet version.
+	 * This does not activate the JPA platforms' plug-in.
+	 */
+	public boolean isPlatformEnabledForJpaFacetVersion(String platformId, String jpaFacetVersion) {
+		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(platformId);
+		String specifiedJpaFacetVersion = configElement.getAttribute(JPA_FACET_VERSION_ATTRIBUTE_NAME);
+		return specifiedJpaFacetVersion == null
+				|| specifiedJpaFacetVersion.equals(jpaFacetVersion);
+	}
+	
 	/**
 	 * Return the ID for a JPA platform registered as a default platform.
 	 * Returns null if there are no such registered platforms.

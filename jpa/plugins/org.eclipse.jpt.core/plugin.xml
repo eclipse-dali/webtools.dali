@@ -143,15 +143,17 @@
 		
 		<jpaPlatform
 			id="generic"
-			label="%GENERIC_PLATFORM_LABEL"
+			label="%GENERIC_1_0_PLATFORM_LABEL"
 			factoryClass="org.eclipse.jpt.core.internal.GenericJpaPlatformFactory"
+			jpaFacetVersion="1.0"
 			default="false">
 		</jpaPlatform>
 			
 	  <jpaPlatform
 	        id="generic2_0"
-	        label="%GENERIC2_0_PLATFORM_LABEL"
+	        label="%GENERIC_2_0_PLATFORM_LABEL"
 	        factoryClass="org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformFactory"
+	        jpaFacetVersion="2.0"
 	        default="false">
 	  </jpaPlatform>
 		

@@ -11,12 +11,10 @@ package org.eclipse.jpt.ui.internal.properties;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -61,6 +59,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.AspectCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.AspectPropertyValueModelAdapter;
@@ -421,12 +420,19 @@ public class JpaProjectPropertiesPage
 	}
 
 	private ListValueModel<String> buildPlatformChoicesModel() {
-		ArrayList<String> jpaPlatformIds = new ArrayList<String>();
-		CollectionTools.addAll(jpaPlatformIds, JpaPlatformRegistry.instance().jpaPlatformIds());
-		Collections.sort(jpaPlatformIds, JPA_PLATFORM_COMPARATOR);
-		return new StaticListValueModel<String>(jpaPlatformIds);
+		final String jpaFacetVersion = getProjectFacetVersion().getVersionString();
+		Iterator<String> enabledPlatformIds =
+				new FilteringIterator<String, String>(JpaPlatformRegistry.instance().jpaPlatformIds()) {
+					protected boolean accept(String jpaPlatformId) {
+						return JpaPlatformRegistry.instance().isPlatformEnabledForJpaFacetVersion(
+							jpaPlatformId, jpaFacetVersion);
+					}
+				};
+		return new StaticListValueModel<String>(
+				CollectionTools.sort(
+					CollectionTools.list(enabledPlatformIds), JPA_PLATFORM_COMPARATOR));
 	}
-
+	
 	private static final Comparator<String> JPA_PLATFORM_COMPARATOR =
 			new Comparator<String>() {
 				public int compare(String o1, String o2) {
@@ -495,7 +501,7 @@ public class JpaProjectPropertiesPage
 	private StringConverter<String> buildConnectionStringConverter() {
 		return new StringConverter<String>() {
 			public String convertToString(String o) {
-				return (o != null) ? o : JptUiMessages.JpaFacetWizardPage_none;
+				return (! StringTools.stringIsEmpty(o)) ? o : JptUiMessages.JpaFacetWizardPage_none;
 			}
 			@Override
 			public String toString() {
