@@ -16,6 +16,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.ColumnMapping;
@@ -1099,18 +1100,6 @@ public abstract class AbstractOrmEntity
 	 * Return an iterator of Entities, each which inherits from the one before,
 	 * and terminates at the root entity (or at the point of cyclicity).
 	 */
-	protected Iterator<TypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
-			@Override
-			protected TypeMapping transform(PersistentType type) {
-				return type.getMapping();
-			}
-		};
-	}
-	/**
-	 * Return an iterator of Entities, each which inherits from the one before,
-	 * and terminates at the root entity (or at the point of cyclicity).
-	 */
 	protected Iterator<TypeMapping> ancestors() {
 		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().ancestors()) {
 			@Override
@@ -1164,6 +1153,16 @@ public abstract class AbstractOrmEntity
 				return mapping.overridableAssociations();
 			}
 		});
+	}
+	
+	public AttributeMapping resolveMappedBy(String mappedByName) {
+		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.allAttributeMappings())) {
+			AttributeMapping resolvedMappedBy = attributeMapping.resolveMappedBy(mappedByName);
+			if (resolvedMappedBy != null) {
+				return resolvedMappedBy;
+			}
+		}
+		return null;
 	}
 
 //

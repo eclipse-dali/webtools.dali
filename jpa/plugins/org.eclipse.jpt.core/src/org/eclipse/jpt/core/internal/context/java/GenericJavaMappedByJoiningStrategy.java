@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaOwnableRelationshipReference;
@@ -155,9 +154,9 @@ public class GenericJavaMappedByJoiningStrategy
 			return;  // null target entity is validated elsewhere
 		}
 		
-		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedByAttribute);
+		AttributeMapping mappedByMapping = targetEntity.resolveMappedBy(this.mappedByAttribute);
 		
-		if (attribute == null) {
+		if (mappedByMapping == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -170,7 +169,6 @@ public class GenericJavaMappedByJoiningStrategy
 			return;
 		}
 		
-		AttributeMapping mappedByMapping = attribute.getMapping();
 		if ( ! this.getRelationshipReference().mayBeMappedBy(mappedByMapping)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(

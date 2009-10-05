@@ -23,7 +23,9 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -251,8 +253,19 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	}
 	
 	public Iterator<String> allTargetEntityAttributeNames() {
-		Entity targetEntity = this.getResolvedTargetEntity();
-		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
+		return new CompositeIterator<String>(
+			new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEntityAttributeMappings()) {
+				@Override
+				protected Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allMappingNames();
+				}
+		});
+	}
+
+	public Iterator<AttributeMapping> allTargetEntityAttributeMappings() {
+		return (this.resolvedTargetEntity != null) ?
+				this.resolvedTargetEntity.allAttributeMappings() :
+				EmptyIterator.<AttributeMapping> instance();
 	}
 	
 	@Override

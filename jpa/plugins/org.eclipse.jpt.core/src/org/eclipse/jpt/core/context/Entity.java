@@ -250,4 +250,11 @@ public interface Entity
 	 * @see org.eclipse.jpt.core.context.persistence.PersistenceUnit#addRootWithSubEntities(String)
 	 */
 	void addSubEntity(Entity subEntity);
+	
+	/**
+	 * Returns the attribute mapping that matches the mappedByName.
+	 * In 2.0 this mappedByName could use dot-notation for nested mappings.
+	 */
+	AttributeMapping resolveMappedBy(String mappedByName);
+
 }

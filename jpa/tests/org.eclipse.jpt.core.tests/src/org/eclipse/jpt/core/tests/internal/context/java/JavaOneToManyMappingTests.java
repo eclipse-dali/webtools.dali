@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
@@ -64,6 +65,10 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 					sb.append(JPA.ID);
 					sb.append(";");
 					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR);
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("public class ").append("Address").append(" ");
@@ -74,7 +79,8 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				sb.append(CR);
 				sb.append("    private String city;").append(CR);
 				sb.append(CR);
-				sb.append("    private String state;").append(CR);
+				sb.append("    @Embedded").append(CR);
+				sb.append("    private State state;").append(CR);
 				sb.append(CR);
 				sb.append("    private int zip;").append(CR);
 				sb.append(CR);
@@ -82,6 +88,29 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+	}
+
+	private void createTestEmbeddableState() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("State").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    private String foo;").append(CR);
+				sb.append(CR);
+				sb.append("    private Address address;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
 	private ICompilationUnit createTestEntityWithOneToManyMapping() throws Exception {
@@ -604,8 +633,10 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 	public void testCandidateMappedByAttributeNames() throws Exception {
 		createTestEntityWithValidOneToManyMapping();
 		createTestTargetEntityAddress();
+		createTestEmbeddableState();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
@@ -631,6 +662,11 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertEquals("state", attributeNames.next());
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
+		
+		//TODO this needs to return null for 1.0 mappings.  we want the validation error for dot-notation since this is only supported in 2.0
+		//TODO need to copy this to all the other mapped by tests.
+		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		assertNull(stateFooMapping);
 	}
 
 	public void testDefaultTargetEntity() throws Exception {

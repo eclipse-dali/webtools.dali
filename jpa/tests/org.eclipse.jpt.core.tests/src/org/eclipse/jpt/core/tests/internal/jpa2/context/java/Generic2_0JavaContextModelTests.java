@@ -21,7 +21,9 @@ public class Generic2_0JavaContextModelTests extends TestCase
 		suite.addTestSuite(GenericJavaAssociationOverride2_0Tests.class);
 		suite.addTestSuite(GenericJavaEntity2_0Tests.class);
 		suite.addTestSuite(GenericJavaEmbeddedMapping2_0Tests.class);
+		suite.addTestSuite(GenericJavaManyToManyMapping2_0Tests.class);
 		suite.addTestSuite(GenericJavaManyToOneMapping2_0Tests.class);
+		suite.addTestSuite(GenericJavaOneToManyMapping2_0Tests.class);
 		suite.addTestSuite(GenericJavaOneToOneMapping2_0Tests.class);
 		suite.addTestSuite(GenericJavaPersistentAttribute2_0Tests.class);
 		suite.addTestSuite(GenericJavaPersistentType2_0Tests.class);

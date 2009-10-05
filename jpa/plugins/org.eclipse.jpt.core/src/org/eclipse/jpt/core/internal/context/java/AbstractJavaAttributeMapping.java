@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -104,6 +106,17 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	
 	public boolean isOwnedBy(RelationshipMapping mapping) {
 		return false;
+	}
+	
+	public Iterator<String> allMappingNames() {
+		return new SingleElementIterator<String>(getName());
+	}
+	
+	public AttributeMapping resolveMappedBy(String mappedByName) {
+		if (getName().equals(mappedByName)) {
+			return this;
+		}
+		return null;
 	}
 	
 	// ********** supporting annotation names **********

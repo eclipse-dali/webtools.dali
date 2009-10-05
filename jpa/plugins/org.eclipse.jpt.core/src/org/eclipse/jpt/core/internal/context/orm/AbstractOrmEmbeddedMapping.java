@@ -23,6 +23,8 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -76,7 +78,66 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 		resourceAttributes.getEmbeddeds().remove(this.resourceAttributeMapping);
 	}
 	
+	//only putting this in EmbeddedMapping since relationship mappings
+	//defined within an embedded id class are not supported  by the 2.0 spec.
+	@Override
+	public Iterator<String> allMappingNames() {
+		if (getJpaPlatformVersion().is2_0Compatible()) {
+			return new CompositeIterator<String>(
+				getName(),
+				embeddableAttributeMappingNames()
+			);
+		}
+		return super.allMappingNames();
+	}
+
+	protected Iterator<String> embeddableAttributeMappingNames() {
+		return new TransformationIterator<String, String>(
+			new CompositeIterator<String>(
+				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
+					@Override
+					protected Iterator<String> transform(AttributeMapping mapping) {
+						return mapping.allMappingNames();
+					}
+				}
+			)
+		) {
+			@Override
+			protected String transform(String next) {
+				return getName() + '.' + next;
+			}
+		};
+	}
 	
+	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
+		if (this.getEmbeddable() == null) {
+			return EmptyIterator.instance();
+		}
+		return this.getEmbeddable().attributeMappings();
+	}
+
+
+	@Override
+	public AttributeMapping resolveMappedBy(String mappedByName) {
+		AttributeMapping resolvedMappedBy = super.resolveMappedBy(mappedByName);
+		if (resolvedMappedBy != null) {
+			return resolvedMappedBy;
+		}
+		if (getJpaPlatformVersion().is2_0Compatible()) {
+			int dotIndex = mappedByName.indexOf('.');
+			if (dotIndex != -1) {
+				if (getName().equals(mappedByName.substring(0, dotIndex))) {
+					for (AttributeMapping attributeMapping : CollectionTools.iterable(embeddableAttributeMappings())) {
+						resolvedMappedBy = attributeMapping.resolveMappedBy(mappedByName.substring(dotIndex + 1));
+						if (resolvedMappedBy != null) {
+							return resolvedMappedBy;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 
 	public OrmAssociationOverrideContainer getAssociationOverrideContainer() {
 		return this.associationOverrideContainer;

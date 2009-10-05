@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class GenericOrmManyToOneMapping2_0Tests
 	extends Generic2_0OrmContextModelTestCase
 {
@@ -61,8 +62,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		OrmManyToOneMapping2_0 contextMapping = (OrmManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
-		XmlDerivedId resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getManyToOnes().get(0);
+		XmlDerivedId resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
 		assertFalse(contextMapping.getDerivedId().getValue());
@@ -86,8 +86,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		OrmManyToOneMapping2_0 contextMapping = (OrmManyToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
-		XmlDerivedId resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getManyToOnes().get(0);
+		XmlDerivedId resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
 		assertFalse(contextMapping.getDerivedId().getValue());
@@ -107,21 +106,18 @@ public class GenericOrmManyToOneMapping2_0Tests
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
 		
-		XmlDerivedId resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getManyToOnes().get(0);
+		XmlDerivedId resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
 		resourceMapping.setId(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
 		assertTrue(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getOneToOnes().get(0);
+		resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
 		assertTrue(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getManyToOnes().get(0);
+		resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
 		assertTrue(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 	}

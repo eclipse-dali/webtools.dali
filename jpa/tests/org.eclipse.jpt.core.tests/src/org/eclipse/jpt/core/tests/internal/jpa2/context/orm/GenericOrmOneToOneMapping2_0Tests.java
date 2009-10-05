@@ -11,7 +11,11 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
@@ -19,9 +23,11 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToOneMapping2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class GenericOrmOneToOneMapping2_0Tests
 	extends Generic2_0OrmContextModelTestCase
 {
@@ -54,6 +60,83 @@ public class GenericOrmOneToOneMapping2_0Tests
 			each.makeSpecified();
 		}
 	}
+	private void createTestTargetEntityAddress() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+				sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Address").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    private String city;").append(CR);
+				sb.append(CR);
+				sb.append("    private State state;").append(CR);
+				sb.append(CR);
+				sb.append("    private int zip;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+	}
+	
+	private ICompilationUnit createTestEntityWithValidOneToOneMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToOne").append(CR);				
+				sb.append("    private Address address;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private void createTestEmbeddableState() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("State").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    private String foo;").append(CR);
+				sb.append(CR);
+				sb.append("    private Address address;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+	}
 	
 	public void testUpdateDerivedId() throws Exception {
 		createTestEntityWithDerivedId();
@@ -61,8 +144,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
-		XmlDerivedId resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getOneToOnes().get(0);
+		XmlDerivedId resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
 		assertFalse(contextMapping.getDerivedId().getValue());
@@ -86,8 +168,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
-		XmlDerivedId resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getOneToOnes().get(0);
+		XmlDerivedId resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
 		assertFalse(contextMapping.getDerivedId().getValue());
@@ -107,22 +188,65 @@ public class GenericOrmOneToOneMapping2_0Tests
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
 		
-		XmlDerivedId resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getOneToOnes().get(0);
+		XmlDerivedId resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		resourceMapping.setId(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
 		assertTrue(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getManyToOnes().get(0);
+		resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
 		assertTrue(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		resourceMapping = 
-				(XmlDerivedId) resourceEntity.getAttributes().getOneToOnes().get(0);
+		resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
 		assertTrue(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
+	}
+	
+	public void testCandidateMappedByAttributeNames() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
+		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "address");
+
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		PersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+
+		Iterator<String> attributeNames = 
+			oneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+		assertEquals("id", attributeNames.next());
+		assertEquals("city", attributeNames.next());
+		assertEquals("state", attributeNames.next());
+		assertEquals("state.foo", attributeNames.next());
+		assertEquals("state.address", attributeNames.next());
+		assertEquals("zip", attributeNames.next());
+		assertFalse(attributeNames.hasNext());
+		
+		oneToOneMapping.setSpecifiedTargetEntity("foo");
+		attributeNames = 
+			oneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+		assertFalse(attributeNames.hasNext());
+		
+		oneToOneMapping.setSpecifiedTargetEntity(null);
+		attributeNames = 
+			oneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+		assertEquals("id", attributeNames.next());
+		assertEquals("city", attributeNames.next());
+		assertEquals("state", attributeNames.next());
+		assertEquals("state.foo", attributeNames.next());
+		assertEquals("state.address", attributeNames.next());
+		assertEquals("zip", attributeNames.next());
+		assertFalse(attributeNames.hasNext());
+		
+		AttributeMapping stateFooMapping = oneToOneMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		assertEquals("foo", stateFooMapping.getName());
 	}
 }

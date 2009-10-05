@@ -14,8 +14,10 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -26,6 +28,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
@@ -88,13 +91,36 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return EmptyIterator.instance();
 	}
 
+	/**
+	 * Return an iterator of TypeMappings, each which inherits from the one before,
+	 * and terminates at the root entity (or at the point of cyclicity).
+	 */
+	protected Iterator<TypeMapping> inheritanceHierarchy() {
+		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
+			@Override
+			protected TypeMapping transform(PersistentType type) {
+				return type.getMapping();
+			}
+		};
+	}
+
 	public ListIterator<JavaAttributeMapping> attributeMappings() {
 		return new TransformationListIterator<JavaPersistentAttribute, JavaAttributeMapping>(getPersistentType().attributes()) {
 			@Override
-			protected JavaAttributeMapping transform(JavaPersistentAttribute next) {
-				return next.getMapping();
+			protected JavaAttributeMapping transform(JavaPersistentAttribute attribute) {
+				return attribute.getMapping();
 			}
 		};
+	}
+
+	public Iterator<AttributeMapping> allAttributeMappings() {
+		return new CompositeIterator<AttributeMapping>(
+			new TransformationIterator<TypeMapping, Iterator<AttributeMapping>>(this.inheritanceHierarchy()) {
+				@Override
+				protected Iterator<AttributeMapping> transform(TypeMapping typeMapping) {
+					return typeMapping.attributeMappings();
+				}
+		});
 	}
 
 	public Iterator<JavaColumnMapping> overridableAttributes() {

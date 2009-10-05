@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -37,6 +39,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -178,6 +181,18 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		// Default implementation - override where needed
 		return false;
 	}
+	
+	public Iterator<String> allMappingNames() {
+		return new SingleElementIterator<String>(getName());
+	}
+	
+	public AttributeMapping resolveMappedBy(String mappedByName) {
+		if (getName().equals(mappedByName)) {
+			return this;
+		}
+		return null;
+	}
+	
 
 	public T getResourceAttributeMapping() {
 		return this.resourceAttributeMapping;

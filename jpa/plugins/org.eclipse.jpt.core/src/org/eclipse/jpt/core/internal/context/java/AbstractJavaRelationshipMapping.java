@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
@@ -25,7 +26,9 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -133,9 +136,19 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 
 	public Iterator<String> allTargetEntityAttributeNames() {
+		return new CompositeIterator<String>(
+			new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEntityAttributeMappings()) {
+				@Override
+				protected Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allMappingNames();
+				}
+		});
+	}
+
+	protected Iterator<AttributeMapping> allTargetEntityAttributeMappings() {
 		return (this.resolvedTargetEntity != null) ?
-				this.resolvedTargetEntity.getPersistentType().allAttributeNames() :
-				EmptyIterator.<String> instance();
+				this.resolvedTargetEntity.allAttributeMappings() :
+				EmptyIterator.<AttributeMapping> instance();
 	}
 
 	public char getTargetEntityEnclosingTypeSeparator() {

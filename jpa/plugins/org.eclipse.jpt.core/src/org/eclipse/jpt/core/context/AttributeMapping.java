@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.Iterator;
+
 /**
  * JPA attribute mapping.
  * <p>
@@ -71,5 +73,21 @@ public interface AttributeMapping
 	 * (For instance, if the connection is not active, then it should not.)
 	 */
 	boolean shouldValidateAgainstDatabase();
+
+	/**
+	 * Typically this will just be a single element iterator with the name of the mapping.
+	 * In a 2.0 project, an embedded mapping should return its own name as well as 
+	 * the name of its target Embeddable's mappings with the embedded mapping name 
+	 * prepended : "embedded", "embedded.foo", "embedded.bar".
+	 */
+	Iterator<String> allMappingNames();
+	
+	/**
+	 * Returns this attribute mapping if its name matches the mappedByName.
+	 * In 2.0 this mappedByName could use dot-notation for nested mappings.
+	 * 2.0 Embedded mappings will have to parse this name and return the appropriate 
+	 * nested attribute mapping.
+	 */
+	AttributeMapping resolveMappedBy(String mappedByName);
 
 }

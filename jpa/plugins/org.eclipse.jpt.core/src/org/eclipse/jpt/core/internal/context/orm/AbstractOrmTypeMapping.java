@@ -15,7 +15,9 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
@@ -30,6 +32,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
@@ -154,10 +157,33 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	public ListIterator<OrmAttributeMapping> attributeMappings() {
 		return new TransformationListIterator<OrmPersistentAttribute, OrmAttributeMapping>(getPersistentType().attributes()) {
 			@Override
-			protected OrmAttributeMapping transform(OrmPersistentAttribute next) {
-				return next.getMapping();
+			protected OrmAttributeMapping transform(OrmPersistentAttribute attribute) {
+				return attribute.getMapping();
 			}
 		};
+	}
+
+	/**
+	 * Return an iterator of TypeMappings, each which inherits from the one before,
+	 * and terminates at the root entity (or at the point of cyclicity).
+	 */
+	protected Iterator<TypeMapping> inheritanceHierarchy() {
+		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
+			@Override
+			protected TypeMapping transform(PersistentType type) {
+				return type.getMapping();
+			}
+		};
+	}
+	
+	public Iterator<AttributeMapping> allAttributeMappings() {
+		return new CompositeIterator<AttributeMapping>(
+			new TransformationIterator<TypeMapping, Iterator<AttributeMapping>>(this.inheritanceHierarchy()) {
+				@Override
+				protected Iterator<AttributeMapping> transform(TypeMapping typeMapping) {
+					return typeMapping.attributeMappings();
+				}
+			});
 	}
 
 	public Iterator<OrmColumnMapping> overridableAttributes() {

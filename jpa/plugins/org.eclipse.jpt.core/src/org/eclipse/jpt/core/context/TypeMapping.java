@@ -82,6 +82,12 @@ public interface TypeMapping extends JpaContextNode {
 	 * A convenience methods for getting the attribute mappings from PersistentType.attributes()
 	 */
 	<T extends AttributeMapping> ListIterator<T> attributeMappings();
+	
+	/**
+	 * Return all the attribute mappings in the type mapping's
+	 * inheritance hierarchy.
+	 */
+	Iterator<AttributeMapping> allAttributeMappings();
 
 	/**
 	 * Return an Iterator of column mapping attributes that can be overridden by a 
