@@ -1792,6 +1792,37 @@ public abstract class Pane<T extends Model>
 			helpId
 		);
 	}
+	
+	/**
+	 * Creates a new container that will have an editable combo labeled with the
+	 * given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param helpId The topic help ID to be registered for the given center
+	 * composite
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo addLabeledEditableCombo(Composite container,
+	                                                      String labelText,
+	                                                      ListValueModel<V> listHolder,
+	                                                      WritablePropertyValueModel<V> selectedItemHolder,
+	                                                      String helpId) {
+
+		return this.addLabeledEditableCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance(),
+			null,
+			helpId
+		);
+	}
 
 	/**
 	 * Creates a new container that will have the given center control labeled

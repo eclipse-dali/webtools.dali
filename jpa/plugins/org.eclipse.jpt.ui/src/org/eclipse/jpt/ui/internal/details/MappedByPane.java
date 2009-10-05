@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class MappedByPane 
 	extends FormPane<MappedByJoiningStrategy>
 {
@@ -57,12 +56,9 @@ public class MappedByPane
 	}
 	
 	
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		addLabeledEditableCCombo(
+		addLabeledEditableCombo(
 			container,
 			JptUiDetailsMessages.Joining_mappedByAttributeLabel,
 			buildCandidateAttributesListValueModel(),
