@@ -130,15 +130,22 @@ public abstract class AbstractJavaResourceUiDefinition
 	// ********** attributes mapping UI definitions **********
 	
 	public JpaComposite buildAttributeMappingComposite(String key, PropertyValueModel<AttributeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory) {
-
-		JavaAttributeMappingUiDefinition<AttributeMapping> mappingUiDefinition = 
-			(JavaAttributeMappingUiDefinition<AttributeMapping>) getSpecifiedAttributeMappingUiDefinition(key);
+		JavaAttributeMappingUiDefinition<AttributeMapping> mappingUiDefinition = getAttributeMappingUiDefinition(mappingHolder.getValue());
 		return mappingUiDefinition.buildAttributeMappingComposite(
 			getFactory(), 
 			mappingHolder,
 			parent,
 			widgetFactory
 		);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected JavaAttributeMappingUiDefinition<AttributeMapping> getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {
+		String key = attributeMapping == null ? null : attributeMapping.getKey();
+		if (attributeMapping == null || attributeMapping.isDefault()) {
+			return (JavaAttributeMappingUiDefinition<AttributeMapping>) getDefaultAttributeMappingUiDefinition(key);
+		}
+		return (JavaAttributeMappingUiDefinition<AttributeMapping>) getSpecifiedAttributeMappingUiDefinition(key);
 	}
 	
 	protected JavaAttributeMappingUiDefinition<? extends AttributeMapping> getSpecifiedAttributeMappingUiDefinition(String mappingKey) {
