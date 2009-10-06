@@ -538,7 +538,8 @@ public class JptCorePlugin extends Plugin {
 	public static String getConnectionProfileName(IProject project) {
 		try {
 			String connectionProfileName = project.getPersistentProperty(DATA_SOURCE_CONNECTION_PROFILE_NAME);
-			// the properties system will return an empty string rather than null
+			// the properties system will return an empty string if we have mistakenly stored one
+			// (which it turns out we have at times) rather than null
 			return (StringTools.stringIsEmpty(connectionProfileName)) ? null : connectionProfileName;
 		} catch (CoreException ex) {
 			log(ex);
