@@ -665,7 +665,7 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		
 		//TODO this needs to return null for 1.0 mappings.  we want the validation error for dot-notation since this is only supported in 2.0
 		//TODO need to copy this to all the other mapped by tests.
-		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertNull(stateFooMapping);
 	}
 

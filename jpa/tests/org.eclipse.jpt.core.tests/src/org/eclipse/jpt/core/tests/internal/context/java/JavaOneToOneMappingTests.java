@@ -984,7 +984,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 		
-		AttributeMapping stateFooMapping = oneToOneMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = oneToOneMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertNull(stateFooMapping);
 	}
 

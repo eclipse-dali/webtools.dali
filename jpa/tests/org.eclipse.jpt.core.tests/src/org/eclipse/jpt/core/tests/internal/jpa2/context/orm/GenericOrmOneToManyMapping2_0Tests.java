@@ -150,7 +150,7 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 		
-		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertEquals("foo", stateFooMapping.getName());
 	}
 }

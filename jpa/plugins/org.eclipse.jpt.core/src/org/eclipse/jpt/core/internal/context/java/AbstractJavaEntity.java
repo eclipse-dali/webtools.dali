@@ -1078,11 +1078,11 @@ public abstract class AbstractJavaEntity
 		});
 	}
 	
-	public AttributeMapping resolveMappedBy(String mappedByName) {
+	public AttributeMapping resolveAttributeMapping(String name) {
 		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.allAttributeMappings())) {
-			AttributeMapping resolvedMappedBy = attributeMapping.resolveAttributeMapping(mappedByName);
-			if (resolvedMappedBy != null) {
-				return resolvedMappedBy;
+			AttributeMapping resolvedMapping = attributeMapping.resolveAttributeMapping(name);
+			if (resolvedMapping != null) {
+				return resolvedMapping;
 			}
 		}
 		return null;

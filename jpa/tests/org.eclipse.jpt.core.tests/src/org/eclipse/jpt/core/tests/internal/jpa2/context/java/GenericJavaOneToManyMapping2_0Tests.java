@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -118,7 +117,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = ((JavaPersistentType) getJavaPersistentType()).attributes().next();
+		PersistentAttribute persistentAttribute = (getJavaPersistentType()).attributes().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
@@ -147,7 +146,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 
-		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertEquals("foo", stateFooMapping.getName());
 	}
 

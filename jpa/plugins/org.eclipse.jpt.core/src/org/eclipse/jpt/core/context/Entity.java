@@ -254,10 +254,10 @@ public interface Entity
 	void addSubEntity(Entity subEntity);
 	
 	/**
-	 * Returns the attribute mapping that matches the mappedByName.
-	 * In 2.0 this mappedByName could use dot-notation for nested mappings.
+	 * Returns the attribute mapping that matches the name.
+	 * In 2.0 this name could use dot-notation for nested mappings.
 	 */
-	AttributeMapping resolveMappedBy(String mappedByName);
+	AttributeMapping resolveAttributeMapping(String name);
 
 	/**
 	 * Return the entity's ID attribute.

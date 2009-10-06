@@ -661,7 +661,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 
-		AttributeMapping stateFooMapping = manyToManyMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = manyToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertNull(stateFooMapping);
 	}
 

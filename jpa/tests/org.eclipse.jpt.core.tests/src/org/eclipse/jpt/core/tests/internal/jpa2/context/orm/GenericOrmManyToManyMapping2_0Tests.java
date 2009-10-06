@@ -150,7 +150,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 		
-		AttributeMapping stateFooMapping = manyToManyMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = manyToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertEquals("foo", stateFooMapping.getName());
 	}
 }

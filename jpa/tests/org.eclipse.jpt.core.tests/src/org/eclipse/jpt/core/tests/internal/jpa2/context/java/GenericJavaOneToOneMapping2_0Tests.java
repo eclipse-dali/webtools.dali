@@ -222,7 +222,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = ((JavaPersistentType) getJavaPersistentType()).attributes().next();
+		PersistentAttribute persistentAttribute = (getJavaPersistentType()).attributes().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
@@ -251,7 +251,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 		
-		AttributeMapping stateFooMapping = oneToOneMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = oneToOneMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertEquals("foo", stateFooMapping.getName());
 	}
 

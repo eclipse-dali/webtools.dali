@@ -154,7 +154,7 @@ public class GenericJavaMappedByJoiningStrategy
 			return;  // null target entity is validated elsewhere
 		}
 		
-		AttributeMapping mappedByMapping = targetEntity.resolveMappedBy(this.mappedByAttribute);
+		AttributeMapping mappedByMapping = targetEntity.resolveAttributeMapping(this.mappedByAttribute);
 		
 		if (mappedByMapping == null) {
 			messages.add(

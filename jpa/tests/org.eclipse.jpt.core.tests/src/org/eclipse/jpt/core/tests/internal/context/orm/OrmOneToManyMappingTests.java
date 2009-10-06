@@ -732,7 +732,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertEquals("zip", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 
-		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveMappedBy("state.foo");
+		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertNull(stateFooMapping);
 	}
 }
