@@ -139,7 +139,7 @@ public abstract class BaseJpaPlatformUi
 	// ********** resource ui definitions **********
 	
 	protected ListIterator<ResourceUiDefinition> resourceUiDefinitions() {
-		return this.platformUiProvider.fileUiDefinitions();
+		return this.platformUiProvider.resourceUiDefinitions();
 	}
 	
 	public ResourceUiDefinition getResourceUiDefinition(JpaResourceType resourceType) {

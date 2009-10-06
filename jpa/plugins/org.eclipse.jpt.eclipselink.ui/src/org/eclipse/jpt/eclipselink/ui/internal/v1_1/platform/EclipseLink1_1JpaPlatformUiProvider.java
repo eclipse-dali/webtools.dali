@@ -60,10 +60,10 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	}
 	
 	
-	// ********** mapping file ui definitions **********
+	// ********** resource ui definitions **********
 	
 	@Override
-	protected void addFileUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
+	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
 		definitions.add(EclipseLink1_1JavaResourceUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
 		definitions.add(EclipseLinkOrmXmlUiDefinition.instance());

@@ -25,7 +25,7 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 {
 	private JpaDetailsProvider[] detailsProviders;
 
-	private ResourceUiDefinition[] fileUiDefinitions;
+	private ResourceUiDefinition[] resourceUiDefinitions;
 	
 	/**
 	 * zero-argument constructor
@@ -63,26 +63,26 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 	
 	// ********** structure providers **********
 
-	public ListIterator<ResourceUiDefinition> fileUiDefinitions() {
-		return new ArrayListIterator<ResourceUiDefinition>(getFileUiDefinitions());
+	public ListIterator<ResourceUiDefinition> resourceUiDefinitions() {
+		return new ArrayListIterator<ResourceUiDefinition>(getResourceUiDefinitions());
 	}
 	
-	protected synchronized ResourceUiDefinition[] getFileUiDefinitions() {
-		if (this.fileUiDefinitions == null) {
-			this.fileUiDefinitions = this.buildFileUiDefinitions();
+	protected synchronized ResourceUiDefinition[] getResourceUiDefinitions() {
+		if (this.resourceUiDefinitions == null) {
+			this.resourceUiDefinitions = this.buildResourceUiDefinitions();
 		}
-		return this.fileUiDefinitions;
+		return this.resourceUiDefinitions;
 	}
 
-	protected ResourceUiDefinition[] buildFileUiDefinitions() {
+	protected ResourceUiDefinition[] buildResourceUiDefinitions() {
 		ArrayList<ResourceUiDefinition> definitions = new ArrayList<ResourceUiDefinition>();
-		this.addFileUiDefinitionsTo(definitions);
+		this.addResourceUiDefinitionsTo(definitions);
 		return definitions.toArray(new ResourceUiDefinition[definitions.size()]);
 	}
 
 	/**
 	 * Implement this to specify JPA mapping file ui definitions.
 	 */
-	protected abstract void addFileUiDefinitionsTo(List<ResourceUiDefinition> definitions);
+	protected abstract void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions);
 	
 }

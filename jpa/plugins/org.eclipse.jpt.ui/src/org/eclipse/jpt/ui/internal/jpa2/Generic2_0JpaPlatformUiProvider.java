@@ -64,10 +64,10 @@ public class Generic2_0JpaPlatformUiProvider extends AbstractJpaPlatformUiProvid
 	}
 	
 	
-	// ********** file ui definitions **********
+	// ********** resource ui definitions **********
 	
 	@Override
-	protected void addFileUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
+	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
 		definitions.add(Generic2_0JavaResourceUiDefinition.instance());
 		definitions.add(OrmXmlUiDefinition.instance());
 		definitions.add(OrmXml2_0UiDefinition.instance());
