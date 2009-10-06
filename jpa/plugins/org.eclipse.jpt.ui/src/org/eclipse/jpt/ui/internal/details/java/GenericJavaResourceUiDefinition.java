@@ -55,7 +55,6 @@ public class GenericJavaResourceUiDefinition extends AbstractJavaResourceUiDefin
 		definitions.add(JavaManyToManyMappingUiDefinition.instance());
 		definitions.add(JavaEmbeddedMappingUiDefinition.instance());
 		definitions.add(JavaTransientMappingUiDefinition.instance());
-		
 	}
 	
 	@Override
