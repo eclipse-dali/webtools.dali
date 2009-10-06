@@ -1157,7 +1157,7 @@ public abstract class AbstractOrmEntity
 	
 	public AttributeMapping resolveMappedBy(String mappedByName) {
 		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.allAttributeMappings())) {
-			AttributeMapping resolvedMappedBy = attributeMapping.resolveMappedBy(mappedByName);
+			AttributeMapping resolvedMappedBy = attributeMapping.resolveAttributeMapping(mappedByName);
 			if (resolvedMappedBy != null) {
 				return resolvedMappedBy;
 			}

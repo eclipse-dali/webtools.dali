@@ -83,11 +83,11 @@ public interface AttributeMapping
 	Iterator<String> allMappingNames();
 	
 	/**
-	 * Returns this attribute mapping if its name matches the mappedByName.
-	 * In 2.0 this mappedByName could use dot-notation for nested mappings.
+	 * Returns this attribute mapping if its name matches the name.
+	 * In 2.0 this name could use dot-notation for nested mappings.
 	 * 2.0 Embedded mappings will have to parse this name and return the appropriate 
 	 * nested attribute mapping.
 	 */
-	AttributeMapping resolveMappedBy(String mappedByName);
+	AttributeMapping resolveAttributeMapping(String name);
 
 }

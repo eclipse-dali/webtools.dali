@@ -109,19 +109,19 @@ public class GenericJavaEmbeddedMapping
 	}
 
 	@Override
-	public AttributeMapping resolveMappedBy(String mappedByName) {
-		AttributeMapping resolvedMappedBy = super.resolveMappedBy(mappedByName);
-		if (resolvedMappedBy != null) {
-			return resolvedMappedBy;
+	public AttributeMapping resolveAttributeMapping(String name) {
+		AttributeMapping resolvedMapping = super.resolveAttributeMapping(name);
+		if (resolvedMapping != null) {
+			return resolvedMapping;
 		}
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			int dotIndex = mappedByName.indexOf('.');
+			int dotIndex = name.indexOf('.');
 			if (dotIndex != -1) {
-				if (getName().equals(mappedByName.substring(0, dotIndex))) {
+				if (getName().equals(name.substring(0, dotIndex))) {
 					for (AttributeMapping attributeMapping : CollectionTools.iterable(embeddableAttributeMappings())) {
-						resolvedMappedBy = attributeMapping.resolveMappedBy(mappedByName.substring(dotIndex + 1));
-						if (resolvedMappedBy != null) {
-							return resolvedMappedBy;
+						resolvedMapping = attributeMapping.resolveAttributeMapping(name.substring(dotIndex + 1));
+						if (resolvedMapping != null) {
+							return resolvedMapping;
 						}
 					}
 				}

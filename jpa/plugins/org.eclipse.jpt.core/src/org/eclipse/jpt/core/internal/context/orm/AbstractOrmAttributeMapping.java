@@ -192,8 +192,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return new SingleElementIterator<String>(getName());
 	}
 	
-	public AttributeMapping resolveMappedBy(String mappedByName) {
-		if (getName().equals(mappedByName)) {
+	public AttributeMapping resolveAttributeMapping(String name) {
+		if (getName().equals(name)) {
 			return this;
 		}
 		return null;
