@@ -43,6 +43,8 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	private Map<String, JpaComposite> mappingComposites;
 	private PageBook mappingPageBook;
 
+	private PropertyValueModel<AttributeMapping> mappingHolder;
+	
 	/**
 	 * Creates a new <code>PersistentAttributeDetailsPage</code>.
 	 *
@@ -75,7 +77,8 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 		this.mappingPageBook.setLayoutData(gridData);
 		
-		new ControlSwitcher(this.buildMappingHolder(), this.buildPaneTransformer(), this.mappingPageBook);
+		this.mappingHolder = this.buildMappingHolder();
+		new ControlSwitcher(this.mappingHolder, this.buildPaneTransformer(), this.mappingPageBook);
 
 		return this.mappingPageBook;
 	}
@@ -117,7 +120,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	
 	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {
 		return new FilteringPropertyValueModel<AttributeMapping>(
-			buildMappingHolder(),
+			this.mappingHolder,
 			buildMappingFilter(key)
 		);
 	}
