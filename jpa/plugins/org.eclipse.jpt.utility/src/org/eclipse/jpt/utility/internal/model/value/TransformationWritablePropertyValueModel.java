@@ -79,7 +79,8 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 	}
 
 	/**
-	 * "Reverse-transform" the specified, non-null, value and return the result.
+	 * "Reverse-transform" the specified, non-<code>null</code>,
+	 * value and return the result.
 	 */
 	protected T1 reverseTransform_(@SuppressWarnings("unused") T2 value) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
@@ -109,12 +110,14 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 	// ********** default bidi transformer **********
 
 	/**
-	 * The default bidi transformer will return null if the wrapped value is null.
-	 * If the wrapped value is not null, it is transformed by a subclass
+	 * The default bidi transformer will return <code>null</code> if the
+	 * wrapped value is <code>null</code>.
+	 * If the wrapped value is not <code>null</code>, it is transformed by a subclass
 	 * implementation of {@link #transform_(Object)}.
-	 * The default bidi transformer will also return null if the new value is null.
-	 * If the new value is not null, it is reverse-transformed by a subclass
-	 * implementation of {@link #reverseTransform_(Object)}.
+	 * The default bidi transformer will also return <code>null</code>
+	 * if the new value is <code>null</code>.
+	 * If the new value is not <code>null</code>, it is reverse-transformed
+	 * by a subclass implementation of {@link #reverseTransform_(Object)}.
 	 */
 	protected class DefaultBidiTransformer
 		extends DefaultTransformer
