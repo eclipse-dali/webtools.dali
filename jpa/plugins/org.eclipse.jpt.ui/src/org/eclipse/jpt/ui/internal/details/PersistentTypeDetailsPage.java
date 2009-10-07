@@ -42,6 +42,7 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 {
 	private Map<String, JpaComposite> mappingComposites;
 	private PageBook mappingPageBook;
+	private PropertyValueModel<TypeMapping> mappingHolder;
 
 	/**
 	 * Creates a new <code>PersistentTypeDetailsPage</code>.
@@ -87,7 +88,8 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 
 		this.mappingPageBook.setLayoutData(gridData);
 		
-		new ControlSwitcher(this.buildMappingHolder(), this.buildPaneTransformer(), this.mappingPageBook);
+		this.mappingHolder = this.buildMappingHolder();
+		new ControlSwitcher(this.mappingHolder, this.buildPaneTransformer(), this.mappingPageBook);
 
 		return this.mappingPageBook;
 	}
@@ -105,7 +107,7 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	
 	protected PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
 		return new FilteringPropertyValueModel<TypeMapping>(
-			buildMappingHolder(),
+			this.mappingHolder,
 			buildMappingFilter(key)
 		);
 	}
@@ -121,8 +123,8 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 
 	private Filter<TypeMapping> buildMappingFilter(final String key) {
 		return new Filter<TypeMapping>() {
-			public boolean accept(TypeMapping value) {
-				return (value == null) || key.equals(value.getKey());
+			public boolean accept(TypeMapping mapping) {
+				return (mapping == null || key == null) || key.equals(mapping.getKey());
 			}
 		};
 	}

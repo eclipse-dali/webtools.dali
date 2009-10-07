@@ -77,14 +77,21 @@ public abstract class AbstractJavaResourceUiDefinition
 	// ********** type mapping ui definitions **********
 	
 	public JpaComposite buildTypeMappingComposite(String key, PropertyValueModel<TypeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory) {
-		JavaTypeMappingUiDefinition<TypeMapping> mappingUiDefinition = 
-			(JavaTypeMappingUiDefinition<TypeMapping>) getSpecifiedJavaTypeMappingUiDefinition(key);
+		JavaTypeMappingUiDefinition<TypeMapping> mappingUiDefinition = getJavaTypeMappingUiDefinition(mappingHolder.getValue());
 		return mappingUiDefinition.buildTypeMappingComposite(
 			getFactory(), 
 			mappingHolder,
 			parent,
 			widgetFactory
 		);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected JavaTypeMappingUiDefinition<TypeMapping> getJavaTypeMappingUiDefinition(TypeMapping typeMapping) {
+		if (typeMapping == null || typeMapping.getKey() == null) {
+			return (JavaTypeMappingUiDefinition<TypeMapping>) getDefaultTypeMappingUiDefinition();
+		}
+		return (JavaTypeMappingUiDefinition<TypeMapping>) getSpecifiedJavaTypeMappingUiDefinition(typeMapping.getKey());
 	}
 	
 	protected JavaTypeMappingUiDefinition<? extends TypeMapping> getSpecifiedJavaTypeMappingUiDefinition(String mappingKey) {
