@@ -80,7 +80,7 @@ public class JpaPlatformExtensionTests extends ContextModelTestCase
 	}
 	
 	public void testAllJpaPlatformIds() {
-		assertTrue(CollectionTools.size(JpaPlatformRegistry.instance().jpaPlatformIds()) >= 2);
+		assertTrue(CollectionTools.size(JpaPlatformRegistry.instance().getJpaPlatformIds()) >= 2);
 	}
 	
 	public void testJpaPlatformLabel() {

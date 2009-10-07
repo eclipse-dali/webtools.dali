@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -29,9 +30,8 @@ import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.osgi.util.NLS;
@@ -450,37 +450,27 @@ public class JpaFacetDataModelProvider
 	}
 
 	private DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
-		final String jpaFacetVersion = getProjectFacetVersion().getVersionString();
-		Iterator<String> enabledPlatformIds = 
-				new FilteringIterator<String, String>(JpaPlatformRegistry.instance().jpaPlatformIds()) {
-					@Override
-					protected boolean accept(String platformId) {
-						return JpaPlatformRegistry.instance().
-								isPlatformEnabledForJpaFacetVersion(platformId, jpaFacetVersion);
-					}
-				};
-		Iterator<DataModelPropertyDescriptor> enabledPlatformDescriptors =
-				new TransformationIterator<String, DataModelPropertyDescriptor>(enabledPlatformIds) {
+		String jpaFacetVersion = this.getProjectFacetVersion().getVersionString();
+		Iterable<String> enabledPlatformIds = JpaPlatformRegistry.instance().getJpaPlatformIdsForJpaFacetVersion(jpaFacetVersion);
+		Iterable<DataModelPropertyDescriptor> enabledPlatformDescriptors =
+				new TransformationIterable<String, DataModelPropertyDescriptor>(enabledPlatformIds) {
 					@Override
 					protected DataModelPropertyDescriptor transform(String platformId) {
-						return buildPlatformIdDescriptor(platformId);
+						return JpaFacetDataModelProvider.this.buildPlatformIdDescriptor(platformId);
 					}
 				};
-		return ArrayTools.sort(
-				ArrayTools.array(enabledPlatformDescriptors, new DataModelPropertyDescriptor[0]),
-				buildDescriptorComparator());
+		return ArrayTools.sort(ArrayTools.array(enabledPlatformDescriptors, EMPTY_DMPD_ARRAY), DESCRIPTOR_COMPARATOR);
 	}
 
 	/**
 	 * sort the descriptors by 'description' (as opposed to 'value')
 	 */
-	private Comparator<DataModelPropertyDescriptor> buildDescriptorComparator() {
-		return new Comparator<DataModelPropertyDescriptor>() {
-				public int compare(DataModelPropertyDescriptor o1, DataModelPropertyDescriptor o2) {
-					return (o1.getPropertyDescription().compareTo(o2.getPropertyDescription()));
+	private static final Comparator<DataModelPropertyDescriptor> DESCRIPTOR_COMPARATOR =
+			new Comparator<DataModelPropertyDescriptor>() {
+				public int compare(DataModelPropertyDescriptor dmpd1, DataModelPropertyDescriptor dmpd2) {
+					return dmpd1.getPropertyDescription().compareTo(dmpd2.getPropertyDescription());
 				}
 			};
-	}
 
 	private DataModelPropertyDescriptor[] buildValidConnectionDescriptors() {
 		List<String> connectionNames = this.buildValidConnectionNames();

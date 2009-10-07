@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -23,8 +23,8 @@ import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -140,8 +140,8 @@ public class JpaPlatformRegistry {
 	 * Return the IDs for the registered JPA platforms.
 	 * This does not activate any of the JPA platforms' plug-ins.
 	 */
-	public Iterator<String> jpaPlatformIds() {
-		return new ReadOnlyIterator<String>(this.jpaPlatformConfigurationElements.keySet());
+	public Iterable<String> getJpaPlatformIds() {
+		return this.jpaPlatformConfigurationElements.keySet();
 	}
 
 	/**
@@ -160,16 +160,29 @@ public class JpaPlatformRegistry {
 	}
 	
 	/**
-	 * Return whether the JPA platform with the specified id supports the given JPA facet version.
+	 * Return the IDs for the registered JPA platforms that support the
+	 * specified JPA facet version.
 	 * This does not activate the JPA platforms' plug-in.
 	 */
-	public boolean isPlatformEnabledForJpaFacetVersion(String platformId, String jpaFacetVersion) {
-		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(platformId);
-		String specifiedJpaFacetVersion = configElement.getAttribute(JPA_FACET_VERSION_ATTRIBUTE_NAME);
-		return specifiedJpaFacetVersion == null
-				|| specifiedJpaFacetVersion.equals(jpaFacetVersion);
+	public Iterable<String> getJpaPlatformIdsForJpaFacetVersion(final String jpaFacetVersion) {
+		return new TransformationIterable<IConfigurationElement, String>(this.getConfigurationElementsForJpaFacetVersion(jpaFacetVersion)) {
+				@Override
+				protected String transform(IConfigurationElement configElement) {
+					return configElement.getAttribute(ID_ATTRIBUTE_NAME);
+				}
+			};
 	}
-	
+
+	private Iterable<IConfigurationElement> getConfigurationElementsForJpaFacetVersion(final String jpaFacetVersion) {
+		return new FilteringIterable<IConfigurationElement, IConfigurationElement>(this.jpaPlatformConfigurationElements.values()) {
+				@Override
+				protected boolean accept(IConfigurationElement configElement) {
+					String ver = configElement.getAttribute(JPA_FACET_VERSION_ATTRIBUTE_NAME);
+					return (ver == null) || ver.equals(jpaFacetVersion);
+				}
+			};
+	}
+
 	/**
 	 * Return the ID for a JPA platform registered as a default platform.
 	 * Returns null if there are no such registered platforms.
@@ -196,7 +209,7 @@ public class JpaPlatformRegistry {
 		String id = JptCorePlugin.getJpaPlatformId(project);
 		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(id);
 		if (configElement == null) {
-			JptCorePlugin.log(NLS.bind(JptCoreMessages.PLATFORM_ID_DOES_NOT_EXIST, id, project.getName()));
+			this.log(JptCoreMessages.PLATFORM_ID_DOES_NOT_EXIST, id, project.getName());
 			return null;
 		}
 		JpaPlatformFactory platformFactory;
