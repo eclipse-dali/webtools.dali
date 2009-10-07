@@ -2861,6 +2861,24 @@ public class ArrayToolsTests extends TestCase {
 		assertSame(a1, a2);
 	}
 
+	public void testFillBooleanArrayIntIntBoolean() {
+		boolean[] a1 = new boolean[9];
+		boolean[] a2 = ArrayTools.fill(a1, false);
+		int from = 3;
+		int to = 6;
+		boolean[] a3 = ArrayTools.fill(a2, from, to, true);
+		for (int i = 0; i < a1.length; i++) {
+			boolean b = a1[i];
+			if (i < from || i >= to) {
+				assertFalse(b);
+			} else {
+				assertTrue(b);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
 	// TODO
 
 
