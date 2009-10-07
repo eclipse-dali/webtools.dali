@@ -28,6 +28,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class CompositeCollectionValueModelTests extends TestCase {
 	private Neighborhood neighborhood;
 	private WritablePropertyValueModel<Neighborhood> neighborhoodHolder;
@@ -254,7 +255,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	/**
 	 * inner class
 	 */
-	private class Neighborhood extends AbstractModel {
+	public class Neighborhood extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 		private Collection<Family> families = new ArrayList<Family>();
@@ -330,7 +331,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	/**
 	 * inner class
 	 */
-	private class Family extends AbstractModel {
+	public class Family extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 		private Collection<Member> members = new ArrayList<Member>();
@@ -385,7 +386,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	/**
 	 * inner class
 	 */
-	private class Member extends AbstractModel {
+	public class Member extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 
