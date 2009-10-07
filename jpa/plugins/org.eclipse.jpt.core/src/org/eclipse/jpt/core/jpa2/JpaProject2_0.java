@@ -29,24 +29,6 @@ public interface JpaProject2_0
 	// ********** Canonical Metamodel **********
 
 	/**
-	 * ID string used when generatesMetamodel property is changed.
-	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
-	 */
-	String GENERATES_METAMODEL_PROPERTY = "generatesMetamodel"; //$NON-NLS-1$
-
-	/**
-	 * Return whether the JPA project will generate a Canonical Metamodel
-	 * automatically.
-	 */
-	boolean generatesMetamodel();
-
-	/**
-	 * Set whether the JPA project will generate a Canonical Metamodel
-	 * automatically.
-	 */
-	void setGeneratesMetamodel(boolean generatesMetamodel);
-
-	/**
 	 * ID string used when metamodelSourceFolderName property is changed.
 	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
@@ -76,6 +58,12 @@ public interface JpaProject2_0
 	 */
 	void synchronizeMetamodel(PersistentType persistentType);
 
+	/**
+	 * Return a list of the names of the Java source folders (that
+	 * can be used to hold the generated Canonical Metamodel).
+	 */
+	Iterable<String> getSourceFolderNames();
+
 
 	// ********** construction config **********
 
@@ -85,14 +73,9 @@ public interface JpaProject2_0
 	interface Config extends JpaProject.Config {
 
 		/**
-		 * Return whether the new JPA project is to generate a Canonical
-		 * Metamodel.
-		 */
-		boolean generatesMetamodel();
-
-		/**
 		 * Return the name of the folder that holds the generated Canonical
-		 * Metamodel.
+		 * Metamodel. Return null if the Canonical Metamodel is not to be
+		 * generated.
 		 */
 		String getMetamodelSourceFolderName();
 

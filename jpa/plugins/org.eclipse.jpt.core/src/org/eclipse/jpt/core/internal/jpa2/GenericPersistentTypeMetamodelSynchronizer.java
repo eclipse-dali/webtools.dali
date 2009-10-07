@@ -26,7 +26,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
@@ -50,14 +49,14 @@ import com.ibm.icu.text.DateFormat;
 public class GenericPersistentTypeMetamodelSynchronizer
 	implements PersistentTypeMetamodelSynchronizer
 {
-	protected final MetamodelSynchronizer metamodelSynchronizer;
+	protected final Owner owner;
 	protected final PersistentType persistentType;
 	protected final String metamodelClassName;
 
 
-	public GenericPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer staticMetamodelSynchronizer, PersistentType persistentType) {
+	public GenericPersistentTypeMetamodelSynchronizer(Owner owner, PersistentType persistentType) {
 		super();
-		this.metamodelSynchronizer = staticMetamodelSynchronizer;
+		this.owner = owner;
 		this.persistentType = persistentType;
 		this.metamodelClassName = this.buildMetamodelClassName();
 	}
@@ -77,7 +76,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 	}
 
 	protected IPackageFragment buildPackageFragment() {
-		IPackageFragmentRoot sourceFolder = this.metamodelSynchronizer.getSourceFolder();
+		IPackageFragmentRoot sourceFolder = this.owner.getSourceFolder();
 		String pkgName = this.getPackageName();
 		IPackageFragment packageFragment = sourceFolder.getPackageFragment(pkgName);
 		if (packageFragment.exists()) {
@@ -127,7 +126,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		int newEnd = newSource.indexOf('"', newBegin);
 		String newSource2 = newSource.replace(newSource.substring(newBegin, newEnd), "");
 
-		if ( ! newSource2.equals(oldSource2)) {
+		if ( ! newSource2.equals(oldSource2)) {  // replace the old file
 			pkg.createCompilationUnit(fileName, newSource, true, null);
 		}
 	}

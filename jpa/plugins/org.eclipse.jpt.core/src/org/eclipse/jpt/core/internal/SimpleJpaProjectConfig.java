@@ -24,7 +24,6 @@ public class SimpleJpaProjectConfig implements JpaProject2_0.Config {
 	protected String userOverrideDefaultCatalog;
 	protected String userOverrideDefaultSchema;
 	protected boolean discoverAnnotatedClasses;
-	protected boolean generatesMetamodel;
 	protected String metamodelSourceFolderName;
 
 	public SimpleJpaProjectConfig() {
@@ -77,14 +76,6 @@ public class SimpleJpaProjectConfig implements JpaProject2_0.Config {
 
 	public void setDiscoverAnnotatedClasses(boolean discoverAnnotatedClasses) {
 		this.discoverAnnotatedClasses = discoverAnnotatedClasses;
-	}
-
-	public boolean generatesMetamodel() {
-		return this.generatesMetamodel;
-	}
-
-	public void setGeneratesMetamodel(boolean generatesMetamodel) {
-		this.generatesMetamodel = generatesMetamodel;
 	}
 
 	public String getMetamodelSourceFolderName() {

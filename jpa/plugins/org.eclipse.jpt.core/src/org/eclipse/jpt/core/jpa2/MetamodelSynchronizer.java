@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2;
 
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 
 /**
@@ -24,9 +23,5 @@ import org.eclipse.jpt.core.context.PersistentType;
 public interface MetamodelSynchronizer {
 
 	void synchronize(PersistentType persistentType);
-
-	JpaProject2_0 getJpaProject();
-
-	IPackageFragmentRoot getSourceFolder();
 
 }

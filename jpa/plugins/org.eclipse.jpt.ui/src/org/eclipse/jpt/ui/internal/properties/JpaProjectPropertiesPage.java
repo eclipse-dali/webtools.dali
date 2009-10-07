@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -32,7 +33,6 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.core.JpaDataSource;
-import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaModelManager;
@@ -58,13 +58,14 @@ import org.eclipse.jpt.utility.internal.BooleanTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.AspectCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.BufferedWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrapper;
@@ -103,7 +104,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -144,7 +144,8 @@ public class JpaProjectPropertiesPage
 
 	private final PropertyValueModel<Boolean> jpa2_0ProjectFlagModel;
 
-	private final BufferedWritablePropertyValueModel<Boolean> generateMetamodelModel;
+	private final BufferedWritablePropertyValueModel<String> metamodelSourceFolderModel;
+	private final ListValueModel<String> javaSourceFolderChoicesModel;
 
 	private final ChangeListener validationListener;
 
@@ -180,7 +181,9 @@ public class JpaProjectPropertiesPage
 		this.listAnnotatedClassesModel = this.buildListAnnotatedClassesModel();
 
 		this.jpa2_0ProjectFlagModel = this.buildJpa2_0ProjectFlagModel();
-		this.generateMetamodelModel = this.buildGenerateMetamodelModel();
+
+		this.metamodelSourceFolderModel = this.buildMetamodelSourceFolderModel();
+		this.javaSourceFolderChoicesModel = this.buildJavaSourceFolderChoicesModel();
 
 		this.validationListener = this.buildValidationListener();
 		this.engageValidationListener();
@@ -312,9 +315,18 @@ public class JpaProjectPropertiesPage
 		return new Jpa2_0ProjectFlagModel(this.jpaProjectModel);
 	}
 
-	// ***** generate metamodel models
-	private BufferedWritablePropertyValueModel<Boolean> buildGenerateMetamodelModel() {
-		return new BufferedWritablePropertyValueModel<Boolean>(new GenerateMetamodelModel(this.jpaProjectModel), this.trigger);
+	// ***** metamodel models
+	private BufferedWritablePropertyValueModel<String> buildMetamodelSourceFolderModel() {
+		return new BufferedWritablePropertyValueModel<String>(new MetamodelSourceFolderModel(this.jpaProjectModel), this.trigger);
+	}
+
+	private ListValueModel<String> buildJavaSourceFolderChoicesModel() {
+		// by default, ExtendedListValueModelWrapper puts a null at the top of the list
+		return new ExtendedListValueModelWrapper<String>(
+					new SortedListValueModelAdapter<String>(
+						new JavaSourceFolderChoicesModel(this.jpaProjectModel)
+					)
+				);
 	}
 
 
@@ -354,9 +366,8 @@ public class JpaProjectPropertiesPage
 
 	@Override
 	public IProjectFacetVersion getProjectFacetVersion() {
-		final IProjectFacet jsfFacet = ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID);
-		final IFacetedProject fproj = getFacetedProject();
-		return fproj.getInstalledVersion( jsfFacet );
+		IProjectFacet jpaFacet = ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID);
+		return this.getFacetedProject().getInstalledVersion(jpaFacet);
 	}
 
 	@Override
@@ -410,33 +421,27 @@ public class JpaProjectPropertiesPage
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Combo platformCombo = this.buildCombo(group);
+		Combo platformDropDown = this.buildDropDown(group);
 		SWTTools.bind(
 				this.buildPlatformChoicesModel(),
 				this.platformIdModel,
-				platformCombo,
+				platformDropDown,
 				JPA_PLATFORM_LABEL_CONVERTER
 		);
 	}
 
 	private ListValueModel<String> buildPlatformChoicesModel() {
-		final String jpaFacetVersion = getProjectFacetVersion().getVersionString();
-		Iterator<String> enabledPlatformIds =
-				new FilteringIterator<String, String>(JpaPlatformRegistry.instance().jpaPlatformIds()) {
-					protected boolean accept(String jpaPlatformId) {
-						return JpaPlatformRegistry.instance().isPlatformEnabledForJpaFacetVersion(
-							jpaPlatformId, jpaFacetVersion);
-					}
-				};
+		String jpaFacetVersion = this.getProjectFacetVersion().getVersionString();
+		Iterable<String> enabledPlatformIds = JpaPlatformRegistry.instance().getJpaPlatformIdsForJpaFacetVersion(jpaFacetVersion);
 		return new StaticListValueModel<String>(
 				CollectionTools.sort(
 					CollectionTools.list(enabledPlatformIds), JPA_PLATFORM_COMPARATOR));
 	}
-	
+
 	private static final Comparator<String> JPA_PLATFORM_COMPARATOR =
 			new Comparator<String>() {
-				public int compare(String o1, String o2) {
-					return getJpaPlatformLabel(o1).compareTo(getJpaPlatformLabel(o2));
+				public int compare(String id1, String id2) {
+					return getJpaPlatformLabel(id1).compareTo(getJpaPlatformLabel(id2));
 				}
 			};
 
@@ -462,12 +467,12 @@ public class JpaProjectPropertiesPage
 
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 
-		Combo connectionCombo = this.buildCombo(group, 3);
+		Combo connectionDropDown = this.buildDropDown(group, 3);
 		SWTTools.bind(
 				CONNECTION_CHOICES_MODEL,
 				this.connectionModel,
-				connectionCombo,
-				this.buildConnectionStringConverter()
+				connectionDropDown,
+				SIMPLE_STRING_CONVERTER
 			);
 
 		Link addConnectionLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_connectionLink);
@@ -482,33 +487,28 @@ public class JpaProjectPropertiesPage
 		SWTTools.bind(this.userOverrideDefaultCatalogFlagModel, overrideDefaultCatalogCheckBox);
 
 		Label defaultCatalogLabel = this.buildLabel(group, JptUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
-		Combo defaultCatalogCombo = this.buildCombo(group);
-		SWTTools.bind(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogCombo);
+		Combo defaultCatalogDropDown = this.buildDropDown(group);
+		SWTTools.bind(this.catalogChoicesModel, this.defaultCatalogModel, defaultCatalogDropDown);
 
-		SWTTools.controlEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogCombo);
+		SWTTools.controlEnabledState(this.userOverrideDefaultCatalogFlagModel, defaultCatalogLabel, defaultCatalogDropDown);
 
 		// override default schema
 		Button overrideDefaultSchemaButton = this.buildCheckBox(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel);
 		SWTTools.bind(this.userOverrideDefaultSchemaFlagModel, overrideDefaultSchemaButton);
 
 		Label defaultSchemaLabel = this.buildLabel(group, JptUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
-		Combo defaultSchemaCombo = this.buildCombo(group);
-		SWTTools.bind(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaCombo);
+		Combo defaultSchemaDropDown = this.buildDropDown(group);
+		SWTTools.bind(this.schemaChoicesModel, this.defaultSchemaModel, defaultSchemaDropDown);
 
-		SWTTools.controlEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaCombo);
+		SWTTools.controlEnabledState(this.userOverrideDefaultSchemaFlagModel, defaultSchemaLabel, defaultSchemaDropDown);
 	}
 
-	private StringConverter<String> buildConnectionStringConverter() {
-		return new StringConverter<String>() {
-			public String convertToString(String o) {
-				return (! StringTools.stringIsEmpty(o)) ? o : JptUiMessages.JpaFacetWizardPage_none;
-			}
-			@Override
-			public String toString() {
-				return "connection string converter"; //$NON-NLS-1$
-			}
-		};
-	}
+	private static final StringConverter<String> SIMPLE_STRING_CONVERTER =
+			new StringConverter<String>() {
+				public String convertToString(String string) {
+					return (string != null) ? string : JptUiMessages.JpaFacetWizardPage_none;
+				}
+			};
 
 	private SelectionListener buildAddConnectionLinkListener() {
 		return new SelectionAdapter() {
@@ -572,13 +572,19 @@ public class JpaProjectPropertiesPage
 	private void buildMetamodelGroup(Composite composite) {
 		Group group = new Group(composite, SWT.NONE);
 		group.setText(JptUiMessages.JpaFacetWizardPage_metamodelLabel);
-		group.setLayout(new GridLayout());
+		group.setLayout(new GridLayout(3, false));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Button generateMetamodelCheckBox = this.buildCheckBox(group, 1, JptUiMessages.JpaFacetWizardPage_generateMetamodelLabel);
-		SWTTools.bind(this.generateMetamodelModel, generateMetamodelCheckBox);
+		Label metamodelSourceFolderLabel = this.buildLabel(group, JptUiMessages.JpaFacetWizardPage_metamodelSourceFolderLabel);
+		Combo metamodelSourceFolderDropDown = this.buildDropDown(group);
+		SWTTools.bind(
+				this.javaSourceFolderChoicesModel,
+				this.metamodelSourceFolderModel,
+				metamodelSourceFolderDropDown,
+				SIMPLE_STRING_CONVERTER
+		);
 
-		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, generateMetamodelCheckBox);
+		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, metamodelSourceFolderLabel, metamodelSourceFolderDropDown);
 	}
 
 
@@ -601,11 +607,11 @@ public class JpaProjectPropertiesPage
 		return button;
 	}
 
-	private Combo buildCombo(Composite parent) {
-		return this.buildCombo(parent, 1);
+	private Combo buildDropDown(Composite parent) {
+		return this.buildDropDown(parent, 1);
 	}
 
-	private Combo buildCombo(Composite parent, int horizontalSpan) {
+	private Combo buildDropDown(Composite parent, int horizontalSpan) {
 		Combo combo = new Combo(parent, SWT.READ_ONLY);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = horizontalSpan;
@@ -712,7 +718,7 @@ public class JpaProjectPropertiesPage
 				this.userOverrideDefaultSchemaFlagModel,
 				this.userOverrideDefaultSchemaModel,
 				this.discoverAnnotatedClassesModel,
-				this.generateMetamodelModel
+				this.metamodelSourceFolderModel
 		};
 	}
 
@@ -1277,33 +1283,56 @@ public class JpaProjectPropertiesPage
 
 
 	/**
-	 * Flag on the JPA (2.0) project indicating whether it should generate the
-	 * Canonical Metamodel.
+	 * The folder where the source for the generated Canonical Metamodel
+	 * is written.
 	 */
-	static class GenerateMetamodelModel
-		extends PropertyAspectAdapter<JpaProject, Boolean>
+	static class MetamodelSourceFolderModel
+		extends PropertyAspectAdapter<JpaProject, String>
 	{
-		GenerateMetamodelModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
-			super(jpaProjectModel, JpaProject2_0.GENERATES_METAMODEL_PROPERTY);
+		MetamodelSourceFolderModel(PropertyValueModel<JpaProject> jpaProjectModel) {
+			super(jpaProjectModel, JpaProject2_0.METAMODEL_SOURCE_FOLDER_NAME_PROPERTY);
 		}
 
 		@Override
-		protected Boolean buildValue_() {
-			return Boolean.valueOf(this.jpaProjectGeneratesMetamodel());
-		}
-
-		protected boolean jpaProjectGeneratesMetamodel() {
-			return this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0) &&
-					((JpaProject2_0) this.subject).generatesMetamodel();
+		protected String buildValue_() {
+			return jpaProjectIsJpa2_0() ? ((JpaProject2_0) this.subject).getMetamodelSourceFolderName() : null;
 		}
 
 		@Override
-		protected void setValue_(Boolean value) {
-			if (this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-				((JpaProject2_0) this.subject).setGeneratesMetamodel(value.booleanValue());
+		protected void setValue_(String value) {
+			if (this.jpaProjectIsJpa2_0()) {
+				((JpaProject2_0) this.subject).setMetamodelSourceFolderName(value);
 			}
 		}
+
+		private boolean jpaProjectIsJpa2_0() {
+			return this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
+		}
 	}
+
+
+	/**
+	 * Java project source folders.
+	 */
+	static class JavaSourceFolderChoicesModel
+		extends CollectionAspectAdapter<JpaProject, String>
+	{
+		JavaSourceFolderChoicesModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
+			super(jpaProjectModel);
+		}
+
+		@Override
+		protected Iterable<String> getIterable() {
+			return this.jpaProjectIsJpa2_0() ?
+					((JpaProject2_0) this.subject).getSourceFolderNames() :
+					EmptyIterable.<String>instance();
+		}
+
+		private boolean jpaProjectIsJpa2_0() {
+			return this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
+		}
+	}
+
 
 	/**
 	 * Abstract property aspect adapter for DTP connection profile connection/database

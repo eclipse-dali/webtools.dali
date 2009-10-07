@@ -61,8 +61,8 @@ public class GenericJpaFactory2_0
 	}
 	
 	@Override
-	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer metamodelSynchronizer, PersistentType persistentType) {
-		return new GenericPersistentTypeMetamodelSynchronizer(metamodelSynchronizer, persistentType);
+	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentTypeMetamodelSynchronizer.Owner owner, PersistentType persistentType) {
+		return new GenericPersistentTypeMetamodelSynchronizer(owner, persistentType);
 	}
 	
 	

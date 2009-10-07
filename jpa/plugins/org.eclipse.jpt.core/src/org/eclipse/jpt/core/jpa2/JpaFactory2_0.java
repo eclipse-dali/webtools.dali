@@ -36,7 +36,7 @@ public interface JpaFactory2_0
 
 	MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject);
 
-	PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer metamodelSynchronizer, PersistentType persistentType);
+	PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentTypeMetamodelSynchronizer.Owner owner, PersistentType persistentType);
 
 	
 	// ********** Java Context Model **********

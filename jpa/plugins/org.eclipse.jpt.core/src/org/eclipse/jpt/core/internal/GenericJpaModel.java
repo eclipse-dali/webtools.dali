@@ -138,7 +138,6 @@ public class GenericJpaModel
 		config.setUserOverrideDefaultCatalog(JptCorePlugin.getUserOverrideDefaultCatalog(project));
 		config.setUserOverrideDefaultSchema(JptCorePlugin.getUserOverrideDefaultSchema(project));
 		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
-		config.setGeneratesMetamodel(JptCorePlugin.generateMetamodel(project));
 		config.setMetamodelSourceFolderName(JptCorePlugin.getMetamodelSourceFolderName(project));
 		return config;
 	}

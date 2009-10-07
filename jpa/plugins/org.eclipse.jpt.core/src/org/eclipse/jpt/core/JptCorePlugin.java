@@ -101,12 +101,6 @@ public class JptCorePlugin extends Plugin {
 	public static final String DISCOVER_ANNOTATED_CLASSES = PLUGIN_ID_ + "discoverAnnotatedClasses";  //$NON-NLS-1$
 
 	/**
-	 * The key for storing a JPA project's "generate metamodel" flag in the Eclipse
-	 * project's preferences.
-	 */
-	public static final String GENERATE_METAMODEL = PLUGIN_ID_ + "generateMetamodel";  //$NON-NLS-1$
-
-	/**
 	 * The key for storing the name of a JPA project's metamodel source folder
 	 * in the Eclipse project's preferences.
 	 */
@@ -485,29 +479,11 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return the JPA "generate metamodel" flag associated with the specified
-	 * Eclipse project.
-	 */
-	public static boolean generateMetamodel(IProject project) {
-		return getProjectPreferences(project).getBoolean(GENERATE_METAMODEL, false);
-	}
-
-	/**
-	 * Set the JPA "generate metamodel" flag associated with the specified
-	 * Eclipse project.
-	 */
-	public static void setGenerateMetamodel(IProject project, boolean generateMetamodel) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		prefs.putBoolean(GENERATE_METAMODEL, generateMetamodel);
-		flush(prefs);
-	}
-
-	/**
 	 * Return the name of the metamodel source folder associated with the
 	 * specified Eclipse project.
 	 */
 	public static String getMetamodelSourceFolderName(IProject project) {
-		return getProjectPreferences(project).get(METAMODEL_SOURCE_FOLDER_NAME, "src");
+		return getProjectPreferences(project).get(METAMODEL_SOURCE_FOLDER_NAME, null);
 	}
 
 	/**
@@ -538,8 +514,8 @@ public class JptCorePlugin extends Plugin {
 	public static String getConnectionProfileName(IProject project) {
 		try {
 			String connectionProfileName = project.getPersistentProperty(DATA_SOURCE_CONNECTION_PROFILE_NAME);
-			// the properties system will return an empty string if we have mistakenly stored one
-			// (which it turns out we have at times) rather than null
+			// some old connection profile names were stored as empty strings instead of nulls :-(
+			// convert them here
 			return (StringTools.stringIsEmpty(connectionProfileName)) ? null : connectionProfileName;
 		} catch (CoreException ex) {
 			log(ex);

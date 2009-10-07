@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2;
 
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 
 /**
@@ -20,23 +18,25 @@ import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 public class NullMetamodelSynchronizer
 	implements MetamodelSynchronizer
 {
-	protected final JpaProject2_0 jpaProject;
+	// singleton
+	private static final NullMetamodelSynchronizer INSTANCE = new NullMetamodelSynchronizer();
 
-	public NullMetamodelSynchronizer(JpaProject2_0 jpaProject) {
+	/**
+	 * Return the singleton.
+	 */
+	public static MetamodelSynchronizer instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private NullMetamodelSynchronizer() {
 		super();
-		this.jpaProject = jpaProject;
 	}
 
 	public void synchronize(PersistentType persistentType) {
-		//no-op
-	}
-
-	public JpaProject2_0 getJpaProject() {
-		return this.jpaProject;
-	}
-
-	public IPackageFragmentRoot getSourceFolder() {
-		return this.jpaProject.getMetamodelPackageFragmentRoot();
+		// NOP
 	}
 
 }

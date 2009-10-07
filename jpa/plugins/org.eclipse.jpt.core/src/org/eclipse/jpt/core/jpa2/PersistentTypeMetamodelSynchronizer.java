@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2;
 
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+
 /**
  * JPA 2.0 Canonical Metamodel.
  * <p>
@@ -21,5 +23,9 @@ package org.eclipse.jpt.core.jpa2;
 public interface PersistentTypeMetamodelSynchronizer {
 
 	void synchronize();
+
+	interface Owner {
+		IPackageFragmentRoot getSourceFolder();
+	}
 
 }

@@ -154,10 +154,10 @@ public abstract class AbstractJpaFactory
 	}
 	
 	public MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject) {
-		return new NullMetamodelSynchronizer(jpaProject);
+		return NullMetamodelSynchronizer.instance();
 	}
 	
-	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(MetamodelSynchronizer metamodelSynchronizer, PersistentType persistentType) {
+	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentTypeMetamodelSynchronizer.Owner owner, PersistentType persistentType) {
 		return new NullPersistentTypeMetamodelSynchronizer();
 	}
 	

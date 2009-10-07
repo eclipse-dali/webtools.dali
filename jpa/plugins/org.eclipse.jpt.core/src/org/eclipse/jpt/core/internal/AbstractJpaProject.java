@@ -68,9 +68,11 @@ import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
@@ -182,7 +184,6 @@ public abstract class AbstractJpaProject
 
 	// ********** metamodel **********
 
-	protected boolean generatesMetamodel;
 	protected String metamodelSourceFolderName;
 	protected final MetamodelSynchronizer metamodelSynchronizer;
 	protected final Job metamodelSynchronizationJob;
@@ -212,7 +213,6 @@ public abstract class AbstractJpaProject
 
 		this.rootContextNode = this.buildRootContextNode();
 
-		this.generatesMetamodel = config.generatesMetamodel();
 		this.metamodelSourceFolderName = config.getMetamodelSourceFolderName();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
 		this.metamodelSynchronizationJob = this.buildMetamodelSynchronizationJob();
@@ -943,17 +943,6 @@ public abstract class AbstractJpaProject
 
 	// ********** metamodel **********
 
-	public boolean generatesMetamodel() {
-		return this.generatesMetamodel;
-	}
-
-	public void setGeneratesMetamodel(boolean generatesMetamodel) {
-		boolean old = this.generatesMetamodel;
-		this.generatesMetamodel = generatesMetamodel;
-		JptCorePlugin.setGenerateMetamodel(this.project, generatesMetamodel);
-		this.firePropertyChanged(GENERATES_METAMODEL_PROPERTY, old, generatesMetamodel);
-	}
-
 	public String getMetamodelSourceFolderName() {
 		return this.metamodelSourceFolderName;
 	}
@@ -970,7 +959,7 @@ public abstract class AbstractJpaProject
 	 */
 	public void synchronizeMetamodel() {
 		if (this.isJpa2_0Compatible()) {
-			if (this.generatesMetamodel) {
+			if (this.metamodelSourceFolderName != null) {
 				this.metamodelSynchronizationJob.schedule();
 			}
 		}
@@ -990,6 +979,51 @@ public abstract class AbstractJpaProject
 
 	protected IFolder getMetaModelSourceFolder() {
 		return this.getProject().getFolder(this.metamodelSourceFolderName);
+	}
+
+
+	// ********** source folder names **********
+
+	public Iterable<String> getSourceFolderNames() {
+		try {
+			return this.getSourceFolderNames_();
+		} catch (JavaModelException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	protected Iterable<String> getSourceFolderNames_() throws JavaModelException {
+		return new TransformationIterable<IPackageFragmentRoot, String>(this.getSourceFolders()) {
+			@Override
+			protected String transform(IPackageFragmentRoot pfr) {
+				return pfr.getElementName();
+			}
+		};
+	}
+
+	protected Iterable<IPackageFragmentRoot> getSourceFolders() throws JavaModelException {
+		return new FilteringIterable<IPackageFragmentRoot, IPackageFragmentRoot>(
+				this.getPackageFragmentRoots(),
+				SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER
+			);
+	}
+
+	protected static final Filter<IPackageFragmentRoot> SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER =
+		new Filter<IPackageFragmentRoot>() {
+			public boolean accept(IPackageFragmentRoot pfr) {
+				try {
+					return this.accept_(pfr);
+				} catch (JavaModelException ex) {
+					return false;
+				}
+			}
+			private boolean accept_(IPackageFragmentRoot pfr) throws JavaModelException {
+				return pfr.exists() && (pfr.getKind() == IPackageFragmentRoot.K_SOURCE);
+			}
+		};
+
+	protected Iterable<IPackageFragmentRoot> getPackageFragmentRoots() throws JavaModelException {
+		return new ArrayIterable<IPackageFragmentRoot>(this.getJavaProject().getPackageFragmentRoots());
 	}
 
 
