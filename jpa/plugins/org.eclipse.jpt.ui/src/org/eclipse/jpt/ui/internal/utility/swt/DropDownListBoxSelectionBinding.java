@@ -24,6 +24,11 @@ import org.eclipse.swt.events.SelectionListener;
  * This binding can be used to keep a drop-down list box's selection
  * synchronized with a model. The selection can be modified by either the
  * drop-down list box or the model, so changes must be coordinated.
+ * <p>
+ * <strong>NB:</strong> A selected item value of <code>null</code> can be used
+ * to clear the drop-down list box's selection; but if <code>null</code> is a
+ * valid item in the model list, there will be <em>no</em> way to clear the
+ * selection.
  * 
  * @see ListValueModel
  * @see WritablePropertyValueModel
@@ -130,13 +135,13 @@ final class DropDownListBoxSelectionBinding<E>
 	/**
 	 * Modifying the drop-down lisb box's selected item programmatically does
 	 * not trigger a SelectionEvent.
-	 * 
+	 * <p>
 	 * Pre-condition: The drop-down list box is not disposed.
 	 */
 	public void synchronizeListWidgetSelection() {
 		int oldIndex = this.dropdownListBox.getSelectionIndex();
 		E value = this.selectedItemHolder.getValue();
-		int newIndex = (value == null) ? -1 : this.indexOf(value);
+		int newIndex = this.indexOf(value);
 		if ((oldIndex != -1) && (newIndex != -1) && (newIndex != oldIndex)) {
 			this.dropdownListBox.deselect(oldIndex);
 		}
@@ -177,6 +182,10 @@ final class DropDownListBoxSelectionBinding<E>
 			if (Tools.valuesAreEqual(this.listHolder.get(i), item)) {
 				return i;
 			}
+		}
+		// if 'null' is not in the list, use it to clear the selection
+		if (item == null) {
+			return -1;
 		}
 		// explicitly catch any model bugs
 		throw new IllegalStateException("selected item not found: " + item);
