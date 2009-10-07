@@ -29,13 +29,18 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
  *     implement this method to add the appropriate listener to the subject
  * <li>{@link #disengageSubject_()}<p>
  *     implement this method to remove the appropriate listener from the subject
- * <li>{@link #iterator_()}<p>
- *     at the very minimum, override this method to return an iterator on the
- *     subject's collection aspect; it does not need to be overridden if
- *     {@link #iterator()} is overridden and its behavior changed
+ * <li>{@link #getIterable()}<p>
+ *     at the very minimum, override this method to return an iterable containing the
+ *     subject's collection aspect; it does not need to be overridden if either
+ *     {@link #iterator_()} or {@link #iterator()} is overridden and its behavior changed
  * <li>{@link #size_()}<p>
  *     override this method to improve performance; it does not need to be overridden if
  *     {@link #size()} is overridden and its behavior changed
+ * <li>{@link #iterator_()}<p>
+ *     override this method to return an iterator on the
+ *     subject's collection aspect if it is not possible to implement {@link #getIterable()};
+ *     it does not need to be overridden if
+ *     {@link #iterator()} is overridden and its behavior changed
  * <li>{@link #iterator()}<p>
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
@@ -77,6 +82,15 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 	 * @see #iterator()
 	 */
 	protected Iterator<E> iterator_() {
+		return this.getIterable().iterator();
+	}
+
+	/**
+	 * Return the elements of the subject's collection aspect.
+	 * At this point we can be sure the subject is not null.
+	 * @see #iterator_()
+	 */
+	protected Iterable<E> getIterable() {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 

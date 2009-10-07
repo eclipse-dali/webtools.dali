@@ -28,8 +28,9 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
  * <p>
  * The typical subclass will override the following methods (see the descriptions
  * in {@link AspectCollectionValueModelAdapter}):<ul>
- * <li>{@link #iterator_()}
+ * <li>{@link #getIterable()}
  * <li>{@link #size_()}
+ * <li>{@link #iterator_()}
  * <li>{@link #iterator()}
  * <li>{@link #size()}
  * </ul>
