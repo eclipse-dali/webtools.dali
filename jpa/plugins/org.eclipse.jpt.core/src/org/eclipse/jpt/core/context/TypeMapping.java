@@ -90,13 +90,6 @@ public interface TypeMapping extends JpaContextNode {
 	Iterator<AttributeMapping> allAttributeMappings();
 
 	/**
-	 * Return an Iterator of column mapping attributes that can be overridden by a 
-	 * sub type mapping. The attribute mapping type is used to determine if
-	 * the attribute is overridable.
-	 */
-	<T extends ColumnMapping> Iterator<T> overridableAttributes();
-
-	/**
 	/**
 	 * Return an Iterator of attribute names that can be overridden by a 
 	 * sub type mapping.
@@ -106,23 +99,18 @@ public interface TypeMapping extends JpaContextNode {
 	Iterator<String> overridableAttributeNames();
 
 	/**
-	 * Return an Iterator of all column mapping attributes that can be overridden in this
-	 * type mapping.  The attribute mapping type is used to determine if
-	 * the attribute is overridable.
-	 * 
-	 * See
-	 * {@link TypeMapping#overridableAttributes()} and
-	 * {@link PersistentType#inheritanceHierarchy()}
-	 */
-	Iterator<ColumnMapping> allOverridableAttributes();
-
-	/**
 	 * Return an Iterator of all attribute names that can be overridden in this
 	 * type mapping.
 	 * @see
 	 * {@link TypeMapping#allOverridableAttributes()}
 	 */
 	Iterator<String> allOverridableAttributeNames();
+	
+	/**
+	 * Returns the Column of the overridable attribute mapping with the given 
+	 * attribute name. In 2.0 this name could use dot-notation for nested mappings.
+	 */
+	Column resolveOverrideColumn(String attributeName);
 
 	/**
 	 * Return an Iterator of associations that can be overridden by a 

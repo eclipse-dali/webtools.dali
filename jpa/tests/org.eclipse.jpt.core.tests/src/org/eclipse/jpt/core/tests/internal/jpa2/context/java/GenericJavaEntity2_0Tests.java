@@ -19,14 +19,14 @@ import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.MappedSuperclass;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
-import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -156,6 +156,122 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
+	
+	private void createTestMappedSuperclassCustomer() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.MAPPED_SUPERCLASS);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR);
+					sb.append(CR);
+				sb.append("@MappedSuperclass");
+				sb.append(CR);
+				sb.append("public class ").append("Customer ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private String id;").append(CR);
+				sb.append(CR);
+				sb.append("    private String name;").append(CR);
+				sb.append(CR);
+				sb.append("    @Embedded").append(CR);
+				sb.append("    private Address address;").append(CR);
+				sb.append(CR);
+			sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Customer.java", sourceWriter);
+	}
+	
+	private void createTestEntityLongTimeCustomer() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR);
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("LongTimeCustomer extends Customer ");
+				sb.append("{}");
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "LongTimeCustomer.java", sourceWriter);
+	}
+
+
+	private void createTestEmbeddableAddress() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR);
+					sb.append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("Address").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    private String street;").append(CR);
+				sb.append(CR);
+				sb.append("    private String city;").append(CR);
+				sb.append(CR);
+				sb.append("    private String state;").append(CR);
+				sb.append(CR);
+				sb.append("    @Embedded").append(CR);
+				sb.append("    private ZipCode zipCode;").append(CR);
+				sb.append(CR);
+			sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+	}
+	
+	private void createTestEmbeddableZipCode() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("ZipCode").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    private String zip;").append(CR);
+				sb.append(CR);
+				sb.append("    private String plusfour;").append(CR);
+				sb.append(CR);
+			sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
+	}
 
 	public void testAttributeMappingKeyAllowed() throws Exception {
 		createTestEntity();
@@ -178,15 +294,15 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<JavaColumnMapping> overridableAttributes = getJavaEntity().overridableAttributes();
+		Iterator<String> overridableAttributes = getJavaEntity().overridableAttributeNames();
 		assertFalse(overridableAttributes.hasNext());
 		
 		
 		getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributes = getJavaEntity().overridableAttributes();		
-		assertEquals("id", overridableAttributes.next().getName());
-		assertEquals("name", overridableAttributes.next().getName());
+		overridableAttributes = getJavaEntity().overridableAttributeNames();		
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 	}
 
@@ -212,10 +328,10 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<ColumnMapping> overridableAttributes = getJavaEntity().allOverridableAttributes();
-		assertEquals("id", overridableAttributes.next().getName());
-		assertEquals("name", overridableAttributes.next().getName());
-		assertEquals("foo", overridableAttributes.next().getName());
+		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
+		assertEquals("foo", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 	}
 	
@@ -225,17 +341,20 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<ColumnMapping> overridableAttributes = getJavaEntity().allOverridableAttributes();
-		assertEquals("id", overridableAttributes.next().getName());
-		assertEquals("name", overridableAttributes.next().getName());
-		assertEquals("foo", overridableAttributes.next().getName());
+		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
+		assertEquals("foo", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 		
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
-		overridableAttributes = abstractEntity.allOverridableAttributes();
+		overridableAttributes = abstractEntity.allOverridableAttributeNames();
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
+		assertEquals("foo", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 	}
 	
@@ -266,10 +385,10 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<ColumnMapping> overridableAttributes = getJavaEntity().allOverridableAttributes();
-		assertEquals("id", overridableAttributes.next().getName());
-		assertEquals("name", overridableAttributes.next().getName());
-		assertEquals("foo", overridableAttributes.next().getName());
+		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
+		assertEquals("foo", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 	}
 
@@ -1207,5 +1326,120 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("address4", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
 		assertFalse(virtualAssociationOverrides.hasNext());
+	}
+	
+	
+	public void testNestedVirtualAttributeOverrides() throws Exception {
+		createTestMappedSuperclassCustomer();
+		createTestEntityLongTimeCustomer();
+		createTestEmbeddableAddress();
+		createTestEmbeddableZipCode();
+		
+		addXmlClassRef(PACKAGE_NAME + ".Customer");
+		addXmlClassRef(PACKAGE_NAME + ".LongTimeCustomer");
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".ZipCode");
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		PersistentType customerPersistentType = specifiedClassRefs.next().getJavaPersistentType();
+		PersistentType longTimeCustomerPersistentType = specifiedClassRefs.next().getJavaPersistentType();
+		PersistentType addressPersistentType = specifiedClassRefs.next().getJavaPersistentType();		
+		PersistentType zipCodePersistentType = specifiedClassRefs.next().getJavaPersistentType();
+
+		AttributeOverrideContainer attributeOverrideContainer = ((Entity) longTimeCustomerPersistentType.getMapping()).getAttributeOverrideContainer();
+		
+		assertEquals(7, attributeOverrideContainer.virtualAttributeOverridesSize());
+		ListIterator<AttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.virtualAttributeOverrides();
+		AttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("id", virtualAttributeOverride.getName());
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", virtualAttributeOverride.getName());
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("address.street", virtualAttributeOverride.getName());
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("address.city", virtualAttributeOverride.getName());
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("address.state", virtualAttributeOverride.getName());
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("address.zipCode.zip", virtualAttributeOverride.getName());
+		assertEquals("zip", virtualAttributeOverride.getColumn().getName());
+		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTable());		
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
+		assertEquals("plusfour", virtualAttributeOverride.getColumn().getName());
+		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals(null, virtualAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, virtualAttributeOverride.getColumn().isUnique());
+		assertEquals(true, virtualAttributeOverride.getColumn().isNullable());
+		assertEquals(255, virtualAttributeOverride.getColumn().getLength());
+		assertEquals(0, virtualAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, virtualAttributeOverride.getColumn().getScale());
+
+		
+		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
+		plusFourMapping.getColumn().setSpecifiedName("BLAH");
+		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
+		plusFourMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
+		plusFourMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
+		plusFourMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
+		plusFourMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
+		plusFourMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
+		plusFourMapping.getColumn().setSpecifiedLength(Integer.valueOf(5));
+		plusFourMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
+		plusFourMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
+
+		attributeOverrideContainer = ((Entity) longTimeCustomerPersistentType.getMapping()).getAttributeOverrideContainer();
+		//check the top-level embedded (Customer.address) attribute override to verify it is getting settings from the specified column on Zipcode.plusfour
+		virtualAttributeOverride = attributeOverrideContainer.getAttributeOverrideNamed("address.zipCode.plusfour");
+		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
+		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
+		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());
+		assertEquals(true, virtualAttributeOverride.getColumn().isUnique());
+		assertEquals(false, virtualAttributeOverride.getColumn().isNullable());
+		assertEquals(5, virtualAttributeOverride.getColumn().getLength());
+		assertEquals(6, virtualAttributeOverride.getColumn().getPrecision());
+		assertEquals(7, virtualAttributeOverride.getColumn().getScale());
+		
+		//set an attribute override on Address.zipCode embedded mapping
+		AttributeOverride specifiedAttributeOverride = ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getAttributeOverrideNamed("plusfour").setVirtual(false);
+		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
+		specifiedAttributeOverride.getColumn().setSpecifiedTable("BLAH_TABLE_OVERRIDE");
+		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");
+
+
+		attributeOverrideContainer = ((Entity) longTimeCustomerPersistentType.getMapping()).getAttributeOverrideContainer();
+		virtualAttributeOverride = attributeOverrideContainer.getAttributeOverrideNamed("address.zipCode.plusfour");
+		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
+		assertEquals("BLAH_OVERRIDE", virtualAttributeOverride.getColumn().getName());
+		assertEquals("BLAH_TABLE_OVERRIDE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("COLUMN_DEFINITION_OVERRIDE", virtualAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, virtualAttributeOverride.getColumn().isUnique());
+		assertEquals(true, virtualAttributeOverride.getColumn().isNullable());
+		assertEquals(255, virtualAttributeOverride.getColumn().getLength());
+		assertEquals(0, virtualAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, virtualAttributeOverride.getColumn().getScale());
+		
+		specifiedAttributeOverride = virtualAttributeOverride.setVirtual(false);
+		assertEquals(false, specifiedAttributeOverride.isVirtual());
+		assertEquals("address.zipCode.plusfour", specifiedAttributeOverride.getName());
+		//TODO I have the default wrong in this case, but this was wrong before as well.  Need to fix this later
+//		assertEquals("plusfour", specifiedAttributeOverride.getColumn().getDefaultName());
+		assertEquals("BLAH_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedName());
+//		assertEquals("Customer", specifiedAttributeOverride.getColumn().getDefaultTable());	
+		assertEquals(null, specifiedAttributeOverride.getColumn().getSpecifiedTable());	
+		assertEquals(null, specifiedAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, specifiedAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, specifiedAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, specifiedAttributeOverride.getColumn().isUnique());
+		assertEquals(true, specifiedAttributeOverride.getColumn().isNullable());
+		assertEquals(255, specifiedAttributeOverride.getColumn().getLength());
+		assertEquals(0, specifiedAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, specifiedAttributeOverride.getColumn().getScale());
 	}
 }

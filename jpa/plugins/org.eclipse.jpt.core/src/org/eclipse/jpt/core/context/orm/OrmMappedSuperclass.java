@@ -30,8 +30,6 @@ public interface OrmMappedSuperclass
 	 * Return null if there is no java persistent type or it is not a mapped superclass.
 	 */
 	JavaMappedSuperclass getJavaMappedSuperclass();
-		
-	Iterator<OrmColumnMapping> overridableAttributes();
 
 	Iterator<OrmRelationshipMapping> overridableAssociations();
 

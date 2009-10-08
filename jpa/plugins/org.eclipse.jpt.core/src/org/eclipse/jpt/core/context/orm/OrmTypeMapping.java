@@ -84,9 +84,6 @@ public interface OrmTypeMapping
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeMapping> attributeMappings();
-
-	@SuppressWarnings("unchecked")
-	Iterator<OrmColumnMapping> overridableAttributes();
 	
 	@SuppressWarnings("unchecked")
 	Iterator<OrmRelationshipMapping> overridableAssociations();

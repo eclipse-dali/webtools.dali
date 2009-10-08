@@ -12,10 +12,11 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -42,7 +43,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 
 	protected final OrmColumn column;
 
-	public GenericOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride resourceAttributeOverride) {
+	public GenericOrmAttributeOverride(OrmAttributeOverrideContainer parent, AttributeOverride.Owner owner, XmlAttributeOverride resourceAttributeOverride) {
 		super(parent);
 		this.owner = owner;
 		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
@@ -94,27 +95,27 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 	}
 	
 	public String getDefaultColumnName() {
-		ColumnMapping columnMapping = getColumnMapping();
-		if (columnMapping == null) {
+		Column column = resolveOverridenColumn();
+		if (column == null) {
 			return null;
 		}
-		return columnMapping.getColumn().getName();
+		return column.getName();
 	}
 	
 	public String getDefaultTableName() {
-		ColumnMapping columnMapping = getColumnMapping();
-		if (columnMapping == null) {
+		Column column = resolveOverridenColumn();
+		if (column == null) {
 			return null;
 		}
-		String tableName = columnMapping.getColumn().getSpecifiedTable();
+		String tableName = column.getSpecifiedTable();
 		if (tableName != null) {
 			return tableName;
 		}
 		return getOwner().getTypeMapping().getPrimaryTableName();
 	}
 	
-	protected ColumnMapping getColumnMapping() {
-		return getOwner().getColumnMapping(getName());
+	protected Column resolveOverridenColumn() {
+		return getOwner().resolveOverridenColumn(getName());
 	}
 
 	public boolean isVirtual() {

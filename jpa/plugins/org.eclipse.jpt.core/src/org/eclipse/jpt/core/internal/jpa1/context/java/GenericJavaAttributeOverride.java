@@ -13,11 +13,11 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaColumn;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -36,7 +36,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	protected final JavaColumn column;
 	
 
-	public GenericJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {
+	public GenericJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverride.Owner owner) {
 		super(parent, owner);
 		this.column = getJpaFactory().buildJavaColumn(this, this);
 	}
@@ -65,27 +65,27 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	public String getDefaultColumnName() {
-		ColumnMapping columnMapping = getColumnMapping();
-		if (columnMapping == null) {
+		Column column = resolveOverridenColumn();
+		if (column == null) {
 			return null;
 		}
-		return columnMapping.getColumn().getName();
+		return column.getName();
 	}
 	
 	public String getDefaultTableName() {
-		ColumnMapping columnMapping = getColumnMapping();
-		if (columnMapping == null) {
+		Column column = resolveOverridenColumn();
+		if (column == null) {
 			return null;
 		}
-		String tableName = columnMapping.getColumn().getSpecifiedTable();
+		String tableName = column.getSpecifiedTable();
 		if (tableName != null) {
 			return tableName;
 		}
 		return getOwner().getTypeMapping().getPrimaryTableName();
 	}
 	
-	protected ColumnMapping getColumnMapping() {
-		return getOwner().getColumnMapping(getName());
+	protected Column resolveOverridenColumn() {
+		return getOwner().resolveOverridenColumn(getName());
 	}
 
 	//************* IColumn.Owner implementation **************

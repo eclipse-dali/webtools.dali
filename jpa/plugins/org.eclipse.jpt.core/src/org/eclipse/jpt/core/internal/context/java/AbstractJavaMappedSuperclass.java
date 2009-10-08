@@ -13,7 +13,6 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
@@ -103,16 +102,6 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 	
 	protected void removeResourceIdClass() {
 		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-	}
-
-	@Override
-	public Iterator<JavaColumnMapping> overridableAttributes() {
-		return new FilteringIterator<JavaAttributeMapping, JavaColumnMapping>(this.attributeMappings()) {
-			@Override
-			protected boolean accept(JavaAttributeMapping o) {
-				return o.isOverridableAttributeMapping();
-			}
-		};
 	}
 
 	@Override

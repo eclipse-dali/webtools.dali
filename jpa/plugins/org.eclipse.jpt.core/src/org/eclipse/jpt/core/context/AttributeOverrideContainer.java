@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -79,9 +78,6 @@ public interface AttributeOverrideContainer
 	
 	interface Owner
 	{
-		Iterator<ColumnMapping> allOverridableAttributes();
-		
-		Iterator<String> allOverridableAttributeNames();
 		
 		/**
 		 * Return the type mapping of the owning persistent type.

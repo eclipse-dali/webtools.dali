@@ -17,12 +17,12 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.VirtualAttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
@@ -34,6 +34,7 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -113,10 +114,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		JavaAttributeOverride virtualAttributeOverride = null;
 		if (attributeOverrideName != null) {
-			for (ColumnMapping columnMapping : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
-				if (columnMapping.getName().equals(attributeOverrideName)) {
+			for (String name : CollectionTools.iterable(allOverridableAttributeNames())) {
+				if (name.equals(attributeOverrideName)) {
 					//store the virtualAttributeOverride so we can fire change notification later
-					virtualAttributeOverride = buildVirtualAttributeOverride(columnMapping);
+					virtualAttributeOverride = buildVirtualAttributeOverride(name);
 					this.virtualAttributeOverrides.add(virtualAttributeOverride);
 					break;
 				}
@@ -220,7 +221,14 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	protected boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
 		return getOverrideNamed(name, overrides) != null;
 	}
-	
+
+	protected Iterator<String> allOverridableAttributeNames() {
+		PersistentType overridablePersistentType = getOwner().getOverridablePersistentType();
+		if (overridablePersistentType != null) {
+			return overridablePersistentType.getMapping().allOverridableAttributeNames();
+		}
+		return EmptyIterator.instance();
+	}
 
 	
 	public void initialize(JavaResourcePersistentMember resourcePersistentMember) {
@@ -241,10 +249,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 	
 	protected void initializeVirtualAttributeOverrides() {
-		for (ColumnMapping overridableAttribute : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
-			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(overridableAttribute.getName());
+		for (String name : CollectionTools.iterable(allOverridableAttributeNames())) {
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(name);
 			if (attributeOverride == null) {
-				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(overridableAttribute));
+				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(name));
 			}
 		}
 	}
@@ -283,26 +291,36 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		return attributeOverride;
 	}
 	
-	protected JavaAttributeOverride buildVirtualAttributeOverride(ColumnMapping overridableAttribute) {
-		return buildAttributeOverride(buildVirtualAttributeOverrideAnnotation(overridableAttribute));
+	protected JavaAttributeOverride buildVirtualAttributeOverride(String attributeOverrideName) {
+		return buildAttributeOverride(buildVirtualAttributeOverrideAnnotation(attributeOverrideName));
 	}
 	
-	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(ColumnMapping overridableAttribute) {
-		return new VirtualAttributeOverrideAnnotation(this.javaResourcePersistentMember, overridableAttribute.getName(),overridableAttribute.getColumn());
+	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(String attributeOverrideName) {
+		Column column = resolveOverrideColumn(attributeOverrideName);
+		return new VirtualAttributeOverrideAnnotation(this.javaResourcePersistentMember, attributeOverrideName, column);
 	}
 
+	private Column resolveOverrideColumn(String attributeOverrideName) {
+		PersistentType overridablePersistentType = getOwner().getOverridablePersistentType();
+		Column column = null;
+		if (overridablePersistentType != null) {
+			column = overridablePersistentType.getMapping().resolveOverrideColumn(attributeOverrideName);
+		}
+		return column;
+	}
+	
 	protected void updateVirtualAttributeOverrides() {
-		for (ColumnMapping overridableAttribute : CollectionTools.iterable(getOwner().allOverridableAttributes())) {
-			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(overridableAttribute.getName());
+		for (String name : CollectionTools.iterable(allOverridableAttributeNames())) {
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(name);
 			if (attributeOverride == null) {
-				addVirtualAttributeOverride(buildVirtualAttributeOverride(overridableAttribute));
+				addVirtualAttributeOverride(buildVirtualAttributeOverride(name));
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.update(buildVirtualAttributeOverrideAnnotation(overridableAttribute));
+				attributeOverride.update(buildVirtualAttributeOverrideAnnotation(name));
 			}
 		}
 		
-		Collection<String> attributeNames = CollectionTools.collection(getOwner().allOverridableAttributeNames());
+		Collection<String> attributeNames = CollectionTools.collection(allOverridableAttributeNames());
 	
 		//remove any default mappings that are not included in the attributeNames collection
 		for (JavaAttributeOverride attributeOverride : CollectionTools.iterable(virtualAttributeOverrides())) {
@@ -351,8 +369,11 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
-		public ColumnMapping getColumnMapping(String attributeName) {
-			return MappingTools.getColumnMapping(attributeName, getOwner().getOverridablePersistentType());
+		public Column resolveOverridenColumn(String attributeName) {
+			if (attributeName == null) {
+				return null;
+			}
+			return GenericJavaAttributeOverrideContainer.this.resolveOverrideColumn(attributeName);			
 		}
 
 		public boolean isVirtual(BaseOverride override) {

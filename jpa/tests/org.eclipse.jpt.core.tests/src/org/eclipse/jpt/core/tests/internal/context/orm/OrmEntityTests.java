@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
@@ -35,7 +34,6 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
@@ -1866,15 +1864,15 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		Entity entity = (Entity) persistentType.getMapping();
-		Iterator<OrmColumnMapping> overridableAttributes = persistentType.getMapping().overridableAttributes();
+		Iterator<String> overridableAttributes = persistentType.getMapping().overridableAttributeNames();
 		assertFalse(overridableAttributes.hasNext());
 		
 		
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributes = entity.overridableAttributes();		
-		assertEquals("id", overridableAttributes.next().getName());
-		assertEquals("name", overridableAttributes.next().getName());
+		overridableAttributes = entity.overridableAttributeNames();		
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 	}
 
@@ -1901,11 +1899,11 @@ public class OrmEntityTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);		
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 	
-		Iterator<ColumnMapping> overridableAttributes = entity.allOverridableAttributes();
-		assertEquals("foo", overridableAttributes.next().getName());
-		assertEquals("basic", overridableAttributes.next().getName());
-		assertEquals("id", overridableAttributes.next().getName());
-		assertEquals("name", overridableAttributes.next().getName());
+		Iterator<String> overridableAttributes = entity.allOverridableAttributeNames();
+		assertEquals("foo", overridableAttributes.next());
+		assertEquals("basic", overridableAttributes.next());
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 	}
 
@@ -1917,14 +1915,17 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 		OrmEntity abstractEntity = (OrmEntity) abstractPersistentType.getMapping();
 	
-		Iterator<ColumnMapping> overridableAttributes = entity.allOverridableAttributes();
-		assertEquals("id", overridableAttributes.next().getName());
-		assertEquals("name", overridableAttributes.next().getName());
-		assertEquals("foo", overridableAttributes.next().getName());
+		Iterator<String> overridableAttributes = entity.allOverridableAttributeNames();
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
+		assertEquals("foo", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 		
 		
-		overridableAttributes = abstractEntity.allOverridableAttributes();
+		overridableAttributes = abstractEntity.allOverridableAttributeNames();
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
+		assertEquals("foo", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 	}
 	

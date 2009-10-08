@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,10 +29,10 @@ public interface AttributeOverride extends BaseOverride, Column.Owner
 	interface Owner extends BaseOverride.Owner
 	{
 		/**
-		 * Return the column mapping with the given attribute name.
+		 * Return the column of the mapping or attribute override with the given attribute name.
 		 * Return null if it does not exist.  This column mapping
 		 * will be found in the mapped superclass (or embeddable), not in the owning entity
 		 */
-		ColumnMapping getColumnMapping(String attributeName);
+		Column resolveOverridenColumn(String attributeName);
 	}
 }

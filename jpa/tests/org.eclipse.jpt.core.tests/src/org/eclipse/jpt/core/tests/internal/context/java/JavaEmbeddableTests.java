@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaEmbeddableTests extends ContextModelTestCase
 {
 	
@@ -88,6 +89,8 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 	
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
 		Iterator<String> overridableAttributeNames = embeddable.overridableAttributeNames();
+		assertEquals(overridableAttributeNames.next(), "id");
+		assertEquals(overridableAttributeNames.next(), "name");
 		assertFalse(overridableAttributeNames.hasNext());
 	}
 	
@@ -153,15 +156,6 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
 
 		assertFalse(embeddable.associatedTableNamesIncludingInherited().hasNext());
-	}
-	
-	public void testAllOverridableAttributeNames() throws Exception {
-		createTestEmbeddable();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-	
-		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAttributeNames = embeddable.overridableAttributeNames();
-		assertFalse(overridableAttributeNames.hasNext());
 	}
 	
 	//TODO need to create a subclass mappedSuperclass and test this

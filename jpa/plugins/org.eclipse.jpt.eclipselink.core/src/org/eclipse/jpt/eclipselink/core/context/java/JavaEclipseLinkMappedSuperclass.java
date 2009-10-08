@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.context.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
@@ -34,8 +33,6 @@ public interface JavaEclipseLinkMappedSuperclass extends EclipseLinkMappedSuperc
 	//********* covariant overrides ***********
 
 	JavaEclipseLinkCaching getCaching();
-	
-	Iterator<JavaColumnMapping> overridableAttributes();
 	
 	Iterator<JavaRelationshipMapping> overridableAssociations();
 }

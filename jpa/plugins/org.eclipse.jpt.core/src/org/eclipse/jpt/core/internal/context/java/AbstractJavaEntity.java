@@ -15,12 +15,13 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
@@ -36,7 +37,6 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
@@ -1033,16 +1033,25 @@ public abstract class AbstractJavaEntity
 	}
 	
 	@Override
-	public Iterator<JavaColumnMapping> overridableAttributes() {
+	public Iterator<String> overridableAttributeNames() {
 		if (!isTablePerClass()) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<JavaAttributeMapping, JavaColumnMapping>(this.attributeMappings()) {
-			@Override
-			protected boolean accept(JavaAttributeMapping o) {
-				return o.isOverridableAttributeMapping();
+		return super.overridableAttributeNames();
+	}
+	
+	@Override
+	public Column resolveOverrideColumn(String attributeName) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			int dotIndex = attributeName.indexOf('.');
+			if (dotIndex != -1) {
+				AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName.substring(dotIndex + 1));
+				if (override != null && !override.isVirtual()) {
+					return override.getColumn();
+				}
 			}
-		};
+		}
+		return super.resolveOverrideColumn(attributeName);
 	}
 
 	@Override
@@ -1056,16 +1065,6 @@ public abstract class AbstractJavaEntity
 				return o.isOverridableAssociationMapping();
 			}
 		};
-	}
-
-	@Override
-	public Iterator<ColumnMapping> allOverridableAttributes() {
-		return new CompositeIterator<ColumnMapping>(new TransformationIterator<TypeMapping, Iterator<ColumnMapping>>(this.ancestors()) {
-			@Override
-			protected Iterator<ColumnMapping> transform(TypeMapping mapping) {
-				return mapping.overridableAttributes();
-			}
-		});
 	}
 
 	@Override
@@ -1087,7 +1086,7 @@ public abstract class AbstractJavaEntity
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		super.update(resourcePersistentType);

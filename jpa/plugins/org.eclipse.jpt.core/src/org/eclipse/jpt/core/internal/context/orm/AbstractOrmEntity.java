@@ -14,11 +14,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
@@ -42,7 +44,6 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
@@ -333,10 +334,10 @@ public abstract class AbstractOrmEntity
 		return this;
 	}
 	
-	public XmlColumn buildVirtualXmlColumn(ColumnMapping overridableColumnMapping) {
-		JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(overridableColumnMapping.getName());
+	public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName) {
+		JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(attributeName);
 		if (javaAttributeOverride == null) {
-			return new VirtualXmlAttributeOverrideColumn(overridableColumnMapping.getColumn());
+			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
 		}
 		return new VirtualXmlColumn(this, javaAttributeOverride.getColumn());
 	}
@@ -1110,16 +1111,25 @@ public abstract class AbstractOrmEntity
 	}
 	
 	@Override
-	public Iterator<OrmColumnMapping> overridableAttributes() {
+	public Iterator<String> overridableAttributeNames() {
 		if (!isTablePerClass()) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<OrmAttributeMapping, OrmColumnMapping>(this.attributeMappings()) {
-			@Override
-			protected boolean accept(OrmAttributeMapping o) {
-				return o.isOverridableAttributeMapping();
+		return super.overridableAttributeNames();
+	}
+	
+	@Override
+	public Column resolveOverrideColumn(String attributeName) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			int dotIndex = attributeName.indexOf('.');
+			if (dotIndex != -1) {
+				AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName.substring(dotIndex + 1));
+				if (override != null && !override.isVirtual()) {
+					return override.getColumn();
+				}
 			}
-		};
+		}
+		return super.resolveOverrideColumn(attributeName);
 	}
 
 	@Override
@@ -1133,16 +1143,6 @@ public abstract class AbstractOrmEntity
 				return o.isOverridableAssociationMapping();
 			}
 		};
-	}
-	
-	@Override
-	public Iterator<ColumnMapping> allOverridableAttributes() {
-		return new CompositeIterator<ColumnMapping>(new TransformationIterator<TypeMapping, Iterator<ColumnMapping>>(this.ancestors()) {
-			@Override
-			protected Iterator<ColumnMapping> transform(TypeMapping mapping) {
-				return mapping.overridableAttributes();
-			}
-		});
 	}
 	
 	@Override

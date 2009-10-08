@@ -110,14 +110,6 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 			}
 		};
 	}
-	
-	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
-		if (this.getEmbeddable() == null) {
-			return EmptyIterator.instance();
-		}
-		return this.getEmbeddable().attributeMappings();
-	}
-
 
 	@Override
 	public AttributeMapping resolveAttributeMapping(String name) {

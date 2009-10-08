@@ -15,6 +15,8 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -31,6 +33,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -119,6 +122,26 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	public AttributeMapping resolveAttributeMapping(String name) {
 		if (getName().equals(name)) {
 			return this;
+		}
+		return null;
+	}
+	
+	public Iterator<String> allOverrideableMappingNames() {
+		if (isOverridableAttributeMapping()) {
+			return allMappingNames();
+		}
+		return EmptyIterator.<String> instance();
+	}
+	
+	public Column resolveOverridenColumn(String attributeName) {
+		ColumnMapping columnMapping = this.resolveColumnMapping(attributeName);
+		return columnMapping == null ? null : columnMapping.getColumn();
+	}
+	
+	public ColumnMapping resolveColumnMapping(String name) {
+		AttributeMapping attributeMapping = resolveAttributeMapping(name);
+		if (attributeMapping != null && attributeMapping.isOverridableAttributeMapping()) {
+			return (ColumnMapping) attributeMapping;
 		}
 		return null;
 	}

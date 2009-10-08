@@ -82,6 +82,8 @@ public interface AttributeMapping
 	 */
 	Iterator<String> allMappingNames();
 	
+	Iterator<String> allOverrideableMappingNames();
+
 	/**
 	 * Returns this attribute mapping if its name matches the name.
 	 * In 2.0 this name could use dot-notation for nested mappings.
@@ -89,5 +91,11 @@ public interface AttributeMapping
 	 * nested attribute mapping.
 	 */
 	AttributeMapping resolveAttributeMapping(String name);
+	
+	/**
+	 * Returns the Column of the overridable attribute mapping with the given 
+	 * attribute name. In 2.0 this name could use dot-notation for nested mappings.
+	 */
+	Column resolveOverridenColumn(String attributeName);
 
 }

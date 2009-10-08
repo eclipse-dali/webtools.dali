@@ -30,8 +30,6 @@ public interface OrmEmbeddable
 	 * Return null if there is no java persistent type or it is not an embeddable.
 	 */
 	JavaEmbeddable getJavaEmbeddable();
-	
-	Iterator<OrmColumnMapping> overridableAttributes();
 
 	Iterator<OrmRelationshipMapping> overridableAssociations();
 

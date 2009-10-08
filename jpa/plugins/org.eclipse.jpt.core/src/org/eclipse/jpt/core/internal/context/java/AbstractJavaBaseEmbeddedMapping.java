@@ -12,8 +12,10 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
@@ -23,8 +25,8 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -79,28 +81,61 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		this.embeddable = this.getPersistentAttribute().getEmbeddable();
 		this.attributeOverrideContainer.update(this.getResourcePersistentAttribute());
 	}
-
-	public Iterator<String> allOverridableAttributeNames() {
-		return new TransformationIterator<ColumnMapping, String>(this.allOverridableAttributes()) {
-			@Override
-			protected String transform(ColumnMapping attribute) {
-				return attribute.getName();
-			}
-		};
-	}
-
-	public Iterator<ColumnMapping> allOverridableAttributes() {
+	
+	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
 		if (this.getEmbeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<AttributeMapping, ColumnMapping>(this.getEmbeddable().attributeMappings()) {
+		return this.getEmbeddable().attributeMappings();
+	}
+	
+	@Override
+	public Iterator<String> allOverrideableMappingNames() {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			return embeddableOverrideableAttributeMappingNames();
+		}
+		return super.allOverrideableMappingNames();
+	}
+	
+	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
+		return new TransformationIterator<String, String>(
+			new CompositeIterator<String>(
+				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
+					@Override
+					protected Iterator<String> transform(AttributeMapping mapping) {
+						return mapping.allOverrideableMappingNames();
+					}
+				}
+			)
+		) {
 			@Override
-			protected boolean accept(AttributeMapping o) {
-				return o.isOverridableAttributeMapping();
+			protected String transform(String next) {
+				return getName() + '.' + next;
 			}
 		};
 	}
 
+	@Override
+	public Column resolveOverridenColumn(String attributeName) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			int dotIndex = attributeName.indexOf('.');
+			if (dotIndex != -1) {
+				if (getName().equals(attributeName.substring(0, dotIndex))) {
+					attributeName = attributeName.substring(dotIndex + 1);
+					AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+					if (override != null && !override.isVirtual()) {
+						return override.getColumn();
+					}
+					if (this.getEmbeddable() == null) {
+						return null;
+					}
+					return this.getEmbeddable().resolveOverrideColumn(attributeName);
+				}
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);

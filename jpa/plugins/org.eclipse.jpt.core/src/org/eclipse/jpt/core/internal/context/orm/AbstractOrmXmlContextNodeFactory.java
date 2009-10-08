@@ -234,11 +234,11 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		return new NullOrmAssociationOverrideContainer(parent, owner);
 	}
 	
-	public OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
+	public OrmAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
 		return new GenericOrmAttributeOverride(parent, owner, xmlAttributeOverride);
 	}
 	
-	public OrmAssociationOverride buildOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
+	public OrmAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
 		return new GenericOrmAssociationOverride(parent, owner, xmlAssociationOverride);
 	}
 	

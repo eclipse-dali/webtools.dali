@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -45,6 +47,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -199,6 +202,25 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return null;
 	}
 	
+	public Iterator<String> allOverrideableMappingNames() {
+		if (isOverridableAttributeMapping()) {
+			return allMappingNames();
+		}
+		return EmptyIterator.<String> instance();
+	}
+	
+	public Column resolveOverridenColumn(String attributeName) {
+		ColumnMapping columnMapping = this.resolveColumnMapping(attributeName);
+		return columnMapping == null ? null : columnMapping.getColumn();
+	}
+	
+	public ColumnMapping resolveColumnMapping(String name) {
+		AttributeMapping attributeMapping = resolveAttributeMapping(name);
+		if (attributeMapping != null && attributeMapping.isOverridableAttributeMapping()) {
+			return (ColumnMapping) attributeMapping;
+		}
+		return null;
+	}	
 
 	public T getResourceAttributeMapping() {
 		return this.resourceAttributeMapping;

@@ -308,11 +308,11 @@ public abstract class AbstractJpaFactory
 		return new NullJavaAssociationOverrideContainer(parent, owner);
 	}
 	
-	public JavaAttributeOverride buildJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {
+	public JavaAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverride.Owner owner) {
 		return new GenericJavaAttributeOverride(parent, owner);
 	}
 	
-	public JavaAssociationOverride buildJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner) {
+	public JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverride.Owner owner) {
 		return new GenericJavaAssociationOverride(parent, owner);
 	}
 	
