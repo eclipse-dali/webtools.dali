@@ -447,24 +447,18 @@ public class SynchronousSynchronizerTests extends TestCase {
 			// ignore
 		}
 
-		try {
-			synchronizer.synchronize();
-		} catch (NullPointerException ex) {
-			// ignore
-		}
-
 		boolean exCaught = false;
 		try {
 			// we used to hang here, before we began handling exceptions
 			synchronizer.stop();
 			fail();
 		} catch (CompositeException ex) {
-			assertEquals(2, ex.getExceptions().length);
+			assertEquals(1, ex.getExceptions().length);
 			exCaught = true;
 		}
 		assertTrue(exCaught);
-		// start + 2 synchronizes
-		assertEquals(3, command.count);
+		// start + synchronize
+		assertEquals(2, command.count);
 	}
 
 	public class BogusCommand implements Command {

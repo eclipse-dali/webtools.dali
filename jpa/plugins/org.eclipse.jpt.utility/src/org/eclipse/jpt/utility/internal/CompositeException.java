@@ -9,14 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+/**
+ * Provide a way for multiple exceptions to be packaged and reported.
+ */
 public class CompositeException
 	extends RuntimeException
 {
 	private final Throwable[] exceptions;
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * The specified exceptions list must not be empty.
+	 */
 	public CompositeException(Throwable[] exceptions) {
-		super();
+		// grab the first exception and make it the "cause"
+		super(exceptions[0]);
 		this.exceptions = exceptions;
 	}
 
