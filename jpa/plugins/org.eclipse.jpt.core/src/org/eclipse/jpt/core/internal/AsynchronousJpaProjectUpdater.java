@@ -19,7 +19,8 @@ import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Adapt the "synchronizer" interface to the JPA project "updater" interface.
+ * Adapt the "callback synchronizer" interface to the JPA project "updater"
+ * interface.
  * <p>
  * This updater will "update" the JPA project in an Eclipse job that executes
  * in a separate thread allowing calls to {@link JpaProject.Updater#update()}

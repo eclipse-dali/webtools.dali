@@ -16,7 +16,8 @@ import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
 
 /**
- * Adapt the "synchronizer" interface to the JPA project "updater" interface.
+ * Adapt the "callback synchronizer" interface to the JPA project "updater"
+ * interface.
  * <p>
  * This updater will "update" the JPA project immediately and not return until
  * the "update" and all resulting "updates" are complete. This implementation

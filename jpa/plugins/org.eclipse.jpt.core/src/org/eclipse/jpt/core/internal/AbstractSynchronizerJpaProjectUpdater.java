@@ -14,9 +14,10 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
 
 /**
- * Adapt the "synchronizer" interface to the JPA project "updater" interface.
+ * Adapt the "callback synchronizer" interface to the JPA project "updater"
+ * interface.
  * <p>
- * Subclasses must build the appropriate synchronizer.
+ * Subclasses are to build the appropriate callback synchronizer.
  */
 public abstract class AbstractSynchronizerJpaProjectUpdater
 	implements JpaProject.Updater

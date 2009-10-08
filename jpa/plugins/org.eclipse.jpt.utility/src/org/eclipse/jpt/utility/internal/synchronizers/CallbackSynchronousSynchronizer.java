@@ -70,8 +70,8 @@ public class CallbackSynchronousSynchronizer
 	// ********** override **********
 
 	@Override
-	void execute() {
-		super.execute();
+	void execute_() {
+		super.execute_();
 		if (this.state.getValue() != State.REPEAT) {
 			// hmmm - we will notify listeners even when we are "stopped";
 			// that seems ok...  ~bjv

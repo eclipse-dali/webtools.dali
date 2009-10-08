@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.synchronizers;
 
+import java.util.Vector;
+
 import org.eclipse.jpt.utility.Command;
+import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.SynchronizedObject;
 
@@ -56,6 +59,11 @@ public class SynchronousSynchronizer
 		REPEAT,
 		STOPPING
 	}
+
+	/**
+	 * A list of the uncaught exceptions thrown by the command.
+	 */
+	final Vector<Throwable> exceptions = new Vector<Throwable>();
 
 
 	// ********** construction **********
@@ -152,9 +160,21 @@ public class SynchronousSynchronizer
 	}
 
 	/**
+	 * Execute the client-supplied command. Do not allow any unhandled
+	 * exceptions to kill the thread. Store them up for later pain.
+	 */
+	private void execute() {
+		try {
+			this.execute_();
+		} catch (Throwable ex) {
+			this.exceptions.add(ex);
+		}
+	}
+
+	/**
 	 * By default, just execute the command.
 	 */
-	void execute() {
+	void execute_() {
 		this.command.execute();
 	}
 
@@ -185,7 +205,9 @@ public class SynchronousSynchronizer
 	}
 
 	/**
-	 * Set the flags so that no further synchronizations occur.
+	 * Set the flags so that no further synchronizations occur. If any uncaught
+	 * exceptions were thrown while the synchronization was executing,
+	 * wrap them in a composite exception and throw the composite exception.
 	 */
 	public synchronized void stop() {
 		switch (this.state.getValue()) {
@@ -205,6 +227,12 @@ public class SynchronousSynchronizer
 				throw this.buildIllegalStateException();
 			default:
 				throw this.buildIllegalStateException();
+		}
+
+		if (this.exceptions.size() > 0) {
+			Throwable[] temp = this.exceptions.toArray(new Throwable[this.exceptions.size()]);
+			this.exceptions.clear();
+			throw new CompositeException(temp);
 		}
 	}
 

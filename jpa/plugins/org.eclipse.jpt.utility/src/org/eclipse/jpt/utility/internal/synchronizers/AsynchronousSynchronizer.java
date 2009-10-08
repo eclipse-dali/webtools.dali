@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.synchronizers;
 
+import java.util.Vector;
+
 import org.eclipse.jpt.utility.Command;
+import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
@@ -50,6 +53,11 @@ public class AsynchronousSynchronizer
 	 */
 	private Thread thread;
 
+	/**
+	 * A list of the uncaught exceptions thrown by the command.
+	 */
+	final Vector<Throwable> exceptions = new Vector<Throwable>();
+
 
 	// ********** construction **********
 
@@ -82,7 +90,21 @@ public class AsynchronousSynchronizer
 
 	/**
 	 * Build and start the synchronization thread, but postpone the first
-	 * synchronization until requested, via {@link #synchronize()}.
+	 * synchronization until requested, i.e. via a call to
+	 * {@link #synchronize()}.
+	 * <p>
+	 * Note: We don't clear the "synchronize" flag here; so if the flag has
+	 * been set <em>before</em> getting here, the first synchronization will
+	 * start promptly (albeit, asynchronously).
+	 * The "synchronize" flag will be set if:<ul>
+	 * <li>{@link #synchronize()} was called after the synchronizer was
+	 *     constructed but before {@link #start()} was called; or
+	 * <li>{@link #synchronize()} was called after {@link #stop()} was called
+	 *     but before {@link #start()} was called (to restart the synchronizer); or
+	 * <li>{@link #stop()} was called when there was an outstanding request
+	 *     for a synchronization (i.e. the "synchronization" flag was set at
+	 *     the time {@link #stop()} was called)
+	 * </ul>
 	 */
 	public synchronized void start() {
 		if (this.thread != null) {
@@ -101,18 +123,27 @@ public class AsynchronousSynchronizer
 	}
 
 	/**
-	 * Set the "synchronize" flag so the synchronization thread will execute
-	 * a synchronization.
+	 * Set the "synchronize" flag so the synchronization thread will either<ul>
+	 * <li>if the thread is quiesced, start a synchronization immediately, or
+	 * <li>if the thread is currently executing a synchronization, execute another
+	 *     synchronization once the current synchronization is complete
+	 * </ul>
 	 */
 	public void synchronize() {
 		this.synchronizeFlag.setTrue();
 	}
 
+	/**
+	 * Interrupt the synchronization thread so that it stops executing at the
+	 * end of the current synchronization. Suspend the current thread until
+	 * the synchronization thread is finished executing. If any uncaught
+	 * exceptions were thrown while the synchronization thread was executing,
+	 * wrap them in a composite exception and throw the composite exception.
+	 */
 	public synchronized void stop() {
 		if (this.thread == null) {
 			throw new IllegalStateException("The Synchronizer was not started."); //$NON-NLS-1$
 		}
-		this.synchronizeFlag.setFalse();
 		this.thread.interrupt();
 		try {
 			this.thread.join();
@@ -123,6 +154,12 @@ public class AsynchronousSynchronizer
 			// after its current execution - we just won't wait around for it...
 		}
 		this.thread = null;
+
+		if (this.exceptions.size() > 0) {
+			Throwable[] temp = this.exceptions.toArray(new Throwable[this.exceptions.size()]);
+			this.exceptions.clear();
+			throw new CompositeException(temp);
+		}
 	}
 
 	@Override
@@ -142,7 +179,9 @@ public class AsynchronousSynchronizer
 	 * the command will be re-executed immediately. Stop the thread by calling
 	 * {@link Thread#interrupt()}.
 	 */
-	class RunnableSynchronization implements Runnable {
+	class RunnableSynchronization
+		implements Runnable
+	{
 		/** The client-supplied command that executes on this thread. */
 		private final Command command;
 
@@ -181,9 +220,21 @@ public class AsynchronousSynchronizer
 		}
 
 		/**
+		 * Execute the client-supplied command. Do not allow any unhandled
+		 * exceptions to kill the thread. Store them up for later pain.
+		 */
+		private void execute() {
+			try {
+				this.execute_();
+			} catch (Throwable ex) {
+				AsynchronousSynchronizer.this.exceptions.add(ex);
+			}
+		}
+
+		/**
 		 * Execute the client-supplied command.
 		 */
-		void execute() {
+		void execute_() {
 			this.command.execute();
 		}
 

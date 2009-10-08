@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.ExceptionHandler;
+import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.synchronizers.AsynchronousSynchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 
@@ -171,16 +171,52 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		s.stop();
 	}
 
-	public class BogusCommand implements Command {
+	public void testSynchronizeCalledBeforeStart() throws Exception {
+		SimpleCommand command = new SimpleCommand();
+		Synchronizer synchronizer = new AsynchronousSynchronizer(command);
+
+		synchronizer.synchronize();
+		synchronizer.start();
+		delay(1);
+		synchronizer.stop();
+		assertEquals(1, command.count);
+	}
+
+	public class SimpleCommand implements Command {
+		int count = 0;
 		public void execute() {
-			throw new NullPointerException();
+			this.count++;
 		}
 	}
 
-	public class LocalExceptionHandler implements ExceptionHandler {
-		public boolean exHandled = false;
-		public void handleException(Throwable t) {
-			this.exHandled = true;
+	public void testException() throws Exception {
+		BogusCommand command = new BogusCommand();
+		Synchronizer synchronizer = new AsynchronousSynchronizer(command);
+		synchronizer.start();
+
+		synchronizer.synchronize();
+		delay(1);
+
+		synchronizer.synchronize();
+		delay(1);
+
+		boolean exCaught = false;
+		try {
+			synchronizer.stop();
+			fail();
+		} catch (CompositeException ex) {
+			assertEquals(2, ex.getExceptions().length);
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+		assertEquals(2, command.count);
+	}
+
+	public class BogusCommand implements Command {
+		int count = 0;
+		public void execute() {
+			this.count++;
+			throw new NullPointerException();
 		}
 	}
 

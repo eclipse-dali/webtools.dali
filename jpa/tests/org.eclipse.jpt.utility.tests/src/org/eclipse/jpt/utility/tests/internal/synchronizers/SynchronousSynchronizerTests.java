@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
@@ -433,6 +434,47 @@ public class SynchronousSynchronizerTests extends TestCase {
 				log("SYNC thread stop");
 			}
 		};
+	}
+
+	public void testException() throws Exception {
+		BogusCommand command = new BogusCommand();
+		Synchronizer synchronizer = new SynchronousSynchronizer(command);
+		synchronizer.start();
+
+		try {
+			synchronizer.synchronize();
+		} catch (NullPointerException ex) {
+			// ignore
+		}
+
+		try {
+			synchronizer.synchronize();
+		} catch (NullPointerException ex) {
+			// ignore
+		}
+
+		boolean exCaught = false;
+		try {
+			// we used to hang here, before we began handling exceptions
+			synchronizer.stop();
+			fail();
+		} catch (CompositeException ex) {
+			assertEquals(2, ex.getExceptions().length);
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+		// start + 2 synchronizes
+		assertEquals(3, command.count);
+	}
+
+	public class BogusCommand implements Command {
+		int count = 0;
+		public void execute() {
+			this.count++;
+			if (this.count > 1) {
+				throw new NullPointerException();
+			}
+		}
 	}
 
 

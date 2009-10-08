@@ -150,6 +150,11 @@ public class JobSynchronizer
 			this.schedule();
 		}
 
+		/**
+		 * Any uncaught exceptions thrown by the command will be reasonably
+		 * handled by the Job Framework.
+		 * @see org.eclipse.core.internal.jobs.Worker#run()
+		 */
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			return this.command.execute(monitor);

@@ -263,6 +263,12 @@ public interface JpaProject
 
 		/**
 		 * Update the JPA project.
+		 * <p>
+		 * {@link JpaProject#update()} will call {@link Updater#update()},
+		 * from which the updater is to call {@link JpaProject#update(IProgressMonitor)}
+		 * as appropriate (typically from an asynchronously executing job).
+		 * Once the updating has quiesced (i.e. there are no outstanding requests
+		 * for another update), the updater is to call {@link JpaProject#updateQuiesced()}.
 		 */
 		void update();
 
