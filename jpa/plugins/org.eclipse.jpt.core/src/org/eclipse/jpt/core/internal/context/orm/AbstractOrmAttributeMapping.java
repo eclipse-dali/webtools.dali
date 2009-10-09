@@ -192,7 +192,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	public Iterator<String> allMappingNames() {
-		return new SingleElementIterator<String>(getName());
+		return getName() == null ? EmptyIterator.<String> instance() : new SingleElementIterator<String>(getName());
 	}
 	
 	public AttributeMapping resolveAttributeMapping(String name) {
