@@ -196,7 +196,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	public AttributeMapping resolveAttributeMapping(String name) {
-		if (getName().equals(name)) {
+		if (getName() != null && getName().equals(name)) {
 			return this;
 		}
 		return null;
