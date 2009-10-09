@@ -847,7 +847,11 @@
 		point="org.eclipse.wst.common.project.facet.ui.wizardPages">
 		
 		<wizard-pages action="jpt.jpa.install">
-			<page class="org.eclipse.jpt.ui.internal.wizards.JpaFacetWizardPage"/>
+			<page class="org.eclipse.jpt.ui.internal.wizards.JpaFacetInstallPage"/>
+		</wizard-pages>
+		
+		<wizard-pages action="jpt.jpa.version-change">
+			<page class="org.eclipse.jpt.ui.internal.wizards.JpaFacetVersionChangePage"/>
 		</wizard-pages>
 		
 	</extension>

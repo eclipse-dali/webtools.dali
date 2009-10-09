@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -32,7 +32,7 @@ public class EclipseLinkJpaProjectTests extends EclipseLinkContextModelTestCase
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
 		// don't build orm.xml
-		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.FALSE);
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.FALSE);
 		return dataModel;
 	}
 	

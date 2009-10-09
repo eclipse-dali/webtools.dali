@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -160,6 +159,24 @@ public class JpaPlatformRegistry {
 	}
 	
 	/**
+	 * Return whether the platform represented by the given id supports the specified JPA facet version.
+	 * This does not active the JPA platform's plug-in.
+	 */
+	public boolean platformSupportsJpaFacetVersion(String platformId, String jpaFacetVersion) {
+		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(platformId);
+		return configElementSupportsJpaFacetVersion(configElement, jpaFacetVersion);
+	}
+	
+	private boolean configElementSupportsJpaFacetVersion(
+			IConfigurationElement configElement, String jpaFacetVersion) {
+		
+		// config element supports version if it explicitly sets it to that version
+		// or if it specifies no version at all
+		String ver = configElement.getAttribute(JPA_FACET_VERSION_ATTRIBUTE_NAME);
+		return (ver == null) || ver.equals(jpaFacetVersion);
+	}
+	
+	/**
 	 * Return the IDs for the registered JPA platforms that support the
 	 * specified JPA facet version.
 	 * This does not activate the JPA platforms' plug-in.
@@ -172,17 +189,16 @@ public class JpaPlatformRegistry {
 				}
 			};
 	}
-
+	
 	private Iterable<IConfigurationElement> getConfigurationElementsForJpaFacetVersion(final String jpaFacetVersion) {
 		return new FilteringIterable<IConfigurationElement, IConfigurationElement>(this.jpaPlatformConfigurationElements.values()) {
 				@Override
 				protected boolean accept(IConfigurationElement configElement) {
-					String ver = configElement.getAttribute(JPA_FACET_VERSION_ATTRIBUTE_NAME);
-					return (ver == null) || ver.equals(jpaFacetVersion);
+					return configElementSupportsJpaFacetVersion(configElement, jpaFacetVersion);
 				}
 			};
 	}
-
+	
 	/**
 	 * Return the ID for a JPA platform registered as a default platform.
 	 * Returns null if there are no such registered platforms.

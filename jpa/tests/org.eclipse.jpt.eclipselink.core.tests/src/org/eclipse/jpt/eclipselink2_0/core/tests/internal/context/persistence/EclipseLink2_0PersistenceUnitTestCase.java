@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLinkPersistenceUnit2_0;
@@ -44,7 +44,7 @@ public abstract class EclipseLink2_0PersistenceUnitTestCase extends PersistenceU
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "2.0"); //$NON-NLS-1$	
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLink2_0JpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.PLATFORM_ID, EclipseLink2_0JpaPlatformProvider.ID);
 		return dataModel;
 	}
 

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
@@ -29,7 +29,7 @@ public abstract class EclipseLinkContextModelTestCase
 	@Override
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLinkJpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.PLATFORM_ID, EclipseLinkJpaPlatformProvider.ID);
 		return dataModel;
 	}
 	

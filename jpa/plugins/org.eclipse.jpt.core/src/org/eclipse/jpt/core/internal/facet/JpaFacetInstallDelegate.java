@@ -12,17 +12,13 @@ package org.eclipse.jpt.core.internal.facet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -31,77 +27,55 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * used in the POST_INSTALL event listener to build the JPA project.
  */
 public class JpaFacetInstallDelegate 
-	implements IDelegate, JpaFacetDataModelProperties
+	extends JpaFacetActionDelegate
+	implements JpaFacetInstallDataModelProperties
 {
-
-	public void execute(IProject project, IProjectFacetVersion fv, 
-				Object config, IProgressMonitor monitor) throws CoreException {
-		monitor = this.nonNullMonitor(monitor);
-		try {
-			this.execute_(project, fv, config, monitor);
-		} finally {
-			monitor.done();
-		}
-	}
-
-	private void execute_(IProject project, @SuppressWarnings("unused") IProjectFacetVersion fv, 
-				Object config, IProgressMonitor monitor) throws CoreException {
+	@Override
+	protected void execute_(
+			IProject project, @SuppressWarnings("unused") IProjectFacetVersion fv, 
+			Object config, IProgressMonitor monitor) throws CoreException {
 		
-		monitor.beginTask("", 1); //$NON-NLS-1$
-
 		// NB: WTP Natures (including the JavaEMFNature)
 		// should already be added, as this facet should 
 		// always coexist with a module facet.
-
+		
+		super.execute_(project, fv, config, monitor);
+		
 		IJavaProject javaProject = JavaCore.create(project);
 		IDataModel dataModel = (IDataModel) config;
 		
+		monitor.beginTask("", 1); //$NON-NLS-1$
+		
 		// project settings
-		JptCorePlugin.setJpaPlatformId(project, dataModel.getStringProperty(PLATFORM_ID));
-
-		// do NOT use IDataModel.getStringProperty(String) - or the connection profile name can
-		// be set to an empty string - we want it to be null
-		JptCorePlugin.setConnectionProfileName(project, (String) dataModel.getProperty(CONNECTION));
-
-		if (dataModel.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
-			JptCorePlugin.setUserOverrideDefaultCatalog(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG));
-		}
-		if (dataModel.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
-			JptCorePlugin.setUserOverrideDefaultSchema(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA));
-		}
-
 		this.addDbDriverLibraryToClasspath(javaProject, dataModel, monitor);
-
-		JptCorePlugin.setDiscoverAnnotatedClasses(project, dataModel.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
-		
-		// defaults settings
-		JptCorePlugin.setDefaultJpaPlatformId(dataModel.getStringProperty(PLATFORM_ID));
-		
-		//Delegate to LibraryInstallDelegate to configure the project classpath
-		((LibraryInstallDelegate) dataModel.getProperty(JpaFacetDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).execute(new NullProgressMonitor());
 		
 		monitor.worked(1);
 	}
-
-	private void addDbDriverLibraryToClasspath(IJavaProject javaProject, IDataModel dataModel, IProgressMonitor monitor) throws CoreException {
+	
+	protected void addDbDriverLibraryToClasspath(
+			IJavaProject javaProject, IDataModel dataModel, 
+			IProgressMonitor monitor) throws CoreException {
+		
 		if( ! dataModel.getBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
 			return;
 		}
 		String driverName = dataModel.getStringProperty(DB_DRIVER_NAME);
-
+		
 		IClasspathContainer container = JptDbPlugin.instance().buildDriverClasspathContainerFor(driverName);
 		IClasspathEntry entry = JavaCore.newContainerEntry(container.getPath());
 		this.addClasspathEntryToProject(entry, javaProject, monitor);
 	}
 	
-	private void addClasspathEntryToProject(IClasspathEntry classpathEntry, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {
-
+	private void addClasspathEntryToProject(
+			IClasspathEntry classpathEntry, IJavaProject javaProject, IProgressMonitor monitor) 
+			throws CoreException {
+		
 		// if the classpathEntry is already there, do nothing
 		IClasspathEntry[] classpath = javaProject.getRawClasspath();
 		if (ArrayTools.contains(classpath, classpathEntry)) {
 			return;
 		}
-
+		
 		// add the given classpathEntry to the project classpath
 		int len = classpath.length;
 		IClasspathEntry[] newClasspath = new IClasspathEntry[len + 1];
@@ -109,9 +83,4 @@ public class JpaFacetInstallDelegate
 		newClasspath[len] = classpathEntry;
 		javaProject.setRawClasspath(newClasspath, monitor);
 	}
-
-	private IProgressMonitor nonNullMonitor(IProgressMonitor monitor) {
-		return (monitor != null) ? monitor : new NullProgressMonitor();
-	}
-
 }

@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
+import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
@@ -394,28 +395,38 @@ public class JptCorePlugin extends Plugin {
 	private static IEclipsePreferences getPreferences(IScopeContext context) {
 		return context.getNode(PLUGIN_ID);
 	}
-
+	
 	/**
-	 * Return the default JPA Platform ID for new JPA projects.
+	 * Return the default JPA Platform ID for new JPA projects with the given JPA facet version.
 	 */
-	public static String getDefaultJpaPlatformId() {
+	public static String getDefaultJpaPlatformId(String jpaFacetVersion) {
 		String platformId = getDefaultJpaPlatformId(getWorkspacePreferences(), getDefaultPreferences());
-		if (jpaPlatformIdIsValid(platformId)) {
+		if (jpaPlatformIdIsValid(platformId) 
+				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(platformId, jpaFacetVersion)) {
 			return platformId;
 		}
 		// if the platform ID stored in the workspace prefs is invalid, look in the default prefs
 		platformId = getDefaultJpaPlatformId(getDefaultPreferences());
-		if (jpaPlatformIdIsValid(platformId)) {
+		if (jpaPlatformIdIsValid(platformId)
+				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(platformId, jpaFacetVersion)) {
 			return platformId;
 		}
 		// if the platform ID stored in the default prefs is invalid, use the Generic platform ID
-		return GenericJpaPlatformProvider.ID;
+		if (jpaFacetVersion.equals(JPA_FACET_VERSION_1_0)) {
+			return GenericJpaPlatformProvider.ID;
+		}
+		else if (jpaFacetVersion.equals(JPA_FACET_VERSION_2_0)) {
+			return Generic2_0JpaPlatformProvider.ID;
+		}
+		else {
+			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion);
+		}
 	}
-
+	
 	private static String getDefaultJpaPlatformId(Preferences... nodes) {
 		return Platform.getPreferencesService().get(DEFAULT_JPA_PLATFORM_PREF_KEY, GenericJpaPlatformProvider.ID, nodes);
 	}
-
+	
 	private static boolean jpaPlatformIdIsValid(String platformId) {
 		return JpaPlatformRegistry.instance().containsPlatform(platformId);
 	}

@@ -63,7 +63,7 @@ public class TestFacetedProject extends TestPlatformProject {
 
 	/**
 	 * if 'config' is null (and 'facetName' is "jpt.jpa"), the JPA project will be built with the defaults
-	 * defined in JpaFacetDataModelProvider#getDefaultProperty(String)
+	 * defined in JpaFacetInstallDataModelProvider#getDefaultProperty(String)
 	 */
 	public void installFacet(String facetName, String versionName, IDataModel config) throws CoreException {
 		this.facetedProject.installProjectFacet(this.facetVersion(facetName, versionName), config, null);

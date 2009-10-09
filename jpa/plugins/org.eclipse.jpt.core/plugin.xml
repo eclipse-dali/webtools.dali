@@ -324,7 +324,7 @@
 		</template>
 		
 		<action facet="jpt.jpa" type="install" id="jpt.jpa.install">
-			<config-factory class="org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider"/>
+			<config-factory class="org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetInstallDelegate"/>
 		</action>
 		
@@ -337,9 +337,12 @@
 		</action>
 		
 		<!-- 
-			There is no version change delegate, because as of now, there is 
-			only a single version of JPA 
+			The version change  
 		-->
+		<action facet="jpt.jpa" type="version-change" id="jpt.jpa.version-change">
+			<config-factory class="org.eclipse.jpt.core.internal.facet.JpaFacetVersionChangeDataModelProvider"/>
+			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetVersionChangeDelegate"/>
+		</action>
 		
 	</extension>
 	

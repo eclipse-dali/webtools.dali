@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaProject.Config;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProperties;
@@ -215,7 +215,7 @@ public class GenericJpaModel
 		IProject project = event.getProject().getProject();
 		IDataModel dataModel = (IDataModel) event.getActionConfig();
 
-		boolean buildOrmXml = dataModel.getBooleanProperty(JpaFacetDataModelProperties.CREATE_ORM_XML);
+		boolean buildOrmXml = dataModel.getBooleanProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML);
 		this.createProjectXml(project, buildOrmXml);
 
 		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA model

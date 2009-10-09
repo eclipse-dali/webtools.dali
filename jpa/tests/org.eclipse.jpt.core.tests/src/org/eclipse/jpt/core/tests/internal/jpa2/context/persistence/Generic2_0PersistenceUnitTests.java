@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.persistence;
 
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.tests.internal.context.persistence.PersistenceUnitTestCase;
@@ -44,8 +44,8 @@ public abstract class Generic2_0PersistenceUnitTests extends PersistenceUnitTest
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "2.0"); //$NON-NLS-1$
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, Generic2_0JpaPlatformProvider.ID);
-		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.PLATFORM_ID, Generic2_0JpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}
 	

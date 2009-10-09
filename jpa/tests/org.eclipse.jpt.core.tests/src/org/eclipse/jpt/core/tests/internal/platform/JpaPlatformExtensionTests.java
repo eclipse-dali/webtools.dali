@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -51,10 +51,10 @@ public class JpaPlatformExtensionTests extends ContextModelTestCase
 	}
 
 	protected IDataModel buildConfig() throws Exception {
-		IActionConfigFactory configFactory = new JpaFacetDataModelProvider();
+		IActionConfigFactory configFactory = new JpaFacetInstallDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
 		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "1.0"); //$NON-NLS-1$
-		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TEST_PLATFORM_ID);
+		config.setProperty(JpaFacetInstallDataModelProperties.PLATFORM_ID, TEST_PLATFORM_ID);
 		return config;
 	}
 
