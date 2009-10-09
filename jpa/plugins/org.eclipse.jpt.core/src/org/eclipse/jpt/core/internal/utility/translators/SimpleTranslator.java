@@ -60,6 +60,12 @@ public class SimpleTranslator
 	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, int style) {
 		super(domPathAndNames, eStructuralFeature, style);
 	}
+	
+	public SimpleTranslator(String domPathAndNames, EStructuralFeature aFeature, int style, EClass eClass, Translator[] children) {
+		this(domPathAndNames, aFeature, style);
+		setEMFClass(eClass);
+		this.children = children;
+	}
 
 	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, int style, Translator[] children) {
 		super(domPathAndNames, eStructuralFeature, style);

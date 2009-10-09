@@ -331,8 +331,10 @@ public class XmlTransient extends org.eclipse.jpt.core.resource.orm.XmlTransient
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature, 
+			Translator.END_TAG_NO_INDENT,
 			EclipseLinkOrmPackage.eINSTANCE.getXmlTransient(), 
-			buildTranslatorChildren());
+			buildTranslatorChildren()
+			);
 	}
 	
 	private static Translator[] buildTranslatorChildren() {
