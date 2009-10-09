@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.jpt.core" id="jpaPlatforms" name="JPA Platforms"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Used to add JPA platforms as choices when configuring a project with the JPA facet.  The optional &quot;jpaFacetVersion&quot; attribute is used to tie a platform to a particular JPA facet version (if not present, the platform is available for all facet versions.)  The optional &quot;default&quot; attribute is used to determine if a platform should have a higher priority when calculating the default platform for a project.
       </documentation>
    </annotation>
 
@@ -112,7 +112,17 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         The following example shows a basic JPA platform which should be considered a prominent platform for JPA 1.0
+
+&lt;extension point=&quot;org.eclipse.jpt.core.jpaPlatforms&quot;&gt;
+   &lt;jpaPlatform
+      id=&quot;myJpaPlatform&quot;
+      label=&quot;My JPA Platform&quot;
+      factoryClass=&quot;org.foo.MyJpaPlatformFactory&quot;
+      jpaFacetVersion=&quot;1.0&quot;
+      default=&quot;true&quot;&gt;
+   &lt;/jpaPlatform&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 
