@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMappedById <em>Mapped By Id</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMapsId <em>Maps Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -32,29 +32,29 @@ import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
 public interface XmlManyToOne_2_0 extends XmlDerivedId
 {
 	/**
-	 * Returns the value of the '<em><b>Mapped By Id</b></em>' attribute.
+	 * Returns the value of the '<em><b>Maps Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Mapped By Id</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Maps Id</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Mapped By Id</em>' attribute.
-	 * @see #setMappedById(String)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlManyToOne_2_0_MappedById()
+	 * @return the value of the '<em>Maps Id</em>' attribute.
+	 * @see #setMapsId(String)
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlManyToOne_2_0_MapsId()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	String getMappedById();
+	String getMapsId();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMappedById <em>Mapped By Id</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMapsId <em>Maps Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Mapped By Id</em>' attribute.
-	 * @see #getMappedById()
+	 * @param value the new value of the '<em>Maps Id</em>' attribute.
+	 * @see #getMapsId()
 	 * @generated
 	 */
-	void setMappedById(String value);
+	void setMapsId(String value);
 
 } // XmlManyToOne_2_0

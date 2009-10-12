@@ -3731,13 +3731,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__ID = ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE__MAPPED_BY_ID = ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_ONE__MAPS_ID = ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Many To One</em>' class.
@@ -4361,13 +4361,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__ORPHAN_REMOVAL = ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__MAPPED_BY_ID = ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_ONE_TO_ONE__MAPS_ID = ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.

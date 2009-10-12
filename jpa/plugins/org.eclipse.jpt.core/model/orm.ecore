@@ -508,7 +508,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlDerivedId">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedById" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsId" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMapKeyClass_2_0" abstract="true"
         interface="true">
@@ -542,7 +542,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne_2_0" abstract="true" interface="true"
         eSuperTypes="#//XmlDerivedId">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="orphanRemoval" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedById" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsId" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn_2_0" abstract="true"
         interface="true">

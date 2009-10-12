@@ -455,7 +455,7 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 			buildFetchTranslator(),
 			buildOptionalTranslator(),
 			buildAccessTranslator(),
-			buildMappedByIdTranslator(),
+			buildMapsIdTranslator(),
 			buildIdTranslator(),
 			buildJoinColumnTranslator(),
 			buildJoinTableTranslator(),

@@ -544,7 +544,7 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 			buildAccessTranslator(),
 			buildMappedByTranslator(),
 			buildOrphanRemovalTranslator(),
-			buildMappedByIdTranslator(),
+			buildMapsIdTranslator(),
 			buildIdTranslator(),
 			buildPrimaryKeyJoinColumnTranslator(),
 			buildJoinColumnTranslator(),

@@ -2717,13 +2717,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MANY_TO_ONE__ID = OrmPackage.XML_MANY_TO_ONE__ID;
 	/**
-	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_MANY_TO_ONE__MAPPED_BY_ID;
+	public static final int XML_MANY_TO_ONE__MAPS_ID = OrmPackage.XML_MANY_TO_ONE__MAPS_ID;
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -3443,13 +3443,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_ONE__ORPHAN_REMOVAL = OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL;
 	/**
-	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__MAPPED_BY_ID = OrmPackage.XML_ONE_TO_ONE__MAPPED_BY_ID;
+	public static final int XML_ONE_TO_ONE__MAPS_ID = OrmPackage.XML_ONE_TO_ONE__MAPS_ID;
 	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->

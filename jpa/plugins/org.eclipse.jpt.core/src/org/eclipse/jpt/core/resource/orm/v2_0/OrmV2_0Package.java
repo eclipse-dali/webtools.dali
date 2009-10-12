@@ -682,13 +682,13 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_MANY_TO_ONE_20__ID = OrmPackage.XML_DERIVED_ID__ID;
 
 	/**
-	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE_20__MAPPED_BY_ID = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 0;
+	public static final int XML_MANY_TO_ONE_20__MAPS_ID = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Many To One 20</em>' class.
@@ -903,13 +903,13 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ONE_TO_ONE_20__ORPHAN_REMOVAL = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Mapped By Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_20__MAPPED_BY_ID = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_ONE_20__MAPS_ID = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To One 20</em>' class.
@@ -2160,15 +2160,15 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMappedById <em>Mapped By Id</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMapsId <em>Maps Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Mapped By Id</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMappedById()
+	 * @return the meta object for the attribute '<em>Maps Id</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMapsId()
 	 * @see #getXmlManyToOne_2_0()
 	 * @generated
 	 */
-	public EAttribute getXmlManyToOne_2_0_MappedById()
+	public EAttribute getXmlManyToOne_2_0_MapsId()
 	{
 		return (EAttribute)xmlManyToOne_2_0EClass.getEStructuralFeatures().get(0);
 	}
@@ -2425,15 +2425,15 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMappedById <em>Mapped By Id</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMapsId <em>Maps Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Mapped By Id</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMappedById()
+	 * @return the meta object for the attribute '<em>Maps Id</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMapsId()
 	 * @see #getXmlOneToOne_2_0()
 	 * @generated
 	 */
-	public EAttribute getXmlOneToOne_2_0_MappedById()
+	public EAttribute getXmlOneToOne_2_0_MapsId()
 	{
 		return (EAttribute)xmlOneToOne_2_0EClass.getEStructuralFeatures().get(1);
 	}
@@ -2835,7 +2835,7 @@ public class OrmV2_0Package extends EPackageImpl
 		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS);
 
 		xmlManyToOne_2_0EClass = createEClass(XML_MANY_TO_ONE_20);
-		createEAttribute(xmlManyToOne_2_0EClass, XML_MANY_TO_ONE_20__MAPPED_BY_ID);
+		createEAttribute(xmlManyToOne_2_0EClass, XML_MANY_TO_ONE_20__MAPS_ID);
 
 		xmlMapKeyClass_2_0EClass = createEClass(XML_MAP_KEY_CLASS_20);
 		createEAttribute(xmlMapKeyClass_2_0EClass, XML_MAP_KEY_CLASS_20__CLASS_NAME);
@@ -2858,7 +2858,7 @@ public class OrmV2_0Package extends EPackageImpl
 
 		xmlOneToOne_2_0EClass = createEClass(XML_ONE_TO_ONE_20);
 		createEAttribute(xmlOneToOne_2_0EClass, XML_ONE_TO_ONE_20__ORPHAN_REMOVAL);
-		createEAttribute(xmlOneToOne_2_0EClass, XML_ONE_TO_ONE_20__MAPPED_BY_ID);
+		createEAttribute(xmlOneToOne_2_0EClass, XML_ONE_TO_ONE_20__MAPS_ID);
 
 		xmlOrderColumn_2_0EClass = createEClass(XML_ORDER_COLUMN_20);
 		createEAttribute(xmlOrderColumn_2_0EClass, XML_ORDER_COLUMN_20__NULLABLE);
@@ -2992,7 +2992,7 @@ public class OrmV2_0Package extends EPackageImpl
 		initEReference(getXmlManyToMany_2_0_MapKeyJoinColumns(), theOrmPackage.getXmlJoinColumn(), null, "mapKeyJoinColumns", null, 0, -1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToOne_2_0EClass, XmlManyToOne_2_0.class, "XmlManyToOne_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlManyToOne_2_0_MappedById(), theXMLTypePackage.getString(), "mappedById", null, 0, 1, XmlManyToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlManyToOne_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlManyToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMapKeyClass_2_0EClass, XmlMapKeyClass_2_0.class, "XmlMapKeyClass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapKeyClass_2_0_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlMapKeyClass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3015,7 +3015,7 @@ public class OrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlOneToOne_2_0EClass, XmlOneToOne_2_0.class, "XmlOneToOne_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOneToOne_2_0_OrphanRemoval(), theXMLTypePackage.getBoolean(), "orphanRemoval", null, 0, 1, XmlOneToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlOneToOne_2_0_MappedById(), theXMLTypePackage.getString(), "mappedById", null, 0, 1, XmlOneToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlOneToOne_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlOneToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOrderColumn_2_0EClass, XmlOrderColumn_2_0.class, "XmlOrderColumn_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOrderColumn_2_0_Nullable(), theXMLTypePackage.getBooleanObject(), "nullable", null, 0, 1, XmlOrderColumn_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3475,12 +3475,12 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EClass XML_MANY_TO_ONE_20 = eINSTANCE.getXmlManyToOne_2_0();
 
 		/**
-		 * The meta object literal for the '<em><b>Mapped By Id</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Maps Id</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_MANY_TO_ONE_20__MAPPED_BY_ID = eINSTANCE.getXmlManyToOne_2_0_MappedById();
+		public static final EAttribute XML_MANY_TO_ONE_20__MAPS_ID = eINSTANCE.getXmlManyToOne_2_0_MapsId();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
@@ -3629,12 +3629,12 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EAttribute XML_ONE_TO_ONE_20__ORPHAN_REMOVAL = eINSTANCE.getXmlOneToOne_2_0_OrphanRemoval();
 
 		/**
-		 * The meta object literal for the '<em><b>Mapped By Id</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Maps Id</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ONE_TO_ONE_20__MAPPED_BY_ID = eINSTANCE.getXmlOneToOne_2_0_MappedById();
+		public static final EAttribute XML_ONE_TO_ONE_20__MAPS_ID = eINSTANCE.getXmlOneToOne_2_0_MapsId();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderColumn_2_0 <em>Xml Order Column 20</em>}' class.

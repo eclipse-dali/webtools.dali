@@ -41,7 +41,7 @@ public interface JPA2_0
 	String MAP_KEY_CONVERT = "map-key-convert";
 	String MAP_KEY_ENUMERATED = "map-key-enumerated";
 	String MAP_KEY_JOIN_COLUMN = "map-key-join-column";
-	String MAPPED_BY_ID = "mapped-by-id";
+	String MAPS_ID = "maps-id";
 	String NAMED_QUERY__LOCK_MODE = "lock-mode";
 	String ORDER_COLUMN = "order-column";
 	String ORPHAN_REMOVAL = "orphan-removal";

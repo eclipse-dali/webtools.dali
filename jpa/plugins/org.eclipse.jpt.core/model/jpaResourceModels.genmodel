@@ -407,7 +407,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlManyToMany_2_0/mapKeyJoinColumns"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlManyToOne_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlManyToOne_2_0/mappedById"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlManyToOne_2_0/mapsId"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyClass_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyClass_2_0/className"/>
@@ -430,7 +430,7 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOneToOne_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOneToOne_2_0/orphanRemoval"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOneToOne_2_0/mappedById"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOneToOne_2_0/mapsId"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrderColumn_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrderColumn_2_0/nullable"/>
