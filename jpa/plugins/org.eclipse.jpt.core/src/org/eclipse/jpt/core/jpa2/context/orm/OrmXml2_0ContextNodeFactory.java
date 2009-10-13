@@ -10,9 +10,13 @@
 package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
+import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 
 public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 {
@@ -21,4 +25,9 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 	OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource);
 
 	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
+	
+	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping);
+	
+	XmlElementCollection buildVirtualXmlElementCollection2_0(OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping);
+
 }

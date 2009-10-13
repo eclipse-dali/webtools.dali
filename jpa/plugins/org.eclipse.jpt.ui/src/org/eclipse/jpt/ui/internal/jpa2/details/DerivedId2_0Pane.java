@@ -11,7 +11,6 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.jpa2.context.DerivedId2_0;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmManyToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -49,7 +48,7 @@ public class DerivedId2_0Pane
 	protected void initializeLayout(Composite container) {
 		addCheckBox(
 			addSubPane(container, 4, 0, 4, 0), 
-			JptUiDetailsMessages.DerivedIdPane_derivedIdCheckboxLabel,
+			JptUiDetailsMessages2_0.DerivedIdPane_derivedIdCheckboxLabel,
 			buildDerivedIdValueHolder(),
 			null);
 	}

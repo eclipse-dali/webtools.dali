@@ -83,6 +83,8 @@ public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 		definitions.add(OrmManyToManyMappingUiDefinition.instance());
 		definitions.add(OrmEmbeddedMappingUiDefinition.instance());
 		definitions.add(OrmTransientMappingUiDefinition.instance());
+		
+		definitions.add(OrmElementCollectionMapping2_0UiDefinition.instance());
 	}
 	
 	@Override

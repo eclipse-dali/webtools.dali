@@ -74,7 +74,6 @@ public class JptUiDetailsMessages {
 	public static String ColumnComposite_updatableWithDefault;
 	public static String DefaultEmpty;
 	public static String DefaultWithOneParam;
-	public static String DerivedIdPane_derivedIdCheckboxLabel;
 	public static String ProviderDefault;
 	public static String DiscriminatorColumnComposite_discriminatorType;
 	public static String DiscriminatorColumnComposite_name;

@@ -62,7 +62,7 @@ public class Generic2_0JavaResourceUiDefinition extends AbstractJavaResourceUiDe
 	
 	@Override
 	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
-//		definitions.add(JavaElementCollectionMappingUiProvider.instance());
+		definitions.add(JavaElementCollectionMapping2_0UiDefinition.instance());
 		definitions.add(JavaIdMappingUiDefinition.instance());
 		definitions.add(JavaEmbeddedIdMappingUDefinition.instance());
 		definitions.add(JavaBasicMappingUiDefinition.instance());

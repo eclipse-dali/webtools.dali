@@ -20,11 +20,13 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.details.orm.BaseOrmXmlUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmBasicMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedIdMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
@@ -34,10 +36,13 @@ import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmManyToOneMapping2_0Compos
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToManyMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmVersionMapping2_0Composite;
+import org.eclipse.jpt.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class GenericOrmXml2_0UiFactory extends BaseOrmXmlUiFactory
+public class GenericOrmXml2_0UiFactory 
+	extends BaseOrmXmlUiFactory
+	implements OrmXmlUiFactory2_0
 {
 	// **************** orm type mapping composites ****************************
 		
@@ -134,5 +139,11 @@ public class GenericOrmXml2_0UiFactory extends BaseOrmXmlUiFactory
 		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
+	public JpaComposite createOrmElementCollectionMapping2_0Composite(
+			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
 
 }

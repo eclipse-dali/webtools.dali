@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
+import org.eclipse.jpt.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.Generic2_0PersistenceXmlDefinition;
@@ -97,7 +98,7 @@ public class Generic2_0JpaPlatformProvider
 	
 	@Override
 	protected JavaAttributeMappingDefinition[] buildNonNullDefaultJavaAttributeMappingDefinitions() {
-		// order determined by analyzing order that reference implementation (toplink) uses
+		// order determined by analyzing order that reference implementation (eclipselink) uses
 		return new JavaAttributeMappingDefinition[] {
 			JavaEmbeddedMappingDefinition.instance(),
 			JavaBasicMappingDefinition.instance()};
@@ -108,7 +109,7 @@ public class Generic2_0JpaPlatformProvider
 		// order determined by analyzing order that reference implementation (eclipselink) uses
 		return new JavaAttributeMappingDefinition[] {
 			JavaTransientMappingDefinition.instance(),
-			//JavaElementCollectionMappingProvider.instance(),
+			JavaElementCollectionMappingDefinition2_0.instance(),
 			JavaIdMappingDefinition2_0.instance(),
 			JavaVersionMappingDefinition.instance(),
 			JavaBasicMappingDefinition.instance(),

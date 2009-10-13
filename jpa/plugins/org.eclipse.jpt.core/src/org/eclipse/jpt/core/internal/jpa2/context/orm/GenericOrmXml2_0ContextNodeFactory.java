@@ -33,16 +33,18 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer.Owner;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
+import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -51,7 +53,6 @@ import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
@@ -60,7 +61,7 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	
 	@Override
 	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent, org.eclipse.jpt.core.resource.orm.XmlEmbeddable resourceMapping) {
-		return new GenericOrmEmbeddable2_0(parent, (XmlEmbeddable) resourceMapping);
+		return new GenericOrmEmbeddable2_0(parent, resourceMapping);
 	}
 	
 	@Override
@@ -70,12 +71,12 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	
 	@Override
 	public OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent, org.eclipse.jpt.core.resource.orm.XmlAssociationOverride associationOverride) {
-		return new GenericOrmAssociationOverrideRelationshipReference2_0(parent, (XmlAssociationOverride) associationOverride);
+		return new GenericOrmAssociationOverrideRelationshipReference2_0(parent, associationOverride);
 	}
 	
 	@Override
 	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
-		return new GenericOrmSequenceGenerator2_0(parent, (XmlSequenceGenerator) resourceSequenceGenerator);
+		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
 	}
 	
 	@Override
@@ -88,6 +89,10 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 		return new GenericOrmAssociationOverrideContainer(parent, owner, resourceAssociationOverrideContainer);
 	}
 	
+	@Override
+	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
+		return new GenericOrmElementCollectionMapping2_0(parent, resourceMapping);
+	}
 	
 	// ********** ORM Virtual Resource Model **********
 
@@ -149,5 +154,10 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	@Override
 	public XmlNullAttributeMapping buildVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		return new VirtualXmlNullAttributeMapping2_0(ormTypeMapping, javaAttributeMapping);
+	}
+	
+	@Override
+	public XmlElementCollection buildVirtualXmlElementCollection2_0(OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping) {
+		return new VirtualXmlElementCollection2_0(ormTypeMapping, javaMapping);
 	}
 }

@@ -121,7 +121,9 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
@@ -134,6 +136,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
+import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -358,7 +361,10 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		return new NullOrmDerivedId2_0(parent);
 	}
 	
-	
+	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
+		throw new UnsupportedOperationException();
+	}
+
 	// ********** ORM Virtual Resource Model **********
 
 	public XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmTypeMapping parent, JoiningStrategy joiningStrategy) {
@@ -409,4 +415,7 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		return new VirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
 	}
 	
+	public XmlElementCollection buildVirtualXmlElementCollection2_0(OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping) {
+		throw new UnsupportedOperationException();
+	}
 }

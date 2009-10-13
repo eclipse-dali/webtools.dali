@@ -753,6 +753,7 @@ public class Attributes extends AbstractJpaEObject implements XmlAttributes_2_0
 		CollectionTools.addAll(attributeMappings, this.getOneToManys().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		CollectionTools.addAll(attributeMappings, this.getOneToOnes().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		CollectionTools.addAll(attributeMappings, this.getManyToManys().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getElementCollections().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		CollectionTools.addAll(attributeMappings, this.getEmbeddeds().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		CollectionTools.addAll(attributeMappings, this.getTransients().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		return attributeMappings;

@@ -19,42 +19,46 @@ package org.eclipse.jpt.core.jpa2.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 @SuppressWarnings("nls")
-public interface JPA2_0 
-{	
+public interface JPA2_0 {
+
 	// JPA package
 	String PACKAGE = "javax.persistence";
 	String PACKAGE_ = PACKAGE + '.';
-	
-	
+
+
 	// ********** API **********
-	
+
 	// JPA 2.0 annotations
 	String ACCESS = PACKAGE_ + "Access";
 		String ACCESS__VALUE = "value";
-	
+
 	String ASSOCIATION_OVERRIDE__JOIN_TABLE = "joinTable";
-	
+
 	String MAPS_ID = PACKAGE_ + "MapsId";
 		String MAPS_ID__VALUE = "value";
-	
+
 	String SEQUENCE_GENERATOR__CATALOG = "catalog";
 	String SEQUENCE_GENERATOR__SCHEMA = "schema";
-	
+
+	String ELEMENT_COLLECTION = PACKAGE_ + "ElementCollection";
+		String ELEMENT_COLLECTION__FETCH = "fetch";
+		String ELEMENT_COLLECTION__TARGET_CLASS = "targetClass";
+
 	// JPA 2.0 enums
 	String ACCESS_TYPE = PACKAGE_ + "AccessType";
 		String ACCESS_TYPE_ = ACCESS_TYPE + '.';
 		String ACCESS_TYPE__FIELD = ACCESS_TYPE_ + "FIELD";
 		String ACCESS_TYPE__PROPERTY = ACCESS_TYPE_ + "PROPERTY";
-	
+
 	// JPA 2.0 metamodel
 	String METAMODEL_PACKAGE = PACKAGE_ + "metamodel";
 	String METAMODEL_PACKAGE_ = METAMODEL_PACKAGE + '.';
-	
+
 	String STATIC_METAMODEL = METAMODEL_PACKAGE_ + "StaticMetamodel";
 		String STATIC_METAMODEL__VALUE = "value";
-	
+
 	String SINGULAR_ATTRIBUTE = METAMODEL_PACKAGE_ + "SingularAttribute";
-	
+
 	String COLLECTION_ATTRIBUTE = METAMODEL_PACKAGE_ + "CollectionAttribute";
 	String LIST_ATTRIBUTE = METAMODEL_PACKAGE_ + "ListAttribute";
 	String MAP_ATTRIBUTE = METAMODEL_PACKAGE_ + "MapAttribute";

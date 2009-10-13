@@ -16,9 +16,11 @@ import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
+import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEmbeddable2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEmbeddedMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEntity2_0Composite;
@@ -26,6 +28,7 @@ import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaIdMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaManyToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaMappedSuperclass2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaOneToOneMapping2_0Composite;
+import org.eclipse.jpt.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -38,7 +41,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 1.0
  */
-public class Generic2_0JavaUiFactory extends BaseJavaUiFactory
+public class Generic2_0JavaUiFactory
+	extends BaseJavaUiFactory
+	implements JavaUiFactory2_0
 {
 	
 	@Override
@@ -92,5 +97,12 @@ public class Generic2_0JavaUiFactory extends BaseJavaUiFactory
 			Composite parent, 
 			WidgetFactory widgetFactory) {
 		return new JavaOneToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaElementCollectionMapping2_0Composite(
+			PropertyValueModel<JavaElementCollectionMapping2_0> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new ElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

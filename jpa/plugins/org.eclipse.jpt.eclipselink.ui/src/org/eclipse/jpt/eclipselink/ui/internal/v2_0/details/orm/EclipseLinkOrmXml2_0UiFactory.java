@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.BaseEclipseLinkOrmXmlUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkBasicMapping1_1Composite;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkEmbeddedIdMapping1_1Composite;
@@ -29,11 +30,15 @@ import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkOn
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkVersionMapping1_1Composite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Composite;
+import org.eclipse.jpt.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkOrmXml2_0UiFactory extends BaseEclipseLinkOrmXmlUiFactory
+public class EclipseLinkOrmXml2_0UiFactory 
+	extends BaseEclipseLinkOrmXmlUiFactory
+	implements OrmXmlUiFactory2_0
 {
 	@Override
 	public JpaComposite createOrmEntityComposite(
@@ -60,7 +65,7 @@ public class EclipseLinkOrmXml2_0UiFactory extends BaseEclipseLinkOrmXmlUiFactor
 			WidgetFactory widgetFactory) {
 		return new OrmEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
-		
+	
 	@Override
 	public JpaComposite createOrmEmbeddedIdMappingComposite(
 			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
@@ -117,5 +122,12 @@ public class EclipseLinkOrmXml2_0UiFactory extends BaseEclipseLinkOrmXmlUiFactor
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new OrmEclipseLinkManyToManyMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmElementCollectionMapping2_0Composite(
+			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

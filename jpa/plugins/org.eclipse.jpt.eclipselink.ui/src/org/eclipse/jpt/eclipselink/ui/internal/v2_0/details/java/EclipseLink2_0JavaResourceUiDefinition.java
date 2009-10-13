@@ -41,6 +41,7 @@ import org.eclipse.jpt.ui.internal.details.java.JavaOneToOneMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaTransientMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaElementCollectionMapping2_0UiDefinition;
 
 public class EclipseLink2_0JavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
 {
@@ -79,10 +80,13 @@ public class EclipseLink2_0JavaResourceUiDefinition extends AbstractJavaResource
 		definitions.add(JavaManyToManyMappingUiDefinition.instance());
 		definitions.add(JavaEmbeddedMappingUiDefinition.instance());
 		definitions.add(JavaTransientMappingUiDefinition.instance());
+
 		definitions.add(JavaEclipseLinkBasicCollectionMappingUiDefinition.instance());
 		definitions.add(JavaEclipseLinkBasicMapMappingUiDefinition.instance());
 		definitions.add(JavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
 		definitions.add(JavaEclipseLinkTransformationMappingUiDefinition.instance());
+
+		definitions.add(JavaElementCollectionMapping2_0UiDefinition.instance());
 	}
 	
 	@Override

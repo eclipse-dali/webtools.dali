@@ -11,16 +11,21 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java.EclipseLink1_1JavaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  EclipseLink2_0JpaUiFactory
  */
-public class EclipseLink2_0JavaUiFactory extends EclipseLink1_1JavaUiFactory
+public class EclipseLink2_0JavaUiFactory
+	extends EclipseLink1_1JavaUiFactory
+	implements JavaUiFactory2_0
 {
 	public EclipseLink2_0JavaUiFactory() {
 		super();
@@ -37,7 +42,17 @@ public class EclipseLink2_0JavaUiFactory extends EclipseLink1_1JavaUiFactory
 	}
 	
 	@Override
-	public JpaComposite createJavaIdMappingComposite(PropertyValueModel<JavaIdMapping> subjectHolder, Composite parent, WidgetFactory widgetFactory) {
+	public JpaComposite createJavaIdMappingComposite(
+			PropertyValueModel<JavaIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return new JavaEclipseLinkIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaElementCollectionMapping2_0Composite(
+			PropertyValueModel<JavaElementCollectionMapping2_0> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new ElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

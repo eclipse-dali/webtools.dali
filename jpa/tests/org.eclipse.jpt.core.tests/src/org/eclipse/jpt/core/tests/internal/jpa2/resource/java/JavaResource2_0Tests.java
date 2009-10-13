@@ -20,6 +20,7 @@ public class JavaResource2_0Tests {
 		suite.addTestSuite(Access2_0AnnotationTests.class);
 		suite.addTestSuite(AssociationOverride2_0Tests.class);
 		suite.addTestSuite(AssociationOverrides2_0Tests.class);
+		suite.addTestSuite(ElementCollection2_0AnnotationTests.class);
 		suite.addTestSuite(MapsId2_0AnnotationTests.class);
 		suite.addTestSuite(SequenceGenerator2_0Tests.class);
 			

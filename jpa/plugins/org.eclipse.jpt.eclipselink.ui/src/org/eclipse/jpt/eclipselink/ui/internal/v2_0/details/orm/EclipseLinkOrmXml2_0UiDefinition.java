@@ -37,6 +37,7 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmOneToManyMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmTransientMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmVersionMappingUiDefinition;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0UiDefinition;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
@@ -92,6 +93,8 @@ public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDe
 		definitions.add(OrmEclipseLinkBasicMapMappingUiDefinition.instance());
 		definitions.add(OrmEclipseLinkVariableOneToOneMappingUiDefinition.instance());
 		definitions.add(OrmEclipseLinkTransformationMappingUiDefinition.instance());
+		
+		definitions.add(OrmElementCollectionMapping2_0UiDefinition.instance());
 	}
 	
 	@Override

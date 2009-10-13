@@ -1161,7 +1161,11 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	// ********** translators **********
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlElementCollection(), 
+			buildTranslatorChildren());
 	}
 	
 	private static Translator[] buildTranslatorChildren() {

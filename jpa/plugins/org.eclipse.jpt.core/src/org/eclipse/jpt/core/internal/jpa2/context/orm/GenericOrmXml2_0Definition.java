@@ -92,7 +92,7 @@ public class GenericOrmXml2_0Definition
 		// (@see {@link Generic2_0JpaPlatformProvider})
 		return new OrmAttributeMappingDefinition[] {
 			OrmTransientMappingDefinition.instance(),
-			//OrmElementCollectionMappingProvider.instance(),
+			OrmElementCollectionMapping2_0Definition.instance(),
 			OrmIdMappingDefinition.instance(),
 			OrmVersionMappingDefinition.instance(),
 			OrmBasicMappingDefinition.instance(),

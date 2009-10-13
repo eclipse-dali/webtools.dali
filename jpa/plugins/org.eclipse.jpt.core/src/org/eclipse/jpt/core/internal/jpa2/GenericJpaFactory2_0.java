@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
@@ -33,6 +34,7 @@ import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -107,5 +109,10 @@ public class GenericJpaFactory2_0
 	@Override
 	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
 		return new GenericJavaDerivedId2_0(parent);
+	}
+	
+	@Override
+	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
+		return new GenericJavaElementCollectionMapping2_0(parent);
 	}
 }
