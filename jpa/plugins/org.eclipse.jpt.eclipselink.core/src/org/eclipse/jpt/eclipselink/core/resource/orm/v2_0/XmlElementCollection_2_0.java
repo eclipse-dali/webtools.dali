@@ -11,6 +11,7 @@
 
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
 
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
 
@@ -24,6 +25,6 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlConvertersHolder, XmlCollectionMapping_2_0
+public interface XmlElementCollection_2_0 extends XmlAttributeMapping, XmlConvertibleMapping, XmlConvertersHolder, XmlCollectionMapping_2_0
 {
 }
