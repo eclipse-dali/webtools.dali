@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  PersistenceXmlCachingTab
  */
-public class PersistenceXmlCachingTab 
-								extends FormPane<Caching>
+public class PersistenceXmlCachingTab<T extends Caching>
+								extends FormPane<T>
 								implements JpaPageComposite
 {
 	public PersistenceXmlCachingTab(
-			PropertyValueModel<Caching> subjectHolder,
+			PropertyValueModel<T> subjectHolder,
 			Composite parent,
             WidgetFactory widgetFactory) {
 
@@ -40,7 +40,7 @@ public class PersistenceXmlCachingTab
 	@Override
 	protected void initializeLayout(Composite container) {
 		
-		new EclipseLinkCachingComposite(this, container);
+		new EclipseLinkCachingComposite<T>(this, container);
 	}
 
 	// ********** JpaPageComposite implementation **********

@@ -96,13 +96,13 @@ public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFact
 		return new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory);
 	}
 	
-	protected PersistenceXmlCachingTab buildCachingTab(
+	protected PersistenceXmlCachingTab<? extends Caching> buildCachingTab(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
 		PropertyValueModel<Caching> cachingHolder = this.buildCachingHolder(subjectHolder);
 
-		return new PersistenceXmlCachingTab(cachingHolder, parent, widgetFactory);
+		return new PersistenceXmlCachingTab<Caching>(cachingHolder, parent, widgetFactory);
 	}
 	
 	protected PersistenceXmlLoggingTab buildLoggingTab(
@@ -173,7 +173,7 @@ public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFact
 		};
 	}
 	
-	private PropertyValueModel<Caching> buildCachingHolder(
+	protected PropertyValueModel<Caching> buildCachingHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Caching>(subjectHolder) {
 			@Override

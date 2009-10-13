@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2008 Oracle. All rights reserved.
+* Copyright (c) 2007, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -141,6 +141,8 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlCachingTab_title;
 	public static String PersistenceXmlCachingTab_sectionTitle;
 	public static String PersistenceXmlCachingTab_sectionDescription;
+	
+	public static String CacheDefaultsComposite_groupTitle;
 
 	public static String PersistenceXmlCachingTab_defaultCacheTypeLabel;
 	public static String PersistenceXmlCachingTab_cacheTypeLabel;

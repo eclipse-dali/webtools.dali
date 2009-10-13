@@ -48,6 +48,14 @@ public class Jpt2_0UiMessages
 	public static String TransactionTypeComposite_jta;
 	public static String TransactionTypeComposite_resource_local;
 	
+	public static String SharedCacheModeComposite_sharedCacheModeLabel;
+
+	public static String SharedCacheModeComposite_all;
+	public static String SharedCacheModeComposite_none;
+	public static String SharedCacheModeComposite_enable_selective;
+	public static String SharedCacheModeComposite_disable_selective;
+	public static String SharedCacheModeComposite_unspecified;
+	
 	public static String ValidationModeComposite_validationModeLabel;
 	
 	public static String ValidationModeComposite_auto;

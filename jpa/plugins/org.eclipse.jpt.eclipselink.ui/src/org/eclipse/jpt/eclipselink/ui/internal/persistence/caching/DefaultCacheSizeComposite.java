@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheSizeComposite
  */
-public class DefaultCacheSizeComposite extends Pane<Caching>
+public class DefaultCacheSizeComposite<T extends Caching> extends Pane<T>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -32,7 +32,7 @@ public class DefaultCacheSizeComposite extends Pane<Caching>
 	 * @param parent
 	 *            The parent container
 	 */
-	public DefaultCacheSizeComposite(Pane<Caching> parentComposite,
+	public DefaultCacheSizeComposite(Pane<T> parentComposite,
 	                                 Composite parent) {
 
 		super(parentComposite, parent);
@@ -80,7 +80,8 @@ public class DefaultCacheSizeComposite extends Pane<Caching>
 					protected void setValue_(Integer value) {
 						this.subject.setCacheSizeDefault(value);
 					}
-				};			}
+				};			
+			}
 		};
 	}
 

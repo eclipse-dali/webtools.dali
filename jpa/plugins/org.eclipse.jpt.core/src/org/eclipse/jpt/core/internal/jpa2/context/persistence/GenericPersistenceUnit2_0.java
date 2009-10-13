@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.persistence.options.GenericOpt
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 
 /**
@@ -25,6 +26,9 @@ public class GenericPersistenceUnit2_0
 	extends AbstractPersistenceUnit
 	implements PersistenceUnit2_0
 {
+	protected SharedCacheMode specifiedSharedCacheMode;
+	protected SharedCacheMode defaultSharedCacheMode;
+	
 	protected ValidationMode specifiedValidationMode;
 	protected ValidationMode defaultValidationMode;
 	
@@ -35,11 +39,22 @@ public class GenericPersistenceUnit2_0
 	public GenericPersistenceUnit2_0(Persistence parent, org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 
+		this.specifiedSharedCacheMode = this.buildSpecifiedSharedCacheMode();
+		this.defaultSharedCacheMode = this.buildDefaultSharedCacheMode();
+
 		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
 		this.defaultValidationMode = this.buildDefaultValidationMode();
 	}
 
 	// ********** behavior **********
+
+	protected SharedCacheMode buildSpecifiedSharedCacheMode() {
+		return SharedCacheMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getSharedCacheMode());
+	}
+	
+	protected SharedCacheMode buildDefaultSharedCacheMode() {
+		return SharedCacheMode.UNSPECIFIED;
+	}
 
 	protected ValidationMode buildSpecifiedValidationMode() {
 		return ValidationMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getValidationMode());
@@ -47,34 +62,6 @@ public class GenericPersistenceUnit2_0
 	
 	protected ValidationMode buildDefaultValidationMode() {
 		return JpaOptions2_0.DEFAULT_VALIDATION_MODE; 
-	}
-	
-	
-	// ********** validation mode **********
-
-	public ValidationMode getValidationMode() {
-		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
-	}
-
-	public ValidationMode getSpecifiedValidationMode() {
-		return this.specifiedValidationMode;
-	}
-
-	public void setSpecifiedValidationMode(ValidationMode specifiedValidationMode) {
-		ValidationMode old = this.specifiedValidationMode;
-		this.specifiedValidationMode = specifiedValidationMode;
-		this.getXmlPersistenceUnit().setValidationMode(ValidationMode.toXmlResourceModel(specifiedValidationMode));
-		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, specifiedValidationMode);
-	}
-
-	public ValidationMode getDefaultValidationMode() {
-		return this.defaultValidationMode;
-	}
-
-	protected void setDefaultValidationMode(ValidationMode defaultValidationMode) {
-		ValidationMode old = this.defaultValidationMode;
-		this.defaultValidationMode = defaultValidationMode;
-		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
 	}
 	
 	// ********** properties **********
@@ -115,6 +102,9 @@ public class GenericPersistenceUnit2_0
 		super.update(xpu);
 		
 		this.xmlPersistenceUnit = xpu;
+		this.setSpecifiedSharedCacheMode(this.buildSpecifiedSharedCacheMode());
+		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
+		
 		this.updateValidationMode();
 	}
 	
@@ -129,4 +119,59 @@ public class GenericPersistenceUnit2_0
 		this.setSpecifiedValidationMode(newValidationMode);
 	}
 
+
+	// ********** shared cache mode **********
+
+	public SharedCacheMode getSharedCacheMode() {
+		return (this.specifiedSharedCacheMode != null) ? this.specifiedSharedCacheMode : this.defaultSharedCacheMode;
+	}
+
+	public SharedCacheMode getSpecifiedSharedCacheMode() {
+		return this.specifiedSharedCacheMode;
+	}
+
+	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+		SharedCacheMode old = this.specifiedSharedCacheMode;
+		this.specifiedSharedCacheMode = specifiedSharedCacheMode;
+		this.getXmlPersistenceUnit().setSharedCacheMode(SharedCacheMode.toXmlResourceModel(specifiedSharedCacheMode));
+		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, specifiedSharedCacheMode);
+	}
+
+	public SharedCacheMode getDefaultSharedCacheMode() {
+		return this.defaultSharedCacheMode;
+	}
+
+	protected void setDefaultSharedCacheMode(SharedCacheMode defaultSharedCacheMode) {
+		SharedCacheMode old = this.defaultSharedCacheMode;
+		this.defaultSharedCacheMode = defaultSharedCacheMode;
+		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
+	}
+	
+	
+	// ********** validation mode **********
+
+	public ValidationMode getValidationMode() {
+		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
+	}
+
+	public ValidationMode getSpecifiedValidationMode() {
+		return this.specifiedValidationMode;
+	}
+
+	public void setSpecifiedValidationMode(ValidationMode specifiedValidationMode) {
+		ValidationMode old = this.specifiedValidationMode;
+		this.specifiedValidationMode = specifiedValidationMode;
+		this.getXmlPersistenceUnit().setValidationMode(ValidationMode.toXmlResourceModel(specifiedValidationMode));
+		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, specifiedValidationMode);
+	}
+
+	public ValidationMode getDefaultValidationMode() {
+		return this.defaultValidationMode;
+	}
+
+	protected void setDefaultValidationMode(ValidationMode defaultValidationMode) {
+		ValidationMode old = this.defaultValidationMode;
+		this.defaultValidationMode = defaultValidationMode;
+		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
+	}
 }

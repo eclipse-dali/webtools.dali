@@ -47,9 +47,9 @@ import org.eclipse.ui.progress.IProgressService;
 /**
  *  EntityListComposite
  */
-public class EntityListComposite extends Pane<Caching>
+public class EntityListComposite<T extends Caching> extends Pane<T>
 {
-	public EntityListComposite(Pane<Caching> parentComposite, Composite parent) {
+	public EntityListComposite(Pane<T> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}

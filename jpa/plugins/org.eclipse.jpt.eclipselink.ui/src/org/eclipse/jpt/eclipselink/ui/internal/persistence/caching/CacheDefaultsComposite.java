@@ -1,9 +1,9 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-*
+* 
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -15,11 +15,11 @@ import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *  EclipseLinkCachingComposite
+ *  CacheDefaultsComposite
  */
-public class EclipseLinkCachingComposite<T extends Caching> extends FormPane<T>
+public class CacheDefaultsComposite<T extends Caching> extends FormPane<T>
 {
-	public EclipseLinkCachingComposite(FormPane<T> subjectHolder,
+	public CacheDefaultsComposite(FormPane<T> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);
@@ -27,24 +27,29 @@ public class EclipseLinkCachingComposite<T extends Caching> extends FormPane<T>
 
 	@Override
 	protected void initializeLayout(Composite parent) {
+		
+		this.initializeCacheDefaultsPane(parent);
+	}
+	
+	protected void initializeCacheDefaultsPane(Composite parent) {
 
-		Composite container = this.addSection(
+		Composite defaultPane = this.addTitledGroup(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
+			EclipseLinkUiMessages.CacheDefaultsComposite_groupTitle
 		);
 
-		this.initializeCacheDefaultsComposite(container);
-
-		// EntitiesList
-		new EntityListComposite<T>(this, container);
-		// Flush Clear Cache
-		new FlushClearCacheComposite(this, container);
+		this.initializeCacheDefaultsComposites(defaultPane);
 	}
 	
-	protected void initializeCacheDefaultsComposite(Composite container) {
+	protected void initializeCacheDefaultsComposites(Composite parent) {
 
-		new CacheDefaultsComposite<T>(this, container);
+		// Default Cache Type
+		new DefaultCacheTypeComposite(this, parent);
+
+		// Default Cache Size
+		new DefaultCacheSizeComposite<T>(this, parent);
+
+		// Default Shared Cache
+		new DefaultSharedCacheComposite(this, parent);
 	}
-	
 }

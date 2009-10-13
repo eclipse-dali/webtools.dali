@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.jpa2.context.persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 
 /**
@@ -26,6 +27,42 @@ import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 public interface PersistenceUnit2_0
 	extends PersistenceUnit
 {
+
+	// ********** shared cache mode **********
+
+	/** 
+	 * Return the persistence unit's shared cache mode,
+	 * whether specified or defaulted.
+	 */
+	SharedCacheMode getSharedCacheMode();
+
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * specified shared cache mode
+	 */
+	String SPECIFIED_SHARED_CACHE_MODE_PROPERTY = "specifiedSharedCacheMode"; //$NON-NLS-1$
+
+	/** 
+	 * Return the persistence unit's specified shared cache mode.
+	 */
+	SharedCacheMode getSpecifiedSharedCacheMode();
+
+	/** 
+	 * Set the persistence unit's specified shared cache mode.
+	 */
+	void setSpecifiedSharedCacheMode(SharedCacheMode sharedCacheMode);
+
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * default shared cache mode (not typically changed).
+	 */
+	String DEFAULT_SHARED_CACHE_MODE_PROPERTY = "defaultSharedCacheMode"; //$NON-NLS-1$
+
+	/** 
+	 * Return the persistence unit's default shared cache mode.
+	 */
+	SharedCacheMode getDefaultSharedCacheMode();
+
 
 	// ********** validation mode **********
 

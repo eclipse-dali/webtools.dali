@@ -28,7 +28,7 @@ public class EntityCachingPropertyComposite extends Pane<Entity> {
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public EntityCachingPropertyComposite(Pane<Caching> parentComposite,
+	public EntityCachingPropertyComposite(Pane<? extends Caching> parentComposite,
 	                                      PropertyValueModel<Entity> subjectHolder,
 	                                      Composite parent) {
 

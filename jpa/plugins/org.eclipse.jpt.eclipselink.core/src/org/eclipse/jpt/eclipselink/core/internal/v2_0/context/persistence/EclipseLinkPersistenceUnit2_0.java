@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
@@ -27,17 +28,31 @@ public class EclipseLinkPersistenceUnit2_0
 	extends EclipseLinkPersistenceUnit
 	implements PersistenceUnit2_0
 {
+	protected SharedCacheMode specifiedSharedCacheMode;
+	protected SharedCacheMode defaultSharedCacheMode;
+	
 	protected ValidationMode specifiedValidationMode;
 	protected ValidationMode defaultValidationMode;
 
 	public EclipseLinkPersistenceUnit2_0(Persistence parent, org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 
+		this.specifiedSharedCacheMode = this.buildSpecifiedSharedCacheMode();
+		this.defaultSharedCacheMode = this.buildDefaultSharedCacheMode();
+
 		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
 		this.defaultValidationMode = this.buildDefaultValidationMode();
 	}
 
 	// ********** behavior **********
+
+	protected SharedCacheMode buildSpecifiedSharedCacheMode() {
+		return SharedCacheMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getSharedCacheMode());
+	}
+	
+	protected SharedCacheMode buildDefaultSharedCacheMode() {
+		return SharedCacheMode.DISABLE_SELECTIVE;
+	}
 
 	protected ValidationMode buildSpecifiedValidationMode() {
 		return ValidationMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getValidationMode());
@@ -84,6 +99,9 @@ public class EclipseLinkPersistenceUnit2_0
 		super.update(xpu);
 		
 		this.xmlPersistenceUnit = xpu;
+		this.setSpecifiedSharedCacheMode(this.buildSpecifiedSharedCacheMode());
+		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
+		
 		this.updateValidationMode();
 	}
 	
@@ -96,6 +114,34 @@ public class EclipseLinkPersistenceUnit2_0
 			this.getOptions().removeValidationMode();
 		}
 		this.setSpecifiedValidationMode(newValidationMode);
+	}
+	
+	
+	// ********** shared cache mode **********
+
+	public SharedCacheMode getSharedCacheMode() {
+		return (this.specifiedSharedCacheMode != null) ? this.specifiedSharedCacheMode : this.defaultSharedCacheMode;
+	}
+
+	public SharedCacheMode getSpecifiedSharedCacheMode() {
+		return this.specifiedSharedCacheMode;
+	}
+
+	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+		SharedCacheMode old = this.specifiedSharedCacheMode;
+		this.specifiedSharedCacheMode = specifiedSharedCacheMode;
+		this.getXmlPersistenceUnit().setSharedCacheMode(SharedCacheMode.toXmlResourceModel(specifiedSharedCacheMode));
+		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, specifiedSharedCacheMode);
+	}
+
+	public SharedCacheMode getDefaultSharedCacheMode() {
+		return this.defaultSharedCacheMode;
+	}
+
+	protected void setDefaultSharedCacheMode(SharedCacheMode defaultSharedCacheMode) {
+		SharedCacheMode old = this.defaultSharedCacheMode;
+		this.defaultSharedCacheMode = defaultSharedCacheMode;
+		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
 	}
 
 	// ********** validation mode **********

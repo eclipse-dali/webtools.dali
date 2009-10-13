@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -42,6 +41,9 @@ public class ValidationConfigurationComposite extends FormPane<JpaOptions2_0>
 	@Override
 	protected void initializeLayout(Composite parent) {
 
+		// SharedCacheMode
+		new SharedCacheModeComposite(this, this.buildPersistenceUnit2_0Holder(), parent);
+
 		// ValidationMode
 		new ValidationModeComposite(this, this.buildPersistenceUnit2_0Holder(), parent);
 		
@@ -68,10 +70,10 @@ public class ValidationConfigurationComposite extends FormPane<JpaOptions2_0>
 	}
 	
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Holder() {
-		return new TransformationPropertyValueModel<JpaOptions2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<JpaOptions2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
 			@Override
-			protected PersistenceUnit2_0 transform_(JpaOptions2_0 value) {
-				return (PersistenceUnit2_0) value.getPersistenceUnit();
+			protected PersistenceUnit2_0 buildValue_() {
+				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();
 			}
 		};
 	}
