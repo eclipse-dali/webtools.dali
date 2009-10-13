@@ -146,7 +146,7 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.persistenceUnitSetProperty(WRITE_CONNECTIONS_MAX_KEY, WRITE_CONNECTIONS_MAX_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty("misc.property.4", "value.4");
 		
-		// Initializes PU property TransactionType
+		// Initializes PU elements
 		this.getPersistenceUnit().setSpecifiedTransactionType(TRANSACTION_TYPE_TEST_VALUE);
 		this.getPersistenceUnit().setJtaDataSource(JTA_DATA_SOURCE_TEST_VALUE);
 		this.getPersistenceUnit().setNonJtaDataSource(NON_JTA_DATA_SOURCE_TEST_VALUE);
