@@ -9,10 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.BaseEclipseLinkOrmXmlUiFactory;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkBasicMapping1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkEmbeddedIdMapping1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkManyToManyMapping1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkManyToOneMapping1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkOneToManyMapping1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkOneToOneMapping1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkVersionMapping1_1Composite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Composite;
@@ -46,5 +60,62 @@ public class EclipseLinkOrmXml2_0UiFactory extends BaseEclipseLinkOrmXmlUiFactor
 			WidgetFactory widgetFactory) {
 		return new OrmEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
-
+		
+	@Override
+	public JpaComposite createOrmEmbeddedIdMappingComposite(
+			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkEmbeddedIdMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmBasicMappingComposite(
+			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkBasicMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmVersionMappingComposite(
+			PropertyValueModel<OrmVersionMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkVersionMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmManyToOneMappingComposite(
+			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkManyToOneMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public JpaComposite createOrmOneToManyMappingComposite(
+			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkOneToManyMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public JpaComposite createOrmOneToOneMappingComposite(
+			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkOneToOneMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmManyToManyMappingComposite(
+			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkManyToManyMapping1_1Composite(subjectHolder, parent, widgetFactory);
+	}
 }

@@ -32,7 +32,7 @@ public class OrmEclipseLinkPersistentAttribute extends AbstractOrmPersistentAttr
 	}
 	
 	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
-		throw new UnsupportedOperationException("specifiedAccess is not supported for EclipseLinkOrmPersistentAttribute"); //$NON-NLS-1$
+		throw new UnsupportedOperationException("specifiedAccess is not supported for OrmEclipseLinkPersistentAttribute"); //$NON-NLS-1$
 	}
 
 }
