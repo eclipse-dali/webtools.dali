@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -415,5 +416,10 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping
 	 * @generated
 	 */
 	void setCollectionTable(XmlCollectionTable value);
+
+	/**
+	 * Return the {@link TextRange} for the target-class attribute.
+	 */
+	TextRange getTargetClassTextRange();
 
 } // XmlElementCollection_2_0
