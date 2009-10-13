@@ -80,14 +80,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected TemporalType temporal = TEMPORAL_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEnumerated()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EnumType ENUMERATED_EDEFAULT = EnumType.ORDINAL;
+	protected static final EnumType ENUMERATED_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
@@ -120,14 +116,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected String targetClass = TARGET_CLASS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFetch()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final FetchType FETCH_EDEFAULT = FetchType.LAZY;
+	protected static final FetchType FETCH_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
@@ -1473,6 +1465,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		return getAttributeTextRange(JPA2_0.TEMPORAL);
 	}
 	
+	public TextRange getTargetClassTextRange() {
+		return getAttributeTextRange(JPA2_0.TARGET_CLASS);
+	}
 	
 	// **************** translators *******************************************
 	
