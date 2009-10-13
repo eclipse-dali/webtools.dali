@@ -21,7 +21,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
-public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreationDataModelProvider
+public class EclipseLinkOrmFileCreationDataModelProvider
+	extends OrmFileCreationDataModelProvider
 {
 	/**
 	 * required default constructor
@@ -46,6 +47,9 @@ public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreation
 	
 	@Override
 	protected String getDefaultVersion() {
+		if (getProject() == null) {
+			return null;
+		}
 		String platformVersion = getJpaProject().getJpaPlatform().getJpaVersion().getVersion();
 		if (platformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0)) {
 			return EclipseLink.SCHEMA_VERSION;

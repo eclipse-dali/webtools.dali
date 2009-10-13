@@ -41,6 +41,9 @@ public class PersistenceFileCreationDataModelProvider
 	
 	@Override
 	protected String getDefaultVersion() {
+		if (getProject() == null) {
+			return null;
+		}
 		try {
 			String facetVersion = getJpaFacetVersion(getProject());
 			if (facetVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)) {

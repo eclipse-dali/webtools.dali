@@ -190,6 +190,9 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	protected IStatus validateVersion() {
+		if (getProject() == null) {
+			return Status.OK_STATUS;
+		}
 		String fileVersion = getStringProperty(VERSION);
 		if (! fileVersionSupported(fileVersion)) {
 			return new Status(
