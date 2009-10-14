@@ -113,6 +113,9 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 
 	@Override
 	public AttributeMapping resolveAttributeMapping(String name) {
+		if (getName() == null) {
+			return null;
+		}
 		AttributeMapping resolvedMapping = super.resolveAttributeMapping(name);
 		if (resolvedMapping != null) {
 			return resolvedMapping;

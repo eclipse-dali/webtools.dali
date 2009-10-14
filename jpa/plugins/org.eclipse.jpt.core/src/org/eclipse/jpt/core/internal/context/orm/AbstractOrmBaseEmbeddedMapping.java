@@ -101,6 +101,9 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 
 	@Override
 	public Column resolveOverridenColumn(String attributeName) {
+		if (getName() == null) {
+			return null;
+		}
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
