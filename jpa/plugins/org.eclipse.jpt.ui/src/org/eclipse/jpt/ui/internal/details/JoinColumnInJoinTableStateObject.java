@@ -67,7 +67,9 @@ public class JoinColumnInJoinTableStateObject
 	
 	@Override
 	public Table getReferencedNameTable() {
-		return getRelationshipMapping().getTypeMapping().getPrimaryDbTable();
+		RelationshipMapping relationshipMapping = getRelationshipMapping();
+		return relationshipMapping == null ? null :
+			relationshipMapping.getTypeMapping().getPrimaryDbTable();
 	}
 	
 	@Override

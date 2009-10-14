@@ -67,7 +67,11 @@ public class InverseJoinColumnInJoinTableStateObject
 	
 	@Override
 	public Table getReferencedNameTable() {
-		Entity targetEntity = getRelationshipMapping().getResolvedTargetEntity();
+		RelationshipMapping relationshipMapping = getRelationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return null;
 		}
