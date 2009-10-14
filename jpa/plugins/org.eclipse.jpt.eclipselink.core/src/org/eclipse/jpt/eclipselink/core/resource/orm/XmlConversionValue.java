@@ -288,7 +288,12 @@ public class XmlConversionValue extends AbstractJpaEObject implements JpaEObject
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName,
+			structuralFeature,
+			Translator.END_TAG_NO_INDENT,
+			buildTranslatorChildren()
+		);
 	}
 
 	private static Translator[] buildTranslatorChildren() {
