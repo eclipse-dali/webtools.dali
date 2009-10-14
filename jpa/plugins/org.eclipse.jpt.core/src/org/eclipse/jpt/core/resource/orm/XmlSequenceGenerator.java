@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlSequenceGenerator_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
@@ -670,9 +669,9 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 			buildSequenceNameTranslator(),
 			buildInitialValueTranslator(),
 			buildAllocationSizeTranslator(),
-			buildDescriptionTranslator(),
 			buildCatalogTranslator(),
 			buildSchemaTranslator(),
+			buildDescriptionTranslator(),
 		};
 	}
 	
@@ -693,14 +692,14 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlGenerator_2_0_Description());
+		return new Translator(JPA.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlGenerator_2_0_Description());
 	}
 
 	protected static Translator buildCatalogTranslator() {
-		return new Translator(JPA2_0.CATALOG, OrmV2_0Package.eINSTANCE.getXmlSequenceGenerator_2_0_Catalog());
+		return new Translator(JPA.CATALOG, OrmV2_0Package.eINSTANCE.getXmlSequenceGenerator_2_0_Catalog(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildSchemaTranslator() {
-		return new Translator(JPA2_0.SCHEMA, OrmV2_0Package.eINSTANCE.getXmlSequenceGenerator_2_0_Schema());
+		return new Translator(JPA.SCHEMA, OrmV2_0Package.eINSTANCE.getXmlSequenceGenerator_2_0_Schema(), Translator.DOM_ATTRIBUTE);
 	}
 }
