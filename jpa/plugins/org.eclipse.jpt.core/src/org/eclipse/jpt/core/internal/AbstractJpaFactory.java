@@ -120,9 +120,10 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstrai
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
-import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.NullMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapsId2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
@@ -130,6 +131,7 @@ import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -367,5 +369,9 @@ public abstract class AbstractJpaFactory
 	
 	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		throw new UnsupportedOperationException();
+	}
+	
+	public JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent) {
+		return new NullJavaMapsId2_0(parent);
 	}
 }

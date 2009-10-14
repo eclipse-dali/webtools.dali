@@ -11,8 +11,6 @@
 
 package org.eclipse.jpt.core.resource.orm.v2_0;
 
-import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Xml One To One 20</b></em>'.
@@ -22,7 +20,6 @@ import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#isOrphanRemoval <em>Orphan Removal</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMapsId <em>Maps Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -30,7 +27,7 @@ import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlOneToOne_2_0 extends XmlDerivedId
+public interface XmlOneToOne_2_0 extends XmlSingleRelationshipMapping_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Orphan Removal</b></em>' attribute.
@@ -57,31 +54,5 @@ public interface XmlOneToOne_2_0 extends XmlDerivedId
 	 * @generated
 	 */
 	void setOrphanRemoval(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Maps Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Maps Id</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Maps Id</em>' attribute.
-	 * @see #setMapsId(String)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToOne_2_0_MapsId()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	String getMapsId();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMapsId <em>Maps Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Maps Id</em>' attribute.
-	 * @see #getMapsId()
-	 * @generated
-	 */
-	void setMapsId(String value);
 
 } // XmlOneToOne_2_0

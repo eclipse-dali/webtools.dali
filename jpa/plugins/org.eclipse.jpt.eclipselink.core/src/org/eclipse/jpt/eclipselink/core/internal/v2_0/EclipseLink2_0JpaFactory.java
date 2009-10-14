@@ -23,12 +23,14 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOve
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaMapsId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -51,11 +53,6 @@ public class EclipseLink2_0JpaFactory
 		return new GenericJavaPersistentType2_0(owner, jrpt);
 	}
 	
-	@Override
-	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
-		return new GenericJavaDerivedId2_0(parent);
-	}
-	
 	//The 2.0 JPA spec supports association overrides on an embedded mapping while the 1.0 spec did not
 	@Override
 	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, Owner owner) {
@@ -73,12 +70,22 @@ public class EclipseLink2_0JpaFactory
 	}
 	
 	@Override
-	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
-		return new GenericJavaSequenceGenerator2_0(parent);
+	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
+		return new GenericJavaDerivedId2_0(parent);
 	}
 	
 	@Override
 	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		return new GenericJavaElementCollectionMapping2_0(parent);
+	}
+	
+	@Override
+	public JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent) {
+		return new GenericJavaMapsId2_0(parent);
+	}
+	
+	@Override
+	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
+		return new GenericJavaSequenceGenerator2_0(parent);
 	}
 }

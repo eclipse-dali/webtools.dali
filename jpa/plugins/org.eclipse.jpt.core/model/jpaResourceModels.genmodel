@@ -148,7 +148,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/temporal"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/enumerated"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlDerivedId"/>
     <genClasses ecoreClass="orm.ecore#//XmlDiscriminatorColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/discriminatorType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/length"/>
@@ -406,14 +405,14 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlManyToMany_2_0/mapKeyColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlManyToMany_2_0/mapKeyJoinColumns"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlManyToOne_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlManyToOne_2_0/mapsId"/>
-      </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyClass_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyClass_2_0/className"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMappedSuperclass_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMappedSuperclass_2_0/cacheable"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapsId_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapsId_2_0/mapsId"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlNamedQuery_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlNamedQuery_2_0/lockMode"/>
@@ -430,7 +429,6 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOneToOne_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOneToOne_2_0/orphanRemoval"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOneToOne_2_0/mapsId"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrderColumn_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrderColumn_2_0/nullable"/>
@@ -454,6 +452,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlSequenceGenerator_2_0/catalog"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlSequenceGenerator_2_0/schema"/>
       </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlSingleRelationshipMapping_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlSqlResultSetMapping_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlSqlResultSetMapping_2_0/description"/>
       </genClasses>

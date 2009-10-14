@@ -663,43 +663,6 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_20_FEATURE_COUNT = 7;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0 <em>Xml Many To One 20</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlManyToOne_2_0()
-	 * @generated
-	 */
-	public static final int XML_MANY_TO_ONE_20 = 13;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_ONE_20__ID = OrmPackage.XML_DERIVED_ID__ID;
-
-	/**
-	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_ONE_20__MAPS_ID = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Many To One 20</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_ONE_20_FEATURE_COUNT = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 1;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -707,7 +670,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyClass_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAP_KEY_CLASS_20 = 14;
+	public static final int XML_MAP_KEY_CLASS_20 = 13;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -735,7 +698,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMappedSuperclass_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20 = 15;
+	public static final int XML_MAPPED_SUPERCLASS_20 = 14;
 
 	/**
 	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
@@ -754,6 +717,34 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapsId_2_0()
+	 * @generated
+	 */
+	public static final int XML_MAPS_ID_20 = 15;
+
+	/**
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPS_ID_20__MAPS_ID = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Maps Id 20</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPS_ID_20_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlNamedQuery_2_0 <em>Xml Named Query 20</em>}' class.
@@ -875,6 +866,43 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ONE_TO_MANY_20_FEATURE_COUNT = 8;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0 <em>Xml Single Relationship Mapping 20</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSingleRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20 = 25;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20__ID = XML_DERIVED_ID_20__ID;
+
+	/**
+	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20__MAPS_ID = XML_DERIVED_ID_20_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Single Relationship Mapping 20</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20_FEATURE_COUNT = XML_DERIVED_ID_20_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0 <em>Xml One To One 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -891,16 +919,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_20__ID = OrmPackage.XML_DERIVED_ID__ID;
-
-	/**
-	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_ONE_20__ORPHAN_REMOVAL = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 0;
+	public static final int XML_ONE_TO_ONE_20__ID = XML_SINGLE_RELATIONSHIP_MAPPING_20__ID;
 
 	/**
 	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
@@ -909,7 +928,16 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_20__MAPS_ID = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_ONE_20__MAPS_ID = XML_SINGLE_RELATIONSHIP_MAPPING_20__MAPS_ID;
+
+	/**
+	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE_20__ORPHAN_REMOVAL = XML_SINGLE_RELATIONSHIP_MAPPING_20_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To One 20</em>' class.
@@ -918,7 +946,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_20_FEATURE_COUNT = OrmPackage.XML_DERIVED_ID_FEATURE_COUNT + 2;
+	public static final int XML_ONE_TO_ONE_20_FEATURE_COUNT = XML_SINGLE_RELATIONSHIP_MAPPING_20_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderColumn_2_0 <em>Xml Order Column 20</em>}' class.
@@ -1132,7 +1160,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSqlResultSetMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 25;
+	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 26;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1160,7 +1188,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlUniqueConstraint_2_0()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT_20 = 26;
+	public static final int XML_UNIQUE_CONSTRAINT_20 = 27;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1188,7 +1216,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getLockModeType_2_0()
 	 * @generated
 	 */
-	public static final int LOCK_MODE_TYPE_20 = 27;
+	public static final int LOCK_MODE_TYPE_20 = 28;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1286,13 +1314,6 @@ public class OrmV2_0Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlManyToOne_2_0EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass xmlMapKeyClass_2_0EClass = null;
 
 	/**
@@ -1301,6 +1322,13 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlMappedSuperclass_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlMapsId_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1364,6 +1392,13 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlSequenceGenerator_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlSingleRelationshipMapping_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2146,35 +2181,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0 <em>Xml Many To One 20</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Many To One 20</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0
-	 * @generated
-	 */
-	public EClass getXmlManyToOne_2_0()
-	{
-		return xmlManyToOne_2_0EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMapsId <em>Maps Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Maps Id</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0#getMapsId()
-	 * @see #getXmlManyToOne_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlManyToOne_2_0_MapsId()
-	{
-		return (EAttribute)xmlManyToOne_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2229,6 +2235,35 @@ public class OrmV2_0Package extends EPackageImpl
 	public EAttribute getXmlMappedSuperclass_2_0_Cacheable()
 	{
 		return (EAttribute)xmlMappedSuperclass_2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Maps Id 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0
+	 * @generated
+	 */
+	public EClass getXmlMapsId_2_0()
+	{
+		return xmlMapsId_2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0#getMapsId <em>Maps Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Maps Id</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0#getMapsId()
+	 * @see #getXmlMapsId_2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlMapsId_2_0_MapsId()
+	{
+		return (EAttribute)xmlMapsId_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -2421,21 +2456,6 @@ public class OrmV2_0Package extends EPackageImpl
 	public EAttribute getXmlOneToOne_2_0_OrphanRemoval()
 	{
 		return (EAttribute)xmlOneToOne_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMapsId <em>Maps Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Maps Id</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getMapsId()
-	 * @see #getXmlOneToOne_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlOneToOne_2_0_MapsId()
-	{
-		return (EAttribute)xmlOneToOne_2_0EClass.getEStructuralFeatures().get(1);
 	}
 
 
@@ -2672,6 +2692,20 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0 <em>Xml Single Relationship Mapping 20</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Single Relationship Mapping 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0
+	 * @generated
+	 */
+	public EClass getXmlSingleRelationshipMapping_2_0()
+	{
+		return xmlSingleRelationshipMapping_2_0EClass;
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSqlResultSetMapping_2_0 <em>Xml Sql Result Set Mapping 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2834,14 +2868,14 @@ public class OrmV2_0Package extends EPackageImpl
 		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_COLUMN);
 		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS);
 
-		xmlManyToOne_2_0EClass = createEClass(XML_MANY_TO_ONE_20);
-		createEAttribute(xmlManyToOne_2_0EClass, XML_MANY_TO_ONE_20__MAPS_ID);
-
 		xmlMapKeyClass_2_0EClass = createEClass(XML_MAP_KEY_CLASS_20);
 		createEAttribute(xmlMapKeyClass_2_0EClass, XML_MAP_KEY_CLASS_20__CLASS_NAME);
 
 		xmlMappedSuperclass_2_0EClass = createEClass(XML_MAPPED_SUPERCLASS_20);
 		createEAttribute(xmlMappedSuperclass_2_0EClass, XML_MAPPED_SUPERCLASS_20__CACHEABLE);
+
+		xmlMapsId_2_0EClass = createEClass(XML_MAPS_ID_20);
+		createEAttribute(xmlMapsId_2_0EClass, XML_MAPS_ID_20__MAPS_ID);
 
 		xmlNamedQuery_2_0EClass = createEClass(XML_NAMED_QUERY_20);
 		createEAttribute(xmlNamedQuery_2_0EClass, XML_NAMED_QUERY_20__LOCK_MODE);
@@ -2858,7 +2892,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 		xmlOneToOne_2_0EClass = createEClass(XML_ONE_TO_ONE_20);
 		createEAttribute(xmlOneToOne_2_0EClass, XML_ONE_TO_ONE_20__ORPHAN_REMOVAL);
-		createEAttribute(xmlOneToOne_2_0EClass, XML_ONE_TO_ONE_20__MAPS_ID);
 
 		xmlOrderColumn_2_0EClass = createEClass(XML_ORDER_COLUMN_20);
 		createEAttribute(xmlOrderColumn_2_0EClass, XML_ORDER_COLUMN_20__NULLABLE);
@@ -2881,6 +2914,8 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlSequenceGenerator_2_0EClass = createEClass(XML_SEQUENCE_GENERATOR_20);
 		createEAttribute(xmlSequenceGenerator_2_0EClass, XML_SEQUENCE_GENERATOR_20__CATALOG);
 		createEAttribute(xmlSequenceGenerator_2_0EClass, XML_SEQUENCE_GENERATOR_20__SCHEMA);
+
+		xmlSingleRelationshipMapping_2_0EClass = createEClass(XML_SINGLE_RELATIONSHIP_MAPPING_20);
 
 		xmlSqlResultSetMapping_2_0EClass = createEClass(XML_SQL_RESULT_SET_MAPPING_20);
 		createEAttribute(xmlSqlResultSetMapping_2_0EClass, XML_SQL_RESULT_SET_MAPPING_20__DESCRIPTION);
@@ -2928,8 +2963,9 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlAttributeMapping_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
-		xmlManyToOne_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlDerivedId());
-		xmlOneToOne_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlDerivedId());
+		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlSingleRelationshipMapping_2_0());
+		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlDerivedId_2_0());
+		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlMapsId_2_0());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlAttributeMapping_2_0EClass, XmlAttributeMapping_2_0.class, "XmlAttributeMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2991,14 +3027,14 @@ public class OrmV2_0Package extends EPackageImpl
 		initEReference(getXmlManyToMany_2_0_MapKeyColumn(), theOrmPackage.getXmlColumn(), null, "mapKeyColumn", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlManyToMany_2_0_MapKeyJoinColumns(), theOrmPackage.getXmlJoinColumn(), null, "mapKeyJoinColumns", null, 0, -1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlManyToOne_2_0EClass, XmlManyToOne_2_0.class, "XmlManyToOne_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlManyToOne_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlManyToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(xmlMapKeyClass_2_0EClass, XmlMapKeyClass_2_0.class, "XmlMapKeyClass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapKeyClass_2_0_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlMapKeyClass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_0EClass, XmlMappedSuperclass_2_0.class, "XmlMappedSuperclass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMappedSuperclass_2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlMappedSuperclass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlMapsId_2_0EClass, XmlMapsId_2_0.class, "XmlMapsId_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlMapsId_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlMapsId_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedQuery_2_0EClass, XmlNamedQuery_2_0.class, "XmlNamedQuery_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlNamedQuery_2_0_LockMode(), this.getLockModeType_2_0(), "lockMode", null, 0, 1, XmlNamedQuery_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3015,7 +3051,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlOneToOne_2_0EClass, XmlOneToOne_2_0.class, "XmlOneToOne_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOneToOne_2_0_OrphanRemoval(), theXMLTypePackage.getBoolean(), "orphanRemoval", null, 0, 1, XmlOneToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlOneToOne_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlOneToOne_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOrderColumn_2_0EClass, XmlOrderColumn_2_0.class, "XmlOrderColumn_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOrderColumn_2_0_Nullable(), theXMLTypePackage.getBooleanObject(), "nullable", null, 0, 1, XmlOrderColumn_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3038,6 +3073,8 @@ public class OrmV2_0Package extends EPackageImpl
 		initEClass(xmlSequenceGenerator_2_0EClass, XmlSequenceGenerator_2_0.class, "XmlSequenceGenerator_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlSequenceGenerator_2_0_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, XmlSequenceGenerator_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlSequenceGenerator_2_0_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, XmlSequenceGenerator_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlSingleRelationshipMapping_2_0EClass, XmlSingleRelationshipMapping_2_0.class, "XmlSingleRelationshipMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlSqlResultSetMapping_2_0EClass, XmlSqlResultSetMapping_2_0.class, "XmlSqlResultSetMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlSqlResultSetMapping_2_0_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlSqlResultSetMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3465,24 +3502,6 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EReference XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = eINSTANCE.getXmlManyToMany_2_0_MapKeyJoinColumns();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0 <em>Xml Many To One 20</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToOne_2_0
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlManyToOne_2_0()
-		 * @generated
-		 */
-		public static final EClass XML_MANY_TO_ONE_20 = eINSTANCE.getXmlManyToOne_2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Maps Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_MANY_TO_ONE_20__MAPS_ID = eINSTANCE.getXmlManyToOne_2_0_MapsId();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3517,6 +3536,24 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_MAPPED_SUPERCLASS_20__CACHEABLE = eINSTANCE.getXmlMappedSuperclass_2_0_Cacheable();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapsId_2_0()
+		 * @generated
+		 */
+		public static final EClass XML_MAPS_ID_20 = eINSTANCE.getXmlMapsId_2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Maps Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MAPS_ID_20__MAPS_ID = eINSTANCE.getXmlMapsId_2_0_MapsId();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlNamedQuery_2_0 <em>Xml Named Query 20</em>}' class.
@@ -3627,14 +3664,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ONE_TO_ONE_20__ORPHAN_REMOVAL = eINSTANCE.getXmlOneToOne_2_0_OrphanRemoval();
-
-		/**
-		 * The meta object literal for the '<em><b>Maps Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ONE_TO_ONE_20__MAPS_ID = eINSTANCE.getXmlOneToOne_2_0_MapsId();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderColumn_2_0 <em>Xml Order Column 20</em>}' class.
@@ -3775,6 +3804,16 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_SEQUENCE_GENERATOR_20__SCHEMA = eINSTANCE.getXmlSequenceGenerator_2_0_Schema();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0 <em>Xml Single Relationship Mapping 20</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSingleRelationshipMapping_2_0()
+		 * @generated
+		 */
+		public static final EClass XML_SINGLE_RELATIONSHIP_MAPPING_20 = eINSTANCE.getXmlSingleRelationshipMapping_2_0();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSqlResultSetMapping_2_0 <em>Xml Sql Result Set Mapping 20</em>}' class.

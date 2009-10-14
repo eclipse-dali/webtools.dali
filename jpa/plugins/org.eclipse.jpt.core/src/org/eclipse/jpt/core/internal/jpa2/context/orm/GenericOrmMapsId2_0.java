@@ -8,30 +8,31 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericOrmDerivedId2_0 
+public class GenericOrmMapsId2_0
 	extends AbstractOrmXmlContextNode
-	implements OrmDerivedId2_0
+	implements OrmMapsId2_0
 {
-	protected XmlDerivedId_2_0 resource;
+	protected XmlMapsId_2_0 resource;
 	
-	protected boolean value;
+	protected String value;
 	
 	
-	public GenericOrmDerivedId2_0(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId_2_0 resource) {
+	public GenericOrmMapsId2_0(OrmSingleRelationshipMapping2_0 parent, XmlMapsId_2_0 resource) {
 		super(parent);
 		this.resource = resource;
-		this.value = getResourceToContextValue();
+		this.value = this.resource.getMapsId();
 	}
 	
 	
@@ -40,37 +41,29 @@ public class GenericOrmDerivedId2_0
 		return (OrmSingleRelationshipMapping2_0) super.getParent();
 	}
 	
-	public boolean getValue() {
+	public String getValue() {
 		return this.value;
 	}
 	
-	public void setValue(boolean newValue) {
-		boolean oldValue = this.value;
+	public void setValue(String newValue) {
+		String oldValue = this.value;
 		this.value = newValue;
-		this.resource.setId(getContextToResourceValue());
+		this.resource.setMapsId(this.value);
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	protected void setValue_(boolean newValue) {
-		boolean oldValue = this.value;
+	protected void setValue_(String newValue) {
+		String oldValue = this.value;
 		this.value = newValue;
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
 	public void update() {
-		setValue_(getResourceToContextValue());
-	}
-	
-	protected boolean getResourceToContextValue() {
-		return (resource.getId() == null) ? false : resource.getId().booleanValue();
-	}
-	
-	protected Boolean getContextToResourceValue() {
-		return (this.value) ? Boolean.TRUE : null;
+		setValue_(this.resource.getMapsId());
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.resource.getDerivedIdTextRange();
+		return this.resource.getMapsIdTextRange();
 	}
 	
 	@Override

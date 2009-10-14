@@ -12,6 +12,7 @@
 package org.eclipse.jpt.core.resource.orm.v2_0;
 
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -57,5 +58,9 @@ public interface XmlDerivedId_2_0 extends JpaEObject
 	 * @generated
 	 */
 	void setId(Boolean value);
-
-} // XmlDerivedId_2_0
+	
+	/**
+	 * Return the text range of the derived id part of the XML document
+	 */
+	TextRange getDerivedIdTextRange();
+}

@@ -121,10 +121,12 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
@@ -135,7 +137,6 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
-import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
@@ -165,6 +166,8 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0ContextNodeFactory
@@ -357,14 +360,25 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		return new GenericOrmNullConverter(parent);
 	}
 	
-	public OrmDerivedId2_0 buildOrmDerivedId(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId resource) {
+	public OrmDerivedId2_0 buildOrmDerivedId(
+			OrmSingleRelationshipMapping2_0 parent, XmlDerivedId_2_0 resource) {
+		
 		return new NullOrmDerivedId2_0(parent);
 	}
 	
-	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
+	public OrmMapsId2_0 buildOrmMapsId(
+			OrmSingleRelationshipMapping2_0 parent, XmlMapsId_2_0 resource) {
+		
+		return new NullOrmMapsId2_0(parent);
+	}
+	
+	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(
+			OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
+		
 		throw new UnsupportedOperationException();
 	}
-
+	
+	
 	// ********** ORM Virtual Resource Model **********
 
 	public XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmTypeMapping parent, JoiningStrategy joiningStrategy) {

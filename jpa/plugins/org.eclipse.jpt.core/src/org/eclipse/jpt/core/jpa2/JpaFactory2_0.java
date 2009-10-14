@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 
 /**
@@ -43,10 +44,11 @@ public interface JpaFactory2_0
 	
 	// ********** Java Context Model **********
 	
-	JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent);
-
 	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, AssociationOverrideContainer.Owner owner);
 	
+	JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent);
+	
 	JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent);
-
+	
+	JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent);
 }

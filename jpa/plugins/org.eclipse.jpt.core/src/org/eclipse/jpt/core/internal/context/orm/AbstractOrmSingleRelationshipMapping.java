@@ -14,11 +14,14 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
+import org.eclipse.jpt.core.jpa2.context.MapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.XmlDerivedId;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -31,17 +34,23 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	
 	protected final OrmDerivedId2_0 derivedId;
 	
+	protected final OrmMapsId2_0 mapsId;
+	
+	
 	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.specifiedOptional = this.getResourceOptional();
 		//TODO defaultOptional
 		this.derivedId = buildDerivedId();
+		this.mapsId = buildMapsId();
 	}
+	
 	
 	@Override
 	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
 		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
 		getDerivedId().setValue(((OrmSingleRelationshipMapping2_0) oldMapping).getDerivedId().getValue());
+		getMapsId().setValue(((OrmSingleRelationshipMapping2_0) oldMapping).getMapsId().getValue());
 	}
 	
 	@Override
@@ -81,12 +90,13 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 		return Nullable.DEFAULT_OPTIONAL;
 	}
 	
-	// **************** 2.0 derived id ***********************************************
-
-	protected OrmDerivedId2_0 buildDerivedId() {
-		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmDerivedId(this, (XmlDerivedId) this.resourceAttributeMapping);
-	}
 	
+	// ********** 2.0 derived id **********
+	
+	protected OrmDerivedId2_0 buildDerivedId() {
+		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
+				buildOrmDerivedId(this, (XmlDerivedId_2_0) this.resourceAttributeMapping);
+	}
 	
 	public OrmDerivedId2_0 getDerivedId() {
 		return this.derivedId;
@@ -96,8 +106,20 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	public boolean isIdMapping() {
 		return this.derivedId.getValue();
 	}
-
-
+	
+	
+	// ********** 2.0 maps id **********
+	
+	protected OrmMapsId2_0 buildMapsId() {
+		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
+				buildOrmMapsId(this, (XmlMapsId_2_0) this.resourceAttributeMapping);
+	}
+	
+	public MapsId2_0 getMapsId() {
+		return this.mapsId;
+	}
+	
+	
 	// **************** resource => context ************************************
 	
 	@Override
@@ -105,18 +127,20 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 		super.update();
 		this.setSpecifiedOptional_(this.getResourceOptional());
 		this.derivedId.update();
+		this.mapsId.update();
 	}
 	
 	protected Boolean getResourceOptional() {
 		return this.resourceAttributeMapping.getOptional();
 	}
-
+	
 	
 	// **************** validation ************************************
-
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.derivedId.validate(messages, reporter);
+		this.mapsId.validate(messages, reporter);
 	}
 }

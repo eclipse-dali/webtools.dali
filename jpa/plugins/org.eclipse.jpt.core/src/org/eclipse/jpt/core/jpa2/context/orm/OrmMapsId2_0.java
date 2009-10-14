@@ -8,9 +8,11 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.context.SingleRelationshipMapping;
+package org.eclipse.jpt.core.jpa2.context.orm;
+
+import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.MapsId2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,10 +24,8 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
  * @version 3.0
  * @since 3.0
  */
-public interface SingleRelationshipMapping2_0
-	extends SingleRelationshipMapping
+public interface OrmMapsId2_0
+	extends XmlContextNode, MapsId2_0
 {
-	DerivedId2_0 getDerivedId();
-	
-	MapsId2_0 getMapsId();
+	void update();
 }

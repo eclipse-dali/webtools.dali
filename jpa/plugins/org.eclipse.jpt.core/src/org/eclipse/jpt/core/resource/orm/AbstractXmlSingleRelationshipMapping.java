@@ -18,6 +18,12 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 
@@ -43,7 +49,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlJoinTableMapping, XmlJoinColumnsMapping
+public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlJoinTableMapping, XmlJoinColumnsMapping, XmlSingleRelationshipMapping_2_0
 {
 	/**
 	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
@@ -63,6 +69,42 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 	 * @ordered
 	 */
 	protected EList<XmlJoinColumn> joinColumns;
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean ID_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean id = ID_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getMapsId() <em>Maps Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapsId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String MAPS_ID_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getMapsId() <em>Maps Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapsId()
+	 * @generated
+	 * @ordered
+	 */
+	protected String mapsId = MAPS_ID_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -187,6 +229,76 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(Boolean)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlDerivedId_2_0_Id()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getId()
+	{
+		return id;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	public void setId(Boolean newId)
+	{
+		Boolean oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__ID, oldId, id));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Maps Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Maps Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Maps Id</em>' attribute.
+	 * @see #setMapsId(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapsId_2_0_MapsId()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getMapsId()
+	{
+		return mapsId;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping#getMapsId <em>Maps Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Maps Id</em>' attribute.
+	 * @see #getMapsId()
+	 * @generated
+	 */
+	public void setMapsId(String newMapsId)
+	{
+		String oldMapsId = mapsId;
+		mapsId = newMapsId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__MAPS_ID, oldMapsId, mapsId));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -251,6 +363,10 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 				return getJoinTable();
 			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				return getJoinColumns();
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__ID:
+				return getId();
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__MAPS_ID:
+				return getMapsId();
 			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				return getOptional();
 		}
@@ -275,6 +391,12 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__ID:
+				setId((Boolean)newValue);
+				return;
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__MAPS_ID:
+				setMapsId((String)newValue);
+				return;
 			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				setOptional((Boolean)newValue);
 				return;
@@ -298,6 +420,12 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				return;
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__ID:
+				setId(ID_EDEFAULT);
+				return;
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__MAPS_ID:
+				setMapsId(MAPS_ID_EDEFAULT);
+				return;
 			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				setOptional(OPTIONAL_EDEFAULT);
 				return;
@@ -319,6 +447,10 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 				return joinTable != null;
 			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__ID:
+				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__MAPS_ID:
+				return MAPS_ID_EDEFAULT == null ? mapsId != null : !MAPS_ID_EDEFAULT.equals(mapsId);
 			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
 		}
@@ -349,6 +481,29 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlDerivedId_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__ID: return OrmV2_0Package.XML_DERIVED_ID_20__ID;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMapsId_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__MAPS_ID: return OrmV2_0Package.XML_MAPS_ID_20__MAPS_ID;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlSingleRelationshipMapping_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -376,6 +531,29 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlDerivedId_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_DERIVED_ID_20__ID: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__ID;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMapsId_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_MAPS_ID_20__MAPS_ID: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__MAPS_ID;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlSingleRelationshipMapping_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -390,16 +568,47 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (optional: ");
+		result.append(" (id: ");
+		result.append(id);
+		result.append(", mapsId: ");
+		result.append(mapsId);
+		result.append(", optional: ");
 		result.append(optional);
 		result.append(')');
 		return result.toString();
 	}
+	
+	
+	// ********** validation ***********
+	
+	public TextRange getMapsIdTextRange() {
+		return getAttributeTextRange(JPA2_0.MAPS_ID);
+	}
+	
+	public TextRange getDerivedIdTextRange() {
+		return getAttributeTextRange(JPA2_0.ID);
+	}
+	
 	
 	// ********** translators **********
 	
 	protected static Translator buildOptionalTranslator() {
 		return new Translator(JPA.OPTIONAL, OrmPackage.eINSTANCE.getAbstractXmlSingleRelationshipMapping_Optional(), Translator.DOM_ATTRIBUTE);
 	}
-
-} // SingleRelationshipMapping
+	
+	protected static Translator buildMapsIdTranslator() {
+		return new Translator(JPA2_0.MAPS_ID, OrmV2_0Package.eINSTANCE.getXmlMapsId_2_0_MapsId(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildIdTranslator() {
+		return new Translator(JPA2_0.ID, OrmV2_0Package.eINSTANCE.getXmlDerivedId_2_0_Id(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildJoinColumnTranslator() {
+		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnsMapping_JoinColumns());
+	}
+	
+	protected static Translator buildJoinTableTranslator() {
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+	}
+}

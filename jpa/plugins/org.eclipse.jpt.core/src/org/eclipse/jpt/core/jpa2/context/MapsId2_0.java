@@ -8,9 +8,10 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.context.SingleRelationshipMapping;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,10 +23,20 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
  * @version 3.0
  * @since 3.0
  */
-public interface SingleRelationshipMapping2_0
-	extends SingleRelationshipMapping
+public interface MapsId2_0 extends JpaContextNode
 {
-	DerivedId2_0 getDerivedId();
+	/**
+	 * String associated with changes to the value property of this object
+	 */
+	public static final String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
-	MapsId2_0 getMapsId();
+	/**
+	 * Return the id this object maps
+	 */
+	String getValue();
+	
+	/**
+	 * Set the id this object maps
+	 */
+	void setValue(String newValue);
 }

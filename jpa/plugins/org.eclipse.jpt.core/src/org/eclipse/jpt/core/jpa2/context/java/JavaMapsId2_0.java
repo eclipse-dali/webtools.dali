@@ -8,9 +8,11 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.context.SingleRelationshipMapping;
+package org.eclipse.jpt.core.jpa2.context.java;
+
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.jpa2.context.MapsId2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,10 +24,16 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
  * @version 3.0
  * @since 3.0
  */
-public interface SingleRelationshipMapping2_0
-	extends SingleRelationshipMapping
+public interface JavaMapsId2_0
+	extends JavaJpaContextNode, MapsId2_0
 {
-	DerivedId2_0 getDerivedId();
+	/**
+	 * Initialize model without throwing any events
+	 */
+	void initialize();
 	
-	MapsId2_0 getMapsId();
+	/**
+	 * Update model, throwing events as necessary
+	 */
+	void update();
 }
