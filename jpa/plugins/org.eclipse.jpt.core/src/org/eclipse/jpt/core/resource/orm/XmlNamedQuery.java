@@ -117,14 +117,10 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery, XmlNa
 	protected EList<XmlQueryHint> hints;
 
 	/**
-	 * The default value of the '{@link #getLockMode() <em>Lock Mode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLockMode()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final LockModeType_2_0 LOCK_MODE_EDEFAULT = LockModeType_2_0.READ;
+	protected static final LockModeType_2_0 LOCK_MODE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getLockMode() <em>Lock Mode</em>}' attribute.
