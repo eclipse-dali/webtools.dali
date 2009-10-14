@@ -21,11 +21,10 @@ import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
-import org.eclipse.jpt.core.resource.xml.EmfTools;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -115,10 +114,7 @@ public class GenericOrmGeneratorContainer extends AbstractOrmXmlContextNode
 	}
 	
 	protected XmlSequenceGenerator buildResourceSequenceGenerator() {
-		return EmfTools.create(
-			getResourceNodeFactory(), 
-			OrmPackage.eINSTANCE.getXmlSequenceGenerator(), 
-			XmlSequenceGenerator.class);
+		return OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 	}
 	
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
@@ -132,10 +128,7 @@ public class GenericOrmGeneratorContainer extends AbstractOrmXmlContextNode
 	}
 	
 	protected XmlTableGenerator buildResourceTableGenerator() {
-		return EmfTools.create(
-			getResourceNodeFactory(), 
-			OrmPackage.eINSTANCE.getXmlTableGenerator(), 
-			XmlTableGenerator.class);
+		return OrmFactory.eINSTANCE.createXmlTableGenerator();
 	}
 	
 	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {

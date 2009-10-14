@@ -24,10 +24,9 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
-import org.eclipse.jpt.core.resource.xml.EmfTools;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -283,10 +282,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 	}
 
 	protected XmlAssociationOverride buildResourceAssociationOverride() {
-		return EmfTools.create(
-			getResourceNodeFactory(),
-			OrmPackage.eINSTANCE.getXmlAssociationOverride(),
-			XmlAssociationOverride.class);
+		return OrmFactory.eINSTANCE.createXmlAssociationOverride();
 	}
 	
 	protected AssociationOverride.Owner buildAssociationOverrideOwner() {
