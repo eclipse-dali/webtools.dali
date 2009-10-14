@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -210,13 +211,18 @@ public class XmlCustomizer extends AbstractJpaEObject implements JpaEObject
 	}
 
 	public TextRange getCustomizerClassNameTextRange() {
-		return getAttributeTextRange(EclipseLink.CLASS);
+		return getAttributeTextRange(JPA.CLASS);
 	}
 
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName,
+			structuralFeature,
+			Translator.END_TAG_NO_INDENT,
+			buildTranslatorChildren()
+		);
 	}
 
 	private static Translator[] buildTranslatorChildren() {
@@ -226,7 +232,7 @@ public class XmlCustomizer extends AbstractJpaEObject implements JpaEObject
 	}
 		
 	protected static Translator buildClassTranslator() {
-		return new Translator(EclipseLink.CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizer_CustomizerClassName(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizer_CustomizerClassName(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlCustomizer

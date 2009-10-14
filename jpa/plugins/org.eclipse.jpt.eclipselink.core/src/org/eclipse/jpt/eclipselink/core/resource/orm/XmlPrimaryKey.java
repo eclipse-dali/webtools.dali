@@ -268,6 +268,7 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature,
+			EclipseLinkOrmPackage.eINSTANCE.getXmlPrimaryKey(),
 			buildTranslatorChildren());
 	}
 
