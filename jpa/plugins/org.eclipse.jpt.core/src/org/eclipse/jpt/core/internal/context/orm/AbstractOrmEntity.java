@@ -326,8 +326,9 @@ public abstract class AbstractOrmEntity
 	
 	//****************** OrmAttributeOverrideContainer.Owner implementation *******************
 	
-	public PersistentType getOverridablePersistentType() {
-		return getPersistentType().getSuperPersistentType();
+	public TypeMapping getOverridableTypeMapping() {
+		PersistentType superPersistentType = getPersistentType().getSuperPersistentType();
+		return superPersistentType == null ? null : superPersistentType.getMapping();
 	}
 
 	public OrmTypeMapping getTypeMapping() {

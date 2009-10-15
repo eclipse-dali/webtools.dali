@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Table;
 
 /**
@@ -168,15 +170,15 @@ public class MappingTools {
 		return null;		
 	}
 	
-	public static RelationshipMapping getRelationshipMapping(String attributeName, PersistentType persistentType) {
-		if (attributeName == null || persistentType == null) {
+	public static RelationshipMapping getRelationshipMapping(String attributeName, TypeMapping typeMapping) {
+		if (attributeName == null || typeMapping == null) {
 			return null;
 		}
-		for (Iterator<PersistentAttribute> stream = persistentType.allAttributes(); stream.hasNext(); ) {
-			PersistentAttribute persAttribute = stream.next();
-			if (attributeName.equals(persAttribute.getName())) {
-				if (persAttribute.getMapping() instanceof RelationshipMapping) {
-					return (RelationshipMapping) persAttribute.getMapping();
+		for (Iterator<AttributeMapping> stream = typeMapping.allAttributeMappings(); stream.hasNext(); ) {
+			AttributeMapping attributeMapping = stream.next();
+			if (attributeName.equals(attributeMapping.getName())) {
+				if (attributeMapping instanceof RelationshipMapping) {
+					return (RelationshipMapping) attributeMapping;
 				}
 				// keep looking or return null???
 			}

@@ -88,7 +88,7 @@ public interface AttributeOverrideContainer
 		 * Return the overridable persistent type, not the owning persistent type.
 		 * This will be the persistent type of the mapped superclass or embeddable.
 		 */
-		PersistentType getOverridablePersistentType();
+		TypeMapping getOverridableTypeMapping();
 	}
 
 }

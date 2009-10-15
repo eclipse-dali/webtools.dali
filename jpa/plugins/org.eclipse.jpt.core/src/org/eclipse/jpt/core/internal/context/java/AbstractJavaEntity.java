@@ -288,8 +288,9 @@ public abstract class AbstractJavaEntity
 		return this;
 	}
 	
-	public PersistentType getOverridablePersistentType() {
-		return getPersistentType().getSuperPersistentType();
+	public TypeMapping getOverridableTypeMapping() {
+		PersistentType superPersistentType = getPersistentType().getSuperPersistentType();
+		return superPersistentType == null ? null : superPersistentType.getMapping();
 	}
 	
 	

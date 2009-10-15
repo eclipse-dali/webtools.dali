@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
-import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -49,8 +49,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		return this.attributeOverrideContainer;
 	}
 
-	public PersistentType getOverridablePersistentType() {
-		return (this.embeddable == null) ? null : this.embeddable.getPersistentType();
+	public TypeMapping getOverridableTypeMapping() {
+		return this.embeddable;
 	}
 	
 	//****************** JavaAttributeMapping implementation *******************

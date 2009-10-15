@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
-import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
@@ -57,9 +57,8 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		return new VirtualXmlAttributeOverrideColumn(overridableColumn);
 	}
 
-	public PersistentType getOverridablePersistentType() {
-		Embeddable embeddable = getEmbeddable();
-		return embeddable == null ? null : embeddable.getPersistentType();
+	public TypeMapping getOverridableTypeMapping() {
+		return this.embeddable;
 	}
 
 	public Embeddable getEmbeddable() {

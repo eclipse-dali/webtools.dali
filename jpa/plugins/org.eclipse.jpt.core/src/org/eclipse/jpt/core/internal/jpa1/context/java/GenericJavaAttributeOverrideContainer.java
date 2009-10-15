@@ -18,7 +18,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
@@ -223,9 +222,9 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 
 	protected Iterator<String> allOverridableAttributeNames() {
-		PersistentType overridablePersistentType = getOwner().getOverridablePersistentType();
-		if (overridablePersistentType != null) {
-			return overridablePersistentType.getMapping().allOverridableAttributeNames();
+		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
+		if (overridableTypeMapping != null) {
+			return overridableTypeMapping.allOverridableAttributeNames();
 		}
 		return EmptyIterator.instance();
 	}
@@ -301,10 +300,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 
 	private Column resolveOverrideColumn(String attributeOverrideName) {
-		PersistentType overridablePersistentType = getOwner().getOverridablePersistentType();
+		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
 		Column column = null;
-		if (overridablePersistentType != null) {
-			column = overridablePersistentType.getMapping().resolveOverrideColumn(attributeOverrideName);
+		if (overridableTypeMapping != null) {
+			column = overridableTypeMapping.resolveOverrideColumn(attributeOverrideName);
 		}
 		return column;
 	}
