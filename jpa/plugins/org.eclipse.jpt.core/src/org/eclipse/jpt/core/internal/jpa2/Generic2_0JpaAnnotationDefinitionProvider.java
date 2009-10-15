@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa2;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
@@ -17,6 +18,8 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverride2_0An
 import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverrides2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToMany2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToOne2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverridesAnnotationDefinition;
@@ -45,8 +48,6 @@ import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueriesAnnotationD
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueryAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedQueriesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedQueryAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.OneToManyAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.OneToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OrderByAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnsAnnotationDefinition;
@@ -144,8 +145,8 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(ManyToOneAnnotationDefinition.instance());
 		definitions.add(MapsId2_0AnnotationDefinition.instance());
 		definitions.add(MapKeyAnnotationDefinition.instance());
-		definitions.add(OneToManyAnnotationDefinition.instance());
-		definitions.add(OneToOneAnnotationDefinition.instance());
+		definitions.add(OneToMany2_0AnnotationDefinition.instance());
+		definitions.add(OneToOne2_0AnnotationDefinition.instance());
 		definitions.add(OrderByAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());

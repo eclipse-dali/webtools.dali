@@ -19,8 +19,8 @@ package org.eclipse.jpt.core.jpa2.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 @SuppressWarnings("nls")
-public interface JPA2_0 {
-
+public interface JPA2_0 
+{
 	// JPA package
 	String PACKAGE = "javax.persistence";
 	String PACKAGE_ = PACKAGE + '.';
@@ -39,6 +39,10 @@ public interface JPA2_0 {
 
 	String SEQUENCE_GENERATOR__CATALOG = "catalog";
 	String SEQUENCE_GENERATOR__SCHEMA = "schema";
+
+	String ONE_TO_MANY__ORPHAN_REMOVAL = "orphanRemoval";
+
+	String ONE_TO_ONE__ORPHAN_REMOVAL = "orphanRemoval";
 
 	String ELEMENT_COLLECTION = PACKAGE_ + "ElementCollection";
 		String ELEMENT_COLLECTION__FETCH = "fetch";

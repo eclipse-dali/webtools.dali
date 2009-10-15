@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 /**
  * javax.persistence.OneToOne
  */
-public final class SourceOneToOneAnnotation
+public abstract class SourceOneToOneAnnotation
 	extends SourceRelationshipMappingAnnotation
 	implements OneToOneAnnotation
 {

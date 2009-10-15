@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 /**
  * javax.persistence.OneToOne
  */
-public final class BinaryOneToOneAnnotation
+public abstract class BinaryOneToOneAnnotation
 	extends BinaryRelationshipMappingAnnotation
 	implements OneToOneAnnotation
 {
@@ -110,7 +110,7 @@ public final class BinaryOneToOneAnnotation
 	}
 
 	private Boolean buildOptional() {
-		return (Boolean) this.getJdtMemberValue(JPA.MANY_TO_ONE__OPTIONAL);
+		return (Boolean) this.getJdtMemberValue(JPA.ONE_TO_ONE__OPTIONAL);
 	}
 
 	public TextRange getOptionalTextRange(CompilationUnit astRoot) {

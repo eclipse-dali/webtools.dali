@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 /**
  * javax.persistence.OneToMany
  */
-public final class BinaryOneToManyAnnotation
+public abstract class BinaryOneToManyAnnotation
 	extends BinaryRelationshipMappingAnnotation
 	implements OneToManyAnnotation
 {

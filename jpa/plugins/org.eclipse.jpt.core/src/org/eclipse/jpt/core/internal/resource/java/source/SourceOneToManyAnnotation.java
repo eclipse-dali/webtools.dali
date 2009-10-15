@@ -24,11 +24,11 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 /**
  * javax.persistence.OneToMany
  */
-public final class SourceOneToManyAnnotation
+public abstract class SourceOneToManyAnnotation
 	extends SourceRelationshipMappingAnnotation
 	implements OneToManyAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	protected static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();
 

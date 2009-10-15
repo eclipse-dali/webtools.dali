@@ -1,17 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java;
+* Copyright (c) 2009 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+*******************************************************************************/
+package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.jpa1.resource.java.binary.BinaryOneToOne1_0Annotation;
-import org.eclipse.jpt.core.internal.jpa1.resource.java.source.SourceOneToOne1_0Annotation;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryOneToOne2_0Annotation;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceOneToOne2_0Annotation;
+import org.eclipse.jpt.core.internal.resource.java.NullOneToOneAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -21,13 +22,13 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.OneToOne
+ *  OneToOne2_0AnnotationDefinition
  */
-public final class OneToOneAnnotationDefinition
+public class OneToOne2_0AnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new OneToOneAnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new OneToOne2_0AnnotationDefinition();
 
 	/**
 	 * Return the singleton.
@@ -39,12 +40,12 @@ public final class OneToOneAnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private OneToOneAnnotationDefinition() {
+	private OneToOne2_0AnnotationDefinition() {
 		super();
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceOneToOne1_0Annotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
+		return new SourceOneToOne2_0Annotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -52,7 +53,7 @@ public final class OneToOneAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryOneToOne1_0Annotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
+		return new BinaryOneToOne2_0Annotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

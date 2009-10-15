@@ -21,7 +21,7 @@ public final class NullOneToOneAnnotation
 	extends NullOwnableRelationshipMappingAnnotation
 	implements OneToOneAnnotation
 {
-	protected NullOneToOneAnnotation(JavaResourcePersistentAttribute parent) {
+	public NullOneToOneAnnotation(JavaResourcePersistentAttribute parent) {
 		super(parent);
 	}
 
