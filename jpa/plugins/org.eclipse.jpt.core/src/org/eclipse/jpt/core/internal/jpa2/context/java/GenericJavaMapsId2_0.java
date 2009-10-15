@@ -57,7 +57,9 @@ public class GenericJavaMapsId2_0
 		this.value = newValue;
 		
 		if (newValue != null) {
-			addMapsIdAnnotation();
+			if (getMapsIdAnnotation() == null) {
+				addMapsIdAnnotation();
+			}
 			getMapsIdAnnotation().setValue(newValue);
 		}
 		else {
