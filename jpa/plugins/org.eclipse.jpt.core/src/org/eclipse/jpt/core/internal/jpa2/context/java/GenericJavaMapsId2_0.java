@@ -57,9 +57,6 @@ public class GenericJavaMapsId2_0
 		this.value = newValue;
 		
 		if (newValue != null) {
-			if (getMapsIdAnnotation() == null) {
-				addMapsIdAnnotation();
-			}
 			getMapsIdAnnotation().setValue(newValue);
 		}
 		else {
@@ -75,15 +72,11 @@ public class GenericJavaMapsId2_0
 	}
 	
 	protected String getResourceMapsId() {
-		return (getMapsIdAnnotation() == null) ? null : getMapsIdAnnotation().getValue();
+		return getMapsIdAnnotation().getValue();
 	}
 	
 	protected MapsId2_0Annotation getMapsIdAnnotation() {
-		return (MapsId2_0Annotation) getResourceAttribute().getAnnotation(JPA2_0.MAPS_ID);
-	}
-	
-	protected void addMapsIdAnnotation() {
-		getResourceAttribute().addAnnotation(JPA2_0.MAPS_ID);
+		return (MapsId2_0Annotation) getResourceAttribute().getNonNullAnnotation(JPA2_0.MAPS_ID);
 	}
 	
 	protected void removeMapsIdAnnotation() {
@@ -99,8 +92,7 @@ public class GenericJavaMapsId2_0
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		MapsId2_0Annotation annotation = this.getMapsIdAnnotation();
-		return annotation == null ? null : annotation.getTextRange(astRoot);
+		return this.getMapsIdAnnotation().getTextRange(astRoot);
 	}
 	
 	@Override
