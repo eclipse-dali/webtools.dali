@@ -115,7 +115,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverrideColumn(attributeName);
+					return this.getEmbeddable().resolveOverridenColumn(attributeName);
 				}
 			}
 		}

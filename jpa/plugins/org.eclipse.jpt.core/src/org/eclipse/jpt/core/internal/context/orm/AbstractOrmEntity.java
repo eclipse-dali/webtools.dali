@@ -1120,7 +1120,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	@Override
-	public Column resolveOverrideColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName) {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
@@ -1130,7 +1130,7 @@ public abstract class AbstractOrmEntity
 				}
 			}
 		}
-		return super.resolveOverrideColumn(attributeName);
+		return super.resolveOverridenColumn(attributeName);
 	}
 
 	@Override

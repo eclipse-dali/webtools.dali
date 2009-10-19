@@ -47,6 +47,14 @@ public interface TypeMapping extends JpaContextNode {
 	Schema getDbSchema();
 
 	/**
+	 * Return the type mapping's "persistence" inheritance hierarchy,
+	 * <em>including</em> the type mapping itself.
+	 * The returned iterator will return elements infinitely if the hierarchy
+	 * has a loop.
+	 */
+	Iterator<TypeMapping> inheritanceHierarchy();
+	
+	/**
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables.
 	 */
@@ -110,7 +118,7 @@ public interface TypeMapping extends JpaContextNode {
 	 * Returns the Column of the overridable attribute mapping with the given 
 	 * attribute name. In 2.0 this name could use dot-notation for nested mappings.
 	 */
-	Column resolveOverrideColumn(String attributeName);
+	Column resolveOverridenColumn(String attributeName);
 
 	/**
 	 * Return an Iterator of associations that can be overridden by a 

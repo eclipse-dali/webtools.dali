@@ -258,7 +258,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
 		Column column = null;
 		if (overridableTypeMapping != null) {
-			column = overridableTypeMapping.resolveOverrideColumn(attributeOverrideName);
+			column = overridableTypeMapping.resolveOverridenColumn(attributeOverrideName);
 		}
 		return column;
 	}

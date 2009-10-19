@@ -303,7 +303,12 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
 		Column column = null;
 		if (overridableTypeMapping != null) {
-			column = overridableTypeMapping.resolveOverrideColumn(attributeOverrideName);
+			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+				column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+				if (column != null) {
+					return column;
+				}
+			}
 		}
 		return column;
 	}

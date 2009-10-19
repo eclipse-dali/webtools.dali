@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -1042,17 +1041,12 @@ public abstract class AbstractJavaEntity
 	}
 	
 	@Override
-	public Column resolveOverrideColumn(String attributeName) {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			int dotIndex = attributeName.indexOf('.');
-			if (dotIndex != -1) {
-				AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName.substring(dotIndex + 1));
-				if (override != null && !override.isVirtual()) {
-					return override.getColumn();
-				}
-			}
+	public Column resolveOverridenColumn(String attributeName) {
+		AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+		if (override != null && !override.isVirtual()) {
+			return override.getColumn();
 		}
-		return super.resolveOverrideColumn(attributeName);
+		return super.resolveOverridenColumn(attributeName);
 	}
 
 	@Override

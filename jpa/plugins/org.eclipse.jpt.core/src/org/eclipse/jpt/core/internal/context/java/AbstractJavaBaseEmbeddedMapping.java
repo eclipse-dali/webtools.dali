@@ -129,7 +129,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverrideColumn(attributeName);
+					return this.getEmbeddable().resolveOverridenColumn(attributeName);
 				}
 			}
 		}

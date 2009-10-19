@@ -167,7 +167,7 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	 * Return an iterator of TypeMappings, each which inherits from the one before,
 	 * and terminates at the root entity (or at the point of cyclicity).
 	 */
-	protected Iterator<TypeMapping> inheritanceHierarchy() {
+	public Iterator<TypeMapping> inheritanceHierarchy() {
 		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
 			@Override
 			protected TypeMapping transform(PersistentType type) {
@@ -205,7 +205,7 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		});
 	}
 	
-	public Column resolveOverrideColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName) {
 		for (AttributeMapping attributeMapping : CollectionTools.iterable(allAttributeMappings())) {
 			Column resolvedColumn = attributeMapping.resolveOverridenColumn(attributeName);
 			if (resolvedColumn != null) {
