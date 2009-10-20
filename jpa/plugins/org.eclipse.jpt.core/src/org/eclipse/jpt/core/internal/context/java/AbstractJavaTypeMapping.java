@@ -142,9 +142,9 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		});
 	}
 	
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
 		for (AttributeMapping attributeMapping : CollectionTools.iterable(attributeMappings())) {
-			Column resolvedColumn = attributeMapping.resolveOverridenColumn(attributeName);
+			Column resolvedColumn = attributeMapping.resolveOverridenColumn(attributeName, isMetadataComplete);
 			if (resolvedColumn != null) {
 				return resolvedColumn;
 			}

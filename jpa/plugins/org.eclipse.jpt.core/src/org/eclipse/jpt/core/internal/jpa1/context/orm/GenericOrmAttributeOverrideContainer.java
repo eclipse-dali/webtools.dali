@@ -250,7 +250,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	
 	protected XmlAttributeOverride buildVirtualXmlAttributeOverride(String name) {
 		Column column = resolveAttributeOverrideMappingColumn(name);
-		XmlColumn xmlColumn = getOwner().buildVirtualXmlColumn(column, name);
+		XmlColumn xmlColumn = getOwner().buildVirtualXmlColumn(column, name, getOwner().getTypeMapping().isMetadataComplete());
 		return new VirtualXmlAttributeOverride(name, xmlColumn);
 	}
 	
@@ -258,7 +258,12 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
 		Column column = null;
 		if (overridableTypeMapping != null) {
-			column = overridableTypeMapping.resolveOverridenColumn(attributeOverrideName);
+			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+				column = typeMapping.resolveOverridenColumn(attributeOverrideName, getOwner().getTypeMapping().isMetadataComplete());
+				if (column != null) {
+					return column;
+				}
+			}
 		}
 		return column;
 	}

@@ -35,6 +35,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
@@ -335,9 +336,16 @@ public abstract class AbstractOrmEntity
 		return this;
 	}
 	
-	public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName) {
-		JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(attributeName);
+	public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
+		JavaAttributeOverride javaAttributeOverride = null;
+		if (!isMetadataComplete) {
+			javaAttributeOverride = getJavaAttributeOverrideNamed(attributeName);
+		}
 		if (javaAttributeOverride == null) {
+			//TODO not the greatest solution here, but things seems to work, so I'm stepping away slowly
+			if (overridableColumn instanceof JavaColumn) {
+				return new VirtualXmlColumn(this, overridableColumn);
+			}
 			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
 		}
 		return new VirtualXmlColumn(this, javaAttributeOverride.getColumn());
@@ -1120,7 +1128,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
@@ -1130,7 +1138,7 @@ public abstract class AbstractOrmEntity
 				}
 			}
 		}
-		return super.resolveOverridenColumn(attributeName);
+		return super.resolveOverridenColumn(attributeName, isMetadataComplete);
 	}
 
 	@Override

@@ -116,20 +116,22 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(attributeName.substring(0, dotIndex))) {
 					attributeName = attributeName.substring(dotIndex + 1);
-					AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
-					if (override != null && !override.isVirtual()) {
-						return override.getColumn();
+					if (!isMetadataComplete) {
+						AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+						if (override != null && !override.isVirtual()) {
+							return override.getColumn();
+						}
 					}
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverridenColumn(attributeName);
+					return this.getEmbeddable().resolveOverridenColumn(attributeName, isMetadataComplete);
 				}
 			}
 		}

@@ -41,7 +41,7 @@ public interface OrmAttributeOverrideContainer extends AttributeOverrideContaine
 		/**
 		 * Build a virtual xml column based on the overridable column.
 		 */
-		XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName);
+		XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete);
 
 	}
 }

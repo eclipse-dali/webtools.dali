@@ -133,7 +133,7 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 		return EmptyIterator.<String> instance();
 	}
 	
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
 		ColumnMapping columnMapping = this.resolveColumnMapping(attributeName);
 		return columnMapping == null ? null : columnMapping.getColumn();
 	}

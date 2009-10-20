@@ -209,7 +209,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return EmptyIterator.<String> instance();
 	}
 	
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
 		ColumnMapping columnMapping = this.resolveColumnMapping(attributeName);
 		return columnMapping == null ? null : columnMapping.getColumn();
 	}

@@ -1041,12 +1041,14 @@ public abstract class AbstractJavaEntity
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
-		AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
-		if (override != null && !override.isVirtual()) {
-			return override.getColumn();
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
+		if (!isMetadataComplete) {
+			AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+			if (override != null && !override.isVirtual()) {
+				return override.getColumn();
+			}
 		}
-		return super.resolveOverridenColumn(attributeName);
+		return super.resolveOverridenColumn(attributeName, isMetadataComplete);
 	}
 
 	@Override

@@ -295,16 +295,16 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 	
 	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(String attributeOverrideName) {
-		Column column = resolveOverrideColumn(attributeOverrideName);
+		Column column = resolveOverridenColumn(attributeOverrideName);
 		return new VirtualAttributeOverrideAnnotation(this.javaResourcePersistentMember, attributeOverrideName, column);
 	}
 
-	private Column resolveOverrideColumn(String attributeOverrideName) {
+	private Column resolveOverridenColumn(String attributeOverrideName) {
 		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
 		Column column = null;
 		if (overridableTypeMapping != null) {
 			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-				column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+				column = typeMapping.resolveOverridenColumn(attributeOverrideName, false);
 				if (column != null) {
 					return column;
 				}
@@ -377,7 +377,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 			if (attributeName == null) {
 				return null;
 			}
-			return GenericJavaAttributeOverrideContainer.this.resolveOverrideColumn(attributeName);			
+			return GenericJavaAttributeOverrideContainer.this.resolveOverridenColumn(attributeName);			
 		}
 
 		public boolean isVirtual(BaseOverride override) {

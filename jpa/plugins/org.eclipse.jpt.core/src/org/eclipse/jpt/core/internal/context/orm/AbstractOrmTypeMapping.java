@@ -205,12 +205,16 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		});
 	}
 	
-	public Column resolveOverridenColumn(String attributeName) {
-		for (AttributeMapping attributeMapping : CollectionTools.iterable(allAttributeMappings())) {
-			Column resolvedColumn = attributeMapping.resolveOverridenColumn(attributeName);
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
+		for (AttributeMapping attributeMapping : CollectionTools.iterable(attributeMappings())) {
+			Column resolvedColumn = attributeMapping.resolveOverridenColumn(attributeName, isMetadataComplete);
 			if (resolvedColumn != null) {
 				return resolvedColumn;
 			}
+		}
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		if (javaPersistentType != null) {
+			return javaPersistentType.getMapping().resolveOverridenColumn(attributeName, isMetadataComplete);
 		}
 		return null;
 	}

@@ -53,7 +53,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	
 	//************* AttributeOverrideContainer.Owner implementation ********************
 	
-	public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName) {
+	public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
 		return new VirtualXmlAttributeOverrideColumn(overridableColumn);
 	}
 
@@ -99,7 +99,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	}
 
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
 		if (getName() == null) {
 			return null;
 		}
@@ -115,7 +115,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverridenColumn(attributeName);
+					return this.getEmbeddable().resolveOverridenColumn(attributeName, isMetadataComplete);
 				}
 			}
 		}
