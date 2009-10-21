@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverride2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverrides2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.Cacheable2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToMany2_0AnnotationDefinition;
@@ -95,6 +96,7 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(AssociationOverrides2_0AnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
+		definitions.add(Cacheable2_0AnnotationDefinition.instance());
 		definitions.add(DiscriminatorColumnAnnotationDefinition.instance());
 		definitions.add(DiscriminatorValueAnnotationDefinition.instance());
 		definitions.add(EmbeddableAnnotationDefinition.instance());

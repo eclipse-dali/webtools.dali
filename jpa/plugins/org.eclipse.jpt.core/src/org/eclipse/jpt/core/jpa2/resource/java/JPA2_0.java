@@ -33,6 +33,9 @@ public interface JPA2_0
 		String ACCESS__VALUE = "value";
 
 	String ASSOCIATION_OVERRIDE__JOIN_TABLE = "joinTable";
+	
+	String CACHEABLE = PACKAGE_ + "Cacheable";
+		String CACHEABLE__VALUE = "value";
 
 	String MAPS_ID = PACKAGE_ + "MapsId";
 		String MAPS_ID__VALUE = "value";
