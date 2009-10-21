@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
+package org.eclipse.jpt.core.tests.internal.jpa2.context;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;

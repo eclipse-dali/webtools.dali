@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.core.tests.internal.jpa2.context.java.Generic2_0ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 
 public abstract class Generic2_0OrmContextModelTestCase
 	extends Generic2_0ContextModelTestCase
