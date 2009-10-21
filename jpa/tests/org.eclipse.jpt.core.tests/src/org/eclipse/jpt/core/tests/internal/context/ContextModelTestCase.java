@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
@@ -86,9 +87,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
 		// default facet version is 2.0 - most tests use 1.0
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "1.0"); //$NON-NLS-1$
+		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JptCorePlugin.JPA_FACET_VERSION_1_0); //$NON-NLS-1$
 		// most tests use the basic generic platform
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.PLATFORM_ID, GenericJpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericJpaPlatformProvider.ID);
 		// most tests do use an orm.xml
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;

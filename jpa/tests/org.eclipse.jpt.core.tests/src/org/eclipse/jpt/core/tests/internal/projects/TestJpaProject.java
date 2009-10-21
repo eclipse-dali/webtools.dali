@@ -55,7 +55,7 @@ public class TestJpaProject extends TestJavaProject {
 
 	public TestJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws CoreException {
 		super(projectName, autoBuild);
-		String jpaFacetVersion = "1.0";
+		String jpaFacetVersion = JptCorePlugin.JPA_FACET_VERSION_1_0;
 		if (jpaConfig != null) {
 			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
 		}

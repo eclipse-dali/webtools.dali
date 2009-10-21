@@ -13,12 +13,13 @@ package org.eclipse.jpt.core.tests.internal.platform;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
-import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
@@ -38,12 +39,10 @@ import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModel
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 
+@SuppressWarnings("nls")
 public class JpaPlatformTests extends ContextModelTestCase
 {
 	protected TestJpaProject testProject;
-
-	protected static final String PROJECT_NAME = "ExtensionTestProject";
-	protected static final String PACKAGE_NAME = "extension.test";
 	
 	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = "org.eclipse.jpt.core.tests.extension.resource";
@@ -72,8 +71,8 @@ public class JpaPlatformTests extends ContextModelTestCase
 	protected IDataModel buildConfig() throws Exception {
 		IActionConfigFactory configFactory = new JpaFacetInstallDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
-		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, "1.0"); //$NON-NLS-1$
-		config.setProperty(JpaFacetInstallDataModelProperties.PLATFORM_ID, TestJpaPlatformProvider.ID);
+		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JptCorePlugin.JPA_FACET_VERSION_1_0);
+		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TestJpaPlatformProvider.ID);
 		return config;
 	}
 
