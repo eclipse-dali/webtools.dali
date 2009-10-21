@@ -3838,22 +3838,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__ATTRIBUTES = ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__CACHEABLE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__ID_CLASS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_MAPPED_SUPERCLASS__ID_CLASS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' attribute.
@@ -3862,7 +3853,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 2;
+	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
@@ -3871,7 +3862,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference.
@@ -3880,7 +3871,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
@@ -3889,7 +3880,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.

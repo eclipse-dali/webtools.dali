@@ -408,9 +408,6 @@
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyClass_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyClass_2_0/className"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMappedSuperclass_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMappedSuperclass_2_0/cacheable"/>
-      </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapsId_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapsId_2_0/mapsId"/>
       </genClasses>

@@ -135,7 +135,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToMany #//XmlAttributeMapping #//XmlJoinFetch #//v2_0/XmlCollectionMapping_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOne #//XmlAttributeMapping #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlPropertyContainer #//v1_1/XmlMappedSuperclass_1_1">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlPropertyContainer #//v1_1/XmlMappedSuperclass_1_1 #//v2_0/XmlMappedSuperclass_2_0">
     <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
@@ -316,6 +316,10 @@
         interface="true" eSuperTypes="#//XmlAttributeMapping #//XmlConvertibleMapping #//XmlConvertersHolder #//v2_0/XmlCollectionMapping_2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlConverterHolder #//v2_0/XmlCollectionMapping_2_0"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass_2_0" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlConverterHolder #//v2_0/XmlCollectionMapping_2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn_2_0" abstract="true"

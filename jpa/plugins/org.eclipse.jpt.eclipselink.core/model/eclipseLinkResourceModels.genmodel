@@ -267,6 +267,9 @@
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlElementCollection_2_0"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlManyToMany_2_0"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlMappedSuperclass_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlMappedSuperclass_2_0/cacheable"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlOneToMany_2_0"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlOrderColumn_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlOrderColumn_2_0/validationMode"/>

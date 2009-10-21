@@ -701,22 +701,13 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS_20 = 14;
 
 	/**
-	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS_20__CACHEABLE = 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass 20</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = 1;
+	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}' class.
@@ -2224,21 +2215,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheable <em>Cacheable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Cacheable</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheable()
-	 * @see #getXmlMappedSuperclass_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlMappedSuperclass_2_0_Cacheable()
-	{
-		return (EAttribute)xmlMappedSuperclass_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2872,7 +2848,6 @@ public class OrmV2_0Package extends EPackageImpl
 		createEAttribute(xmlMapKeyClass_2_0EClass, XML_MAP_KEY_CLASS_20__CLASS_NAME);
 
 		xmlMappedSuperclass_2_0EClass = createEClass(XML_MAPPED_SUPERCLASS_20);
-		createEAttribute(xmlMappedSuperclass_2_0EClass, XML_MAPPED_SUPERCLASS_20__CACHEABLE);
 
 		xmlMapsId_2_0EClass = createEClass(XML_MAPS_ID_20);
 		createEAttribute(xmlMapsId_2_0EClass, XML_MAPS_ID_20__MAPS_ID);
@@ -3031,7 +3006,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEAttribute(getXmlMapKeyClass_2_0_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlMapKeyClass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_0EClass, XmlMappedSuperclass_2_0.class, "XmlMappedSuperclass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlMappedSuperclass_2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlMappedSuperclass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMapsId_2_0EClass, XmlMapsId_2_0.class, "XmlMapsId_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapsId_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlMapsId_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3528,14 +3502,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS_20 = eINSTANCE.getXmlMappedSuperclass_2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Cacheable</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_MAPPED_SUPERCLASS_20__CACHEABLE = eINSTANCE.getXmlMappedSuperclass_2_0_Cacheable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}' class.

@@ -7,7 +7,6 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Collection;
@@ -21,10 +20,13 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlMappedSuperclass_1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -58,7 +60,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer, XmlMappedSuperclass_1_1
+public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer, XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0
 {
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -185,6 +187,26 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @ordered
 	 */
 	protected XmlPrimaryKey primaryKey;
+
+	/**
+	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CACHEABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
@@ -937,6 +959,41 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cacheable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cacheable</em>' attribute.
+	 * @see #setCacheable(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_0_Cacheable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCacheable()
+	{
+		return cacheable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCacheable <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cacheable</em>' attribute.
+	 * @see #getCacheable()
+	 * @generated
+	 */
+	public void setCacheable(Boolean newCacheable)
+	{
+		Boolean oldCacheable = cacheable;
+		cacheable = newCacheable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE, oldCacheable, cacheable));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1043,6 +1100,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return getProperties();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				return getPrimaryKey();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return getCacheable();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return getOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1106,6 +1165,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				setPrimaryKey((XmlPrimaryKey)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable((Boolean)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)newValue);
 				return;
@@ -1168,6 +1230,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				setPrimaryKey((XmlPrimaryKey)null);
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable(CACHEABLE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)null);
 				return;
@@ -1219,6 +1284,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				return primaryKey != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1301,6 +1368,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMappedSuperclass_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE: return EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHEABLE;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1372,6 +1447,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMappedSuperclass_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHEABLE: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1390,6 +1473,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		result.append(readOnly);
 		result.append(", existenceChecking: ");
 		result.append(existenceChecking);
+		result.append(", cacheable: ");
+		result.append(cacheable);
 		result.append(", excludeDefaultMappings: ");
 		result.append(excludeDefaultMappings);
 		result.append(')');
@@ -1449,6 +1534,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		};
 	}
 	
+	protected static Translator buildCacheableTranslator() {
+		return new Translator(JPA2_0.CACHEABLE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMappedSuperclass_2_0_Cacheable(), Translator.DOM_ATTRIBUTE);
+	}
+
 	protected static Translator buildReadOnlyTranslator() {
 		return new Translator(EclipseLink.READ_ONLY, EclipseLinkOrmPackage.eINSTANCE.getXmlReadOnly_ReadOnly(), Translator.DOM_ATTRIBUTE);
 	}

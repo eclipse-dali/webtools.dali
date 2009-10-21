@@ -277,7 +277,7 @@
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping #//v2_0/XmlMappedSuperclass_2_0">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
@@ -508,10 +508,6 @@
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass_2_0" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMapsId_2_0" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsId" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
