@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaEntityDefinition;
-import org.eclipse.jpt.core.internal.context.java.JavaIdMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassDefinition;
@@ -32,6 +31,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingDefinition;
@@ -125,7 +125,7 @@ public class EclipseLink2_0JpaPlatformProvider
 			JavaEclipseLinkBasicCollectionMappingDefinition.instance(),
 			JavaEclipseLinkBasicMapMappingDefinition.instance(),
 			JavaElementCollectionMappingDefinition2_0.instance(),
-			JavaIdMappingDefinition.instance(),
+			JavaIdMappingDefinition2_0.instance(),
 			JavaVersionMappingDefinition.instance(),
 			JavaBasicMappingDefinition.instance(),
 			JavaEmbeddedMappingDefinition.instance(),

@@ -1,27 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
+* Copyright (c) 2009 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+*******************************************************************************/
+package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToOneMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedComposite;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.details.OneToOneJoiningStrategyPane;
+import org.eclipse.jpt.ui.internal.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.AbstractManyToOneMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.DerivedId2_0Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -37,12 +36,12 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | AccessTypeComposite                                                   | |
+ * | | DerivedId2_0Pane                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | OneToOneJoiningStrategyPane                                           | |
+ * | | ManyToOneJoiningStrategyPane                                          | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -52,17 +51,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | EclipseLinkJoinFetchComposite                                         | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
  * | | OptionalComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EclipseLinkPrivateOwnedComposite                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -72,57 +61,46 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see OneToOneMapping
- * @see AccessTypeComposite
- * @see CascadeComposite
- * @see EclipseLinkJoinFetchComposite
- * @see EclipseLinkPrivateOwnedComposite
- * @see FetchTypeComposite
- * @see MappedByPane
- * @see OneToOneJoiningStrategyPane
- * @see OptionalComposite
- * @see TargetEntityComposite
- *
- * @version 2.2
- * @since 2.2
+ * @see {@link JavaManyToOneMapping2_0}
+ * @see {@link TargetEntityComposite}
+ * @see {@link DerivedId2_0Pane}
+ * @see {@link ManyToOneJoiningStrategyPane}
+ * @see {@link FetchTypeComposite}
+ * @see {@link OptionalComposite}
+ * @see {@link CascadeComposite}
  */
-public class OrmEclipseLinkOneToOneMapping1_1Composite<T extends EclipseLinkOneToOneMapping>
-extends EclipseLinkOneToOneMappingComposite<T>
+public class OrmEclipseLinkManyToOneMapping2_0Composite<T extends OrmManyToOneMapping2_0>
+	extends AbstractManyToOneMapping2_0Composite<T>
 {
-	/**
-	 * Creates a new <code>Eclipselink1_1OneToOneMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IOneToOneMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmEclipseLinkOneToOneMapping1_1Composite(PropertyValueModel<? extends T> subjectHolder,
-	                                Composite parent,
-	                                WidgetFactory widgetFactory) {
-
+	public OrmEclipseLinkManyToOneMapping2_0Composite(
+			PropertyValueModel<T> subjectHolder,
+			Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-
+		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new DerivedId2_0Pane(this, buildDerivedIdHolder(), addPane(container, groupBoxMargin));
+		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new OptionalComposite(this, addPane(container, groupBoxMargin));
-		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
-		
+	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmManyToOneMapping2_0, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
 			}
 		};
 	}
+
 }

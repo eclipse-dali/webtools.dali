@@ -13,6 +13,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.java.JptEclipseLink2_0JavaContextModelTests;
+import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.orm.JptEclipseLink2_0OrmContextModelTests;
 import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.persistence.JptEclipseLink2_0CorePersistenceContextModelTests;
 
 /**
@@ -24,6 +26,8 @@ public class JptEclipseLink2_0CoreContextModelTests extends TestCase
 		TestSuite suite = new TestSuite(JptEclipseLink2_0CoreContextModelTests.class.getName());
 
 		suite.addTest(JptEclipseLink2_0CorePersistenceContextModelTests.suite());
+		suite.addTest(JptEclipseLink2_0JavaContextModelTests.suite());
+		suite.addTest(JptEclipseLink2_0OrmContextModelTests.suite());
 
 		return suite;
 	}
