@@ -125,7 +125,7 @@ public class GenericJavaEmbeddedMapping
 	}
 	
 	@Override
-	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+	public RelationshipReference resolveRelationshipReference(String attributeName) {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
@@ -138,7 +138,7 @@ public class GenericJavaEmbeddedMapping
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().getOverridableRelationshipReference(attributeName);
+					return this.getEmbeddable().resolveRelationshipReference(attributeName);
 				}
 			}
 		}
@@ -196,7 +196,7 @@ public class GenericJavaEmbeddedMapping
 			RelationshipReference relationshipReference = null;
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
 					if (relationshipReference != null) {
 						return relationshipReference;
 					}

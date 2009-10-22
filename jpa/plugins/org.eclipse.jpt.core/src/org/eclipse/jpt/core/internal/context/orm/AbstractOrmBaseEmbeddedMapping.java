@@ -16,13 +16,16 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -37,7 +40,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	protected AbstractOrmBaseEmbeddedMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.embeddable = embeddableFor(this.getJavaPersistentAttribute());
-		this.attributeOverrideContainer = getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, this, this.resourceAttributeMapping);
+		this.attributeOverrideContainer = getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner(), this.resourceAttributeMapping);
 	}
 
 	@Override
@@ -49,18 +52,14 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	public OrmAttributeOverrideContainer getAttributeOverrideContainer() {
 		return this.attributeOverrideContainer;
 	}
-	
-	
-	//************* AttributeOverrideContainer.Owner implementation ********************
-	
-	public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
-		return new VirtualXmlAttributeOverrideColumn(overridableColumn);
-	}
 
-	public TypeMapping getOverridableTypeMapping() {
-		return this.embeddable;
-	}
-
+	protected JavaAttributeOverride getJavaAttributeOverrideNamed(String attributeName) {
+		if (getJavaEmbeddedMapping() != null) {
+			return getJavaEmbeddedMapping().getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+		}
+		return null;
+	}	
+	
 	public Embeddable getEmbeddable() {
 		return this.embeddable;
 	}
@@ -125,7 +124,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
+	public Column resolveOverridenColumn(String attributeName) {
 		if (getName() == null) {
 			return null;
 		}
@@ -141,7 +140,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverridenColumn(attributeName, isMetadataComplete);
+					return this.getEmbeddable().resolveOverridenColumn(attributeName);
 				}
 			}
 		}
@@ -168,5 +167,42 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	
 	public static Embeddable embeddableFor(JavaPersistentAttribute javaPersistentAttribute) {
 		return (javaPersistentAttribute == null) ? null : javaPersistentAttribute.getEmbeddable();
+	}
+	
+	
+	//********** AttributeOverrideContainer.Owner implementation *********	
+	
+	class AttributeOverrideContainerOwner implements OrmAttributeOverrideContainer.Owner {
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractOrmBaseEmbeddedMapping.this.getEmbeddable();
+		}
+		
+		public OrmTypeMapping getTypeMapping() {
+			return AbstractOrmBaseEmbeddedMapping.this.getTypeMapping();
+		}
+		
+		public Column resolveOverridenColumn(String attributeOverrideName) {
+			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
+				JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(attributeOverrideName);
+				if (javaAttributeOverride != null && !javaAttributeOverride.isVirtual()) {
+					return javaAttributeOverride.getColumn();
+				}
+			}
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			Column column = null;
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					if (column != null) {
+						return column;
+					}
+				}
+			}
+			return column;
+		}
+		
+		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
+			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
+		}
 	}
 }

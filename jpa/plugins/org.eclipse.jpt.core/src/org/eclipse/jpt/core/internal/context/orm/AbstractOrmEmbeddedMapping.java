@@ -142,7 +142,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	}
 	
 	@Override
-	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+	public RelationshipReference resolveRelationshipReference(String attributeName) {
 		if (getName() == null) {
 			return null;
 		}
@@ -158,7 +158,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().getOverridableRelationshipReference(attributeName);
+					return this.getEmbeddable().resolveRelationshipReference(attributeName);
 				}
 			}
 		}
@@ -205,7 +205,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	
 	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
-			return AbstractOrmEmbeddedMapping.this.getOverridableTypeMapping();
+			return AbstractOrmEmbeddedMapping.this.getEmbeddable();
 		}
 		
 		public OrmTypeMapping getTypeMapping() {
@@ -223,7 +223,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
 					if (relationshipReference != null) {
 						return relationshipReference;
 					}

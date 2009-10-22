@@ -203,16 +203,18 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		});
 	}
 	
-	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
+	public Column resolveOverridenColumn(String attributeName) {
 		for (AttributeMapping attributeMapping : CollectionTools.iterable(attributeMappings())) {
-			Column resolvedColumn = attributeMapping.resolveOverridenColumn(attributeName, isMetadataComplete);
+			Column resolvedColumn = attributeMapping.resolveOverridenColumn(attributeName);
 			if (resolvedColumn != null) {
 				return resolvedColumn;
 			}
 		}
-		JavaPersistentType javaPersistentType = getJavaPersistentType();
-		if (javaPersistentType != null) {
-			return javaPersistentType.getMapping().resolveOverridenColumn(attributeName, isMetadataComplete);
+		if (!isMetadataComplete()) {
+			JavaPersistentType javaPersistentType = getJavaPersistentType();
+			if (javaPersistentType != null) {
+				return javaPersistentType.getMapping().resolveOverridenColumn(attributeName);
+			}
 		}
 		return null;
 	}
@@ -236,9 +238,9 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		});
 	}
 	
-	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+	public RelationshipReference resolveRelationshipReference(String attributeName) {
 		for (AttributeMapping attributeMapping : CollectionTools.iterable(attributeMappings())) {
-			RelationshipReference resolvedRelationshipReference = attributeMapping.getOverridableRelationshipReference(attributeName);
+			RelationshipReference resolvedRelationshipReference = attributeMapping.resolveRelationshipReference(attributeName);
 			if (resolvedRelationshipReference != null) {
 				return resolvedRelationshipReference;
 			}
@@ -246,7 +248,7 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		if (!isMetadataComplete()) {
 			JavaPersistentType javaPersistentType = getJavaPersistentType();
 			if (javaPersistentType != null) {
-				return javaPersistentType.getMapping().getOverridableRelationshipReference(attributeName);
+				return javaPersistentType.getMapping().resolveRelationshipReference(attributeName);
 			}
 		}
 		return null;

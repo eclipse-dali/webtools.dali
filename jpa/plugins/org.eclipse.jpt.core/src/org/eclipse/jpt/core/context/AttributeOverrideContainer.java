@@ -89,6 +89,9 @@ public interface AttributeOverrideContainer
 		 * This will be the persistent type of the mapped superclass or embeddable.
 		 */
 		TypeMapping getOverridableTypeMapping();
+		
+		
+		Column resolveOverridenColumn(String attributeOverrideName);
 	}
 
 }

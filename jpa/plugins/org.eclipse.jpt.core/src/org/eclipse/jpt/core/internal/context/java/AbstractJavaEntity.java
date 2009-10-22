@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
@@ -132,7 +133,7 @@ public abstract class AbstractJavaEntity
 		this.discriminatorColumn = buildJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<JavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
-		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this);
+		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
 		this.associationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
 		this.queryContainer = this.getJpaFactory().buildJavaQueryContainer(this);
 		this.generatorContainer = this.getJpaFactory().buildJavaGeneratorContainer(this);
@@ -1039,23 +1040,21 @@ public abstract class AbstractJavaEntity
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
-		if (!isMetadataComplete) {
-			AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
-			if (override != null && !override.isVirtual()) {
-				return override.getColumn();
-			}
+	public Column resolveOverridenColumn(String attributeName) {
+		AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+		if (override != null && !override.isVirtual()) {
+			return override.getColumn();
 		}
-		return super.resolveOverridenColumn(attributeName, isMetadataComplete);
+		return super.resolveOverridenColumn(attributeName);
 	}
 	
 	@Override
-	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+	public RelationshipReference resolveRelationshipReference(String attributeName) {
 		AssociationOverride override = getAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
 		if (override != null && !override.isVirtual()) {
 			return override.getRelationshipReference();
 		}
-		return super.getOverridableRelationshipReference(attributeName);
+		return super.resolveRelationshipReference(attributeName);
 	}
 	
 	@Override
@@ -1548,9 +1547,34 @@ public abstract class AbstractJavaEntity
 			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					RelationshipReference relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					RelationshipReference relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
 					if (relationshipReference != null) {
 						return relationshipReference;
+					}
+				}
+			}
+			return null;
+		}
+	}
+	
+	//********** AttributeOverrideContainer.Owner implementation *********	
+	
+	class AttributeOverrideContainerOwner implements AttributeOverrideContainer.Owner {
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractJavaEntity.this.getOverridableTypeMapping();
+		}
+		
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaEntity.this.getTypeMapping();
+		}
+
+		public Column resolveOverridenColumn(String attributeOverrideName) {
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					Column column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					if (column != null) {
+						return column;
 					}
 				}
 			}

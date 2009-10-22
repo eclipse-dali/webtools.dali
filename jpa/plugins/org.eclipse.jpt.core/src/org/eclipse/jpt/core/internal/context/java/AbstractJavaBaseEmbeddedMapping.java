@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -25,6 +26,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -42,7 +44,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 
 	protected AbstractJavaBaseEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this);
+		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
 	}
 
 	public JavaAttributeOverrideContainer getAttributeOverrideContainer() {
@@ -142,22 +144,20 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 
 	@Override
-	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
+	public Column resolveOverridenColumn(String attributeName) {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(attributeName.substring(0, dotIndex))) {
 					attributeName = attributeName.substring(dotIndex + 1);
-					if (!isMetadataComplete) {
-						AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
-						if (override != null && !override.isVirtual()) {
-							return override.getColumn();
-						}
+					AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+					if (override != null && !override.isVirtual()) {
+						return override.getColumn();
 					}
 					if (this.getEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverridenColumn(attributeName, isMetadataComplete);
+					return this.getEmbeddable().resolveOverridenColumn(attributeName);
 				}
 			}
 		}
@@ -184,5 +184,32 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		getAttributeOverrideContainer().validate(messages, reporter, astRoot);
+	}
+	
+	
+	//********** AttributeOverrideContainer.Owner implementation *********	
+	
+	class AttributeOverrideContainerOwner implements AttributeOverrideContainer.Owner {
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractJavaBaseEmbeddedMapping.this.getOverridableTypeMapping();
+		}
+		
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaBaseEmbeddedMapping.this.getTypeMapping();
+		}
+		
+		public Column resolveOverridenColumn(String attributeOverrideName) {
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			Column column = null;
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					if (column != null) {
+						return column;
+					}
+				}
+			}
+			return column;
+		}
 	}
 }

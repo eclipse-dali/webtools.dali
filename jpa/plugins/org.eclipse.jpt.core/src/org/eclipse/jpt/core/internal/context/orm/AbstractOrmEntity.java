@@ -241,7 +241,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, this, this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner(), this.resourceTypeMapping);
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
@@ -334,21 +334,6 @@ public abstract class AbstractOrmEntity
 		return this;
 	}
 	
-	public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
-		JavaAttributeOverride javaAttributeOverride = null;
-		if (!isMetadataComplete) {
-			javaAttributeOverride = getJavaAttributeOverrideNamed(attributeName);
-		}
-		if (javaAttributeOverride == null) {
-			//TODO not the greatest solution here, but things seems to work, so I'm stepping away slowly
-			if (overridableColumn instanceof JavaColumn) {
-				return new VirtualXmlColumn(this, overridableColumn);
-			}
-			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
-		}
-		return new VirtualXmlColumn(this, javaAttributeOverride.getColumn());
-	}
-	
 	protected JavaAttributeOverride getJavaAttributeOverrideNamed(String attributeName) {
 		if (getJavaEntity() != null) {
 			return getJavaEntity().getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
@@ -357,7 +342,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	@Override
-	public RelationshipReference getOverridableRelationshipReference(String name) {
+	public RelationshipReference resolveRelationshipReference(String name) {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = name.indexOf('.');
 			if (dotIndex != -1) {
@@ -367,7 +352,7 @@ public abstract class AbstractOrmEntity
 				}
 			}
 		}
-		return super.getOverridableRelationshipReference(name);
+		return super.resolveRelationshipReference(name);
 	}
 	
 	protected JavaAssociationOverride getJavaAssociationOverrideNamed(String attributeName) {
@@ -1130,7 +1115,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
+	public Column resolveOverridenColumn(String attributeName) {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
@@ -1140,7 +1125,7 @@ public abstract class AbstractOrmEntity
 				}
 			}
 		}
-		return super.resolveOverridenColumn(attributeName, isMetadataComplete);
+		return super.resolveOverridenColumn(attributeName);
 	}
 	
 	@Override
@@ -1795,7 +1780,7 @@ public abstract class AbstractOrmEntity
 			if (!isMetadataComplete()) {
 				JavaPersistentType javaPersistentType = getPersistentType().getJavaPersistentType();
 				if (javaPersistentType != null) {
-					RelationshipReference relationshipReference = javaPersistentType.getMapping().getOverridableRelationshipReference(associationOverrideName);
+					RelationshipReference relationshipReference = javaPersistentType.getMapping().resolveRelationshipReference(associationOverrideName);
 					if (relationshipReference != null) {
 						return relationshipReference;
 					}
@@ -1804,13 +1789,62 @@ public abstract class AbstractOrmEntity
 			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					RelationshipReference relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					RelationshipReference relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
 					if (relationshipReference != null) {
 						return relationshipReference;
 					}
 				}
 			}
 			return null;
+		}
+	}
+	
+	//********** OrmAttributeOverrideContainer.Owner implementation *********	
+	
+	class AttributeOverrideContainerOwner implements OrmAttributeOverrideContainer.Owner {
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractOrmEntity.this.getOverridableTypeMapping();
+		}
+		
+		public OrmTypeMapping getTypeMapping() {
+			return AbstractOrmEntity.this.getTypeMapping();
+		}
+
+		public Column resolveOverridenColumn(String attributeOverrideName) {
+			if (!isMetadataComplete()) {
+				JavaPersistentType javaPersistentType = getPersistentType().getJavaPersistentType();
+				if (javaPersistentType != null) {
+					Column column = javaPersistentType.getMapping().resolveOverridenColumn(attributeOverrideName);
+					if (column != null) {
+						return column;
+					}
+				}
+			}
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					Column column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					if (column != null) {
+						return column;
+					}
+				}
+			}
+			return null;
+		}
+		
+		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
+			JavaAttributeOverride javaAttributeOverride = null;
+			if (!isMetadataComplete) {
+				javaAttributeOverride = getJavaAttributeOverrideNamed(attributeName);
+			}
+			if (javaAttributeOverride == null) {
+				//TODO not the greatest solution here, but things seems to work, so I'm stepping away slowly
+				if (overridableColumn instanceof JavaColumn) {
+					return new VirtualXmlColumn(AbstractOrmEntity.this, overridableColumn);
+				}
+				return new VirtualXmlAttributeOverrideColumn(overridableColumn);
+			}
+			return new VirtualXmlColumn(AbstractOrmEntity.this, javaAttributeOverride.getColumn());
 		}
 	}
 	

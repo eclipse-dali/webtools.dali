@@ -114,10 +114,10 @@ public interface TypeMapping extends JpaContextNode {
 	 * Returns the Column of the overridable attribute mapping with the given 
 	 * attribute name. In 2.0 this name could use dot-notation for nested mappings.
 	 */
-	Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete);
+	Column resolveOverridenColumn(String attributeName);
 
 
-	RelationshipReference getOverridableRelationshipReference(String associationOverrideName);
+	RelationshipReference resolveRelationshipReference(String associationOverrideName);
 
 	/**
 	 * Return an Iterator of associations names that can be overridden in this

@@ -255,17 +255,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	}
 	
 	private Column resolveAttributeOverrideMappingColumn(String attributeOverrideName) {
-		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
-		Column column = null;
-		if (overridableTypeMapping != null) {
-			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-				column = typeMapping.resolveOverridenColumn(attributeOverrideName, getOwner().getTypeMapping().isMetadataComplete());
-				if (column != null) {
-					return column;
-				}
-			}
-		}
-		return column;
+		return getOwner().resolveOverridenColumn(attributeOverrideName);
 	}
 
 	protected void updateSpecifiedAttributeOverrides() {

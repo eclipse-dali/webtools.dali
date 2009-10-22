@@ -21,7 +21,7 @@ import java.util.ListIterator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Entity
-	extends TypeMapping, IdClassHolder, AttributeOverrideContainer.Owner
+	extends TypeMapping, IdClassHolder
 {
 	// **************** name **************************************
 

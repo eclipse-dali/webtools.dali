@@ -217,7 +217,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return EmptyIterator.<String> instance();
 	}
 	
-	public Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete) {
+	public Column resolveOverridenColumn(String attributeName) {
 		ColumnMapping columnMapping = this.resolveColumnMapping(attributeName);
 		return columnMapping == null ? null : columnMapping.getColumn();
 	}
@@ -230,7 +230,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return null;
 	}	
 
-	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+	public RelationshipReference resolveRelationshipReference(String attributeName) {
 		RelationshipMapping relationshipMapping = this.resolveRelationshipMapping(attributeName);
 		return relationshipMapping == null ? null : relationshipMapping.getRelationshipReference();
 	}

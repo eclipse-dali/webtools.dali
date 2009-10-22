@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmBaseEmbeddedMapping extends BaseEmbeddedMapping, OrmAttributeMapping, OrmAttributeOverrideContainer.Owner
+public interface OrmBaseEmbeddedMapping extends BaseEmbeddedMapping, OrmAttributeMapping
 {
 	OrmAttributeOverrideContainer getAttributeOverrideContainer();
 
