@@ -13,8 +13,11 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
@@ -26,8 +29,6 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
@@ -39,7 +40,7 @@ public class GenericJavaEmbeddedMapping
 
 	public GenericJavaEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.associationOverrideContainer = ((JpaFactory2_0) this.getJpaFactory()).buildJavaAssociationOverrideContainer(this, this);
+		this.associationOverrideContainer = ((JpaFactory2_0) this.getJpaFactory()).buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
 	}
 	
 	@Override
@@ -123,6 +124,27 @@ public class GenericJavaEmbeddedMapping
 		return null;
 	}
 	
+	@Override
+	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			int dotIndex = attributeName.indexOf('.');
+			if (dotIndex != -1) {
+				if (getName().equals(attributeName.substring(0, dotIndex))) {
+					attributeName = attributeName.substring(dotIndex + 1);
+					AssociationOverride override = getAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
+					if (override != null && !override.isVirtual()) {
+						return override.getRelationshipReference();
+					}
+					if (this.getEmbeddable() == null) {
+						return null;
+					}
+					return this.getEmbeddable().getOverridableRelationshipReference(attributeName);
+				}
+			}
+		}
+		return null;
+	}
+	
 	//****************** AbstractJavaAttributeMapping implementation *******************
 	@Override
 	protected String[] buildSupportingAnnotationNames() {
@@ -141,28 +163,6 @@ public class GenericJavaEmbeddedMapping
 	public JavaAssociationOverrideContainer getAssociationOverrideContainer() {
 		return this.associationOverrideContainer;
 	}
-	
-	public Iterator<String> allOverridableAssociationNames() {
-		return new TransformationIterator<RelationshipMapping, String>(this.allOverridableAssociations()) {
-			@Override
-			protected String transform(RelationshipMapping attribute) {
-				return attribute.getName();
-			}
-		};
-	}
-
-	//TODO hmm, is this only for 2.0???
-	public Iterator<RelationshipMapping> allOverridableAssociations() {
-		if (this.getEmbeddable() == null) {
-			return EmptyIterator.instance();
-		}
-		return new FilteringIterator<AttributeMapping, RelationshipMapping>(this.getEmbeddable().attributeMappings()) {
-			@Override
-			protected boolean accept(AttributeMapping o) {
-				return o.isOverridableAssociationMapping();
-			}
-		};
-	}
 
 	
 	@Override
@@ -178,4 +178,32 @@ public class GenericJavaEmbeddedMapping
 		}
 		return null;
 	}
+	
+	// ********** association override container owner **********
+
+	class AssociationOverrideContainerOwner implements AssociationOverrideContainer.Owner {
+		
+		public TypeMapping getOverridableTypeMapping() {
+			return GenericJavaEmbeddedMapping.this.getOverridableTypeMapping();
+		}
+		
+		public TypeMapping getTypeMapping() {
+			return GenericJavaEmbeddedMapping.this.getTypeMapping();
+		}
+
+		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			RelationshipReference relationshipReference = null;
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					if (relationshipReference != null) {
+						return relationshipReference;
+					}
+				}
+			}
+			return relationshipReference;
+		}
+	}
+
 }

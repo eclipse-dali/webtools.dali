@@ -44,7 +44,4 @@ public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeMapping> attributeMappings();
-	
-	@SuppressWarnings("unchecked")
-	Iterator<JavaRelationshipMapping> overridableAssociations();
 }

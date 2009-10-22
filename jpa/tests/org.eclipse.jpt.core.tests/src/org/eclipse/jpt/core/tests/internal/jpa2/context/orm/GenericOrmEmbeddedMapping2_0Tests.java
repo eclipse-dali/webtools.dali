@@ -1486,14 +1486,19 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 		javaInverseJoinColumn.setSpecifiedName("JAVA_INVERSE_JOIN_COLUMN_NAME");
 		javaInverseJoinColumn.setSpecifiedReferencedColumnName("JAVA_INVERSE_JOIN_COLUMN_REFERENCED_NAME");
 		
+		getOrmXmlResource().save(null);
 		
 		assertEquals(2, overrideContainer.virtualAssociationOverridesSize());
 		virtualAssociationOverride = CollectionTools.get(overrideContainer.virtualAssociationOverrides(), 1);
 		joiningStrategy = ((AssociationOverrideRelationshipReference2_0) virtualAssociationOverride.getRelationshipReference()).getJoinTableJoiningStrategy();
 		joinTable = joiningStrategy.getJoinTable();
 		assertEquals("addresses", virtualAssociationOverride.getName());
+		assertEquals("MY_JOIN_TABLE", joinTable.getName());
 		assertEquals(1, joinTable.joinColumnsSize());
 		virtualJoinColumn = joinTable.joinColumns().next();
+		
+		getOrmXmlResource().save(null);
+
 		assertEquals("MY_JOIN_COLUMN", virtualJoinColumn.getName());
 		assertEquals("MY_REFERENCE_COLUMN", virtualJoinColumn.getReferencedColumnName());
 		assertEquals("BAR", virtualJoinColumn.getTable());

@@ -101,16 +101,12 @@ public interface TypeMapping extends JpaContextNode {
 	/**
 	 * Return an Iterator of attribute names that can be overridden by a 
 	 * sub type mapping.
-	 * @see
-	 * {@link TypeMapping#overridableAttributes()}
 	 */
 	Iterator<String> overridableAttributeNames();
 
 	/**
 	 * Return an Iterator of all attribute names that can be overridden in this
 	 * type mapping.
-	 * @see
-	 * {@link TypeMapping#allOverridableAttributes()}
 	 */
 	Iterator<String> allOverridableAttributeNames();
 	
@@ -120,37 +116,18 @@ public interface TypeMapping extends JpaContextNode {
 	 */
 	Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete);
 
-	/**
-	 * Return an Iterator of associations that can be overridden by a 
-	 * sub type mapping. The platform and joining strategy are used to determine
-	 * if it is an overridable association.
-	 */
-	<T extends RelationshipMapping> Iterator<T> overridableAssociations();
+
+	RelationshipReference getOverridableRelationshipReference(String associationOverrideName);
 
 	/**
-	 * Return an Iterator of association names that can be overridden by a 
-	 * sub type mapping.
-	 * @see
-	 * {@link TypeMapping#overridableAssociations()}
+	 * Return an Iterator of associations names that can be overridden in this
+	 * type mapping.
 	 */
 	Iterator<String> overridableAssociationNames();
-
-	/**
-	 * Return an Iterator of all associations that can be overridden in this
-	 * type mapping.  The platform and joining strategy are used to determine
-	 * if it is an overridable association.
-	 * 
-	 * See
-	 * {@link TypeMapping#overridableAssociations()} and
-	 * {@link PersistentType#inheritanceHierarchy()}
-	 */
-	Iterator<RelationshipMapping> allOverridableAssociations();
 	
 	/**
 	 * Return an Iterator of all associations names that can be overridden in this
 	 * type mapping.
-	 * @see
-	 * {@link TypeMapping#allOverridableAssociations()}
 	 */
 	Iterator<String> allOverridableAssociationNames();
 

@@ -33,7 +33,6 @@ import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -44,7 +43,6 @@ import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -1697,32 +1695,34 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<RelationshipMapping> overridableAssociations = getJavaEntity().allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
+		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 		
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
-		overridableAssociations = abstractEntity.allOverridableAssociations();
+		overridableAssociations = abstractEntity.allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 	}
-//
-//	public void testAllOverridableAttributesMappedSuperclassInOrmXml() throws Exception {
-//		createTestMappedSuperclass();
-//		createTestSubType();
-//		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
-//		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		
-//		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
-//		assertEquals("foo", overridableAttributes.next());
-//		assertEquals("basic", overridableAttributes.next());
-//		assertEquals("id", overridableAttributes.next());
-//		assertEquals("name", overridableAttributes.next());
-//		assertFalse(overridableAttributes.hasNext());
-//	}
+
+	public void testAllOverridableAttributesMappedSuperclassInOrmXml() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		assertEquals("foo", overridableAttributes.next());
+		assertEquals("basic", overridableAttributes.next());
+		assertEquals("id", overridableAttributes.next());
+		assertEquals("name", overridableAttributes.next());
+		assertFalse(overridableAttributes.hasNext());
+	}
 
 	public void testAllOverridableAttributeNames() throws Exception {
 		createTestMappedSuperclass();
@@ -2236,15 +2236,6 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(virtualAttributeOverrides.hasNext());
 	}
 	
-	
-	public void testOverridableAssociations() throws Exception {
-		createTestEntity();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-
-		Iterator<JavaRelationshipMapping> overridableAssociations = getJavaEntity().overridableAssociations();
-		assertFalse(overridableAssociations.hasNext());
-	}
-
 	public void testOverridableAssociationNames() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -2271,9 +2262,9 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<RelationshipMapping> overridableAssociations = getJavaEntity().allOverridableAssociations();
-		assertEquals("oneToOne", overridableAssociations.next().getName());
-		assertEquals("manyToOne", overridableAssociations.next().getName());
+		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		assertEquals("oneToOne", overridableAssociations.next());
+		assertEquals("manyToOne", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 	}
 //	

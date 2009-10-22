@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Entity;
 
@@ -42,8 +41,6 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 	ListIterator<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
-	
-	Iterator<JavaRelationshipMapping> overridableAssociations();
 
 	JavaAttributeOverrideContainer getAttributeOverrideContainer();
 	

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 
@@ -30,7 +29,5 @@ public interface OrmMappedSuperclass
 	 * Return null if there is no java persistent type or it is not a mapped superclass.
 	 */
 	JavaMappedSuperclass getJavaMappedSuperclass();
-
-	Iterator<OrmRelationshipMapping> overridableAssociations();
 
 }

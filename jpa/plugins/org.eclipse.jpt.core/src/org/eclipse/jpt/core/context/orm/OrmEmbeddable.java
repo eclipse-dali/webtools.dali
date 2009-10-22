@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 
@@ -30,7 +29,5 @@ public interface OrmEmbeddable
 	 * Return null if there is no java persistent type or it is not an embeddable.
 	 */
 	JavaEmbeddable getJavaEmbeddable();
-
-	Iterator<OrmRelationshipMapping> overridableAssociations();
 
 }

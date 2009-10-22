@@ -90,11 +90,19 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 	
 	@Override
-	public Iterator<String> allOverrideableMappingNames() {
+	public Iterator<String> allOverrideableAttributeMappingNames() {
 		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
 			return embeddableOverrideableAttributeMappingNames();
 		}
-		return super.allOverrideableMappingNames();
+		return super.allOverrideableAttributeMappingNames();
+	}
+	
+	@Override
+	public Iterator<String> allOverrideableAssociationMappingNames() {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			return embeddableOverrideableAssociationMappingNames();
+		}
+		return super.allOverrideableAssociationMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
@@ -103,7 +111,25 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
 					@Override
 					protected Iterator<String> transform(AttributeMapping mapping) {
-						return mapping.allOverrideableMappingNames();
+						return mapping.allOverrideableAttributeMappingNames();
+					}
+				}
+			)
+		) {
+			@Override
+			protected String transform(String next) {
+				return getName() + '.' + next;
+			}
+		};
+	}
+	
+	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
+		return new TransformationIterator<String, String>(
+			new CompositeIterator<String>(
+				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
+					@Override
+					protected Iterator<String> transform(AttributeMapping mapping) {
+						return mapping.allOverrideableAssociationMappingNames();
 					}
 				}
 			)

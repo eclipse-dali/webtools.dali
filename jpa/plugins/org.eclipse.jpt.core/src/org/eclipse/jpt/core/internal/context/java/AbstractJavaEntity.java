@@ -17,6 +17,8 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
+import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -28,12 +30,11 @@ import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
@@ -42,7 +43,6 @@ import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
@@ -133,7 +133,7 @@ public abstract class AbstractJavaEntity
 		this.specifiedSecondaryTables = new ArrayList<JavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
 		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this);
-		this.associationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this, this);
+		this.associationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
 		this.queryContainer = this.getJpaFactory().buildJavaQueryContainer(this);
 		this.generatorContainer = this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}
@@ -279,7 +279,6 @@ public abstract class AbstractJavaEntity
 	protected EntityAnnotation getResourceMappingAnnotation() {
 		return (EntityAnnotation) super.getResourceMappingAnnotation();
 	}
-
 	
 	//****************** AttributeOverrideContainer.Owner implementation *******************
 
@@ -291,7 +290,6 @@ public abstract class AbstractJavaEntity
 		PersistentType superPersistentType = getPersistentType().getSuperPersistentType();
 		return superPersistentType == null ? null : superPersistentType.getMapping();
 	}
-	
 	
 	//****************** TypeMapping implementation *******************
 	
@@ -1050,28 +1048,22 @@ public abstract class AbstractJavaEntity
 		}
 		return super.resolveOverridenColumn(attributeName, isMetadataComplete);
 	}
-
+	
 	@Override
-	public Iterator<JavaRelationshipMapping> overridableAssociations() {
+	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+		AssociationOverride override = getAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
+		if (override != null && !override.isVirtual()) {
+			return override.getRelationshipReference();
+		}
+		return super.getOverridableRelationshipReference(attributeName);
+	}
+	
+	@Override
+	public Iterator<String> overridableAssociationNames() {
 		if (!isTablePerClass()) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<JavaAttributeMapping, JavaRelationshipMapping>(this.attributeMappings()) {
-			@Override
-			protected boolean accept(JavaAttributeMapping o) {
-				return o.isOverridableAssociationMapping();
-			}
-		};
-	}
-
-	@Override
-	public Iterator<RelationshipMapping> allOverridableAssociations() {
-		return new CompositeIterator<RelationshipMapping>(new TransformationIterator<TypeMapping, Iterator<RelationshipMapping>>(this.ancestors()) {
-			@Override
-			protected Iterator<RelationshipMapping> transform(TypeMapping mapping) {
-				return mapping.overridableAssociations();
-			}
-		});
+		return super.overridableAssociationNames();
 	}
 	
 	public AttributeMapping resolveAttributeMapping(String name) {
@@ -1537,6 +1529,33 @@ public abstract class AbstractJavaEntity
 			}
 		}
 		return false;
+	}
+	
+	
+	// ********** association override container owner **********
+
+	class AssociationOverrideContainerOwner implements AssociationOverrideContainer.Owner {
+		
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractJavaEntity.this.getOverridableTypeMapping();
+		}
+		
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaEntity.this.getTypeMapping();
+		}
+
+		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					RelationshipReference relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					if (relationshipReference != null) {
+						return relationshipReference;
+					}
+				}
+			}
+			return null;
+		}
 	}
 	
 	

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmEntity 
-	extends Entity, OrmTypeMapping, OrmAttributeOverrideContainer.Owner, OrmAssociationOverrideContainer.Owner
+	extends Entity, OrmTypeMapping, OrmAttributeOverrideContainer.Owner
 {
 	/**
 	 * Return a list iterator of the virtual(not specified) secondary tables.
@@ -86,8 +85,6 @@ public interface OrmEntity
 	ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
-
-	Iterator<OrmRelationshipMapping> overridableAssociations();
 
 	OrmAttributeOverrideContainer getAttributeOverrideContainer();
 	

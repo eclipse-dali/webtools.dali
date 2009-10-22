@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -126,8 +127,15 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 		return null;
 	}
 	
-	public Iterator<String> allOverrideableMappingNames() {
+	public Iterator<String> allOverrideableAttributeMappingNames() {
 		if (isOverridableAttributeMapping()) {
+			return allMappingNames();
+		}
+		return EmptyIterator.<String> instance();
+	}
+	
+	public Iterator<String> allOverrideableAssociationMappingNames() {
+		if (isOverridableAssociationMapping()) {
 			return allMappingNames();
 		}
 		return EmptyIterator.<String> instance();
@@ -138,10 +146,23 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 		return columnMapping == null ? null : columnMapping.getColumn();
 	}
 	
-	public ColumnMapping resolveColumnMapping(String name) {
+	protected ColumnMapping resolveColumnMapping(String name) {
 		AttributeMapping attributeMapping = resolveAttributeMapping(name);
 		if (attributeMapping != null && attributeMapping.isOverridableAttributeMapping()) {
 			return (ColumnMapping) attributeMapping;
+		}
+		return null;
+	}
+	
+	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+		RelationshipMapping relationshipMapping = this.resolveRelationshipMapping(attributeName);
+		return relationshipMapping == null ? null : relationshipMapping.getRelationshipReference();
+	}
+	
+	protected RelationshipMapping resolveRelationshipMapping(String name) {
+		AttributeMapping attributeMapping = resolveAttributeMapping(name);
+		if (attributeMapping != null && attributeMapping.isOverridableAssociationMapping()) {
+			return (RelationshipMapping) attributeMapping;
 		}
 		return null;
 	}

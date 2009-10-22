@@ -24,11 +24,9 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
@@ -365,18 +363,22 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<RelationshipMapping> overridableAssociations = getJavaEntity().allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
-		assertEquals("address3", overridableAssociations.next().getName());
-		assertEquals("address4", overridableAssociations.next().getName());
+		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
+		assertEquals("address3", overridableAssociations.next());
+		assertEquals("address4", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 		
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
-		overridableAssociations = abstractEntity.allOverridableAssociations();
+		overridableAssociations = abstractEntity.allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
+		assertEquals("address3", overridableAssociations.next());
+		assertEquals("address4", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 	}
 
@@ -855,7 +857,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaRelationshipMapping> overridableAssociations = getJavaEntity().overridableAssociations();
+		Iterator<String> overridableAssociations = getJavaEntity().overridableAssociationNames();
 		assertFalse(overridableAssociations.hasNext());
 	}
 
@@ -881,32 +883,18 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("address4", overridableAssociationNames.next());
 		assertFalse(overridableAssociationNames.hasNext());
 	}
-	
-	public void testAllOverridableAssociations() throws Exception {
-		createTestMappedSuperclass();
-		createTestSubType();
-		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-	
-		Iterator<RelationshipMapping> overridableAssociations = getJavaEntity().allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
-		assertEquals("address3", overridableAssociations.next().getName());
-		assertEquals("address4", overridableAssociations.next().getName());
-		assertFalse(overridableAssociations.hasNext());
-	}
-	
+		
 	public void testAllOverridableAssociationsMappedSuperclassInOrmXml() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<RelationshipMapping> overridableAssociations = getJavaEntity().allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
-		assertEquals("address3", overridableAssociations.next().getName());
-		assertEquals("address4", overridableAssociations.next().getName());
+		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
+		assertEquals("address3", overridableAssociations.next());
+		assertEquals("address4", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 	}
 

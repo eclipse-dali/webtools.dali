@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.java;
 
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.jpa2.context.EmbeddedMapping2_0;
@@ -26,7 +25,7 @@ import org.eclipse.jpt.core.jpa2.context.EmbeddedMapping2_0;
  * @since 3.0
  */
 public interface JavaEmbeddedMapping2_0
-	extends JavaEmbeddedMapping, EmbeddedMapping2_0, AssociationOverrideContainer.Owner
+	extends JavaEmbeddedMapping, EmbeddedMapping2_0
 {
 	JavaAssociationOverrideContainer getAssociationOverrideContainer();
 }

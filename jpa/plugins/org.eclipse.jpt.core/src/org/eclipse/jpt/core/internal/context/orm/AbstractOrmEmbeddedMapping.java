@@ -13,13 +13,16 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
@@ -40,7 +43,9 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 
 	protected AbstractOrmEmbeddedMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.associationOverrideContainer = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmAssociationOverrideContainer(this, this, this.resourceAttributeMapping);
+		this.associationOverrideContainer = 
+			((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
+				buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner(), this.resourceAttributeMapping);
 	}
 	
 	@Override
@@ -135,9 +140,40 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 		}
 		return null;
 	}
-
+	
+	@Override
+	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+		if (getName() == null) {
+			return null;
+		}
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			int dotIndex = attributeName.indexOf('.');
+			if (dotIndex != -1) {
+				if (getName().equals(attributeName.substring(0, dotIndex))) {
+					attributeName = attributeName.substring(dotIndex + 1);
+					AssociationOverride override = getAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
+					if (override != null && !override.isVirtual()) {
+						return override.getRelationshipReference();
+					}
+					if (this.getEmbeddable() == null) {
+						return null;
+					}
+					return this.getEmbeddable().getOverridableRelationshipReference(attributeName);
+				}
+			}
+		}
+		return null;
+	}
+	
 	public OrmAssociationOverrideContainer getAssociationOverrideContainer() {
 		return this.associationOverrideContainer;
+	}
+
+	protected JavaAssociationOverride getJavaAssociationOverrideNamed(String attributeName) {
+		if (getJavaEmbeddedMapping() != null) {
+			return getJavaEmbeddedMapping().getAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
+		}
+		return null;
 	}
 	
 	
@@ -164,24 +200,36 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 		};
 	}
 
-	//********** OrmAssociationOverrideContainer.Owner implementation *********
+	
+	//********** OrmAssociationOverrideContainer.Owner implementation *********	
+	
+	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractOrmEmbeddedMapping.this.getOverridableTypeMapping();
+		}
+		
+		public OrmTypeMapping getTypeMapping() {
+			return AbstractOrmEmbeddedMapping.this.getTypeMapping();
+		}
 
-	public RelationshipReference getOverridableRelationshipReference(RelationshipMapping overridableAssociation) {
-		if (getPersistentAttribute().isVirtual()) {
-			JavaAssociationOverride javaAssociationOverride = getJavaAssociationOverrideNamed(overridableAssociation.getName());
-			if (javaAssociationOverride != null && !javaAssociationOverride.isVirtual()) {
-				return javaAssociationOverride.getRelationshipReference();
+		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
+			RelationshipReference relationshipReference = null;
+			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
+				JavaAssociationOverride javaAssociationOverride = getJavaAssociationOverrideNamed(associationOverrideName);
+				if (javaAssociationOverride != null && !javaAssociationOverride.isVirtual()) {
+					return javaAssociationOverride.getRelationshipReference();
+				}
 			}
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					if (relationshipReference != null) {
+						return relationshipReference;
+					}
+				}
+			}
+			return relationshipReference;
 		}
-		return overridableAssociation.getRelationshipReference();
 	}
-
-	protected JavaAssociationOverride getJavaAssociationOverrideNamed(String attributeName) {
-		if (getJavaEmbeddedMapping() != null) {
-			return getJavaEmbeddedMapping().getAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
-		}
-		return null;
-	}
-
-
 }

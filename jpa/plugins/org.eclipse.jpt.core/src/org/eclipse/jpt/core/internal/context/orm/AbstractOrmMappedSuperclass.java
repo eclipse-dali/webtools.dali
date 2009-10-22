@@ -15,16 +15,13 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClass;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
 public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMappedSuperclass>
@@ -124,16 +121,6 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 
 	public Iterator<Table> associatedTablesIncludingInherited() {
 		return EmptyIterator.instance();
-	}
-
-	@Override
-	public Iterator<OrmRelationshipMapping> overridableAssociations() {
-		return new FilteringIterator<OrmAttributeMapping, OrmRelationshipMapping>(this.attributeMappings()) {
-			@Override
-			protected boolean accept(OrmAttributeMapping o) {
-				return o.isOverridableAssociationMapping();
-			}
-		};
 	}
 
 	public int getXmlSequence() {

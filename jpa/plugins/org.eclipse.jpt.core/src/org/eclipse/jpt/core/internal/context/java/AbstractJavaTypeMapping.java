@@ -15,13 +15,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -128,7 +127,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 			new TransformationIterator<AttributeMapping, Iterator<String>>(this.attributeMappings()) {
 				@Override
 				protected Iterator<String> transform(AttributeMapping mapping) {
-					return mapping.allOverrideableMappingNames();
+					return mapping.allOverrideableAttributeMappingNames();
 				}
 			});
 	}
@@ -151,30 +150,34 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		}
 		return null;
 	}
-
-	public Iterator<JavaRelationshipMapping> overridableAssociations() {
-		return EmptyIterator.instance();
+	
+	public RelationshipReference getOverridableRelationshipReference(String attributeName) {
+		for (AttributeMapping attributeMapping : CollectionTools.iterable(attributeMappings())) {
+			RelationshipReference resolvedRelationshipReference = attributeMapping.getOverridableRelationshipReference(attributeName);
+			if (resolvedRelationshipReference != null) {
+				return resolvedRelationshipReference;
+			}
+		}
+		return null;
 	}
 	
 	public Iterator<String> overridableAssociationNames() {
-		return this.namesOf(this.overridableAssociations());
-	}
-
-	public Iterator<RelationshipMapping> allOverridableAssociations() {
-		return EmptyIterator.instance();
+		return new CompositeIterator<String>(
+			new TransformationIterator<AttributeMapping, Iterator<String>>(this.attributeMappings()) {
+				@Override
+				protected Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allOverrideableAssociationMappingNames();
+				}
+			});
 	}
 	
 	public Iterator<String> allOverridableAssociationNames() {
-		return this.namesOf(this.allOverridableAssociations());
-	}
-	
-	protected Iterator<String> namesOf(Iterator<? extends AttributeMapping> attributeMappings) {
-		return new TransformationIterator<AttributeMapping, String>(attributeMappings) {
+		return new CompositeIterator<String>(new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
 			@Override
-			protected String transform(AttributeMapping attributeMapping) {
-				return attributeMapping.getName();
+			protected Iterator<String> transform(TypeMapping mapping) {
+				return mapping.overridableAssociationNames();
 			}
-		};
+		});
 	}
 	
 	

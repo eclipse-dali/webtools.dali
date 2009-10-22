@@ -18,8 +18,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
@@ -35,6 +35,7 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -91,6 +92,14 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 
 	protected boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
 		return getOverrideNamed(name, overrides) != null;
+	}
+
+	protected Iterator<String> allOverridableAssociationNames() {
+		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
+		if (overridableTypeMapping != null) {
+			return overridableTypeMapping.allOverridableAssociationNames();
+		}
+		return EmptyIterator.instance();
 	}
 
 
@@ -171,10 +180,10 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		JavaAssociationOverride virtualAssociationOverride = null;
 		if (associationOverrideName != null) {
-			for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
-				if (overridableAssociation.getName().equals(associationOverrideName)) {
+			for (String name : CollectionTools.iterable(allOverridableAssociationNames())) {
+				if (name.equals(associationOverrideName)) {
 					//store the virtualAttributeOverride so we can fire change notification later
-					virtualAssociationOverride = buildVirtualAssociationOverride(overridableAssociation);
+					virtualAssociationOverride = buildVirtualAssociationOverride(name);
 					this.virtualAssociationOverrides.add(virtualAssociationOverride);
 					break;
 				}
@@ -242,10 +251,10 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	}
 	
 	protected void initializeVirtualAssociationOverrides() {
-		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
-			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
+		for (String name : CollectionTools.iterable(allOverridableAssociationNames())) {
+			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(name);
 			if (associationOverride == null) {
-				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(overridableAssociation));
+				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(name));
 			}
 		}
 	}
@@ -294,27 +303,31 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 		return associationOverride;
 	}
 	
-	protected JavaAssociationOverride buildVirtualAssociationOverride(RelationshipMapping overridableAssociation) {
-		return buildAssociationOverride(buildVirtualAssociationOverrideAnnotation(overridableAssociation));
+	protected JavaAssociationOverride buildVirtualAssociationOverride(String name) {
+		return buildAssociationOverride(buildVirtualAssociationOverrideAnnotation(name));
 	}
 	
-	protected AssociationOverrideAnnotation buildVirtualAssociationOverrideAnnotation(RelationshipMapping overridableAssociation) {
-		JoiningStrategy joiningStrategy = overridableAssociation.getRelationshipReference().getPredominantJoiningStrategy();
-		return getJpaFactory().buildJavaVirtualAssociationOverrideAnnotation(this.javaResourcePersistentMember, overridableAssociation.getName(), joiningStrategy);
+	protected AssociationOverrideAnnotation buildVirtualAssociationOverrideAnnotation(String name) {
+		RelationshipReference relationshipReference = this.resolveAssociationOverrideRelationshipReference(name);
+		return getJpaFactory().buildJavaVirtualAssociationOverrideAnnotation(this.javaResourcePersistentMember, name, relationshipReference.getPredominantJoiningStrategy());
+	}
+	
+	private RelationshipReference resolveAssociationOverrideRelationshipReference(String associationOverrideName) {
+		return getOwner().resolveRelationshipReference(associationOverrideName);
 	}
 
 	protected void updateVirtualAssociationOverrides() {
-		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
-			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
+		for (String name : CollectionTools.iterable(allOverridableAssociationNames())) {
+			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(name);
 			if (associationOverride == null) {
-				addVirtualAssociationOverride(buildVirtualAssociationOverride(overridableAssociation));
+				addVirtualAssociationOverride(buildVirtualAssociationOverride(name));
 			}
 			else if (associationOverride.isVirtual()) {
-				associationOverride.update(buildVirtualAssociationOverrideAnnotation(overridableAssociation));
+				associationOverride.update(buildVirtualAssociationOverrideAnnotation(name));
 			}
 		}
 		
-		Collection<String> associationNames = CollectionTools.collection(getOwner().allOverridableAssociationNames());
+		Collection<String> associationNames = CollectionTools.collection(allOverridableAssociationNames());
 	
 		//remove any default mappings that are not included in the associationNames collection
 		for (JavaAssociationOverride associationOverride : CollectionTools.iterable(virtualAssociationOverrides())) {

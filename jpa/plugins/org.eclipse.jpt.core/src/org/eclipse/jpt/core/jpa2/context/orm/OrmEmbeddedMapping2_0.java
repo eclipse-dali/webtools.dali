@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.jpa2.context.EmbeddedMapping2_0;
  * @since 3.0
  */
 public interface OrmEmbeddedMapping2_0
-	extends OrmEmbeddedMapping, EmbeddedMapping2_0, OrmAssociationOverrideContainer.Owner
+	extends OrmEmbeddedMapping, EmbeddedMapping2_0
 {
 	OrmAssociationOverrideContainer getAssociationOverrideContainer();
 }

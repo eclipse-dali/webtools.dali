@@ -82,7 +82,9 @@ public interface AttributeMapping
 	 */
 	Iterator<String> allMappingNames();
 	
-	Iterator<String> allOverrideableMappingNames();
+	Iterator<String> allOverrideableAttributeMappingNames();
+	
+	Iterator<String> allOverrideableAssociationMappingNames();
 
 	/**
 	 * Returns this attribute mapping if its name matches the name.
@@ -97,5 +99,7 @@ public interface AttributeMapping
 	 * attribute name. In 2.0 this name could use dot-notation for nested mappings.
 	 */
 	Column resolveOverridenColumn(String attributeName, boolean isMetadataComplete);
+
+	RelationshipReference getOverridableRelationshipReference(String attributeName);
 
 }

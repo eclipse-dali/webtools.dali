@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -84,8 +83,5 @@ public interface OrmTypeMapping
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeMapping> attributeMappings();
-	
-	@SuppressWarnings("unchecked")
-	Iterator<OrmRelationshipMapping> overridableAssociations();
 
 }

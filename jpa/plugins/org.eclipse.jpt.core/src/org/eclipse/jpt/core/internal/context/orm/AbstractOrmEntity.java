@@ -17,6 +17,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
+import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -28,7 +29,6 @@ import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -42,7 +42,6 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
@@ -51,7 +50,6 @@ import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
@@ -239,7 +237,7 @@ public abstract class AbstractOrmEntity
 	}
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, this, this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner(), this.resourceTypeMapping);
 	}
 	
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
@@ -358,14 +356,18 @@ public abstract class AbstractOrmEntity
 		return null;
 	}
 	
-	//****************** OrmAssociationOverrideContainer.Owner implementation *******************
-	
-	public RelationshipReference getOverridableRelationshipReference(RelationshipMapping overridableAssociation) {
-		JavaAssociationOverride javaAssociationOverride = getJavaAssociationOverrideNamed(overridableAssociation.getName());
-		if (javaAssociationOverride == null || javaAssociationOverride.isVirtual()) {
-			return overridableAssociation.getRelationshipReference();
+	@Override
+	public RelationshipReference getOverridableRelationshipReference(String name) {
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			int dotIndex = name.indexOf('.');
+			if (dotIndex != -1) {
+				AssociationOverride override = getAssociationOverrideContainer().getAssociationOverrideNamed(name.substring(dotIndex + 1));
+				if (override != null && !override.isVirtual()) {
+					return override.getRelationshipReference();
+				}
+			}
 		}
-		return javaAssociationOverride.getRelationshipReference();
+		return super.getOverridableRelationshipReference(name);
 	}
 	
 	protected JavaAssociationOverride getJavaAssociationOverrideNamed(String attributeName) {
@@ -1140,28 +1142,13 @@ public abstract class AbstractOrmEntity
 		}
 		return super.resolveOverridenColumn(attributeName, isMetadataComplete);
 	}
-
+	
 	@Override
-	public Iterator<OrmRelationshipMapping> overridableAssociations() {
+	public Iterator<String> overridableAssociationNames() {
 		if (!isTablePerClass()) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<OrmAttributeMapping, OrmRelationshipMapping>(this.attributeMappings()) {
-			@Override
-			protected boolean accept(OrmAttributeMapping o) {
-				return o.isOverridableAssociationMapping();
-			}
-		};
-	}
-	
-	@Override
-	public Iterator<RelationshipMapping> allOverridableAssociations() {
-		return new CompositeIterator<RelationshipMapping>(new TransformationIterator<TypeMapping, Iterator<RelationshipMapping>>(this.ancestors()) {
-			@Override
-			protected Iterator<RelationshipMapping> transform(TypeMapping mapping) {
-				return mapping.overridableAssociations();
-			}
-		});
+		return super.overridableAssociationNames();
 	}
 	
 	public AttributeMapping resolveAttributeMapping(String name) {
@@ -1794,6 +1781,38 @@ public abstract class AbstractOrmEntity
 		return false;
 	}
 
+	
+	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractOrmEntity.this.getOverridableTypeMapping();
+		}
+		
+		public OrmTypeMapping getTypeMapping() {
+			return AbstractOrmEntity.this.getTypeMapping();
+		}
+
+		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
+			if (!isMetadataComplete()) {
+				JavaPersistentType javaPersistentType = getPersistentType().getJavaPersistentType();
+				if (javaPersistentType != null) {
+					RelationshipReference relationshipReference = javaPersistentType.getMapping().getOverridableRelationshipReference(associationOverrideName);
+					if (relationshipReference != null) {
+						return relationshipReference;
+					}
+				}
+			}
+			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
+			if (overridableTypeMapping != null) {
+				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+					RelationshipReference relationshipReference = typeMapping.getOverridableRelationshipReference(associationOverrideName);
+					if (relationshipReference != null) {
+						return relationshipReference;
+					}
+				}
+			}
+			return null;
+		}
+	}
 	
 	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -78,10 +77,6 @@ public interface AssociationOverrideContainer
 	
 	interface Owner
 	{
-		Iterator<RelationshipMapping> allOverridableAssociations();
-		
-		Iterator<String> allOverridableAssociationNames();
-		
 		/**
 		 * Return the type mapping of the owning persistent type.
 		 */
@@ -92,6 +87,8 @@ public interface AssociationOverrideContainer
 		 * This will be the persistent type of the mapped superclass or embeddable.
 		 */
 		TypeMapping getOverridableTypeMapping();
+		
+		RelationshipReference resolveRelationshipReference(String associationOverrideName);
 	}
 
 

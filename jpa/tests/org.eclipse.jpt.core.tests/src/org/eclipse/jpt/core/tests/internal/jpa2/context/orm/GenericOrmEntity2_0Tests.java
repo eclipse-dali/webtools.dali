@@ -21,13 +21,11 @@ import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -360,16 +358,20 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<RelationshipMapping> overridableAssociations = ormEntity.allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
-		assertEquals("address3", overridableAssociations.next().getName());
-		assertEquals("address4", overridableAssociations.next().getName());
+		Iterator<String> overridableAssociations = ormEntity.allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
+		assertEquals("address3", overridableAssociations.next());
+		assertEquals("address4", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 		
 		
 		OrmEntity abstractEntity = (OrmEntity) ormEntity.getParentEntity();
-		overridableAssociations = abstractEntity.allOverridableAssociations();
+		overridableAssociations = abstractEntity.allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
+		assertEquals("address3", overridableAssociations.next());
+		assertEquals("address4", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 	}
 //TODO
@@ -825,15 +827,6 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		assertTrue(virtualAttributeOverride.isVirtual());
 		assertFalse(virtualAttributeOverrides.hasNext());
 	}
-	
-	public void testOverridableAssociations() throws Exception {
-		createTestEntity();
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "test.AnnotationTestTypeChild");
-		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-
-		Iterator<OrmRelationshipMapping> overridableAssociations = ormEntity.overridableAssociations();
-		assertFalse(overridableAssociations.hasNext());
-	}
 
 	public void testOverridableAssociationNames() throws Exception {
 		createTestEntity();
@@ -867,26 +860,11 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<RelationshipMapping> overridableAssociations = ormEntity.allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
-		assertEquals("address3", overridableAssociations.next().getName());
-		assertEquals("address4", overridableAssociations.next().getName());
-		assertFalse(overridableAssociations.hasNext());
-	}
-	
-	public void testAllOverridableAssociationsMappedSuperclassInOrmXml() throws Exception {
-		createTestMappedSuperclass();
-		createTestSubType();
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "test.AnnotationTestTypeChild");
-		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		
-		Iterator<RelationshipMapping> overridableAssociations = ormEntity.allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
-		assertEquals("address3", overridableAssociations.next().getName());
-		assertEquals("address4", overridableAssociations.next().getName());
+		Iterator<String> overridableAssociations = ormEntity.allOverridableAssociationNames();
+		assertEquals("address", overridableAssociations.next());
+		assertEquals("address2", overridableAssociations.next());
+		assertEquals("address3", overridableAssociations.next());
+		assertEquals("address4", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
 	}
 

@@ -12,16 +12,13 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMapping
 	implements JavaMappedSuperclass
@@ -102,16 +99,6 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 	
 	protected void removeResourceIdClass() {
 		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-	}
-
-	@Override
-	public Iterator<JavaRelationshipMapping> overridableAssociations() {
-		return new FilteringIterator<JavaAttributeMapping, JavaRelationshipMapping>(this.attributeMappings()) {
-			@Override
-			protected boolean accept(JavaAttributeMapping o) {
-				return o.isOverridableAssociationMapping();
-			}
-		};
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {

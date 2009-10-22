@@ -32,6 +32,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -101,10 +102,10 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		OrmAssociationOverride virtualAssociationOverride = null;
 		if (associationOverrideName != null) {
-			for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
-				if (overridableAssociation.getName().equals(associationOverrideName)) {
+			for (String name : CollectionTools.iterable(allOverridableAssociationNames())) {
+				if (name.equals(associationOverrideName)) {
 					//store the virtualAssociationOverride so we can fire change notification later
-					virtualAssociationOverride = buildVirtualAssociationOverride(overridableAssociation);
+					virtualAssociationOverride = buildVirtualAssociationOverride(name);
 					this.virtualAssociationOverrides.add(virtualAssociationOverride);
 				}
 			}
@@ -197,28 +198,41 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 		return getOverrideNamed(name, overrides) != null;
 	}
 	
+
+	protected Iterator<String> allOverridableAssociationNames() {
+		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
+		if (overridableTypeMapping != null) {
+			return overridableTypeMapping.allOverridableAssociationNames();
+		}
+		return EmptyIterator.instance();
+	}
 	
 	protected void initializeVirtualAssociationOverrides() {
-		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(getOwner().allOverridableAssociations())) {
-			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
+		for (String name : CollectionTools.iterable(allOverridableAssociationNames())) {
+			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(name);
 			if (ormAssociationOverride == null) {
-				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(overridableAssociation));
+				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(name));
 			}
 		}
 	}
 
-	protected OrmAssociationOverride buildVirtualAssociationOverride(RelationshipMapping overridableAssociation) {
-		return buildAssociationOverride(buildVirtualXmlAssociationOverride(overridableAssociation));
+	protected OrmAssociationOverride buildVirtualAssociationOverride(String name) {
+		return buildAssociationOverride(buildVirtualXmlAssociationOverride(name));
 	}
 	
-	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(RelationshipMapping overridableAssociation) {
-		RelationshipReference relationshipReference = getOwner().getOverridableRelationshipReference(overridableAssociation);
-		return buildVirtualXmlAssociationOverride(overridableAssociation.getName(), relationshipReference.getPredominantJoiningStrategy());
+	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name) {
+		RelationshipReference relationshipReference = this.resolveAssociationOverrideRelationshipReference(name);
+		return buildVirtualXmlAssociationOverride(name, relationshipReference.getPredominantJoiningStrategy());
 	}
 	
 	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, JoiningStrategy joiningStrategy) {
 		return getXmlContextNodeFactory().buildVirtualXmlAssociationOverride(name, getOwner().getTypeMapping(), joiningStrategy);
 	}
+	
+	private RelationshipReference resolveAssociationOverrideRelationshipReference(String associationOverrideName) {
+		return getOwner().resolveRelationshipReference(associationOverrideName);
+	}
+
 
 	protected void initializeSpecifiedAssociationOverrides() {
 		for (XmlAssociationOverride associationOverride : this.resourceAssociationOverrideContainer.getAssociationOverrides()) {
@@ -251,25 +265,25 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 	}
 	
 	protected void updateVirtualAssociationOverrides() {
-		Iterator<RelationshipMapping> overridableAssociations = getOwner().allOverridableAssociations();
+		Iterator<String> overridableAssociations = allOverridableAssociationNames();
 		ListIterator<OrmAssociationOverride> virtualAssociationOverridesCopy = virtualAssociationOverrides();
 		
-		for (RelationshipMapping overridableAssociation : CollectionTools.iterable(overridableAssociations)) {
-			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(overridableAssociation.getName());
+		for (String name : CollectionTools.iterable(overridableAssociations)) {
+			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(name);
 			if (ormAssociationOverride != null && !ormAssociationOverride.isVirtual()) {
 				continue;
 			}
 			if (ormAssociationOverride != null) {
 				if (virtualAssociationOverridesCopy.hasNext()) {
 					OrmAssociationOverride virtualAssociationOverride = virtualAssociationOverridesCopy.next();
-					virtualAssociationOverride.update(buildVirtualXmlAssociationOverride(overridableAssociation));
+					virtualAssociationOverride.update(buildVirtualXmlAssociationOverride(name));
 				}
 				else {
-					addVirtualAssociationOverride(buildVirtualAssociationOverride(overridableAssociation));
+					addVirtualAssociationOverride(buildVirtualAssociationOverride(name));
 				}
 			}
 			else {
-				addVirtualAssociationOverride(buildVirtualAssociationOverride(overridableAssociation));
+				addVirtualAssociationOverride(buildVirtualAssociationOverride(name));
 			}
 		}
 		for (OrmAssociationOverride virtualAssociationOverride : CollectionTools.iterable(virtualAssociationOverridesCopy)) {
