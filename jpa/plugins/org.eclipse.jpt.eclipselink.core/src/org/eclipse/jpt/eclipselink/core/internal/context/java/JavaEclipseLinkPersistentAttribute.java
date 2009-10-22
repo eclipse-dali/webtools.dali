@@ -12,13 +12,17 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
  * EclipseLink Java persistent attribute
  */
 public class JavaEclipseLinkPersistentAttribute
 	extends AbstractJavaPersistentAttribute
+	implements JavaPersistentAttribute2_0
 {
 	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent, jrpa);
@@ -66,4 +70,20 @@ public class JavaEclipseLinkPersistentAttribute
 				interfaceName.equals("org.eclipse.persistence.indirection.ValueHolderInterface"); //$NON-NLS-1$
 	}
 
+	// ********** metamodel **********
+
+	public String getMetamodelContainerFieldTypeName() {
+		return this.getJpaContainer(this.resourcePersistentAttribute.getTypeName()).getMetamodelContainerFieldTypeName();
+	}
+
+	public String getMetamodelTypeName() {
+		String typeName = this.resourcePersistentAttribute.getTypeName();
+		if (typeName == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		if (ClassTools.classNamedIsPrimitive(typeName)) {
+			return ClassTools.wrapperClassName(typeName);  // ???
+		}
+		return typeName;
+	}
 }
