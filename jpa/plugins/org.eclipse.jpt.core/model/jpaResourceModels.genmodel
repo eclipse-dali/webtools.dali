@@ -384,9 +384,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/collectionTable"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlEmbedded_2_0"/>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlEntity_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlEntity_2_0/cacheable"/>
-      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlEntity_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlEntityListener_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlEntityListener_2_0/description"/>
       </genClasses>
@@ -455,6 +453,9 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlUniqueConstraint_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlUniqueConstraint_2_0/name"/>
+      </genClasses>
+      <genClasses ecoreClass="orm.ecore#//v2_0/XmlCacheable2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlCacheable2_0/cacheable"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

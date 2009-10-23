@@ -49,6 +49,10 @@ import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.Entity2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
@@ -79,7 +83,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaEntity
 	extends AbstractJavaTypeMapping
-	implements JavaEntity
+	implements JavaEntity, Entity2_0
 {
 	protected String specifiedName;
 
@@ -127,6 +131,8 @@ public abstract class AbstractJavaEntity
 	
 	protected Entity rootEntity;
 	
+	protected final JavaCacheable2_0 cacheable;
+	
 	protected AbstractJavaEntity(JavaPersistentType parent) {
 		super(parent);
 		this.table = this.getJpaFactory().buildJavaTable(this);
@@ -137,6 +143,7 @@ public abstract class AbstractJavaEntity
 		this.associationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
 		this.queryContainer = this.getJpaFactory().buildJavaQueryContainer(this);
 		this.generatorContainer = this.getJpaFactory().buildJavaGeneratorContainer(this);
+		this.cacheable = ((JpaFactory2_0) this.getJpaFactory()).buildJavaCacheable(this);
 	}
 	
 	protected JavaBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
@@ -220,6 +227,7 @@ public abstract class AbstractJavaEntity
 		this.attributeOverrideContainer.initialize(resourcePersistentType);
 		this.associationOverrideContainer.initialize(resourcePersistentType);
 		this.initializeIdClass();
+		this.cacheable.initialize(resourcePersistentType);
 	}
 	
 	protected void initializeSecondaryTables() {
@@ -1074,7 +1082,13 @@ public abstract class AbstractJavaEntity
 		}
 		return null;
 	}
+	
+	//****************** Entity2_0 implementation *******************
 
+	public Cacheable2_0 getCacheable() {
+		return this.cacheable;
+	}
+	
 	@Override
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		super.update(resourcePersistentType);
@@ -1097,6 +1111,7 @@ public abstract class AbstractJavaEntity
 		this.attributeOverrideContainer.update(resourcePersistentType);
 		this.associationOverrideContainer.update(resourcePersistentType);
 		this.updateIdClass();
+		this.cacheable.update(resourcePersistentType);
 	}
 	
 	@Override

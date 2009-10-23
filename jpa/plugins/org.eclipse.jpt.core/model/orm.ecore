@@ -474,9 +474,8 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded_2_0" abstract="true" interface="true"
         eSuperTypes="#//XmlAssociationOverrideContainer"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_0" abstract="true" interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_0" abstract="true" interface="true"
+        eSuperTypes="#//v2_0/XmlCacheable2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlEntityListener_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -582,6 +581,9 @@
       <eLiterals name="PESSIMISTIC_READ"/>
       <eLiterals name="PESSIMISTIC_WRITE"/>
       <eLiterals name="PESSIMISTIC_FORCE_INCREMENT"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlCacheable2_0" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

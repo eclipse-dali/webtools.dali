@@ -22,7 +22,10 @@ public class JptUiDetailsMessages2_0 {
 	public static String DerivedIdPane_derivedIdCheckboxLabel;
 	public static String ElementCollectionMapping2_0_label;
 	public static String ElementCollectionMapping2_0_linkLabel;
-
+	
+	public static String Entity_cacheableLabel;
+	public static String Entity_cacheableWithDefaultLabel;
+	
 	private static final String BUNDLE_NAME = "jpt_ui_details2_0"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiDetailsMessages2_0.class;
 	static {

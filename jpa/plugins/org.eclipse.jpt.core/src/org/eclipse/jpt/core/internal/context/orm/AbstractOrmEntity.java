@@ -56,6 +56,9 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.Entity2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -82,7 +85,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmEntity
 	extends AbstractOrmTypeMapping<XmlEntity>
-	implements OrmEntity
+	implements OrmEntity, Entity2_0
 {
 	protected String specifiedName;
 
@@ -132,6 +135,8 @@ public abstract class AbstractOrmEntity
 	
 	protected Entity rootEntity;
 
+	protected final OrmCacheable2_0 cacheable;
+	
 	protected AbstractOrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
 		this.table = getXmlContextNodeFactory().buildOrmTable(this);
@@ -163,6 +168,7 @@ public abstract class AbstractOrmEntity
 		this.initializeSpecifiedPrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumns();
 		this.initializeIdClass(this.getResourceIdClass());
+		this.cacheable = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmCacheable(this, resourceMapping);
 	}
 	
 	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
@@ -1195,7 +1201,12 @@ public abstract class AbstractOrmEntity
 //	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
 //		return !this.getSpecifiedPrimaryKeyJoinColumns().isEmpty();
 //	}
+
+	//****************** Entity2_0 implementation *******************
 	
+	public OrmCacheable2_0 getCacheable() {
+		return this.cacheable;
+	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
 		this.specifiedInheritanceStrategy = this.getResourceInheritanceStrategy(inheritanceResource);
@@ -1282,6 +1293,7 @@ public abstract class AbstractOrmEntity
 		getAssociationOverrideContainer().update();
 		getQueryContainer().update();
 		this.updateIdClass(this.getResourceIdClass());
+		getCacheable().update();
 	}
 	
 	@Override

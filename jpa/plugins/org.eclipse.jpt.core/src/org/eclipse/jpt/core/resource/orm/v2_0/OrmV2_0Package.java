@@ -469,6 +469,34 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_EMBEDDED_20_FEATURE_COUNT = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0 <em>Xml Cacheable2 0</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable2_0()
+	 * @generated
+	 */
+	public static final int XML_CACHEABLE2_0 = 27;
+
+	/**
+	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHEABLE2_0__CACHEABLE = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Cacheable2 0</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHEABLE2_0_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEntity_2_0 <em>Xml Entity 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -485,7 +513,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_20__CACHEABLE = 0;
+	public static final int XML_ENTITY_20__CACHEABLE = XML_CACHEABLE2_0__CACHEABLE;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity 20</em>' class.
@@ -494,7 +522,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_20_FEATURE_COUNT = 1;
+	public static final int XML_ENTITY_20_FEATURE_COUNT = XML_CACHEABLE2_0_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEntityListener_2_0 <em>Xml Entity Listener 20</em>}' class.
@@ -691,25 +719,6 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_MAP_KEY_CLASS_20_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0 <em>Xml Mapped Superclass 20</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMappedSuperclass_2_0()
-	 * @generated
-	 */
-	public static final int XML_MAPPED_SUPERCLASS_20 = 14;
-
-	/**
-	 * The number of structural features of the '<em>Xml Mapped Superclass 20</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -717,7 +726,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapsId_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAPS_ID_20 = 15;
+	public static final int XML_MAPS_ID_20 = 14;
 
 	/**
 	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
@@ -745,7 +754,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlNamedQuery_2_0()
 	 * @generated
 	 */
-	public static final int XML_NAMED_QUERY_20 = 16;
+	public static final int XML_NAMED_QUERY_20 = 15;
 
 	/**
 	 * The feature id for the '<em><b>Lock Mode</b></em>' attribute.
@@ -773,7 +782,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToMany_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_20 = 17;
+	public static final int XML_ONE_TO_MANY_20 = 16;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -864,7 +873,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSingleRelationshipMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20 = 25;
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20 = 24;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -901,7 +910,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToOne_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_20 = 18;
+	public static final int XML_ONE_TO_ONE_20 = 17;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -947,7 +956,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderColumn_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN_20 = 19;
+	public static final int XML_ORDER_COLUMN_20 = 18;
 
 	/**
 	 * The feature id for the '<em><b>Nullable</b></em>' attribute.
@@ -993,7 +1002,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlPersistenceUnitDefaults_2_0()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_20 = 20;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_20 = 19;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1030,7 +1039,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlPersistenceUnitMetadata_2_0()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_METADATA_20 = 21;
+	public static final int XML_PERSISTENCE_UNIT_METADATA_20 = 20;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1058,7 +1067,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlQuery_2_0()
 	 * @generated
 	 */
-	public static final int XML_QUERY_20 = 22;
+	public static final int XML_QUERY_20 = 21;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1086,7 +1095,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlQueryHint_2_0()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT_20 = 23;
+	public static final int XML_QUERY_HINT_20 = 22;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1114,7 +1123,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSequenceGenerator_2_0()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR_20 = 24;
+	public static final int XML_SEQUENCE_GENERATOR_20 = 23;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -1151,7 +1160,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSqlResultSetMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 26;
+	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 25;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1179,7 +1188,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlUniqueConstraint_2_0()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT_20 = 27;
+	public static final int XML_UNIQUE_CONSTRAINT_20 = 26;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1312,13 +1321,6 @@ public class OrmV2_0Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlMappedSuperclass_2_0EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass xmlMapsId_2_0EClass = null;
 
 	/**
@@ -1404,6 +1406,13 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlUniqueConstraint_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCacheable2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1951,21 +1960,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEntity_2_0#getCacheable <em>Cacheable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Cacheable</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlEntity_2_0#getCacheable()
-	 * @see #getXmlEntity_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlEntity_2_0_Cacheable()
-	{
-		return (EAttribute)xmlEntity_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEntityListener_2_0 <em>Xml Entity Listener 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2197,20 +2191,6 @@ public class OrmV2_0Package extends EPackageImpl
 	public EAttribute getXmlMapKeyClass_2_0_ClassName()
 	{
 		return (EAttribute)xmlMapKeyClass_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0 <em>Xml Mapped Superclass 20</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Mapped Superclass 20</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0
-	 * @generated
-	 */
-	public EClass getXmlMappedSuperclass_2_0()
-	{
-		return xmlMappedSuperclass_2_0EClass;
 	}
 
 
@@ -2740,6 +2720,35 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0 <em>Xml Cacheable2 0</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Cacheable2 0</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0
+	 * @generated
+	 */
+	public EClass getXmlCacheable2_0()
+	{
+		return xmlCacheable2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0#getCacheable <em>Cacheable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Cacheable</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0#getCacheable()
+	 * @see #getXmlCacheable2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlCacheable2_0_Cacheable()
+	{
+		return (EAttribute)xmlCacheable2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0 <em>Lock Mode Type 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2824,7 +2833,6 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlEmbedded_2_0EClass = createEClass(XML_EMBEDDED_20);
 
 		xmlEntity_2_0EClass = createEClass(XML_ENTITY_20);
-		createEAttribute(xmlEntity_2_0EClass, XML_ENTITY_20__CACHEABLE);
 
 		xmlEntityListener_2_0EClass = createEClass(XML_ENTITY_LISTENER_20);
 		createEAttribute(xmlEntityListener_2_0EClass, XML_ENTITY_LISTENER_20__DESCRIPTION);
@@ -2846,8 +2854,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 		xmlMapKeyClass_2_0EClass = createEClass(XML_MAP_KEY_CLASS_20);
 		createEAttribute(xmlMapKeyClass_2_0EClass, XML_MAP_KEY_CLASS_20__CLASS_NAME);
-
-		xmlMappedSuperclass_2_0EClass = createEClass(XML_MAPPED_SUPERCLASS_20);
 
 		xmlMapsId_2_0EClass = createEClass(XML_MAPS_ID_20);
 		createEAttribute(xmlMapsId_2_0EClass, XML_MAPS_ID_20__MAPS_ID);
@@ -2898,6 +2904,9 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlUniqueConstraint_2_0EClass = createEClass(XML_UNIQUE_CONSTRAINT_20);
 		createEAttribute(xmlUniqueConstraint_2_0EClass, XML_UNIQUE_CONSTRAINT_20__NAME);
 
+		xmlCacheable2_0EClass = createEClass(XML_CACHEABLE2_0);
+		createEAttribute(xmlCacheable2_0EClass, XML_CACHEABLE2_0__CACHEABLE);
+
 		// Create enums
 		lockModeType_2_0EEnum = createEEnum(LOCK_MODE_TYPE_20);
 	}
@@ -2938,6 +2947,7 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlAttributeMapping_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
+		xmlEntity_2_0EClass.getESuperTypes().add(this.getXmlCacheable2_0());
 		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlSingleRelationshipMapping_2_0());
 		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlDerivedId_2_0());
 		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlMapsId_2_0());
@@ -2982,7 +2992,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEClass(xmlEmbedded_2_0EClass, XmlEmbedded_2_0.class, "XmlEmbedded_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlEntity_2_0EClass, XmlEntity_2_0.class, "XmlEntity_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlEntity_2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlEntity_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityListener_2_0EClass, XmlEntityListener_2_0.class, "XmlEntityListener_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlEntityListener_2_0_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlEntityListener_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3004,8 +3013,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlMapKeyClass_2_0EClass, XmlMapKeyClass_2_0.class, "XmlMapKeyClass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapKeyClass_2_0_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlMapKeyClass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlMappedSuperclass_2_0EClass, XmlMappedSuperclass_2_0.class, "XmlMappedSuperclass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlMapsId_2_0EClass, XmlMapsId_2_0.class, "XmlMapsId_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapsId_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlMapsId_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3055,6 +3062,9 @@ public class OrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlUniqueConstraint_2_0EClass, XmlUniqueConstraint_2_0.class, "XmlUniqueConstraint_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlUniqueConstraint_2_0_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlUniqueConstraint_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlCacheable2_0EClass, XmlCacheable2_0.class, "XmlCacheable2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCacheable2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlCacheable2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(lockModeType_2_0EEnum, LockModeType_2_0.class, "LockModeType_2_0");
@@ -3348,14 +3358,6 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EClass XML_ENTITY_20 = eINSTANCE.getXmlEntity_2_0();
 
 		/**
-		 * The meta object literal for the '<em><b>Cacheable</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ENTITY_20__CACHEABLE = eINSTANCE.getXmlEntity_2_0_Cacheable();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEntityListener_2_0 <em>Xml Entity Listener 20</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3492,16 +3494,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_MAP_KEY_CLASS_20__CLASS_NAME = eINSTANCE.getXmlMapKeyClass_2_0_ClassName();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0 <em>Xml Mapped Superclass 20</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMappedSuperclass_2_0()
-		 * @generated
-		 */
-		public static final EClass XML_MAPPED_SUPERCLASS_20 = eINSTANCE.getXmlMappedSuperclass_2_0();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0 <em>Xml Maps Id 20</em>}' class.
@@ -3816,6 +3808,24 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_UNIQUE_CONSTRAINT_20__NAME = eINSTANCE.getXmlUniqueConstraint_2_0_Name();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0 <em>Xml Cacheable2 0</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable2_0()
+		 * @generated
+		 */
+		public static final EClass XML_CACHEABLE2_0 = eINSTANCE.getXmlCacheable2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Cacheable</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHEABLE2_0__CACHEABLE = eINSTANCE.getXmlCacheable2_0_Cacheable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0 <em>Lock Mode Type 20</em>}' enum.

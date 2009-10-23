@@ -9816,7 +9816,6 @@ public class OrmPackage extends EPackageImpl
 		xmlManyToOneEClass.getESuperTypes().add(this.getAbstractXmlSingleRelationshipMapping());
 		xmlMapKeyClassEClass.getESuperTypes().add(theOrmV2_0Package.getXmlMapKeyClass_2_0());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getAbstractXmlTypeMapping());
-		xmlMappedSuperclassEClass.getESuperTypes().add(theOrmV2_0Package.getXmlMappedSuperclass_2_0());
 		xmlNamedNativeQueryEClass.getESuperTypes().add(this.getXmlQuery());
 		xmlNamedQueryEClass.getESuperTypes().add(this.getXmlQuery());
 		xmlNamedQueryEClass.getESuperTypes().add(theOrmV2_0Package.getXmlNamedQuery_2_0());

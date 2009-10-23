@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -1401,5 +1402,50 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		assertEquals(255, specifiedAttributeOverride.getColumn().getLength());
 		assertEquals(0, specifiedAttributeOverride.getColumn().getPrecision());
 		assertEquals(0, specifiedAttributeOverride.getColumn().getScale());
+	}
+	
+	public void testSetSpecifiedCacheable() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		Entity2_0 entity = (Entity2_0) ormPersistentType.getMapping();
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, entityResource.getCacheable());
+		
+		entity.getCacheable().setSpecifiedCacheable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(Boolean.FALSE, entityResource.getCacheable());
+		
+		entity.getCacheable().setSpecifiedCacheable(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(Boolean.TRUE, entityResource.getCacheable());
+		
+		entity.getCacheable().setSpecifiedCacheable(null);
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, entityResource.getCacheable());
+	}
+	
+	public void testGetSpecifiedCacheable() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		Entity2_0 entity = (Entity2_0) ormPersistentType.getMapping();
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, entityResource.getCacheable());
+		
+		entityResource.setCacheable(Boolean.TRUE);
+		getOrmXmlResource().save(null);
+		assertEquals(Boolean.TRUE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(Boolean.TRUE, entityResource.getCacheable());
+
+		entityResource.setCacheable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(Boolean.FALSE, entityResource.getCacheable());
+		
+		entityResource.setCacheable(null);
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, entityResource.getCacheable());
 	}
 }

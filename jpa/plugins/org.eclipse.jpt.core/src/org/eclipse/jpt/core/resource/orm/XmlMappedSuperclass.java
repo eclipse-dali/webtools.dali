@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMappedSuperclass_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -46,7 +45,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlMappedSuperclass_2_0
+public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 {
 
 	/**

@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
@@ -380,7 +381,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20__CACHEABLE = 0;
+	public static final int XML_MAPPED_SUPERCLASS_20__CACHEABLE = OrmV2_0Package.XML_CACHEABLE2_0__CACHEABLE;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass 20</em>' class.
@@ -389,7 +390,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = 1;
+	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = OrmV2_0Package.XML_CACHEABLE2_0_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.
@@ -602,7 +603,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		// Initialize simple dependencies
 		OrmPackage.eINSTANCE.eClass();
 		CommonPackage.eINSTANCE.eClass();
-		XMLTypePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) instanceof EclipseLinkOrmPackage ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) : EclipseLinkOrmPackage.eINSTANCE);
@@ -710,21 +710,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheable <em>Cacheable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Cacheable</em>'.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheable()
-	 * @see #getXmlMappedSuperclass_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlMappedSuperclass_2_0_Cacheable()
-	{
-		return (EAttribute)xmlMappedSuperclass_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -818,7 +803,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlManyToMany_2_0EClass = createEClass(XML_MANY_TO_MANY_20);
 
 		xmlMappedSuperclass_2_0EClass = createEClass(XML_MAPPED_SUPERCLASS_20);
-		createEAttribute(xmlMappedSuperclass_2_0EClass, XML_MAPPED_SUPERCLASS_20__CACHEABLE);
 
 		xmlOneToMany_2_0EClass = createEClass(XML_ONE_TO_MANY_20);
 
@@ -856,7 +840,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		// Obtain other dependent packages
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
-		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
+		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI);
 
 		// Create type parameters
 
@@ -869,6 +853,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterHolder());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
+		xmlMappedSuperclass_2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlCacheable2_0());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterHolder());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 
@@ -882,7 +867,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		initEClass(xmlManyToMany_2_0EClass, XmlManyToMany_2_0.class, "XmlManyToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlMappedSuperclass_2_0EClass, XmlMappedSuperclass_2_0.class, "XmlMappedSuperclass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlMappedSuperclass_2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlMappedSuperclass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_0EClass, XmlOneToMany_2_0.class, "XmlOneToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -965,14 +949,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS_20 = eINSTANCE.getXmlMappedSuperclass_2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Cacheable</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_MAPPED_SUPERCLASS_20__CACHEABLE = eINSTANCE.getXmlMappedSuperclass_2_0_Cacheable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.

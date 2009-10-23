@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 
@@ -39,4 +40,6 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 	
 	XmlElementCollection buildVirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping);
+	
+	OrmCacheable2_0 buildOrmCacheable(OrmTypeMapping parent, XmlCacheable2_0 resource);
 }

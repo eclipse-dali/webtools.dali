@@ -122,12 +122,14 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverri
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
 import org.eclipse.jpt.core.internal.jpa2.NullMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapsId2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
@@ -373,5 +375,9 @@ public abstract class AbstractJpaFactory
 	
 	public JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent) {
 		return new NullJavaMapsId2_0(parent);
+	}
+	
+	public JavaCacheable2_0 buildJavaCacheable(JavaTypeMapping parent) {
+		return new NullJavaCacheable2_0(parent);
 	}
 }

@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverr
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
@@ -55,6 +56,7 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 
@@ -109,6 +111,11 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 			OrmSingleRelationshipMapping2_0 parent, XmlMapsId_2_0 resource) {
 		
 		return new GenericOrmMapsId2_0(parent, resource);
+	}
+	
+	@Override
+	public OrmCacheable2_0 buildOrmCacheable(OrmTypeMapping parent, XmlCacheable2_0 resource) {
+		return new GenericOrmCacheable2_0(parent, resource);
 	}
 	
 	

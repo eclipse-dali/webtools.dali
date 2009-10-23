@@ -42,6 +42,7 @@ public interface JpaHelpContextIds {
 	public static final String ENTITY_ORM_XML = PREFIX + "orm_xml";
 	public static final String ENTITY_SCHEMA = PREFIX + "entity_schema";
 	public static final String ENTITY_TABLE = PREFIX + "entity_table";
+	public static final String ENTITY_CACHEABLE = PREFIX + "entity_cacheable";
 
 	//Persistent Attribute composites
 	public static final String MAPPING_CASCADE_TYPE = PREFIX + "mapping_cascadeType";

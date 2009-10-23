@@ -14,6 +14,8 @@ import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
@@ -51,4 +53,6 @@ public interface JpaFactory2_0
 	JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent);
 	
 	JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent);
+	
+	JavaCacheable2_0 buildJavaCacheable(JavaTypeMapping parent);
 }

@@ -11,6 +11,8 @@ package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -19,6 +21,7 @@ import org.eclipse.jpt.ui.internal.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.details.TableComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaSecondaryTablesComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Cacheable2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -57,6 +60,7 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
 		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new Cacheable2_0Pane(this, buildCacheableHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
@@ -66,6 +70,15 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();
+			}
+		};
+	}
+	
+	protected PropertyValueModel<Cacheable2_0> buildCacheableHolder() {
+		return new PropertyAspectAdapter<JavaEntity, Cacheable2_0>(getSubjectHolder()) {
+			@Override
+			protected Cacheable2_0 buildValue_() {
+				return ((Entity2_0) this.subject).getCacheable();
 			}
 		};
 	}

@@ -19,13 +19,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlMappedSuperclass_1_1;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -968,7 +969,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cacheable</em>' attribute.
 	 * @see #setCacheable(Boolean)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_0_Cacheable()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheable2_0_Cacheable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -1368,11 +1369,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlCacheable2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE: return OrmV2_0Package.XML_CACHEABLE2_0__CACHEABLE;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMappedSuperclass_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE: return EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHEABLE;
 				default: return -1;
 			}
 		}
@@ -1447,11 +1455,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlCacheable2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_CACHEABLE2_0__CACHEABLE: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMappedSuperclass_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHEABLE: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE;
 				default: return -1;
 			}
 		}
@@ -1484,6 +1499,11 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	public TextRange getReadOnlyTextRange() {
 		return getAttributeTextRange(EclipseLink.READ_ONLY);
 	}
+	
+	public TextRange getCacheableTextRange() {
+		return getAttributeTextRange(JPA2_0.CACHEABLE);
+	}
+	
 	
 	
 	// ********** translators **********
@@ -1535,7 +1555,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 	
 	protected static Translator buildCacheableTranslator() {
-		return new Translator(JPA2_0.CACHEABLE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMappedSuperclass_2_0_Cacheable(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.CACHEABLE, OrmV2_0Package.eINSTANCE.getXmlCacheable2_0_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildReadOnlyTranslator() {

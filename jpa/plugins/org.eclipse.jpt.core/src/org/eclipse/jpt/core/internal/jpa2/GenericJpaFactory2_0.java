@@ -20,9 +20,11 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
@@ -34,6 +36,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverrid
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
@@ -121,5 +124,10 @@ public class GenericJpaFactory2_0
 	@Override
 	public JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent) {
 		return new GenericJavaMapsId2_0(parent);
+	}
+	
+	@Override
+	public JavaCacheable2_0 buildJavaCacheable(JavaTypeMapping parent) {
+		return new GenericJavaCacheable2_0(parent);
 	}
 }

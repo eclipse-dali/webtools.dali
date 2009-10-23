@@ -28,6 +28,9 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.jpa2.context.Entity2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.Cacheable2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
@@ -1431,4 +1434,85 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(0, specifiedAttributeOverride.getColumn().getPrecision());
 		assertEquals(0, specifiedAttributeOverride.getColumn().getScale());
 	}
+	
+	public void testSetSpecifiedCacheable() throws Exception {
+		ICompilationUnit cu = createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		Entity2_0 entity = (Entity2_0) getJavaEntity();
+		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA2_0.CACHEABLE);
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, cacheableAnnotation);
+		
+		entity.getCacheable().setSpecifiedCacheable(Boolean.FALSE);
+		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA2_0.CACHEABLE);		
+		assertEquals(Boolean.FALSE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(Boolean.FALSE, cacheableAnnotation.getValue());
+		assertSourceContains("@Cacheable(false)", cu);
+		
+		entity.getCacheable().setSpecifiedCacheable(Boolean.TRUE);
+		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA2_0.CACHEABLE);		
+		assertEquals(Boolean.TRUE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, cacheableAnnotation.getValue());
+		assertSourceContains("@Cacheable", cu);
+		
+		entity.getCacheable().setSpecifiedCacheable(null);
+		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA2_0.CACHEABLE);		
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, cacheableAnnotation);
+		assertSourceDoesNotContain("@Cacheable", cu);
+	}
+	
+	public void testGetSpecifiedCacheable() throws Exception {
+		ICompilationUnit cu = createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		Entity2_0 entity = (Entity2_0) getJavaEntity();
+		Cacheable2_0Annotation cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA2_0.CACHEABLE);
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, cacheableAnnotation);
+		
+		getJavaPersistentType().getResourcePersistentType().addAnnotation(JPA2_0.CACHEABLE);
+		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA2_0.CACHEABLE);
+		assertEquals(Boolean.TRUE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, cacheableAnnotation.getValue());
+		assertSourceContains("@Cacheable", cu);
+
+		cacheableAnnotation.setValue(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(Boolean.FALSE, cacheableAnnotation.getValue());
+		assertSourceContains("@Cacheable(false)", cu);
+		
+		cacheableAnnotation.setValue(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(Boolean.TRUE, cacheableAnnotation.getValue());
+		assertSourceContains("@Cacheable(true)", cu);
+		
+		cacheableAnnotation.setValue(null);
+		assertEquals(Boolean.TRUE, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, cacheableAnnotation.getValue());
+		assertSourceContains("@Cacheable", cu);
+
+		getJavaPersistentType().getResourcePersistentType().removeAnnotation(JPA2_0.CACHEABLE);
+		cacheableAnnotation = (Cacheable2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA2_0.CACHEABLE);		
+		assertEquals(null, entity.getCacheable().getSpecifiedCacheable());
+		assertEquals(null, cacheableAnnotation);
+		assertSourceDoesNotContain("@Cacheable", cu);
+	}
+//	
+//	public void testIsDefaultCacheable() throws Exception {
+//		createTestEntity();
+//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+//		
+//		Entity2_0 entity = (Entity2_0) getJavaEntity();
+//		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
+//		assertEquals(SharedCacheMode.UNSPECIFIED, persistenceUnit2_0.getSharedCacheMode());
+//		assertEquals(true, entity.getCacheable().isDefaultCacheable());
+//		
+//		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ALL);
+//		assertEquals(true, entity.getCacheable().isDefaultCacheable());
+//		
+//		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+//		assertEquals(false, entity.getCacheable().isDefaultCacheable());
+//	}
 }

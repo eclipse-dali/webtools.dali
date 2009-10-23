@@ -120,9 +120,11 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
@@ -166,6 +168,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -378,6 +381,9 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		throw new UnsupportedOperationException();
 	}
 	
+	public OrmCacheable2_0 buildOrmCacheable(OrmTypeMapping parent, XmlCacheable2_0 resource) {
+		return new NullOrmCacheable2_0(parent);
+	}
 	
 	// ********** ORM Virtual Resource Model **********
 
