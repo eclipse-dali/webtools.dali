@@ -503,7 +503,12 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static void setMetamodelSourceFolderName(IProject project, String metamodelSourceFolderName) {
 		IEclipsePreferences prefs = getProjectPreferences(project);
-		prefs.put(METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
+		if (metamodelSourceFolderName == null) {
+			prefs.remove(METAMODEL_SOURCE_FOLDER_NAME);
+		}
+		else {
+			prefs.put(METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
+		}
 		flush(prefs);
 	}
 
