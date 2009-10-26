@@ -79,7 +79,8 @@ public class PrimaryKeyJoinColumnStateObject extends BaseJoinColumnStateObject
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		return getOwner().getParentEntity().getPrimaryDbTable();
+		Entity parentEntity = getOwner().getParentEntity();
+		return (parentEntity == null) ? getOwner().getPrimaryDbTable() : parentEntity.getPrimaryDbTable();
 	}
 
 	/*

@@ -149,7 +149,7 @@ public interface Entity
 	/**
 	 * The first parent in the class hierarchy that is an entity. 
 	 * This is the parent in the entity (persistent) inheritance hierarchy
-	 * (vs class inheritance hierarchy)
+	 * (vs class inheritance hierarchy).  Return null if there is no parent entity.
 	 */
 	Entity getParentEntity();
 

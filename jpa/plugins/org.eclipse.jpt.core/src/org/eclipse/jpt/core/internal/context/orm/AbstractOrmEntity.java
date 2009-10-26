@@ -927,7 +927,7 @@ public abstract class AbstractOrmEntity
 				return (Entity) tm;
 			}
 		}
-		return this;
+		return null;
 	}
 
 	/**
@@ -1887,7 +1887,8 @@ public abstract class AbstractOrmEntity
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return AbstractOrmEntity.this.getParentEntity().getPrimaryKeyColumnName();
+			Entity parentEntity = AbstractOrmEntity.this.getParentEntity();
+			return (parentEntity == null) ? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 		
 		public TextRange getValidationTextRange() {

@@ -805,7 +805,7 @@ public abstract class AbstractJavaEntity
 				return (Entity) typeMapping;
 			}
 		}
-		return this;
+		return null;
 	}
 
 	/**
@@ -1631,7 +1631,8 @@ public abstract class AbstractJavaEntity
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return AbstractJavaEntity.this.getParentEntity().getPrimaryKeyColumnName();
+			Entity parentEntity = AbstractJavaEntity.this.getParentEntity();
+			return (parentEntity == null) ? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 	}
 	

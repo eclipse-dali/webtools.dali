@@ -375,8 +375,9 @@ public class GenericOrmSecondaryTable
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return getOrmEntity().getParentEntity().getPrimaryKeyColumnName();
-		}
+			Entity parentEntity = getOrmEntity().getParentEntity();
+			return (parentEntity == null) ? getOrmEntity().getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
+	}
 		
 		public TextRange getValidationTextRange() {
 			return null;
