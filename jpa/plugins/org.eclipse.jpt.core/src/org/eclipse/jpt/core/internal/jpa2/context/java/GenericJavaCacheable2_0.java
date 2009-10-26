@@ -12,7 +12,9 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -51,15 +53,8 @@ public class GenericJavaCacheable2_0
 		this.resourcePersistentType.removeAnnotation(getCacheableAnnotationName());
 	}
 
-	protected boolean calculateDefaultCacheable() {
-		return false;
-		//TODO
-//		JavaEclipseLinkPersistentAttribute javaAttribute = (JavaEclipseLinkPersistentAttribute) this.getAttributeMapping().getPersistentAttribute();
-//		if (javaAttribute.typeIsDateOrCalendar()) {
-//			Boolean persistenceUnitDefaultMutable = this.getPersistenceUnit().getOptions().getTemporalMutable();
-//			return persistenceUnitDefaultMutable == null ? false : persistenceUnitDefaultMutable.booleanValue();
-//		}
-//		return javaAttribute.typeIsSerializable();
+	protected boolean calculateDefaultCacheable() {		
+		return ((Entity2_0) getParent()).calculateDefaultCacheable();
 	}
 
 	public boolean isCacheable() {

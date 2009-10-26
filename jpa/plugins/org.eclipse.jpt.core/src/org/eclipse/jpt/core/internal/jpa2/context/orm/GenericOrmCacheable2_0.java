@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -31,7 +33,7 @@ public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode
 		this.defaultCacheable = this.calculateDefaultCacheable();
 		this.specifiedCacheable = this.getResourceCacheable();
 	}
-	
+
 	public boolean isCacheable() {
 		return (this.specifiedCacheable != null) ? this.specifiedCacheable.booleanValue() : this.defaultCacheable;
 	}
@@ -76,16 +78,7 @@ public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode
 	}
 	
 	protected boolean calculateDefaultCacheable() {
-//		JavaEclipseLinkPersistentAttribute javaAttribute = (JavaEclipseLinkPersistentAttribute) this.getAttributeMapping().getPersistentAttribute().getJavaPersistentAttribute();
-//		if (javaAttribute == null) {
-//			return false;
-//		}
-//		if (javaAttribute.typeIsDateOrCalendar()) {
-//			Boolean persistenceUnitDefaultCacheable = getPersistenceUnit().getOptions().getTemporalCacheable();
-//			return persistenceUnitDefaultCacheable == null ? false : persistenceUnitDefaultCacheable.booleanValue();
-//		}
-//		return javaAttribute.typeIsSerializable();
-		return false;
+		return ((Entity2_0) getParent()).calculateDefaultCacheable();
 	}
 	
 	

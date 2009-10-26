@@ -26,4 +26,6 @@ import org.eclipse.jpt.core.context.Entity;
 public interface Entity2_0 extends Entity
 {
 	Cacheable2_0 getCacheable();
+	
+	boolean calculateDefaultCacheable();
 }

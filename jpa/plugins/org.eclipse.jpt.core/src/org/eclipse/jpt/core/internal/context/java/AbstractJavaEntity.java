@@ -53,6 +53,7 @@ import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
@@ -1089,6 +1090,24 @@ public abstract class AbstractJavaEntity
 		return this.cacheable;
 	}
 	
+	public boolean calculateDefaultCacheable() {		
+		Entity2_0 parentEntity = (Entity2_0) getParentEntity();
+		if (parentEntity != null) {
+			return parentEntity.getCacheable().isCacheable();
+		}
+		
+		switch (((PersistenceUnit2_0) getPersistenceUnit()).getSharedCacheMode()) {
+			case NONE:
+			case UNSPECIFIED:
+			case ENABLE_SELECTIVE:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		super.update(resourcePersistentType);
@@ -1157,10 +1176,10 @@ public abstract class AbstractJavaEntity
 	
 	protected Entity calculateRootEntity() {
 		Entity root = this;
-		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
-			PersistentType persistentType = stream.next();
-			if (persistentType.getMapping() instanceof Entity) {
-				root = (Entity) persistentType.getMapping();
+		for (Iterator<TypeMapping> stream = inheritanceHierarchy(); stream.hasNext();) {
+			TypeMapping typeMapping = stream.next();
+			if (typeMapping instanceof Entity) {
+				root = (Entity) typeMapping;
 			}
 		}
 		return root;

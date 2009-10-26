@@ -59,6 +59,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -1208,6 +1209,31 @@ public abstract class AbstractOrmEntity
 		return this.cacheable;
 	}
 	
+	public boolean calculateDefaultCacheable() {
+		if (!isMetadataComplete()) {
+			Entity2_0 javaEntity = (Entity2_0) getJavaEntity();
+			if (javaEntity != null) {
+				return javaEntity.getCacheable().isCacheable();
+			}
+		}
+		
+		Entity2_0 parentEntity = (Entity2_0) getParentEntity();
+		if (parentEntity != null) {
+			return parentEntity.getCacheable().isCacheable();
+		}
+		
+		switch (((PersistenceUnit2_0) getPersistenceUnit()).getSharedCacheMode()) {
+			case NONE:
+			case UNSPECIFIED:
+			case ENABLE_SELECTIVE:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+				return true;
+		}
+		return false;
+	}
+	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
 		this.specifiedInheritanceStrategy = this.getResourceInheritanceStrategy(inheritanceResource);
 		//no need to initialize defaultInheritanceStrategy, need to get all the persistentTypes in the model first
@@ -1411,10 +1437,10 @@ public abstract class AbstractOrmEntity
 	
 	protected Entity calculateRootEntity() {
 		Entity root = this;
-		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
-			PersistentType persistentType = stream.next();
-			if (persistentType.getMapping() instanceof Entity) {
-				root = (Entity) persistentType.getMapping();
+		for (Iterator<TypeMapping> stream = inheritanceHierarchy(); stream.hasNext();) {
+			TypeMapping typeMapping = stream.next();
+			if (typeMapping instanceof Entity) {
+				root = (Entity) typeMapping;
 			}
 		}
 		return root;
