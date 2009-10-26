@@ -10,7 +10,9 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
+import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -19,15 +21,66 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.OneToManyJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-
-public class OrmOneToManyMapping2_0Composite extends AbstractOneToManyMappingComposite<OrmOneToManyMapping>
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | TargetEntityComposite                                                 | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OneToManyJoiningStrategyPane                                   | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | AccessTypeComposite                                                | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | FetchTypeComposite                                                    | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | CascadeComposite                                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OrphanRemoval2_0Composite                                       | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OrderingComposite                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see OneToManyMapping
+ * @see TargetEntityComposite
+ * @see OneToManyJoiningStrategyPane
+ * @see AccessTypeComposite
+ * @see FetchTypeComposite
+ * @see CascadeComposite
+ * @see OrphanRemoval2_0Composite
+ * @see OrderingComposite
+ */
+public class OrmOneToManyMapping2_0Composite<T extends OrmOneToManyMapping2_0>
+	extends AbstractOneToManyMappingComposite<T>
 {
 	public OrmOneToManyMapping2_0Composite(
-			PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<T> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
@@ -37,16 +90,17 @@ public class OrmOneToManyMapping2_0Composite extends AbstractOneToManyMappingCom
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new OneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
+		new OneToManyJoiningStrategyPane(this, this.buildJoiningHolder(), container);
+		new AccessTypeComposite(this, this.buildAccessHolderHolder(), this.addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
+		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
+		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
 		new OrderingComposite(this, container);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmOneToManyMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmOneToManyMapping, AccessHolder>(this.getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

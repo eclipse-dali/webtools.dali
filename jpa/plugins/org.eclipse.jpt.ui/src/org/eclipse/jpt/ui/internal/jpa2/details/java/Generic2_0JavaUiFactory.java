@@ -15,19 +15,14 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEmbeddable2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEmbeddedMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEntity2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaIdMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaManyToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaMappedSuperclass2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaOneToOneMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceXmlUiFactory;
 import org.eclipse.jpt.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -89,6 +84,14 @@ public class Generic2_0JavaUiFactory
 			Composite parent, 
 			WidgetFactory widgetFactory) {
 		return new JavaManyToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+
+	@Override
+	public JpaComposite createJavaOneToManyMappingComposite(
+			PropertyValueModel<JavaOneToManyMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new JavaOneToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

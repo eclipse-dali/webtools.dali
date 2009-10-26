@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 /**
  * javax.persistence.OneToOne
  */
-public final class NullOneToOneAnnotation
+public class NullOneToOneAnnotation
 	extends NullOwnableRelationshipMappingAnnotation
 	implements OneToOneAnnotation
 {

@@ -12,6 +12,13 @@ package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.OneToOneMapping;
 
+/**
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
 public interface OneToOneMapping2_0
-	extends OneToOneMapping, SingleRelationshipMapping2_0
+	extends OneToOneMapping, SingleRelationshipMapping2_0, OrphanRemovable2_0
 {}

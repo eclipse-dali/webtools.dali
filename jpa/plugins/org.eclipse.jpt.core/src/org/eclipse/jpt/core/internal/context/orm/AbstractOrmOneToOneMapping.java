@@ -57,4 +57,22 @@ public abstract class AbstractOrmOneToOneMapping<T extends XmlOneToOne>
 	public OrmOneToOneRelationshipReference getRelationshipReference() {
 		return (OrmOneToOneRelationshipReference) super.getRelationshipReference();
 	}
+	
+	// ********** JPA 2.0 behavior **********
+
+	public boolean isOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public Boolean getSpecifiedOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public void setSpecifiedOrphanRemoval(Boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public boolean isDefaultOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
 }

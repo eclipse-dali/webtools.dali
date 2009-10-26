@@ -26,6 +26,8 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -35,6 +37,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNodeFactor
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
@@ -117,6 +120,16 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	public OrmCacheable2_0 buildOrmCacheable(OrmTypeMapping parent, XmlCacheable2_0 resource) {
 		return new GenericOrmCacheable2_0(parent, resource);
 	}
+
+	@Override
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+		return new GenericOrmOneToManyMapping2_0(parent, resourceMapping);
+	}
+
+	@Override
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+		return new GenericOrmOneToOneMapping2_0(parent, resourceMapping);
+	}
 	
 	
 	// ********** ORM Virtual Resource Model **********
@@ -158,7 +171,7 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	
 	@Override
 	public XmlOneToMany buildVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
-		return new VirtualXmlOneToMany2_0(ormTypeMapping, javaOneToManyMapping);
+		return new VirtualXmlOneToMany2_0(ormTypeMapping, (JavaOneToManyMapping2_0) javaOneToManyMapping);
 	}
 	
 	@Override

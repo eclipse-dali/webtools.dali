@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -31,12 +31,12 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 		
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaOneToManyMapping javaAttributeMapping;
+	protected final JavaOneToManyMapping2_0 javaAttributeMapping;
 
 	protected final VirtualXmlOneToMany virtualXmlOneToMany;
 		
 	public VirtualXmlOneToMany2_0(
-			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping2_0 javaOneToManyMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToManyMapping;
@@ -85,6 +85,19 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	@Override
 	public void setCascade(CascadeType value) {
 		this.virtualXmlOneToMany.setCascade(value);
+	}
+
+	@Override
+	public boolean isOrphanRemoval() {
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.isDefaultOrphanRemoval();
+		}
+		return this.javaAttributeMapping.isOrphanRemoval();
+	}
+
+	@Override
+	public void setOrphanRemoval(boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	@Override

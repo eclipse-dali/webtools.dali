@@ -25,6 +25,8 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -39,6 +41,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmMapsId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlAssociationOverride2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
@@ -54,7 +57,6 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlContextNodeFactory;
@@ -67,12 +69,11 @@ import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipse
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlId1_1;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlManyToMany1_1;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlManyToOne1_1;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlOneToMany1_1;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlOneToOne1_1;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlTransformation1_1;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlTransient1_1;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlVariableOneToOne1_1;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlVersion1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkOneToManyMapping2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
@@ -128,6 +129,16 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 	}
 	
 	@Override
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlOneToMany resourceMapping) {
+		return new OrmEclipseLinkOneToManyMapping2_0(parent, (XmlOneToMany) resourceMapping);
+	}
+	
+	@Override
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlOneToOne resourceMapping) {
+		return new OrmEclipseLinkOneToOneMapping2_0(parent, (XmlOneToOne) resourceMapping);
+	}
+	
+	@Override
 	public OrmCacheable2_0 buildOrmCacheable(OrmTypeMapping parent, XmlCacheable2_0 resource) {
 		return new GenericOrmCacheable2_0(parent, resource);
 	}
@@ -166,12 +177,12 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 	
 	@Override
 	public XmlOneToMany buildVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
-		return new VirtualEclipseLinkXmlOneToMany1_1(ormTypeMapping, (JavaEclipseLinkOneToManyMapping) javaOneToManyMapping);
+		return new VirtualEclipseLinkXmlOneToMany2_0(ormTypeMapping, (JavaEclipseLinkOneToManyMapping2_0) javaOneToManyMapping);
 	}
 	
 	@Override
 	public XmlOneToOne buildVirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
-		return new VirtualEclipseLinkXmlOneToOne1_1(ormTypeMapping, javaOneToOneMapping);
+		return new VirtualEclipseLinkXmlOneToOne2_0(ormTypeMapping, (JavaOneToOneMapping2_0) javaOneToOneMapping);
 	}
 	
 	@Override

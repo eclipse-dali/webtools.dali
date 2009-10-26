@@ -34,9 +34,6 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToOneMappin
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkTransformationMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVersionMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEmbeddableComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
@@ -109,7 +106,7 @@ public class EclipseLinkJavaUiFactory extends BaseJavaUiFactory
 	
 	@Override
 	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder, 
+			PropertyValueModel<JavaOneToManyMapping> subjectHolder, 
 			Composite parent, 
 			WidgetFactory widgetFactory) {
 		return new EclipseLinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);

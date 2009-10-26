@@ -23,11 +23,11 @@ public abstract class AbstractJavaOneToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
 	implements JavaOneToOneMapping2_0
 {
+	// ********** constructor **********
 	protected AbstractJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-	
-	
+
 	@Override
 	protected JavaRelationshipReference buildRelationshipReference() {
 		return new GenericJavaOneToOneRelationshipReference(this);
@@ -67,5 +67,23 @@ public abstract class AbstractJavaOneToOneMapping
 	@Override
 	protected void setResourceOptional(Boolean newOptional) {
 		this.mappingAnnotation.setOptional(newOptional);
+	}
+	
+	// ********** JPA 2.0 behavior **********
+
+	public boolean isOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public Boolean getSpecifiedOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public void setSpecifiedOrphanRemoval(Boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public boolean isDefaultOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
 	}
 }

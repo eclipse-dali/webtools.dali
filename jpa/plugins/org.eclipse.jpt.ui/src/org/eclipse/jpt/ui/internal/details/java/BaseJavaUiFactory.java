@@ -38,8 +38,6 @@ import org.eclipse.jpt.ui.internal.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.details.VersionMappingComposite;
-import org.eclipse.jpt.ui.internal.details.java.JavaEntityComposite;
-import org.eclipse.jpt.ui.internal.details.java.JavaMappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddableComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmEntityComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappedSuperclassComposite;
@@ -140,7 +138,7 @@ public abstract class BaseJavaUiFactory implements JavaUiFactory
 	}
 	
 	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder,
+			PropertyValueModel<JavaOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);

@@ -101,6 +101,17 @@ public class VirtualXmlOneToMany
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+
+	@Override
+	public boolean isOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void setOrphanRemoval(boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+	
 	@Override
 	public XmlJoinTable getJoinTable() {
 		if (this.javaAttributeMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable() != null) {

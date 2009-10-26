@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 /**
  * javax.persistence.OneToMany
  */
-public final class NullOneToManyAnnotation
+public class NullOneToManyAnnotation
 	extends NullOwnableRelationshipMappingAnnotation
 	implements OneToManyAnnotation
 {

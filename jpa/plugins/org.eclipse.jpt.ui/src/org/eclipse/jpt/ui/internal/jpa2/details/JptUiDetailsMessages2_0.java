@@ -25,6 +25,9 @@ public class JptUiDetailsMessages2_0 {
 	
 	public static String Entity_cacheableLabel;
 	public static String Entity_cacheableWithDefaultLabel;
+
+	public static String OrphanRemoval2_0Composite_orphanRemovableLabel;
+	public static String OrphanRemoval2_0Composite_orphanRemovableLabelDefault;
 	
 	private static final String BUNDLE_NAME = "jpt_ui_details2_0"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiDetailsMessages2_0.class;

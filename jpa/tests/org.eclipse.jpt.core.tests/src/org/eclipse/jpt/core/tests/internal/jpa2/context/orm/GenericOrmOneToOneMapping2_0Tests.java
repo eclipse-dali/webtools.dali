@@ -1,16 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+* Copyright (c) 2009 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -334,5 +334,43 @@ public class GenericOrmOneToOneMapping2_0Tests
 		
 		AttributeMapping stateFooMapping = oneToOneMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertEquals("foo", stateFooMapping.getName());
+	}
+	
+	public void testUpdateSpecifiedOrphanRemoval() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();
+		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+		
+		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, ormOneToOneMapping.getSpecifiedOrphanRemoval().booleanValue());
+		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, oneToOneResource.isOrphanRemoval());
+				
+		//set enumerated in the resource model, verify context model updated
+		oneToOneResource.setOrphanRemoval(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
+		assertEquals(true, oneToOneResource.isOrphanRemoval());
+	
+		oneToOneResource.setOrphanRemoval(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
+		assertEquals(false, oneToOneResource.isOrphanRemoval());
+	}
+	
+	public void testModifySpecifiedOrphanRemoval() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();
+		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+		
+		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, ormOneToOneMapping.getSpecifiedOrphanRemoval().booleanValue());
+		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, oneToOneResource.isOrphanRemoval());
+
+		//set enumerated in the context model, verify resource model updated
+		ormOneToOneMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		assertEquals(true, oneToOneResource.isOrphanRemoval());
+		assertEquals(Boolean.TRUE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
+	
+		ormOneToOneMapping.setSpecifiedOrphanRemoval(Boolean.FALSE);
+		assertEquals(false, oneToOneResource.isOrphanRemoval());
+		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
 	}
 }

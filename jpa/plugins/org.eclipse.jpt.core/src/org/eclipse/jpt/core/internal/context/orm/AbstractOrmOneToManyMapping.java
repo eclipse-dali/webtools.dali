@@ -11,21 +11,21 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 
 
 public abstract class AbstractOrmOneToManyMapping<T extends XmlOneToMany>
 	extends AbstractOrmMultiRelationshipMapping<T>
-	implements OrmOneToManyMapping
+	implements OrmOneToManyMapping2_0
 {
 	protected AbstractOrmOneToManyMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
-		
+
 	public int getXmlSequence() {
 		return 50;
 	}
@@ -49,5 +49,23 @@ public abstract class AbstractOrmOneToManyMapping<T extends XmlOneToMany>
 	@Override
 	public OrmOneToManyRelationshipReference getRelationshipReference() {
 		return (OrmOneToManyRelationshipReference) super.getRelationshipReference();
+	}
+	
+	// ********** JPA 2.0 behavior *********s*
+
+	public boolean isOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public Boolean getSpecifiedOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public void setSpecifiedOrphanRemoval(Boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public boolean isDefaultOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
 	}
 }

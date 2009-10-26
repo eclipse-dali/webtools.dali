@@ -9,6 +9,7 @@ import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.DerivedId2_0Pane;
+import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,6 +47,11 @@ import org.eclipse.swt.widgets.Composite;
  * | | CascadeComposite                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OrphanRemoval2_0Composite                                       | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link JavaOneToOneMapping2_0}
@@ -55,6 +61,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link FetchTypeComposite}
  * @see {@link OptionalComposite}
  * @see {@link CascadeComposite}
+ * @see {@link OrphanRemoval2_0Composite}
  */
 public class JavaOneToOneMapping2_0Composite<T extends JavaOneToOneMapping2_0>
 	extends AbstractOneToOneMapping2_0Composite<T>
@@ -72,11 +79,12 @@ public class JavaOneToOneMapping2_0Composite<T extends JavaOneToOneMapping2_0>
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new DerivedId2_0Pane(this, buildDerivedIdHolder(), addPane(container, groupBoxMargin));
-		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new OptionalComposite(this, addPane(container, groupBoxMargin));
-		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
+		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
+		new DerivedId2_0Pane(this, this.buildDerivedIdHolder(), this.addPane(container, groupBoxMargin));
+		new OneToOneJoiningStrategyPane(this, this.buildJoiningHolder(), container);
+		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
+		new OptionalComposite(this, this.addPane(container, groupBoxMargin));
+		new CascadeComposite(this, this.buildCascadeHolder(),  this.addSubPane(container, 5));
+		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
 	}
 }

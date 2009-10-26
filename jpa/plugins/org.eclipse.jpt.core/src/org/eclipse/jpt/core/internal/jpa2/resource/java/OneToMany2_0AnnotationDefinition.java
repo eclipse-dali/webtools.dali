@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryOneToMany2_0Annotation;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceOneToMany2_0Annotation;
-import org.eclipse.jpt.core.internal.resource.java.NullOneToManyAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -49,7 +48,7 @@ public final class OneToMany2_0AnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
-		return new NullOneToManyAnnotation((JavaResourcePersistentAttribute) parent);
+		return new NullOneToMany2_0Annotation((JavaResourcePersistentAttribute) parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {

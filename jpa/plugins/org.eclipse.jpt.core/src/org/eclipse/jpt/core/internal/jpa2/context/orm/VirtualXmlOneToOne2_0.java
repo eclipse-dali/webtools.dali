@@ -101,6 +101,19 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 	}
 	
 	@Override
+	public boolean isOrphanRemoval() {
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.isDefaultOrphanRemoval();
+		}
+		return this.javaAttributeMapping.isOrphanRemoval();
+	}
+
+	@Override
+	public void setOrphanRemoval(boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	@Override
 	public XmlJoinTable getJoinTable() {
 		return this.virtualXmlOneToOne.getJoinTable();
 	}

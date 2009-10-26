@@ -25,13 +25,13 @@ public interface OneToMany2_0Annotation
 	 * Returns null if the orphanRemoval element does not exist in java.
 	 */
 	Boolean getOrphanRemoval();
+		String ORPHAN_REMOVAL_PROPERTY = "orphanRemoval"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the orphanRemoval element of the OneToMany annotation.
 	 * Set to null to remove the orphanRemoval element.
 	 */
 	void setOrphanRemoval(Boolean orphanRemoval);
-		String ORPHAN_REMOVAL_PROPERTY = "orphanRemoval"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the orphanRemoval element.  If the orphanRemoval element 

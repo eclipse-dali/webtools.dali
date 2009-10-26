@@ -10,17 +10,17 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
 
-public abstract class AbstractJavaOneToManyMapping
-	extends AbstractJavaMultiRelationshipMapping<OneToManyAnnotation>
-	implements JavaOneToManyMapping
+public abstract class AbstractJavaOneToManyMapping<T extends OneToManyAnnotation>
+	extends AbstractJavaMultiRelationshipMapping<T>
+	implements JavaOneToManyMapping2_0
 {
 	
 	protected AbstractJavaOneToManyMapping(JavaPersistentAttribute parent) {
@@ -41,7 +41,7 @@ public abstract class AbstractJavaOneToManyMapping
 	}
 
 	@Override
-	public OneToManyAnnotation getMappingAnnotation() {
+	public T getMappingAnnotation() {
 		return super.getMappingAnnotation();
 	}
 	
@@ -52,5 +52,23 @@ public abstract class AbstractJavaOneToManyMapping
 	@Override
 	public JavaOneToManyRelationshipReference getRelationshipReference() {
 		return (JavaOneToManyRelationshipReference) super.getRelationshipReference();
+	}
+	
+	// ********** JPA 2.0 behavior **********
+
+	public boolean isOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public Boolean getSpecifiedOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public void setSpecifiedOrphanRemoval(Boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	public boolean isDefaultOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
 	}
 }

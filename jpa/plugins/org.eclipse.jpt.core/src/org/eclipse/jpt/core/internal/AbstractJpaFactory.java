@@ -139,6 +139,7 @@ import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -262,7 +263,7 @@ public abstract class AbstractJpaFactory
 	}
 	
 	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
-		return new GenericJavaOneToManyMapping(parent);
+		return new GenericJavaOneToManyMapping<OneToManyAnnotation>(parent);
 	}
 	
 	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {

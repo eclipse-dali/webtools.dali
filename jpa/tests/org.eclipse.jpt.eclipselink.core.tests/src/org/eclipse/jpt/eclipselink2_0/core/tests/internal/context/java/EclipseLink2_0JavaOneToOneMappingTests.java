@@ -1,16 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+* Copyright (c) 2009 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -20,10 +20,12 @@ import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToOne2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -57,6 +59,32 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    @OneToOne");
+				sb.append(CR);
+				sb.append("    private Address address;");
+				sb.append(CR);
+				sb.append(CR);
+				sb.append("    @Id");			
+			}
+		});
+	}
+
+	private void createTestEntityWithValidOneToOneMappingOrphanRemovalSpecified() throws Exception {
+		createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE);
+			}
+			
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+				sb.append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToOne(orphanRemoval=false)");
 				sb.append(CR);
 				sb.append("    private Address address;");
 				sb.append(CR);
@@ -345,6 +373,135 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		
 		AttributeMapping stateFooMapping = oneToOneMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertEquals("foo", stateFooMapping.getName());
+	}
+
+	public void testDefaultOneToOneGetDefaultOrphanRemoval() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
+		assertEquals(false, oneToOneMapping.isDefaultOrphanRemoval());
+	}
+	
+	public void testSpecifiedOneToOneGetDefaultOrphanRemoval() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getSpecifiedMapping();
+		assertEquals(false, oneToOneMapping.isDefaultOrphanRemoval());
+	}
+	
+	public void testGetOrphanRemoval() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getSpecifiedMapping();
+
+		assertEquals(false, oneToOneMapping.isOrphanRemoval());
+		
+		oneToOneMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		assertEquals(true, oneToOneMapping.isOrphanRemoval());
+	}
+	
+	public void testGetSpecifiedOrphanRemoval() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(oneToOneMapping.getSpecifiedOrphanRemoval());
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
+		oneToOne.setOrphanRemoval(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, oneToOneMapping.getSpecifiedOrphanRemoval());
+	}
+	
+	public void testGetSpecifiedOrphanRemoval2() throws Exception {
+		this.createTestEntityWithValidOneToOneMappingOrphanRemovalSpecified();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getSpecifiedMapping();
+
+		assertEquals(Boolean.FALSE, oneToOneMapping.getSpecifiedOrphanRemoval());
+	}
+
+	public void testSetSpecifiedOrphanRemoval() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
+		assertNull(oneToOneMapping.getSpecifiedOrphanRemoval());
+		
+		oneToOneMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
+		
+		assertEquals(Boolean.TRUE, oneToOne.getOrphanRemoval());
+		
+		oneToOneMapping.setSpecifiedOrphanRemoval(null);
+		assertNotNull(attributeResource.getAnnotation(JPA.ONE_TO_ONE)); 	// .getElement);
+	}
+	
+	public void testSetSpecifiedOrphanRemoval2() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
+		assertNull(oneToOneMapping.getSpecifiedOrphanRemoval());
+		
+		oneToOneMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
+		
+		assertEquals(Boolean.TRUE, oneToOne.getOrphanRemoval());
+		
+		oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
+		assertEquals(Boolean.TRUE, oneToOneMapping.getSpecifiedOrphanRemoval());
+
+		oneToOneMapping.setSpecifiedOrphanRemoval(null);
+		assertNotNull(attributeResource.getAnnotation(JPA.ONE_TO_ONE));
+		
+		oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
+	}
+
+	public void testGetSpecifiedOrphanRemovalUpdatesFromResourceModelChange() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(oneToOneMapping.getSpecifiedOrphanRemoval());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
+		oneToOne.setOrphanRemoval(Boolean.FALSE);
+
+		assertEquals(Boolean.FALSE, oneToOneMapping.getSpecifiedOrphanRemoval());
+		
+		oneToOne.setOrphanRemoval(null);
+		assertNull(oneToOneMapping.getSpecifiedOrphanRemoval());
+		assertSame(oneToOneMapping, persistentAttribute.getSpecifiedMapping());
+		
+		oneToOne.setOrphanRemoval(Boolean.FALSE);
+		attributeResource.setPrimaryAnnotation(null, new String[0]);
+		
+		assertNull(persistentAttribute.getSpecifiedMapping());
 	}
 
 }
