@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -111,7 +110,6 @@ public class GenericJavaCacheable2_0
 		this.resourcePersistentType = jrpt;
 		Cacheable2_0Annotation resourceCacheable = this.getResourceCacheable();
 		this.specifiedCacheable = this.specifiedCacheable(resourceCacheable);
-		this.defaultCacheable = this.calculateDefaultCacheable();
 	}
 	
 	public void update(JavaResourcePersistentType jrpt) {

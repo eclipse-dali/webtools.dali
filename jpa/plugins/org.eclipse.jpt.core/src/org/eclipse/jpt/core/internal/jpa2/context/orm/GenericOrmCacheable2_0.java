@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -30,7 +29,6 @@ public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode
 	public GenericOrmCacheable2_0(OrmTypeMapping parent, XmlCacheable2_0 resource) {
 		super(parent);
 		this.resource = resource;
-		this.defaultCacheable = this.calculateDefaultCacheable();
 		this.specifiedCacheable = this.getResourceCacheable();
 	}
 
