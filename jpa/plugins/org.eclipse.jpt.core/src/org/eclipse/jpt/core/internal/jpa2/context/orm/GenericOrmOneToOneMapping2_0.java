@@ -36,7 +36,7 @@ public class GenericOrmOneToOneMapping2_0
 	}
 	
 	protected Boolean getResourceOrphanRemoval() {
-		return this.resourceAttributeMapping.isOrphanRemoval();
+		return this.resourceAttributeMapping.getOrphanRemoval();
 	}
 	
 	// ********** OrphanRemovable2_0 implementation **********

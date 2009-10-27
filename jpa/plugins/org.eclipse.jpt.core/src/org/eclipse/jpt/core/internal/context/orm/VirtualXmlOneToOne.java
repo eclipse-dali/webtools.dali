@@ -124,6 +124,16 @@ public class VirtualXmlOneToOne extends XmlOneToOne
 	public void setCascade(CascadeType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
+
+	@Override
+	public Boolean getOrphanRemoval() {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void setOrphanRemoval(Boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	}
 	
 	@Override
 	public XmlJoinTable getJoinTable() {

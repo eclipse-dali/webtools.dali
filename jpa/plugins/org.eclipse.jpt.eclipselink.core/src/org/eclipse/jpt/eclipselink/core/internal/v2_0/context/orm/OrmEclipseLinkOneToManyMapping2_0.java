@@ -32,7 +32,7 @@ public class OrmEclipseLinkOneToManyMapping2_0 extends OrmEclipseLinkOneToManyMa
 	}
 	
 	protected Boolean getResourceOrphanRemoval() {
-		return this.resourceAttributeMapping.isOrphanRemoval();
+		return this.resourceAttributeMapping.getOrphanRemoval();
 	}
 	
 	// ********** OrphanRemovable2_0 implementation **********

@@ -19,7 +19,7 @@ package org.eclipse.jpt.core.resource.orm.v2_0;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#isOrphanRemoval <em>Orphan Removal</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getOrphanRemoval <em>Orphan Removal</em>}</li>
  * </ul>
  * </p>
  *
@@ -38,21 +38,21 @@ public interface XmlOneToOne_2_0 extends XmlSingleRelationshipMapping_2_0
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #setOrphanRemoval(boolean)
+	 * @see #setOrphanRemoval(Boolean)
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToOne_2_0_OrphanRemoval()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	boolean isOrphanRemoval();
+	Boolean getOrphanRemoval();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#isOrphanRemoval <em>Orphan Removal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0#getOrphanRemoval <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #isOrphanRemoval()
+	 * @see #getOrphanRemoval()
 	 * @generated
 	 */
-	void setOrphanRemoval(boolean value);
+	void setOrphanRemoval(Boolean value);
 
 } // XmlOneToOne_2_0

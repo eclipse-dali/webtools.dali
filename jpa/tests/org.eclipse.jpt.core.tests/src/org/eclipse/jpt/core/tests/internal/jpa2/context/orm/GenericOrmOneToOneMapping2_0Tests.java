@@ -342,17 +342,17 @@ public class GenericOrmOneToOneMapping2_0Tests
 		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
-		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, ormOneToOneMapping.getSpecifiedOrphanRemoval().booleanValue());
-		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, oneToOneResource.isOrphanRemoval());
+		assertEquals(null, ormOneToOneMapping.getSpecifiedOrphanRemoval());
+		assertEquals(null, oneToOneResource.getOrphanRemoval());
 				
 		//set enumerated in the resource model, verify context model updated
 		oneToOneResource.setOrphanRemoval(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
-		assertEquals(true, oneToOneResource.isOrphanRemoval());
+		assertEquals(Boolean.TRUE, oneToOneResource.getOrphanRemoval());
 	
 		oneToOneResource.setOrphanRemoval(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
-		assertEquals(false, oneToOneResource.isOrphanRemoval());
+		assertEquals(Boolean.FALSE, oneToOneResource.getOrphanRemoval());
 	}
 	
 	public void testModifySpecifiedOrphanRemoval() throws Exception {
@@ -361,16 +361,16 @@ public class GenericOrmOneToOneMapping2_0Tests
 		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
-		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, ormOneToOneMapping.getSpecifiedOrphanRemoval().booleanValue());
-		assertEquals(OrmOneToOneMapping2_0.DEFAULT_ORPHAN_REMOVAL, oneToOneResource.isOrphanRemoval());
+		assertEquals(null, ormOneToOneMapping.getSpecifiedOrphanRemoval());
+		assertEquals(null, oneToOneResource.getOrphanRemoval());
 
 		//set enumerated in the context model, verify resource model updated
 		ormOneToOneMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
-		assertEquals(true, oneToOneResource.isOrphanRemoval());
+		assertEquals(Boolean.TRUE, oneToOneResource.getOrphanRemoval());
 		assertEquals(Boolean.TRUE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
 	
 		ormOneToOneMapping.setSpecifiedOrphanRemoval(Boolean.FALSE);
-		assertEquals(false, oneToOneResource.isOrphanRemoval());
+		assertEquals(Boolean.FALSE, oneToOneResource.getOrphanRemoval());
 		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOrphanRemoval());
 	}
 }

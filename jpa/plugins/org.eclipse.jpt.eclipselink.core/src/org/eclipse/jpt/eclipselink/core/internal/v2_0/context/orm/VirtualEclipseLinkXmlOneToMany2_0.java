@@ -89,7 +89,7 @@ public class VirtualEclipseLinkXmlOneToMany2_0 extends XmlOneToMany
 	}
 
 	@Override
-	public boolean isOrphanRemoval() {
+	public Boolean getOrphanRemoval() {
 		if (this.isOrmMetadataComplete()) {
 			return this.javaAttributeMapping.isDefaultOrphanRemoval();
 		}
@@ -97,7 +97,7 @@ public class VirtualEclipseLinkXmlOneToMany2_0 extends XmlOneToMany
 	}
 
 	@Override
-	public void setOrphanRemoval(boolean newOrphanRemoval) {
+	public void setOrphanRemoval(Boolean newOrphanRemoval) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	

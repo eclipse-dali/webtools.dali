@@ -103,12 +103,12 @@ public class VirtualXmlOneToMany
 	
 
 	@Override
-	public boolean isOrphanRemoval() {
+	public Boolean getOrphanRemoval() {
 		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
 	}
 
 	@Override
-	public void setOrphanRemoval(boolean newOrphanRemoval) {
+	public void setOrphanRemoval(Boolean newOrphanRemoval) {
 		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
 	}
 	

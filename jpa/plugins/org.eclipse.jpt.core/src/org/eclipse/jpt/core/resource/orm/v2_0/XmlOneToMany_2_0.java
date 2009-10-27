@@ -36,7 +36,7 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyColumn <em>Map Key Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyJoinColumns <em>Map Key Join Columns</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#isOrphanRemoval <em>Orphan Removal</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrphanRemoval <em>Orphan Removal</em>}</li>
  * </ul>
  * </p>
  *
@@ -224,21 +224,21 @@ public interface XmlOneToMany_2_0 extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #setOrphanRemoval(boolean)
+	 * @see #setOrphanRemoval(Boolean)
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToMany_2_0_OrphanRemoval()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	boolean isOrphanRemoval();
+	Boolean getOrphanRemoval();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#isOrphanRemoval <em>Orphan Removal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrphanRemoval <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #isOrphanRemoval()
+	 * @see #getOrphanRemoval()
 	 * @generated
 	 */
-	void setOrphanRemoval(boolean value);
+	void setOrphanRemoval(Boolean value);
 
 } // XmlOneToMany_2_0

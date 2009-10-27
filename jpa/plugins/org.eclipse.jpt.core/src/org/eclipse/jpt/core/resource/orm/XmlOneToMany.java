@@ -129,23 +129,23 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 */
 	protected EList<XmlJoinColumn> mapKeyJoinColumns;
 	/**
-	 * The default value of the '{@link #isOrphanRemoval() <em>Orphan Removal</em>}' attribute.
+	 * The default value of the '{@link #getOrphanRemoval() <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isOrphanRemoval()
+	 * @see #getOrphanRemoval()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean ORPHAN_REMOVAL_EDEFAULT = false;
+	protected static final Boolean ORPHAN_REMOVAL_EDEFAULT = null;
 	/**
-	 * The cached value of the '{@link #isOrphanRemoval() <em>Orphan Removal</em>}' attribute.
+	 * The cached value of the '{@link #getOrphanRemoval() <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isOrphanRemoval()
+	 * @see #getOrphanRemoval()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean orphanRemoval = ORPHAN_REMOVAL_EDEFAULT;
+	protected Boolean orphanRemoval = ORPHAN_REMOVAL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -502,27 +502,27 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #setOrphanRemoval(boolean)
+	 * @see #setOrphanRemoval(Boolean)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany_2_0_OrphanRemoval()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isOrphanRemoval()
+	public Boolean getOrphanRemoval()
 	{
 		return orphanRemoval;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToMany#isOrphanRemoval <em>Orphan Removal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToMany#getOrphanRemoval <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #isOrphanRemoval()
+	 * @see #getOrphanRemoval()
 	 * @generated
 	 */
-	public void setOrphanRemoval(boolean newOrphanRemoval)
+	public void setOrphanRemoval(Boolean newOrphanRemoval)
 	{
-		boolean oldOrphanRemoval = orphanRemoval;
+		Boolean oldOrphanRemoval = orphanRemoval;
 		orphanRemoval = newOrphanRemoval;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL, oldOrphanRemoval, orphanRemoval));
@@ -581,7 +581,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS:
 				return getMapKeyJoinColumns();
 			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
-				return isOrphanRemoval();
+				return getOrphanRemoval();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -699,7 +699,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS:
 				return mapKeyJoinColumns != null && !mapKeyJoinColumns.isEmpty();
 			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
-				return orphanRemoval != ORPHAN_REMOVAL_EDEFAULT;
+				return ORPHAN_REMOVAL_EDEFAULT == null ? orphanRemoval != null : !ORPHAN_REMOVAL_EDEFAULT.equals(orphanRemoval);
 		}
 		return super.eIsSet(featureID);
 	}

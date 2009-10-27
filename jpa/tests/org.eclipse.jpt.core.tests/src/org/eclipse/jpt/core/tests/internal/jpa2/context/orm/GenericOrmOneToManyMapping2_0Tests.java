@@ -163,17 +163,17 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OrmOneToManyMapping2_0 ormOneToManyMapping = (OrmOneToManyMapping2_0) ormPersistentAttribute.getMapping();
 		XmlOneToMany oneToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
-		assertEquals(OrmOneToManyMapping2_0.DEFAULT_ORPHAN_REMOVAL, ormOneToManyMapping.getSpecifiedOrphanRemoval().booleanValue());
-		assertEquals(OrmOneToManyMapping2_0.DEFAULT_ORPHAN_REMOVAL, oneToManyResource.isOrphanRemoval());
+		assertEquals(null, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(null, oneToManyResource.getOrphanRemoval());
 				
 		//set enumerated in the resource model, verify context model updated
 		oneToManyResource.setOrphanRemoval(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
-		assertEquals(true, oneToManyResource.isOrphanRemoval());
+		assertEquals(Boolean.TRUE, oneToManyResource.getOrphanRemoval());
 	
 		oneToManyResource.setOrphanRemoval(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
-		assertEquals(false, oneToManyResource.isOrphanRemoval());
+		assertEquals(Boolean.FALSE, oneToManyResource.getOrphanRemoval());
 	}
 	
 	public void testModifySpecifiedOrphanRemoval() throws Exception {
@@ -182,16 +182,16 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OrmOneToManyMapping2_0 ormOneToManyMapping = (OrmOneToManyMapping2_0) ormPersistentAttribute.getMapping();
 		XmlOneToMany oneToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
-		assertEquals(OrmOneToManyMapping2_0.DEFAULT_ORPHAN_REMOVAL, ormOneToManyMapping.getSpecifiedOrphanRemoval().booleanValue());
-		assertEquals(OrmOneToManyMapping2_0.DEFAULT_ORPHAN_REMOVAL, oneToManyResource.isOrphanRemoval());
+		assertEquals(null, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(null, oneToManyResource.getOrphanRemoval());
 				
 		//set enumerated in the context model, verify resource model updated
 		ormOneToManyMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
-		assertEquals(true, oneToManyResource.isOrphanRemoval());
+		assertEquals(Boolean.TRUE, oneToManyResource.getOrphanRemoval());
 		assertEquals(Boolean.TRUE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
 	
 		ormOneToManyMapping.setSpecifiedOrphanRemoval(Boolean.FALSE);
-		assertEquals(false, oneToManyResource.isOrphanRemoval());
+		assertEquals(Boolean.FALSE, oneToManyResource.getOrphanRemoval());
 		assertEquals(Boolean.FALSE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
 	}
 }
