@@ -516,7 +516,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="lockMode" eType="#//v2_0/LockModeType_2_0"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany_2_0" abstract="true"
-        interface="true">
+        interface="true" eSuperTypes="#//v2_0/XmlOrphanRemovable2_0">
       <eStructuralFeatures xsi:type="ecore:EReference" name="orderColumn" eType="#//XmlOrderColumn"
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyClass" eType="#//XmlMapKeyClass"
@@ -529,12 +529,9 @@
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyJoinColumns" upperBound="-1"
           eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="orphanRemoval" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne_2_0" abstract="true" interface="true"
-        eSuperTypes="#//v2_0/XmlSingleRelationshipMapping_2_0">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="orphanRemoval" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    </eClassifiers>
+        eSuperTypes="#//v2_0/XmlSingleRelationshipMapping_2_0 #//v2_0/XmlOrphanRemovable2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
@@ -584,6 +581,10 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlCacheable2_0" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlOrphanRemovable2_0" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="orphanRemoval" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

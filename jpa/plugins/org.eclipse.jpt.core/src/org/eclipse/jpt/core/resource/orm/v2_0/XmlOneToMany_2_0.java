@@ -36,16 +36,14 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyColumn <em>Map Key Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyJoinColumns <em>Map Key Join Columns</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrphanRemoval <em>Orphan Removal</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToMany_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlOneToMany_2_0 extends JpaEObject
+public interface XmlOneToMany_2_0 extends XmlOrphanRemovable2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
@@ -214,31 +212,5 @@ public interface XmlOneToMany_2_0 extends JpaEObject
 	 * @generated
 	 */
 	EList<XmlJoinColumn> getMapKeyJoinColumns();
-
-	/**
-	 * Returns the value of the '<em><b>Orphan Removal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Orphan Removal</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #setOrphanRemoval(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToMany_2_0_OrphanRemoval()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
-	 * @generated
-	 */
-	Boolean getOrphanRemoval();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrphanRemoval <em>Orphan Removal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Orphan Removal</em>' attribute.
-	 * @see #getOrphanRemoval()
-	 * @generated
-	 */
-	void setOrphanRemoval(Boolean value);
 
 } // XmlOneToMany_2_0

@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -164,7 +165,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Orphan Removal</em>' attribute.
 	 * @see #setOrphanRemoval(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_2_0_OrphanRemoval()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrphanRemovable2_0_OrphanRemoval()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -332,11 +333,18 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrphanRemovable2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL: return OrmV2_0Package.XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlOneToOne_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL: return OrmV2_0Package.XML_ONE_TO_ONE_20__ORPHAN_REMOVAL;
 				default: return -1;
 			}
 		}
@@ -359,11 +367,18 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrphanRemovable2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL: return OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlOneToOne_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmV2_0Package.XML_ONE_TO_ONE_20__ORPHAN_REMOVAL: return OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL;
 				default: return -1;
 			}
 		}
@@ -433,7 +448,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	}
 	
 	protected static Translator buildOrphanRemovalTranslator() {
-		return new Translator(JPA2_0.ORPHAN_REMOVAL, OrmV2_0Package.eINSTANCE.getXmlOneToOne_2_0_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ORPHAN_REMOVAL, OrmV2_0Package.eINSTANCE.getXmlOrphanRemovable2_0_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildPrimaryKeyJoinColumnTranslator() {

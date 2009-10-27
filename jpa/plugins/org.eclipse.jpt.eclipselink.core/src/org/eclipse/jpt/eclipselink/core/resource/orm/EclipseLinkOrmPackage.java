@@ -3242,6 +3242,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_MANY__JOIN_COLUMNS = OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS;
 	/**
+	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__ORPHAN_REMOVAL = OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL;
+	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3297,14 +3305,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS = OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS;
-	/**
-	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__ORPHAN_REMOVAL = OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL;
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

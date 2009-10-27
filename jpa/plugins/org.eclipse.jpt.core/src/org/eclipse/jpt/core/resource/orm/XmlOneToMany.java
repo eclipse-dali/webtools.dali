@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -56,79 +57,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	protected EList<XmlJoinColumn> joinColumns;
 
 	/**
-	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlOrderColumn orderColumn;
-	/**
-	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlMapKeyClass mapKeyClass;
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 * @ordered
-	 */
-	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 * @ordered
-	 */
-	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
-	/**
-	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyAttributeOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
-	/**
-	 * The cached value of the '{@link #getMapKeyColumn() <em>Map Key Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlColumn mapKeyColumn;
-	/**
-	 * The cached value of the '{@link #getMapKeyJoinColumns() <em>Map Key Join Columns</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyJoinColumns()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlJoinColumn> mapKeyJoinColumns;
-	/**
 	 * The default value of the '{@link #getOrphanRemoval() <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -146,6 +74,88 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * @ordered
 	 */
 	protected Boolean orphanRemoval = ORPHAN_REMOVAL_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderColumn()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlOrderColumn orderColumn;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlMapKeyClass mapKeyClass;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyTemporal()
+	 * @generated
+	 * @ordered
+	 */
+	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyEnumerated()
+	 * @generated
+	 * @ordered
+	 */
+	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyAttributeOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyColumn() <em>Map Key Column</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyColumn()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlColumn mapKeyColumn;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyJoinColumns() <em>Map Key Join Columns</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyJoinColumns()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlJoinColumn> mapKeyJoinColumns;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -503,7 +513,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Orphan Removal</em>' attribute.
 	 * @see #setOrphanRemoval(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany_2_0_OrphanRemoval()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrphanRemovable2_0_OrphanRemoval()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -566,6 +576,8 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS:
 				return getJoinColumns();
+			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
+				return getOrphanRemoval();
 			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
 				return getOrderColumn();
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS:
@@ -580,8 +592,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				return getMapKeyColumn();
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS:
 				return getMapKeyJoinColumns();
-			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
-				return getOrphanRemoval();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -600,6 +610,9 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
+				setOrphanRemoval((Boolean)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
 				setOrderColumn((XmlOrderColumn)newValue);
@@ -624,9 +637,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				getMapKeyJoinColumns().clear();
 				getMapKeyJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
-			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
-				setOrphanRemoval((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -643,6 +653,9 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS:
 				getJoinColumns().clear();
+				return;
+			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
+				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
 				setOrderColumn((XmlOrderColumn)null);
@@ -665,9 +678,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS:
 				getMapKeyJoinColumns().clear();
 				return;
-			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
-				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -684,6 +694,8 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
+			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
+				return ORPHAN_REMOVAL_EDEFAULT == null ? orphanRemoval != null : !ORPHAN_REMOVAL_EDEFAULT.equals(orphanRemoval);
 			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
 				return orderColumn != null;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS:
@@ -698,8 +710,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				return mapKeyColumn != null;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS:
 				return mapKeyJoinColumns != null && !mapKeyJoinColumns.isEmpty();
-			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
-				return ORPHAN_REMOVAL_EDEFAULT == null ? orphanRemoval != null : !ORPHAN_REMOVAL_EDEFAULT.equals(orphanRemoval);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -720,6 +730,14 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrphanRemovable2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL: return OrmV2_0Package.XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlOneToMany_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -731,7 +749,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_COLUMN: return OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_COLUMN;
 				case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS: return OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS;
-				case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL: return OrmV2_0Package.XML_ONE_TO_MANY_20__ORPHAN_REMOVAL;
 				default: return -1;
 			}
 		}
@@ -754,6 +771,14 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrphanRemovable2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL: return OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlOneToMany_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -765,7 +790,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				case OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				case OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_COLUMN: return OrmPackage.XML_ONE_TO_MANY__MAP_KEY_COLUMN;
 				case OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS;
-				case OrmV2_0Package.XML_ONE_TO_MANY_20__ORPHAN_REMOVAL: return OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL;
 				default: return -1;
 			}
 		}
@@ -783,12 +807,12 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (mapKeyTemporal: ");
+		result.append(" (orphanRemoval: ");
+		result.append(orphanRemoval);
+		result.append(", mapKeyTemporal: ");
 		result.append(mapKeyTemporal);
 		result.append(", mapKeyEnumerated: ");
 		result.append(mapKeyEnumerated);
-		result.append(", orphanRemoval: ");
-		result.append(orphanRemoval);
 		result.append(')');
 		return result.toString();
 	}
@@ -831,7 +855,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	}
 	
 	protected static Translator buildOrphanRemovalTranslator() {
-		return new Translator(JPA2_0.ORPHAN_REMOVAL, OrmV2_0Package.eINSTANCE.getXmlOneToMany_2_0_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA2_0.ORPHAN_REMOVAL, OrmV2_0Package.eINSTANCE.getXmlOrphanRemovable2_0_OrphanRemoval(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildOrderColumnTranslator() {
