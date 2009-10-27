@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.EnumeratedValueTranslator;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -263,7 +264,14 @@ public abstract class AbstractJpaRootEObject extends AbstractJpaEObject implemen
 		result.append(')');
 		return result.toString();
 	}
-
+	
+	
+	// **************** validation ********************************************
+	
+	public TextRange getVersionTextRange() {
+		return getAttributeTextRange(XML.VERSION);
+	}
+	
 	
 	// **************** version -> schema location mapping ********************
 	

@@ -11,6 +11,8 @@
 
 package org.eclipse.jpt.core.resource.xml;
 
+import org.eclipse.jpt.core.utility.TextRange;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -83,4 +85,6 @@ public interface JpaRootEObject extends JpaEObject
 	 * @generated
 	 */
 	void setSchemaLocation(String value);
+	
+	TextRange getVersionTextRange();
 }

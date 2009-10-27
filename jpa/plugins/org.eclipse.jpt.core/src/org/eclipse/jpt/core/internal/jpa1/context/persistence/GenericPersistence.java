@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -21,10 +21,11 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.resource.persistence.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -211,10 +212,35 @@ public class GenericPersistence
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		validateVersion(messages);
 		this.checkForMultiplePersistenceUnits(messages);
 		this.validatePersistenceUnit(messages, reporter);
 	}
-
+	
+	protected void validateVersion(List<IMessage> messages) {
+		if (! latestDocumentVersion().equals(this.xmlPersistence.getVersion())) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.LOW_SEVERITY,
+						JpaValidationMessages.XML_VERSION_NOT_LATEST,
+						this,
+						this.xmlPersistence.getVersionTextRange()));
+		}
+	}
+	
+	protected String latestDocumentVersion() {
+		String jpaPlatformVersion = getJpaPlatform().getJpaVersion().getJpaVersion();
+		if (jpaPlatformVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)) {
+			return JPA.SCHEMA_VERSION;
+		}
+		else if (jpaPlatformVersion.equals(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			return JPA2_0.SCHEMA_VERSION;
+		}
+		else {
+			throw new IllegalStateException("Platform version not recognized.");
+		}
+	}
+	
 	/**
 	 * extraneous persistence units can be
 	 * accessed through the XmlPersistence resource object

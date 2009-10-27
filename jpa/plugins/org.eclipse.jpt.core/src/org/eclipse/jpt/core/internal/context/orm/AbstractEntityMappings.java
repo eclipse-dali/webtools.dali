@@ -712,12 +712,29 @@ public abstract class AbstractEntityMappings
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		this.validateVersion(messages);
 		this.validateGenerators(messages);
 		this.queryContainer.validate(messages, reporter);
 		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
 			this.validatePersistentType(ormPersistentType, messages, reporter);
 		}
 	}
+	
+	protected void validateVersion(List<IMessage> messages) {
+		if (! latestDocumentVersion().equals(this.xmlEntityMappings.getVersion())) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.LOW_SEVERITY,
+						JpaValidationMessages.XML_VERSION_NOT_LATEST,
+						this,
+						this.xmlEntityMappings.getVersionTextRange()));
+		}
+	}
+	
+	/**
+	 * Return the latest version of the document supported by the platform
+	 */
+	protected abstract String latestDocumentVersion();
 	
 	protected void validateGenerators(List<IMessage> messages) {
 		for (Iterator<OrmGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
@@ -760,11 +777,10 @@ public abstract class AbstractEntityMappings
 
 
 	// ********** dispose **********
-
+	
 	public void dispose() {
 		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
 			ormPersistentType.dispose();
 		}
 	}
-
 }
