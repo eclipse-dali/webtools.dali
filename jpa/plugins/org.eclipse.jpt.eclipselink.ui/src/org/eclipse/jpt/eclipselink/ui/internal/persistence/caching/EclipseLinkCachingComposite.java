@@ -34,17 +34,12 @@ public class EclipseLinkCachingComposite<T extends Caching> extends FormPane<T>
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
 		);
 
-		this.initializeCacheDefaultsComposite(container);
-
+		// Defaults
+		new CacheDefaultsComposite<T>(this, container);
 		// EntitiesList
 		new EntityListComposite<T>(this, container);
 		// Flush Clear Cache
 		new FlushClearCacheComposite(this, container);
-	}
-	
-	protected void initializeCacheDefaultsComposite(Composite container) {
-
-		new CacheDefaultsComposite<T>(this, container);
 	}
 	
 }

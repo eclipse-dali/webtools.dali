@@ -11,8 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.caching;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.EclipseLinkCachingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.caching.CacheDefaults2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.options.SharedCacheModeComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -31,12 +31,20 @@ public class EclipseLinkCaching2_0Composite extends EclipseLinkCachingComposite<
 	}
 
 	@Override
-	protected void initializeCacheDefaultsComposite(Composite parent) {
+	protected void initializeLayout(Composite parent) {
+
+		Composite container = this.addSection(
+			parent,
+			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
+			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
+		);
 
 		// SharedCacheMode
-		new SharedCacheModeComposite(this, this.buildPersistenceUnit2_0Holder(), parent);
-		
-		new CacheDefaults2_0Composite(this, parent);
+		new SharedCacheModeComposite(this, this.buildPersistenceUnit2_0Holder(), container);
+		// Defaults
+		new CacheDefaults2_0Composite(this, container);
+		// Flush Clear Cache
+		new FlushClearCache2_0Composite(this, container);
 	}
 
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Holder() {
