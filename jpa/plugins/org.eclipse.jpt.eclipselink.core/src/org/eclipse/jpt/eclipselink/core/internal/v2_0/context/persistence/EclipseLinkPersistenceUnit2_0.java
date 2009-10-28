@@ -143,6 +143,19 @@ public class EclipseLinkPersistenceUnit2_0
 		this.defaultSharedCacheMode = defaultSharedCacheMode;
 		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
 	}
+	
+	public boolean calculateDefaultCacheable() {
+		switch (getSharedCacheMode()) {
+			case NONE:
+			case ENABLE_SELECTIVE:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+			case UNSPECIFIED:
+				return true;
+		}
+		return true;//null
+	}
 
 	// ********** validation mode **********
 

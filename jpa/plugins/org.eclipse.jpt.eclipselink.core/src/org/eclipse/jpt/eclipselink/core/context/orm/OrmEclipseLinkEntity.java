@@ -15,4 +15,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 public interface OrmEclipseLinkEntity extends EclipseLinkEntity, OrmEntity
 {
 	EclipseLinkConverterHolder getConverterHolder();
+	
+	OrmEclipseLinkCaching getCaching();
 }

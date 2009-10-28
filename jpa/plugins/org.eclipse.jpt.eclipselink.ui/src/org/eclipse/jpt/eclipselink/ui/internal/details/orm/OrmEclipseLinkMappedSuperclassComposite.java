@@ -11,8 +11,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMappedSuperclassAdvancedComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
@@ -74,12 +74,12 @@ public class OrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMap
 		new OrmEclipseLinkCachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<T, EclipseLinkCaching>(
+	private PropertyAspectAdapter<T, OrmEclipseLinkCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<T, OrmEclipseLinkCaching>(
 			getSubjectHolder())
 		{
 			@Override
-			protected EclipseLinkCaching buildValue_() {
+			protected OrmEclipseLinkCaching buildValue_() {
 				return this.subject.getCaching();
 			}
 		};

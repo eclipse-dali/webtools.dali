@@ -13,6 +13,8 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
@@ -62,6 +64,14 @@ public class JavaEclipseLinkEntityImpl extends AbstractJavaEntity implements Jav
 	
 	public EclipseLinkChangeTracking getChangeTracking() {
 		return this.changeTracking;
+	}
+
+	public JavaCacheable2_0 getCacheable() {
+		return ((JavaCacheableHolder2_0) getCaching()).getCacheable();
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		return ((JavaCacheableHolder2_0) getCaching()).calculateDefaultCacheable();
 	}
 	
 	@Override

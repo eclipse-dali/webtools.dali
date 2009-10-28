@@ -15,4 +15,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 public interface OrmEclipseLinkMappedSuperclass extends EclipseLinkMappedSuperclass, OrmMappedSuperclass
 {
 	EclipseLinkConverterHolder getConverterHolder();
+	
+	OrmEclipseLinkCaching getCaching();
 }

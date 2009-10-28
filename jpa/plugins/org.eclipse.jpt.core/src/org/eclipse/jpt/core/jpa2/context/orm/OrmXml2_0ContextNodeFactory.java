@@ -41,5 +41,5 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 	XmlElementCollection buildVirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping);
 	
-	OrmCacheable2_0 buildOrmCacheable(OrmTypeMapping parent, XmlCacheable2_0 resource);
+	OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource);
 }

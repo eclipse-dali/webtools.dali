@@ -11,10 +11,21 @@ package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 
 public class TestJavaEntity extends AbstractJavaEntity
 {
 	protected TestJavaEntity(JavaPersistentType parent) {
 		super(parent);
 	}
+
+	public JavaCacheable2_0 getCacheable() {
+		return null;
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		return false;
+	}
+
+	
 }

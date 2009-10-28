@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -26,12 +25,17 @@ public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode
 	protected Boolean specifiedCacheable;
 	
 	
-	public GenericOrmCacheable2_0(OrmTypeMapping parent, XmlCacheable2_0 resource) {
+	public GenericOrmCacheable2_0(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource) {
 		super(parent);
 		this.resource = resource;
 		this.specifiedCacheable = this.getResourceCacheable();
 	}
 
+	@Override
+	public OrmCacheableHolder2_0 getParent() {
+		return (OrmCacheableHolder2_0) super.getParent();
+	}
+	
 	public boolean isCacheable() {
 		return (this.specifiedCacheable != null) ? this.specifiedCacheable.booleanValue() : this.defaultCacheable;
 	}
@@ -67,8 +71,8 @@ public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode
 	// **************** initialize/update **************************************
 		
 	public void update() {
-		setDefaultCacheable(this.calculateDefaultCacheable());
 		setSpecifiedCacheable_(this.getResourceCacheable());
+		setDefaultCacheable(this.calculateDefaultCacheable());
 	}
 	
 	protected Boolean getResourceCacheable() {
@@ -76,7 +80,7 @@ public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode
 	}
 	
 	protected boolean calculateDefaultCacheable() {
-		return ((Entity2_0) getParent()).calculateDefaultCacheable();
+		return getParent().calculateDefaultCacheable();
 	}
 	
 	

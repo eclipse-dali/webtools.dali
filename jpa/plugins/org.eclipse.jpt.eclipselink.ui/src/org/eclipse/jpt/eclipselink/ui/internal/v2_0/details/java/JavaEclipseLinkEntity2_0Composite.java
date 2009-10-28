@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.AbstractJavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -79,6 +80,11 @@ public class JavaEclipseLinkEntity2_0Composite extends AbstractJavaEclipseLinkEn
 	@Override
 	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
 		new Generation2_0Composite(this, generatorContainerHolder, container);
+	}
+	
+	@Override
+	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
+		new JavaEclipseLinkCaching2_0Composite(this, cachingHolder, container);
 	}
 
 }

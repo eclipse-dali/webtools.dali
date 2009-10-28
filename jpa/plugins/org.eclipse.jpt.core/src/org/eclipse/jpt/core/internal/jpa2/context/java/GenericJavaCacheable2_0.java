@@ -10,10 +10,9 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.core.jpa2.context.Entity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -27,13 +26,13 @@ public class GenericJavaCacheable2_0
 	
 	protected JavaResourcePersistentType resourcePersistentType;
 	
-	public GenericJavaCacheable2_0(JavaTypeMapping parent) {
+	public GenericJavaCacheable2_0(JavaCacheableHolder2_0 parent) {
 		super(parent);
 	}
 
 	@Override
-	public JavaTypeMapping getParent() {
-		return (JavaTypeMapping) super.getParent();
+	public JavaCacheableHolder2_0 getParent() {
+		return (JavaCacheableHolder2_0) super.getParent();
 	}
 	
 	protected String getCacheableAnnotationName() {
@@ -53,7 +52,7 @@ public class GenericJavaCacheable2_0
 	}
 
 	protected boolean calculateDefaultCacheable() {		
-		return ((Entity2_0) getParent()).calculateDefaultCacheable();
+		return getParent().calculateDefaultCacheable();
 	}
 
 	public boolean isCacheable() {

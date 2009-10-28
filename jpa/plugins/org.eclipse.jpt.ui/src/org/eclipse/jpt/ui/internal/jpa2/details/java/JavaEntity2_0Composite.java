@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.jpa2.details.java;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.Entity2_0;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -78,7 +78,7 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 		return new PropertyAspectAdapter<JavaEntity, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
-				return ((Entity2_0) this.subject).getCacheable();
+				return ((CacheableHolder2_0) this.subject).getCacheable();
 			}
 		};
 	}

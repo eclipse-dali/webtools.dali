@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.AbstractOrmEclipseLinkEntityComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
@@ -35,6 +36,11 @@ public class OrmEclipseLinkEntity2_0Composite extends AbstractOrmEclipseLinkEnti
 	@Override
 	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
 		new Generation2_0Composite(this, generatorContainerHolder, container);
+	}
+	
+	@Override
+	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
+		new OrmEclipseLinkCaching2_0Composite(this, cachingHolder, container);
 	}
 
 }

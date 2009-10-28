@@ -147,6 +147,19 @@ public class GenericPersistenceUnit2_0
 		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
 	}
 	
+	public boolean calculateDefaultCacheable() {
+		switch (getSharedCacheMode()) {
+			case NONE:
+			case ENABLE_SELECTIVE:
+			case UNSPECIFIED:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+				return true;
+		}
+		return false;//null
+	}
+	
 	
 	// ********** validation mode **********
 

@@ -7,9 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context;
+package org.eclipse.jpt.core.jpa2.context.java;
 
-import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 
 /**
  * 
@@ -23,9 +24,7 @@ import org.eclipse.jpt.core.context.Entity;
  * @version 3.0
  * @since 3.0
  */
-public interface Entity2_0 extends Entity
+public interface JavaCacheableHolder2_0 extends CacheableHolder2_0, JavaJpaContextNode
 {
-	Cacheable2_0 getCacheable();
-	
-	boolean calculateDefaultCacheable();
+	JavaCacheable2_0 getCacheable();
 }

@@ -63,6 +63,7 @@ public interface PersistenceUnit2_0
 	 */
 	SharedCacheMode getDefaultSharedCacheMode();
 
+	boolean calculateDefaultCacheable();
 
 	// ********** validation mode **********
 

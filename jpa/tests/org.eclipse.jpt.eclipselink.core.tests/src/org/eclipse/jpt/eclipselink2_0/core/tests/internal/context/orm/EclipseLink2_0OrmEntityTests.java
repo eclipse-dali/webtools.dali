@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
+package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -35,16 +35,17 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
+public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelTestCase
 {
 	protected static final String SUB_TYPE_NAME = "AnnotationTestTypeChild";
 	protected static final String FULLY_QUALIFIED_SUB_TYPE_NAME = PACKAGE_NAME + "." + SUB_TYPE_NAME;
 	
 	
-	public GenericOrmEntity2_0Tests(String name) {
+	public EclipseLink2_0OrmEntityTests(String name) {
 		super(name);
 	}
 
@@ -1411,21 +1412,21 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
+		Cacheable2_0 cacheable2_0 = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		assertEquals(null, cacheable.getSpecifiedCacheable());
+		assertEquals(null, cacheable2_0.getSpecifiedCacheable());
 		assertEquals(null, entityResource.getCacheable());
 		
-		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, cacheable.getSpecifiedCacheable());
+		cacheable2_0.setSpecifiedCacheable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, cacheable2_0.getSpecifiedCacheable());
 		assertEquals(Boolean.FALSE, entityResource.getCacheable());
 		
-		cacheable.setSpecifiedCacheable(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, cacheable.getSpecifiedCacheable());
+		cacheable2_0.setSpecifiedCacheable(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, cacheable2_0.getSpecifiedCacheable());
 		assertEquals(Boolean.TRUE, entityResource.getCacheable());
 		
-		cacheable.setSpecifiedCacheable(null);
-		assertEquals(null, cacheable.getSpecifiedCacheable());
+		cacheable2_0.setSpecifiedCacheable(null);
+		assertEquals(null, cacheable2_0.getSpecifiedCacheable());
 		assertEquals(null, entityResource.getCacheable());
 	}
 	
@@ -1457,8 +1458,8 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		
 		Cacheable2_0 cacheable = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
 		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
-		assertEquals(SharedCacheMode.UNSPECIFIED, persistenceUnit2_0.getSharedCacheMode());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(SharedCacheMode.DISABLE_SELECTIVE, persistenceUnit2_0.getSharedCacheMode());
+		assertEquals(true, cacheable.isDefaultCacheable());
 		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ALL);
 		assertEquals(true, cacheable.isDefaultCacheable());
@@ -1471,6 +1472,9 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
 		assertEquals(true, cacheable.isDefaultCacheable());
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.UNSPECIFIED);
+		assertEquals(true, cacheable.isDefaultCacheable());
 	}
 	
 	public void testIsDefaultCacheableFromSuperType() throws Exception {
@@ -1479,15 +1483,25 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		OrmPersistentType subOrmPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_SUB_TYPE_NAME);
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Cacheable2_0 subCacheable = ((CacheableHolder2_0) subOrmPersistentType.getMapping()).getCacheable();
-		Cacheable2_0 cacheable = ((CacheableHolder2_0) ormPersistentType.getMapping()).getCacheable();
-		cacheable.setSpecifiedCacheable(Boolean.TRUE);
+		EclipseLinkEntity subEntity = (EclipseLinkEntity) subOrmPersistentType.getMapping();
+		EclipseLinkEntity entity = (EclipseLinkEntity) ormPersistentType.getMapping();
+		Cacheable2_0 subCacheable = ((CacheableHolder2_0) subEntity).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableHolder2_0) entity).getCacheable();
 		assertEquals(true, subCacheable.isDefaultCacheable());
-		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
 		
 		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+	
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(null);
+		cacheable.setSpecifiedCacheable(Boolean.FALSE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+		
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
-		assertEquals(true, subCacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 				
 		cacheable.setSpecifiedCacheable(Boolean.FALSE);
@@ -1499,6 +1513,10 @@ public class GenericOrmEntity2_0Tests extends Generic2_0OrmContextModelTestCase
 		assertEquals(false, cacheable.isDefaultCacheable());
 		
 		cacheable.setSpecifiedCacheable(Boolean.TRUE);
+		assertEquals(true, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(false, cacheable.isDefaultCacheable());
 	}

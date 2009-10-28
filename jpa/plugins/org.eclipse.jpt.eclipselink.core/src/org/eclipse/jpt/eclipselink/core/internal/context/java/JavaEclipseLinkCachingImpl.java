@@ -11,13 +11,20 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
@@ -29,7 +36,11 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnota
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkCachingImpl extends AbstractJavaJpaContextNode implements JavaEclipseLinkCaching
+public class JavaEclipseLinkCachingImpl
+	extends AbstractJavaJpaContextNode
+	implements 
+		JavaEclipseLinkCaching,
+		JavaCacheableHolder2_0
 {
 	
 	protected EclipseLinkCacheType specifiedType;
@@ -48,11 +59,13 @@ public class JavaEclipseLinkCachingImpl extends AbstractJavaJpaContextNode imple
 	protected Integer expiry;
 	protected JavaEclipseLinkExpiryTimeOfDay expiryTimeOfDay;
 	
+	protected final JavaCacheable2_0 cacheable;
 	
 	protected JavaResourcePersistentType resourcePersistentType;
 	
 	public JavaEclipseLinkCachingImpl(JavaTypeMapping parent) {
 		super(parent);
+		this.cacheable = ((JpaFactory2_0) this.getJpaFactory()).buildJavaCacheable(this);
 	}
 	
 	@Override
@@ -415,10 +428,25 @@ public class JavaEclipseLinkCachingImpl extends AbstractJavaJpaContextNode imple
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
 	}
 	
+	public JavaCacheable2_0 getCacheable() {
+		return this.cacheable;
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		if (getParent() instanceof Entity) {
+			EclipseLinkEntity parentEntity = (EclipseLinkEntity) ((Entity) getParent()).getParentEntity();
+			if (parentEntity != null) {
+				return ((CacheableHolder2_0) parentEntity).getCacheable().isCacheable();
+			}
+		}
+		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+	}
+	
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
 		initialize(getCacheAnnotation());
 		initialize(getExistenceCheckingAnnotation());
+		this.cacheable.initialize(resourcePersistentType);
 	}
 
 	protected void initialize(EclipseLinkCacheAnnotation cache) {
@@ -455,6 +483,7 @@ public class JavaEclipseLinkCachingImpl extends AbstractJavaJpaContextNode imple
 		update(getCacheAnnotation());
 		update(getExistenceCheckingAnnotation());
 		updateExpiry(getCacheAnnotation());
+		this.cacheable.update(resourcePersistentType);
 	}
 	
 	protected void update(EclipseLinkCacheAnnotation cache) {

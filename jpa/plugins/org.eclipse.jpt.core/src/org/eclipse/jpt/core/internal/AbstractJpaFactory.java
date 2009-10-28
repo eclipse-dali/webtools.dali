@@ -129,6 +129,7 @@ import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
@@ -377,7 +378,7 @@ public abstract class AbstractJpaFactory
 		return new NullJavaMapsId2_0(parent);
 	}
 	
-	public JavaCacheable2_0 buildJavaCacheable(JavaTypeMapping parent) {
+	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
 		return new NullJavaCacheable2_0(parent);
 	}
 }

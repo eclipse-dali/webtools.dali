@@ -12,13 +12,17 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
@@ -38,7 +42,7 @@ public class OrmEclipseLinkEntityImpl extends AbstractOrmEntity
 	
 	protected final OrmEclipseLinkChangeTracking changeTracking;
 	
-	protected final OrmEclipseLinkCachingImpl caching;
+	protected final OrmEclipseLinkCaching caching;
 	
 	protected final OrmEclipseLinkConverterHolder converterHolder;
 	
@@ -48,11 +52,11 @@ public class OrmEclipseLinkEntityImpl extends AbstractOrmEntity
 		this.readOnly = new OrmEclipseLinkReadOnly(this, (XmlReadOnly) this.resourceTypeMapping, getJavaReadOnly());
 		this.customizer = new OrmEclipseLinkCustomizer(this, (XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
 		this.changeTracking = new OrmEclipseLinkChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
-		this.caching = new OrmEclipseLinkCachingImpl(this, (XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
+		this.caching = new OrmEclipseLinkCachingImpl(this, (XmlCacheHolder) this.resourceTypeMapping, (XmlCacheable2_0) this.resourceTypeMapping, getJavaCaching());
 		this.converterHolder = new OrmEclipseLinkConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping);
 	}
 	
-	public EclipseLinkCaching getCaching() {
+	public OrmEclipseLinkCaching getCaching() {
 		return this.caching;
 	}
 
@@ -70,6 +74,14 @@ public class OrmEclipseLinkEntityImpl extends AbstractOrmEntity
 	
 	public EclipseLinkConverterHolder getConverterHolder() {
 		return this.converterHolder;
+	}
+
+	public OrmCacheable2_0 getCacheable() {
+		return ((OrmCacheableHolder2_0) getCaching()).getCacheable();
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		return ((CacheableHolder2_0) getCaching()).calculateDefaultCacheable();
 	}
 	
 	// **************** resource-context interaction ***************************

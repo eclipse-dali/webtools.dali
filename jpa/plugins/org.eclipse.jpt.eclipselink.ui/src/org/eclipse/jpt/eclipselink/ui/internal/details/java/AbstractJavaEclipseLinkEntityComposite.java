@@ -61,7 +61,7 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 		initializeSecondaryTablesPane(container);
 		initializeAdvancedPane(container);
 	}
-	
+
 	protected void initializeCachingPane(Composite container) {
 
 		container = addCollapsableSection(
@@ -69,7 +69,11 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching
 		);
 
-		new JavaEclipseLinkCachingComposite(this, buildCachingHolder(), container);
+		addCachingComposite(container, buildCachingHolder());
+	}
+	
+	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
+		new JavaEclipseLinkCachingComposite(this, cachingHolder, container);
 	}
 
 	private PropertyAspectAdapter<JavaEntity, JavaEclipseLinkCaching> buildCachingHolder() {

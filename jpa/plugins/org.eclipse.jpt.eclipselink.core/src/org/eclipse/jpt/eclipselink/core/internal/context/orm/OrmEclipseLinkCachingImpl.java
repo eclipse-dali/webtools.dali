@@ -9,11 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
@@ -23,8 +32,11 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 
-public class OrmEclipseLinkCachingImpl extends AbstractOrmXmlContextNode
-	implements OrmEclipseLinkCaching
+public class OrmEclipseLinkCachingImpl 
+	extends AbstractOrmXmlContextNode
+	implements 
+		OrmEclipseLinkCaching,
+		OrmCacheableHolder2_0
 {
 	protected final XmlCacheHolder resource;
 	
@@ -54,8 +66,10 @@ public class OrmEclipseLinkCachingImpl extends AbstractOrmXmlContextNode
 	
 	protected Integer expiry;
 	protected OrmEclipseLinkExpiryTimeOfDay expiryTimeOfDay;
+
+	protected final OrmCacheable2_0 cacheable;
 	
-	public OrmEclipseLinkCachingImpl(OrmTypeMapping parent, XmlCacheHolder resource, JavaEclipseLinkCaching javaCaching) {
+	public OrmEclipseLinkCachingImpl(OrmTypeMapping parent, XmlCacheHolder resource, XmlCacheable2_0 cacheableResource, JavaEclipseLinkCaching javaCaching) {
 		super(parent);
 		this.resource = resource;
 		XmlCache resourceCache = getResourceCache();
@@ -76,8 +90,14 @@ public class OrmEclipseLinkCachingImpl extends AbstractOrmXmlContextNode
 		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
 		this.specifiedExistenceType = this.getResourceExistenceChecking();
 		this.initializeExpiry(resourceCache);
+		this.cacheable = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmCacheable(this, cacheableResource);
 	}
 
+	@Override
+	public OrmTypeMapping getParent() {
+		return (OrmTypeMapping) super.getParent();
+	}
+	
 	public int getSize() {
 		return (this.specifiedSize == null) ? this.defaultSize : this.specifiedSize.intValue();
 	}
@@ -503,6 +523,26 @@ public class OrmEclipseLinkCachingImpl extends AbstractOrmXmlContextNode
 		this.resource.setCache(null);
 	}
 	
+	public OrmCacheable2_0 getCacheable() {
+		return this.cacheable;
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		if (getParent() instanceof Entity) {
+			if (!getParent().isMetadataComplete()) {
+				EclipseLinkEntity javaEntity = (EclipseLinkEntity) ((OrmEntity) getParent()).getJavaEntity();
+				if (javaEntity != null) {
+					return ((CacheableHolder2_0) javaEntity).getCacheable().isCacheable();
+				}
+			}
+		
+			EclipseLinkEntity parentEntity = (EclipseLinkEntity) ((OrmEntity) getParent()).getParentEntity();
+			if (parentEntity != null) {
+				return ((CacheableHolder2_0) parentEntity).getCacheable().isCacheable();
+			}
+		}
+		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+	}
 	
 	// **************** initialize/update **************************************
 
@@ -521,7 +561,7 @@ public class OrmEclipseLinkCachingImpl extends AbstractOrmXmlContextNode
 		}
 	}
 
-	protected void update(JavaEclipseLinkCaching javaCaching) {
+	public void update(JavaEclipseLinkCaching javaCaching) {
 		XmlCache resourceCache = getResourceCache();
 		setDefaultSize(this.defaultSize(javaCaching));
 		setSpecifiedSize_(this.getResourceSize(resourceCache));
@@ -540,6 +580,7 @@ public class OrmEclipseLinkCachingImpl extends AbstractOrmXmlContextNode
 		setDefaultExistenceType(this.defaultExistenceType(javaCaching));
 		setSpecifiedExistenceType_(this.getResourceExistenceChecking());
 		this.updateExpiry(resourceCache);
+		this.cacheable.update();
 	}
 	
 	protected void updateExpiry(XmlCache resourceCache) {

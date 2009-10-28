@@ -11,8 +11,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEntityAdvancedComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
@@ -48,13 +48,18 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 		container = addCollapsableSection(
 			addSubPane(container, 5),
 			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
-		new OrmEclipseLinkCachingComposite(this, buildCachingHolder(), container);
+		addCachingComposite(container, buildCachingHolder());
 	}
 	
-	private PropertyAspectAdapter<OrmEntity, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<OrmEntity, EclipseLinkCaching>(getSubjectHolder()) {
+	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
+		new OrmEclipseLinkCachingComposite(this, cachingHolder, container);
+	}
+
+	
+	private PropertyAspectAdapter<OrmEntity, OrmEclipseLinkCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<OrmEntity, OrmEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
-			protected EclipseLinkCaching buildValue_() {
+			protected OrmEclipseLinkCaching buildValue_() {
 				return ((OrmEclipseLinkEntity) this.subject).getCaching();
 			}
 		};

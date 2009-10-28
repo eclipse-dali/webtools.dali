@@ -10,16 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class NullOrmCacheable2_0
 	extends AbstractOrmXmlContextNode
 	implements OrmCacheable2_0
 {
-	public NullOrmCacheable2_0(OrmTypeMapping parent) {
+	public NullOrmCacheable2_0(OrmCacheableHolder2_0 parent) {
 		super(parent);
 	}
 	

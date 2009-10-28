@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.Entity2_0;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EntityNameComposite;
@@ -66,7 +66,7 @@ public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
 		return new PropertyAspectAdapter<OrmEntity, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
-				return ((Entity2_0) this.subject).getCacheable();
+				return ((CacheableHolder2_0) this.subject).getCacheable();
 			}
 		};
 	}

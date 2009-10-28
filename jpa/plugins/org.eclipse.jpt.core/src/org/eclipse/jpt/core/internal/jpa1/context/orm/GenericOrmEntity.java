@@ -11,14 +11,46 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 public class GenericOrmEntity
 	extends AbstractOrmEntity
+
 {
+
+	protected final OrmCacheable2_0 cacheable;
 	
 	public GenericOrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
+		this.cacheable = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmCacheable(this, resourceMapping);
 	}
 	
+	public OrmCacheable2_0 getCacheable() {
+		return this.cacheable;
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		if (!isMetadataComplete()) {
+			CacheableHolder2_0 javaEntity = (CacheableHolder2_0) getJavaEntity();
+			if (javaEntity != null) {
+				return javaEntity.getCacheable().isCacheable();
+			}
+		}
+		
+		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) getParentEntity();
+		if (parentEntity != null) {
+			return parentEntity.getCacheable().isCacheable();
+		}
+		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		getCacheable().update();
+	}
 }
