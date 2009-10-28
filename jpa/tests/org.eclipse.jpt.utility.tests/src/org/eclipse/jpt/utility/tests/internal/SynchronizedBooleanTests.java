@@ -40,28 +40,81 @@ public class SynchronizedBooleanTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testAccessors() throws Exception {
+	public void testGetValue() throws Exception {
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testIs() throws Exception {
+		assertTrue(this.sb.is(false));
+	}
+
+	public void testIsNot() throws Exception {
+		assertTrue(this.sb.isNot(true));
+	}
+
+	public void testIsTrue() throws Exception {
+		assertFalse(this.sb.isTrue());
+	}
+
+	public void testIsFalse() throws Exception {
+		assertTrue(this.sb.isFalse());
+	}
+
+	public void testSetValueFalse() throws Exception {
 		this.sb.setValue(false);
 		assertFalse(this.sb.getValue());
 		assertFalse(this.sb.isTrue());
 		assertTrue(this.sb.isFalse());
+	}
 
+	public void testSetValueTrue() throws Exception {
 		this.sb.setValue(true);
 		assertTrue(this.sb.getValue());
 		assertTrue(this.sb.isTrue());
 		assertFalse(this.sb.isFalse());
+	}
 
+	public void testFlip() throws Exception {
+		assertTrue(this.sb.flip());
+		assertFalse(this.sb.flip());
+	}
+
+	public void testSetNotTrue() throws Exception {
+		this.sb.setNot(true);
+		assertFalse(this.sb.getValue());
+		assertFalse(this.sb.isTrue());
+		assertTrue(this.sb.isFalse());
+	}
+
+	public void testSetNotFalse() throws Exception {
+		this.sb.setNot(false);
+		assertTrue(this.sb.getValue());
+		assertTrue(this.sb.isTrue());
+		assertFalse(this.sb.isFalse());
+	}
+
+	public void testSetFalse() throws Exception {
 		this.sb.setFalse();
 		assertFalse(this.sb.getValue());
 		assertFalse(this.sb.isTrue());
 		assertTrue(this.sb.isFalse());
+	}
 
+	public void testSetTrue() throws Exception {
 		this.sb.setTrue();
 		assertTrue(this.sb.getValue());
 		assertTrue(this.sb.isTrue());
 		assertFalse(this.sb.isFalse());
+	}
 
+	public void testGetMutexThis() throws Exception {
 		assertSame(this.sb, this.sb.getMutex());
+	}
+
+	public void testGetMutexObject() throws Exception {
+		Object mutex = new Object();
+		SynchronizedBoolean syncBool = new SynchronizedBoolean(mutex);
+		assertSame(mutex, syncBool.getMutex());
 	}
 
 	public void testEquals() throws Exception {

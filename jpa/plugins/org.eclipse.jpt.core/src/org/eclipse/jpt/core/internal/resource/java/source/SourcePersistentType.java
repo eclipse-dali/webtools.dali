@@ -33,7 +33,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.Counter;
+import org.eclipse.jpt.utility.internal.IntReference;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -582,24 +582,24 @@ final class SourcePersistentType
 	// ********** CounterMap **********
 
 	private static class CounterMap {
-		private final HashMap<Object, Counter> counters;
+		private final HashMap<Object, IntReference> counters;
 
 		protected CounterMap(int initialCapacity) {
 			super();
-			this.counters = new HashMap<Object, Counter>(initialCapacity);
+			this.counters = new HashMap<Object, IntReference>(initialCapacity);
 		}
 
 		/**
 		 * Return the incremented count for the specified object.
 		 */
 		int increment(Object o) {
-			Counter counter = this.counters.get(o);
+			IntReference counter = this.counters.get(o);
 			if (counter == null) {
-				counter = new Counter();
+				counter = new IntReference();
 				this.counters.put(o, counter);
 			}
 			counter.increment();
-			return counter.count();
+			return counter.getValue();
 		}
 	}
 

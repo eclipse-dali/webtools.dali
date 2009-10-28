@@ -18,7 +18,7 @@ import org.eclipse.jpt.utility.Command;
  * <code>boolean</code> value is set to <code>true</code> or <code>false</code>,
  * with optional time-outs.
  * 
- * @see BooleanHolder
+ * @see BooleanReference
  */
 public class SynchronizedBoolean
 	implements Cloneable, Serializable
@@ -87,6 +87,26 @@ public class SynchronizedBoolean
 
 	/**
 	 * Return whether the current <code>boolean</code>
+	 * value is the specified value.
+	 */
+	public boolean is(boolean v) {
+		synchronized (this.mutex) {
+			return this.value == v;
+		}
+	}
+
+	/**
+	 * Return whether the current <code>boolean</code>
+	 * value is the specified value.
+	 */
+	public boolean isNot(boolean v) {
+		synchronized (this.mutex) {
+			return this.value != v;
+		}
+	}
+
+	/**
+	 * Return whether the current <code>boolean</code>
 	 * value is <code>true</code>.
 	 */
 	public boolean isTrue() {
@@ -106,16 +126,6 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Return whether the current <code>boolean</code>
-	 * value is the specified value.
-	 */
-	public boolean is(boolean v) {
-		synchronized (this.mutex) {
-			return this.value == v;
-		}
-	}
-
-	/**
 	 * Set the <code>boolean</code> value.
 	 * If the value changes, all waiting threads are notified.
 	 */
@@ -128,11 +138,32 @@ public class SynchronizedBoolean
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void setValue_(boolean value) {
-		if (this.value != value) {
-			this.value = value;
+	private void setValue_(boolean v) {
+		if (this.value != v) {
+			this.value = v;
 			this.mutex.notifyAll();
 		}
+	}
+
+	/**
+	 * Set the <code>boolean</code> value to the NOT of its current value.
+	 * If the value changes, all waiting threads are notified.
+	 * Return the resulting value.
+	 */
+	public boolean flip() {
+		synchronized (this.mutex) {
+			boolean v = ! this.value;
+			this.setValue_(v);
+			return v;
+		}
+	}
+
+	/**
+	 * Set the <code>boolean</code> value to <code>true</code>.
+	 * If the value changes, all waiting threads are notified.
+	 */
+	public void setNot(boolean v) {
+		this.setValue( ! v);
 	}
 
 	/**
@@ -180,6 +211,16 @@ public class SynchronizedBoolean
 		while (this.value != v) {
 			this.mutex.wait();
 		}
+	}
+
+	/**
+	 * Suspend the current thread until the <code>boolean</code> value
+	 * changes to the NOT of the specified value.
+	 * If the <code>boolean</code> value is already the NOT of the specified
+	 * value, return immediately.
+	 */
+	public void waitUntilValueIsNot(boolean v) throws InterruptedException {
+		this.waitUntilValueIs( ! v);
 	}
 
 	/**
@@ -244,8 +285,9 @@ public class SynchronizedBoolean
 	/**
 	 * Suspend the current thread until the <code>boolean</code> value changes
 	 * to the specified value or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return <code>true</code> if the specified
-	 * value was achieved; return <code>false</code> if a time-out occurred.
+	 * The time-out is specified in milliseconds. Return <code>true</code> if
+	 * the specified value was achieved;
+	 * return <code>false</code> if a time-out occurred.
 	 * If the <code>boolean</code> value is already the specified value,
 	 * return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
@@ -275,10 +317,25 @@ public class SynchronizedBoolean
 	}
 
 	/**
+	 * Suspend the current thread until the <code>boolean</code> value
+	 * changes to the NOT of the specified value or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code> if
+	 * the NOT of the specified value was achieved;
+	 * return <code>false</code> if a time-out occurred.
+	 * If the <code>boolean</code> value is already the NOT of the specified
+	 * value, return immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public void waitUntilValueIsNot(boolean v, long timeout) throws InterruptedException {
+		this.waitUntilValueIs( ! v, timeout);
+	}
+
+	/**
 	 * Suspend the current thread until the <code>boolean</code> value changes
 	 * to <code>true</code> or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return <code>true</code> if the specified
-	 * value was achieved; return <code>false</code> if a time-out occurred.
+	 * The time-out is specified in milliseconds. Return <code>true</code> if
+	 * <code>true</code> was achieved;
+	 * return <code>false</code> if a time-out occurred.
 	 * If the <code>boolean</code> value is already <code>true</code>,
 	 * return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
@@ -290,8 +347,9 @@ public class SynchronizedBoolean
 	/**
 	 * Suspend the current thread until the <code>boolean</code> value changes
 	 * to <code>false</code> or the specified time-out occurs.
-	 * The time-out is specified in milliseconds. Return <code>true</code> if the specified
-	 * value was achieved; return <code>false</code> if a time-out occurred.
+	 * The time-out is specified in milliseconds. Return <code>true</code> if
+	 * <code>false</code> was achieved;
+	 * return <code>false</code> if a time-out occurred.
 	 * If the <code>boolean</code> value is already <code>true</code>,
 	 * return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
@@ -399,7 +457,7 @@ public class SynchronizedBoolean
 
 	@Override
 	public String toString() {
-		return String.valueOf(this.getValue());
+		return '[' + String.valueOf(this.getValue()) + ']';
 	}
 
 	private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException {

@@ -19,13 +19,12 @@ import org.eclipse.jpt.utility.Command;
  * with optional time-outs.
  * 
  * @parm V the type of the synchronized object's value
+ * @see ObjectReference
  */
 public class SynchronizedObject<V>
 	implements Cloneable, Serializable
 {
-	/**
-	 * Backing value.
-	 */
+	/** Backing value. */
 	private V value;
 
 	/** Object to synchronize on. */
@@ -57,7 +56,7 @@ public class SynchronizedObject<V>
 	}
 
 	/**
-	 * Create a synchronized object with an initial value of null.
+	 * Create a synchronized object with an initial value of <code>null</code>.
 	 * The synchronized object itself will be the mutex.
 	 */
 	public SynchronizedObject() {
@@ -77,7 +76,25 @@ public class SynchronizedObject<V>
 	}
 
 	/**
-	 * Return whether the current value is null.
+	 * Return whether the current value is equal to the specified value.
+	 */
+	public boolean valueEquals(V v) {
+		synchronized (this.mutex) {
+			return Tools.valuesAreEqual(this.value, v);
+		}
+	}
+
+	/**
+	 * Return whether the current value is not equal to the specified value.
+	 */
+	public boolean valueNotEqual(V v) {
+		synchronized (this.mutex) {
+			return Tools.valuesAreDifferent(this.value, v);
+		}
+	}
+
+	/**
+	 * Return whether the current value is <code>null</code>.
 	 */
 	public boolean isNull() {
 		synchronized (this.mutex) {
@@ -86,7 +103,7 @@ public class SynchronizedObject<V>
 	}
 
 	/**
-	 * Return whether the current value is not null.
+	 * Return whether the current value is not <code>null</code>.
 	 */
 	public boolean isNotNull() {
 		synchronized (this.mutex) {
@@ -138,7 +155,7 @@ public class SynchronizedObject<V>
 	 * Pre-condition: synchronized
 	 */
 	private V compareAndSwap_(V expectedValue, V newValue) {
-		return (this.value == expectedValue) ? this.setValue_(newValue) : this.value;
+		return Tools.valuesAreEqual(this.value, expectedValue) ? this.setValue_(newValue) : this.value;
 	}
 
 	/**
@@ -167,7 +184,7 @@ public class SynchronizedObject<V>
 	 * Pre-condition: synchronized
 	 */
 	private void waitUntilValueIs_(V v) throws InterruptedException {
-		while (this.value != v) {
+		while (Tools.valuesAreDifferent(this.value, v)) {
 			this.mutex.wait();
 		}
 	}
@@ -188,7 +205,7 @@ public class SynchronizedObject<V>
 	 * Pre-condition: synchronized
 	 */
 	private void waitUntilValueIsNot_(V v) throws InterruptedException {
-		while (this.value == v) {
+		while (Tools.valuesAreEqual(this.value, v)) {
 			this.mutex.wait();
 		}
 	}
@@ -282,7 +299,7 @@ public class SynchronizedObject<V>
 
 		long stop = System.currentTimeMillis() + timeout;
 		long remaining = timeout;
-		while ((this.value != v) && (remaining > 0L)) {
+		while (Tools.valuesAreDifferent(this.value, v) && (remaining > 0L)) {
 			this.mutex.wait(remaining);
 			remaining = stop - System.currentTimeMillis();
 		}
@@ -315,7 +332,7 @@ public class SynchronizedObject<V>
 
 		long stop = System.currentTimeMillis() + timeout;
 		long remaining = timeout;
-		while ((this.value == v) && (remaining > 0L)) {
+		while (Tools.valuesAreEqual(this.value, v) && (remaining > 0L)) {
 			this.mutex.wait(remaining);
 			remaining = stop - System.currentTimeMillis();
 		}
@@ -449,12 +466,8 @@ public class SynchronizedObject<V>
 
 	@Override
 	public boolean equals(Object obj) {
-		if ( ! (obj instanceof SynchronizedObject<?>)) {
-			return false;
-		}
-		Object v1 = this.getValue();
-		Object v2 = ((SynchronizedObject<?>) obj).getValue();
-		return (v1 == null) ? (v2 == null) : v1.equals(v2);
+		return (obj instanceof SynchronizedObject<?>) &&
+			Tools.valuesAreEqual(this.getValue(), ((SynchronizedObject<?>) obj).getValue());
 	}
 
 	@Override
@@ -465,7 +478,7 @@ public class SynchronizedObject<V>
 
 	@Override
 	public String toString() {
-		return String.valueOf(this.getValue());
+		return '[' + String.valueOf(this.getValue()) + ']';
 	}
 
 	private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException {

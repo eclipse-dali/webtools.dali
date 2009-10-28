@@ -44,7 +44,107 @@ public class SynchronizedIntTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testAccessors() throws Exception {
+	public void testGetValue() throws Exception {
+		assertEquals(0, this.si.getValue());
+	}
+
+	public void testEqualsInt() throws Exception {
+		assertTrue(this.si.equals(0));
+		this.si.setValue(this.value);
+		assertTrue(this.si.equals(7));
+	}
+
+	public void testNotEqualsInt() throws Exception {
+		assertTrue(this.si.notEquals(7));
+		this.si.setValue(this.value);
+		assertTrue(this.si.notEquals(0));
+	}
+
+	public void testIsZero() throws Exception {
+		assertTrue(this.si.isZero());
+		this.si.setValue(this.value);
+		assertFalse(this.si.isZero());
+	}
+
+	public void testIsNotZero() throws Exception {
+		assertFalse(this.si.isNotZero());
+		this.si.setValue(this.value);
+		assertTrue(this.si.isNotZero());
+	}
+
+	public void testIsGreaterThan() throws Exception {
+		assertTrue(this.si.isGreaterThan(-1));
+		assertFalse(this.si.isGreaterThan(0));
+		assertFalse(this.si.isGreaterThan(1));
+		this.si.setValue(this.value);
+		assertTrue(this.si.isGreaterThan(-1));
+		assertFalse(this.si.isGreaterThan(7));
+		assertFalse(this.si.isGreaterThan(8));
+	}
+
+	public void testIsGreaterThanOrEqual() throws Exception {
+		assertTrue(this.si.isGreaterThanOrEqual(-1));
+		assertTrue(this.si.isGreaterThanOrEqual(0));
+		assertFalse(this.si.isGreaterThanOrEqual(1));
+		this.si.setValue(this.value);
+		assertTrue(this.si.isGreaterThanOrEqual(-1));
+		assertTrue(this.si.isGreaterThanOrEqual(7));
+		assertFalse(this.si.isGreaterThanOrEqual(8));
+	}
+
+	public void testIsLessThan() throws Exception {
+		assertFalse(this.si.isLessThan(-1));
+		assertFalse(this.si.isLessThan(0));
+		assertTrue(this.si.isLessThan(1));
+		this.si.setValue(this.value);
+		assertFalse(this.si.isLessThan(-1));
+		assertFalse(this.si.isLessThan(7));
+		assertTrue(this.si.isLessThan(8));
+	}
+
+	public void testIsLessThanOrEqual() throws Exception {
+		assertFalse(this.si.isLessThanOrEqual(-1));
+		assertTrue(this.si.isLessThanOrEqual(0));
+		assertTrue(this.si.isLessThanOrEqual(1));
+		this.si.setValue(this.value);
+		assertFalse(this.si.isLessThanOrEqual(-1));
+		assertTrue(this.si.isLessThanOrEqual(7));
+		assertTrue(this.si.isLessThanOrEqual(8));
+	}
+
+	public void testIsPositive() throws Exception {
+		assertFalse(this.si.isPositive());
+		this.si.setValue(this.value);
+		assertTrue(this.si.isPositive());
+		this.si.setValue(-3);
+		assertFalse(this.si.isPositive());
+	}
+
+	public void testIsNotPositive() throws Exception {
+		assertTrue(this.si.isNotPositive());
+		this.si.setValue(this.value);
+		assertFalse(this.si.isNotPositive());
+		this.si.setValue(-3);
+		assertTrue(this.si.isNotPositive());
+	}
+
+	public void testIsNegative() throws Exception {
+		assertFalse(this.si.isNegative());
+		this.si.setValue(this.value);
+		assertFalse(this.si.isNegative());
+		this.si.setValue(-3);
+		assertTrue(this.si.isNegative());
+	}
+
+	public void testIsNotNegative() throws Exception {
+		assertTrue(this.si.isNotNegative());
+		this.si.setValue(this.value);
+		assertTrue(this.si.isNotNegative());
+		this.si.setValue(-3);
+		assertFalse(this.si.isNotNegative());
+	}
+
+	public void testSetValue() throws Exception {
 		this.si.setValue(0);
 		assertEquals(0, this.si.getValue());
 		assertFalse(this.si.isNotZero());
@@ -54,12 +154,38 @@ public class SynchronizedIntTests extends TestCase {
 		assertEquals(this.value, this.si.getValue());
 		assertTrue(this.si.isNotZero());
 		assertFalse(this.si.isZero());
+	}
 
+	public void testAbs() throws Exception {
+		assertEquals(0, this.si.abs());
+		assertEquals(0, this.si.getValue());
+		this.si.setValue(this.value);
+		assertEquals(this.value, this.si.abs());
+		assertEquals(this.value, this.si.getValue());
+		this.si.setValue(-this.value);
+		assertEquals(this.value, this.si.abs());
+		assertEquals(this.value, this.si.getValue());
+	}
+
+	public void testNeg() throws Exception {
+		assertEquals(0, this.si.neg());
+		assertEquals(0, this.si.getValue());
+		this.si.setValue(this.value);
+		assertEquals(-this.value, this.si.neg());
+		assertEquals(-this.value, this.si.getValue());
+		this.si.setValue(-this.value);
+		assertEquals(this.value, this.si.neg());
+		assertEquals(this.value, this.si.getValue());
+	}
+
+	public void testSetZero() throws Exception {
 		this.si.setZero();
 		assertEquals(0, this.si.getValue());
 		assertFalse(this.si.isNotZero());
 		assertTrue(this.si.isZero());
+	}
 
+	public void testGetMutexThis() throws Exception {
 		assertSame(this.si, this.si.getMutex());
 	}
 

@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.Counter;
+import org.eclipse.jpt.utility.internal.IntReference;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.model.Model;
@@ -57,7 +57,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Maintain a counter for each of the items in the
 	 * wrapped list holder we are listening to.
 	 */
-	protected final IdentityHashMap<E, Counter> counters;
+	protected final IdentityHashMap<E, IntReference> counters;
 
 
 	// ********** constructors **********
@@ -67,7 +67,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 */
 	protected ItemAspectListValueModelAdapter(ListValueModel<? extends E> listHolder) {
 		super(listHolder);
-		this.counters = new IdentityHashMap<E, Counter>();
+		this.counters = new IdentityHashMap<E, IntReference>();
 	}
 
 	/**
@@ -124,9 +124,9 @@ public abstract class ItemAspectListValueModelAdapter<E>
 
 	protected void engageItem(E item) {
 		// listen to each item only once
-		Counter counter = this.counters.get(item);
+		IntReference counter = this.counters.get(item);
 		if (counter == null) {
-			counter = new Counter();
+			counter = new IntReference();
 			this.counters.put(item, counter);
 			this.engageItem_((Model) item);
 		}
@@ -159,7 +159,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 
 	protected void disengageItem(E item) {
 		// stop listening to each item only once
-		Counter counter = this.counters.get(item);
+		IntReference counter = this.counters.get(item);
 		if (counter == null) {
 			// something is wrong if this happens...  ~bjv
 			throw new IllegalStateException("missing counter: " + item); //$NON-NLS-1$

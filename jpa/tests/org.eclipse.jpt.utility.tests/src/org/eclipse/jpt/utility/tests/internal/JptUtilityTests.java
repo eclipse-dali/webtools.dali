@@ -36,33 +36,36 @@ public class JptUtilityTests {
 
 		suite.addTestSuite(ArrayToolsTests.class);
 		suite.addTestSuite(BitToolsTests.class);
-		suite.addTestSuite(BooleanHolderTests.class);
+		suite.addTestSuite(BooleanReferenceTests.class);
 		suite.addTestSuite(BooleanToolsTests.class);
 		suite.addTestSuite(ClasspathTests.class);
 		suite.addTestSuite(ClassToolsTests.class);
 		suite.addTestSuite(CollectionToolsTests.class);
 		suite.addTestSuite(CommandExecutorTests.class);
 		suite.addTestSuite(CommandTests.class);
-		suite.addTestSuite(CounterTests.class);
 		suite.addTestSuite(ExceptionHandlerTests.class);
 		suite.addTestSuite(FileToolsTests.class);
 		suite.addTestSuite(FilterTests.class);
 		suite.addTestSuite(HashBagTests.class);
 		suite.addTestSuite(IdentityHashBagTests.class);
 		suite.addTestSuite(IndentingPrintWriterTests.class);
+		suite.addTestSuite(IntReferenceTests.class);
 		suite.addTestSuite(JavaTypeTests.class);
 		suite.addTestSuite(JDBCTypeTests.class);
 		suite.addTestSuite(ListenerListTests.class);
 		suite.addTestSuite(MethodSignatureTests.class);
 		suite.addTestSuite(NameToolsTests.class);
+		suite.addTestSuite(ObjectReferenceTests.class);
 		suite.addTestSuite(RangeTests.class);
 		suite.addTestSuite(ReverseComparatorTests.class);
 		suite.addTestSuite(SimpleAssociationTests.class);
+		suite.addTestSuite(SimpleQueueTests.class);
 		suite.addTestSuite(SimpleStackTests.class);
 		suite.addTestSuite(StringToolsTests.class);
 		suite.addTestSuite(SynchronizedBooleanTests.class);
 		suite.addTestSuite(SynchronizedIntTests.class);
 		suite.addTestSuite(SynchronizedObjectTests.class);
+		suite.addTestSuite(SynchronizedQueueTests.class);
 		suite.addTestSuite(SynchronizedStackTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 

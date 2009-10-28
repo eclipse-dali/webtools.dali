@@ -17,13 +17,13 @@ import org.eclipse.jpt.utility.Command;
  * This class provides synchronized access to an <code>int</code>.
  * It also provides protocol for suspending a thread until the
  * value is set to a specified value, with optional time-outs.
+ * 
+ * @see IntReference
  */
 public class SynchronizedInt
-	implements Cloneable, Serializable
+	implements Comparable<SynchronizedInt>, Cloneable, Serializable
 {
-	/**
-	 * Backing value.
-	 */
+	/** Backing <code>int</code>. */
 	private int value;
 
 	/** Object to synchronize on. */
@@ -46,7 +46,7 @@ public class SynchronizedInt
 
 	/**
 	 * Create a synchronized integer with the specified initial value.
-	 * The synchronized object itself will be the mutex.
+	 * The synchronized integer itself will be the mutex.
 	 */
 	public SynchronizedInt(int value) {
 		super();
@@ -55,15 +55,23 @@ public class SynchronizedInt
 	}
 
 	/**
+	 * Create a synchronized integer with an initial value of zero
+	 * and the specified mutex.
+	 */
+	public SynchronizedInt(Object mutex) {
+		this(0, mutex);
+	}
+
+	/**
 	 * Create a synchronized object with an initial value of zero.
-	 * The synchronized object itself will be the mutex.
+	 * The synchronized integer itself will be the mutex.
 	 */
 	public SynchronizedInt() {
 		this(0);
 	}
 
 
-	// ********** accessors **********
+	// ********** methods **********
 
 	/**
 	 * Return the current value.
@@ -71,6 +79,24 @@ public class SynchronizedInt
 	public int getValue() {
 		synchronized (this.mutex) {
 			return this.value;
+		}
+	}
+
+	/**
+	 * Return whether the current value is equal to the specified value.
+	 */
+	public boolean equals(int v) {
+		synchronized (this.mutex) {
+			return this.value == v;
+		}
+	}
+
+	/**
+	 * Return whether the current value is not equal to the specified value.
+	 */
+	public boolean notEquals(int v) {
+		synchronized (this.mutex) {
+			return this.value != v;
 		}
 	}
 
@@ -93,6 +119,74 @@ public class SynchronizedInt
 	}
 
 	/**
+	 * Return whether the current value is greater than the specified value.
+	 */
+	public boolean isGreaterThan(int v) {
+		synchronized (this.mutex) {
+			return this.value > v;
+		}
+	}
+
+	/**
+	 * Return whether the current value is greater than or equal to the
+	 * specified value.
+	 */
+	public boolean isGreaterThanOrEqual(int v) {
+		synchronized (this.mutex) {
+			return this.value >= v;
+		}
+	}
+
+	/**
+	 * Return whether the current value is less than the specified value.
+	 */
+	public boolean isLessThan(int v) {
+		synchronized (this.mutex) {
+			return this.value < v;
+		}
+	}
+
+	/**
+	 * Return whether the current value is less than or equal to the
+	 * specified value.
+	 */
+	public boolean isLessThanOrEqual(int v) {
+		synchronized (this.mutex) {
+			return this.value <= v;
+		}
+	}
+
+	/**
+	 * Return whether the current value is positive.
+	 */
+	public boolean isPositive() {
+		return this.isGreaterThan(0);
+	}
+
+	/**
+	 * Return whether the current value is not positive
+	 * (i.e. negative or zero).
+	 */
+	public boolean isNotPositive() {
+		return this.isLessThanOrEqual(0);
+	}
+
+	/**
+	 * Return whether the current value is negative.
+	 */
+	public boolean isNegative() {
+		return this.isLessThan(0);
+	}
+
+	/**
+	 * Return whether the current value is not negative
+	 * (i.e. zero or positive).
+	 */
+	public boolean isNotNegative() {
+		return this.isGreaterThanOrEqual(0);
+	}
+
+	/**
 	 * Set the value. If the value changes, all waiting
 	 * threads are notified. Return the previous value.
 	 */
@@ -103,6 +197,7 @@ public class SynchronizedInt
 	}
 
 	/**
+	 * Return the <em>old</em> value.
 	 * Pre-condition: synchronized
 	 */
 	private int setValue_(int v) {
@@ -115,11 +210,149 @@ public class SynchronizedInt
 	}
 
 	/**
+	 * Return the <em>new</em> value.
+	 * Pre-condition: synchronized
+	 */
+	private int setNewValue_(int v) {
+		if (this.value != v) {
+			this.value = v;
+			this.mutex.notifyAll();
+		}
+		return v;
+	}
+
+	/**
+	 * Set the value to the absolute value of the current value.
+	 * Return the new value.
+	 */
+	public int abs() {
+		synchronized (this.mutex) {
+			return this.setNewValue_(Math.abs(this.value));
+		}
+	}
+
+	/**
+	 * Set the value to the negative value of the current value.
+	 * Return the new value.
+	 */
+	public int neg() {
+		synchronized (this.mutex) {
+			return this.setNewValue_(-this.value);
+		}
+	}
+
+	/**
 	 * Set the value to zero. If the value changes, all waiting
 	 * threads are notified. Return the previous value.
 	 */
 	public int setZero() {
 		return this.setValue(0);
+	}
+
+	/**
+	 * Set the value to the current value plus the specified value.
+	 * Return the new value.
+	 */
+	public int add(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_(this.value + v);
+		}
+	}
+
+	/**
+	 * Increment the value by one.
+	 * Return the new value.
+	 */
+	public int increment() {
+		synchronized (this.mutex) {
+			this.value++;
+			this.mutex.notifyAll();
+			return this.value;
+		}
+	}
+
+	/**
+	 * Set the value to the current value minus the specified value.
+	 * Return the new value.
+	 */
+	public int subtract(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_(this.value - v);
+		}
+	}
+
+	/**
+	 * Decrement the value by one.
+	 * Return the new value.
+	 */
+	public int decrement() {
+		synchronized (this.mutex) {
+			this.value--;
+			this.mutex.notifyAll();
+			return this.value;
+		}
+	}
+
+	/**
+	 * Set the value to the current value times the specified value.
+	 * Return the new value.
+	 */
+	public int multiply(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_(this.value * v);
+		}
+	}
+
+	/**
+	 * Set the value to the current value divided by the specified value.
+	 * Return the new value.
+	 */
+	public int divide(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_(this.value / v);
+		}
+	}
+
+	/**
+	 * Set the value to the remainder of the current value divided by the
+	 * specified value.
+	 * Return the new value.
+	 */
+	public int remainder(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_(this.value % v);
+		}
+	}
+
+	/**
+	 * Set the value to the minimum of the current value and the specified value.
+	 * Return the new value.
+	 */
+	public int min(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_(Math.min(this.value, v));
+		}
+	}
+
+	/**
+	 * Set the value to the maximum of the current value and the specified value.
+	 * Return the new value.
+	 */
+	public int max(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_(Math.max(this.value, v));
+		}
+	}
+
+	/**
+	 * Set the value to the current value raised to the power of the'
+	 * specified value.
+	 * Return the new value.
+	 */
+	public int pow(int v) {
+		synchronized (this.mutex) {
+			return this.setNewValue_((int) Math.pow(this.value, v));
+		}
 	}
 
 	/**
@@ -155,16 +388,16 @@ public class SynchronizedInt
 	 * to the specified value. If the value is already the
 	 * specified value, return immediately.
 	 */
-	public void waitUntilValueIs(int v) throws InterruptedException {
+	public void waitUntilEqual(int v) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIs_(v);
+			this.waitUntilEqual_(v);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void waitUntilValueIs_(int v) throws InterruptedException {
+	private void waitUntilEqual_(int v) throws InterruptedException {
 		while (this.value != v) {
 			this.mutex.wait();
 		}
@@ -176,16 +409,16 @@ public class SynchronizedInt
 	 * value is already <em>not</em> the specified value,
 	 * return immediately.
 	 */
-	public void waitUntilValueIsNot(int v) throws InterruptedException {
+	public void waitUntilNotEqual(int v) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIsNot_(v);
+			this.waitUntilNotEqual_(v);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void waitUntilValueIsNot_(int v) throws InterruptedException {
+	private void waitUntilNotEqual_(int v) throws InterruptedException {
 		while (this.value == v) {
 			this.mutex.wait();
 		}
@@ -196,7 +429,7 @@ public class SynchronizedInt
 	 * If the value is already zero, return immediately.
 	 */
 	public void waitUntilZero() throws InterruptedException {
-		this.waitUntilValueIs(0);
+		this.waitUntilEqual(0);
 	}
 
 	/**
@@ -206,7 +439,123 @@ public class SynchronizedInt
 	 * return immediately.
 	 */
 	public void waitUntilNotZero() throws InterruptedException {
-		this.waitUntilValueIsNot(0);
+		this.waitUntilNotEqual(0);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to a value greater than the specified value. If the value is already
+	 * greater than the specified value, return immediately.
+	 */
+	public void waitUntilGreaterThan(int v) throws InterruptedException {
+		synchronized (this.mutex) {
+			this.waitUntilGreaterThan_(v);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void waitUntilGreaterThan_(int v) throws InterruptedException {
+		while (this.value <= v) {
+			this.mutex.wait();
+		}
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to a value greater than or equal to the specified value. If the value is already
+	 * greater than or equal the specified value, return immediately.
+	 */
+	public void waitUntilGreaterThanOrEqual(int v) throws InterruptedException {
+		synchronized (this.mutex) {
+			this.waitUntilGreaterThanOrEqual_(v);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void waitUntilGreaterThanOrEqual_(int v) throws InterruptedException {
+		while (this.value < v) {
+			this.mutex.wait();
+		}
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to a value less than the specified value. If the value is already
+	 * less than the specified value, return immediately.
+	 */
+	public void waitUntilLessThan(int v) throws InterruptedException {
+		synchronized (this.mutex) {
+			this.waitUntilLessThan_(v);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void waitUntilLessThan_(int v) throws InterruptedException {
+		while (this.value >= v) {
+			this.mutex.wait();
+		}
+	}
+
+	/**
+	 * Suspend the current thread until the value changes
+	 * to a value less than or equal to the specified value. If the value is already
+	 * less than or equal the specified value, return immediately.
+	 */
+	public void waitUntilLessThanOrEqual(int v) throws InterruptedException {
+		synchronized (this.mutex) {
+			this.waitUntilLessThanOrEqual_(v);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private void waitUntilLessThanOrEqual_(int v) throws InterruptedException {
+		while (this.value > v) {
+			this.mutex.wait();
+		}
+	}
+
+	/**
+	 * Suspend the current thread until the value is positive.
+	 * If the value is already positive, return immediately.
+	 */
+	public void waitUntilPositive() throws InterruptedException {
+		this.waitUntilGreaterThan(0);
+	}
+
+	/**
+	 * Suspend the current thread until the value is not positive
+	 * (i.e. negative or zero).
+	 * If the value is already <em>not</em> positive,
+	 * return immediately.
+	 */
+	public void waitUntilNotPositive() throws InterruptedException {
+		this.waitUntilLessThanOrEqual(0);
+	}
+
+	/**
+	 * Suspend the current thread until the value is negative.
+	 * If the value is already negative, return immediately.
+	 */
+	public void waitUntilNegative() throws InterruptedException {
+		this.waitUntilLessThan(0);
+	}
+
+	/**
+	 * Suspend the current thread until the value is not negative
+	 * (i.e. zero or positive).
+	 * If the value is already <em>not</em> negative,
+	 * return immediately.
+	 */
+	public void waitUntilNotNegative() throws InterruptedException {
+		this.waitUntilGreaterThanOrEqual(0);
 	}
 
 	/**
@@ -219,7 +568,7 @@ public class SynchronizedInt
 	 */
 	public int waitToSetValue(int v) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIsNot_(v);
+			this.waitUntilNotEqual_(v);
 			return this.setValue_(v);
 		}
 	}
@@ -246,7 +595,7 @@ public class SynchronizedInt
 	 */
 	public int waitToSwap(int expectedValue, int newValue) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIs_(expectedValue);
+			this.waitUntilEqual_(expectedValue);
 			return this.setValue_(newValue);
 		}
 	}
@@ -263,18 +612,18 @@ public class SynchronizedInt
 	 * If the value is already the specified value, return true immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitUntilValueIs(int v, long timeout) throws InterruptedException {
+	public boolean waitUntilEqual(int v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			return this.waitUntilValueIs_(v, timeout);
+			return this.waitUntilEqual_(v, timeout);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private boolean waitUntilValueIs_(int v, long timeout) throws InterruptedException {
+	private boolean waitUntilEqual_(int v, long timeout) throws InterruptedException {
 		if (timeout == 0L) {
-			this.waitUntilValueIs_(v);  // wait indefinitely until notified
+			this.waitUntilEqual_(v);  // wait indefinitely until notified
 			return true;  // if it ever comes back, the condition was met
 		}
 
@@ -296,18 +645,18 @@ public class SynchronizedInt
 	 * value, return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitUntilValueIsNot(int v, long timeout) throws InterruptedException {
+	public boolean waitUntilNotEqual(int v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			return this.waitUntilValueIsNot_(v, timeout);
+			return this.waitUntilNotEqual_(v, timeout);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private boolean waitUntilValueIsNot_(int v, long timeout) throws InterruptedException {
+	private boolean waitUntilNotEqual_(int v, long timeout) throws InterruptedException {
 		if (timeout == 0L) {
-			this.waitUntilValueIsNot_(v);	// wait indefinitely until notified
+			this.waitUntilNotEqual_(v);	// wait indefinitely until notified
 			return true;	// if it ever comes back, the condition was met
 		}
 
@@ -324,26 +673,212 @@ public class SynchronizedInt
 	 * Suspend the current thread until the value changes
 	 * to zero or the specified time-out occurs.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
-	 * if the specified value was achieved; return <code>false</code>
+	 * if the value is now zero; return <code>false</code>
 	 * if a time-out occurred. If the value is already zero,
 	 * return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitUntilZero(long timeout) throws InterruptedException {
-		return this.waitUntilValueIs(0, timeout);
+		return this.waitUntilEqual(0, timeout);
 	}
 
 	/**
 	 * Suspend the current thread until the value changes
 	 * to something other than zero or the specified time-out occurs.
 	 * The time-out is specified in milliseconds. Return <code>true</code>
-	 * if the specified value was achieved; return <code>false</code>
+	 * if the value is now not zero; return <code>false</code>
 	 * if a time-out occurred. If the value is already <em>not</em>
 	 * zero, return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
 	public boolean waitUntilNotZero(long timeout) throws InterruptedException {
-		return this.waitUntilValueIsNot(0, timeout);
+		return this.waitUntilNotEqual(0, timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes to a value greater
+	 * than the specified value or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code>
+	 * if a time-out occurred.
+	 * If the value is already greater than the specified value, return immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilGreaterThan(int v, long timeout) throws InterruptedException {
+		synchronized (this.mutex) {
+			return this.waitUntilGreaterThan_(v, timeout);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private boolean waitUntilGreaterThan_(int v, long timeout) throws InterruptedException {
+		if (timeout == 0L) {
+			this.waitUntilGreaterThan_(v);  // wait indefinitely until notified
+			return true;  // if it ever comes back, the condition was met
+		}
+
+		long stop = System.currentTimeMillis() + timeout;
+		long remaining = timeout;
+		while ((this.value <= v) && (remaining > 0L)) {
+			this.mutex.wait(remaining);
+			remaining = stop - System.currentTimeMillis();
+		}
+		return (this.value > v);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes to a value greater
+	 * than or equal to the specified value or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code>
+	 * if a time-out occurred.
+	 * If the value is already greater than or equal to the specified value,
+	 * return immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilGreaterThanOrEqual(int v, long timeout) throws InterruptedException {
+		synchronized (this.mutex) {
+			return this.waitUntilGreaterThanOrEqual_(v, timeout);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private boolean waitUntilGreaterThanOrEqual_(int v, long timeout) throws InterruptedException {
+		if (timeout == 0L) {
+			this.waitUntilGreaterThanOrEqual_(v);  // wait indefinitely until notified
+			return true;  // if it ever comes back, the condition was met
+		}
+
+		long stop = System.currentTimeMillis() + timeout;
+		long remaining = timeout;
+		while ((this.value < v) && (remaining > 0L)) {
+			this.mutex.wait(remaining);
+			remaining = stop - System.currentTimeMillis();
+		}
+		return (this.value >= v);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes to a value less
+	 * than the specified value or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code>
+	 * if a time-out occurred.
+	 * If the value is already less than the specified value, return immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilLessThan(int v, long timeout) throws InterruptedException {
+		synchronized (this.mutex) {
+			return this.waitUntilLessThan_(v, timeout);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private boolean waitUntilLessThan_(int v, long timeout) throws InterruptedException {
+		if (timeout == 0L) {
+			this.waitUntilLessThan_(v);  // wait indefinitely until notified
+			return true;  // if it ever comes back, the condition was met
+		}
+
+		long stop = System.currentTimeMillis() + timeout;
+		long remaining = timeout;
+		while ((this.value >= v) && (remaining > 0L)) {
+			this.mutex.wait(remaining);
+			remaining = stop - System.currentTimeMillis();
+		}
+		return (this.value < v);
+	}
+
+	/**
+	 * Suspend the current thread until the value changes to a value less
+	 * than or equal to the specified value or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the specified value was achieved; return <code>false</code>
+	 * if a time-out occurred.
+	 * If the value is already less than or equal to the specified value,
+	 * return immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilLessThanOrEqual(int v, long timeout) throws InterruptedException {
+		synchronized (this.mutex) {
+			return this.waitUntilLessThanOrEqual_(v, timeout);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized
+	 */
+	private boolean waitUntilLessThanOrEqual_(int v, long timeout) throws InterruptedException {
+		if (timeout == 0L) {
+			this.waitUntilLessThanOrEqual_(v);  // wait indefinitely until notified
+			return true;  // if it ever comes back, the condition was met
+		}
+
+		long stop = System.currentTimeMillis() + timeout;
+		long remaining = timeout;
+		while ((this.value > v) && (remaining > 0L)) {
+			this.mutex.wait(remaining);
+			remaining = stop - System.currentTimeMillis();
+		}
+		return (this.value <= v);
+	}
+
+	/**
+	 * Suspend the current thread until the value is positive
+	 * or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value is now positive; return <code>false</code>
+	 * if a time-out occurred. If the value is already positive,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilPositive(long timeout) throws InterruptedException {
+		return this.waitUntilGreaterThan(0, timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value is not positive
+	 * or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value is now not positive; return <code>false</code>
+	 * if a time-out occurred. If the value is already not positive,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilNotPositive(long timeout) throws InterruptedException {
+		return this.waitUntilLessThanOrEqual(0, timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value is negative
+	 * or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value is now negative; return <code>false</code>
+	 * if a time-out occurred. If the value is already negative,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilNegative(long timeout) throws InterruptedException {
+		return this.waitUntilLessThan(0, timeout);
+	}
+
+	/**
+	 * Suspend the current thread until the value is not negative
+	 * or the specified time-out occurs.
+	 * The time-out is specified in milliseconds. Return <code>true</code>
+	 * if the value is now not negative; return <code>false</code>
+	 * if a time-out occurred. If the value is already not negative,
+	 * return <code>true</code> immediately.
+	 * If the time-out is zero, wait indefinitely.
+	 */
+	public boolean waitUntilNotNegative(long timeout) throws InterruptedException {
+		return this.waitUntilGreaterThanOrEqual(0, timeout);
 	}
 
 	/**
@@ -362,7 +897,7 @@ public class SynchronizedInt
 	 */
 	public boolean waitToSetValue(int v, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIsNot_(v, timeout);
+			boolean success = this.waitUntilNotEqual_(v, timeout);
 			if (success) {
 				this.setValue_(v);
 			}
@@ -404,7 +939,7 @@ public class SynchronizedInt
 	 */
 	public boolean waitToSwap(int expectedValue, int newValue, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIs_(expectedValue, timeout);
+			boolean success = this.waitUntilEqual_(expectedValue, timeout);
 			if (success) {
 				this.setValue_(newValue);
 			}
@@ -430,6 +965,15 @@ public class SynchronizedInt
 	}
 
 
+	// ********** Comparable implementation **********
+
+	public int compareTo(SynchronizedInt si) {
+		int thisValue = this.getValue();
+		int otherValue = si.getValue();
+		return thisValue < otherValue ? -1 : (thisValue == otherValue ? 0 : 1);
+	}
+
+
 	// ********** standard methods **********
 
 	@Override
@@ -445,8 +989,8 @@ public class SynchronizedInt
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof SynchronizedInt &&
-				this.getValue() == ((SynchronizedInt) obj).getValue();
+		return (obj instanceof SynchronizedInt) &&
+				(this.getValue() == ((SynchronizedInt) obj).getValue());
 	}
 
 	@Override
@@ -456,7 +1000,7 @@ public class SynchronizedInt
 
 	@Override
 	public String toString() {
-		return String.valueOf(this.getValue());
+		return '[' + String.valueOf(this.getValue()) + ']';
 	}
 
 	private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException {

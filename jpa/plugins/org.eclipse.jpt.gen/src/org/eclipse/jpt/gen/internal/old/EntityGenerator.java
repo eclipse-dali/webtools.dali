@@ -29,7 +29,7 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.JavaType;
-import org.eclipse.jpt.utility.internal.BooleanHolder;
+import org.eclipse.jpt.utility.internal.BooleanReference;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -449,7 +449,7 @@ public class EntityGenerator {
 	private void printOwnedManyToManyAnnotationOn(String attributeName, ManyToManyRelation relation, EntitySourceWriter pw) {
 		pw.printAnnotation(JPA.MANY_TO_MANY);
 		pw.println();
-		BooleanHolder printJoinTableAnnotation = new BooleanHolder(true);
+		BooleanReference printJoinTableAnnotation = new BooleanReference(true);
 
 		if ( ! relation.joinTableNameIsDefault()) {  // db-only test - no need to delegate to platform?
 			printJoinTableAnnotation.setFalse();
@@ -483,7 +483,7 @@ public class EntityGenerator {
 	/**
 	 * 'elementName' is either "joinColumns" or "inverseJoinColumns"
 	 */
-	private void printJoinTableJoinColumnAnnotationsOn(String elementName, String attributeName, ForeignKey foreignKey, BooleanHolder printJoinTableAnnotation, EntitySourceWriter pw) {
+	private void printJoinTableJoinColumnAnnotationsOn(String elementName, String attributeName, ForeignKey foreignKey, BooleanReference printJoinTableAnnotation, EntitySourceWriter pw) {
 		// we have to pre-calculate whether either 'name' and/or 'referencedColumnName'
 		// is required because they are wrapped by the JoinTable annotation and we
 		// need to print the JoinTable annotation first (if it hasn't already been printed)
