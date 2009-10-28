@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
@@ -155,7 +154,7 @@ public abstract class AbstractJpaFactory
 	
 	// ********** Core Model **********
 	
-	public JpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
+	public JpaProject buildJpaProject(JpaProject.Config config) {
 		return new GenericJpaProject((JpaProject2_0.Config) config);
 	}
 	

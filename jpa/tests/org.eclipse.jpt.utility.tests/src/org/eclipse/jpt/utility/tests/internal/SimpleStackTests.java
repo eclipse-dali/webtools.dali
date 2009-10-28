@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,14 +14,19 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.SimpleStack;
 import org.eclipse.jpt.utility.internal.Stack;
 
+@SuppressWarnings("nls")
 public class SimpleStackTests extends TestCase {
 
 	public SimpleStackTests(String name) {
 		super(name);
 	}
 
+	Stack<String> buildStack() {
+		return new SimpleStack<String>();
+	}
+
 	public void testIsEmpty() {
-		Stack<String> stack = new SimpleStack<String>();
+		Stack<String> stack = this.buildStack();
 		assertTrue(stack.isEmpty());
 		stack.push("first");
 		assertFalse(stack.isEmpty());
@@ -34,7 +39,7 @@ public class SimpleStackTests extends TestCase {
 	}
 
 	public void testPushAndPop() {
-		Stack<String> stack = new SimpleStack<String>();
+		Stack<String> stack = this.buildStack();
 		String first = "first";
 		String second = "second";
 
@@ -45,7 +50,7 @@ public class SimpleStackTests extends TestCase {
 	}
 
 	public void testPushAndPeek() {
-		Stack<String> stack = new SimpleStack<String>();
+		Stack<String> stack = this.buildStack();
 		String first = "first";
 		String second = "second";
 
@@ -60,7 +65,7 @@ public class SimpleStackTests extends TestCase {
 	}
 
 	public void testEmptyStackExceptionPeek() {
-		Stack<String> stack = new SimpleStack<String>();
+		Stack<String> stack = this.buildStack();
 		String first = "first";
 		String second = "second";
 
@@ -74,6 +79,7 @@ public class SimpleStackTests extends TestCase {
 		boolean exCaught = false;
 		try {
 			stack.peek();
+			fail();
 		} catch (EmptyStackException ex) {
 			exCaught = true;
 		}
@@ -81,7 +87,7 @@ public class SimpleStackTests extends TestCase {
 	}
 
 	public void testEmptyStackExceptionPop() {
-		Stack<String> stack = new SimpleStack<String>();
+		Stack<String> stack = this.buildStack();
 		String first = "first";
 		String second = "second";
 
@@ -95,6 +101,7 @@ public class SimpleStackTests extends TestCase {
 		boolean exCaught = false;
 		try {
 			stack.pop();
+			fail();
 		} catch (EmptyStackException ex) {
 			exCaught = true;
 		}
@@ -102,7 +109,7 @@ public class SimpleStackTests extends TestCase {
 	}
 
 	public void testClone() {
-		SimpleStack<String> stack = new SimpleStack<String>();
+		SimpleStack<String> stack = (SimpleStack<String>) this.buildStack();
 		stack.push("first");
 		stack.push("second");
 		stack.push("third");
@@ -111,7 +118,7 @@ public class SimpleStackTests extends TestCase {
 	}
 
 	public void testSerialization() throws Exception {
-		SimpleStack<String> stack = new SimpleStack<String>();
+		Stack<String> stack = this.buildStack();
 		stack.push("first");
 		stack.push("second");
 		stack.push("third");

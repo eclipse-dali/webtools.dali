@@ -232,10 +232,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	
 	protected JpaProject getJpaProject() {
 		IProject project = getProject();
-		if (project == null) {
-			return null;
-		}
-		return JptCorePlugin.getJpaProject(project);
+		return (project == null) ? null : JptCorePlugin.getJpaProject(project);
 	}
 	
 	/**

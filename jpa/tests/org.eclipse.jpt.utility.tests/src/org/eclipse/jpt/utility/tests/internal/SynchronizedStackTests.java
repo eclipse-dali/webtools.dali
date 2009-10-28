@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.utility.internal.SimpleStack;
 import org.eclipse.jpt.utility.internal.Stack;
 import org.eclipse.jpt.utility.internal.SynchronizedStack;
 
+@SuppressWarnings("nls")
 public class SynchronizedStackTests extends SimpleStackTests {
 	private volatile SynchronizedStack<String> ss;
 	private volatile boolean exCaught;
@@ -27,6 +28,16 @@ public class SynchronizedStackTests extends SimpleStackTests {
 
 	public SynchronizedStackTests(String name) {
 		super(name);
+	}
+
+	@Override
+	Stack<String> buildStack() {
+		return new SynchronizedStack<String>();
+	}
+
+	@Override
+	public void testClone() {
+		// synchronized stack is not cloneable
 	}
 
 	@Override
@@ -53,10 +64,13 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		slowStack.push("first");
 		slowStack.push("second");
 
-		new Thread(this.buildRunnable(slowStack)).start();
+		Thread thread = new Thread(this.buildRunnable(slowStack));
+		thread.start();
 		Thread.sleep(200);
 
 		assertEquals(expected, slowStack.pop());
+		thread.join();
+		assertTrue(slowStack.isEmpty());
 	}
 
 	private Runnable buildRunnable(final SlowStack<String> slowStack) {
@@ -93,7 +107,7 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		}
 		public synchronized Object slowPop() {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException ex) {
 				throw new RuntimeException(ex);
 			}

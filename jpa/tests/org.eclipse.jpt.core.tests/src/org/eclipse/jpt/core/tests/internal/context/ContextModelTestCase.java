@@ -63,7 +63,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		super.setUp();
 		this.persistenceXmlResource = getJpaProject().getPersistenceXmlResource();
 		this.ormXmlResource = getJpaProject().getDefaultOrmXmlResource();
-		waitForWorkspaceJobs();
+		this.waitForWorkspaceJobsToFinish();
 	}
 	
 	@Override
@@ -71,6 +71,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		this.persistenceXmlResource = null;
 		this.ormXmlResource = null;
 		JptCorePlugin.getWorkspacePreferences().clear();
+		this.waitForWorkspaceJobsToFinish();
 		super.tearDown();
 	}
 	
@@ -99,8 +100,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return getJavaProject().getJpaProject();
 	}
 	
-	protected void waitForWorkspaceJobs() {
-		// This job will not finish running until the workspace jobs are done
+	protected void waitForWorkspaceJobsToFinish() throws InterruptedException {
+		// This job will not start running until all the other workspace jobs are done
 		Job waitJob = new Job("Wait job") {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
@@ -109,11 +110,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 			};
 		waitJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
 		waitJob.schedule();
-		try {
-			waitJob.join();
-		} catch (InterruptedException ex) {
-			// the job thread was interrupted during a wait - ignore
-		}
+		waitJob.join();
 	}
 	
 	protected JpaXmlResource getPersistenceXmlResource() {

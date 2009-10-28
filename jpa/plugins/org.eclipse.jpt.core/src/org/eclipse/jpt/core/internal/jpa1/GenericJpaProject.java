@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 
@@ -22,7 +21,7 @@ public class GenericJpaProject
 
 	// ********** constructor/initialization **********
 
-	public GenericJpaProject(JpaProject2_0.Config config) throws CoreException {
+	public GenericJpaProject(JpaProject2_0.Config config) {
 		super(config);
 	}
 

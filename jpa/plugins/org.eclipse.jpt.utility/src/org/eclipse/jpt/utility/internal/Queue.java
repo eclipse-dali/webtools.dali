@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,57 +10,57 @@
 package org.eclipse.jpt.utility.internal;
 
 import java.io.Serializable;
-import java.util.EmptyStackException;
+import java.util.NoSuchElementException;
 
 /**
- * Interface defining the classic stack behavior,
- * without the backdoors allowed by {@link java.util.Stack}.
+ * Interface defining the classic queue behavior,
+ * without the backdoors allowed by {@link java.util.Queue}.
  * 
- * @param <E> the type of elements contained by the stack
+ * @param <E> the type of elements contained by the queue
  */
-public interface Stack<E> {
+public interface Queue<E> {
 
 	/**
-	 * "Push" the specified item on to the top of the stack.
+	 * "Enqueue" the specified item to the tail of the queue.
 	 */
-	void push(E element);
+	void enqueue(E o);
 
 	/**
-	 * "Pop" an item from the top of the stack.
+	 * "Dequeue" an item from the head of the queue.
 	 */
-	E pop();
+	E dequeue();
 
 	/**
-	 * Return the item on the top of the stack
-	 * without removing it from the stack.
+	 * Return the item on the head of the queue
+	 * without removing it from the queue.
 	 */
 	E peek();
 
 	/**
-	 * Return whether the stack is empty.
+	 * Return whether the queue is empty.
 	 */
 	boolean isEmpty();
 
 
-	final class Empty<E> implements Stack<E>, Serializable {
+	final class Empty<E> implements Queue<E>, Serializable {
 		@SuppressWarnings("unchecked")
-		public static final Stack INSTANCE = new Empty();
+		public static final Queue INSTANCE = new Empty();
 		@SuppressWarnings("unchecked")
-		public static <T> Stack<T> instance() {
+		public static <T> Queue<T> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
 		private Empty() {
 			super();
 		}
-		public void push(E element) {
+		public void enqueue(E o) {
 			throw new UnsupportedOperationException();
 		}
-		public E pop() {
-			throw new EmptyStackException();
+		public E dequeue() {
+			throw new NoSuchElementException();
 		}
 		public E peek() {
-			throw new EmptyStackException();
+			throw new NoSuchElementException();
 		}
 		public boolean isEmpty() {
 			return true;

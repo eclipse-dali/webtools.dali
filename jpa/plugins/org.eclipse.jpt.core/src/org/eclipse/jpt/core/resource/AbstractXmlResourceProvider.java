@@ -173,7 +173,7 @@ public abstract class AbstractXmlResourceProvider
 				createResourceAndUnderlyingFile(config);
 			}
 		};
-		workspace.run(runnable, workspace.getRoot(), IWorkspace.AVOID_UPDATE, new NullProgressMonitor());
+		workspace.run(runnable, this.project, IWorkspace.AVOID_UPDATE, null);
 		return this.resource;	
 	}
 	

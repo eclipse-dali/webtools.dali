@@ -21,6 +21,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
 import org.eclipse.jpt.core.JpaResourceModel;
@@ -75,15 +76,29 @@ public class JpaXmlResource
 	// ********** BasicNotifierImpl override **********
 	
 	/**
-	 * override to prevent notification when the resource's state is unchanged
-	 * or the resource is not loaded
+	 * override to fire notification only when
+	 * - the resource's state has actually changed; and
+	 * - the resource is loaded; and
+	 * - the resource's resource set is still present (EMF will fire an
+	 *    notification when the resource set is set to 'null', just before
+	 *    the resource is "unloaded" - we want to swallow this notification)
 	 */
 	@Override
 	public void eNotify(Notification notification) {
-		if ( ! notification.isTouch() && this.isLoaded()) {
+		if ( ! notification.isTouch() && this.isLoaded() && (this.resourceSet != null)) {
 			super.eNotify(notification);
 			this.resourceModelChanged();
 		}
+	}
+
+	/**
+	 * we could use this method to suppress some notifications; or we could just
+	 * check whether 'resourceSet' is 'null' (which is what we do)
+	 */
+	protected boolean resultSetCleared(Notification notification) {
+		return (notification.getNotifier() == this) &&
+					(notification.getFeatureID(Resource.class) == RESOURCE__RESOURCE_SET) &&
+					(notification.getNewValue() == null);
 	}
 	
 	

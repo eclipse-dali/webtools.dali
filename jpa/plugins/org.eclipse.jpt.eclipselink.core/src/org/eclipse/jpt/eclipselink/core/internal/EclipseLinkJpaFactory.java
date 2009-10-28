@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
@@ -54,7 +53,7 @@ public class EclipseLinkJpaFactory
 	// ********** Core Model **********
 	
 	@Override
-	public EclipseLinkJpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
+	public EclipseLinkJpaProject buildJpaProject(JpaProject.Config config) {
 		return new EclipseLinkJpaProjectImpl((JpaProject2_0.Config) config);
 	}
 	

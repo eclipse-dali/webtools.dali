@@ -37,6 +37,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
  */
 public class JpaValidator extends AbstractValidator implements IValidator {
 
+	public JpaValidator() {
+		super();
+	}
+
 	
 	// ********** IValidator implementation **********
 

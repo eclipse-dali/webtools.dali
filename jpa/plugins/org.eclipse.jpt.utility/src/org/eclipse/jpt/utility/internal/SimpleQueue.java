@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,15 +11,13 @@ package org.eclipse.jpt.utility.internal;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.EmptyStackException;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 /**
- * Straightforward implementation of the {@link Stack} interface.
+ * Straightforward implementation of the {@link Queue} interface.
  */
-public class SimpleStack<E>
-	implements Stack<E>, Cloneable, Serializable
+public class SimpleQueue<E>
+	implements Queue<E>, Cloneable, Serializable
 {
 	private LinkedList<E> elements;
 
@@ -29,46 +27,38 @@ public class SimpleStack<E>
 	// ********** constructors **********
 
 	/**
-	 * Construct an empty stack.
+	 * Construct an empty queue.
 	 */
-	public SimpleStack() {
+	public SimpleQueue() {
 		super();
 		this.elements = new LinkedList<E>();
 	}
 
 	/**
-	 * Construct a stack containing the elements of the specified
-	 * collection. The stack will pop its elements in reverse of the
+	 * Construct a queue containing the elements of the specified
+	 * collection. The queue will dequeue its elements in the same
 	 * order they are returned by the collection's iterator (i.e. the
-	 * last element returned by the collection's iterator will be the
-	 * first element returned by {@link #pop()}).
+	 * first element returned by the collection's iterator will be the
+	 * first element returned by {@link #dequeue()}).
 	 */
-	public SimpleStack(Collection<? extends E> collection) {
+	public SimpleQueue(Collection<? extends E> c) {
 		super();
-		this.elements = new LinkedList<E>(collection);
+		this.elements = new LinkedList<E>(c);
 	}
 
 
-	// ********** Stack implementation **********
+	// ********** Queue implementation **********
 
-	public void push(E element) {
-		this.elements.addLast(element);
+	public void enqueue(E o) {
+		this.elements.addLast(o);
 	}
 
-	public E pop() {
-		try {
-			return this.elements.removeLast();
-		} catch (NoSuchElementException ex) {
-			throw new EmptyStackException();
-		}
+	public E dequeue() {
+		return this.elements.removeFirst();
 	}
 
 	public E peek() {
-		try {
-			return this.elements.getLast();
-		} catch (NoSuchElementException ex) {
-			throw new EmptyStackException();
-		}
+		return this.elements.getFirst();
 	}
 
 	public boolean isEmpty() {
@@ -76,13 +66,13 @@ public class SimpleStack<E>
 	}
 
 
-	// ********** standard methods **********
+	// ********** Cloneable implementation **********
 
 	@Override
-	public SimpleStack<E> clone() {
+	public SimpleQueue<E> clone() {
 		try {
 			@SuppressWarnings("unchecked")
-			SimpleStack<E> clone = (SimpleStack<E>) super.clone();
+			SimpleQueue<E> clone = (SimpleQueue<E>) super.clone();
 			@SuppressWarnings("unchecked")
 			LinkedList<E> ll = (LinkedList<E>) this.elements.clone();
 			clone.elements = ll;

@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.synchronizers;
 
-import java.util.Vector;
-
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.internal.CompositeException;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**
@@ -28,7 +25,7 @@ public class AsynchronousSynchronizer
 	implements Synchronizer
 {
 	/**
-	 * This flag is shared with the synchronization thread. Setting it to true
+	 * This flag is shared with the synchronization/consumer thread. Setting it to true
 	 * will trigger the synchronization to begin or, if the synchronization is
 	 * currently executing, to execute again, once the current execution is
 	 * complete.
@@ -36,34 +33,16 @@ public class AsynchronousSynchronizer
 	final SynchronizedBoolean synchronizeFlag = new SynchronizedBoolean(false);
 
 	/**
-	 * The runnable passed to the synchronization thread each time it is built.
+	 * Most of the thread-related behavior is delegated to this coordinator.
 	 */
-	private final Runnable runnable;
-
-	/**
-	 * Optional, client-supplied name for the synchronization thread.
-	 * If null, allow the JDK to assign a name.
-	 */
-	private final String threadName;
-
-	/**
-	 * The synchronization is performed on this thread. A new thread is built
-	 * for every start/stop cycle (since a thread cannot be started more than
-	 * once).
-	 */
-	private Thread thread;
-
-	/**
-	 * A list of the uncaught exceptions thrown by the command.
-	 */
-	final Vector<Throwable> exceptions = new Vector<Throwable>();
+	private final ConsumerThreadCoordinator consumerThreadCoordinator;
 
 
 	// ********** construction **********
 
 	/**
 	 * Construct an asynchronous synchronizer that uses the specified command to
-	 * perform the synchronization. Allow the generated thread(s) to be assigned
+	 * perform the synchronization. Allow the synchronization thread(s) to be assigned
 	 * JDK-generated names.
 	 */
 	public AsynchronousSynchronizer(Command command) {
@@ -72,17 +51,19 @@ public class AsynchronousSynchronizer
 
 	/**
 	 * Construct an asynchronous synchronizer that uses the specified command to
-	 * perform the synchronization. Assign the generated thread(s) the specified
+	 * perform the synchronization. Assign the synchronization thread(s) the specified
 	 * name.
 	 */
 	public AsynchronousSynchronizer(Command command, String threadName) {
 		super();
-		this.runnable = this.buildRunnable(command);
-		this.threadName = threadName;
+		if (command == null) {
+			throw new NullPointerException();
+		}
+		this.consumerThreadCoordinator = new ConsumerThreadCoordinator(this.buildConsumer(command), threadName);
 	}
 
-	Runnable buildRunnable(Command command) {
-		return new RunnableSynchronization(command);
+	ConsumerThreadCoordinator.Consumer buildConsumer(Command command) {
+		return new Consumer(command);
 	}
 
 
@@ -106,20 +87,8 @@ public class AsynchronousSynchronizer
 	 *     the time {@link #stop()} was called)
 	 * </ul>
 	 */
-	public synchronized void start() {
-		if (this.thread != null) {
-			throw new IllegalStateException("The Synchronizer was not stopped."); //$NON-NLS-1$
-		}
-		this.thread = this.buildThread();
-		this.thread.start();
-	}
-
-	private Thread buildThread() {
-		Thread t = new Thread(this.runnable);
-		if (this.threadName != null) {
-			t.setName(this.threadName);
-		}
-		return t;
+	public void start() {
+		this.consumerThreadCoordinator.start();
 	}
 
 	/**
@@ -140,101 +109,49 @@ public class AsynchronousSynchronizer
 	 * exceptions were thrown while the synchronization thread was executing,
 	 * wrap them in a composite exception and throw the composite exception.
 	 */
-	public synchronized void stop() {
-		if (this.thread == null) {
-			throw new IllegalStateException("The Synchronizer was not started."); //$NON-NLS-1$
-		}
-		this.thread.interrupt();
-		try {
-			this.thread.join();
-		} catch (InterruptedException ex) {
-			// the thread that called #stop() was interrupted while waiting to
-			// join the synchronization thread - ignore;
-			// 'thread' is still "interrupted", so its #run() loop will still stop
-			// after its current execution - we just won't wait around for it...
-		}
-		this.thread = null;
-
-		if (this.exceptions.size() > 0) {
-			Throwable[] temp = this.exceptions.toArray(new Throwable[this.exceptions.size()]);
-			this.exceptions.clear();
-			throw new CompositeException(temp);
-		}
-	}
-
-	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.thread);
+	public void stop() {
+		this.consumerThreadCoordinator.stop();
 	}
 
 
-	// ********** synchronization thread runnable **********
+	// ********** consumer **********
 
 	/**
-	 * This implementation of {@link Runnable} will execute a client-supplied command.
-	 * It will wait until a shared "synchronize" flag is set to execute the
-	 * command. Once the the comand is executed, the thread will quiesce until
+	 * This implementation of {@link ConsumerThreadCoordinator.Consumer}
+	 * will execute the client-supplied "synchronize" command.
+	 * It will wait until the shared "synchronize" flag is set to execute the
+	 * command. Once the comand is executed, the thread will quiesce until
 	 * the flag is set again. If the flag was set during the execution of the
 	 * command (either recursively by the command itself or by another thread),
 	 * the command will be re-executed immediately. Stop the thread by calling
 	 * {@link Thread#interrupt()}.
 	 */
-	class RunnableSynchronization
-		implements Runnable
+	class Consumer
+		implements ConsumerThreadCoordinator.Consumer
 	{
-		/** The client-supplied command that executes on this thread. */
+		/**
+		 * The client-supplied command that executes on the
+		 * synchronization/consumer thread.
+		 */
 		private final Command command;
 
-
-		RunnableSynchronization(Command command) {
+		Consumer(Command command) {
 			super();
-			if (command == null) {
-				throw new NullPointerException();
-			}
 			this.command = command;
 		}
 
 		/**
-		 * Loop while this thread has not been interrupted by another thread.
-		 * In each loop: Wait until the "synchronize" flag is set,
-		 * then clear it and execute the command. If the
-		 * "synchronize" flag was set <em>during</em> the synchronization,
-		 * there will be no "wait" before beginning the next synchronization
-		 * (thus the call to {@link Thread#isInterrupted()} before each cycle).
-		 * <p>
-		 * If this thread is interrupted <em>during</em> the synchronization, the
-		 * call to {@link Thread#interrupted()} will stop the loop. If this thread is
-		 * interrupted during the call to {@link SynchronizedBoolean#waitToSetFalse()},
-		 * we will catch the {@link InterruptedException} and stop the loop.
+		 * Wait until the "synchronize" flag is set,
+		 * then clear it and allow the "synchronize" command to execute.
 		 */
-		public void run() {
-			while ( ! Thread.interrupted()) {
-				try {
-					AsynchronousSynchronizer.this.synchronizeFlag.waitToSetFalse();
-				} catch (InterruptedException ex) {
-					// we were interrupted while waiting, must be Quittin' Time
-					return;
-				}
-				this.execute();
-			}
-		}
-
-		/**
-		 * Execute the client-supplied command. Do not allow any unhandled
-		 * exceptions to kill the thread. Store them up for later pain.
-		 */
-		private void execute() {
-			try {
-				this.execute_();
-			} catch (Throwable ex) {
-				AsynchronousSynchronizer.this.exceptions.add(ex);
-			}
+		public void waitForProducer() throws InterruptedException {
+			AsynchronousSynchronizer.this.synchronizeFlag.waitToSetFalse();
 		}
 
 		/**
 		 * Execute the client-supplied command.
 		 */
-		void execute_() {
+		public void execute() {
 			this.command.execute();
 		}
 

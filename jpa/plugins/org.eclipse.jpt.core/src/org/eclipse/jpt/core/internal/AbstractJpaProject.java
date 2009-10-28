@@ -191,7 +191,7 @@ public abstract class AbstractJpaProject
 
 	// ********** constructor/initialization **********
 
-	protected AbstractJpaProject(JpaProject2_0.Config config) throws CoreException {
+	protected AbstractJpaProject(JpaProject2_0.Config config) {
 		super(null);  // JPA project is the root of the containment tree
 		if ((config.getProject() == null) || (config.getJpaPlatform() == null)) {
 			throw new NullPointerException();
@@ -207,7 +207,8 @@ public abstract class AbstractJpaProject
 
 		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
-		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
+		InitialResourceProxyVisitor visitor = this.buildInitialResourceProxyVisitor();
+		visitor.visitProject(this.project);
 
 		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
 
@@ -243,7 +244,7 @@ public abstract class AbstractJpaProject
 		return new DefaultResourceModelListener();
 	}
 
-	protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
+	protected InitialResourceProxyVisitor buildInitialResourceProxyVisitor() {
 		return new InitialResourceProxyVisitor();
 	}
 
@@ -286,8 +287,16 @@ public abstract class AbstractJpaProject
 		protected InitialResourceProxyVisitor() {
 			super();
 		}
+		protected void visitProject(IProject p) {
+			try {
+				p.accept(this, IResource.NONE);
+			} catch (CoreException ex) {
+				// we don't throw any CoreExceptions
+				throw new RuntimeException(ex);
+			}
+		}
 		// add a JPA file for every [appropriate] file encountered by the visitor
-		public boolean visit(IResourceProxy resource) throws CoreException {
+		public boolean visit(IResourceProxy resource) {
 			switch (resource.getType()) {
 				case IResource.ROOT :  // shouldn't happen
 					return true;  // visit children
@@ -1227,7 +1236,7 @@ public abstract class AbstractJpaProject
 	// ********** resource events **********
 
 	// TODO need to do the same thing for external projects and compilation units
-	public void projectChanged(IResourceDelta delta) throws CoreException {
+	public void projectChanged(IResourceDelta delta) {
 		if (delta.getResource().equals(this.getProject())) {
 			this.internalProjectChanged(delta);
 		} else {
@@ -1235,9 +1244,9 @@ public abstract class AbstractJpaProject
 		}
 	}
 
-	protected void internalProjectChanged(IResourceDelta delta) throws CoreException {
+	protected void internalProjectChanged(IResourceDelta delta) {
 		ResourceDeltaVisitor resourceDeltaVisitor = this.buildInternalResourceDeltaVisitor();
-		delta.accept(resourceDeltaVisitor);
+		resourceDeltaVisitor.visitDelta(delta);
 		// at this point, if we have added and/or removed JpaFiles, an "update" will have been triggered;
 		// any changes to the resource model during the "resolve" will trigger further "updates";
 		// there should be no need to "resolve" external Java types (they can't have references to
@@ -1304,10 +1313,10 @@ public abstract class AbstractJpaProject
 		}
 	}
 
-	protected void externalProjectChanged(IResourceDelta delta) throws CoreException {
+	protected void externalProjectChanged(IResourceDelta delta) {
 		if (this.getJavaProject().isOnClasspath(delta.getResource())) {
 			ResourceDeltaVisitor resourceDeltaVisitor = this.buildExternalResourceDeltaVisitor();
-			delta.accept(resourceDeltaVisitor);
+			resourceDeltaVisitor.visitDelta(delta);
 			// force an "update" here since adding and/or removing an external Java type
 			// will only trigger an "update" if the "resolve" causes something in the resource model to change
 			if (resourceDeltaVisitor.encounteredSignificantChange()) {
@@ -1396,7 +1405,16 @@ public abstract class AbstractJpaProject
 			super();
 		}
 
-		public boolean visit(IResourceDelta delta) throws CoreException {
+		protected void visitDelta(IResourceDelta delta) {
+			try {
+				delta.accept(this);
+			} catch (CoreException ex) {
+				// we don't throw any CoreExceptions
+				throw new RuntimeException(ex);
+			}
+		}
+
+		public boolean visit(IResourceDelta delta) {
 			IResource res = delta.getResource();
 			switch (res.getType()) {
 				case IResource.ROOT :

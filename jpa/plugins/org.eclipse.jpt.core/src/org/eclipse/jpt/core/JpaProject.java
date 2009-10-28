@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -202,7 +202,7 @@ public interface JpaProject
 	 * Synchronize the JPA project with the specified project resource
 	 * delta, watching for added and removed files in particular.
 	 */
-	void projectChanged(IResourceDelta delta) throws CoreException;
+	void projectChanged(IResourceDelta delta);
 
 	/**
 	 * Synchronize the JPA project with the specified Java change.

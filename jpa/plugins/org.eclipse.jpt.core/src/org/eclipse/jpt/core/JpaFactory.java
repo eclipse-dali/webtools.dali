@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
@@ -68,8 +67,6 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -111,7 +108,7 @@ public interface JpaFactory
 	 * added to the specified JPA project. Return null if unable to create
 	 * the JPA file (e.g. the content type is unrecognized).
 	 */
-	JpaProject buildJpaProject(JpaProject.Config config) throws CoreException;
+	JpaProject buildJpaProject(JpaProject.Config config);
 	
 	JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName);
 

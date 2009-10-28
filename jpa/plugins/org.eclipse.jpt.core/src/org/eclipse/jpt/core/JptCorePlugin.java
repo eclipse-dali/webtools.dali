@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import javax.xml.parsers.SAXParserFactory;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -28,10 +29,8 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
-import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -44,19 +43,20 @@ import org.osgi.service.prefs.Preferences;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * The JPT plug-in lifecycle implementation.
+ * The Dali core plug-in lifecycle implementation.
  * A number of globally-available constants and methods.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-// TODO keep preferences in synch with the JPA project
-// (connection profile name, "discover" flag)
-// use listeners?
 public class JptCorePlugin extends Plugin {
+
+	private volatile GenericJpaModel jpaModel;
+	private volatile ServiceTracker parserTracker;
+
 
 	// ********** public constants **********
 
@@ -145,18 +145,18 @@ public class JptCorePlugin extends Plugin {
 	public static final JpaResourceType JAVA_SOURCE_RESOURCE_TYPE = new JpaResourceType(JAVA_SOURCE_CONTENT_TYPE);
 	
 	/**
-	 * The content type for persistence.xml files.
+	 * The content type for <code>persistence.xml</code> files.
 	 */
 	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
 	
 	/**
-	 * The resource type for persistence.xml version 1.0 files
+	 * The resource type for <code>persistence.xml</code> version 1.0 files
 	 */
 	public static final JpaResourceType PERSISTENCE_XML_1_0_RESOURCE_TYPE = 
 			new JpaResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.JPA.SCHEMA_VERSION);
 	
 	/**
-	 * The resource type for persistence.xml version 2.0 files
+	 * The resource type for <code>persistence.xml</code> version 2.0 files
 	 */
 	public static final JpaResourceType PERSISTENCE_XML_2_0_RESOURCE_TYPE = 
 			new JpaResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0.SCHEMA_VERSION);
@@ -167,18 +167,18 @@ public class JptCorePlugin extends Plugin {
 	public static final IContentType MAPPING_FILE_CONTENT_TYPE = getJpaContentType("mappingFile"); //$NON-NLS-1$
 
 	/**
-	 * The content type for orm.xml mapping files.
+	 * The content type for <code>orm.xml</code> mapping files.
 	 */
 	public static final IContentType ORM_XML_CONTENT_TYPE = getJpaContentType("orm"); //$NON-NLS-1$
 	
 	/**
-	 * The resource type for orm.xml version 1.0 mapping files
+	 * The resource type for <code>orm.xml</code> version 1.0 mapping files
 	 */
 	public static final JpaResourceType ORM_XML_1_0_RESOURCE_TYPE = 
 			new JpaResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.JPA.SCHEMA_VERSION);
 	
 	/**
-	 * The resource type for orm.xml version 2.0 mapping files
+	 * The resource type for <code>orm.xml</code> version 2.0 mapping files
 	 */
 	public static final JpaResourceType ORM_XML_2_0_RESOURCE_TYPE = 
 			new JpaResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0.SCHEMA_VERSION);
@@ -189,7 +189,7 @@ public class JptCorePlugin extends Plugin {
 	public static final IContentType JAR_CONTENT_TYPE = getJpaContentType("jar"); //$NON-NLS-1$
 	
 	/**
-	 * The resource type for Java archives (JARs)
+	 * The resource type for Java archives (JARs).
 	 */
 	public static final JpaResourceType JAR_RESOURCE_TYPE = new JpaResourceType(JAR_CONTENT_TYPE);
 	
@@ -220,14 +220,12 @@ public class JptCorePlugin extends Plugin {
 	}
 	
 	
-	private ServiceTracker parserTracker;
-
 	// ********** singleton **********
 
 	private static JptCorePlugin INSTANCE;
 
 	/**
-	 * Return the singleton JPT plug-in.
+	 * Return the singleton Dali core plug-in.
 	 */
 	public static JptCorePlugin instance() {
 		return INSTANCE;
@@ -240,34 +238,34 @@ public class JptCorePlugin extends Plugin {
 	 * Return the singular JPA model corresponding to the current workspace.
 	 */
 	public static JpaModel getJpaModel() {
-		return JpaModelManager.instance().getJpaModel();
+		return INSTANCE.getJpaModel_();
 	}
 
 	/**
 	 * Return the JPA project corresponding to the specified Eclipse project,
-	 * or null if unable to associate the specified project with a
+	 * or <code>null</code> if unable to associate the specified project with a
 	 * JPA project.
 	 */
 	public static JpaProject getJpaProject(IProject project) {
-		try {
-			return JpaModelManager.instance().getJpaProject(project);
-		} catch (CoreException ex) {
-			log(ex);
-			return null;
-		}
+		return getJpaModel().getJpaProject(project);
 	}
 
 	/**
 	 * Return the JPA file corresponding to the specified Eclipse file,
-	 * or null if unable to associate the specified file with a JPA file.
+	 * or <code>null</code> if unable to associate the specified file with a JPA file.
 	 */
 	public static JpaFile getJpaFile(IFile file) {
-		try {
-			return JpaModelManager.instance().getJpaFile(file);
-		} catch (CoreException ex) {
-			log(ex);
-			return null;
-		}
+		return getJpaModel().getJpaFile(file);
+	}
+
+	/**
+	 * The JPA settings associated with the specified Eclipse project
+	 * have changed in such a way as to require the associated
+	 * JPA project to be completely rebuilt
+	 * (e.g. when the user changes a project's JPA platform).
+	 */
+	public static void rebuildJpaProject(IProject project) {
+		getJpaModel().rebuildJpaProject(project);
 	}
 
 	/**
@@ -278,7 +276,7 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return whether the specified Eclipse project has a JPA facet.
+	 * Return whether the specified Eclipse project has a Web facet.
 	 */
 	public static boolean projectHasWebFacet(IProject project) {
 		return projectHasFacet(project, WEB_PROJECT_FACET_ID);
@@ -297,7 +295,7 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return the persistence.xml (specified as "META-INF/persistence.xml")
+	 * Return the <code>persistence.xml</code> (specified as <code>"META-INF/persistence.xml"</code>)
 	 * deployment URI for the specified project.
 	 */
 	public static String getPersistenceXmlDeploymentURI(IProject project) {
@@ -305,7 +303,7 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return the default mapping file (specified as "META-INF/orm.xml")
+	 * Return the default mapping file (specified as <code>"META-INF/orm.xml"</code>)
 	 * deployment URI for the specified project.
 	 */
 	public static String getDefaultOrmXmlDeploymentURI(IProject project) {
@@ -313,7 +311,7 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return the mapping file (specified as "META-INF/<mappingFileName>")
+	 * Return the mapping file (specified as {@code"META-INF/<mappingFileName>"})
 	 * deployment URI for the specified project.
 	 */
 	public static String getOrmXmlDeploymentURI(IProject project, String mappingFileName) {
@@ -322,7 +320,7 @@ public class JptCorePlugin extends Plugin {
 
 	/**
 	 * Tweak the specified deployment URI if the specified project
-	 * has a web facet.
+	 * has a Web facet.
 	 */
 	public static String getDeploymentURI(IProject project, String defaultURI) {
 		return projectHasWebFacet(project) ?
@@ -332,9 +330,9 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return the deployment path to which jars are relatively specified for 
-	 * the given project
-	 * (Web projects have a different deployment structure than non-web projects)
+	 * Return the deployment path to which JARs are relatively specified for 
+	 * the given project.
+	 * (Web projects have a different deployment structure than non-web projects.)
 	 */
 	public static IPath getJarDeploymentRootPath(IProject project) {
 		return new Path(getJarDeploymentRootPathName(project));
@@ -415,12 +413,10 @@ public class JptCorePlugin extends Plugin {
 		if (jpaFacetVersion.equals(JPA_FACET_VERSION_1_0)) {
 			return GenericJpaPlatformProvider.ID;
 		}
-		else if (jpaFacetVersion.equals(JPA_FACET_VERSION_2_0)) {
+		if (jpaFacetVersion.equals(JPA_FACET_VERSION_2_0)) {
 			return Generic2_0JpaPlatformProvider.ID;
 		}
-		else {
-			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion);
-		}
+		throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
 	}
 	
 	private static String getDefaultJpaPlatformId(Preferences... nodes) {
@@ -602,6 +598,20 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
+	 * Return whether the model manager's Java change listener is active.
+	 */
+	public static boolean javaElementChangeListenerIsActive() {
+		return getJpaModel().javaElementChangeListenerIsActive();
+	}
+
+	/**
+	 * Set whether the model manager's Java change listener is active.
+	 */
+	public static void setJavaElementChangeListenerIsActive(boolean javaElementChangeListenerIsActive) {
+		getJpaModel().setJavaElementChangeListenerIsActive(javaElementChangeListenerIsActive);
+	}
+
+	/**
 	 * Log the specified status.
 	 */
 	public static void log(IStatus status) {
@@ -638,13 +648,16 @@ public class JptCorePlugin extends Plugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		JpaModelManager.instance().start();
+		// nothing yet...
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		try {
-			JpaModelManager.instance().stop();
+			if (this.jpaModel != null) {
+				this.jpaModel.stop();
+				this.jpaModel = null;
+			}
 			if (this.parserTracker != null) {
 				this.parserTracker.close();
 				this.parserTracker = null;
@@ -652,6 +665,18 @@ public class JptCorePlugin extends Plugin {
 		} finally {
 			super.stop(context);
 		}
+	}
+
+	private synchronized GenericJpaModel getJpaModel_() {
+		if (this.jpaModel == null) {
+			this.jpaModel = this.buildJpaModel();
+			this.jpaModel.start();
+		}
+		return this.jpaModel;
+	}
+
+	private GenericJpaModel buildJpaModel() {
+		return new GenericJpaModel();
 	}
 
 	public synchronized SAXParserFactory getSAXParserFactory() {

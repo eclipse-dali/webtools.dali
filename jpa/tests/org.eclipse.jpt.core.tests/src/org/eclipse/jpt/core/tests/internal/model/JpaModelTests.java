@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.model;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import junit.framework.TestCase;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.GenericJpaModel;
-import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
@@ -47,8 +43,13 @@ public class JpaModelTests extends TestCase {
 	}
 
 	private boolean debug() {
-		Boolean debug = (Boolean) ClassTools.staticFieldValue(JpaModelManager.class, "DEBUG");
+		Boolean debug = (Boolean) ClassTools.staticFieldValue(this.getGenericJpaModelClass(), "DEBUG");
 		return debug.booleanValue();
+	}
+
+	// GenericJpaModel is package-private
+	private Class<?> getGenericJpaModelClass() {
+		return JptCorePlugin.getJpaModel().getClass();
 	}
 
 	private void printName() {
@@ -94,8 +95,7 @@ public class JpaModelTests extends TestCase {
 	 * make sure the DEBUG constants are 'false' before checking in the code
 	 */
 	public void testDEBUG() {
-		this.verifyDEBUG(JpaModelManager.class);
-		this.verifyDEBUG(GenericJpaModel.class);
+		this.verifyDEBUG(this.getGenericJpaModelClass());
 	}
 
 	private void verifyDEBUG(Class<?> clazz) {
@@ -131,12 +131,12 @@ public class JpaModelTests extends TestCase {
 		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0");
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
-		assertEquals(1, JptCorePlugin.getJpaModel().jpaProjectsSize());
+		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
 
 		this.testProject.getProject().delete(false, true, null);
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
-		assertEquals(0, JptCorePlugin.getJpaModel().jpaProjectsSize());
+		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
 		assertEquals(0, ResourcesPlugin.getWorkspace().getRoot().getProjects().length);
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(this.testProject.getProject().getName());
@@ -159,7 +159,7 @@ public class JpaModelTests extends TestCase {
 		assertNull(JptCorePlugin.getJpaProject(this.testProject.getProject()));
 
 		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0");
-		assertEquals(1, JptCorePlugin.getJpaModel().jpaProjectsSize());
+		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.jpaFilesSize());
@@ -170,7 +170,7 @@ public class JpaModelTests extends TestCase {
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
 
 		this.testProject.uninstallFacet(JptCorePlugin.FACET_ID, "1.0");
-		assertEquals(0, JptCorePlugin.getJpaModel().jpaProjectsSize());
+		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
 	}

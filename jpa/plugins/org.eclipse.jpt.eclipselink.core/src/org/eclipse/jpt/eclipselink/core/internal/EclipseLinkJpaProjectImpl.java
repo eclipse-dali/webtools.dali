@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -22,7 +21,7 @@ public class EclipseLinkJpaProjectImpl
 	extends AbstractJpaProject
 	implements EclipseLinkJpaProject
 {
-	public EclipseLinkJpaProjectImpl(JpaProject2_0.Config config) throws CoreException {
+	public EclipseLinkJpaProjectImpl(JpaProject2_0.Config config) {
 		super(config);
 	}
 

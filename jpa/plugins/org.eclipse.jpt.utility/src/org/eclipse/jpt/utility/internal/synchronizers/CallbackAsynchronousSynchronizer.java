@@ -10,15 +10,16 @@
 package org.eclipse.jpt.utility.internal.synchronizers;
 
 import org.eclipse.jpt.utility.Command;
+import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.utility.internal.ListenerList;
 
 /**
  * Extend the asynchronous synchronizer to notify listeners
  * when a synchronization "cycle" is complete; i.e. the synchronization has,
- * for the moment, handled every "synchronize" request and quiesced.
+ * for the moment, handled every outstanding "synchronize" request and quiesced.
  * This notification is <em>not</em> guaranteed to occur with <em>every</em>
- * synchronization "cycle";
- * since other, unrelated, synchronizations can be triggered concurrently.
+ * synchronization "cycle"; since other, unrelated, synchronizations can be
+ * triggered concurrently.
  * <p>
  * <strong>NB:</strong> Listeners should handle any exceptions
  * appropriately (e.g. log the exception and return gracefully so the thread
@@ -35,7 +36,7 @@ public class CallbackAsynchronousSynchronizer
 
 	/**
 	 * Construct a callback asynchronous synchronizer that uses the specified
-	 * command to perform the synchronization. Allow the generated thread(s)
+	 * command to perform the synchronization. Allow the synchronization thread(s)
 	 * to be assigned JDK-generated names.
 	 */
 	public CallbackAsynchronousSynchronizer(Command command) {
@@ -44,7 +45,7 @@ public class CallbackAsynchronousSynchronizer
 
 	/**
 	 * Construct a callback asynchronous synchronizer that uses the specified
-	 * command to perform the synchronization. Assign the generated thread(s)
+	 * command to perform the synchronization. Assign the synchronization thread(s)
 	 * the specified name.
 	 */
 	public CallbackAsynchronousSynchronizer(Command command, String threadName) {
@@ -52,12 +53,12 @@ public class CallbackAsynchronousSynchronizer
 	}
 
 	/**
-	 * Build a runnable that will let us know when the synchronization has
+	 * Build a consumer that will let us know when the synchronization has
 	 * quiesced.
 	 */
 	@Override
-	Runnable buildRunnable(Command command) {
-		return new RunnableCallbackSynchronization(command);
+	ConsumerThreadCoordinator.Consumer buildConsumer(Command command) {
+		return new CallbackConsumer(command);
 	}
 
 
@@ -84,7 +85,7 @@ public class CallbackAsynchronousSynchronizer
 	// ********** synchronization thread runnable **********
 
 	/**
-	 * Extend {@link AsynchronousSynchronizer.RunnableSynchronization}
+	 * Extend {@link AsynchronousSynchronizer.Consumer}
 	 * to notify the synchronizer when the synchronization has quiesced
 	 * (i.e. the command has finished executing and there are no further
 	 * requests for synchronization).
@@ -96,16 +97,16 @@ public class CallbackAsynchronousSynchronizer
 	 * but this synchronization will not occur until <em>after</em> all the
 	 * listeners have been notified.
 	 */
-	class RunnableCallbackSynchronization
-		extends RunnableSynchronization
+	class CallbackConsumer
+		extends Consumer
 	{
-		RunnableCallbackSynchronization(Command command) {
+		CallbackConsumer(Command command) {
 			super(command);
 		}
 
 		@Override
-		void execute_() {
-			super.execute_();
+		public void execute() {
+			super.execute();
 			// hmmm - we will notify listeners even when we our thread is "interrupted";
 			// that seems ok...  ~bjv
 			if (CallbackAsynchronousSynchronizer.this.synchronizeFlag.isFalse()) {

@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.core.JpaPlatform;
-import org.eclipse.jpt.core.internal.JpaModelManager;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.swt.SWT;
@@ -156,7 +156,7 @@ public class JptUiPlugin
 	 * @see #focusOut()
 	 */
 	private void focusIn() {
-		JpaModelManager.instance().setJavaElementChangeListenerIsActive(false);
+		JptCorePlugin.setJavaElementChangeListenerIsActive(false);
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class JptUiPlugin
 	 * @see #focusIn()
 	 */
 	private void focusOut() {
-		JpaModelManager.instance().setJavaElementChangeListenerIsActive(true);
+		JptCorePlugin.setJavaElementChangeListenerIsActive(true);
 	}
 
 	/**

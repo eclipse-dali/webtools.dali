@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
@@ -35,7 +36,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
@@ -666,9 +666,12 @@ public class JpaProjectPropertiesPage
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				try {
-					IWorkspace ws = ResourcesPlugin.getWorkspace();
-					IWorkspaceRunnable wr = JpaProjectPropertiesPage.this.buildOkWorkspaceRunnable();
-					ws.run(wr, ws.getRoot(), IWorkspace.AVOID_UPDATE, monitor);
+					ResourcesPlugin.getWorkspace().run(
+							JpaProjectPropertiesPage.this.buildOkWorkspaceRunnable(),
+							JpaProjectPropertiesPage.this.getOkSchedulingRule(),
+							IWorkspace.AVOID_UPDATE,
+							monitor
+					);
 				}
 				catch (CoreException ex) {
 					throw new InvocationTargetException(ex);
@@ -685,13 +688,17 @@ public class JpaProjectPropertiesPage
 		};
 	}
 
+	ISchedulingRule getOkSchedulingRule() {
+		return this.getProject();
+	}
+
 	void performOk_(IProgressMonitor monitor) throws CoreException {
 		if (this.isBuffering()) {
 			boolean platformChanged = this.platformIdModel.isBuffering();
 			this.trigger.accept();
 			if (platformChanged) {
 				// if the JPA platform is changed, we need to completely rebuild the JPA project
-				JpaModelManager.instance().rebuildJpaProject(this.getProject());
+				JptCorePlugin.rebuildJpaProject(this.getProject());
 			}
 			this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 		}

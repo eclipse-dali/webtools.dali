@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.utility;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * A job scheduling rule that conflicts only with itself.
@@ -17,21 +18,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 public final class SimpleSchedulingRule
 	implements ISchedulingRule
 {
-
-	// singleton
-	private static final SimpleSchedulingRule INSTANCE = new SimpleSchedulingRule();
-
-	/**
-	 * Return the singleton.
-	 */
-	public static ISchedulingRule instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Ensure single instance.
-	 */
-	private SimpleSchedulingRule() {
+	public SimpleSchedulingRule() {
 		super();
 	}
 
@@ -41,6 +28,11 @@ public final class SimpleSchedulingRule
 
 	public boolean isConflicting(ISchedulingRule rule) {
 		return rule == this;
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this);
 	}
 
 }

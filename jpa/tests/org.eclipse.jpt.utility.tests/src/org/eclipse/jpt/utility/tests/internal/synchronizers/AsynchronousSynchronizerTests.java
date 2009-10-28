@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CompositeException;
+import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.utility.internal.synchronizers.AsynchronousSynchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 
@@ -57,7 +58,8 @@ public class AsynchronousSynchronizerTests extends TestCase {
 	}
 
 	protected static void stop(Synchronizer synchronizer) {
-		if (ClassTools.fieldValue(synchronizer, "thread") != null) {
+		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ClassTools.fieldValue(synchronizer, "consumerThreadCoordinator");
+		if (ClassTools.fieldValue(ctc, "thread") != null) {
 			synchronizer.stop();
 		}
 	}
@@ -166,7 +168,8 @@ public class AsynchronousSynchronizerTests extends TestCase {
 	public void testThreadName() {
 		Synchronizer s = new AsynchronousSynchronizer(this.command1, "sync");
 		s.start();
-		Thread t = (Thread) ClassTools.fieldValue(s, "thread");
+		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ClassTools.fieldValue(s, "consumerThreadCoordinator");
+		Thread t = (Thread) ClassTools.fieldValue(ctc, "thread");
 		assertEquals("sync", t.getName());
 		s.stop();
 	}
