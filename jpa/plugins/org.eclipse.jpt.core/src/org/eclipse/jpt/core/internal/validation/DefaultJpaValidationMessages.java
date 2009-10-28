@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,22 +20,29 @@ public class DefaultJpaValidationMessages {
 	private static TextRange DEFAULT_TEXT_RANGE = TextRange.Empty.instance();
 	
 	public static IMessage buildMessage(
-			int severity, String messageId, Object targetObject) {
-		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject);
+			int defaultSeverity, String messageId, Object targetObject) {
+		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject);
 	}
 	
 	public static IMessage buildMessage(
-			int severity, String messageId, String[] parms, Object targetObject) {
-		return buildMessage(severity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
+			int defaultSeverity, String messageId, String[] parms, Object targetObject) {
+		return buildMessage(defaultSeverity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
 	}
 	
 	public static IMessage buildMessage(
-			int severity, String messageId, Object targetObject, TextRange textRange) {
-		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject, textRange);
+			int defaultSeverity, String messageId, Object targetObject, TextRange textRange) {
+		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject, textRange);
 	}
 	
 	public static IMessage buildMessage(
-			int severity, String messageId, String[] parms, Object targetObject, TextRange textRange) {
+			int defaultSeverity, String messageId, String[] parms, Object targetObject, TextRange textRange) {
+		
+		//determine whether default severity should be overridden
+		int severity = defaultSeverity;
+		int severityPreference = JpaValidationPreferences.getProblemSeverityPreference(targetObject, messageId);
+		if (severityPreference!=JpaValidationPreferences.NO_SEVERITY_PREFERENCE){
+			severity = severityPreference;
+		}
 		IMessage message = new Message(JpaValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
 		if (textRange == null) {
 			//log an exception and then continue without setting location information
