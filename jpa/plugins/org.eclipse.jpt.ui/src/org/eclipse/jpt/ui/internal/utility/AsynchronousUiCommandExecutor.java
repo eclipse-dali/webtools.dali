@@ -34,14 +34,14 @@ public final class AsynchronousUiCommandExecutor
 	}
 
 	public void execute(Command command) {
-		this.display().asyncExec(this.buildRunnable(command));
+		this.getDisplay().asyncExec(this.buildRunnable(command));
 	}
 
 	private Runnable buildRunnable(Command command) {
 		return new CommandRunnable(command);
 	}
 
-	private Display display() {
+	private Display getDisplay() {
 		Display display = Display.getCurrent();
 		return (display != null) ? display : Display.getDefault();
 	}

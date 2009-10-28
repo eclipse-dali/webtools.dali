@@ -38,10 +38,10 @@ public class ThreadLocalCommandExecutor implements CommandExecutor {
 	}
 
 	public void execute(Command command) {
-		this.get().execute(command);
+		this.getThreadLocalCommandExecutor().execute(command);
 	}
 
-	protected CommandExecutor get() {
+	protected CommandExecutor getThreadLocalCommandExecutor() {
 		CommandExecutor ce = this.threadLocal.get();
 		return (ce != null) ? ce : this.defaultCommandExecutor;
 	}
@@ -59,7 +59,7 @@ public class ThreadLocalCommandExecutor implements CommandExecutor {
 	 */
 	@Override
 	public String toString() {
-		return this.get().toString();
+		return this.getThreadLocalCommandExecutor().toString();
 	}
 
 }
