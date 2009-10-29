@@ -19,6 +19,7 @@ public class JptEclipseLink2_0OrmContextModelTests extends TestCase
 		TestSuite suite = new TestSuite(JptEclipseLink2_0OrmContextModelTests.class.getName());
 		suite.addTestSuite(EclipseLink2_0OrmEntityTests.class);
 		suite.addTestSuite(Eclipselink2_0OrmManyToOneMappingTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmMappedSuperclassTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmOneToOneMappingTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmOneToManyMappingTests.class);
 		return suite;

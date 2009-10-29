@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
@@ -528,20 +527,28 @@ public class OrmEclipseLinkCachingImpl
 	}
 	
 	public boolean calculateDefaultCacheable() {
-		if (getParent() instanceof Entity) {
-			if (!getParent().isMetadataComplete()) {
-				EclipseLinkEntity javaEntity = (EclipseLinkEntity) ((OrmEntity) getParent()).getJavaEntity();
-				if (javaEntity != null) {
-					return ((CacheableHolder2_0) javaEntity).getCacheable().isCacheable();
-				}
-			}
-		
-			EclipseLinkEntity parentEntity = (EclipseLinkEntity) ((OrmEntity) getParent()).getParentEntity();
-			if (parentEntity != null) {
-				return ((CacheableHolder2_0) parentEntity).getCacheable().isCacheable();
+		if (!getParent().isMetadataComplete()) {
+			JavaPersistentType javaPersistentType = getParent().getPersistentType().getJavaPersistentType();
+			if (javaPersistentType != null && javaPersistentType.getMapping() instanceof CacheableHolder2_0) {
+				return ((CacheableHolder2_0) javaPersistentType.getMapping()).getCacheable().isCacheable();
 			}
 		}
+		CacheableHolder2_0 cacheableHolder = getCacheableSuperPersistentType(getParent().getPersistentType());
+		if (cacheableHolder != null) {
+			return cacheableHolder.getCacheable().isCacheable();
+		}
 		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+	}
+	
+	protected CacheableHolder2_0 getCacheableSuperPersistentType(PersistentType persistentType) {
+		PersistentType superPersistentType = persistentType.getSuperPersistentType();
+		if (superPersistentType != null) {
+			if (superPersistentType.getMapping() instanceof CacheableHolder2_0) {
+				return (CacheableHolder2_0) superPersistentType.getMapping();
+			}
+			return getCacheableSuperPersistentType(superPersistentType);
+		}
+		return null;
 	}
 	
 	// **************** initialize/update **************************************

@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
@@ -433,13 +432,22 @@ public class JavaEclipseLinkCachingImpl
 	}
 	
 	public boolean calculateDefaultCacheable() {
-		if (getParent() instanceof Entity) {
-			EclipseLinkEntity parentEntity = (EclipseLinkEntity) ((Entity) getParent()).getParentEntity();
-			if (parentEntity != null) {
-				return ((CacheableHolder2_0) parentEntity).getCacheable().isCacheable();
-			}
+		CacheableHolder2_0 cacheableHolder = getCacheableSuperPersistentType(getParent().getPersistentType());
+		if (cacheableHolder != null) {
+			return cacheableHolder.getCacheable().isCacheable();
 		}
 		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+	}
+	
+	protected CacheableHolder2_0 getCacheableSuperPersistentType(PersistentType persistentType) {
+		PersistentType superPersistentType = persistentType.getSuperPersistentType();
+		if (superPersistentType != null) {
+			if (superPersistentType.getMapping() instanceof CacheableHolder2_0) {
+				return (CacheableHolder2_0) superPersistentType.getMapping();
+			}
+			return getCacheableSuperPersistentType(superPersistentType);
+		}
+		return null;
 	}
 	
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {

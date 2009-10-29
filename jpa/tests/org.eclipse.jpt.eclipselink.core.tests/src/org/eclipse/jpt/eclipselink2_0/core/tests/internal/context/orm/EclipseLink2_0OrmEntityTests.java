@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -1564,4 +1565,49 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 	}
+	
+	public void testIsDefaultCacheableFromMappedSuperClass() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType subOrmPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_SUB_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkEntity subEntity = (EclipseLinkEntity) subOrmPersistentType.getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) ormPersistentType.getMapping();
+		Cacheable2_0 subCacheable = ((CacheableHolder2_0) subEntity).getCacheable();
+		Cacheable2_0 cacheable = ((CacheableHolder2_0) mappedSuperclass).getCacheable();
+		assertEquals(true, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+		
+		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+	
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(null);
+		cacheable.setSpecifiedCacheable(Boolean.FALSE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+				
+		cacheable.setSpecifiedCacheable(Boolean.FALSE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+		
+		cacheable.setSpecifiedCacheable(Boolean.TRUE);
+		assertEquals(true, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		assertEquals(true, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+	}
+
 }

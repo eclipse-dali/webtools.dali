@@ -12,6 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmMappedSuperclass;
+import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
@@ -30,8 +32,11 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkMappedSuperclassImpl extends AbstractOrmMappedSuperclass
-	implements OrmEclipseLinkMappedSuperclass
+public class OrmEclipseLinkMappedSuperclassImpl
+	extends AbstractOrmMappedSuperclass
+	implements
+		OrmEclipseLinkMappedSuperclass,
+		CacheableHolder2_0
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 	
@@ -72,7 +77,14 @@ public class OrmEclipseLinkMappedSuperclassImpl extends AbstractOrmMappedSupercl
 	public EclipseLinkConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
+		
+	public Cacheable2_0 getCacheable() {
+		return ((CacheableHolder2_0) getCaching()).getCacheable();
+	}
 	
+	public boolean calculateDefaultCacheable() {
+		return ((CacheableHolder2_0) getCaching()).calculateDefaultCacheable();
+	}
 	
 	// **************** resource-context interaction ***************************
 	

@@ -13,6 +13,8 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaMappedSuperclass;
+import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
@@ -23,7 +25,10 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkMappedSuperclassImpl extends AbstractJavaMappedSuperclass implements JavaEclipseLinkMappedSuperclass
+public class JavaEclipseLinkMappedSuperclassImpl
+	extends AbstractJavaMappedSuperclass
+	implements JavaEclipseLinkMappedSuperclass,
+		CacheableHolder2_0
 {
 	protected JavaEclipseLinkCaching eclipseLinkCaching;
 	
@@ -62,6 +67,14 @@ public class JavaEclipseLinkMappedSuperclassImpl extends AbstractJavaMappedSuper
 	
 	public EclipseLinkChangeTracking getChangeTracking() {
 		return this.changeTracking;
+	}
+	
+	public Cacheable2_0 getCacheable() {
+		return ((CacheableHolder2_0) getCaching()).getCacheable();
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		return ((CacheableHolder2_0) getCaching()).calculateDefaultCacheable();
 	}
 	
 	@Override
