@@ -19,10 +19,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class JpaValidationPreferences {
 	
-	static String HIGH_SEVERITY = "error";
-	static String NORMAL_SEVERITY = "warning";
-	static String LOW_SEVERITY = "info";
-	static String IGNORE = "ignore";
+	public static String HIGH_SEVERITY = "error";
+	public static String NORMAL_SEVERITY = "warning";
+	public static String LOW_SEVERITY = "info";
+	public static String IGNORE = "ignore";
 	
 	static int NO_SEVERITY_PREFERENCE = -1;
 	
