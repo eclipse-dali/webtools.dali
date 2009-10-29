@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
@@ -44,6 +45,15 @@ public class EclipseLinkOrmXml2_0UiFactory
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new OrmEclipseLinkEntity2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public JpaComposite createOrmMappedSuperclassComposite(
+			PropertyValueModel<OrmMappedSuperclass> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEclipseLinkMappedSuperclass2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	// **************** orm attribute mapping composites ***********************

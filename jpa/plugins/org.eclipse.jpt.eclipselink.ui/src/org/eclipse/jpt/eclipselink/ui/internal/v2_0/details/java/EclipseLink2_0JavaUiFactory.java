@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
@@ -42,6 +43,13 @@ public class EclipseLink2_0JavaUiFactory
 			PropertyValueModel<JavaEntity> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
 		return new JavaEclipseLinkEntity2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createJavaMappedSuperclassComposite(
+			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
+		return new JavaEclipseLinkMappedSuperclass2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

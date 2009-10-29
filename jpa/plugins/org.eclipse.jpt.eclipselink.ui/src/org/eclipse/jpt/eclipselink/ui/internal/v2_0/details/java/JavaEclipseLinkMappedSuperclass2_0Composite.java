@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,10 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java;
+package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.AbstractJavaEclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -25,10 +26,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see EclipseLinkMappedSuperclass
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
- * @version 2.1
- * @since 2.1
+ * @version 3.0
+ * @since 3.0
  */
-public class JavaEclipseLinkMappedSuperclass1_1Composite extends AbstractJavaEclipseLinkMappedSuperclassComposite
+public class JavaEclipseLinkMappedSuperclass2_0Composite extends AbstractJavaEclipseLinkMappedSuperclassComposite
 {
 	/**
 	 * Creates a new <code>MappedSuperclassComposite</code>.
@@ -37,7 +38,7 @@ public class JavaEclipseLinkMappedSuperclass1_1Composite extends AbstractJavaEcl
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEclipseLinkMappedSuperclass1_1Composite(PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
+	public JavaEclipseLinkMappedSuperclass2_0Composite(PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
@@ -59,5 +60,10 @@ public class JavaEclipseLinkMappedSuperclass1_1Composite extends AbstractJavaEcl
 				return this.subject.getPersistentType();
 			}
 		};
+	}
+
+	@Override
+	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
+		new JavaEclipseLinkCaching2_0Composite(this, cachingHolder, container);
 	}
 }
