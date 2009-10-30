@@ -86,6 +86,11 @@ public class JpaValidationPreferences {
 		projectPreferences.put(messageId, problemPreference);
 	}
 	
+	public static void removeProjectLevelProblemPreference(IProject project, String messageId){
+		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
+		projectPreferences.remove(messageId);
+	}
+	
 	/**
 	 * Returns the String value of the problem preference from the workspace preferences
 	 */
@@ -98,4 +103,9 @@ public class JpaValidationPreferences {
 		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
 		workspacePreferences.put(messageId, problemPreference);
 	}	
+	
+	public static void removeWorkspaceLevelProblemPreference(String messageId){
+		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
+		workspacePreferences.remove(messageId);
+	}
 }
