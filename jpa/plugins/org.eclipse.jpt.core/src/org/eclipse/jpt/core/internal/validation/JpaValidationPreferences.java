@@ -16,7 +16,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jpt.core.IResourcePart;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.osgi.service.prefs.BackingStoreException;
 
+//TODO:  Probably want to merge the behavior in this class into JptCorePlugin
 public class JpaValidationPreferences {
 	
 	public static String HIGH_SEVERITY = "error";
@@ -32,11 +34,7 @@ public class JpaValidationPreferences {
 	 * @return an IMessage severity level
 	 */
 	public static int getProblemSeverityPreference(Object targetObject, String messageId) {
-
-		IAdaptable target = (IAdaptable)targetObject;
-		IResource resource = ((IResourcePart) target.getAdapter(IResourcePart.class)).getResource();
-		IProject project = resource.getProject();
-			
+		IProject project = getProject(targetObject);
 		String problemPreference = getPreference(project, messageId);
 		
 		if (problemPreference==null){
@@ -51,13 +49,22 @@ public class JpaValidationPreferences {
 		return NO_SEVERITY_PREFERENCE;
 	}
 
+	private static IProject getProject(Object targetObject) {
+		IAdaptable target = (IAdaptable)targetObject;
+		IResource resource = ((IResourcePart) target.getAdapter(IResourcePart.class)).getResource();
+		IProject project = resource.getProject();
+		return project;
+	}
+
 	/**
 	 * Returns whether or not this problem should be ignored based on project or
 	 * workspace preferences
 	 */
 	public static boolean isProblemIgnored(IProject project, String messageId){
 		String problemPreference = getPreference(project, messageId);
-		if (problemPreference.equals(IGNORE)){
+		if (problemPreference==null){
+			return false;
+		}else if(problemPreference.equals(IGNORE)){
 			return true;
 		}
 		return false;
@@ -84,6 +91,7 @@ public class JpaValidationPreferences {
 	public static void setProjectLevelProblemPreference(IProject project, String messageId, String problemPreference) {
 		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
 		projectPreferences.put(messageId, problemPreference);
+		flush(projectPreferences);
 	}
 	
 	public static void removeProjectLevelProblemPreference(IProject project, String messageId){
@@ -102,10 +110,20 @@ public class JpaValidationPreferences {
 	public static void setWorkspaceLevelProblemPreference(String messageId, String problemPreference) {
 		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
 		workspacePreferences.put(messageId, problemPreference);
+		flush(workspacePreferences);
 	}	
 	
 	public static void removeWorkspaceLevelProblemPreference(String messageId){
 		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
 		workspacePreferences.remove(messageId);
 	}
+	
+	private static void flush(IEclipsePreferences prefs) {
+		try {
+			prefs.flush();
+		} catch(BackingStoreException ex) {
+			JptCorePlugin.log(ex);
+		}
+	}
+	
 }

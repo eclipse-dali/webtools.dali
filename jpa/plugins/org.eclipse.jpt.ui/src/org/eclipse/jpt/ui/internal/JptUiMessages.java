@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -118,6 +118,13 @@ public class JptUiMessages {
 	public static String PackageChooserPane_dialogTitle;
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String EntitiesGenerator_jobName;
+	public static String JpaPreferencesPage_Description;
+	public static String JpaProblemSeveritiesPage_Default;
+	public static String JpaProblemSeveritiesPage_Description;
+	public static String JpaProblemSeveritiesPage_Error;
+	public static String JpaProblemSeveritiesPage_Ignore;
+	public static String JpaProblemSeveritiesPage_Info;
+	public static String JpaProblemSeveritiesPage_Warning;
 
 	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;

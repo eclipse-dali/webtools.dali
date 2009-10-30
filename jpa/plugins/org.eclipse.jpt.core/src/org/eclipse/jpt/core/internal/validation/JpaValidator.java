@@ -89,7 +89,11 @@ public class JpaValidator extends AbstractValidator implements IValidator {
 		reporter.removeAllMessages(this);
 		
 		for (Iterator<IMessage> stream = this.validationMessages(reporter, project); stream.hasNext(); ) {
-			reporter.addMessage(this, adjustMessage(stream.next()));
+			IMessage message = stream.next();
+			// check to see if the message should be ignored based on preferences
+			if (!JpaValidationPreferences.isProblemIgnored(project, message.getId())){
+				reporter.addMessage(this, adjustMessage(message));
+			}
 		}
 	}
 	
