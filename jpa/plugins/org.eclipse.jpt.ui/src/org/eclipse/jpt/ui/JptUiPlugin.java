@@ -47,8 +47,9 @@ public class JptUiPlugin
 	 * The plug-in identifier of JPA UI support (value {@value}).
 	 */
 	public static final String PLUGIN_ID = "org.eclipse.jpt.ui";
+	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
 
-	private static final String FOCUS_DATA_KEY = PLUGIN_ID + ".focus";
+	private static final String FOCUS_DATA_KEY = PLUGIN_ID_ + "focus";
 	private static final Object FOCUS_DATA = new Object();
 
 
@@ -116,6 +117,9 @@ public class JptUiPlugin
 		INSTANCE = this;
 	}
 
+	/**
+	 * We are registered to receive only {@link SWT#FocusIn} events
+	 */
 	private Listener buildFocusListener() {
 		return new Listener() {
 			public void handleEvent(Event event) {
@@ -172,7 +176,8 @@ public class JptUiPlugin
 	/**
 	 * Tag the specified control so that whenever it (or any of its children,
 	 * grandchildren, etc.) has the focus, the Dali model ignores any Java
-	 * change events.
+	 * change events. This method is to be called when the control is first
+	 * constructed.
 	 */
 	public void controlAffectsJavaSource(Control control) {
 		control.setData(FOCUS_DATA_KEY, FOCUS_DATA);
