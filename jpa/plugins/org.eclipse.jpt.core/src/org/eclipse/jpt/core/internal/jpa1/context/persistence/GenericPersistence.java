@@ -21,11 +21,9 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.persistence.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -229,16 +227,8 @@ public class GenericPersistence
 	}
 	
 	protected String latestDocumentVersion() {
-		String jpaPlatformVersion = getJpaPlatform().getJpaVersion().getJpaVersion();
-		if (jpaPlatformVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)) {
-			return JPA.SCHEMA_VERSION;
-		}
-		else if (jpaPlatformVersion.equals(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return JPA2_0.SCHEMA_VERSION;
-		}
-		else {
-			throw new IllegalStateException("Platform version not recognized.");
-		}
+		return getJpaPlatform().getMostRecentSupportedResourceType(
+				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE).getVersion();
 	}
 	
 	/**

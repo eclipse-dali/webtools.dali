@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
+import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
@@ -61,6 +64,24 @@ public class TestJpaPlatformProvider extends AbstractJpaPlatformProvider
 	
 	
 	// ********** resource models **********
+	
+	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+		}
+		else if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
+			return JptCorePlugin.JAR_RESOURCE_TYPE;
+		}
+		else if (contentType.equals(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
+			return JptCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE;
+		}
+		else if (contentType.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE)) {
+			return JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE;
+		}
+		else {
+			throw new IllegalArgumentException(contentType.toString());
+		}
+	}
 	
 	@Override
 	protected JpaResourceModelProvider[] buildResourceModelProviders() {

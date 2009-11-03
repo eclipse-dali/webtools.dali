@@ -79,11 +79,11 @@
 			id="generic.ui"
 			jpaPlatform="generic"
 			factoryClass="org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUiFactory"/>
-  <jpaPlatformUi
-        factoryClass="org.eclipse.jpt.ui.internal.jpa2.platform.generic.Generic2_0JpaPlatformUiFactory"
-        id="generic2_0.ui"
-        jpaPlatform="generic2_0">
-  </jpaPlatformUi>
+		
+		<jpaPlatformUi
+			id="generic2_0.ui"
+			jpaPlatform="generic2_0"
+			factoryClass="org.eclipse.jpt.ui.internal.jpa2.platform.generic.Generic2_0JpaPlatformUiFactory"/>
 		
 	</extension>
 	
@@ -111,6 +111,10 @@
 	
 	<extension
 		point="org.eclipse.ui.commands">
+		
+		<command
+			id="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion"
+			name="%upgradeToLatestVersion"/>
 		
 		<category
 			id="org.eclipse.jpt.ui.jpaStructureViewCommands"
@@ -167,11 +171,11 @@
 				name="%mapAsSpecifiedMappingParameterName"
 				optional="false">
 			</commandParameter>
-   <commandParameter
-         id="defaultPersistentAttributeMappingKey"
-         name="%mapAsDefaultMappingParameterName"
-         optional="false">
-   </commandParameter>
+			<commandParameter
+				id="defaultPersistentAttributeMappingKey"
+				name="%mapAsDefaultMappingParameterName"
+				optional="false">
+			</commandParameter>
 		</command>
 		
 	</extension>
@@ -199,6 +203,32 @@
  	
  	<extension
 		point="org.eclipse.ui.handlers">
+		
+		<handler
+			commandId="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion"
+			class="org.eclipse.jpt.ui.internal.commands.UpgradeXmlFileVersionHandler">
+			<enabledWhen>
+				<and>
+					<count value="1"/>
+					<iterate>
+						<or>
+							<adapt
+								type="org.eclipse.jpt.core.context.XmlFile">
+								<test
+									property="org.eclipse.jpt.core.isLatestSupportedVersion"
+									value="false"/>
+							</adapt>
+							<adapt
+								type="org.eclipse.jpt.core.resource.xml.JpaXmlResource">
+								<test
+									property="org.eclipse.jpt.core.isLatestSupportedVersion"
+									value="false"/>
+							</adapt>
+						</or>
+					</iterate>
+				</and>
+			</enabledWhen>
+		</handler>
 		
 		<handler
 			commandId="org.eclipse.jpt.ui.entityMappingsAddPersistentClass"
@@ -325,6 +355,64 @@
  	<extension
 		point="org.eclipse.ui.menus">
 		
+		<!-- contributions for any popup -->
+		<menuContribution
+			locationURI="popup:org.eclipse.ui.popup.any">
+			<!-- "JPA Tools" submenu for anything that adapts to JpaXmlResource (IFile objects, mostly) -->
+			<menu
+				id="org.eclipse.jpt.ui.project.JPATools"
+				label="%jpaMenuName">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate ifEmpty="false">
+							<adapt
+								type="org.eclipse.jpt.core.resource.xml.JpaXmlResource"/>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</menu>
+			<!-- commands for objects that don't need "JPA Tools" submenu -->
+			<command
+				commandId="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate ifEmpty="false">
+							<adapt
+								type="org.eclipse.jpt.core.context.XmlFile">
+								<test
+									property="org.eclipse.jpt.core.isLatestSupportedVersion"
+									value="false"/>
+							</adapt>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>	
+		</menuContribution>
+		
+		<!-- contributions to the "JPA Tools" submenu -->
+		<menuContribution
+			locationURI="popup:org.eclipse.jpt.ui.project.JPATools">
+			<command
+				commandId="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate ifEmpty="false">
+							<adapt
+								type="org.eclipse.jpt.core.resource.xml.JpaXmlResource">
+								<test
+									property="org.eclipse.jpt.core.isLatestSupportedVersion"
+									value="false"/>
+							</adapt>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		
+		<!-- contributions to objects in the JPA structure view -->
 		<menuContribution
 			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
 			<command
@@ -409,7 +497,7 @@
 					class="org.eclipse.jpt.ui.internal.menus.PersistentTypeMapAsContribution">
 				</dynamic>
 			</menu>
-
+			
 			<menu
 				id="org.eclipse.jpt.ui.persistentAttributeMapAs"
 				label="%mapAs"

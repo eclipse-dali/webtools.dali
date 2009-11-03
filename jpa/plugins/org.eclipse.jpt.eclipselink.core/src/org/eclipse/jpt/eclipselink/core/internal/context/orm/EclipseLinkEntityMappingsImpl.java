@@ -15,10 +15,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -57,18 +54,7 @@ public class EclipseLinkEntityMappingsImpl
 	
 	@Override
 	protected String latestDocumentVersion() {
-		String jpaPlatformVersion = getJpaPlatform().getJpaVersion().getVersion();
-		if (jpaPlatformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0)) {
-			return EclipseLink.SCHEMA_VERSION;
-		}
-		else if (jpaPlatformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_1)) {
-			return EclipseLink1_1.SCHEMA_VERSION;
-		}
-		else if (jpaPlatformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_0)) {
-			return EclipseLink2_0.SCHEMA_VERSION;
-		}
-		else {
-			throw new IllegalStateException("Platform version not recognized.");
-		}
+		return getJpaPlatform().getMostRecentSupportedResourceType(
+				JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE).getVersion();
 	}
 }

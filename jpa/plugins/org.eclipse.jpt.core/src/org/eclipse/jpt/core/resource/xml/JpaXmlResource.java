@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.resource.xml;
 import java.io.IOException;
 import java.util.Collections;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
@@ -24,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JpaResourceType;
@@ -184,6 +186,14 @@ public class JpaXmlResource
 		}
 		String fileName = URI.decode(uri.path()).substring(JEMUtilPlugin.PLATFORM_RESOURCE.length() + 1);
 		return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
+	}
+	
+	public IProject getProject() {
+		return getFile().getProject();
+	}
+	
+	public JpaProject getJpaProject() {
+		return JptCorePlugin.getJpaProject(getProject());
 	}
 	
 	public void modify(Runnable runnable) {

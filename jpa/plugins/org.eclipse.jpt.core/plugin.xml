@@ -81,25 +81,36 @@
 			type="org.eclipse.jpt.core.context.PersistentAttribute"
 			namespace="org.eclipse.jpt.core"
 			properties="isMapped, isVirtual"
-			class="org.eclipse.jpt.core.internal.context.PersistentAttributePropertyTester">
-		</propertyTester>
+			class="org.eclipse.jpt.core.internal.context.PersistentAttributePropertyTester"/>
 		
 		<propertyTester
 			id="org.eclipse.jpt.core.propertyTester.platformResource"
 			type="org.eclipse.core.resources.IResource"
 			namespace="org.eclipse.jpt.core"
 			properties="jpaPlatform"
-			class="org.eclipse.jpt.core.internal.JpaPlatformTester">
-		</propertyTester>
+			class="org.eclipse.jpt.core.internal.JpaPlatformTester"/>
 		
 		<propertyTester
 			id="org.eclipse.jpt.core.propertyTester.javaElement"
 			type="org.eclipse.jdt.core.IJavaElement"
 			namespace="org.eclipse.jpt.core"
 			properties="jpaPlatform"
-			class="org.eclipse.jpt.core.internal.JpaPlatformTester">
-		</propertyTester>
-			
+			class="org.eclipse.jpt.core.internal.JpaPlatformTester"/>
+		
+		<propertyTester
+			id="org.eclipse.jpt.core.propertyTester.xmlResource"
+			type="org.eclipse.jpt.core.resource.xml.JpaXmlResource"
+			namespace="org.eclipse.jpt.core"
+			properties="isLatestSupportedVersion"
+			class="org.eclipse.jpt.core.internal.resource.xml.JpaXmlResourcePropertyTester"/>
+		
+		<propertyTester
+			id="org.eclipse.jpt.core.propertyTester.xmlFile"
+			type="org.eclipse.jpt.core.context.XmlFile"
+			namespace="org.eclipse.jpt.core"
+			properties="isLatestSupportedVersion"
+			class="org.eclipse.jpt.core.internal.resource.xml.JpaXmlResourcePropertyTester"/>
+		
 	</extension>
 	
 	
@@ -122,6 +133,12 @@
 			class="org.eclipse.jpt.core.internal.ResourceAdapterFactory"
 			adaptableType="org.eclipse.core.resources.IResource">
 			<adapter type="org.eclipse.jpt.core.IResourcePart"/>
+		</factory>
+		
+		<factory
+			class="org.eclipse.jpt.core.internal.resource.xml.JpaXmlResourceAdapterFactory"
+			adaptableType="org.eclipse.core.resources.IFile">
+			<adapter type="org.eclipse.jpt.core.resource.xml.JpaXmlResource"/>
 		</factory>
 		
 	</extension>

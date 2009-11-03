@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -137,18 +138,26 @@ public interface JpaPlatform
 	JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(String mappingKey);
 	
 	
-	// ********** Mapping Files **********
+	// ********** resource types and definitions **********
 	
 	/**
 	 * Return a {@link ResourceDefinition} to describe the context model for a file of the given
 	 * resource type.
-	 * Thrown an {@link IllegalArgumentException} if the resource type is not supported by the platform.
+	 * Throw an {@link IllegalArgumentException} if the resource type is not supported by the platform.
 	 * 
-	 * @param resourceType The resource type of a potential mapping file
-	 * @return The resource definition that can be used to describe the context model of such
-	 * a file
+	 * @param resourceType The resource type of a potential resource definition
+	 * @return The resource definition that can be used for such a file
 	 */
 	ResourceDefinition getResourceDefinition(JpaResourceType resourceType);
+	
+	/**
+	 * Return the most recent supported {@link JpaResourceType} for the given content type.
+	 * Throw an {@link IllegalArgumentException} if the content type is not supported by the platform.
+	 * 
+	 * @param contentType A content type supported by the platform
+	 * @return The most recent resource type supported by the platform
+	 */
+	JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
 	
 	
 	// ********** database **********

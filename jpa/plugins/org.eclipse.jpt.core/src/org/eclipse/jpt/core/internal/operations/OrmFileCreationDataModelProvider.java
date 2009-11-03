@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.operations;
 
 import java.util.Iterator;
 import java.util.Set;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -97,16 +96,8 @@ public class OrmFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		try {
-			String facetVersion = getJpaFacetVersion(getProject());
-			if (facetVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)) {
-				return JPA.SCHEMA_VERSION;
-			}
-		}
-		catch (CoreException ce) {
-			// fall through to final return
-		}
-		return JPA2_0.SCHEMA_VERSION;
+		return getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(
+				JptCorePlugin.ORM_XML_CONTENT_TYPE).getVersion();
 	}
 	
 	protected PersistenceUnit getDefaultPersistenceUnit() {

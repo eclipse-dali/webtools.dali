@@ -9,8 +9,11 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
+import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
@@ -34,6 +37,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.JavaElementCollectionMapp
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMappingDefinition;
@@ -76,6 +80,27 @@ public class EclipseLink2_0JpaPlatformProvider
 	
 	
 	// ********** resource models **********
+	
+	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+		}
+		else if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
+			return JptCorePlugin.JAR_RESOURCE_TYPE;
+		}
+		else if (contentType.equals(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
+			return JptCorePlugin.PERSISTENCE_XML_2_0_RESOURCE_TYPE;
+		}
+		else if (contentType.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE)) {
+			return JptCorePlugin.ORM_XML_2_0_RESOURCE_TYPE;
+		}
+		else if (contentType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
+			return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE;
+		}
+		else {
+			throw new IllegalArgumentException(contentType.toString());
+		}
+	}
 	
 	@Override
 	protected JpaResourceModelProvider[] buildResourceModelProviders() {

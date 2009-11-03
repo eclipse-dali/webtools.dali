@@ -50,19 +50,8 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		String platformVersion = getJpaProject().getJpaPlatform().getJpaVersion().getVersion();
-		if (platformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0)) {
-			return EclipseLink.SCHEMA_VERSION;
-		}
-		else if (platformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_1)) {
-			return EclipseLink1_1.SCHEMA_VERSION;
-		}
-		else if (platformVersion.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_0)) {
-			return EclipseLink2_0.SCHEMA_VERSION;
-		}
-		else {
-			throw new IllegalStateException("Illegal EclipseLink platform version: " + platformVersion);
-		}
+		return getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(
+				JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE).getVersion();
 	}
 	
 	@Override

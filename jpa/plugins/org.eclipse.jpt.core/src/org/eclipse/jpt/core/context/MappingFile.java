@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
@@ -23,13 +22,8 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface MappingFile
-	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
+	extends XmlFile, PersistentTypeContainer
 {
-	/**
-	 * Return the underlying xml resource
-	 */
-	JpaXmlResource getXmlResource();
-	
 	/**
 	 * Return the root object of this mapping file
 	 */

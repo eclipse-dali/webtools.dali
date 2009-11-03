@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.operations;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.persistence.JPA;
@@ -44,16 +43,8 @@ public class PersistenceFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		try {
-			String facetVersion = getJpaFacetVersion(getProject());
-			if (facetVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)) {
-				return JPA.SCHEMA_VERSION;
-			}
-		}
-		catch (CoreException ce) {
-			// fall through to final return
-		}
-		return JPA2_0.SCHEMA_VERSION;
+		return getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(
+				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE).getVersion();
 	}
 	
 	

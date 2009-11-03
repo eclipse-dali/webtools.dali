@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import java.util.ListIterator;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 
@@ -34,6 +35,11 @@ import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
  */
 public interface JpaPlatformProvider
 {
+	/**
+	 * Return the most recent resource type for the given content type supported by this platform
+	 */
+	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
+	
 	/**
 	 * Return the resource model providers that apply to this platform.
 	 */

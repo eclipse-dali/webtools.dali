@@ -206,7 +206,7 @@ public class GenericJpaPlatform
 	}
 	
 	
-	// ********** Mapping Files **********
+	// ********** resource types and definitions **********
 	
 	public ResourceDefinition getResourceDefinition(JpaResourceType resourceType) {
 		for (ResourceDefinition resourceDefinition : CollectionTools.iterable(resourceDefinitions())) {
@@ -219,6 +219,10 @@ public class GenericJpaPlatform
 	
 	protected ListIterator<ResourceDefinition> resourceDefinitions() {
 		return this.platformProvider.resourceDefinitions();
+	}
+	
+	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+		return this.platformProvider.getMostRecentSupportedResourceType(contentType);
 	}
 	
 	
