@@ -42,7 +42,7 @@ public class OrphanRemoval2_0Composite extends FormPane<OrphanRemovable2_0>
 
 		this.addTriStateCheckBoxWithDefault(
 			this.addSubPane(container, 4),
-			JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovableLabel,
+			JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovalLabel,
 			this.buildOrphanRemovalHolder(),
 			this.buildOrphanRemovalStringHolder(),
 			null		// TODO
@@ -68,9 +68,9 @@ public class OrphanRemoval2_0Composite extends FormPane<OrphanRemovable2_0>
 			protected String transform(Boolean value) {
 				if (value != null) {
 					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
-					return NLS.bind(JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovableLabelDefault, defaultStringValue);
+					return NLS.bind(JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovalLabelDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovableLabel;
+				return JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovalLabel;
 			}
 		};
 	}
