@@ -39,8 +39,8 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.utility.internal.AsynchronousCommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
-import org.eclipse.jpt.utility.internal.CallbackStatefulCommandExecutor;
 import org.eclipse.jpt.utility.internal.SimpleCommandExecutor;
+import org.eclipse.jpt.utility.internal.StatefulCommandExecutor;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
@@ -124,7 +124,7 @@ class GenericJpaModel
 	 * Determine how Resource and Java change events are
 	 * handled (i.e. synchronously or asynchronously).
 	 */
-	private volatile CallbackStatefulCommandExecutor eventHandler = new AsynchronousCommandExecutor(JptCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME);
+	private volatile StatefulCommandExecutor eventHandler = new AsynchronousCommandExecutor(JptCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME);
 
 	/**
 	 * Listen for<ul>
@@ -194,12 +194,16 @@ class GenericJpaModel
 		}
 	}
 
+	/**
+	 * side-effect: 'jpaProjects' populated
+	 */
 	private void buildJpaProjects() {
 		try {
 			this.buildJpaProjects_();
 		} catch (CoreException ex) {
-			// our visitor does not throw any exceptions
-			throw new RuntimeException(ex);
+			// if we have a problem, leave the currently built JPA projects in
+			// place and keep executing (should be OK...)
+			JptCorePlugin.log(ex);
 		}
 	}
 
@@ -321,24 +325,46 @@ class GenericJpaModel
 	private void addJpaProject(JpaProject jpaProject) {
 		// figure out exactly when JPA projects are added
 		dumpStackTrace("add: ", jpaProject); //$NON-NLS-1$
-		// the jpa project can be null if we have problems getting the jpa platform
+		// the JPA project will be null if we have any problems building it...
+		// (e.g. if we have problems getting the JPA platform)
 		if (jpaProject != null) {
 			this.addItemToCollection(jpaProject, this.jpaProjects, JPA_PROJECTS_COLLECTION);
 		}
 	}
 
+	/**
+	 * return null if we have any problems...
+	 */
 	private JpaProject buildJpaProject(IProject project) {
 		return this.buildJpaProject(this.buildJpaProjectConfig(project));
 	}
 
+	/**
+	 * return null if we have any problems...
+	 */
 	private JpaProject buildJpaProject(JpaProject.Config config) {
 		JpaPlatform jpaPlatform = config.getJpaPlatform();
 		if (jpaPlatform == null) {
 			return null;
 		}
-		JpaProject result = jpaPlatform.getJpaFactory().buildJpaProject(config);
-		result.setUpdater(new AsynchronousJpaProjectUpdater(result));
-		return result;
+		JpaProject jpaProject = this.buildJpaProject(jpaPlatform, config);
+		if (jpaProject == null) {
+			return null;
+		}
+		jpaProject.setUpdater(new AsynchronousJpaProjectUpdater(jpaProject));
+		return jpaProject;
+	}
+
+	/**
+	 * return null if we have any problems...
+	 */
+	private JpaProject buildJpaProject(JpaPlatform jpaPlatform, JpaProject.Config config) {
+		try {
+			return jpaPlatform.getJpaFactory().buildJpaProject(config);
+		} catch (Exception ex) {
+			JptCorePlugin.log(ex);
+			return null;
+		}
 	}
 
 	private JpaProject.Config buildJpaProjectConfig(IProject project) {
@@ -390,7 +416,7 @@ class GenericJpaModel
 	// ********** Project POST_BUILD (CLEAN_BUILD) **********
 
 	/* private */ void projectPostCleanBuild(IProject project) {
-		this.waitForExecution(this.buildProjectPostCleanBuildCommand(project));
+		this.executeAfterEventsHandled(this.buildProjectPostCleanBuildCommand(project));
 	}
 
 	private Command buildProjectPostCleanBuildCommand(final IProject project) {
@@ -418,7 +444,7 @@ class GenericJpaModel
 	 * JPA project if appropriate.
 	 */
 	/* private */ void projectPreDelete(IProject project) {
-		this.waitForExecution(this.buildProjectPreDeleteCommand(project));
+		this.executeAfterEventsHandled(this.buildProjectPreDeleteCommand(project));
 	}
 
 	private Command buildProjectPreDeleteCommand(final IProject project) {
@@ -444,7 +470,7 @@ class GenericJpaModel
 	 * Check whether the JPA facet has been added or removed.
 	 */
 	/* private */ void checkForJpaFacetTransition(IProject project) {
-		this.waitForExecution(this.buildCheckForJpaFacetTransitionCommand(project));
+		this.executeAfterEventsHandled(this.buildCheckForJpaFacetTransitionCommand(project));
 	}
 
 	private Command buildCheckForJpaFacetTransitionCommand(final IProject project) {
@@ -474,7 +500,7 @@ class GenericJpaModel
 	// ********** FacetedProject POST_INSTALL **********
 
 	/* private */ void jpaFacetedProjectPostInstall(IProjectFacetActionEvent event) {
-		this.waitForExecution(this.buildJpaFacetedProjectPostInstallCommand(event));
+		this.executeAfterEventsHandled(this.buildJpaFacetedProjectPostInstallCommand(event));
 	}
 
 	private Command buildJpaFacetedProjectPostInstallCommand(final IProjectFacetActionEvent event) {
@@ -532,7 +558,7 @@ class GenericJpaModel
 
 	/* private */ void jpaFacetedProjectPreUninstall(IProjectFacetActionEvent event) {
 		IProject project = event.getProject().getProject();
-		this.waitForExecution(this.buildJpaFacetedProjectPreUninstallCommand(project));
+		this.executeAfterEventsHandled(this.buildJpaFacetedProjectPreUninstallCommand(project));
 	}
 
 	private Command buildJpaFacetedProjectPreUninstallCommand(final IProject project) {
@@ -586,46 +612,73 @@ class GenericJpaModel
 
 	// ********** event handler **********
 
-	private void waitForExecution(Command command) {
+	/**
+	 * If the event handler is executing asynchronously:<br>
+	 * Allow all the commands currently on the command executor's queue to execute.
+	 * Once they have executed, suspend the command executor and process the
+	 * specified command (on <em>this</em> thread, <em>not</em> the command
+	 * executor thread). Once the specified command is finished, allow the
+	 * command executor to resume processing its command queue.
+	 * <p>
+	 * If the event handler is executing synchronously:<br>
+	 * All the events have already been handled synchronously, so we simply
+	 * execute the specified command [sorta] directly.
+	 */
+	private void executeAfterEventsHandled(Command command) {
 		SynchronizedBoolean flag = new SynchronizedBoolean(false);
-		org.eclipse.jpt.utility.Command markerCommand = this.buildMarkerCommand();
-		EventHandlerListener listener = new EventHandlerListener(markerCommand, flag);
-		this.eventHandler.addListener(listener);
-		this.eventHandler.execute(markerCommand);
+		this.eventHandler.execute(new PauseCommand(Thread.currentThread(), flag));
 		try {
 			flag.waitUntilTrue();
 		} catch (InterruptedException ex) {
 			// ignore - not sure why this thread would be interrupted
 		}
-		this.eventHandler.removeListener(listener);
-		command.execute();
+		try {
+			command.execute();
+		} finally {
+			flag.setFalse();
+		}
 	}
 
-	private org.eclipse.jpt.utility.Command buildMarkerCommand() {
-		return new org.eclipse.jpt.utility.Command() {
-			public void execute() {
-				// do nothing
-			}
-		};
-	}
-
-	private static class EventHandlerListener implements CallbackStatefulCommandExecutor.Listener {
-		private final org.eclipse.jpt.utility.Command command;
+	/**
+	 * If this "pause" command is executing (asynchronously) on a different
+	 * thread than the JPA model:<ul>
+	 * <li>it will set the flag to <code>true</code>, allowing the JPA model to
+	 * resume executing on its own thread
+	 * <li>then it will suspend its command executor until the JPA model sets
+	 * the flag back to <code>false</code>.
+	 * </ul>
+	 * If this "pause" command is executing (synchronously) on the same thread
+	 * as the JPA model, it will simply set the flag to <code>true</code> and
+	 * return.
+	 */
+	private static class PauseCommand
+		implements org.eclipse.jpt.utility.Command
+	{
+		private final Thread producerThread;
 		private final SynchronizedBoolean flag;
 
-		EventHandlerListener(org.eclipse.jpt.utility.Command command, SynchronizedBoolean flag) {
+		PauseCommand(Thread producerThread, SynchronizedBoolean flag) {
 			super();
-			this.command = command;
+			this.producerThread = producerThread;
 			this.flag = flag;
 		}
 
-		public void commandExecuted(org.eclipse.jpt.utility.Command c) {
-			if (c == this.command) {
-				this.flag.setTrue();
+		public void execute() {
+			this.flag.setTrue();
+			if (Thread.currentThread() != this.producerThread) {
+				try {
+					this.flag.waitUntilFalse();
+				} catch (InterruptedException ex) {
+					// ignore - the command executor will check for interruptions
+				}
 			}
 		}
 	}
 
+	/**
+	 * This method is called (via reflection) when the test plug-in is loaded.
+	 * @see JptCoreTestsPlugin#start(BundleContext)
+	 */
 	public void handleEventsSynchronously() {
 		try {
 			this.lock.acquire();

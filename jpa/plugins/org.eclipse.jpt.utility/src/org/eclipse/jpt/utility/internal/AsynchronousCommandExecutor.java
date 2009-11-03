@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.Command;
  * the command execution thread can continue executing.
  */
 public class AsynchronousCommandExecutor
-	implements CallbackStatefulCommandExecutor
+	implements StatefulCommandExecutor
 {
 	/**
 	 * This command queue is shared with the command execution/consumer thread.
@@ -36,8 +36,6 @@ public class AsynchronousCommandExecutor
 	 * Most of the thread-related behavior is delegated to this coordinator.
 	 */
 	private final ConsumerThreadCoordinator consumerThreadCoordinator;
-
-	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 
 
 	// ********** construction **********
@@ -56,7 +54,11 @@ public class AsynchronousCommandExecutor
 	 */
 	public AsynchronousCommandExecutor(String threadName) {
 		super();
-		this.consumerThreadCoordinator = new ConsumerThreadCoordinator(this.buildConsumer(), threadName);
+		this.consumerThreadCoordinator = this.buildConsumerThreadCoordinator(threadName);
+	}
+
+	private ConsumerThreadCoordinator buildConsumerThreadCoordinator(String threadName) {
+		return new ConsumerThreadCoordinator(this.buildConsumer(), threadName);
 	}
 
 	private ConsumerThreadCoordinator.Consumer buildConsumer() {
@@ -104,23 +106,6 @@ public class AsynchronousCommandExecutor
 		this.consumerThreadCoordinator.stop();
 	}
 
-	public void addListener(Listener listener) {
-		this.listenerList.add(listener);
-	}
-
-	public void removeListener(Listener listener) {
-		this.listenerList.remove(listener);
-	}
-
-	/**
-	 * Notify our listeners.
-	 */
-	/* private */ void commandExecuted(Command command) {
-		for (Listener listener : this.listenerList.getListeners()) {
-			listener.commandExecuted(command);
-		}
-	}
-
 
 	// ********** consumer **********
 
@@ -154,9 +139,7 @@ public class AsynchronousCommandExecutor
 		 * Execute the first command in the queue and notify our listeners.
 		 */
 		public void execute() {
-			Command command = AsynchronousCommandExecutor.this.commands.dequeue();
-			command.execute();
-			AsynchronousCommandExecutor.this.commandExecuted(command);
+			AsynchronousCommandExecutor.this.commands.dequeue().execute();
 		}
 
 	}

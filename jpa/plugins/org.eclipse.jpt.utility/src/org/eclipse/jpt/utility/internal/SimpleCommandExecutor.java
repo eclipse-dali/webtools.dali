@@ -15,10 +15,9 @@ import org.eclipse.jpt.utility.Command;
  * Straightforward implementation of {@link CallbackStatefulCommandExecutor}.
  */
 public class SimpleCommandExecutor
-	implements CallbackStatefulCommandExecutor
+	implements StatefulCommandExecutor
 {
 	private boolean active = false;
-	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 
 	public SimpleCommandExecutor() {
 		super();
@@ -34,7 +33,6 @@ public class SimpleCommandExecutor
 	public void execute(Command command) {
 		if (this.active) {
 			command.execute();
-			this.commandExecuted(command);
 		}
 	}
 
@@ -43,23 +41,6 @@ public class SimpleCommandExecutor
 			throw new IllegalStateException("Not started."); //$NON-NLS-1$
 		}
 		this.active = false;
-	}
-
-	public void addListener(Listener listener) {
-		this.listenerList.add(listener);
-	}
-
-	public void removeListener(Listener listener) {
-		this.listenerList.remove(listener);
-	}
-
-	/**
-	 * Notify our listeners.
-	 */
-	private void commandExecuted(Command command) {
-		for (Listener listener : this.listenerList.getListeners()) {
-			listener.commandExecuted(command);
-		}
 	}
 
 }
