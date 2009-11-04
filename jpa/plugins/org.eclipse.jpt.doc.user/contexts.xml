@@ -608,6 +608,12 @@
 		<topic label="Add Converter dialog" href="ref_add_converter" />
 		<topic label="Managing the orm.xml file" href="task_manage_orm" />
 	</context>
-	
+
+<!-- Added for 3.0 -->
+	<context id="properties_canonicalMetamodel">
+		<description>                               </description>
+		<topic label="Project properties" href="ref_project_properties"/>
+		<topic label="Understanding persistence" href="concept_persistence.htm"/>
+	</context>
 	
 </contexts>
