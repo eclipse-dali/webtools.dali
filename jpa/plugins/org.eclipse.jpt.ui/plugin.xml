@@ -358,20 +358,32 @@
 		<!-- contributions for any popup -->
 		<menuContribution
 			locationURI="popup:org.eclipse.ui.popup.any">
-			<!-- "JPA Tools" submenu for anything that adapts to JpaXmlResource (IFile objects, mostly) -->
+			
+			<!-- "JPA Tools" submenu for 
+				- anything that adapts to JpaXmlResource (IFile objects, mostly)
+				- anything that adapts to IProject and has a JPA facet -->
 			<menu
-				id="org.eclipse.jpt.ui.project.JPATools"
+				id="org.eclipse.jpt.ui.menu.JpaTools"
 				label="%jpaMenuName">
 				<visibleWhen>
 					<with
 						variable="selection">
 						<iterate ifEmpty="false">
-							<adapt
-								type="org.eclipse.jpt.core.resource.xml.JpaXmlResource"/>
+							<or>
+								<adapt
+									type="org.eclipse.jpt.core.resource.xml.JpaXmlResource"/>
+								<adapt
+									type="org.eclipse.core.resources.IProject">
+									<test
+										property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+										value="jpt.jpa"/>
+								</adapt>
+							</or>
 						</iterate>
 					</with>
 				</visibleWhen>
 			</menu>
+			
 			<!-- commands for objects that don't need "JPA Tools" submenu -->
 			<command
 				commandId="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion">
@@ -393,7 +405,7 @@
 		
 		<!-- contributions to the "JPA Tools" submenu -->
 		<menuContribution
-			locationURI="popup:org.eclipse.jpt.ui.project.JPATools">
+			locationURI="popup:org.eclipse.jpt.ui.menu.JpaTools">
 			<command
 				commandId="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion">
 				<visibleWhen>
@@ -801,9 +813,6 @@
 			id="org.eclipse.jpt.ui.project.JPATools"
 			objectClass="org.eclipse.core.resources.IProject"
 			adaptable="true">
-			<menu
-				id="org.eclipse.jpt.ui.project.JPATools"
-				label="%jpaMenuName"/>
 
 			<enablement>
 				<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
@@ -814,14 +823,14 @@
 				label="%generateEntities"
 				class="org.eclipse.jpt.ui.internal.actions.GenerateEntitiesAction"
 				enablesFor="1"
-				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
+				menubarPath="org.eclipse.jpt.ui.menu.JpaTools/content"/>
 			
 			<action
 				id="org.eclipse.jpt.ui.generateDDL"
 				label="%generateDDL"
 				class="org.eclipse.jpt.ui.internal.actions.GenerateDDLAction"
 				enablesFor="1"
-				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
+				menubarPath="org.eclipse.jpt.ui.menu.JpaTools/content"/>
 				
 		</objectContribution>
 		
@@ -855,15 +864,14 @@
 			id="org.eclipse.jpt.ui.persistenceXmlFileActions"
 			objectClass="org.eclipse.core.resources.IFile"
 			nameFilter="persistence.xml">
-			<menu
-				id="persistenceXmlJPATools"
-				label="%jpaMenuName"/>
+			
 			<action
 				id="synchClassesAction"
 				label="%synchronizeClasses"
-				menubarPath="persistenceXmlJPATools/content"
+				menubarPath="org.eclipse.jpt.ui.menu.JpaTools/content"
 				class="org.eclipse.jpt.ui.internal.actions.SynchronizeClassesAction"
 				enablesFor="1"/>
+			
 		</objectContribution>
 		
 		<objectContribution
@@ -878,21 +886,26 @@
 		</objectContribution>
 		
 	</extension>
-
+	
+	
 	<extension
-       point="org.eclipse.ui.preferencePages">
-    <page
-          id="org.eclipse.jpt.ui.preferences"
-          class="org.eclipse.jpt.ui.internal.preferences.JpaPreferencesPage"
-          name="%jpaPreferencePage">
-    </page>
-    <page
-          category="org.eclipse.jpt.ui.preferences"
-          class="org.eclipse.jpt.ui.internal.preferences.JpaProblemSeveritiesPage"
-          id="org.eclipse.jpt.ui.preferences.problemSeverities"
-          name="%jpaProblemSeveritiesPageName">
-    </page>
+		point="org.eclipse.ui.preferencePages">
+		
+		<page
+			id="org.eclipse.jpt.ui.preferences"
+			class="org.eclipse.jpt.ui.internal.preferences.JpaPreferencesPage"
+			name="%jpaPreferencePage">
+		</page>
+		
+		<page
+			category="org.eclipse.jpt.ui.preferences"
+			class="org.eclipse.jpt.ui.internal.preferences.JpaProblemSeveritiesPage"
+			id="org.eclipse.jpt.ui.preferences.problemSeverities"
+			name="%jpaProblemSeveritiesPageName">
+		</page>
+		
 	</extension>
+	
 	
 	<extension
 		point="org.eclipse.ui.propertyPages">
