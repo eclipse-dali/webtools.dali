@@ -19,6 +19,9 @@ public class JptUiValidationPreferenceMessages {
 	public static String PROJECT_INVALID_CONNECTION;
 	public static String PROJECT_INACTIVE_CONNECTION;
 	public static String PROJECT_NO_PERSISTENCE_XML;
+	
+	public static String XML_VERSION_NOT_LATEST;
+	
 	public static String PROJECT_MULTIPLE_PERSISTENCE_XML;
 	public static String PERSISTENCE_NO_PERSISTENCE_UNIT;
 	public static String PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS;

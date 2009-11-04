@@ -303,6 +303,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PROJECT_NO_CONNECTION,                  JpaValidationMessages.PROJECT_NO_CONNECTION);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PROJECT_INVALID_CONNECTION,             JpaValidationMessages.PROJECT_INVALID_CONNECTION);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PROJECT_INACTIVE_CONNECTION,            JpaValidationMessages.PROJECT_INACTIVE_CONNECTION);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.XML_VERSION_NOT_LATEST,                 JpaValidationMessages.XML_VERSION_NOT_LATEST);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PROJECT_NO_PERSISTENCE_XML,             JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PROJECT_MULTIPLE_PERSISTENCE_XML,       JpaValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,        JpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT);
