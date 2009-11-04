@@ -133,7 +133,7 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 				return definition;
 			}
 		}
-		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
+		throw new IllegalArgumentException("Illegal attribute mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 	
 	public ListIterator<MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions() {
