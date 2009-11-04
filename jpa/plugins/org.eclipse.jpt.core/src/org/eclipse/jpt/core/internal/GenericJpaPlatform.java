@@ -214,7 +214,7 @@ public class GenericJpaPlatform
 				return resourceDefinition;
 			}
 		}
-		throw new IllegalArgumentException("Illegal mapping file resource type: " + resourceType); //$NON-NLS-1$
+		throw new IllegalArgumentException("Illegal resource type: " + resourceType); //$NON-NLS-1$
 	}
 	
 	protected ListIterator<ResourceDefinition> resourceDefinitions() {
