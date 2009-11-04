@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
+import org.eclipse.jpt.core.context.orm.UnsupportedOrmAttributeMappingDefinition;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
@@ -84,7 +85,7 @@ public abstract class AbstractOrmXmlDefinition
 				return definition;
 			}
 		}
-		throw new IllegalArgumentException("Illegal attribute mapping key: " + mappingKey); //$NON-NLS-1$
+		return UnsupportedOrmAttributeMappingDefinition.instance();
 	}
 	
 	public ListIterator<OrmAttributeMappingDefinition> ormAttributeMappingDefinitions() {

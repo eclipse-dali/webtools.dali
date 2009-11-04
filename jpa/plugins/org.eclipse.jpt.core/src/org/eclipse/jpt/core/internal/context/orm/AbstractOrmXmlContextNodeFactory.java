@@ -120,6 +120,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.UnsupportedOrmAttributeMapping;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmMapsId2_0;
@@ -342,6 +343,10 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 	
 	public OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
 		return new GenericOrmNullAttributeMapping(parent, resourceMapping);
+	}
+	
+	public OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
+		return new UnsupportedOrmAttributeMapping(parent, resourceMapping);
 	}
 	
 	public OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {

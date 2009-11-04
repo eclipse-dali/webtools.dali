@@ -58,6 +58,9 @@ public class JptUiDetailsOrmMessages {
 	public static String AddGeneratorDialog_sequenceGenerator;
 	public static String GeneratorStateObject_nameMustBeSpecified;
 	public static String GeneratorStateObject_typeMustBeSpecified;
+	
+	public static String UnsupportedOrmMappingUiProvider_label;
+	public static String UnsupportedOrmMappingUiProvider_linkLabel;
 
 	private static final String BUNDLE_NAME = "jpt_ui_details_orm"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiDetailsOrmMessages.class;

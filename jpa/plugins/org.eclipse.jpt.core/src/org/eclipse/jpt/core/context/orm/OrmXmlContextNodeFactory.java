@@ -152,6 +152,8 @@ public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
 	
 	OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 	
+	OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
+
 	OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 	
 	OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping);
