@@ -83,8 +83,8 @@ public class JavaOneToManyMapping2_0Composite<T extends JavaOneToManyMapping2_0>
 		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
 		new OneToManyJoiningStrategyPane(this, this.buildJoiningHolder(), container);
 		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
-		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
 		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
+		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
 

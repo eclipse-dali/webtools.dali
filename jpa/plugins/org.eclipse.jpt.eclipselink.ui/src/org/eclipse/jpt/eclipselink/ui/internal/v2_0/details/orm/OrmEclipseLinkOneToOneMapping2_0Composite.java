@@ -27,6 +27,7 @@ import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.DerivedId2_0Pane;
+import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -100,6 +101,7 @@ public class OrmEclipseLinkOneToOneMapping2_0Composite<T extends OrmOneToOneMapp
 		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new OptionalComposite(this, addPane(container, groupBoxMargin));
 		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
+		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 	}
 	

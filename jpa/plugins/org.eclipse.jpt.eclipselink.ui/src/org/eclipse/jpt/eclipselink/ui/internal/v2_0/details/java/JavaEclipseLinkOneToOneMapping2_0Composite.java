@@ -101,8 +101,8 @@ public class JavaEclipseLinkOneToOneMapping2_0Composite<T extends JavaOneToOneMa
 		new EclipseLinkJoinFetchComposite(this, this.buildJoinFetchableHolder(), this.addPane(container, groupBoxMargin));
 		new OptionalComposite(this, this.addPane(container, groupBoxMargin));
 		new EclipseLinkPrivateOwnedComposite(this, this.buildPrivateOwnableHolder(), this.addPane(container, groupBoxMargin));
-		new CascadeComposite(this, this.buildCascadeHolder(),  this.addSubPane(container, 5));
 		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
+		new CascadeComposite(this, this.buildCascadeHolder(),  this.addSubPane(container, 5));
 	}
 	
 	

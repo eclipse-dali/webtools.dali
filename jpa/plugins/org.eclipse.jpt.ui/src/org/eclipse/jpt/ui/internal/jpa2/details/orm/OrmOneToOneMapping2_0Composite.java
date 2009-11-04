@@ -105,8 +105,8 @@ public class OrmOneToOneMapping2_0Composite<T extends OrmOneToOneMapping2_0>
 		new AccessTypeComposite(this, this.buildAccessHolderHolder(), this.addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
 		new OptionalComposite(this, this.addPane(container, groupBoxMargin));
-		new CascadeComposite(this, this.buildCascadeHolder(),  this.addSubPane(container, 5));
 		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
+		new CascadeComposite(this, this.buildCascadeHolder(),  this.addSubPane(container, 5));
 	}
 		
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
