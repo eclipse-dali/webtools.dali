@@ -55,6 +55,7 @@ public class JptUtilityTests {
 		suite.addTestSuite(ListenerListTests.class);
 		suite.addTestSuite(MethodSignatureTests.class);
 		suite.addTestSuite(NameToolsTests.class);
+		suite.addTestSuite(NotNullFilterTests.class);
 		suite.addTestSuite(ObjectReferenceTests.class);
 		suite.addTestSuite(RangeTests.class);
 		suite.addTestSuite(ReverseComparatorTests.class);

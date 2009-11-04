@@ -13,6 +13,9 @@ import java.io.Serializable;
 
 import org.eclipse.jpt.utility.Filter;
 
+/**
+ * This filter accepts only non-null objects.
+ */
 public final class NotNullFilter<T>
 	implements Filter<T>, Serializable
 {
@@ -31,12 +34,12 @@ public final class NotNullFilter<T>
 
 	// accept only non-null objects
 	public boolean accept(T o) {
-		return true;
+		return o != null;
 	}
 
 	@Override
 	public String toString() {
-		return "Filter.Null";  //$NON-NLS-1$
+		return ClassTools.shortClassNameForObject(this);
 	}
 
 	private static final long serialVersionUID = 1L;
