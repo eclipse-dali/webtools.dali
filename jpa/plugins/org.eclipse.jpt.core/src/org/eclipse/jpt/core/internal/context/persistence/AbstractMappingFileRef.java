@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.MappingFileRoot;
@@ -164,7 +164,14 @@ public abstract class AbstractMappingFileRef
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		MappingFileDefinition mappingFileDef = (MappingFileDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
+		MappingFileDefinition mappingFileDef;
+		try {
+			mappingFileDef = (MappingFileDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
+		}
+		catch (IllegalArgumentException iae) {
+			JptCorePlugin.log(iae);
+			return null;
+		}
 		return (mappingFileDef == null) ? null : mappingFileDef.getContextNodeFactory().buildMappingFile(this, resource);
 	}
 	

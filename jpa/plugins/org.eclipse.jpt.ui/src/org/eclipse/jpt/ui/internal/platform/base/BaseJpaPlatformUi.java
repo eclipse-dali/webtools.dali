@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -68,7 +69,15 @@ public abstract class BaseJpaPlatformUi
 	}
 	
 	protected JpaStructureProvider getStructureProvider(JpaResourceType resourceType) {
-		return getResourceUiDefinition(resourceType).getStructureProvider();
+		ResourceUiDefinition resourceUiDefinition;
+		try {
+			resourceUiDefinition = getResourceUiDefinition(resourceType);
+		}
+		catch (IllegalArgumentException iae) {
+			JptUiPlugin.log(iae);
+			return null;
+		}
+		return resourceUiDefinition.getStructureProvider();
 	}
 	
 	

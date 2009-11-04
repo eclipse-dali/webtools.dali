@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -146,7 +145,14 @@ public class GenericRootContextNode
 	}
 	
 	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
-		PersistenceXmlDefinition persistenceXmlDef = (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
+		PersistenceXmlDefinition persistenceXmlDef;
+		try {
+			persistenceXmlDef = (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
+		}
+		catch (IllegalArgumentException iae) {
+			JptCorePlugin.log(iae);
+			return null;
+		}
 		return (persistenceXmlDef == null) ? null : persistenceXmlDef.getContextNodeFactory().buildPersistenceXml(this, resource);
 	}
 	
