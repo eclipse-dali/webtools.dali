@@ -25,7 +25,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
@@ -665,10 +664,13 @@ public class JpaProjectPropertiesPage
 	private IRunnableWithProgress buildOkRunnableWithProgress() {
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				IWorkspace ws = ResourcesPlugin.getWorkspace();
 				try {
-					ResourcesPlugin.getWorkspace().run(
+					// the build we execute in #performOk_() locks the workspace root,
+					// so we need to use the workspace root as our scheduling rule here
+					ws.run(
 							JpaProjectPropertiesPage.this.buildOkWorkspaceRunnable(),
-							JpaProjectPropertiesPage.this.getOkSchedulingRule(),
+							ws.getRoot(),
 							IWorkspace.AVOID_UPDATE,
 							monitor
 					);
@@ -686,10 +688,6 @@ public class JpaProjectPropertiesPage
 				JpaProjectPropertiesPage.this.performOk_(monitor);
 			}
 		};
-	}
-
-	ISchedulingRule getOkSchedulingRule() {
-		return this.getProject();
 	}
 
 	void performOk_(IProgressMonitor monitor) throws CoreException {
