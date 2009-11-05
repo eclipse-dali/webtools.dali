@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
@@ -436,7 +435,7 @@ public class JavaEclipseLinkCachingImpl
 		if (cacheableHolder != null) {
 			return cacheableHolder.getCacheable().isCacheable();
 		}
-		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+		return true;//((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
 	}
 	
 	protected CacheableHolder2_0 getCacheableSuperPersistentType(PersistentType persistentType) {

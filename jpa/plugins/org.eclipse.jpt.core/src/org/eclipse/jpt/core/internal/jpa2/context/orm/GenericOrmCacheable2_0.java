@@ -72,7 +72,7 @@ public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode
 		
 	public void update() {
 		setSpecifiedCacheable_(this.getResourceCacheable());
-		//setDefaultCacheable(this.calculateDefaultCacheable());
+		setDefaultCacheable(this.calculateDefaultCacheable());
 	}
 	
 	protected Boolean getResourceCacheable() {

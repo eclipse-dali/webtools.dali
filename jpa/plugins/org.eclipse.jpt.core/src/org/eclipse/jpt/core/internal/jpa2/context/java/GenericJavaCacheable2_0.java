@@ -115,7 +115,7 @@ public class GenericJavaCacheable2_0
 		this.resourcePersistentType = jrpt;
 		Cacheable2_0Annotation resourceCacheable = this.getResourceCacheable();
 		this.setSpecifiedCacheable_(this.specifiedCacheable(resourceCacheable));
-		//this.setDefaultCacheable(this.calculateDefaultCacheable());
+		this.setDefaultCacheable(this.calculateDefaultCacheable());
 	}
 	
 	private Boolean specifiedCacheable(Cacheable2_0Annotation resourceCacheable) {

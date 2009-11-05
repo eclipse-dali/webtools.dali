@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 public class GenericJavaEntity
@@ -51,7 +50,7 @@ public class GenericJavaEntity
 		if (parentEntity != null) {
 			return parentEntity.getCacheable().isCacheable();
 		}
-		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+		return false;//((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
 	}
 
 }
