@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal.facet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class JpaFacetVersionChangeDelegate
@@ -20,11 +21,19 @@ public class JpaFacetVersionChangeDelegate
 {
 	@Override
 	protected void execute_(
-			IProject project, @SuppressWarnings("unused") IProjectFacetVersion fv, 
+			IProject project, IProjectFacetVersion fv, 
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
 		super.execute_(project, fv, config, monitor);
 		
-		// nothing to do here *just* yet
+		// need to do a rebuild here
+		
+		monitor.beginTask("", 1); //$NON-NLS-1$
+		
+		JptCorePlugin.rebuildJpaProject(project);
+		
+		monitor.worked(1);
+		
+		// nothing further to do here *just* yet
 	}
 }
