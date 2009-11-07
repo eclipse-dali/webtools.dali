@@ -70,10 +70,12 @@ import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.BitTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
@@ -183,7 +185,6 @@ public abstract class AbstractJpaProject
 	protected final ThreadLocalCommandExecutor modifySharedDocumentCommandExecutor;
 
 	// ********** metamodel **********
-
 	protected String metamodelSourceFolderName;
 	protected final MetamodelSynchronizer metamodelSynchronizer;
 	protected final Job metamodelSynchronizationJob;
@@ -215,6 +216,9 @@ public abstract class AbstractJpaProject
 		this.rootContextNode = this.buildRootContextNode();
 
 		this.metamodelSourceFolderName = config.getMetamodelSourceFolderName();
+		if (this.metamodelSoureFolderNameIsInvalid()) {
+			this.metamodelSourceFolderName = null;
+		}
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
 		this.metamodelSynchronizationJob = this.buildMetamodelSynchronizationJob();
 
@@ -291,7 +295,7 @@ public abstract class AbstractJpaProject
 			try {
 				p.accept(this, IResource.NONE);
 			} catch (CoreException ex) {
-				// we don't throw any CoreExceptions
+				// shouldn't happen - we don't throw any CoreExceptions
 				throw new RuntimeException(ex);
 			}
 		}
@@ -990,6 +994,24 @@ public abstract class AbstractJpaProject
 		return this.getProject().getFolder(this.metamodelSourceFolderName);
 	}
 
+	/**
+	 * If the metamodel source folder is not longer a Java project source
+	 * folder, clear it out.
+	 */
+	protected void checkMetamodelSourceFolderName() {
+		if (this.metamodelSoureFolderNameIsInvalid()) {
+			this.setMetamodelSourceFolderName(null);
+		}
+	}
+
+	protected boolean metamodelSoureFolderNameIsInvalid() {
+		return ! this.metamodelSoureFolderNameIsValid();
+	}
+
+	protected boolean metamodelSoureFolderNameIsValid() {
+		return CollectionTools.contains(this.getSourceFolderNames(), this.metamodelSourceFolderName);
+	}
+
 
 	// ********** source folder names **********
 
@@ -997,7 +1019,8 @@ public abstract class AbstractJpaProject
 		try {
 			return this.getSourceFolderNames_();
 		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
+			JptCorePlugin.log(ex);
+			return EmptyIterable.instance();
 		}
 	}
 
@@ -1040,63 +1063,101 @@ public abstract class AbstractJpaProject
 
 	// TODO handle changes to external projects
 	public void javaElementChanged(ElementChangedEvent event) {
-		this.synchWithJavaDelta(event.getDelta());
+		this.processJavaDelta(event.getDelta());
 	}
 
 	/**
-	 * We recurse back here when processing 'affectedChildren'.
+	 * We recurse back here from {@link #processJavaDeltaChildren(IJavaElementDelta)}.
 	 */
-	protected void synchWithJavaDelta(IJavaElementDelta delta) {
+	protected void processJavaDelta(IJavaElementDelta delta) {
 		switch (delta.getElement().getElementType()) {
 			case IJavaElement.JAVA_MODEL :
-				this.javaModelChanged(delta);
+				this.processJavaModelDelta(delta);
 				break;
 			case IJavaElement.JAVA_PROJECT :
-				this.javaProjectChanged(delta);
+				this.processJavaProjectDelta(delta);
 				break;
 			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
-				this.javaPackageFragmentRootChanged(delta);
+				this.processJavaPackageFragmentRootDelta(delta);
 				break;
 			case IJavaElement.PACKAGE_FRAGMENT :
-				this.javaPackageFragmentChanged(delta);
+				this.processJavaPackageFragmentDelta(delta);
 				break;
 			case IJavaElement.COMPILATION_UNIT :
-				this.javaCompilationUnitChanged(delta);
+				this.processJavaCompilationUnitDelta(delta);
 				break;
 			default :
 				break; // ignore the elements inside a compilation unit
 		}
 	}
 
-	protected void synchWithJavaDeltaChildren(IJavaElementDelta delta) {
+	protected void processJavaDeltaChildren(IJavaElementDelta delta) {
 		for (IJavaElementDelta child : delta.getAffectedChildren()) {
-			this.synchWithJavaDelta(child); // recurse
+			this.processJavaDelta(child); // recurse
 		}
 	}
 
+	/**
+	 * Return whether the specified Java element delta is for a CHANGED
+	 * (as opposed to ADDED or REMOVED) Java element and the specified flag is set.
+	 * (The delta flags are only significant if the delta "kind" is CHANGED.)
+	 */
+	protected boolean deltaFlagIsSet(IJavaElementDelta delta, int flag) {
+		return (delta.getKind() == IJavaElementDelta.CHANGED) &&
+				BitTools.flagIsSet(delta.getFlags(), flag);
+	}
+
 	// ***** model
-	protected void javaModelChanged(IJavaElementDelta delta) {
-		// process the java model's projects
-		this.synchWithJavaDeltaChildren(delta);
+	protected void processJavaModelDelta(IJavaElementDelta delta) {
+		// process the Java model's projects
+		this.processJavaDeltaChildren(delta);
 	}
 
 	// ***** project
-	protected void javaProjectChanged(IJavaElementDelta delta) {
-		// process the java project's package fragment roots
-		this.synchWithJavaDeltaChildren(delta);
+	protected void processJavaProjectDelta(IJavaElementDelta delta) {
+		// process the Java project's package fragment roots
+		this.processJavaDeltaChildren(delta);
 
+		// a classpath change can have pretty far-reaching effects...
 		if (this.classpathHasChanged(delta)) {
-			if (delta.getElement().equals(this.getJavaProject())) {
-				this.update(this.getInternalJavaResourceCompilationUnits());
-			} else {
-				// TODO see if changed project is on our classpath?
-				this.update(this.getExternalJavaResourceCompilationUnits());
+			this.rebuild((IJavaProject) delta.getElement());
+		}
+	}
+
+	/**
+	 * The specified Java project's classpath changed. Rebuild the JPA project
+	 * as appropriate.
+	 */
+	protected void rebuild(IJavaProject javaProject) {
+		// if the classpath has changed, we need to update everything since
+		// class references could now be resolved (or not) etc.
+		if (javaProject.equals(this.getJavaProject())) {
+			this.removeDeadJpaFiles();
+			this.checkMetamodelSourceFolderName();
+			this.update(this.getInternalJavaResourceCompilationUnits());
+		} else {
+			// TODO see if changed project is on our classpath?
+			this.update(this.getExternalJavaResourceCompilationUnits());
+		}
+	}
+
+	/**
+	 * Loop through all our JPA files, remove any that are no longer on the
+	 * classpath.
+	 */
+	protected void removeDeadJpaFiles() {
+		for (JpaFile jpaFile : this.getJpaFiles()) {
+			if ( ! this.getJavaProject().isOnClasspath(jpaFile.getFile())) {
+				this.removeJpaFile(jpaFile);
 			}
 		}
 	}
 
+	/**
+	 * pre-condition: delta.getElement().getElementType() == IJavaElement.JAVA_PROJECT
+	 */
 	protected boolean classpathHasChanged(IJavaElementDelta delta) {
-		return BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
+		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
 	}
 
 	protected void update(Iterable<JavaResourceCompilationUnit> javaResourceCompilationUnits) {
@@ -1106,9 +1167,9 @@ public abstract class AbstractJpaProject
 	}
 
 	// ***** package fragment root
-	protected void javaPackageFragmentRootChanged(IJavaElementDelta delta) {
-		// process the java package fragment root's package fragments
-		this.synchWithJavaDeltaChildren(delta);
+	protected void processJavaPackageFragmentRootDelta(IJavaElementDelta delta) {
+		// process the Java package fragment root's package fragments
+		this.processJavaDeltaChildren(delta);
 
 		if (this.classpathEntryHasBeenAdded(delta)) {
 			// TODO
@@ -1117,22 +1178,28 @@ public abstract class AbstractJpaProject
 		}
 	}
 
+	/**
+	 * pre-condition: delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
+	 */
 	protected boolean classpathEntryHasBeenAdded(IJavaElementDelta delta) {
-		return BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_ADDED_TO_CLASSPATH);
+		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_ADDED_TO_CLASSPATH);
 	}
 
+	/**
+	 * pre-condition: delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
+	 */
 	protected boolean classpathEntryHasBeenRemoved(IJavaElementDelta delta) {
-		return BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_REMOVED_FROM_CLASSPATH);
+		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_REMOVED_FROM_CLASSPATH);
 	}
 
 	// ***** package fragment
-	protected void javaPackageFragmentChanged(IJavaElementDelta delta) {
+	protected void processJavaPackageFragmentDelta(IJavaElementDelta delta) {
 		// process the java package fragment's compilation units
-		this.synchWithJavaDeltaChildren(delta);
+		this.processJavaDeltaChildren(delta);
 	}
 
 	// ***** compilation unit
-	protected void javaCompilationUnitChanged(IJavaElementDelta delta) {
+	protected void processJavaCompilationUnitDelta(IJavaElementDelta delta) {
 		if (this.javaCompilationUnitDeltaIsRelevant(delta)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
 			for (JavaResourceCompilationUnit jrcu : this.getCombinedJavaResourceCompilationUnits()) {
@@ -1409,7 +1476,7 @@ public abstract class AbstractJpaProject
 			try {
 				delta.accept(this);
 			} catch (CoreException ex) {
-				// we don't throw any CoreExceptions
+				// shouldn't happen - we don't throw any CoreExceptions
 				throw new RuntimeException(ex);
 			}
 		}

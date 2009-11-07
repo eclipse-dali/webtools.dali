@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
+import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.AsynchronousCommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.SimpleCommandExecutor;
@@ -389,23 +390,27 @@ class GenericJpaModel
 
 	// ********** Project POST_CHANGE **********
 
-	/**
-	 * Forward the specified resource delta to all our JPA projects;
-	 * they will each determine whether the event is significant.
-	 */
 	/* private */ void projectChanged(IResourceDelta delta) {
 		this.eventHandler.execute(this.buildProjectChangedCommand(delta));
 	}
 
 	private Command buildProjectChangedCommand(final IResourceDelta delta) {
-		return new Command() {
+		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
 				GenericJpaModel.this.projectChanged_(delta);
 			}
+			@Override
+			public String toString() {
+				return "Project POST_CHANGE Command"; //$NON-NLS-1$
+			}
 		};
 	}
 
+	/**
+	 * Forward the specified resource delta to all our JPA projects;
+	 * they will each determine whether the event is significant.
+	 */
 	/* private */ void projectChanged_(IResourceDelta delta) {
 		for (JpaProject jpaProject : this.jpaProjects) {
 			jpaProject.projectChanged(delta);
@@ -420,10 +425,14 @@ class GenericJpaModel
 	}
 
 	private Command buildProjectPostCleanBuildCommand(final IProject project) {
-		return new Command() {
+		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
 				GenericJpaModel.this.projectPostCleanBuild_(project);
+			}
+			@Override
+			public String toString() {
+				return "Project POST_BUILD (CLEAN_BUILD) Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -439,23 +448,27 @@ class GenericJpaModel
 
 	// ********** Project PRE_DELETE **********
 
-	/**
-	 * A project is being deleted. Remove its corresponding
-	 * JPA project if appropriate.
-	 */
 	/* private */ void projectPreDelete(IProject project) {
 		this.executeAfterEventsHandled(this.buildProjectPreDeleteCommand(project));
 	}
 
 	private Command buildProjectPreDeleteCommand(final IProject project) {
-		return new Command() {
+		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
 				GenericJpaModel.this.projectPreDelete_(project);
 			}
+			@Override
+			public String toString() {
+				return "Project PRE_DELETE Command"; //$NON-NLS-1$
+			}
 		};
 	}
 
+	/**
+	 * A project is being deleted. Remove its corresponding
+	 * JPA project if appropriate.
+	 */
 	/* private */ void projectPreDelete_(IProject project) {
 		JpaProject jpaProject = this.getJpaProject(project);
 		if (jpaProject != null) {
@@ -466,22 +479,26 @@ class GenericJpaModel
 
 	// ********** Resource and/or Facet events **********
 
-	/**
-	 * Check whether the JPA facet has been added or removed.
-	 */
 	/* private */ void checkForJpaFacetTransition(IProject project) {
 		this.executeAfterEventsHandled(this.buildCheckForJpaFacetTransitionCommand(project));
 	}
 
 	private Command buildCheckForJpaFacetTransitionCommand(final IProject project) {
-		return new Command() {
+		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
 				GenericJpaModel.this.checkForJpaFacetTransition_(project);
 			}
+			@Override
+			public String toString() {
+				return "JPA Facet Transition Command"; //$NON-NLS-1$
+			}
 		};
 	}
 
+	/**
+	 * Check whether the JPA facet has been added or removed.
+	 */
 	/* private */ void checkForJpaFacetTransition_(IProject project) {
 		JpaProject jpaProject = this.getJpaProject_(project);
 
@@ -504,10 +521,14 @@ class GenericJpaModel
 	}
 
 	private Command buildJpaFacetedProjectPostInstallCommand(final IProjectFacetActionEvent event) {
-		return new Command() {
+		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
 				GenericJpaModel.this.jpaFacetedProjectPostInstall_(event);
+			}
+			@Override
+			public String toString() {
+				return "Faceted Project POST_INSTALL Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -562,10 +583,14 @@ class GenericJpaModel
 	}
 
 	private Command buildJpaFacetedProjectPreUninstallCommand(final IProject project) {
-		return new Command() {
+		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
 				GenericJpaModel.this.jpaFacetedProjectPreUninstall_(project);
+			}
+			@Override
+			public String toString() {
+				return "Faceted Project PRE_UNINSTALL Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -578,23 +603,27 @@ class GenericJpaModel
 
 	// ********** Java element changed **********
 
-	/**
-	 * Forward the Java element changed event to all the JPA projects
-	 * because the event could affect multiple projects.
-	 */
 	/* private */ void javaElementChanged(ElementChangedEvent event) {
 		this.eventHandler.execute(this.buildJavaElementChangedCommand(event));
 	}
 
 	private Command buildJavaElementChangedCommand(final ElementChangedEvent event) {
-		return new Command() {
+		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
 				GenericJpaModel.this.javaElementChanged_(event);
 			}
+			@Override
+			public String toString() {
+				return "Java element changed Command"; //$NON-NLS-1$
+			}
 		};
 	}
 
+	/**
+	 * Forward the Java element changed event to all the JPA projects
+	 * because the event could affect multiple projects.
+	 */
 	/* private */ void javaElementChanged_(ElementChangedEvent event) {
 		for (JpaProject jpaProject : this.jpaProjects) {
 			jpaProject.javaElementChanged(event);
@@ -641,18 +670,18 @@ class GenericJpaModel
 
 	/**
 	 * If this "pause" command is executing (asynchronously) on a different
-	 * thread than the JPA model:<ul>
+	 * thread than the JPA model:<ol>
 	 * <li>it will set the flag to <code>true</code>, allowing the JPA model to
 	 * resume executing on its own thread
 	 * <li>then it will suspend its command executor until the JPA model sets
 	 * the flag back to <code>false</code>.
-	 * </ul>
+	 * </ol>
 	 * If this "pause" command is executing (synchronously) on the same thread
 	 * as the JPA model, it will simply set the flag to <code>true</code> and
 	 * return.
 	 */
 	private static class PauseCommand
-		implements org.eclipse.jpt.utility.Command
+		implements Command
 	{
 		private final Thread producerThread;
 		private final SynchronizedBoolean flag;
@@ -711,7 +740,7 @@ class GenericJpaModel
 				case IResource.ROOT :
 					return true;  // all projects are in the "root"
 				case IResource.PROJECT :
-					this.checkProject(resourceProxy);
+					this.processProject(resourceProxy);
 					return false;  // no nested projects
 				case IResource.FOLDER :
 					return false;  // ignore
@@ -722,7 +751,7 @@ class GenericJpaModel
 			}
 		}
 
-		private void checkProject(IResourceProxy resourceProxy) {
+		private void processProject(IResourceProxy resourceProxy) {
 			if (resourceProxy.isAccessible()) {  // the project exists and is open
 				IProject project = (IProject) resourceProxy.requestResource();
 				if (JptCorePlugin.projectHasJpaFacet(project)) {
@@ -742,13 +771,13 @@ class GenericJpaModel
 	// ********** command **********
 
 	/**
-	 * Abstract class that holds the JPA model lock while
+	 * Command that holds the JPA model lock while
 	 * executing.
 	 */
-	private abstract class Command
-		implements org.eclipse.jpt.utility.Command
+	private abstract class EventHandlerCommand
+		implements Command
 	{
-		Command() {
+		EventHandlerCommand() {
 			super();
 		}
 
@@ -784,7 +813,7 @@ class GenericJpaModel
 		public void resourceChanged(IResourceChangeEvent event) {
 			switch (event.getType()) {
 				case IResourceChangeEvent.POST_CHANGE :
-					this.resourcePostChange(event);
+					this.processPostChangeEvent(event);
 					break;
 
 				// workspace or project events
@@ -793,14 +822,14 @@ class GenericJpaModel
 				case IResourceChangeEvent.PRE_BUILD :
 					break;  // ignore
 				case IResourceChangeEvent.POST_BUILD :
-					this.resourcePostBuild(event);
+					this.processPostBuildEvent(event);
 					break;
 
 				// project-only events
 				case IResourceChangeEvent.PRE_CLOSE :  
 					break;  // ignore
 				case IResourceChangeEvent.PRE_DELETE :
-					this.resourcePreDelete(event);
+					this.processPreDeleteEvent(event);
 					break;
 				default :
 					break;
@@ -814,19 +843,19 @@ class GenericJpaModel
 		 * File changes are handled via the Java Element Changed event.)
 		 * Also check for opened projects.
 		 */
-		private void resourcePostChange(IResourceChangeEvent event) {
+		private void processPostChangeEvent(IResourceChangeEvent event) {
 			debug("Resource POST_CHANGE"); //$NON-NLS-1$
-			this.resourceChanged(event.getDelta());
+			this.processPostChangeDelta(event.getDelta());
 		}
 
-		private void resourceChanged(IResourceDelta delta) {
+		private void processPostChangeDelta(IResourceDelta delta) {
 			IResource resource = delta.getResource();
 			switch (resource.getType()) {
 				case IResource.ROOT :
-					this.resourceChangedChildren(delta);
+					this.processPostChangeDeltaChildren(delta);
 					break;
 				case IResource.PROJECT :
-					this.projectChanged((IProject) resource, delta);
+					this.processPostChangeProjectDelta((IProject) resource, delta);
 					break;
 				case IResource.FOLDER :
 					break;  // ignore
@@ -837,13 +866,13 @@ class GenericJpaModel
 			}
 		}
 
-		private void resourceChangedChildren(IResourceDelta delta) {
+		private void processPostChangeDeltaChildren(IResourceDelta delta) {
 			for (IResourceDelta child : delta.getAffectedChildren()) {
-				this.resourceChanged(child);  // recurse
+				this.processPostChangeDelta(child);  // recurse
 			}
 		}
 
-		private void projectChanged(IProject project, IResourceDelta delta) {
+		private void processPostChangeProjectDelta(IProject project, IResourceDelta delta) {
 			GenericJpaModel.this.projectChanged(delta);
 			this.checkForOpenedProject(project, delta);
 		}
@@ -857,7 +886,6 @@ class GenericJpaModel
 		private void checkForOpenedProject(IProject project, IResourceDelta delta) {
 			switch (delta.getKind()) {
 				case IResourceDelta.ADDED :  // all but project import and rename handled with the facet POST_INSTALL event
-					this.checkDeltaFlagsForOpenedProject(project, delta);
 					this.checkDeltaFlagsForRenamedProject(project, delta);
 					break;
 				case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
@@ -881,6 +909,8 @@ class GenericJpaModel
 		 * This event also occurs when a project is simply opened. Project opening
 		 * also triggers a {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED} event
 		 * and that is where we add the JPA project, not here.
+		 * <p>
+		 * pre-condition: delta kind is CHANGED
 		 */
 		private void checkDeltaFlagsForOpenedProject(IProject project, IResourceDelta delta) {
 			if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
@@ -892,6 +922,8 @@ class GenericJpaModel
 		/**
 		 * We don't get any events from the Facets Framework when a project is renamed,
 		 * so we need to check for the renamed projects here.
+		 * <p>
+		 * pre-condition: delta kind is ADDED
 		 */
 		private void checkDeltaFlagsForRenamedProject(IProject project, IResourceDelta delta) {
 			if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.MOVED_FROM) && project.isOpen()) {
@@ -904,21 +936,21 @@ class GenericJpaModel
 		 * A post build event has occurred.
 		 * Check for whether the build was a "clean" build and trigger project update.
 		 */
-		private void resourcePostBuild(IResourceChangeEvent event) {
+		private void processPostBuildEvent(IResourceChangeEvent event) {
 			debug("Resource POST_BUILD: ", event.getResource()); //$NON-NLS-1$
 			if (event.getBuildKind() == IncrementalProjectBuilder.CLEAN_BUILD) {
-				this.resourcePostCleanBuild(event.getDelta());
+				this.processPostCleanBuildDelta(event.getDelta());
 			}
 		}
 
-		private void resourcePostCleanBuild(IResourceDelta delta) {
+		private void processPostCleanBuildDelta(IResourceDelta delta) {
 			IResource resource = delta.getResource();
 			switch (resource.getType()) {
 				case IResource.ROOT :
-					this.resourcePostCleanBuildChildren(delta);
+					this.processPostCleanBuildDeltaChildren(delta);
 					break;
 				case IResource.PROJECT :
-					this.projectPostCleanBuild((IProject) resource);
+					this.processProjectPostCleanBuild((IProject) resource);
 					break;
 				case IResource.FOLDER :
 					break;  // ignore
@@ -929,13 +961,13 @@ class GenericJpaModel
 			}
 		}
 
-		private void resourcePostCleanBuildChildren(IResourceDelta delta) {
+		private void processPostCleanBuildDeltaChildren(IResourceDelta delta) {
 			for (IResourceDelta child : delta.getAffectedChildren()) {
-				this.resourcePostCleanBuild(child);  // recurse
+				this.processPostCleanBuildDelta(child);  // recurse
 			}
 		}
 
-		private void projectPostCleanBuild(IProject project) {
+		private void processProjectPostCleanBuild(IProject project) {
 			debug("\tProject CLEAN: ", project.getName()); //$NON-NLS-1$
 			GenericJpaModel.this.projectPostCleanBuild(project);
 		}
@@ -944,7 +976,7 @@ class GenericJpaModel
 		 * A project is being deleted. Remove its corresponding
 		 * JPA project if appropriate.
 		 */
-		private void resourcePreDelete(IResourceChangeEvent event) {
+		private void processPreDeleteEvent(IResourceChangeEvent event) {
 			IProject project = (IProject) event.getResource();
 			debug("Resource (Project) PRE_DELETE: ", project); //$NON-NLS-1$
 			GenericJpaModel.this.projectPreDelete(project);
@@ -979,27 +1011,27 @@ class GenericJpaModel
 		public void handleEvent(IFacetedProjectEvent event) {
 			switch (event.getType()) {
 				case POST_INSTALL :
-					this.facetedProjectPostInstall((IProjectFacetActionEvent) event);
+					this.processPostInstallEvent((IProjectFacetActionEvent) event);
 					break;
 				case PRE_UNINSTALL :
-					this.facetedProjectPreUninstall((IProjectFacetActionEvent) event);
+					this.processPreUninstallEvent((IProjectFacetActionEvent) event);
 					break;
 				case PROJECT_MODIFIED :
-					this.facetedProjectModified(event.getProject().getProject());
+					this.processProjectModifiedEvent(event.getProject().getProject());
 					break;
 				default :
 					break;
 			}
 		}
 
-		private void facetedProjectPostInstall(IProjectFacetActionEvent event) {
+		private void processPostInstallEvent(IProjectFacetActionEvent event) {
 			debug("Facet POST_INSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
 			if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 				GenericJpaModel.this.jpaFacetedProjectPostInstall(event);
 			}
 		}
 
-		private void facetedProjectPreUninstall(IProjectFacetActionEvent event) {
+		private void processPreUninstallEvent(IProjectFacetActionEvent event) {
 			debug("Facet PRE_UNINSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
 			if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 				GenericJpaModel.this.jpaFacetedProjectPreUninstall(event);
@@ -1014,7 +1046,7 @@ class GenericJpaModel
 		 * <li>one of a project's (facet) metadata files is edited directly
 		 * </ul>
 		 */
-		private void facetedProjectModified(IProject project) {
+		private void processProjectModifiedEvent(IProject project) {
 			debug("Facet PROJECT_MODIFIED: ", project.getName()); //$NON-NLS-1$
 			GenericJpaModel.this.checkForJpaFacetTransition(project);
 		}

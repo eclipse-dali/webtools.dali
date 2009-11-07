@@ -20,15 +20,13 @@ import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
  * 
  */
 public class GenericMetamodelSynchronizer
-	implements MetamodelSynchronizer
+	implements MetamodelSynchronizer, PersistentTypeMetamodelSynchronizer.Owner
 {
 	protected final JpaProject2_0 jpaProject;
-	protected final PersistentTypeMetamodelSynchronizer.Owner ptmsOwner;
 
 	public GenericMetamodelSynchronizer(JpaProject2_0 jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
-		this.ptmsOwner = new PersistentTypeMetamodelSynchronizerOwner();
 	}
 
 	protected JpaFactory2_0 getJpaFactory() {
@@ -40,18 +38,10 @@ public class GenericMetamodelSynchronizer
 	}
 
 	protected PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType persistentType) {
-		return this.getJpaFactory().buildPersistentTypeMetamodelSynchronizer(this.ptmsOwner, persistentType);
+		return this.getJpaFactory().buildPersistentTypeMetamodelSynchronizer(this, persistentType);
 	}
 
-	protected IPackageFragmentRoot getSourceFolder() {
+	public IPackageFragmentRoot getSourceFolder() {
 		return this.jpaProject.getMetamodelPackageFragmentRoot();
-	}
-
-	protected class PersistentTypeMetamodelSynchronizerOwner
-		implements PersistentTypeMetamodelSynchronizer.Owner
-	{
-		public IPackageFragmentRoot getSourceFolder() {
-			return GenericMetamodelSynchronizer.this.getSourceFolder();
-		}
 	}
 }

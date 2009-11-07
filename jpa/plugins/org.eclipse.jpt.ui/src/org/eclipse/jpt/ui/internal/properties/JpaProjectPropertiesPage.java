@@ -28,6 +28,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaElementDelta;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
@@ -53,6 +59,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.BooleanTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -64,7 +71,6 @@ import org.eclipse.jpt.utility.internal.model.value.AspectCollectionValueModelAd
 import org.eclipse.jpt.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.BufferedWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrapper;
@@ -908,7 +914,7 @@ public class JpaProjectPropertiesPage
 		 * The JPA project's platform is stored as a preference.
 		 * If it changes, a new JPA project is built.
 		 */
-		private IPreferenceChangeListener preferenceChangeListener;
+		private final IPreferenceChangeListener preferenceChangeListener;
 
 
 		JpaProjectModel(PropertyValueModel<IProject> projectModel) {
@@ -1068,7 +1074,7 @@ public class JpaProjectPropertiesPage
 		extends AbstractCollectionValueModel
 		implements CollectionValueModel<String>
 	{
-		private ConnectionProfileListener connectionProfileListener;
+		private final ConnectionProfileListener connectionProfileListener;
 
 		ConnectionChoicesModel() {
 			super();
@@ -1318,12 +1324,63 @@ public class JpaProjectPropertiesPage
 
 	/**
 	 * Java project source folders.
+	 * We keep the metamodel source folder in synch with the Java source folders
+	 * (i.e. if a Java source folder is deleted or removed from the build path,
+	 * we remove the metamodel source folder); therefore the list of folder
+	 * choices does not need to be augmented with the current folder (as we do
+	 * when the current folder is not in the list of choices).
 	 */
 	static class JavaSourceFolderChoicesModel
-		extends CollectionAspectAdapter<JpaProject, String>
+		extends AspectCollectionValueModelAdapter<JpaProject, String>
 	{
+		private final IElementChangedListener javaElementChangedListener;
+
 		JavaSourceFolderChoicesModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
 			super(jpaProjectModel);
+			this.javaElementChangedListener = this.buildJavaElementChangedListener();
+		}
+
+		private IElementChangedListener buildJavaElementChangedListener() {
+			return new IElementChangedListener() {
+				public void elementChanged(ElementChangedEvent event) {
+					JavaSourceFolderChoicesModel.this.processJavaDelta(event.getDelta());
+				}
+			};
+		}
+
+		void processJavaDelta(IJavaElementDelta delta) {
+			switch (delta.getElement().getElementType()) {
+				case IJavaElement.JAVA_MODEL :
+					this.processJavaDeltaChildren(delta);
+					break;
+				case IJavaElement.JAVA_PROJECT :
+					this.processJavaProjectDelta(delta);
+					break;
+				default :
+					break; // ignore everything else
+			}
+		}
+
+		private void processJavaDeltaChildren(IJavaElementDelta delta) {
+			for (IJavaElementDelta child : delta.getAffectedChildren()) {
+				this.processJavaDelta(child); // recurse
+			}
+		}
+
+		private void processJavaProjectDelta(IJavaElementDelta delta) {
+			IJavaProject javaProject = (IJavaProject) delta.getElement();
+			if (javaProject.equals(this.subject.getJavaProject()) && this.classpathHasChanged(delta)) {
+				this.fireCollectionChanged(CollectionValueModel.VALUES, CollectionTools.collection(this.iterator()));
+			}
+		}
+
+		private boolean classpathHasChanged(IJavaElementDelta delta) {
+			return this.deltaFlagIsSet(delta, IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
+		}
+
+		private boolean deltaFlagIsSet(IJavaElementDelta delta, int flag) {
+			return (delta.getKind() == IJavaElementDelta.CHANGED) &&
+					BitTools.flagIsSet(delta.getFlags(), flag);
 		}
 
 		@Override
@@ -1336,6 +1393,16 @@ public class JpaProjectPropertiesPage
 		private boolean jpaProjectIsJpa2_0() {
 			return this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
 		}
+
+		@Override
+		protected void engageSubject_() {
+			JavaCore.addElementChangedListener(this.javaElementChangedListener);
+		}
+
+		@Override
+		protected void disengageSubject_() {
+			JavaCore.removeElementChangedListener(this.javaElementChangedListener);
+		}
 	}
 
 
@@ -1345,7 +1412,7 @@ public class JpaProjectPropertiesPage
 	abstract static class ConnectionProfilePropertyAspectAdapter<V>
 		extends AspectPropertyValueModelAdapter<ConnectionProfile, V>
 	{
-		private ConnectionListener connectionListener;
+		private final ConnectionListener connectionListener;
 
 		ConnectionProfilePropertyAspectAdapter(PropertyValueModel<ConnectionProfile> connectionProfileModel) {
 			super(connectionProfileModel);
@@ -1493,7 +1560,7 @@ public class JpaProjectPropertiesPage
 	abstract static class ConnectionProfileCollectionAspectAdapter<E>
 		extends AspectCollectionValueModelAdapter<ConnectionProfile, E>
 	{
-		private ConnectionListener connectionListener;
+		private final ConnectionListener connectionListener;
 
 		ConnectionProfileCollectionAspectAdapter(PropertyValueModel<ConnectionProfile> connectionProfileModel) {
 			super(connectionProfileModel);
@@ -1629,9 +1696,9 @@ public class JpaProjectPropertiesPage
 		extends CompositePropertyValueModel<String>
 		implements WritablePropertyValueModel<String>
 	{
-		private PropertyValueModel<Boolean> userOverrideDefaultFlagModel;
-		private WritablePropertyValueModel<String> userOverrideDefaultModel;
-		private PropertyValueModel<String> databaseDefaultModel;
+		private final PropertyValueModel<Boolean> userOverrideDefaultFlagModel;
+		private final WritablePropertyValueModel<String> userOverrideDefaultModel;
+		private final PropertyValueModel<String> databaseDefaultModel;
 
 		DefaultModel(
 				PropertyValueModel<Boolean> userOverrideDefaultFlagModel,

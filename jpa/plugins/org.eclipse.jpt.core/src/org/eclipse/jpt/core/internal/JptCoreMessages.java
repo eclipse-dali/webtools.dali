@@ -54,6 +54,7 @@ public class JptCoreMessages {
 	public static String SYNCHRONIZE_METAMODEL_JOB_NAME;
 	public static String PLATFORM_ID_DOES_NOT_EXIST;
 	public static String DALI_EVENT_HANDLER_THREAD_NAME;
+	public static String PREFERENCES_FLUSH_JOB_NAME;
 	
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptCoreMessages.class;

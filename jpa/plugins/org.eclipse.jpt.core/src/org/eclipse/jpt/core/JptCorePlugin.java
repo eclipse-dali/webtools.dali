@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -30,9 +32,11 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
+import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
@@ -509,13 +513,28 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * checked exceptions bite
+	 * Flush preferences in an asynchronous Job because the flush request will
+	 * trigger a lock on the project, which can cause us some deadlocks (e.g.
+	 * when deleting the metamodel source folder).
 	 */
 	private static void flush(IEclipsePreferences prefs) {
-		try {
-			prefs.flush();
-		} catch(BackingStoreException ex) {
-			log(ex);
+		new PreferencesFlushJob(prefs).schedule();
+	}
+
+	private static class PreferencesFlushJob extends Job {
+		private final IEclipsePreferences prefs;
+		PreferencesFlushJob(IEclipsePreferences prefs) {
+			super(NLS.bind(JptCoreMessages.PREFERENCES_FLUSH_JOB_NAME, prefs.absolutePath()));
+			this.prefs = prefs;
+		}
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			try {
+				prefs.flush();
+			} catch(BackingStoreException ex) {
+				log(ex);
+			}
+			return Status.OK_STATUS;
 		}
 	}
 
