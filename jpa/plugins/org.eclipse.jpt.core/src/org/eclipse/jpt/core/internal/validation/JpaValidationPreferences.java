@@ -90,13 +90,13 @@ public class JpaValidationPreferences {
 	
 	public static void setProjectLevelProblemPreference(IProject project, String messageId, String problemPreference) {
 		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
-		projectPreferences.put(messageId, problemPreference);
+		if (problemPreference==null){
+			projectPreferences.remove(messageId);
+		}
+		else {
+			projectPreferences.put(messageId, problemPreference);
+		}
 		flush(projectPreferences);
-	}
-	
-	public static void removeProjectLevelProblemPreference(IProject project, String messageId){
-		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
-		projectPreferences.remove(messageId);
 	}
 	
 	/**
@@ -109,14 +109,15 @@ public class JpaValidationPreferences {
 	
 	public static void setWorkspaceLevelProblemPreference(String messageId, String problemPreference) {
 		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
-		workspacePreferences.put(messageId, problemPreference);
+		if (problemPreference==null){
+			workspacePreferences.remove(messageId);
+		}
+		else {
+			workspacePreferences.put(messageId, problemPreference);
+		}
 		flush(workspacePreferences);
 	}	
 	
-	public static void removeWorkspaceLevelProblemPreference(String messageId){
-		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
-		workspacePreferences.remove(messageId);
-	}
 	
 	private static void flush(IEclipsePreferences prefs) {
 		try {

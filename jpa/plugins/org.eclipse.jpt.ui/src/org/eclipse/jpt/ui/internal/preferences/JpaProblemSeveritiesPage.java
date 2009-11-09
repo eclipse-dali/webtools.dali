@@ -600,20 +600,10 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	protected void updatePreference(String preferenceKey, String value) {
 		if (isProjectPreferencePage()) {
-			if (value != null) {
-				JpaValidationPreferences.setProjectLevelProblemPreference(getProject(), preferenceKey, value);
-			}
-			else {
-				JpaValidationPreferences.removeProjectLevelProblemPreference(getProject(), preferenceKey);
-			}
+			JpaValidationPreferences.setProjectLevelProblemPreference(getProject(), preferenceKey, value);
 		}
 		else {
-			if (value != null) {
-				JpaValidationPreferences.setWorkspaceLevelProblemPreference(preferenceKey, value);
-			}
-			else {
-				JpaValidationPreferences.removeWorkspaceLevelProblemPreference(preferenceKey);
-			}
+			JpaValidationPreferences.setWorkspaceLevelProblemPreference(preferenceKey, value);
 		}
 	}
 }
