@@ -36,6 +36,7 @@ public class GenericPersistenceXml
 	
 	protected Persistence persistence;
 	
+	protected JpaResourceType resourceType;
 	
 	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
 		super(parent);
@@ -45,6 +46,7 @@ public class GenericPersistenceXml
 		this.persistenceXmlResource = resource;
 		if (resource.getRootObject() != null) {
 			this.persistence = buildPersistence((XmlPersistence) resource.getRootObject());
+			this.resourceType = resource.getResourceType();
 		}
 	}
 	
@@ -103,13 +105,14 @@ public class GenericPersistenceXml
 		XmlPersistence oldXmlPersistence = 
 			(this.persistence == null) ? null : this.persistence.getXmlPersistence();
 		XmlPersistence newXmlPersistence = (XmlPersistence) persistenceResource.getRootObject();
+		JpaResourceType newResourceType = persistenceResource.getResourceType();
 		
 		this.persistenceXmlResource = persistenceResource;
 		
 		// if the old and new xml persistences are different instances,
 		// we scrap the old and rebuild.  this can happen when the resource
 		// model drastically changes, such as a cvs checkout or an edit reversion
-		if (oldXmlPersistence != newXmlPersistence) {
+		if (oldXmlPersistence != newXmlPersistence || newXmlPersistence == null || valuesAreDifferent(this.resourceType, newResourceType)) {
 			if (this.persistence != null) {
 				this.getJpaFile(this.persistenceXmlResource.getFile()).removeRootStructureNode(this.persistenceXmlResource);
 				this.persistence.dispose();
@@ -119,20 +122,14 @@ public class GenericPersistenceXml
 		
 		if (newXmlPersistence != null) {
 			if (this.persistence != null) {
-				this.getJpaFile(this.persistenceXmlResource.getFile()).addRootStructureNode(this.persistenceXmlResource, this.persistence);
 				this.persistence.update(newXmlPersistence);
 			}
 			else {
 				setPersistence(buildPersistence(newXmlPersistence));
 			}
+			this.getJpaFile(this.persistenceXmlResource.getFile()).addRootStructureNode(this.persistenceXmlResource, this.persistence);
 		}
-		else {
-			if (this.persistence != null) {
-				this.getJpaFile(this.persistenceXmlResource.getFile()).removeRootStructureNode(this.persistenceXmlResource);
-				this.persistence.dispose();
-			}
-			setPersistence(null);
-		}
+		this.resourceType = newResourceType;
 	}
 	
 	@Override
