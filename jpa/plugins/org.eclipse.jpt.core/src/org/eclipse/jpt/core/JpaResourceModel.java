@@ -22,6 +22,7 @@ public interface JpaResourceModel
 {
 	/**
 	 * Return the resource type of the model.  This may potentially change.
+	 * Return null if it cannot be determined, the content type or version is null.
 	 */
 	JpaResourceType getResourceType();
 	

@@ -67,10 +67,13 @@ public class JpaXmlResource
 	}
 	
 	public String getVersion() {
-		return getRootObject().getVersion();
+		return getRootObject() == null ? null : getRootObject().getVersion();
 	}
 	
 	public JpaResourceType getResourceType() {
+		if (getContentType() == null || getVersion() == null) {
+			return null;
+		}
 		return new JpaResourceType(getContentType(), getVersion());
 	}
 	
