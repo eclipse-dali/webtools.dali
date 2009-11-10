@@ -54,7 +54,6 @@ public interface Connection extends PersistenceUnitProperties
 		static final String DRIVER_PROPERTY = "driver"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_DRIVER = "eclipselink.jdbc.driver"; //$NON-NLS-1$
-		static final String ECLIPSELINK2_0_DRIVER = "javax.persistence.jdbc.driver"; //$NON-NLS-1$
 		static final String DEFAULT_DRIVER = ""; //$NON-NLS-1$
 
 	String getDefaultUrl();
@@ -63,7 +62,6 @@ public interface Connection extends PersistenceUnitProperties
 		static final String URL_PROPERTY = "url"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_URL = "eclipselink.jdbc.url"; //$NON-NLS-1$
-		static final String ECLIPSELINK2_0_URL = "javax.persistence.jdbc.url"; //$NON-NLS-1$
 		static final String DEFAULT_URL = ""; //$NON-NLS-1$
 
 	String getDefaultUser();
@@ -72,7 +70,6 @@ public interface Connection extends PersistenceUnitProperties
 		static final String USER_PROPERTY = "user"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_USER = "eclipselink.jdbc.user"; //$NON-NLS-1$
-		static final String ECLIPSELINK2_0_USER = "javax.persistence.jdbc.user"; //$NON-NLS-1$
 		static final String DEFAULT_USER = ""; //$NON-NLS-1$
 
 	String getDefaultPassword();
@@ -81,7 +78,6 @@ public interface Connection extends PersistenceUnitProperties
 		static final String PASSWORD_PROPERTY = "password"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_PASSWORD = "eclipselink.jdbc.password"; //$NON-NLS-1$
-		static final String ECLIPSELINK2_0_PASSWORD = "javax.persistence.jdbc.password"; //$NON-NLS-1$
 		static final String DEFAULT_PASSWORD = ""; //$NON-NLS-1$
 
 	Boolean getDefaultBindParameters();

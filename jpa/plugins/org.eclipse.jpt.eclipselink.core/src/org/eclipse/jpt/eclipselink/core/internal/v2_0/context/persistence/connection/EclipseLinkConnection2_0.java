@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.conne
 import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection.Connection2_0;
@@ -33,13 +34,13 @@ public class EclipseLinkConnection2_0 extends EclipseLinkConnection
 	@Override
 	protected void initializeDatabaseConnectionProperties() {
 		this.driver = 
-			this.getStringValue(ECLIPSELINK2_0_DRIVER);
+			this.getStringValue(JpaConnection2_0.PERSISTENCE_JDBC_DRIVER);
 		this.url = 
-			this.getStringValue(ECLIPSELINK2_0_URL);
+			this.getStringValue(JpaConnection2_0.PERSISTENCE_JDBC_URL);
 		this.user = 
-			this.getStringValue(ECLIPSELINK2_0_USER);
+			this.getStringValue(JpaConnection2_0.PERSISTENCE_JDBC_USER);
 		this.password = 
-			this.getStringValue(ECLIPSELINK2_0_PASSWORD);
+			this.getStringValue(JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD);
 	}
 	
 	@Override
@@ -75,16 +76,16 @@ public class EclipseLinkConnection2_0 extends EclipseLinkConnection
 	public void propertyValueChanged(String propertyName, String newValue) {
 		super.propertyValueChanged(propertyName, newValue);
 
-		if (propertyName.equals(ECLIPSELINK2_0_DRIVER)) {
+		if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_DRIVER)) {
 			this.driverChanged(newValue);
 		}
-		else if (propertyName.equals(ECLIPSELINK2_0_URL)) {
+		else if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_URL)) {
 			this.urlChanged(newValue);
 		}
-		else if (propertyName.equals(ECLIPSELINK2_0_USER)) {
+		else if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_USER)) {
 			this.userChanged(newValue);
 		}
-		else if (propertyName.equals(ECLIPSELINK2_0_PASSWORD)) {
+		else if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD)) {
 			this.passwordChanged(newValue);
 		}
 	}
@@ -93,16 +94,16 @@ public class EclipseLinkConnection2_0 extends EclipseLinkConnection
 	public void propertyRemoved(String propertyName) {
 		super.propertyRemoved(propertyName);
 		
-		if (propertyName.equals(ECLIPSELINK2_0_DRIVER)) {
+		if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_DRIVER)) {
 			this.driverChanged(null);
 		}
-		else if (propertyName.equals(ECLIPSELINK2_0_URL)) {
+		else if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_URL)) {
 			this.urlChanged(null);
 		}
-		else if (propertyName.equals(ECLIPSELINK2_0_USER)) {
+		else if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_USER)) {
 			this.userChanged(null);
 		}
-		else if (propertyName.equals(ECLIPSELINK2_0_PASSWORD)) {
+		else if (propertyName.equals(JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD)) {
 			this.passwordChanged(null);
 		}
 	}
@@ -110,16 +111,16 @@ public class EclipseLinkConnection2_0 extends EclipseLinkConnection
 	@Override
 	protected void addDatabaseConnectionPropertyNames(Map<String, String> propertyNames) {
 		propertyNames.put(
-			ECLIPSELINK2_0_DRIVER,
+			JpaConnection2_0.PERSISTENCE_JDBC_DRIVER,
 			Connection.DRIVER_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK2_0_URL,
+			JpaConnection2_0.PERSISTENCE_JDBC_URL,
 			Connection.URL_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK2_0_USER,
+			JpaConnection2_0.PERSISTENCE_JDBC_USER,
 			Connection.USER_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK2_0_PASSWORD,
+			JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD,
 			Connection.PASSWORD_PROPERTY);
 	}
 	
@@ -127,10 +128,10 @@ public class EclipseLinkConnection2_0 extends EclipseLinkConnection
 	 * Migrate properties names to EclipseLink 2.0 names.
 	 */
 	private void migrateProperties() {
-		this.migrateStringProperty(ECLIPSELINK_DRIVER, ECLIPSELINK2_0_DRIVER, this.driver);
-		this.migrateStringProperty(ECLIPSELINK_URL, ECLIPSELINK2_0_URL, this.url);
-		this.migrateStringProperty(ECLIPSELINK_USER, ECLIPSELINK2_0_USER, this.user);
-		this.migrateStringProperty(ECLIPSELINK_PASSWORD, ECLIPSELINK2_0_PASSWORD, this.password);
+		this.migrateStringProperty(ECLIPSELINK_DRIVER, JpaConnection2_0.PERSISTENCE_JDBC_DRIVER, this.driver);
+		this.migrateStringProperty(ECLIPSELINK_URL, JpaConnection2_0.PERSISTENCE_JDBC_URL, this.url);
+		this.migrateStringProperty(ECLIPSELINK_USER, JpaConnection2_0.PERSISTENCE_JDBC_USER, this.user);
+		this.migrateStringProperty(ECLIPSELINK_PASSWORD, JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD, this.password);
 	}
 	
 	private void migrateStringProperty(String oldKey, String newKey, String value) {

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection.Connection2_0;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -25,25 +26,25 @@ public class EclipseLink2_0ConnectionTests extends EclipseLink2_0PersistenceUnit
 	public static final Boolean NATIVE_SQL_TEST_VALUE = false;
 	public static final Boolean NATIVE_SQL_TEST_VALUE_2 = ! NATIVE_SQL_TEST_VALUE;
 	
-	public static final String DRIVER_KEY = Connection.ECLIPSELINK2_0_DRIVER;
+	public static final String DRIVER_KEY = JpaConnection2_0.PERSISTENCE_JDBC_DRIVER;
 	public static final String DRIVER_TEST_VALUE = "connection.driver";
 	public static final String DRIVER_TEST_VALUE_2 = "connection.driver.2";
 	public static final String LEGACY_DRIVER_KEY = Connection.ECLIPSELINK_DRIVER;
 	public static final String LEGACY_DRIVER_TEST_VALUE = "legacy.connection.driver";
 	
-	public static final String URL_KEY = Connection.ECLIPSELINK2_0_URL;
+	public static final String URL_KEY = JpaConnection2_0.PERSISTENCE_JDBC_URL;
 	public static final String URL_TEST_VALUE = "test";
 	public static final String URL_TEST_VALUE_2 = "test_2";
 	public static final String LEGACY_URL_KEY = Connection.ECLIPSELINK_URL;
 	public static final String LEGACY_URL_TEST_VALUE = "legacy.connection.url";
 
-	public static final String USER_KEY = Connection.ECLIPSELINK2_0_USER;
+	public static final String USER_KEY = JpaConnection2_0.PERSISTENCE_JDBC_USER;
 	public static final String USER_TEST_VALUE = "test";
 	public static final String USER_TEST_VALUE_2 = "test_2";
 	public static final String LEGACY_USER_KEY = Connection.ECLIPSELINK_USER;
 	public static final String LEGACY_USER_TEST_VALUE = "legacy.connection.user";
 
-	public static final String PASSWORD_KEY = Connection.ECLIPSELINK2_0_PASSWORD;
+	public static final String PASSWORD_KEY = JpaConnection2_0.PERSISTENCE_JDBC_PASSWORD;
 	public static final String PASSWORD_TEST_VALUE = "test";
 	public static final String PASSWORD_TEST_VALUE_2 = "test_2";
 	public static final String LEGACY_PASSWORD_KEY = Connection.ECLIPSELINK_PASSWORD;
