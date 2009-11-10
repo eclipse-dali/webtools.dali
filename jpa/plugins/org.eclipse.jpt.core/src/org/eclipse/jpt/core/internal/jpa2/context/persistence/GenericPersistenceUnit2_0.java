@@ -61,7 +61,7 @@ public class GenericPersistenceUnit2_0
 	}
 	
 	protected ValidationMode buildDefaultValidationMode() {
-		return JpaOptions2_0.DEFAULT_VALIDATION_MODE; 
+		return DEFAULT_VALIDATION_MODE; 
 	}
 	
 	// ********** properties **********
@@ -104,19 +104,8 @@ public class GenericPersistenceUnit2_0
 		this.xmlPersistenceUnit = xpu;
 		this.setSpecifiedSharedCacheMode(this.buildSpecifiedSharedCacheMode());
 		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
-		
-		this.updateValidationMode();
-	}
-	
-	private void updateValidationMode() {
-		ValidationMode newValidationMode = this.buildSpecifiedValidationMode();
-
-		// update with the property definition if the element is null, and discard the property
-		if(newValidationMode == null && this.options.getValidationMode() != null) {
-			newValidationMode = this.options.getValidationMode();
-			this.options.removeValidationMode();
-		}
-		this.setSpecifiedValidationMode(newValidationMode);
+		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
+		this.setDefaultValidationMode(this.buildDefaultValidationMode());
 	}
 
 

@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 
 /**
  * JPA 2.0 options
@@ -65,9 +64,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 		else if (propertyName.equals(PERSISTENCE_QUERY_TIMEOUT)) {
 			this.queryTimeoutChanged(newValue);
 		}
-		else if (propertyName.equals(PERSISTENCE_VALIDATION_MODE)) {
-			this.validationModeChanged(newValue);
-		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST)) {
 			this.validationGroupPrePersistChanged(newValue);
 		}
@@ -85,9 +81,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 		}
 		else if (propertyName.equals(PERSISTENCE_QUERY_TIMEOUT)) {
 			this.queryTimeoutChanged(null);
-		}
-		else if (propertyName.equals(PERSISTENCE_VALIDATION_MODE)) {
-			this.validationModeChanged(null);
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST)) {
 			this.validationGroupPrePersistChanged(null);
@@ -114,9 +107,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 			PERSISTENCE_QUERY_TIMEOUT,
 			QUERY_TIMEOUT_PROPERTY);
 		propertyNames.put(
-			PERSISTENCE_VALIDATION_MODE,
-			VALIDATION_MODE_PROPERTY);
-		propertyNames.put(
 			PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST,
 			VALIDATION_GROUP_PRE_PERSIST_PROPERTY);
 		propertyNames.put(
@@ -131,13 +121,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	public PersistenceUnit2_0 getPersistenceUnit() {
 		return (PersistenceUnit2_0) super.getPersistenceUnit();
 	}
-	
-	/**
-	 * Migrate properties names to JPA 2.0 names.
-	 */
-	private void migrateProperties() {
-		this.removeValidationMode();
-	}
 
 	// ********** LockTimeout **********
 	public Integer getLockTimeout() {
@@ -145,8 +128,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 	public void setLockTimeout(Integer newLockTimeout) {
-		this.migrateProperties();
-		
 		Integer old = this.lockTimeout;
 		this.lockTimeout = newLockTimeout;
 		this.putProperty(LOCK_TIMEOUT_PROPERTY, newLockTimeout);
@@ -171,8 +152,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 	public void setQueryTimeout(Integer newQueryTimeout) {
-		this.migrateProperties();
-
 		Integer old = this.queryTimeout;
 		this.queryTimeout = newQueryTimeout;
 		this.putProperty(QUERY_TIMEOUT_PROPERTY, newQueryTimeout);
@@ -191,37 +170,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 		return DEFAULT_QUERY_TIMEOUT;
 	}
 
-	// ********** ValidationMode **********
-	/**
-	 * Implementation to be conform with the JPA 2.0 spec, 
-	 * but note that only the persistence unit element is supported by Dali.
-	 */
-	public ValidationMode getValidationMode() {
-		return this.getEnumValue(PERSISTENCE_VALIDATION_MODE, ValidationMode.values());
-	}
-
-	public void removeValidationMode() {
-		if(this.persistenceUnitKeyExists(PERSISTENCE_VALIDATION_MODE)) {
-			this.getPersistenceUnit().removeProperty(PERSISTENCE_VALIDATION_MODE);
-		}
-	}
-
-	/**
-	 * Sets the persistence unit element only, the property is removed if it exist.
-	 */
-	public void setValidationMode(ValidationMode newValidationMode) {
-		if(newValidationMode != null) {
-			this.migrateProperties();
-
-			this.getPersistenceUnit().setSpecifiedValidationMode(newValidationMode);
-			this.firePropertyChanged(VALIDATION_MODE_PROPERTY, null, newValidationMode);
-		}
-	}
-
-	private void validationModeChanged(String stringValue) {
-		ValidationMode newValue = getEnumValueOf(stringValue, ValidationMode.values());
-		this.setValidationMode(newValue);
-	}
 
 	// ********** ValidationGroupPrePersist **********
 	public String getValidationGroupPrePersist() {
@@ -229,8 +177,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 	public void setValidationGroupPrePersist(String newValidationGroupPrePersist) {
-		this.migrateProperties();
-
 		String old = this.validationGroupPrePersist;
 		this.validationGroupPrePersist = newValidationGroupPrePersist;
 		this.putProperty(VALIDATION_GROUP_PRE_PERSIST_PROPERTY, newValidationGroupPrePersist);
@@ -253,8 +199,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 	public void setValidationGroupPreUpdate(String newValidationGroupPreUpdate) {
-		this.migrateProperties();
-
 		String old = this.validationGroupPreUpdate;
 		this.validationGroupPreUpdate = newValidationGroupPreUpdate;
 		this.putProperty(VALIDATION_GROUP_PRE_UPDATE_PROPERTY, newValidationGroupPreUpdate);
@@ -277,8 +221,6 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 	public void setValidationGroupPreRemove(String newValidationGroupPreRemove) {
-		this.migrateProperties();
-
 		String old = this.validationGroupPreRemove;
 		this.validationGroupPreRemove = newValidationGroupPreRemove;
 		this.putProperty(VALIDATION_GROUP_PRE_REMOVE_PROPERTY, newValidationGroupPreRemove);
@@ -294,6 +236,4 @@ public class GenericOptions2_0 extends AbstractPersistenceUnitProperties
 	public String getDefaultValidationGroupPreRemove() {
 		return DEFAULT_VALIDATION_GROUP_PRE_REMOVE;
 	}
-
-	
 }

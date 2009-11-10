@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
@@ -29,10 +28,6 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 	public static final String QUERY_TIMEOUT_KEY = JpaOptions2_0.PERSISTENCE_QUERY_TIMEOUT;
 	public static final Integer QUERY_TIMEOUT_TEST_VALUE = 100;
 	public static final Integer QUERY_TIMEOUT_TEST_VALUE_2 = 200;
-
-	public static final String VALIDATION_MODE_KEY = JpaOptions2_0.PERSISTENCE_VALIDATION_MODE;
-	public static final ValidationMode VALIDATION_MODE_TEST_VALUE = ValidationMode.none;
-	public static final ValidationMode VALIDATION_MODE_TEST_VALUE_2 = ValidationMode.callback;
 	
 	public static final String VALIDATION_GROUP_PRE_PERSIST_KEY = JpaOptions2_0.PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST;
 	public static final String VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE = "test_pre-persist_group";
@@ -60,7 +55,6 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 
 		this.options.addPropertyChangeListener(JpaOptions2_0.LOCK_TIMEOUT_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY, propertyChangeListener);
-		this.options.addPropertyChangeListener(JpaOptions2_0.VALIDATION_MODE_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY, propertyChangeListener);
@@ -82,7 +76,6 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 		this.persistenceUnitSetProperty(QUERY_TIMEOUT_KEY, QUERY_TIMEOUT_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty("misc.property.3", "value.3");
 
-		this.getPersistenceUnit().setSpecifiedValidationMode(VALIDATION_MODE_TEST_VALUE);		// test ValidationMode element 
 		this.persistenceUnitSetProperty(VALIDATION_GROUP_PRE_PERSIST_KEY, VALIDATION_GROUP_PRE_PERSIST_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(VALIDATION_GROUP_PRE_UPDATE_KEY, VALIDATION_GROUP_PRE_UPDATE_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(VALIDATION_GROUP_PRE_REMOVE_KEY, VALIDATION_GROUP_PRE_REMOVE_TEST_VALUE.toString());
@@ -100,8 +93,6 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 			modelValue = this.options.getLockTimeout();
 		else if (propertyName.equals(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY))
 			modelValue = this.options.getQueryTimeout();
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_MODE_PROPERTY))
-			modelValue = this.options.getValidationMode();
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			modelValue = this.options.getValidationGroupPrePersist();
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
@@ -119,8 +110,6 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 			this.options.setLockTimeout((Integer) newValue);
 		else if (propertyName.equals(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY))
 			this.options.setQueryTimeout((Integer) newValue);
-		else if (propertyName.equals(JpaOptions2_0.VALIDATION_MODE_PROPERTY))
-			this.options.setValidationMode((ValidationMode) newValue);
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
 			this.options.setValidationGroupPrePersist((String) newValue);
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
@@ -165,59 +154,6 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 			QUERY_TIMEOUT_KEY,
 			QUERY_TIMEOUT_TEST_VALUE,
 			QUERY_TIMEOUT_TEST_VALUE_2);
-	}
-	
-	// ********** ValidationMode tests **********
-	public void testSetValidationMode() throws Exception {
-		this.verifySetValidationMode(
-			VALIDATION_MODE_TEST_VALUE,
-			VALIDATION_MODE_TEST_VALUE_2);
-	}
-
-	public void testAddRemoveValidationMode() throws Exception {
-		this.verifyAddRemoveValidationMode(
-			VALIDATION_MODE_KEY,
-			VALIDATION_MODE_TEST_VALUE,
-			VALIDATION_MODE_TEST_VALUE_2);
-	}
-	
-	/**
-	 * Verify if ValidationMode element is set
-	 */
-	private void verifySetValidationMode(ValidationMode testValue1, ValidationMode testValue2) throws Exception {
-		
-		this.getPersistenceUnit().setSpecifiedValidationMode(testValue2);
-		assertEquals(testValue2, this.getPersistenceUnit().getSpecifiedValidationMode());
-		// Replace
-		this.options.setValidationMode(testValue1);
-		assertEquals(testValue1, this.getPersistenceUnit().getSpecifiedValidationMode());
-		assertNull(this.options.getValidationMode());
-		
-		// Replace by setting model object
-		this.options.setValidationMode(testValue2);
-		assertEquals(testValue2, this.getPersistenceUnit().getValidationMode());
-	}
-	
-	/**
-	 * Add & Remove ValidationMode
-	 * Verify if ValidationMode element is added
-	 */
-	private void verifyAddRemoveValidationMode(String puKey, ValidationMode testValue1, ValidationMode testValue2) throws Exception {
-		// Remove
-		this.clearEvent();
-		assertNull(this.getPersistenceUnit().getProperty(puKey));
-		this.getPersistenceUnit().setSpecifiedValidationMode(null);
-		assertEquals(this.getPersistenceUnit().getDefaultValidationMode(), this.getPersistenceUnit().getValidationMode());
-		
-		// Add original 
-		++this.propertiesTotal;
-		++this.modelPropertiesSize;
-		this.options.setValidationMode(testValue1);
-		assertEquals(testValue1, this.getPersistenceUnit().getValidationMode());
-		
-		// Replace
-		this.options.setValidationMode(testValue2);
-		assertEquals(testValue2, this.getPersistenceUnit().getValidationMode());
 	}
 
 	// ********** ValidationGroupPrePersist tests **********

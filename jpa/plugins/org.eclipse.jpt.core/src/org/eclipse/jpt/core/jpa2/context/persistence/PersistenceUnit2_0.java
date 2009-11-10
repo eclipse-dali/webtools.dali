@@ -99,6 +99,8 @@ public interface PersistenceUnit2_0
 	 * Return the persistence unit's default validation mode.
 	 */
 	ValidationMode getDefaultValidationMode();
+	
+	ValidationMode DEFAULT_VALIDATION_MODE = ValidationMode.AUTO;
 
 
 	// ********** properties **********

@@ -16,44 +16,41 @@ import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidati
  */
 public enum ValidationMode 
 {
-	auto,
-	callback,
-	none; 
-	
-	// JPA value string
-	public static final String AUTO = "AUTO";
-	public static final String CALLBACK = "CALLBACK";
-	public static final String NONE = "NONE";
-	
-	public static ValidationMode fromXmlResourceModel(XmlPersistenceUnitValidationModeType_2_0 validationMode) {
-		if (validationMode == null) {
-			return null;
+	AUTO(XmlPersistenceUnitValidationModeType_2_0.AUTO),
+	CALLBACK(XmlPersistenceUnitValidationModeType_2_0.CALLBACK),
+	NONE(XmlPersistenceUnitValidationModeType_2_0.NONE); 
+
+	private XmlPersistenceUnitValidationModeType_2_0 xmlEnumValue;
+
+	ValidationMode(XmlPersistenceUnitValidationModeType_2_0 xmlEnumValue) {
+		if (xmlEnumValue == null) {
+			throw new NullPointerException();
 		}
-		switch (validationMode) {
-			case AUTO:
-				return auto;
-			case CALLBACK:
-				return callback;
-			case NONE:
-				return none;
-			default:
-				throw new IllegalArgumentException("unknown validation mode: " + validationMode); //$NON-NLS-1$
-		}
+		this.xmlEnumValue = xmlEnumValue;
+	}
+
+	public XmlPersistenceUnitValidationModeType_2_0 getXmlEnumValue() {
+		return this.xmlEnumValue;
 	}
 	
+	
+	// ********** static methods **********
+
+	public static ValidationMode fromXmlResourceModel(XmlPersistenceUnitValidationModeType_2_0 xmlValidationMode) {
+		return (xmlValidationMode == null) ? null : fromXmlResourceModel_(xmlValidationMode);
+	}
+
+	private static ValidationMode fromXmlResourceModel_(XmlPersistenceUnitValidationModeType_2_0 xmlValidationMode) {
+		for (ValidationMode validationMode : ValidationMode.values()) {
+			if (validationMode.getXmlEnumValue().equals(xmlValidationMode)) {
+				return validationMode;
+			}
+		}
+		return null;
+	}
+
 	public static XmlPersistenceUnitValidationModeType_2_0 toXmlResourceModel(ValidationMode validationMode) {
-		if (validationMode == null) {
-			return null;
-		}
-		switch (validationMode) {
-			case auto:
-				return XmlPersistenceUnitValidationModeType_2_0.AUTO;
-			case callback:
-				return XmlPersistenceUnitValidationModeType_2_0.CALLBACK;
-			case none:
-				return XmlPersistenceUnitValidationModeType_2_0.NONE;
-			default:
-				throw new IllegalArgumentException("unknown validation mode: " + validationMode); //$NON-NLS-1$
-		}
+		return (validationMode == null) ? null : validationMode.getXmlEnumValue();
 	}
+
 }
