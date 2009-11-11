@@ -12,7 +12,12 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.connection.EclipseLinkConnection2_0;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.options.EclipseLinkOptions2_0;
 
 
 public class EclipseLink2_0PersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextNodeFactory
@@ -21,6 +26,14 @@ public class EclipseLink2_0PersistenceXmlContextNodeFactory extends AbstractPers
 	@Override
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		return new EclipseLinkPersistenceUnit2_0(parent, xmlPersistenceUnit);
+	}
+	
+	public JpaConnection2_0 buildConnection(PersistenceUnit parent) {
+		return new EclipseLinkConnection2_0((PersistenceUnit2_0) parent);
+	}
+	
+	public JpaOptions2_0 buildOptions(PersistenceUnit parent) {
+		return new EclipseLinkOptions2_0((PersistenceUnit2_0) parent);
 	}
 
 }

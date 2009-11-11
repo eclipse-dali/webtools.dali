@@ -31,11 +31,9 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -171,7 +169,7 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	protected Connection buildEclipseLinkConnection() {
-		return new EclipseLinkConnection(this);
+		return (Connection) getContextNodeFactory().buildConnection(this);
 	}
 	
 	protected Customization buildEclipseLinkCustomization() {
@@ -187,7 +185,7 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	protected Options buildEclipseLinkOptions() {
-		return new EclipseLinkOptions(this);
+		return (Options) getContextNodeFactory().buildOptions(this);
 	}
 	
 	protected SchemaGeneration buildEclipseLinkSchemaGeneration() {

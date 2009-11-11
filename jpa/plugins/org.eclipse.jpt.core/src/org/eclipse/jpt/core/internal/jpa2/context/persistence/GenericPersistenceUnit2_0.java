@@ -11,8 +11,6 @@ package org.eclipse.jpt.core.internal.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.connection.GenericConnection2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.persistence.options.GenericOptions2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
@@ -69,8 +67,8 @@ public class GenericPersistenceUnit2_0
 	protected void initializeProperties() {
 		super.initializeProperties();
 		
-		this.connection = new GenericConnection2_0(this);
-		this.options = new GenericOptions2_0(this);
+		this.connection = (JpaConnection2_0) getContextNodeFactory().buildConnection(this);
+		this.options = (JpaOptions2_0) getContextNodeFactory().buildOptions(this);
 	}
 	
 	@Override

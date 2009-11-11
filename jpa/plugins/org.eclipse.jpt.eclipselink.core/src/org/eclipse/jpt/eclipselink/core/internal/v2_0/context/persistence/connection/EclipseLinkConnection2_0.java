@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.conne
 
 import java.util.Map;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
@@ -26,7 +26,7 @@ public class EclipseLinkConnection2_0 extends EclipseLinkConnection
 {
 
 	// ********** constructors **********
-	public EclipseLinkConnection2_0(PersistenceUnit parent) {
+	public EclipseLinkConnection2_0(PersistenceUnit2_0 parent) {
 		super(parent);
 	}
 	

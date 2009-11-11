@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.optio
 
 import java.util.Map;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
@@ -31,7 +30,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	
 
 	// ********** constructors **********
-	public EclipseLinkOptions2_0(PersistenceUnit parent) {
+	public EclipseLinkOptions2_0(PersistenceUnit2_0 parent) {
 		super(parent);
 	}
 

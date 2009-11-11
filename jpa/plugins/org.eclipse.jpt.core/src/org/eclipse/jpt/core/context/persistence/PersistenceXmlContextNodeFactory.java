@@ -54,4 +54,9 @@ public interface PersistenceXmlContextNodeFactory
 	JarFile buildJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot);
 
 	PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty property);
+	
+	PersistenceUnitProperties buildConnection(PersistenceUnit parent);
+	
+	PersistenceUnitProperties buildOptions(PersistenceUnit parent);
+
 }
