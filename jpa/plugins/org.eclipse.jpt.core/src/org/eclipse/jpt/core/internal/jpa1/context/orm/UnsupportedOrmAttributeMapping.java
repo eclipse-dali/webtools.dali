@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
@@ -48,4 +49,12 @@ public class UnsupportedOrmAttributeMapping
 	public void removeFromResourceModel(Attributes resourceAttributes) {
 		throw new UnsupportedOperationException();
 	}
+
+	// ********** metamodel **********  
+
+	@Override
+	public MetamodelField getMetamodelField() {
+		return null;
+	}
+
 }

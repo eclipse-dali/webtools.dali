@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 
@@ -46,4 +47,12 @@ public class GenericOrmTransientMapping
 	public void removeFromResourceModel(Attributes resourceAttributes) {
 		resourceAttributes.getTransients().remove(this.resourceAttributeMapping);
 	}
+
+	// ********** metamodel **********  
+
+	@Override
+	public MetamodelField getMetamodelField() {
+		return null;
+	}
+
 }
