@@ -196,8 +196,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return getName() == null ? EmptyIterator.<String> instance() : new SingleElementIterator<String>(getName());
 	}
 	
-	public AttributeMapping resolveAttributeMapping(String name) {
-		if (getName() != null && getName().equals(name)) {
+	public AttributeMapping resolveAttributeMapping(String attributeName) {
+		if (getName() != null && getName().equals(attributeName)) {
 			return this;
 		}
 		return null;
@@ -222,8 +222,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return columnMapping == null ? null : columnMapping.getColumn();
 	}
 	
-	protected ColumnMapping resolveColumnMapping(String name) {
-		AttributeMapping attributeMapping = resolveAttributeMapping(name);
+	protected ColumnMapping resolveColumnMapping(String attributeName) {
+		AttributeMapping attributeMapping = resolveAttributeMapping(attributeName);
 		if (attributeMapping != null && attributeMapping.isOverridableAttributeMapping()) {
 			return (ColumnMapping) attributeMapping;
 		}
@@ -235,8 +235,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return relationshipMapping == null ? null : relationshipMapping.getRelationshipReference();
 	}
 	
-	protected RelationshipMapping resolveRelationshipMapping(String name) {
-		AttributeMapping attributeMapping = resolveAttributeMapping(name);
+	protected RelationshipMapping resolveRelationshipMapping(String attributeName) {
+		AttributeMapping attributeMapping = resolveAttributeMapping(attributeName);
 		if (attributeMapping != null && attributeMapping.isOverridableAssociationMapping()) {
 			return (RelationshipMapping) attributeMapping;
 		}
