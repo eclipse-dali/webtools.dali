@@ -29,13 +29,13 @@ import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXm
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.persistence.details.BasePersistenceXmlUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFactory
+public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFactory
 {
 	// ********** constructors **********
 	
@@ -45,7 +45,6 @@ public class EclipseLinkPersistenceXmlUiFactory extends BasePersistenceXmlUiFact
 
 	// **************** persistence unit composites ****************************
 	
-	@Override
 	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
 						PropertyValueModel<PersistenceUnit> subjectHolder,
 						Composite parent,

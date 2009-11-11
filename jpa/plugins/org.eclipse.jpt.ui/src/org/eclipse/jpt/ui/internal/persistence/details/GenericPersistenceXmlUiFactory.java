@@ -9,6 +9,30 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.persistence.details;
 
-public class GenericPersistenceXmlUiFactory extends BasePersistenceXmlUiFactory
+import java.util.ArrayList;
+import java.util.ListIterator;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.JpaPageComposite;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.widgets.Composite;
+
+public class GenericPersistenceXmlUiFactory implements PersistenceXmlUiFactory
 {
+	// **************** persistence unit composites ****************************
+	
+	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
+		PropertyValueModel<PersistenceUnit> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		ArrayList<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(3);
+
+		pages.add(new GenericPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
+
+		return pages.listIterator();
+	}
+
 }

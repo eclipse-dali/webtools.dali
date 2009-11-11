@@ -19,9 +19,9 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.connection.GenericPersistenceUnit2_0ConnectionTab;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.options.GenericPersistenceUnit2_0OptionsTab;
-import org.eclipse.jpt.ui.internal.persistence.details.BasePersistenceXmlUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -35,11 +35,10 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 1.0
  */
-public class Generic2_0PersistenceXmlUiFactory extends BasePersistenceXmlUiFactory
+public class Generic2_0PersistenceXmlUiFactory implements PersistenceXmlUiFactory
 {
 	
 	// **************** persistence unit composites ****************************
-	@Override
 	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
 		PropertyValueModel<PersistenceUnit> subjectHolder,
 		Composite parent,
