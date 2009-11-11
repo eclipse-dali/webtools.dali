@@ -14,11 +14,9 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
@@ -376,28 +374,14 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String mapKey = this.getMapKey();
-		if (mapKey != null) {
-			typeArgumentNames.add(this.getMetamodelTypeNameForAttributeNamed(mapKey));
+		String keyTypeName = ((JavaPersistentAttribute2_0) this.getJavaPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		if (keyTypeName != null) {
+			typeArgumentNames.add(keyTypeName);
 		}
 	}
 
-	/**
-	 * pre-condition: attribute name is non-null
-	 */
-	protected String getMetamodelTypeNameForAttributeNamed(String attributeName) {
-		if (this.resolvedTargetEntity == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
-		}
-		PersistentAttribute pa = this.resolvedTargetEntity.getPersistentType().resolveAttribute(attributeName);
-		if (pa == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
-		}
-		AttributeMapping2_0 am = (AttributeMapping2_0) pa.getMapping();
-		if (am == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
-		}
-		return am.getMetamodelTypeName();
+	public String getMetamodelFieldMapKeyTypeName() {
+		return MappingTools.getMetamodelFieldMapKeyTypeName(this);
 	}
 
 }

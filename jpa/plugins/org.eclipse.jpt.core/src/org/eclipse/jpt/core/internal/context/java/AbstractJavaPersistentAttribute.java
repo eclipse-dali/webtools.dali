@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -33,6 +34,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -444,30 +446,21 @@ public abstract class AbstractJavaPersistentAttribute
 	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
 	// since we don't know all the possible mapping types
 	public void setSpecifiedMappingKey(String key) {
-		if (key == this.getSpecifiedMappingKey()) {
+		if (Tools.valuesAreEqual(key, this.getSpecifiedMappingKey())) {
 			return;
 		}
-		JavaAttributeMapping oldMapping = this.specifiedMapping;
+		JavaAttributeMapping old = this.specifiedMapping;
 		JavaAttributeMapping newMapping = this.buildMappingFromMappingKey(key);
 		
 		this.specifiedMapping = newMapping;
 		
-		String newAnnotation;
-		String[] newSupportingAnnotationNames;
-		if (newMapping != null) {
-			newAnnotation = newMapping.getAnnotationName();
-			newSupportingAnnotationNames = 
-					ArrayTools.array(newMapping.supportingAnnotationNames(), new String[0]);
-		}
-		else {
-			newAnnotation = null;
-			newSupportingAnnotationNames = 
-					ArrayTools.array(this.defaultMapping.supportingAnnotationNames(), new String[0]);
-		}
-		this.resourcePersistentAttribute.setPrimaryAnnotation(
-				newAnnotation, newSupportingAnnotationNames);
-		this.firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, newMapping);
+		String newAnnotation = (newMapping == null) ? null : newMapping.getAnnotationName();
+		JavaAttributeMapping mapping = (newMapping == null) ? this.defaultMapping : newMapping;
+		String[] newSupportingAnnotationNames = ArrayTools.array(mapping.supportingAnnotationNames(), EMPTY_STRING_ARRAY);
+		this.resourcePersistentAttribute.setPrimaryAnnotation(newAnnotation, newSupportingAnnotationNames);
+		this.firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, old, newMapping);
 	}
+	protected static final String[] EMPTY_STRING_ARRAY = new String[0];
 	
 	/**
 	 * return the annotation name of the currently specified mapping or null 
@@ -611,6 +604,7 @@ public abstract class AbstractJavaPersistentAttribute
 		boolean isContainer();
 		String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
 		String getMetamodelContainerFieldTypeName();
+		String getMetamodelContainerFieldMapKeyTypeName(MultiRelationshipMapping mapping);
 
 		final class Null implements JpaContainer {
 			public static final JpaContainer INSTANCE = new Null();
@@ -632,6 +626,9 @@ public abstract class AbstractJavaPersistentAttribute
 			}
 			public String getMetamodelContainerFieldTypeName() {
 				return JPA2_0.COLLECTION_ATTRIBUTE;
+			}
+			public String getMetamodelContainerFieldMapKeyTypeName(MultiRelationshipMapping mapping) {
+				return null;
 			}
 			@Override
 			public String toString() {
@@ -689,6 +686,9 @@ public abstract class AbstractJavaPersistentAttribute
 						null;
 		}
 
+		public String getMetamodelContainerFieldMapKeyTypeName(MultiRelationshipMapping mapping) {
+			return null;
+		}
 	}
 
 	/**
@@ -705,6 +705,9 @@ public abstract class AbstractJavaPersistentAttribute
 						null;
 		}
 
+		public String getMetamodelContainerFieldMapKeyTypeName(MultiRelationshipMapping mapping) {
+			return mapping.getMetamodelFieldMapKeyTypeName();
+		}
 	}
 
 }

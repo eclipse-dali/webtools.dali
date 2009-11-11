@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
@@ -73,6 +74,10 @@ public class GenericJavaPersistentAttribute2_0
 
 	public String getMetamodelContainerFieldTypeName() {
 		return this.getJpaContainer(this.resourcePersistentAttribute.getTypeName()).getMetamodelContainerFieldTypeName();
+	}
+
+	public String getMetamodelContainerFieldMapKeyTypeName() {
+		return this.getJpaContainer(this.resourcePersistentAttribute.getTypeName()).getMetamodelContainerFieldMapKeyTypeName((MultiRelationshipMapping) this.getMapping());
 	}
 
 	public String getMetamodelTypeName() {

@@ -30,6 +30,13 @@ public interface JavaPersistentAttribute2_0
 	String getMetamodelContainerFieldTypeName();
 
 	/**
+	 * Return the name of the container map key type to be used in the
+	 * metamodel field declaration corresponding to the attribute's mapping.
+	 * Return null if the attribute's type is not {@link java.util.Map}.
+	 */
+	String getMetamodelContainerFieldMapKeyTypeName();
+
+	/**
 	 * Return the attribute's type name for the metamodel.
 	 */
 	String getMetamodelTypeName();

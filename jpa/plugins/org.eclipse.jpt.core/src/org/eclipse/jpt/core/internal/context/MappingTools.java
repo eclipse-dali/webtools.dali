@@ -15,11 +15,14 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.db.Table;
 
 /**
@@ -206,6 +209,37 @@ public class MappingTools {
 			joinColumn.setSpecifiedName(columnName);
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}
+	}
+
+	public static String getMetamodelFieldMapKeyTypeName(MultiRelationshipMapping mapping) {
+		Entity targetEntity = mapping.getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		String mapKey = mapping.getMapKey();
+		if (mapKey == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		PersistentAttribute mapKeyAttribute = targetEntity.getPersistentType().resolveAttribute(mapKey);
+		if (mapKeyAttribute == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		AttributeMapping2_0 mapKeyMapping = (AttributeMapping2_0) mapKeyAttribute.getMapping();
+		if (mapKeyMapping == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		return mapKeyMapping.getMetamodelTypeName();
+	}
+
+
+	// ********** constructor **********
+
+	/**
+	 * Suppress default constructor, ensuring non-instantiability.
+	 */
+	private MappingTools() {
+		super();
+		throw new UnsupportedOperationException();
 	}
 
 }
