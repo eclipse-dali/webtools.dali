@@ -546,13 +546,23 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		severityDisplayStrings = buildSeverityDisplayStrings();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void performDefaults() {
 		super.performDefaults();
-		revertToDefault();
+		//this call would be redundant on project preference page
+		if (!isProjectPreferencePage()) {
+			revertToDefault();
+		}
+	}
+	
+	@Override
+	protected void enableProjectSpecificSettings(boolean useProjectSpecificSettings) {
+		super.enableProjectSpecificSettings(useProjectSpecificSettings);
+		
+		//remove any project specific settings if set to false
+		if (!useProjectSpecificSettings){
+			revertToDefault();
+		}
 	}
 
 	protected String preferenceValue(String preferenceKey) {
