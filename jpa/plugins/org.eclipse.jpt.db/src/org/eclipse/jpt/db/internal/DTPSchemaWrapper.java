@@ -10,9 +10,12 @@
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.datatools.modelbase.sql.tables.SQLTablesPackage;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
@@ -27,6 +30,9 @@ final class DTPSchemaWrapper
 	extends DTPWrapper
 	implements Schema
 {
+	//used for adopter product customization
+	private static final String PERSISTENT_AND_VIEW_TABLES_ONLY = "supportPersistentAndViewTablesOnly";
+	
 	// backpointer to parent
 	private final DTPSchemaContainerWrapper container;
 
@@ -95,7 +101,26 @@ final class DTPSchemaWrapper
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables() {
-		return this.dtpSchema.getTables();
+		
+		//return persistent and view tables only - this filters out synonyms where they are not
+		//fully supported and potentially other problematic table types - see bug 269057
+		String supportPersistentAndViewTablesOnly = Platform.getProduct().getProperty(PERSISTENT_AND_VIEW_TABLES_ONLY);
+		if ( supportPersistentAndViewTablesOnly != null && supportPersistentAndViewTablesOnly.equals("true") ) {
+            List<org.eclipse.datatools.modelbase.sql.tables.Table> result =
+            	new ArrayList<org.eclipse.datatools.modelbase.sql.tables.Table>();
+            for (Iterator iterT = this.dtpSchema.getTables().iterator();iterT.hasNext();) {
+                    org.eclipse.datatools.modelbase.sql.tables.Table table
+                    	= (org.eclipse.datatools.modelbase.sql.tables.Table) iterT.next();
+                    if (SQLTablesPackage.eINSTANCE.getPersistentTable().isSuperTypeOf(table.eClass()) ||
+                    	 SQLTablesPackage.eINSTANCE.getViewTable().isSuperTypeOf(table.eClass()) ) {
+                            result.add(table);
+                    }
+            }
+            return result;
+		}
+		else {
+			return this.dtpSchema.getTables();
+		}
 	}
 
 	public int tablesSize() {
