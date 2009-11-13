@@ -337,7 +337,8 @@
 		
 		<template id="jpt.jpa.template">
 			<label>%JPA_TEMPLATE_LABEL</label>
-			<preset id="jpt.jpa.preset"/>
+			<fixed facet="jst.java"/>
+			<fixed facet="jpt.jpa"/>
 		</template>
 		
 		<action facet="jpt.jpa" type="install" id="jpt.jpa.install">
@@ -363,13 +364,33 @@
 		
 	</extension>
 	
-
+	
+	<extension
+		point="org.eclipse.wst.common.project.facet.core.defaultFacets">
+		
+		<default-facets>
+			<context>
+				<fixed-facet id="jpt.jpa"/>
+			</context>
+			<facet id="jst.utility" version="1.0"/>
+    	</default-facets>
+		
+	</extension>
+	
+	
 	<extension
 		point="org.eclipse.wst.common.project.facet.core.presets">
 		
-		<static-preset id="jpt.jpa.preset">
-			<label>%JPA_PRESET_LABEL</label>
+		<static-preset id="jpt.jpa.1_0.preset">
+			<label>%JPA_1.0_PRESET_LABEL</label>
 			<facet id="jst.java" version="5.0"/>
+			<facet id="jst.utility" version="1.0"/>
+			<facet id="jpt.jpa" version="1.0"/>
+		</static-preset>
+		
+		<static-preset id="jpt.jpa.2_0.preset">
+			<label>%JPA_2.0_PRESET_LABEL</label>
+			<facet id="jst.java" version="6.0"/>
 			<facet id="jst.utility" version="1.0"/>
 			<facet id="jpt.jpa" version="2.0"/>
 		</static-preset>
