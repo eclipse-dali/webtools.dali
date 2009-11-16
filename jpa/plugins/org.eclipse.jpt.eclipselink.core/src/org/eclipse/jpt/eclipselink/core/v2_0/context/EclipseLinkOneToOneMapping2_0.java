@@ -13,7 +13,15 @@ import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 
 /**
- *  EclipseLinkOneToOneMapping2_0
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.0
+ * @since 3.0
  */
-public interface EclipseLinkOneToOneMapping2_0 extends EclipseLinkOneToOneMapping, OneToOneMapping2_0
+public interface EclipseLinkOneToOneMapping2_0
+	extends EclipseLinkOneToOneMapping, OneToOneMapping2_0
 {}
