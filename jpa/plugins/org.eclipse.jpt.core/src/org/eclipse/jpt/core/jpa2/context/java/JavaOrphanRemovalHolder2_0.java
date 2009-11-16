@@ -7,9 +7,10 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.core.jpa2.resource.java;
+package org.eclipse.jpt.core.jpa2.context.java;
 
-import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
  * @version 3.0
  * @since 3.0
  */
-public interface OneToMany2_0Annotation
-	extends OneToManyAnnotation, OrphanRemovable2_0Annotation
-{}
+public interface JavaOrphanRemovalHolder2_0 extends OrphanRemovalHolder2_0, JavaJpaContextNode
+{
+	JavaOrphanRemovable2_0 getOrphanRemoval();
+}

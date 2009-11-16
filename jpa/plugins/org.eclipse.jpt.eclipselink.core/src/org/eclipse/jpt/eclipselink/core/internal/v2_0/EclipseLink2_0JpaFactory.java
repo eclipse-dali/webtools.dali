@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaMapsId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
@@ -41,6 +42,8 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -114,11 +117,6 @@ public class EclipseLink2_0JpaFactory
 	}
 	
 	@Override
-	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
-		return new GenericJavaCacheable2_0(parent);
-	}
-	
-	@Override
 	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		return new JavaEclipseLinkOneToManyMapping2_0(parent);
 	}
@@ -126,5 +124,15 @@ public class EclipseLink2_0JpaFactory
 	@Override
 	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		return new JavaEclipseLinkOneToOneMapping2_0(parent);
+	}
+	
+	@Override
+	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
+		return new GenericJavaCacheable2_0(parent);
+	}
+	
+	@Override
+	public JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent) {
+		return new GenericJavaOrphanRemoval2_0(parent);
 	}
 }

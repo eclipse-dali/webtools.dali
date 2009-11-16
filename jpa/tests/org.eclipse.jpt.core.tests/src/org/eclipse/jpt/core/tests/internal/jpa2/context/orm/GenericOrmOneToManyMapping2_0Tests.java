@@ -18,7 +18,10 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -157,22 +160,27 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertEquals("foo", stateFooMapping.getName());
 	}
 	
+	private OrmOrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
+		return ((OrmOrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+	}
+	
 	public void testUpdateSpecifiedOrphanRemoval() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
 		OrmOneToManyMapping2_0 ormOneToManyMapping = (OrmOneToManyMapping2_0) ormPersistentAttribute.getMapping();
+		OrmOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(ormOneToManyMapping);
 		XmlOneToMany oneToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
-		assertEquals(null, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(null, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		assertEquals(null, oneToManyResource.getOrphanRemoval());
 				
 		//set enumerated in the resource model, verify context model updated
 		oneToManyResource.setOrphanRemoval(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.TRUE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		assertEquals(Boolean.TRUE, oneToManyResource.getOrphanRemoval());
 	
 		oneToManyResource.setOrphanRemoval(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		assertEquals(Boolean.FALSE, oneToManyResource.getOrphanRemoval());
 	}
 	
@@ -180,18 +188,19 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
 		OrmOneToManyMapping2_0 ormOneToManyMapping = (OrmOneToManyMapping2_0) ormPersistentAttribute.getMapping();
+		OrmOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(ormOneToManyMapping);
 		XmlOneToMany oneToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
-		assertEquals(null, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(null, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		assertEquals(null, oneToManyResource.getOrphanRemoval());
 				
 		//set enumerated in the context model, verify resource model updated
-		ormOneToManyMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, oneToManyResource.getOrphanRemoval());
-		assertEquals(Boolean.TRUE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.TRUE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 	
-		ormOneToManyMapping.setSpecifiedOrphanRemoval(Boolean.FALSE);
+		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, oneToManyResource.getOrphanRemoval());
-		assertEquals(Boolean.FALSE, ormOneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 	}
 }

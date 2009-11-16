@@ -9,7 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.resource.java;
 
-import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,6 +22,26 @@ import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
  * @version 3.0
  * @since 3.0
  */
-public interface OneToMany2_0Annotation
-	extends OneToManyAnnotation, OrphanRemovable2_0Annotation
-{}
+public interface OrphanRemovable2_0Annotation
+{
+	// ********** orphan removal **********
+	/**
+	 * Corresponds to the orphanRemoval element of the OneToMany annotation.
+	 * Returns null if the orphanRemoval element does not exist in java.
+	 */
+	Boolean getOrphanRemoval();
+		String ORPHAN_REMOVAL_PROPERTY = "orphanRemoval"; //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the orphanRemoval element of the OneToMany annotation.
+	 * Set to null to remove the orphanRemoval element.
+	 */
+	void setOrphanRemoval(Boolean orphanRemoval);
+
+	/**
+	 * Return the {@link TextRange} for the orphanRemoval element.  If the orphanRemoval element 
+	 * does not exist return the {@link TextRange} for the OneToMany annotation.
+	 */
+	TextRange getOrphanRemovalTextRange(CompilationUnit astRoot);
+
+}

@@ -12,6 +12,8 @@ package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
@@ -94,7 +96,7 @@ public class OrmOneToManyMapping2_0Composite<T extends OrmOneToManyMapping2_0>
 		new OneToManyJoiningStrategyPane(this, this.buildJoiningHolder(), container);
 		new AccessTypeComposite(this, this.buildAccessHolderHolder(), this.addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
+		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
 		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
@@ -104,6 +106,15 @@ public class OrmOneToManyMapping2_0Composite<T extends OrmOneToManyMapping2_0>
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
+			}
+		};
+	}
+	
+	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
+		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(this.getSubjectHolder()) {
+			@Override
+			protected OrphanRemovable2_0 buildValue_() {
+				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();
 			}
 		};
 	}

@@ -11,6 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkOneToManyMapping2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToManyJoiningStrategyPane;
@@ -110,7 +112,7 @@ public class OrmEclipseLinkOneToManyMapping2_0Composite<T extends EclipseLinkOne
 		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
 		new EclipseLinkJoinFetchComposite(this, this.buildJoinFetchableHolder(), this.addPane(container, groupBoxMargin));
 		new EclipseLinkPrivateOwnedComposite(this, this.buildPrivateOwnableHolder(), this.addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
+		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
 		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
@@ -120,6 +122,15 @@ public class OrmEclipseLinkOneToManyMapping2_0Composite<T extends EclipseLinkOne
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
+			}
+		};
+	}
+	
+	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
+		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(this.getSubjectHolder()) {
+			@Override
+			protected OrphanRemovable2_0 buildValue_() {
+				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();
 			}
 		};
 	}

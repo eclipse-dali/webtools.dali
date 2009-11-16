@@ -9,8 +9,11 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaOneToOneMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -20,7 +23,19 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *  OrphanRemoval2_0Composite
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | [X]  Orphan removal (true/false)                                    | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see {@link OrphanRemovable2_0}
+ * @see {@link JavaOneToOneMapping2_0Composite} - A container of this widget
+ * @see {@link OrmOneToOneMapping2_0Composite} - A container of this widget
  */
 public class OrphanRemoval2_0Composite extends FormPane<OrphanRemovable2_0>
 {
@@ -31,10 +46,10 @@ public class OrphanRemoval2_0Composite extends FormPane<OrphanRemovable2_0>
 	 * @param parent The parent container
 	 */
 	public OrphanRemoval2_0Composite(
-							FormPane<? extends OrphanRemovable2_0> parentPane,
-							Composite parent) 
-	{
-		super(parentPane, parent);
+							FormPane<? extends RelationshipMapping> parentPane,
+							PropertyValueModel<? extends OrphanRemovable2_0> subjectHolder,
+							Composite parent) {
+		super(parentPane, subjectHolder, parent);
 	}
 
 	@Override
@@ -49,7 +64,10 @@ public class OrphanRemoval2_0Composite extends FormPane<OrphanRemovable2_0>
 		);
 	}
 	private WritablePropertyValueModel<Boolean> buildOrphanRemovalHolder() {
-		return new PropertyAspectAdapter<OrphanRemovable2_0, Boolean>(this.getSubjectHolder(), OrphanRemovable2_0.SPECIFIED_ORPHAN_REMOVAL_PROPERTY) {
+		return new PropertyAspectAdapter<OrphanRemovable2_0, Boolean>(
+				this.getSubjectHolder(), 
+				OrphanRemovable2_0.DEFAULT_ORPHAN_REMOVAL_PROPERTY,
+				OrphanRemovable2_0.SPECIFIED_ORPHAN_REMOVAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedOrphanRemoval();
@@ -63,6 +81,7 @@ public class OrphanRemoval2_0Composite extends FormPane<OrphanRemovable2_0>
 	}
 
 	private PropertyValueModel<String> buildOrphanRemovalStringHolder() {
+		
 		return new TransformationPropertyValueModel<Boolean, String>(this.buildDefaultOrphanRemovalHolder()) {
 			@Override
 			protected String transform(Boolean value) {

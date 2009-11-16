@@ -11,6 +11,9 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -87,20 +90,25 @@ public class VirtualEclipseLinkXmlOneToMany2_0 extends XmlOneToMany
 	public void setCascade(CascadeType value) {
 		this.virtualXmlOneToMany.setCascade(value);
 	}
+	
+	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
+		return ((JavaOrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+	}
 
 	@Override
 	public Boolean getOrphanRemoval() {
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(this.javaAttributeMapping);
 		if (this.isOrmMetadataComplete()) {
-			return this.javaAttributeMapping.isDefaultOrphanRemoval();
+			return mappingsOrphanRemoval.isDefaultOrphanRemoval();
 		}
-		return this.javaAttributeMapping.isOrphanRemoval();
+		return mappingsOrphanRemoval.isOrphanRemoval();
 	}
 
 	@Override
 	public void setOrphanRemoval(Boolean newOrphanRemoval) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public XmlJoinTable getJoinTable() {
 		return this.virtualXmlOneToMany.getJoinTable();

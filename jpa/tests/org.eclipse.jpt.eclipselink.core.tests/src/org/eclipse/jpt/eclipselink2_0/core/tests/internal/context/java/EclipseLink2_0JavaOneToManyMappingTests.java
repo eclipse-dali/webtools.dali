@@ -14,6 +14,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -74,6 +76,10 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 			}
 		});
 	}
+	
+	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
+		return ((JavaOrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+	}
 
 	public void testDefaultOneToManyGetDefaultOrphanRemoval() throws Exception {
 		this.createTestEntity();
@@ -81,7 +87,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		assertEquals(false, oneToManyMapping.isDefaultOrphanRemoval());
+		assertEquals(false, this.getOrphanRemovalOf(oneToManyMapping).isDefaultOrphanRemoval());
 	}
 	
 	public void testSpecifiedOneToManyGetDefaultOrphanRemoval() throws Exception {
@@ -90,7 +96,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
-		assertEquals(false, oneToManyMapping.isDefaultOrphanRemoval());
+		assertEquals(false, this.getOrphanRemovalOf(oneToManyMapping).isDefaultOrphanRemoval());
 	}
 	
 	public void testGetOrphanRemoval() throws Exception {
@@ -99,11 +105,13 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
-		assertEquals(false, oneToManyMapping.isOrphanRemoval());
+
+		assertEquals(false, mappingsOrphanRemoval.isOrphanRemoval());
 		
-		oneToManyMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
-		assertEquals(true, oneToManyMapping.isOrphanRemoval());
+		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		assertEquals(true, mappingsOrphanRemoval.isOrphanRemoval());
 	}
 	
 	public void testGetSpecifiedOrphanRemoval() throws Exception {
@@ -112,15 +120,16 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
-		assertNull(oneToManyMapping.getSpecifiedOrphanRemoval());
+		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		
-		assertEquals(Boolean.FALSE, oneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 	}
 	
 	public void testGetSpecifiedOrphanRemoval2() throws Exception {
@@ -129,8 +138,9 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
-		assertEquals(Boolean.FALSE, oneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 	}
 
 	public void testSetSpecifiedOrphanRemoval() throws Exception {
@@ -139,9 +149,10 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		assertNull(oneToManyMapping.getSpecifiedOrphanRemoval());
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
-		oneToManyMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -149,7 +160,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
-		oneToManyMapping.setSpecifiedOrphanRemoval(null);
+		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(null);
 		assertNotNull(attributeResource.getAnnotation(JPA.ONE_TO_MANY)); 	// .getElement);
 	}
 	
@@ -159,9 +170,10 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		assertNull(oneToManyMapping.getSpecifiedOrphanRemoval());
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
-		oneToManyMapping.setSpecifiedOrphanRemoval(Boolean.TRUE);
+		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -170,9 +182,9 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
 		oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		assertEquals(Boolean.TRUE, oneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.TRUE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 
-		oneToManyMapping.setSpecifiedOrphanRemoval(null);
+		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(null);
 		assertNotNull(attributeResource.getAnnotation(JPA.ONE_TO_MANY));
 		
 		oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
@@ -184,18 +196,19 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
-		assertNull(oneToManyMapping.getSpecifiedOrphanRemoval());
+		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 
-		assertEquals(Boolean.FALSE, oneToManyMapping.getSpecifiedOrphanRemoval());
+		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		oneToMany.setOrphanRemoval(null);
-		assertNull(oneToManyMapping.getSpecifiedOrphanRemoval());
+		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		assertSame(oneToManyMapping, persistentAttribute.getSpecifiedMapping());
 		
 		oneToMany.setOrphanRemoval(Boolean.FALSE);

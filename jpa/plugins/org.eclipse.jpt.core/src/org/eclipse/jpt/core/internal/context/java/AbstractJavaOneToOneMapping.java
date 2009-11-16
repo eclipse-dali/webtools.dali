@@ -13,7 +13,10 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaOneToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -21,11 +24,28 @@ import org.eclipse.jpt.utility.internal.ArrayTools;
 
 public abstract class AbstractJavaOneToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
-	implements JavaOneToOneMapping2_0
+	implements JavaOneToOneMapping2_0, JavaOrphanRemovalHolder2_0
 {
+	protected final JavaOrphanRemovable2_0 orphanRemoval;
+	
 	// ********** constructor **********
 	protected AbstractJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.orphanRemoval = ((JpaFactory2_0) this.getJpaFactory()).buildJavaOrphanRemoval(this);
+	}
+
+	// ********** initialize/update **********
+	
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.orphanRemoval.initialize(this.getResourcePersistentAttribute());
+	}
+	
+	@Override
+	protected void update() {
+		super.update();
+		this.orphanRemoval.update(this.getResourcePersistentAttribute());
 	}
 
 	@Override
@@ -35,11 +55,6 @@ public abstract class AbstractJavaOneToOneMapping
 	
 	public String getAnnotationName() {
 		return OneToOneAnnotation.ANNOTATION_NAME;
-	}
-	
-	@Override
-	public OneToOneAnnotation getMappingAnnotation() {
-		return super.getMappingAnnotation();
 	}
 	
 	@Override
@@ -55,11 +70,6 @@ public abstract class AbstractJavaOneToOneMapping
 	}
 	
 	@Override
-	public JavaOneToOneRelationshipReference getRelationshipReference() {
-		return (JavaOneToOneRelationshipReference) super.getRelationshipReference();
-	}
-	
-	@Override
 	protected Boolean getResourceOptional() {
 		return this.mappingAnnotation.getOptional();
 	}
@@ -68,22 +78,22 @@ public abstract class AbstractJavaOneToOneMapping
 	protected void setResourceOptional(Boolean newOptional) {
 		this.mappingAnnotation.setOptional(newOptional);
 	}
+
+	// ********** JavaOneToOneMapping implementation **********
 	
-	// ********** JPA 2.0 behavior **********
-
-	public boolean isOrphanRemoval() {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	@Override
+	public OneToOneAnnotation getMappingAnnotation() {
+		return super.getMappingAnnotation();
+	}
+	
+	@Override
+	public JavaOneToOneRelationshipReference getRelationshipReference() {
+		return (JavaOneToOneRelationshipReference) super.getRelationshipReference();
 	}
 
-	public Boolean getSpecifiedOrphanRemoval() {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
-	}
+	// ********** JavaOrphanRemovalHolder2_0 implementation **********
 
-	public void setSpecifiedOrphanRemoval(Boolean newOrphanRemoval) {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
-	}
-
-	public boolean isDefaultOrphanRemoval() {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	public JavaOrphanRemovable2_0 getOrphanRemoval() {
+		return this.orphanRemoval;
 	}
 }

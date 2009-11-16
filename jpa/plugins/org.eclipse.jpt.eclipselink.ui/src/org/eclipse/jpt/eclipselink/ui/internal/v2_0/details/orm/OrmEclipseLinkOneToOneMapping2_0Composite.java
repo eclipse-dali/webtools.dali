@@ -11,6 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToOneMapping2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -101,7 +103,7 @@ public class OrmEclipseLinkOneToOneMapping2_0Composite<T extends OrmOneToOneMapp
 		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new OptionalComposite(this, addPane(container, groupBoxMargin));
 		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, this.addPane(container, groupBoxMargin));
+		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 	}
 	
@@ -132,5 +134,13 @@ public class OrmEclipseLinkOneToOneMapping2_0Composite<T extends OrmOneToOneMapp
 			}
 		};
 	}
-
+	
+	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
+		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(this.getSubjectHolder()) {
+			@Override
+			protected OrphanRemovable2_0 buildValue_() {
+				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();
+			}
+		};
+	}
 }

@@ -12,7 +12,10 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
+import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -86,13 +89,18 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	public void setCascade(CascadeType value) {
 		this.virtualXmlOneToMany.setCascade(value);
 	}
-
+	
+	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
+		return ((JavaOrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+	}
+	
 	@Override
 	public Boolean getOrphanRemoval() {
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(this.javaAttributeMapping);
 		if (this.isOrmMetadataComplete()) {
-			return this.javaAttributeMapping.isDefaultOrphanRemoval();
+			return mappingsOrphanRemoval.isDefaultOrphanRemoval();
 		}
-		return this.javaAttributeMapping.isOrphanRemoval();
+		return mappingsOrphanRemoval.isOrphanRemoval();
 	}
 
 	@Override

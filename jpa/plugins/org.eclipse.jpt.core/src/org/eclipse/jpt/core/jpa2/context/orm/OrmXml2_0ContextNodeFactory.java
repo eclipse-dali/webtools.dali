@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
 
 public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 {
@@ -42,4 +43,6 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping);
 	
 	OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource);
+	
+	OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable2_0 resource);
 }

@@ -19,5 +19,5 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OneToManyMapping2_0
-	extends OneToManyMapping, OrphanRemovable2_0
+	extends OneToManyMapping
 {}

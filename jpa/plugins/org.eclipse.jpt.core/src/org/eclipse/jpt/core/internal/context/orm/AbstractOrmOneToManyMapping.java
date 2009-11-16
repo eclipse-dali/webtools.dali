@@ -14,16 +14,31 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 
 
 public abstract class AbstractOrmOneToManyMapping<T extends XmlOneToMany>
 	extends AbstractOrmMultiRelationshipMapping<T>
-	implements OrmOneToManyMapping2_0
+	implements OrmOneToManyMapping2_0, OrmOrphanRemovalHolder2_0
 {
+	protected final OrmOrphanRemovable2_0 orphanRemoval;
+
+	// ********** constructor **********
 	protected AbstractOrmOneToManyMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
+		this.orphanRemoval = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmOrphanRemoval(this, resourceMapping);
+	}
+
+	// ********** update **********
+	
+	@Override
+	public void update() {
+		super.update();
+		this.getOrphanRemoval().update();
 	}
 
 	public int getXmlSequence() {
@@ -50,22 +65,10 @@ public abstract class AbstractOrmOneToManyMapping<T extends XmlOneToMany>
 	public OrmOneToManyRelationshipReference getRelationshipReference() {
 		return (OrmOneToManyRelationshipReference) super.getRelationshipReference();
 	}
-	
-	// ********** JPA 2.0 behavior *********s*
 
-	public boolean isOrphanRemoval() {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
-	}
+	// ********** OrmOrphanRemovalHolder2_0 implementation **********
 
-	public Boolean getSpecifiedOrphanRemoval() {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
-	}
-
-	public void setSpecifiedOrphanRemoval(Boolean newOrphanRemoval) {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
-	}
-
-	public boolean isDefaultOrphanRemoval() {
-		throw new UnsupportedOperationException("operation not supported in JPA 1.0"); //$NON-NLS-1$
+	public OrmOrphanRemovable2_0 getOrphanRemoval() {
+		return this.orphanRemoval;
 	}
 }

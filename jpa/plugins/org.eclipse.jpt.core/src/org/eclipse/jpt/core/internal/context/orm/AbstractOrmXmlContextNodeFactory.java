@@ -124,6 +124,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.UnsupportedOrmAttributeMap
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmMapsId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
@@ -131,6 +132,8 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
@@ -173,6 +176,7 @@ import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0ContextNodeFactory
@@ -389,6 +393,10 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 	
 	public OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource) {
 		return new NullOrmCacheable2_0(parent);
+	}
+	
+	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable2_0 resource) {
+		return new NullOrmOrphanRemoval2_0(parent);
 	}
 	
 	// ********** ORM Virtual Resource Model **********

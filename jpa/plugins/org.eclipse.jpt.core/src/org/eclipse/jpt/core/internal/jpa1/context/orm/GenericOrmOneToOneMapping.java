@@ -14,11 +14,13 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToOneMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 
 
-public class GenericOrmOneToOneMapping extends AbstractOrmOneToOneMapping<XmlOneToOne>
+public class GenericOrmOneToOneMapping 
+	extends AbstractOrmOneToOneMapping<XmlOneToOne>
 {
-	
+
+	// ********** constructor **********
 	public GenericOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
 		super(parent, resourceMapping);
 	}
-	
+
 }

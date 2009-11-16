@@ -20,5 +20,5 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OneToOneMapping2_0
-	extends OneToOneMapping, SingleRelationshipMapping2_0, OrphanRemovable2_0
+	extends OneToOneMapping, SingleRelationshipMapping2_0
 {}

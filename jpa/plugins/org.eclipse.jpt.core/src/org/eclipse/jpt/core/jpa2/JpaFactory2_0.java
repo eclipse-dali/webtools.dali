@@ -20,6 +20,8 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 
 /**
@@ -55,4 +57,6 @@ public interface JpaFactory2_0
 	JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent);
 	
 	JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent);
+	
+	JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent);
 }

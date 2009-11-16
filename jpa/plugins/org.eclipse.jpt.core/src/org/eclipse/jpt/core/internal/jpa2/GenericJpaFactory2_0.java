@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaMapsId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToOneMapping2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
@@ -45,6 +46,8 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -143,5 +146,10 @@ public class GenericJpaFactory2_0
 	@Override
 	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
 		return new GenericJavaCacheable2_0(parent);
+	}
+	
+	@Override
+	public JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent) {
+		return new GenericJavaOrphanRemoval2_0(parent);
 	}
 }
