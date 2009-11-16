@@ -12,7 +12,7 @@ package org.eclipse.jpt.db;
 import java.util.Iterator;
 
 /**
- * Schema "container" (i.e. Database or Catalog)
+ * Database connection profile repository
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,33 +22,45 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface SchemaContainer {
+public interface ConnectionProfileRepository {
 
 	/**
-	 * Return the container's schemata.
+	 * Return the repository's connection profiles.
 	 */
-	Iterator<Schema> schemata();
+	Iterator<ConnectionProfile> connectionProfiles();
 
 	/**
-	 * Return the number of schemata in the container.
+	 * Return the number of connection profiles in the repository.
 	 */
-	int schemataSize();
+	int connectionProfilesSize();
 
 	/**
-	 * Return the names of the container's schemata.
+	 * Return the repository's connection profile names.
 	 */
-	Iterator<String> schemaNames();
+	Iterator<String> connectionProfileNames();
 
 	/**
-	 * Return whether the container contains a schema with the specified name,
-	 * respecting the database's case-sensitivity.
+	 * Return whether the repository contains a connection profile
+	 * with the specified name.
 	 */
-	boolean containsSchemaNamed(String name);
+	boolean containsConnectionProfileNamed(String name);
 
 	/**
-	 * Return the schema in the container with the specified name,
-	 * respecting the database's case-sensitivity.
+	 * Return the connection profile with the specified name.
+	 * Return a "null" connection profile if the repository does not
+	 * have a connection profile with the specified name.
 	 */
-	Schema schemaNamed(String name);
+	ConnectionProfile connectionProfileNamed(String name);
+
+	/**
+	 * Add a listener that will be notified of changes to the repository's
+	 * connection profiles.
+	 */
+	void addConnectionProfileListener(ConnectionProfileListener listener);
+
+	/**
+	 * Remove the specified listener.
+	 */
+	void removeConnectionProfileListener(ConnectionProfileListener listener);
 
 }

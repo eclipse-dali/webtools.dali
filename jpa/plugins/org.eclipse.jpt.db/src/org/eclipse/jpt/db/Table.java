@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,15 +22,12 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Table extends DatabaseObject {
+public interface Table extends Comparable<Table> {
 
 	/**
-	 * Return the table's schema.
+	 * Return the table's name.
 	 */
-	Schema getSchema();
-
-
-	// ********** columns **********
+	String getName();
 
 	/**
 	 * Return the table's columns.
@@ -43,27 +40,21 @@ public interface Table extends DatabaseObject {
 	int columnsSize();
 
 	/**
-	 * Return the column with specified name. The name must be an exact match
-	 * of the column's name.
-	 * @see #getColumnForIdentifier(String)
+	 * Return the names of the table's columns.
 	 */
-	Column getColumnNamed(String name);
+	Iterator<String> columnNames();
 
 	/**
-	 * Return the table's column identifers, sorted by name.
+	 * Return whether the table contains a column with the specified name,
+	 * respecting the database's case-sensitivity.
 	 */
-	Iterator<String> sortedColumnIdentifiers();
+	boolean containsColumnNamed(String name);
 
 	/**
-	 * Return the column for the specified identifier. The identifier should
-	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
-	 * special characters, unquoted otherwise).
-	 * @see #getColumnNamed(String)
+	 * Return the column in the table with the specified name,
+	 * respecting the database's case-sensitivity.
 	 */
-	Column getColumnForIdentifier(String identifier);
-
-
-	// ********** primary key columns **********
+	Column columnNamed(String name);
 
 	/**
 	 * Return the table's primary key columns.
@@ -71,18 +62,21 @@ public interface Table extends DatabaseObject {
 	Iterator<Column> primaryKeyColumns();
 
 	/**
+	 * Return the table's single primary key column. Throw an
+	 * IllegalStateException if the table has more than one primary key column.
+	 */
+	Column primaryKeyColumn();
+
+	/**
 	 * Return the number of primary key columns the table contains.
 	 */
 	int primaryKeyColumnsSize();
 
 	/**
-	 * Return the table's single primary key column. Throw an
-	 * IllegalStateException if the table has more than one primary key column.
+	 * Return whether the specified column is one of the table's primary key
+	 * columns.
 	 */
-	Column getPrimaryKeyColumn();
-
-
-	// ********** foreign keys **********
+	boolean primaryKeyColumnsContains(Column column);
 
 	/**
 	 * Return the table's foreign keys.
@@ -94,35 +88,28 @@ public interface Table extends DatabaseObject {
 	 */
 	int foreignKeysSize();
 
-
-	// ********** join table support **********
+	/**
+	 * Return whether the specified column is a "base" column
+	 * for any of the table's foreign keys.
+	 */
+	boolean foreignKeyBaseColumnsContains(Column column);
 
 	/**
-	 * Return whether the table is possibly a "join" table
-	 * (i.e. it contains only 2 foreign keys). Whether the table *actually* is
-	 * a "join" table is determined by the semantics of the database design.
+	 * Return the table's name, converted to a Java-appropriate class
+	 * identifier, respecting the database's case-sensitivity.
 	 */
-	boolean isPossibleJoinTable();
+	String getShortJavaClassName();
 
 	/**
-	 * Assuming the table is a "join" table, return the foreign key to the
-	 * "owning" table.
-	 * @see #isPossibleJoinTable()
+	 * Return whether the table's name matches the specified Java-appropriate
+	 * identifier, respecting the database's case-sensitivity.
 	 */
-	ForeignKey getJoinTableOwningForeignKey();
+	boolean matchesShortJavaClassName(String shortJavaClassName);
 
 	/**
-	 * Assuming the table is a "join" table, return the foreign key to the
-	 * "non-owning" table.
-	 * @see #isPossibleJoinTable()
+	 * Return the table's name, converted to a Java-appropriate field
+	 * identifier, respecting the database's case-sensitivity.
 	 */
-	ForeignKey getJoinTableNonOwningForeignKey();
-
-	/**
-	 * Assuming the table is a "join" table, return whether its name matches
-	 * the JPA default (i.e. "OWNINGTABLE_NONOWNINGTABLE").
-	 * @see #isPossibleJoinTable()
-	 */
-	boolean joinTableNameIsDefault();
+	public String getJavaFieldName();
 
 }

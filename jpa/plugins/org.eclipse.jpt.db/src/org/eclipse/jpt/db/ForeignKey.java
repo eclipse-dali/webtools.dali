@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,9 +22,12 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface ForeignKey extends DatabaseObject {
+public interface ForeignKey extends Comparable<ForeignKey> {
 
-	// ********** tables **********
+	/**
+	 * Return the foreign key's name.
+	 */
+	String getName();
 
 	/**
 	 * Return the foreign key's "base" table.
@@ -36,101 +39,84 @@ public interface ForeignKey extends DatabaseObject {
 	 */
 	Table getReferencedTable();
 
-
-	// ********** column pairs **********
-
 	/**
 	 * Return the foreign key's column pairs.
+	 * @see ColumnPair
 	 */
 	Iterator<ColumnPair> columnPairs();
-
-	/**
-	 * Return the size of the foreign key's column pairs.
-	 */
-	int columnPairsSize();
 
 	/**
 	 * Return the foreign key's single column pair. Throw an
 	 * IllegalStateException if the foreign key has more than one column pair.
 	 */
-	ColumnPair getColumnPair();
+	ColumnPair columnPair();
+
+	/**
+	 * Return the size of the foreign key's column pairs.
+	 * @see ColumnPair
+	 */
+	int columnPairsSize();
 
 	/**
 	 * Return the foreign key's "base" columns.
+	 * @see ColumnPair
 	 */
 	Iterator<Column> baseColumns();
 
 	/**
-	 * Return the foreign key's "base" columns that are not part of the base
-	 * table's primary key. (The non-primary key base columns are not used to
-	 * generate basic attributes during entity generation.)
+	 * Return the foreign key's "base" columns that are not part of
+	 * the base table's primary key.
+	 * @see ColumnPair
 	 */
 	Iterator<Column> nonPrimaryKeyBaseColumns();
 
 	/**
 	 * Return the foreign key's "referenced" columns.
+	 * @see ColumnPair
 	 */
 	Iterator<Column> referencedColumns();
 
 	/**
+	 * Return a Java-appropriate name for a field that holds the entity
+	 * mapped to the foreign key's "referenced" table.
+	 */
+	String getJavaFieldName();
+
+	/**
+	 * Return whether the foreign key's default Java field name matches the
+	 * specified Java identifier, respecting the database's case-sensitivity.
+	 */
+	boolean defaultMatchesJavaFieldName(String javaFieldName);
+
+	/**
+	 * Return whether the foreign key is the default for the specified Java
+	 * field name, respecting the database's case-sensitivity.
+	 */
+	boolean isDefaultFor(String javaFieldName);
+
+	/**
 	 * Return whether the foreign key references the primary key of the
 	 * "referenced" table and that primary key has only a single column.
-	 * This can be used when determining JPA defaults.
 	 */
 	boolean referencesSingleColumnPrimaryKey();
 
-
-	// ********** JPA support **********
-
-	/**
-	 * Return an appropriate name for an attribute that holds the entity
-	 * mapped to the foreign key's "referenced" table.
-	 */
-	String getAttributeName();
-
-	/**
-	 * If the name of the "base" column adheres to the JPA spec for a
-	 * default mapping (i.e. it ends with an underscore followed by the name
-	 * of the "referenced" column, and the "referenced" column is the single
-	 * primary key column of the "referenced" table), return the corresponding
-	 * default attribute name:
-	 *     ForeignKey(EMP.CUBICLE_ID => CUBICLE.ID) => "CUBICLE"
-	 * Return a null if it does not adhere to the JPA spec:
-	 *     ForeignKey(EMP.CUBICLE_ID => CUBICLE.CUBICLE_ID) => null
-	 *     ForeignKey(EMP.CUBICLE => CUBICLE.ID) => null
-	 */
-	String getDefaultAttributeName();
-
-	/**
-	 * Given the name of an attribute (field or property) that is mapped to the
-	 * foreign key,
-	 * build and return a string to be used as the value for the attribute's
-	 * JoinColumn annotation's 'name' element. Return null if the attribute
-	 * maps to the join column by default.
-	 * Precondition: The foreign key consists of a single column pair whose
-	 * referenced column is the single-column primary key of the foreign
-	 * key's referenced table.
-	 */
-	String getJoinColumnAnnotationIdentifier(String attributeName);
-
-	// ********** column pair interface **********
 
 	/**
 	 * Pair up the foreign key's column pairs, matching each "base" column with
 	 * the appropriate "referenced" column.
 	 * @see #columnPairs()
 	 */
-	interface ColumnPair {
+	interface ColumnPair extends Comparable<ColumnPair> {
 
 		/**
 		 * Return the column pair's "base" column.
 		 */
-		Column getBaseColumn();
+		Column baseColumn();
 
 		/**
 		 * Return the column pair's "referenced" column.
 		 */
-		Column getReferencedColumn();
+		Column referencedColumn();
 
 	}
 

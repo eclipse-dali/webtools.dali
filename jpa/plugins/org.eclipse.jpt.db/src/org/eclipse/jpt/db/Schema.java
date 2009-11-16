@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,14 +23,12 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Schema extends DatabaseObject {
+public interface Schema extends Comparable<Schema> {
+
 	/**
-	 * Return the schema's container; either a catalog or a database.
+	 * Return the schema's name.
 	 */
-	SchemaContainer getContainer();
-
-
-	// ********** tables **********
+	String getName();
 
 	/**
 	 * Return the schema's tables.
@@ -43,27 +41,21 @@ public interface Schema extends DatabaseObject {
 	int tablesSize();
 
 	/**
-	 * Return the table with specified name. The name must be an exact match
-	 * of the table's name.
-	 * @see #getTableForIdentifier(String)
+	 * Return the names of the schema's tables.
 	 */
-	 Table getTableNamed(String name);
+	Iterator<String> tableNames();
 
 	/**
-	 * Return the schema's table identifiers, sorted by name.
+	 * Return whether the schema contains a table with the specified name,
+	 * respecting the database's case-sensitivity.
 	 */
-	Iterator<String> sortedTableIdentifiers();
+	boolean containsTableNamed(String name);
 
 	/**
-	 * Return the table for the specified identifier. The identifier should
-	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
-	 * special characters, unquoted otherwise).
-	 * @see #getTableNamed(String)
+	 * Return the table in the schema with the specified name,
+	 * respecting the database's case-sensitivity.
 	 */
-	Table getTableForIdentifier(String identifier);
-
-
-	// ********** sequences **********
+	Table tableNamed(String name);
 
 	/**
 	 * Return the schema's sequences.
@@ -76,23 +68,20 @@ public interface Schema extends DatabaseObject {
 	int sequencesSize();
 
 	/**
-	 * Return the sequence with specified name. The name must be an exact match
-	 * of the sequence's name.
-	 * @see #getSequenceForIdentifier(String)
+	 * Return the names of the schema's sequences.
 	 */
-	Sequence getSequenceNamed(String name);
+	Iterator<String> sequenceNames();
 
 	/**
-	 * Return the schema's sequence identifers, sorted by name.
+	 * Return whether the schema contains a sequence with the specified name,
+	 * respecting the database's case-sensitivity.
 	 */
-	Iterator<String> sortedSequenceIdentifiers();
+	boolean containsSequenceNamed(String name);
 
 	/**
-	 * Return the sequence for the specified identifier. The identifier should
-	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
-	 * special characters, unquoted otherwise).
-	 * @see #getSequenceNamed(String)
+	 * Return the sequence in the schema with the specified name,
+	 * respecting the database's case-sensitivity.
 	 */
-	Sequence getSequenceForIdentifier(String identifier);
+	Sequence sequenceNamed(String name);
 
 }

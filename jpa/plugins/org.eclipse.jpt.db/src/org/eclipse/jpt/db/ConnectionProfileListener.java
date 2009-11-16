@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
-import java.util.EventListener;
-
 /**
- * A ProfileListener is notified of any changes to the DTP connection profiles.
+ * A ProfileListener is notified of any changes to the connection profiles.
  * 
  * @see org.eclipse.datatools.connectivity.IProfileListener
  * 
@@ -22,23 +20,20 @@ import java.util.EventListener;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ConnectionProfileListener
-	extends EventListener
-{
+public interface ConnectionProfileListener {
 
 	/**
-	 * The specified profile has been added.
+	 * The specified old profile has been replaced with the specified
+	 * new profile. The old profile is a "null" profile when a profile is
+	 * added. The new profile is a "null" profile when a profile is
+	 * removed.
 	 */
-	public void connectionProfileAdded(String name);
+	public void connectionProfileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile);
 
 	/**
-	 * The specified profile has been removed.
+	 * The specified profile has been modified. Modification includes
+	 * changes to any properties, the name, auto-connect flag, etc.
 	 */
-	public void connectionProfileRemoved(String name);
-
-	/**
-	 * The specified profile has been renamed.
-	 */
-	public void connectionProfileRenamed(String oldName, String newName);
+	public void connectionProfileChanged(ConnectionProfile profile);
 
 }

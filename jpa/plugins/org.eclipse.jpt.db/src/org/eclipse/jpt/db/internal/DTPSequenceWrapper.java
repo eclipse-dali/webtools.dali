@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
+import java.text.Collator;
+
 import org.eclipse.jpt.db.Sequence;
 
 /**
  *  Wrap a DTP Sequence
  */
 final class DTPSequenceWrapper
-	extends DTPDatabaseObjectWrapper
+	extends DTPWrapper
 	implements Sequence
 {
+	// backpointer to parent
+	private final DTPSchemaWrapper schema;
+
 	// the wrapped DTP sequence
 	private final org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence;
 
@@ -26,6 +31,7 @@ final class DTPSequenceWrapper
 
 	DTPSequenceWrapper(DTPSchemaWrapper schema, org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence) {
 		super(schema, dtpSequence);
+		this.schema = schema;
 		this.dtpSequence = dtpSequence;
 	}
 
@@ -33,20 +39,23 @@ final class DTPSequenceWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	synchronized void catalogObjectChanged() {
-		super.catalogObjectChanged();
-		this.getConnectionProfile().sequenceChanged(this);
+	synchronized void catalogObjectChanged(int eventType) {
+		this.getConnectionProfile().sequenceChanged(this, eventType);
 	}
 
 
 	// ********** Sequence implementation **********
 
+	@Override
 	public String getName() {
 		return this.dtpSequence.getName();
 	}
 
-	public DTPSchemaWrapper getSchema() {
-		return (DTPSchemaWrapper) this.getParent();
+
+	// ********** Comparable implementation **********
+
+	public int compareTo(Sequence sequence) {
+		return Collator.getInstance().compare(this.getName(), sequence.getName());
 	}
 
 
@@ -56,9 +65,12 @@ final class DTPSequenceWrapper
 		return this.dtpSequence == sequence;
 	}
 
-	@Override
-	void clear() {
-		// no state to clear
+	boolean isCaseSensitive() {
+		return this.schema.isCaseSensitive();
+	}
+
+	DTPDatabaseWrapper database() {
+		return this.schema.database();
 	}
 
 }
