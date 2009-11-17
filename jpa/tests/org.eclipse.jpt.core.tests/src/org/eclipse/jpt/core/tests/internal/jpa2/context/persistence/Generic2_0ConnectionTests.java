@@ -46,7 +46,7 @@ public class Generic2_0ConnectionTests extends Generic2_0PersistenceUnitTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.connection = this.subject.getConnection();
+		this.connection = (JpaConnection2_0) this.subject.getConnection();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
 		this.connection.addPropertyChangeListener(JpaConnection2_0.DRIVER_PROPERTY, propertyChangeListener);

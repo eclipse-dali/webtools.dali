@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
@@ -50,11 +51,9 @@ public class EclipseLinkPersistenceUnit
 	protected MappingFileRef impliedEclipseLinkMappingFileRef;
 
 	private/*final*/ GeneralProperties generalProperties;
-	private Connection connection;
 	private Customization customization;
 	private Caching caching;
 	private Logging logging;
-	protected Options options;
 	private SchemaGeneration schemaGeneration;
 
 	/* global converter definitions, defined elsewhere in model */
@@ -70,11 +69,9 @@ public class EclipseLinkPersistenceUnit
 		super.initializeProperties();
 
 		this.generalProperties = this.buildEclipseLinkGeneralProperties();
-		this.connection = this.buildEclipseLinkConnection();
 		this.customization = this.buildEclipseLinkCustomization();
 		this.caching = this.buildEclipseLinkCaching();
 		this.logging = this.buildEclipseLinkLogging();
-		this.options = this.buildEclipseLinkOptions();
 		this.schemaGeneration = this.buildEclipseLinkSchemaGeneration();
 	}
 
@@ -88,11 +85,9 @@ public class EclipseLinkPersistenceUnit
 	public void propertyValueChanged(String propertyName, String newValue) {
 		super.propertyValueChanged(propertyName, newValue);
 		this.generalProperties.propertyValueChanged(propertyName, newValue);
-		this.connection.propertyValueChanged(propertyName, newValue);
 		this.customization.propertyValueChanged(propertyName, newValue);
 		this.caching.propertyValueChanged(propertyName, newValue);
 		this.logging.propertyValueChanged(propertyName, newValue);
-		this.options.propertyValueChanged(propertyName, newValue);
 		this.schemaGeneration.propertyValueChanged(propertyName, newValue);
 	}
 	
@@ -100,15 +95,31 @@ public class EclipseLinkPersistenceUnit
 	public void propertyRemoved(String propertyName) {
 		super.propertyRemoved(propertyName);
 		this.generalProperties.propertyRemoved(propertyName);
-		this.connection.propertyRemoved(propertyName);
 		this.customization.propertyRemoved(propertyName);
 		this.caching.propertyRemoved(propertyName);
 		this.logging.propertyRemoved(propertyName);
-		this.options.propertyRemoved(propertyName);
 		this.schemaGeneration.propertyRemoved(propertyName);
 	}
 	
+	@Override
+	protected SharedCacheMode buildDefaultSharedCacheMode() {
+		return SharedCacheMode.DISABLE_SELECTIVE;
+	}
 	
+	@Override
+	public boolean calculateDefaultCacheable() {
+		switch (getSharedCacheMode()) {
+			case NONE:
+			case ENABLE_SELECTIVE:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+			case UNSPECIFIED:
+				return true;
+		}
+		return true;//null
+	}
+
 	// **************** mapping file refs **************************************
 
 	@Override
@@ -199,8 +210,9 @@ public class EclipseLinkPersistenceUnit
 		return this.generalProperties;
 	}
 
+	@Override
 	public Connection getConnection() {
-		return this.connection;
+		return (Connection) super.getConnection();
 	}
 
 	public Customization getCustomization() {
@@ -215,8 +227,9 @@ public class EclipseLinkPersistenceUnit
 		return this.logging;
 	}
 
+	@Override
 	public Options getOptions() {
-		return this.options;
+		return (Options) super.getOptions();
 	}
 
 	public SchemaGeneration getSchemaGeneration() {

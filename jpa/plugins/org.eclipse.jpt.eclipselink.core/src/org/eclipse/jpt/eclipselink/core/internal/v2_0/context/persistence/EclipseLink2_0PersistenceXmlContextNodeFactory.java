@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence;
 
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJarFileRef;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.connection.EclipseLinkConnection2_0;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.options.EclipseLinkOptions2_0;
 
@@ -25,7 +29,12 @@ public class EclipseLink2_0PersistenceXmlContextNodeFactory extends AbstractPers
 	
 	@Override
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		return new EclipseLinkPersistenceUnit2_0(parent, xmlPersistenceUnit);
+		return new EclipseLinkPersistenceUnit(parent, xmlPersistenceUnit);
+	}
+	
+	@Override
+	public JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
+		return new EclipseLinkJarFileRef(parent, xmlJarFileRef);
 	}
 	
 	public JpaConnection2_0 buildConnection(PersistenceUnit parent) {

@@ -34,10 +34,14 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -68,7 +72,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractPersistenceUnit
 	extends AbstractPersistenceXmlContextNode
-	implements PersistenceUnit
+	implements PersistenceUnit2_0
 {
 	protected XmlPersistenceUnit xmlPersistenceUnit;
 
@@ -109,6 +113,15 @@ public abstract class AbstractPersistenceUnit
 	protected String defaultSchema;
 	protected boolean defaultCascadePersist;
 
+	//****** PersistenceUnit2_0 features
+	private PersistenceUnitProperties connection;
+	private PersistenceUnitProperties options;
+	
+	protected SharedCacheMode specifiedSharedCacheMode;
+	protected SharedCacheMode defaultSharedCacheMode;
+	
+	protected ValidationMode specifiedValidationMode;
+	protected ValidationMode defaultValidationMode;
 
 	// ********** construction/initialization **********
 
@@ -144,6 +157,12 @@ public abstract class AbstractPersistenceUnit
 		//specified classRefs and mappingFileRefs
 		this.initializeImpliedClassRefs();
 		this.initializePersistenceUnitDefaults();
+
+		this.specifiedSharedCacheMode = this.buildSpecifiedSharedCacheMode();
+		this.defaultSharedCacheMode = this.buildDefaultSharedCacheMode();
+
+		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
+		this.defaultValidationMode = this.buildDefaultValidationMode();
 	}
 
 	/**
@@ -165,6 +184,9 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void initializeProperties() {
+		this.connection = getContextNodeFactory().buildConnection(this);
+		this.options =  getContextNodeFactory().buildOptions(this);
+
 		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
 		if (xmlProperties == null) {
 			return;
@@ -214,6 +236,22 @@ public abstract class AbstractPersistenceUnit
 
 	protected XmlPersistenceUnit getXmlPersistenceUnit() {
 		return this.xmlPersistenceUnit;
+	}
+
+	protected SharedCacheMode buildSpecifiedSharedCacheMode() {
+		return SharedCacheMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getSharedCacheMode());
+	}
+	
+	protected SharedCacheMode buildDefaultSharedCacheMode() {
+		return SharedCacheMode.UNSPECIFIED;
+	}
+
+	protected ValidationMode buildSpecifiedValidationMode() {
+		return ValidationMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getValidationMode());
+	}
+	
+	protected ValidationMode buildDefaultValidationMode() {
+		return DEFAULT_VALIDATION_MODE; 
 	}
 
 
@@ -847,17 +885,27 @@ public abstract class AbstractPersistenceUnit
 	}
 	
 	public void propertyValueChanged(String propertyName, String newValue) {
-		// do nothing, override in subclasses as necessary
+		this.connection.propertyValueChanged(propertyName, newValue);
+		this.options.propertyValueChanged(propertyName, newValue);
 	}
 
 	public void propertyAdded(String propertyName, String value) {
 		this.propertyValueChanged(propertyName, value);
 	}
 	
-	public void propertyRemoved(@SuppressWarnings("unused") String propertyName) {
-		// do nothing, override in subclasses as necessary		
+	public void propertyRemoved(String propertyName) {
+		this.connection.propertyRemoved(propertyName);
+		this.options.propertyRemoved(propertyName);
 	}
 	
+	public PersistenceUnitProperties getConnection() {
+		return this.connection;
+	}
+
+	public PersistenceUnitProperties getOptions() {
+		return this.options;
+	}
+
 	// ********** ORM persistence unit defaults **********
 
 	public AccessType getDefaultAccess() {
@@ -953,6 +1001,75 @@ public abstract class AbstractPersistenceUnit
 		return this.rootEntities.contains(entityName);
 	}
 	
+	
+	//************** PersistenceUnit2_0 implementation ***********
+
+	// ********** shared cache mode **********
+
+	public SharedCacheMode getSharedCacheMode() {
+		return (this.specifiedSharedCacheMode != null) ? this.specifiedSharedCacheMode : this.defaultSharedCacheMode;
+	}
+
+	public SharedCacheMode getSpecifiedSharedCacheMode() {
+		return this.specifiedSharedCacheMode;
+	}
+
+	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+		SharedCacheMode old = this.specifiedSharedCacheMode;
+		this.specifiedSharedCacheMode = specifiedSharedCacheMode;
+		this.getXmlPersistenceUnit().setSharedCacheMode(SharedCacheMode.toXmlResourceModel(specifiedSharedCacheMode));
+		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, specifiedSharedCacheMode);
+	}
+
+	public SharedCacheMode getDefaultSharedCacheMode() {
+		return this.defaultSharedCacheMode;
+	}
+
+	protected void setDefaultSharedCacheMode(SharedCacheMode defaultSharedCacheMode) {
+		SharedCacheMode old = this.defaultSharedCacheMode;
+		this.defaultSharedCacheMode = defaultSharedCacheMode;
+		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		switch (getSharedCacheMode()) {
+			case NONE:
+			case ENABLE_SELECTIVE:
+			case UNSPECIFIED:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+				return true;
+		}
+		return false;//null
+	}
+	
+	// ********** validation mode **********
+
+	public ValidationMode getValidationMode() {
+		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
+	}
+
+	public ValidationMode getSpecifiedValidationMode() {
+		return this.specifiedValidationMode;
+	}
+
+	public void setSpecifiedValidationMode(ValidationMode specifiedValidationMode) {
+		ValidationMode old = this.specifiedValidationMode;
+		this.specifiedValidationMode = specifiedValidationMode;
+		this.getXmlPersistenceUnit().setValidationMode(ValidationMode.toXmlResourceModel(specifiedValidationMode));
+		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, specifiedValidationMode);
+	}
+
+	public ValidationMode getDefaultValidationMode() {
+		return this.defaultValidationMode;
+	}
+
+	protected void setDefaultValidationMode(ValidationMode defaultValidationMode) {
+		ValidationMode old = this.defaultValidationMode;
+		this.defaultValidationMode = defaultValidationMode;
+		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
+	}	
 	// ********** updating **********
 
 	public void update(XmlPersistenceUnit xpu) {
@@ -991,6 +1108,11 @@ public abstract class AbstractPersistenceUnit
 		this.setSpecifiedExcludeUnlistedClasses(xpu.getExcludeUnlistedClasses());
 		this.updateProperties();
 		this.updatePersistenceUnitDefaults();
+		
+		this.setSpecifiedSharedCacheMode(this.buildSpecifiedSharedCacheMode());
+		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
+		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
+		this.setDefaultValidationMode(this.buildDefaultValidationMode());
 
 		// see comment at top of method
 		this.fireListChanged(GENERATORS_LIST, this.generators);

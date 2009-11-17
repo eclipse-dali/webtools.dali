@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 public class GenericOrmEntity
@@ -44,7 +45,7 @@ public class GenericOrmEntity
 		if (parentEntity != null) {
 			return parentEntity.getCacheable().isCacheable();
 		}
-		return false;//((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
 	}
 	
 	@Override

@@ -10,8 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 
@@ -105,7 +104,7 @@ public interface PersistenceUnit2_0
 
 	// ********** properties **********
 
-	JpaConnection2_0 getConnection();
+	PersistenceUnitProperties getConnection();
 
-	JpaOptions2_0 getOptions();
+	PersistenceUnitProperties getOptions();
 }

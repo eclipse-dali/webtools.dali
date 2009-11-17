@@ -66,7 +66,7 @@ public class Generic2_0PersistenceXmlUiFactory implements PersistenceXmlUiFactor
 		return new TransformationPropertyValueModel<PersistenceUnit, JpaConnection2_0>(subjectHolder) {
 			@Override
 			protected JpaConnection2_0 transform_(PersistenceUnit value) {
-				return ((PersistenceUnit2_0) value).getConnection();
+				return (JpaConnection2_0) ((PersistenceUnit2_0) value).getConnection();
 			}
 		};
 	}
@@ -76,7 +76,7 @@ public class Generic2_0PersistenceXmlUiFactory implements PersistenceXmlUiFactor
 		return new TransformationPropertyValueModel<PersistenceUnit, JpaOptions2_0>(subjectHolder) {
 			@Override
 			protected JpaOptions2_0 transform_(PersistenceUnit value) {
-				return ((PersistenceUnit2_0) value).getOptions();
+				return (JpaOptions2_0) ((PersistenceUnit2_0) value).getOptions();
 			}
 		};
 	}

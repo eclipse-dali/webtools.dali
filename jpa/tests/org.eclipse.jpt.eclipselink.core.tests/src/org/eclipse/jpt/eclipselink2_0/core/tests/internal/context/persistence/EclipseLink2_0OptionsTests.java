@@ -49,7 +49,7 @@ public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTes
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = this.subject.getOptions();
+		this.options = (Options2_0) this.subject.getOptions();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
 		this.options.addPropertyChangeListener(Options2_0.LOCK_TIMEOUT_PROPERTY, propertyChangeListener);

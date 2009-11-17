@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.persistence;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLinkPersistenceUnit2_0;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
@@ -24,9 +24,9 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  */
 public abstract class EclipseLink2_0PersistenceUnitTestCase extends PersistenceUnitTestCase
 {
-	protected EclipseLinkPersistenceUnit2_0 subject;
+	protected EclipseLinkPersistenceUnit subject;
 
-	protected PropertyValueModel<EclipseLinkPersistenceUnit2_0> subjectHolder;
+	protected PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder;
 
 	// ********** constructors **********
 	protected EclipseLink2_0PersistenceUnitTestCase(String name) {
@@ -37,7 +37,7 @@ public abstract class EclipseLink2_0PersistenceUnitTestCase extends PersistenceU
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject = this.getPersistenceUnit();
-		this.subjectHolder = new SimplePropertyValueModel<EclipseLinkPersistenceUnit2_0>(this.subject);
+		this.subjectHolder = new SimplePropertyValueModel<EclipseLinkPersistenceUnit>(this.subject);
 		this.populatePu();
 	}
 
@@ -50,8 +50,8 @@ public abstract class EclipseLink2_0PersistenceUnitTestCase extends PersistenceU
 	}
 
 	@Override
-	protected EclipseLinkPersistenceUnit2_0 getPersistenceUnit() {
-		return (EclipseLinkPersistenceUnit2_0) super.getPersistenceUnit();
+	protected EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 
 }

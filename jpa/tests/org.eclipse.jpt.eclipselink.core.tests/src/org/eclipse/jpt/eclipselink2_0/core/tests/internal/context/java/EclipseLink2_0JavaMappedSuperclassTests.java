@@ -453,16 +453,16 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
 		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
-//		assertEquals(false, cacheable.isDefaultCacheable());
-//
-//		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
-//		assertEquals(false, cacheable.isDefaultCacheable());
-//
-//		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
-//		assertEquals(true, cacheable.isDefaultCacheable());
-//		
-//		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.UNSPECIFIED);
-//		assertEquals(true, cacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		assertEquals(false, cacheable.isDefaultCacheable());
+
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
+		assertEquals(true, cacheable.isDefaultCacheable());
+		
+		persistenceUnit.setSpecifiedSharedCacheMode(SharedCacheMode.UNSPECIFIED);
+		assertEquals(true, cacheable.isDefaultCacheable());
 	}
 	
 	public void testInheritedIsDefaultCacheable() throws Exception {
@@ -478,34 +478,34 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 
 		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
-//		assertEquals(false, subCacheable.isDefaultCacheable());
-//		assertEquals(false, cacheable.isDefaultCacheable());
-//
-//		
-//		persistenceUnit2_0.setSpecifiedSharedCacheMode(null);
-//		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-//		assertEquals(false, subCacheable.isDefaultCacheable());
-//		assertEquals(true, cacheable.isDefaultCacheable());
-//		
-//		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
-//		assertEquals(false, subCacheable.isDefaultCacheable());
-//		assertEquals(true, cacheable.isDefaultCacheable());
-//				
-//		cacheable.setSpecifiedCacheable(Boolean.FALSE);
-//		assertEquals(false, subCacheable.isDefaultCacheable());
-//		assertEquals(true, cacheable.isDefaultCacheable());
-//		
-//		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
-//		assertEquals(false, subCacheable.isDefaultCacheable());
-//		assertEquals(false, cacheable.isDefaultCacheable());
-//		
-//		cacheable.setSpecifiedCacheable(Boolean.TRUE);
-//		assertEquals(true, subCacheable.isDefaultCacheable());
-//		assertEquals(false, cacheable.isDefaultCacheable());
-//		
-//		
-//		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
-//		assertEquals(true, subCacheable.isDefaultCacheable());
-//		assertEquals(false, cacheable.isDefaultCacheable());
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(null);
+		cacheable.setSpecifiedCacheable(Boolean.FALSE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.DISABLE_SELECTIVE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+				
+		cacheable.setSpecifiedCacheable(Boolean.FALSE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(true, cacheable.isDefaultCacheable());
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		assertEquals(false, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+		
+		cacheable.setSpecifiedCacheable(Boolean.TRUE);
+		assertEquals(true, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
+		
+		
+		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
+		assertEquals(true, subCacheable.isDefaultCacheable());
+		assertEquals(false, cacheable.isDefaultCacheable());
 	}
 }

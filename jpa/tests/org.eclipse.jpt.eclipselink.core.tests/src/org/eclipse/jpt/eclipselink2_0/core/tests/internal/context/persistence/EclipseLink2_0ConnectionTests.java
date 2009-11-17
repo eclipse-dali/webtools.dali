@@ -57,7 +57,7 @@ public class EclipseLink2_0ConnectionTests extends EclipseLink2_0PersistenceUnit
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.connection = this.subject.getConnection();
+		this.connection = (Connection2_0) this.subject.getConnection();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
 		this.connection.addPropertyChangeListener(Connection.DRIVER_PROPERTY, propertyChangeListener);

@@ -50,7 +50,7 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = this.subject.getOptions();
+		this.options = (JpaOptions2_0) this.subject.getOptions();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
 		this.options.addPropertyChangeListener(JpaOptions2_0.LOCK_TIMEOUT_PROPERTY, propertyChangeListener);

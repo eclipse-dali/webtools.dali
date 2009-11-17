@@ -20,7 +20,6 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 /**
  * PersistenceUnitTestCase
  */
-@SuppressWarnings("nls")
 public abstract class EclipseLinkPersistenceUnitTestCase extends PersistenceUnitTestCase
 {
 	protected EclipseLinkPersistenceUnit subject;
