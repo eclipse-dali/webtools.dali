@@ -67,7 +67,12 @@
 	@JoinColumns({
 #foreach ($column in $role.referrerColumns)
 #set ($referencedColumn = $role.getReferencedColumn(${column.name}))
-		#joinColumn($column $referencedColumn),
+		#joinColumn($column $referencedColumn)
+#if ($velocityCount < $role.referrerColumns.size() )
+,
+#else
+
+#end
 #end		
 		})
 #end
