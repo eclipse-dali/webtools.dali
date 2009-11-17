@@ -10,8 +10,14 @@
 package org.eclipse.jpt.db.internal;
 
 import com.ibm.icu.text.Collator;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.datatools.modelbase.sql.tables.SQLTablesPackage;
+
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
@@ -35,7 +41,12 @@ final class DTPSchemaWrapper
 	// lazy-initialized
 	private DTPSequenceWrapper[] sequences;
 
+	// ********** constants **********
+	
+	//used for adopter product customization
+	private static final String PERSISTENT_AND_VIEW_TABLES_ONLY = "supportPersistentAndViewTablesOnly";
 
+	
 	// ********** constructor **********
 
 	DTPSchemaWrapper(DTPSchemaContainerWrapper container, org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
@@ -92,7 +103,27 @@ final class DTPSchemaWrapper
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.tables.Table> getDTPTables() {
-		return this.dtpSchema.getTables();
+
+		//if product customization flag is set to true return only persistent and view tables.
+		//this will filter out synonyms where they are not fully supported and potentially other 
+		//problematic table types - see bug 269057
+		String supportPersistentAndViewTablesOnly = Platform.getProduct().getProperty(PERSISTENT_AND_VIEW_TABLES_ONLY);
+		if ( supportPersistentAndViewTablesOnly != null && supportPersistentAndViewTablesOnly.equals("true") ) {
+            List<org.eclipse.datatools.modelbase.sql.tables.Table> result =
+            	new ArrayList<org.eclipse.datatools.modelbase.sql.tables.Table>();
+            for (Iterator iterT = this.dtpSchema.getTables().iterator();iterT.hasNext();) {
+                    org.eclipse.datatools.modelbase.sql.tables.Table table
+                    	= (org.eclipse.datatools.modelbase.sql.tables.Table) iterT.next();
+                    if (SQLTablesPackage.eINSTANCE.getPersistentTable().isSuperTypeOf(table.eClass()) ||
+                    	 SQLTablesPackage.eINSTANCE.getViewTable().isSuperTypeOf(table.eClass()) ) {
+                            result.add(table);
+                    }
+            }
+            return result;
+		}
+		else {
+			return this.dtpSchema.getTables();
+		}
 	}
 
 	public int tablesSize() {
