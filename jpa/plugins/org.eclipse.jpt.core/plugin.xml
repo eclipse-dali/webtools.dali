@@ -339,6 +339,7 @@
 			<label>%JPA_TEMPLATE_LABEL</label>
 			<fixed facet="jst.java"/>
 			<fixed facet="jpt.jpa"/>
+			<preset id="jpt.jpa.2_0.preset"/>
 		</template>
 		
 		<action facet="jpt.jpa" type="install" id="jpt.jpa.install">
@@ -361,19 +362,6 @@
 			<config-factory class="org.eclipse.jpt.core.internal.facet.JpaFacetVersionChangeDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetVersionChangeDelegate"/>
 		</action>
-		
-	</extension>
-	
-	
-	<extension
-		point="org.eclipse.wst.common.project.facet.core.defaultFacets">
-		
-		<default-facets>
-			<context>
-				<fixed-facet id="jpt.jpa"/>
-			</context>
-			<facet id="jst.utility" version="1.0"/>
-    	</default-facets>
 		
 	</extension>
 	
