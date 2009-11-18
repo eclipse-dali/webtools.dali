@@ -21,11 +21,11 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Order Column Correction Type 20</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnCorrectionType_2_0()
+ * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderCorrectionType_2_0()
  * @model
  * @generated
  */
-public enum OrderColumnCorrectionType_2_0 implements Enumerator
+public enum OrderCorrectionType_2_0 implements Enumerator
 {
 	/**
 	 * The '<em><b>READ</b></em>' literal object.
@@ -103,13 +103,13 @@ public enum OrderColumnCorrectionType_2_0 implements Enumerator
 	public static final int EXCEPTION_VALUE = 2;
 
 	/**
-	 * An array of all the '<em><b>Order Column Correction Type 20</b></em>' enumerators.
+	 * An array of all the '<em><b>Order Correction Type 20</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final OrderColumnCorrectionType_2_0[] VALUES_ARRAY =
-		new OrderColumnCorrectionType_2_0[]
+	private static final OrderCorrectionType_2_0[] VALUES_ARRAY =
+		new OrderCorrectionType_2_0[]
 		{
 			READ,
 			READ_WRITE,
@@ -117,24 +117,24 @@ public enum OrderColumnCorrectionType_2_0 implements Enumerator
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>Order Column Correction Type 20</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Order Correction Type 20</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<OrderColumnCorrectionType_2_0> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<OrderCorrectionType_2_0> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Order Column Correction Type 20</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Order Correction Type 20</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static OrderColumnCorrectionType_2_0 get(String literal)
+	public static OrderCorrectionType_2_0 get(String literal)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			OrderColumnCorrectionType_2_0 result = VALUES_ARRAY[i];
+			OrderCorrectionType_2_0 result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal))
 			{
 				return result;
@@ -144,16 +144,16 @@ public enum OrderColumnCorrectionType_2_0 implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Order Column Correction Type 20</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Order Correction Type 20</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static OrderColumnCorrectionType_2_0 getByName(String name)
+	public static OrderCorrectionType_2_0 getByName(String name)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			OrderColumnCorrectionType_2_0 result = VALUES_ARRAY[i];
+			OrderCorrectionType_2_0 result = VALUES_ARRAY[i];
 			if (result.getName().equals(name))
 			{
 				return result;
@@ -163,12 +163,12 @@ public enum OrderColumnCorrectionType_2_0 implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Order Column Correction Type 20</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Order Correction Type 20</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static OrderColumnCorrectionType_2_0 get(int value)
+	public static OrderCorrectionType_2_0 get(int value)
 	{
 		switch (value)
 		{
@@ -206,7 +206,7 @@ public enum OrderColumnCorrectionType_2_0 implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private OrderColumnCorrectionType_2_0(int value, String name, String literal)
+	private OrderCorrectionType_2_0(int value, String name, String literal)
 	{
 		this.value = value;
 		this.name = name;

@@ -256,10 +256,10 @@
     </nestedGenPackages>
     <nestedGenPackages prefix="EclipseLinkOrmV2_0" basePackage="org.eclipse.jpt.eclipselink.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm.ecore#//v2_0">
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_0/OrderColumnCorrectionType_2_0">
-        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderColumnCorrectionType_2_0/READ"/>
-        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderColumnCorrectionType_2_0/READ_WRITE"/>
-        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderColumnCorrectionType_2_0/EXCEPTION"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0">
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0/READ"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0/READ_WRITE"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0/EXCEPTION"/>
       </genEnums>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0/mapKeyConvert"/>

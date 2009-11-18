@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOrderColumn_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -39,7 +39,7 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final OrderColumnCorrectionType_2_0 CORRECTION_TYPE_EDEFAULT = null;
+	protected static final OrderCorrectionType_2_0 CORRECTION_TYPE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getCorrectionType() <em>Correction Type</em>}' attribute.
@@ -49,7 +49,7 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	 * @generated
 	 * @ordered
 	 */
-	protected OrderColumnCorrectionType_2_0 correctionType = CORRECTION_TYPE_EDEFAULT;
+	protected OrderCorrectionType_2_0 correctionType = CORRECTION_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -74,7 +74,7 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 
 	/**
 	 * Returns the value of the '<em><b>Correction Type</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0}.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Correction Type</em>' attribute isn't clear,
@@ -82,13 +82,13 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Correction Type</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
-	 * @see #setCorrectionType(OrderColumnCorrectionType_2_0)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0
+	 * @see #setCorrectionType(OrderCorrectionType_2_0)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOrderColumn_2_0_CorrectionType()
 	 * @model
 	 * @generated
 	 */
-	public OrderColumnCorrectionType_2_0 getCorrectionType()
+	public OrderCorrectionType_2_0 getCorrectionType()
 	{
 		return correctionType;
 	}
@@ -98,13 +98,13 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Correction Type</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0
 	 * @see #getCorrectionType()
 	 * @generated
 	 */
-	public void setCorrectionType(OrderColumnCorrectionType_2_0 newCorrectionType)
+	public void setCorrectionType(OrderCorrectionType_2_0 newCorrectionType)
 	{
-		OrderColumnCorrectionType_2_0 oldCorrectionType = correctionType;
+		OrderCorrectionType_2_0 oldCorrectionType = correctionType;
 		correctionType = newCorrectionType == null ? CORRECTION_TYPE_EDEFAULT : newCorrectionType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE, oldCorrectionType, correctionType));
@@ -137,7 +137,7 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE:
-				setCorrectionType((OrderColumnCorrectionType_2_0)newValue);
+				setCorrectionType((OrderCorrectionType_2_0)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -250,11 +250,11 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 			buildInsertableTranslator(),
 			buildUpdatableTranslator(),
 			buildColumnDefinitionTranslator(),
-			buildValidationModeTranslator(),
+			buildCorrectionTypeTranslator(),
 		};
 	}
 		
-	protected static Translator buildValidationModeTranslator() {
+	protected static Translator buildCorrectionTypeTranslator() {
 		return new Translator(EclipseLink2_0.CORRECTION_TYPE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_CorrectionType(), Translator.DOM_ATTRIBUTE);
 	}
 }

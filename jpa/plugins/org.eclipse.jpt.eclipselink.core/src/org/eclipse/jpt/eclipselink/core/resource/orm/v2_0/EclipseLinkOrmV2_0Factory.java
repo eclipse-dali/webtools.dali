@@ -95,8 +95,8 @@ public class EclipseLinkOrmV2_0Factory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case EclipseLinkOrmV2_0Package.ORDER_COLUMN_CORRECTION_TYPE_20:
-				return createOrderColumnCorrectionType_2_0FromString(eDataType, initialValue);
+			case EclipseLinkOrmV2_0Package.ORDER_CORRECTION_TYPE_20:
+				return createOrderCorrectionType_2_0FromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -112,8 +112,8 @@ public class EclipseLinkOrmV2_0Factory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case EclipseLinkOrmV2_0Package.ORDER_COLUMN_CORRECTION_TYPE_20:
-				return convertOrderColumnCorrectionType_2_0ToString(eDataType, instanceValue);
+			case EclipseLinkOrmV2_0Package.ORDER_CORRECTION_TYPE_20:
+				return convertOrderCorrectionType_2_0ToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -124,9 +124,9 @@ public class EclipseLinkOrmV2_0Factory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OrderColumnCorrectionType_2_0 createOrderColumnCorrectionType_2_0FromString(EDataType eDataType, String initialValue)
+	public OrderCorrectionType_2_0 createOrderCorrectionType_2_0FromString(EDataType eDataType, String initialValue)
 	{
-		OrderColumnCorrectionType_2_0 result = OrderColumnCorrectionType_2_0.get(initialValue);
+		OrderCorrectionType_2_0 result = OrderCorrectionType_2_0.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -136,7 +136,7 @@ public class EclipseLinkOrmV2_0Factory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertOrderColumnCorrectionType_2_0ToString(EDataType eDataType, Object instanceValue)
+	public String convertOrderCorrectionType_2_0ToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

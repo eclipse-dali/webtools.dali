@@ -494,14 +494,14 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ORDER_COLUMN_20_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0 <em>Order Column Correction Type 20</em>}' enum.
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0 <em>Order Correction Type 20</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnCorrectionType_2_0()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderCorrectionType_2_0()
 	 * @generated
 	 */
-	public static final int ORDER_COLUMN_CORRECTION_TYPE_20 = 6;
+	public static final int ORDER_CORRECTION_TYPE_20 = 6;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -550,7 +550,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum orderColumnCorrectionType_2_0EEnum = null;
+	private EEnum orderCorrectionType_2_0EEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -751,16 +751,16 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0 <em>Order Column Correction Type 20</em>}'.
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0 <em>Order Correction Type 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Order Column Correction Type 20</em>'.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
+	 * @return the meta object for enum '<em>Order Correction Type 20</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0
 	 * @generated
 	 */
-	public EEnum getOrderColumnCorrectionType_2_0()
+	public EEnum getOrderCorrectionType_2_0()
 	{
-		return orderColumnCorrectionType_2_0EEnum;
+		return orderCorrectionType_2_0EEnum;
 	}
 
 
@@ -812,7 +812,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		createEAttribute(xmlOrderColumn_2_0EClass, XML_ORDER_COLUMN_20__CORRECTION_TYPE);
 
 		// Create enums
-		orderColumnCorrectionType_2_0EEnum = createEEnum(ORDER_COLUMN_CORRECTION_TYPE_20);
+		orderCorrectionType_2_0EEnum = createEEnum(ORDER_CORRECTION_TYPE_20);
 	}
 
 	/**
@@ -873,13 +873,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		initEClass(xmlOneToMany_2_0EClass, XmlOneToMany_2_0.class, "XmlOneToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlOrderColumn_2_0EClass, XmlOrderColumn_2_0.class, "XmlOrderColumn_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlOrderColumn_2_0_CorrectionType(), this.getOrderColumnCorrectionType_2_0(), "correctionType", null, 0, 1, XmlOrderColumn_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlOrderColumn_2_0_CorrectionType(), this.getOrderCorrectionType_2_0(), "correctionType", null, 0, 1, XmlOrderColumn_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
-		initEEnum(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.class, "OrderColumnCorrectionType_2_0");
-		addEEnumLiteral(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.READ);
-		addEEnumLiteral(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.READ_WRITE);
-		addEEnumLiteral(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.EXCEPTION);
+		initEEnum(orderCorrectionType_2_0EEnum, OrderCorrectionType_2_0.class, "OrderCorrectionType_2_0");
+		addEEnumLiteral(orderCorrectionType_2_0EEnum, OrderCorrectionType_2_0.READ);
+		addEEnumLiteral(orderCorrectionType_2_0EEnum, OrderCorrectionType_2_0.READ_WRITE);
+		addEEnumLiteral(orderCorrectionType_2_0EEnum, OrderCorrectionType_2_0.EXCEPTION);
 	}
 
 	/**
@@ -981,14 +981,14 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		public static final EAttribute XML_ORDER_COLUMN_20__CORRECTION_TYPE = eINSTANCE.getXmlOrderColumn_2_0_CorrectionType();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0 <em>Order Column Correction Type 20</em>}' enum.
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0 <em>Order Correction Type 20</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnCorrectionType_2_0()
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderCorrectionType_2_0()
 		 * @generated
 		 */
-		public static final EEnum ORDER_COLUMN_CORRECTION_TYPE_20 = eINSTANCE.getOrderColumnCorrectionType_2_0();
+		public static final EEnum ORDER_CORRECTION_TYPE_20 = eINSTANCE.getOrderCorrectionType_2_0();
 
 	}
 

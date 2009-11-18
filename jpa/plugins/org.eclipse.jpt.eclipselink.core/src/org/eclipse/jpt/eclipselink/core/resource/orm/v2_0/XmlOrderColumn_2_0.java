@@ -34,7 +34,7 @@ public interface XmlOrderColumn_2_0 extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Correction Type</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0}.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Correction Type</em>' attribute isn't clear,
@@ -42,23 +42,23 @@ public interface XmlOrderColumn_2_0 extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Correction Type</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
-	 * @see #setCorrectionType(OrderColumnCorrectionType_2_0)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0
+	 * @see #setCorrectionType(OrderCorrectionType_2_0)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlOrderColumn_2_0_CorrectionType()
 	 * @model
 	 * @generated
 	 */
-	OrderColumnCorrectionType_2_0 getCorrectionType();
+	OrderCorrectionType_2_0 getCorrectionType();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOrderColumn_2_0#getCorrectionType <em>Correction Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Correction Type</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0
 	 * @see #getCorrectionType()
 	 * @generated
 	 */
-	void setCorrectionType(OrderColumnCorrectionType_2_0 value);
+	void setCorrectionType(OrderCorrectionType_2_0 value);
 
 } // XmlOrderColumn_2_0
