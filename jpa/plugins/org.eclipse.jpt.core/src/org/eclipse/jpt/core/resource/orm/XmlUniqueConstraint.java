@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlUniqueConstraint_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
@@ -266,7 +265,7 @@ public class XmlUniqueConstraint extends AbstractJpaEObject implements XmlUnique
 	}
 	
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA2_0.NAME, OrmV2_0Package.eINSTANCE.getXmlUniqueConstraint_2_0_Name());
+		return new Translator(JPA.NAME, OrmV2_0Package.eINSTANCE.getXmlUniqueConstraint_2_0_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildColumnNameTranslator() {

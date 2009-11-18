@@ -8,44 +8,44 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Order Column Validation Mode Type 20</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Order Column Correction Type 20</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnValidationModeType_2_0()
+ * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnCorrectionType_2_0()
  * @model
  * @generated
  */
-public enum OrderColumnValidationModeType_2_0 implements Enumerator
+public enum OrderColumnCorrectionType_2_0 implements Enumerator
 {
 	/**
-	 * The '<em><b>NONE</b></em>' literal object.
+	 * The '<em><b>READ</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #NONE_VALUE
+	 * @see #READ_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	NONE(0, "NONE", "NONE"),
+	READ(0, "READ", "READ"),
 
 	/**
-	 * The '<em><b>CORRECTION</b></em>' literal object.
+	 * The '<em><b>READ WRITE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #CORRECTION_VALUE
+	 * @see #READ_WRITE_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	CORRECTION(1, "CORRECTION", "CORRECTION"),
+	READ_WRITE(1, "READ_WRITE", "READ_WRITE"),
 
 	/**
 	 * The '<em><b>EXCEPTION</b></em>' literal object.
@@ -58,34 +58,34 @@ public enum OrderColumnValidationModeType_2_0 implements Enumerator
 	EXCEPTION(2, "EXCEPTION", "EXCEPTION");
 
 	/**
-	 * The '<em><b>NONE</b></em>' literal value.
+	 * The '<em><b>READ</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>NONE</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>READ</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #NONE
+	 * @see #READ
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NONE_VALUE = 0;
+	public static final int READ_VALUE = 0;
 
 	/**
-	 * The '<em><b>CORRECTION</b></em>' literal value.
+	 * The '<em><b>READ WRITE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>CORRECTION</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>READ WRITE</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #CORRECTION
+	 * @see #READ_WRITE
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int CORRECTION_VALUE = 1;
+	public static final int READ_WRITE_VALUE = 1;
 
 	/**
 	 * The '<em><b>EXCEPTION</b></em>' literal value.
@@ -103,38 +103,38 @@ public enum OrderColumnValidationModeType_2_0 implements Enumerator
 	public static final int EXCEPTION_VALUE = 2;
 
 	/**
-	 * An array of all the '<em><b>Order Column Validation Mode Type 20</b></em>' enumerators.
+	 * An array of all the '<em><b>Order Column Correction Type 20</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final OrderColumnValidationModeType_2_0[] VALUES_ARRAY =
-		new OrderColumnValidationModeType_2_0[]
+	private static final OrderColumnCorrectionType_2_0[] VALUES_ARRAY =
+		new OrderColumnCorrectionType_2_0[]
 		{
-			NONE,
-			CORRECTION,
+			READ,
+			READ_WRITE,
 			EXCEPTION,
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>Order Column Validation Mode Type 20</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Order Column Correction Type 20</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<OrderColumnValidationModeType_2_0> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<OrderColumnCorrectionType_2_0> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Order Column Validation Mode Type 20</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Order Column Correction Type 20</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static OrderColumnValidationModeType_2_0 get(String literal)
+	public static OrderColumnCorrectionType_2_0 get(String literal)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			OrderColumnValidationModeType_2_0 result = VALUES_ARRAY[i];
+			OrderColumnCorrectionType_2_0 result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal))
 			{
 				return result;
@@ -144,16 +144,16 @@ public enum OrderColumnValidationModeType_2_0 implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Order Column Validation Mode Type 20</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Order Column Correction Type 20</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static OrderColumnValidationModeType_2_0 getByName(String name)
+	public static OrderColumnCorrectionType_2_0 getByName(String name)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			OrderColumnValidationModeType_2_0 result = VALUES_ARRAY[i];
+			OrderColumnCorrectionType_2_0 result = VALUES_ARRAY[i];
 			if (result.getName().equals(name))
 			{
 				return result;
@@ -163,17 +163,17 @@ public enum OrderColumnValidationModeType_2_0 implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Order Column Validation Mode Type 20</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Order Column Correction Type 20</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static OrderColumnValidationModeType_2_0 get(int value)
+	public static OrderColumnCorrectionType_2_0 get(int value)
 	{
 		switch (value)
 		{
-			case NONE_VALUE: return NONE;
-			case CORRECTION_VALUE: return CORRECTION;
+			case READ_VALUE: return READ;
+			case READ_WRITE_VALUE: return READ_WRITE;
 			case EXCEPTION_VALUE: return EXCEPTION;
 		}
 		return null;
@@ -206,7 +206,7 @@ public enum OrderColumnValidationModeType_2_0 implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private OrderColumnValidationModeType_2_0(int value, String name, String literal)
+	private OrderColumnCorrectionType_2_0(int value, String name, String literal)
 	{
 		this.value = value;
 		this.name = name;
@@ -255,4 +255,4 @@ public enum OrderColumnValidationModeType_2_0 implements Enumerator
 		return literal;
 	}
 	
-} //OrderColumnValidationModeType_2_0
+} //OrderColumnCorrectionType_2_0

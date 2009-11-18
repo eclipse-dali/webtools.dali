@@ -3605,13 +3605,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ORDER_COLUMN__UPDATABLE = OrmPackage.XML_ORDER_COLUMN__UPDATABLE;
 	/**
-	 * The feature id for the '<em><b>Validation Mode</b></em>' attribute.
+	 * The feature id for the '<em><b>Correction Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ORDER_COLUMN__VALIDATION_MODE = OrmPackage.XML_ORDER_COLUMN_FEATURE_COUNT + 0;
+	public static final int XML_ORDER_COLUMN__CORRECTION_TYPE = OrmPackage.XML_ORDER_COLUMN_FEATURE_COUNT + 0;
 	/**
 	 * The number of structural features of the '<em>Xml Order Column</em>' class.
 	 * <!-- begin-user-doc -->

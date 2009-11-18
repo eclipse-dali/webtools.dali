@@ -476,13 +476,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ORDER_COLUMN_20 = 5;
 
 	/**
-	 * The feature id for the '<em><b>Validation Mode</b></em>' attribute.
+	 * The feature id for the '<em><b>Correction Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ORDER_COLUMN_20__VALIDATION_MODE = 0;
+	public static final int XML_ORDER_COLUMN_20__CORRECTION_TYPE = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Order Column 20</em>' class.
@@ -494,14 +494,14 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ORDER_COLUMN_20_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0 <em>Order Column Validation Mode Type 20</em>}' enum.
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0 <em>Order Column Correction Type 20</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnValidationModeType_2_0()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnCorrectionType_2_0()
 	 * @generated
 	 */
-	public static final int ORDER_COLUMN_VALIDATION_MODE_TYPE_20 = 6;
+	public static final int ORDER_COLUMN_CORRECTION_TYPE_20 = 6;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -550,7 +550,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum orderColumnValidationModeType_2_0EEnum = null;
+	private EEnum orderColumnCorrectionType_2_0EEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -736,31 +736,33 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOrderColumn_2_0#getValidationMode <em>Validation Mode</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOrderColumn_2_0#getCorrectionType <em>Correction Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Validation Mode</em>'.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOrderColumn_2_0#getValidationMode()
+	 * @return the meta object for the attribute '<em>Correction Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOrderColumn_2_0#getCorrectionType()
 	 * @see #getXmlOrderColumn_2_0()
 	 * @generated
 	 */
-	public EAttribute getXmlOrderColumn_2_0_ValidationMode()
+	public EAttribute getXmlOrderColumn_2_0_CorrectionType()
 	{
 		return (EAttribute)xmlOrderColumn_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
+
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0 <em>Order Column Validation Mode Type 20</em>}'.
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0 <em>Order Column Correction Type 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Order Column Validation Mode Type 20</em>'.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0
+	 * @return the meta object for enum '<em>Order Column Correction Type 20</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
 	 * @generated
 	 */
-	public EEnum getOrderColumnValidationModeType_2_0()
+	public EEnum getOrderColumnCorrectionType_2_0()
 	{
-		return orderColumnValidationModeType_2_0EEnum;
+		return orderColumnCorrectionType_2_0EEnum;
 	}
+
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -807,10 +809,10 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlOneToMany_2_0EClass = createEClass(XML_ONE_TO_MANY_20);
 
 		xmlOrderColumn_2_0EClass = createEClass(XML_ORDER_COLUMN_20);
-		createEAttribute(xmlOrderColumn_2_0EClass, XML_ORDER_COLUMN_20__VALIDATION_MODE);
+		createEAttribute(xmlOrderColumn_2_0EClass, XML_ORDER_COLUMN_20__CORRECTION_TYPE);
 
 		// Create enums
-		orderColumnValidationModeType_2_0EEnum = createEEnum(ORDER_COLUMN_VALIDATION_MODE_TYPE_20);
+		orderColumnCorrectionType_2_0EEnum = createEEnum(ORDER_COLUMN_CORRECTION_TYPE_20);
 	}
 
 	/**
@@ -871,13 +873,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		initEClass(xmlOneToMany_2_0EClass, XmlOneToMany_2_0.class, "XmlOneToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlOrderColumn_2_0EClass, XmlOrderColumn_2_0.class, "XmlOrderColumn_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlOrderColumn_2_0_ValidationMode(), this.getOrderColumnValidationModeType_2_0(), "validationMode", null, 0, 1, XmlOrderColumn_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlOrderColumn_2_0_CorrectionType(), this.getOrderColumnCorrectionType_2_0(), "correctionType", null, 0, 1, XmlOrderColumn_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
-		initEEnum(orderColumnValidationModeType_2_0EEnum, OrderColumnValidationModeType_2_0.class, "OrderColumnValidationModeType_2_0");
-		addEEnumLiteral(orderColumnValidationModeType_2_0EEnum, OrderColumnValidationModeType_2_0.NONE);
-		addEEnumLiteral(orderColumnValidationModeType_2_0EEnum, OrderColumnValidationModeType_2_0.CORRECTION);
-		addEEnumLiteral(orderColumnValidationModeType_2_0EEnum, OrderColumnValidationModeType_2_0.EXCEPTION);
+		initEEnum(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.class, "OrderColumnCorrectionType_2_0");
+		addEEnumLiteral(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.READ);
+		addEEnumLiteral(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.READ_WRITE);
+		addEEnumLiteral(orderColumnCorrectionType_2_0EEnum, OrderColumnCorrectionType_2_0.EXCEPTION);
 	}
 
 	/**
@@ -971,22 +973,22 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		public static final EClass XML_ORDER_COLUMN_20 = eINSTANCE.getXmlOrderColumn_2_0();
 
 		/**
-		 * The meta object literal for the '<em><b>Validation Mode</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Correction Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ORDER_COLUMN_20__VALIDATION_MODE = eINSTANCE.getXmlOrderColumn_2_0_ValidationMode();
+		public static final EAttribute XML_ORDER_COLUMN_20__CORRECTION_TYPE = eINSTANCE.getXmlOrderColumn_2_0_CorrectionType();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0 <em>Order Column Validation Mode Type 20</em>}' enum.
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0 <em>Order Column Correction Type 20</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnValidationModeType_2_0()
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderColumnCorrectionType_2_0()
 		 * @generated
 		 */
-		public static final EEnum ORDER_COLUMN_VALIDATION_MODE_TYPE_20 = eINSTANCE.getOrderColumnValidationModeType_2_0();
+		public static final EEnum ORDER_COLUMN_CORRECTION_TYPE_20 = eINSTANCE.getOrderColumnCorrectionType_2_0();
 
 	}
 

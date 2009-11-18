@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOrderColumn_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -34,21 +34,22 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderColumn implements XmlOrderColumn_2_0
 {
+
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final OrderColumnValidationModeType_2_0 VALIDATION_MODE_EDEFAULT = null;
+	protected static final OrderColumnCorrectionType_2_0 CORRECTION_TYPE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getValidationMode() <em>Validation Mode</em>}' attribute.
+	 * The cached value of the '{@link #getCorrectionType() <em>Correction Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getValidationMode()
+	 * @see #getCorrectionType()
 	 * @generated
 	 * @ordered
 	 */
-	protected OrderColumnValidationModeType_2_0 validationMode = VALIDATION_MODE_EDEFAULT;
+	protected OrderColumnCorrectionType_2_0 correctionType = CORRECTION_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -72,41 +73,41 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Validation Mode</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0}.
+	 * Returns the value of the '<em><b>Correction Type</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Validation Mode</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Correction Type</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Validation Mode</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0
-	 * @see #setValidationMode(OrderColumnValidationModeType_2_0)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOrderColumn_2_0_ValidationMode()
+	 * @return the value of the '<em>Correction Type</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
+	 * @see #setCorrectionType(OrderColumnCorrectionType_2_0)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOrderColumn_2_0_CorrectionType()
 	 * @model
 	 * @generated
 	 */
-	public OrderColumnValidationModeType_2_0 getValidationMode()
+	public OrderColumnCorrectionType_2_0 getCorrectionType()
 	{
-		return validationMode;
+		return correctionType;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOrderColumn#getValidationMode <em>Validation Mode</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOrderColumn#getCorrectionType <em>Correction Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Validation Mode</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnValidationModeType_2_0
-	 * @see #getValidationMode()
+	 * @param value the new value of the '<em>Correction Type</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderColumnCorrectionType_2_0
+	 * @see #getCorrectionType()
 	 * @generated
 	 */
-	public void setValidationMode(OrderColumnValidationModeType_2_0 newValidationMode)
+	public void setCorrectionType(OrderColumnCorrectionType_2_0 newCorrectionType)
 	{
-		OrderColumnValidationModeType_2_0 oldValidationMode = validationMode;
-		validationMode = newValidationMode == null ? VALIDATION_MODE_EDEFAULT : newValidationMode;
+		OrderColumnCorrectionType_2_0 oldCorrectionType = correctionType;
+		correctionType = newCorrectionType == null ? CORRECTION_TYPE_EDEFAULT : newCorrectionType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ORDER_COLUMN__VALIDATION_MODE, oldValidationMode, validationMode));
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE, oldCorrectionType, correctionType));
 	}
 
 	/**
@@ -119,8 +120,8 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__VALIDATION_MODE:
-				return getValidationMode();
+			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE:
+				return getCorrectionType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -135,8 +136,8 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__VALIDATION_MODE:
-				setValidationMode((OrderColumnValidationModeType_2_0)newValue);
+			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE:
+				setCorrectionType((OrderColumnCorrectionType_2_0)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -152,8 +153,8 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__VALIDATION_MODE:
-				setValidationMode(VALIDATION_MODE_EDEFAULT);
+			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE:
+				setCorrectionType(CORRECTION_TYPE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -169,8 +170,8 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__VALIDATION_MODE:
-				return validationMode != VALIDATION_MODE_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE:
+				return correctionType != CORRECTION_TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -187,7 +188,7 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ORDER_COLUMN__VALIDATION_MODE: return EclipseLinkOrmV2_0Package.XML_ORDER_COLUMN_20__VALIDATION_MODE;
+				case EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE: return EclipseLinkOrmV2_0Package.XML_ORDER_COLUMN_20__CORRECTION_TYPE;
 				default: return -1;
 			}
 		}
@@ -206,7 +207,7 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_0Package.XML_ORDER_COLUMN_20__VALIDATION_MODE: return EclipseLinkOrmPackage.XML_ORDER_COLUMN__VALIDATION_MODE;
+				case EclipseLinkOrmV2_0Package.XML_ORDER_COLUMN_20__CORRECTION_TYPE: return EclipseLinkOrmPackage.XML_ORDER_COLUMN__CORRECTION_TYPE;
 				default: return -1;
 			}
 		}
@@ -224,8 +225,8 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (validationMode: ");
-		result.append(validationMode);
+		result.append(" (correctionType: ");
+		result.append(correctionType);
 		result.append(')');
 		return result.toString();
 	}
@@ -254,6 +255,6 @@ public class XmlOrderColumn extends org.eclipse.jpt.core.resource.orm.XmlOrderCo
 	}
 		
 	protected static Translator buildValidationModeTranslator() {
-		return new Translator(EclipseLink2_0.VALIDATION_MODE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_ValidationMode(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.CORRECTION_TYPE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_CorrectionType(), Translator.DOM_ATTRIBUTE);
 	}
 }

@@ -322,11 +322,11 @@
         interface="true" eSuperTypes="#//XmlConverterHolder #//v2_0/XmlCollectionMapping_2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn_2_0" abstract="true"
         interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="validationMode" eType="#//v2_0/OrderColumnValidationModeType_2_0"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="correctionType" eType="#//v2_0/OrderColumnCorrectionType_2_0"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="OrderColumnValidationModeType_2_0">
-      <eLiterals name="NONE"/>
-      <eLiterals name="CORRECTION" value="1"/>
+    <eClassifiers xsi:type="ecore:EEnum" name="OrderColumnCorrectionType_2_0">
+      <eLiterals name="READ"/>
+      <eLiterals name="READ_WRITE" value="1"/>
       <eLiterals name="EXCEPTION" value="2"/>
     </eClassifiers>
   </eSubpackages>

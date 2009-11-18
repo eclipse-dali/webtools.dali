@@ -22,6 +22,7 @@ public interface EclipseLink2_0
 	String SCHEMA_VERSION	= "2.0";
 	
 	// EclipseLink 2.0 specific nodes
-	
+
+	String CORRECTION_TYPE = "correction-type";
 	String MAP_KEY_ASSOCIATION_OVERRIDE = "map-key-association-override";
 }

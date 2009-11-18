@@ -47,5 +47,4 @@ public interface JPA2_0
 	String ORPHAN_REMOVAL = "orphan-removal";
 	String TARGET_CLASS = "target-class";
 	String MAP_KEY_TEMPORAL = "map-key-temporal";
-	String VALIDATION_MODE = "validation-mode";
 }
