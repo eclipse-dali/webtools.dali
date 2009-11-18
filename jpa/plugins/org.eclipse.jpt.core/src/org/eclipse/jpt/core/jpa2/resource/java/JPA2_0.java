@@ -33,23 +33,24 @@ public interface JPA2_0
 		String ACCESS__VALUE = "value";
 
 	String ASSOCIATION_OVERRIDE__JOIN_TABLE = "joinTable";
-	
+
 	String CACHEABLE = PACKAGE_ + "Cacheable";
 		String CACHEABLE__VALUE = "value";
 
+	String ELEMENT_COLLECTION = PACKAGE_ + "ElementCollection";
+		String ELEMENT_COLLECTION__FETCH = "fetch";
+		String ELEMENT_COLLECTION__TARGET_CLASS = "targetClass";
+
 	String MAPS_ID = PACKAGE_ + "MapsId";
 		String MAPS_ID__VALUE = "value";
-
-	String SEQUENCE_GENERATOR__CATALOG = "catalog";
-	String SEQUENCE_GENERATOR__SCHEMA = "schema";
 
 	String ONE_TO_MANY__ORPHAN_REMOVAL = "orphanRemoval";
 
 	String ONE_TO_ONE__ORPHAN_REMOVAL = "orphanRemoval";
 
-	String ELEMENT_COLLECTION = PACKAGE_ + "ElementCollection";
-		String ELEMENT_COLLECTION__FETCH = "fetch";
-		String ELEMENT_COLLECTION__TARGET_CLASS = "targetClass";
+	String SEQUENCE_GENERATOR__CATALOG = "catalog";
+	String SEQUENCE_GENERATOR__SCHEMA = "schema";
+
 
 	// JPA 2.0 enums
 	String ACCESS_TYPE = PACKAGE_ + "AccessType";

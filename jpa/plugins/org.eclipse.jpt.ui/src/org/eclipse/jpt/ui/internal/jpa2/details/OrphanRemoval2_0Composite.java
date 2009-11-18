@@ -56,7 +56,7 @@ public class OrphanRemoval2_0Composite extends FormPane<OrphanRemovable2_0>
 	protected void initializeLayout(Composite container) {
 
 		this.addTriStateCheckBoxWithDefault(
-			this.addSubPane(container, 4),
+			container,
 			JptUiDetailsMessages2_0.OrphanRemoval2_0Composite_orphanRemovalLabel,
 			this.buildOrphanRemovalHolder(),
 			this.buildOrphanRemovalStringHolder(),

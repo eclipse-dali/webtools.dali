@@ -16,8 +16,6 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
@@ -49,8 +47,6 @@ import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkOneToManyMapping2_0;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkOneToOneMapping2_0;
 
 /**
  *  EclipseLink2_0JpaFactory
@@ -115,17 +111,7 @@ public class EclipseLink2_0JpaFactory
 	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
 		return new GenericJavaSequenceGenerator2_0(parent);
 	}
-	
-	@Override
-	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
-		return new JavaEclipseLinkOneToManyMapping2_0(parent);
-	}
-	
-	@Override
-	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
-		return new JavaEclipseLinkOneToOneMapping2_0(parent);
-	}
-	
+
 	@Override
 	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
 		return new GenericJavaCacheable2_0(parent);

@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
@@ -183,7 +184,7 @@ public class EclipseLinkOrmXmlContextNodeFactory extends AbstractOrmXmlContextNo
 	
 	@Override
 	public XmlOneToOne buildVirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
-		return new VirtualEclipseLinkXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
+		return new VirtualEclipseLinkXmlOneToOne(ormTypeMapping, (JavaEclipseLinkOneToOneMapping) javaOneToOneMapping);
 	}
 	
 	@Override

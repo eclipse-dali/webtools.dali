@@ -15,16 +15,16 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkOneToOneMapping2_0;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkOneToOneMapping
 	extends AbstractJavaOneToOneMapping
-	implements EclipseLinkOneToOneMapping
+	implements EclipseLinkOneToOneMapping2_0
 {
 	protected final JavaEclipseLinkJoinFetch joinFetch;
 	

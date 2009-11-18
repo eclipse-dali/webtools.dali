@@ -10,9 +10,11 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToOne;
+import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -34,11 +36,11 @@ public class VirtualEclipseLinkXmlOneToOne extends XmlOneToOne
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaOneToOneMapping javaAttributeMapping;
+	protected final JavaEclipseLinkOneToOneMapping javaAttributeMapping;
 
 	protected final VirtualXmlOneToOne virtualXmlOneToOne;
 		
-	public VirtualEclipseLinkXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
+	public VirtualEclipseLinkXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaEclipseLinkOneToOneMapping javaOneToOneMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToOneMapping;
@@ -154,7 +156,7 @@ public class VirtualEclipseLinkXmlOneToOne extends XmlOneToOne
 		if (isOrmMetadataComplete()) {
 			return null; //don't return default value, it only applies for an empty @JoinFetch
 		}
-		return EclipseLinkJoinFetchType.toOrmResourceModel(((JavaEclipseLinkOneToOneMapping) this.javaAttributeMapping).getJoinFetch().getValue());
+		return EclipseLinkJoinFetchType.toOrmResourceModel((this.javaAttributeMapping).getJoinFetch().getValue());
 	}
 	
 	@Override
@@ -167,7 +169,7 @@ public class VirtualEclipseLinkXmlOneToOne extends XmlOneToOne
 		if (isOrmMetadataComplete()) {
 			return false;
 		}
-		return ((JavaEclipseLinkOneToOneMapping) this.javaAttributeMapping).getPrivateOwned().isPrivateOwned();
+		return (this.javaAttributeMapping).getPrivateOwned().isPrivateOwned();
 	}
 	
 	@Override
@@ -200,4 +202,24 @@ public class VirtualEclipseLinkXmlOneToOne extends XmlOneToOne
 	public TextRange getPrivateOwnedTextRange() {
 		return null;
 	}
+	
+	
+	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToOneMapping2_0 oneToManyMapping) {
+		return ((JavaOrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+	}
+
+	@Override
+	public Boolean getOrphanRemoval() {
+		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(this.javaAttributeMapping);
+		if (this.isOrmMetadataComplete()) {
+			return Boolean.valueOf(mappingsOrphanRemoval.isDefaultOrphanRemoval());
+		}
+		return Boolean.valueOf(mappingsOrphanRemoval.isOrphanRemoval());
+	}
+
+	@Override
+	public void setOrphanRemoval(Boolean newOrphanRemoval) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
 }

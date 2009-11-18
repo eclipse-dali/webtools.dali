@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaOneToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -17,6 +18,7 @@ import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -59,12 +61,20 @@ public abstract class AbstractJavaOneToOneMapping
 	
 	@Override
 	protected String[] buildSupportingAnnotationNames() {
-		return ArrayTools.addAll(
+		String[] annotationNames = ArrayTools.addAll(
 			super.buildSupportingAnnotationNames(),
 			JPA.PRIMARY_KEY_JOIN_COLUMN,
 			JPA.PRIMARY_KEY_JOIN_COLUMNS);
+		
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			annotationNames = ArrayTools.addAll(
+				annotationNames,
+				JPA2_0.ONE_TO_ONE__ORPHAN_REMOVAL);
+		}
+		
+		return annotationNames;
 	}
-	
+
 	public String getKey() {
 		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
