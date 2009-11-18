@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,39 +22,12 @@ import org.eclipse.jpt.utility.JavaType;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Column extends DatabaseObject {
+public interface Column extends Comparable<Column> {
 
 	/**
-	 * Return the column's table.
+	 * Return the column's name.
 	 */
-	Table getTable();
-
-
-	// ********** constraints **********
-
-	/**
-	 * Return whether the column is part of it's table's primary key.
-	 */
-	boolean isPartOfPrimaryKey();
-
-	/**
-	 * Return whether the column is part of one of it's table's foreign keys.
-	 */
-	boolean isPartOfForeignKey();
-
-	/**
-	 * Return whether the column is part of a unique constraint defined for its
-	 * table.
-	 */
-	boolean isPartOfUniqueConstraint();
-
-	/**
-	 * Return whether the column is nullable.
-	 */
-	boolean isNullable();
-
-
-	// ********** data type **********
+	String getName();
 
 	/**
 	 * Return the name of the column's datatype.
@@ -62,48 +35,15 @@ public interface Column extends DatabaseObject {
 	String getDataTypeName();
 
 	/**
-	 * Return whether the column's type is numeric.
+	 * Return a Java-appropriate version of the column's name.
 	 */
-	boolean isNumeric();
+	String getJavaFieldName();
 
 	/**
-	 * Return the column's precision if it is a NumericalDataType;
-	 * otherwise, return -1.
+	 * Return whether the column's name matches the specified Java identifier,
+	 * respecting the database's case-sensitivity.
 	 */
-	public int getPrecision();
-
-	/**
-	 * Return the column's scale if it is an ExactNumericDataType;
-	 * otherwise, return -1.
-	 */
-	public int getScale();
-
-	/**
-	 * If the column is a CharacterStringDataType, return its length;
-	 * otherwise, return -1.
-	 */
-	public int getLength();
-
-	/**
-	 * Return whether the column's datatype is a LOB type
-	 * (i.e. BLOB, CLOB, or NCLOB).
-	 */
-	boolean isLOB();
-
-
-	// ********** Java type **********
-
-	/**
-	 * Return a Java type declaration that is reasonably
-	 * similar to the column's data type.
-	 */
-	String getJavaTypeDeclaration();
-
-	/**
-	 * Return a Java type that is reasonably
-	 * similar to the column's data type.
-	 */
-	JavaType getJavaType();
+	boolean matchesJavaFieldName(String javaFieldName);
 
 	/**
 	 * Return a Java type declaration that is reasonably
@@ -118,5 +58,23 @@ public interface Column extends DatabaseObject {
 	 * primary key field.
 	 */
 	JavaType getPrimaryKeyJavaType();
+
+	/**
+	 * Return a Java type declaration that is reasonably
+	 * similar to the column's data type.
+	 */
+	String getJavaTypeDeclaration();
+
+	/**
+	 * Return a Java type that is reasonably
+	 * similar to the column's data type.
+	 */
+	JavaType getJavaType();
+
+	/**
+	 * Return whether the column's datatype is a LOB type
+	 * (i.e. BLOB, CLOB, or NCLOB).
+	 */
+	boolean dataTypeIsLOB();
 
 }

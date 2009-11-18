@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,15 +23,32 @@ import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionCons
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface ConnectionProfile extends DatabaseObject {
+public interface ConnectionProfile extends Comparable<ConnectionProfile> {
 
-	// ********** properties **********
+	/**
+	 * Return the connection profile's name.
+	 */
+	String getName();
 
 	/**
 	 * Return the connection profile's database.
-	 * Return null if the connection profile is inactive.
+	 * Return a "null" database if the connection profile is inactive.
 	 */
 	Database getDatabase();
+
+	/**
+	 * Return the connection profile's "default" catalog.
+	 * Return null if the connection profile's database does not support
+	 * catalogs.
+	 */
+	Catalog getDefaultCatalog();
+
+	/**
+	 * Return the connection profile's default schema.
+	 * In most cases the default schema's name will match the user name.
+	 * It may be null.
+	 */
+	Schema getDefaultSchema();
 
 	/**
 	 * Return ID of the provider managing the DTP profile.
@@ -71,7 +88,7 @@ public interface ConnectionProfile extends DatabaseObject {
 	/**
 	 * Return the default connection URL.
 	 */
-	String getURL();
+	String getUrl();
 
 	/**
 	 * Return the default user name.
@@ -84,37 +101,23 @@ public interface ConnectionProfile extends DatabaseObject {
 	String getUserPassword();
 
 	/**
-	 * Return the ID of the associated Driver definition.
+	 * Return the driver definition ID.
 	 */
 	String getDriverDefinitionID();
 
 	/**
-	 * Return the jar list for the associated Driver as a 
+	 * Return the jar list for the driver instance as a 
 	 * comma-delimited string.
 	 */
 	String getDriverJarList();
 
 	/**
-	 * Return the name of the associated Driver definition.
-	 */
-	String getDriverName();
-
-	// ********** connection **********
-
-	/**
 	 * Return whether the profile is either connected to a live database
 	 * session or working off-line (i.e. it has access to meta-data).
 	 * @see isConnected()
-	 * @see isWorkingOffline()
+	 * @see isWorkingOfflin()
 	 */
 	boolean isActive();
-
-	/**
-	 * Return whether the profile is neither connected to a live database
-	 * session nor working off-line (i.e. it has access to meta-data).
-	 * @see isActive()
-	 */
-	boolean isInactive();
 
 	/**
 	 * Return whether the profile is connected to a live database session
@@ -125,27 +128,14 @@ public interface ConnectionProfile extends DatabaseObject {
 	boolean isConnected();
 
 	/**
-	 * Return whether the profile is not connected to a live database session
-	 * (i.e. the meta-data comes from the database), as opposed to working
-	 * off-line.
-	 * @see #isConnected()
-	 */
-	boolean isDisconnected();
-
-	/**
 	 * Connect to the database.
-	 * @see #disconnect()
 	 */
 	void connect();
 
 	/**
 	 * Disconnect from the database.
-	 * @see #connect()
 	 */
 	void disconnect();
-
-
-	// ********** off-line support **********
 
 	/**
 	 * Return whether the profile is working off-line (i.e. the meta-data
@@ -179,8 +169,10 @@ public interface ConnectionProfile extends DatabaseObject {
 	 */
 	IStatus workOffline();
 
-
-	// ********** listeners **********
+	/**
+	 * Return whether the connection profile is a "null" connection profile.
+	 */
+	boolean isNull();
 
 	/**
 	 * Add the specified connection listener to the connection profile.
@@ -191,9 +183,6 @@ public interface ConnectionProfile extends DatabaseObject {
 	 * Remove the specified connection listener from the connection profile.
 	 */
 	void removeConnectionListener(ConnectionListener listener);
-
-
-	// ********** constants **********
 
 	String CONNECTION_PROFILE_TYPE = "org.eclipse.datatools.connectivity.db.generic.connectionProfile";  //$NON-NLS-1$
 	String DRIVER_DEFINITION_PROP_ID = "org.eclipse.datatools.connectivity.driverDefinitionID";  //$NON-NLS-1$

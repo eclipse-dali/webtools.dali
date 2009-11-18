@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,23 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-
-import com.ibm.icu.text.Collator;
 
 /**
  * Coalesce behavior for a schema container (i.e. database or catalog).
  */
 abstract class DTPSchemaContainerWrapper
-	extends DTPDatabaseObjectWrapper
+	extends DTPWrapper
 	implements SchemaContainer
 {
 	// lazy-initialized
@@ -34,82 +31,40 @@ abstract class DTPSchemaContainerWrapper
 
 	// ********** constructor **********
 
-	DTPSchemaContainerWrapper(DTPDatabaseObject parent, Object dtpSchemaContainer) {
-		super(parent, dtpSchemaContainer);
+	DTPSchemaContainerWrapper(ConnectionProfileHolder connectionProfileHolder, Object dtpObject) {
+		super(connectionProfileHolder, dtpObject);
 	}
 
 
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	synchronized void catalogObjectChanged() {
-		super.catalogObjectChanged();
+	synchronized void catalogObjectChanged(int eventType) {
+		// clear stuff so it will be rebuilt
+		this.dispose_();
 	}
 
 
 	// ********** abstract methods **********
 
-	/**
-	 * return the schema container's DTP schemata
-	 */
-	abstract List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemata();
+	abstract DTPDatabaseWrapper database();
 
-	/**
-	 * return the schema for the specified DTP schema
-	 */
-	abstract DTPSchemaWrapper getSchema(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema);
+	abstract boolean isCaseSensitive();
 
-	/**
-	 * assume the schema container (database or catalog) contains
-	 * the specified schema
-	 */
-	DTPSchemaWrapper getSchema_(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
-		for (DTPSchemaWrapper schema : this.getSchemata()) {
-			if (schema.wraps(dtpSchema)) {
-				return schema;
-			}
-		}
-		throw new IllegalArgumentException("invalid DTP schema: " + dtpSchema);  //$NON-NLS-1$
-	}
-
-	/**
-	 * return the table for the specified DTP table;
-	 * this is only called from a schema (to its container)
-	 */
-	abstract DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable);
-
-	/**
-	 * assume the schema container contains the specified table
-	 */
-	DTPTableWrapper getTable_(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
-		return this.getSchema_(dtpTable.getSchema()).getTable_(dtpTable);
-	}
-
-	/**
-	 * return the column for the specified DTP column;
-	 * this is only called from a schema (to its container)
-	 */
-	abstract DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn);
-
-	/**
-	 * assume the schema container contains the specified column
-	 */
-	DTPColumnWrapper getColumn_(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
-		return this.getTable_(dtpColumn.getTable()).getColumn_(dtpColumn);
-	}
+	abstract List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata();
 
 
 	// ********** schemata **********
 
 	public Iterator<Schema> schemata() {
-		return new ArrayIterator<Schema>(this.getSchemata());
+		return new ArrayIterator<Schema>(this.schemata_());
 	}
 
-	Iterator<DTPSchemaWrapper> schemaWrappers() {
-		return new ArrayIterator<DTPSchemaWrapper>(this.getSchemata());
+	private Iterator<DTPSchemaWrapper> schemaWrappers() {
+		return new ArrayIterator<DTPSchemaWrapper>(this.schemata_());
 	}
 
-	synchronized DTPSchemaWrapper[] getSchemata() {
+	synchronized DTPSchemaWrapper[] schemata_() {
 		if (this.schemata == null) {
 			this.schemata = this.buildSchemata();
 		}
@@ -117,65 +72,49 @@ abstract class DTPSchemaContainerWrapper
 	}
 
 	private DTPSchemaWrapper[] buildSchemata() {
-		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.getDTPSchemata();
+		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
 		DTPSchemaWrapper[] result = new DTPSchemaWrapper[dtpSchemata.size()];
-		for (int i = result.length; i-- > 0; ) {
+		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPSchemaWrapper(this, dtpSchemata.get(i));
 		}
-		return ArrayTools.sort(result, this.buildSchemaComparator());
-	}
-
-	private Comparator<Schema> buildSchemaComparator() {
-		return new Comparator<Schema>() {
-			public int compare(Schema schema1, Schema schema2) {
-				return Collator.getInstance().compare(schema1.getName(), schema2.getName());
-			}
-		};
+		return result;
 	}
 
 	public int schemataSize() {
-		return this.getSchemata().length;
+		return this.schemata_().length;
 	}
 
-	public Iterator<String> sortedSchemaNames() {
-		// the schemata are already sorted
+	public Iterator<String> schemaNames() {
 		return new TransformationIterator<DTPSchemaWrapper, String>(this.schemaWrappers()) {
 			@Override
-			protected String transform(DTPSchemaWrapper next) {
-				 return next.getName();
+			protected String transform(DTPSchemaWrapper schema) {
+				 return schema.getName();
 			}
 		};
 	}
 
-	public DTPSchemaWrapper getSchemaNamed(String name) {
-		return this.selectDatabaseObjectNamed(this.getSchemata(), name);
+	public boolean containsSchemaNamed(String name) {
+		return this.schemaNamed(name) != null;
 	}
 
-	public Iterator<String> sortedSchemaIdentifiers() {
-		// the schemata are already sorted
-		return new TransformationIterator<DTPSchemaWrapper, String>(this.schemaWrappers()) {
-			@Override
-			protected String transform(DTPSchemaWrapper next) {
-				 return next.getIdentifier();
+	public DTPSchemaWrapper schemaNamed(String name) {
+		return this.isCaseSensitive() ? this.schemaNamedCaseSensitive(name) : this.schemaNamedIgnoreCase(name);
+	}
+
+	private DTPSchemaWrapper schemaNamedCaseSensitive(String name) {
+		for (Iterator<DTPSchemaWrapper> stream = this.schemaWrappers(); stream.hasNext(); ) {
+			DTPSchemaWrapper schema = stream.next();
+			if (schema.getName().equals(name)) {
+				return schema;
 			}
-		};
+		}
+		return null;
 	}
-
-	public DTPSchemaWrapper getSchemaForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getSchemata(), identifier);
-	}
-
-	public DTPSchemaWrapper getDefaultSchema() {
-		return this.getSchemaForIdentifiers(this.getDatabase().getDefaultSchemaIdentifiers());
-	}
-
-	/**
-	 * Return the first schema found.
-	 */
-	DTPSchemaWrapper getSchemaForIdentifiers(List<String> identifiers) {
-		for (String identifier : identifiers) {
-			DTPSchemaWrapper schema = this.getSchemaForIdentifier(identifier);
-			if (schema != null) {
+	
+	private DTPSchemaWrapper schemaNamedIgnoreCase(String name) {
+		for (Iterator<DTPSchemaWrapper> stream = this.schemaWrappers(); stream.hasNext(); ) {
+			DTPSchemaWrapper schema = stream.next();
+			if (StringTools.stringsAreEqualIgnoreCase(schema.getName(), name)) {
 				return schema;
 			}
 		}
@@ -183,68 +122,38 @@ abstract class DTPSchemaContainerWrapper
 	}
 
 	/**
-	 * If we find a default schema, return its identifier;
-	 * otherwise, return the last identifier on the list of default identifiers.
-	 * (Some containers have multiple possible default names.)
+	 * return the schema for the specified DTP schema
 	 */
-	public synchronized String getDefaultSchemaIdentifier() {
-		DTPSchemaWrapper schema = this.getDefaultSchema();
-		return (schema != null) ? schema.getIdentifier() : this.getDefaultSchemaIdentifier_();
+	DTPSchemaWrapper schema(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
+		for (Iterator<DTPSchemaWrapper> stream = this.schemaWrappers(); stream.hasNext(); ) {
+			DTPSchemaWrapper schema = stream.next();
+			if (schema.wraps(dtpSchema)) {
+				return schema;
+			}
+		}
+		throw new IllegalArgumentException("invalid DTP schema: " + dtpSchema);  //$NON-NLS-1$
 	}
 
-	private String getDefaultSchemaIdentifier_() {
-		List<String> identifiers = this.getDatabase().getDefaultSchemaIdentifiers();
-		// assume 'identifiers' is non-empty (!)
-		return identifiers.get(identifiers.size() - 1);
-	}
 
-
-	// ********** listening **********
+	// ********** disposal **********
 
 	@Override
-	synchronized void startListening() {
+	synchronized void dispose() {
+		this.dispose_();
+		super.dispose();
+	}
+
+	void dispose_() {
+		this.disposeSchemata();
+	}
+
+	private void disposeSchemata() {
 		if (this.schemata != null) {
-			this.startSchemata();
+			for (DTPSchemaWrapper schema : this.schemata) {
+				schema.dispose();
+			}
+			this.schemata = null;
 		}
-		super.startListening();
-	}
-
-	private void startSchemata() {
-		for (DTPSchemaWrapper schema : this.schemata) {
-			schema.startListening();
-		}
-	}
-
-	@Override
-	synchronized void stopListening() {
-		if (this.schemata != null) {
-			this.stopSchemata();
-		}
-		super.stopListening();
-	}
-
-	private void stopSchemata() {
-		for (DTPSchemaWrapper schema : this.schemata) {
-			schema.stopListening();
-		}
-	}
-
-
-	// ********** clear **********
-
-	@Override
-	synchronized void clear() {
-		if (this.schemata != null) {
-			this.clearSchemata();
-		}
-	}
-
-	private void clearSchemata() {
-		this.stopSchemata();
-		for (DTPSchemaWrapper schema : this.schemata) {
-			schema.clear();
-		}
-		this.schemata = null;
 	}
 
 }

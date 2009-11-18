@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
-import java.util.EventListener;
-
 
 /**
  * A ConnectionListener is notified of any changes to a connection.
@@ -23,7 +21,7 @@ import java.util.EventListener;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ConnectionListener extends EventListener {
+public interface ConnectionListener {
 
 	public void opened(ConnectionProfile profile);
 	public void modified(ConnectionProfile profile);
