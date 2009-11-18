@@ -36,7 +36,8 @@ public class GenericOrmXml
 	protected JpaXmlResource xmlResource;
 	
 	protected EntityMappings entityMappings;
-	
+
+	protected JpaResourceType resourceType;	
 	
 	public GenericOrmXml(MappingFileRef parent, JpaXmlResource resource) {
 		super(parent);
@@ -47,6 +48,10 @@ public class GenericOrmXml
 		XmlEntityMappings xmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
 		if (xmlEntityMappings != null) {
 			this.entityMappings = this.buildEntityMappings(xmlEntityMappings);
+		}
+		if (resource.getRootObject() != null) {
+			this.entityMappings = buildEntityMappings((XmlEntityMappings) resource.getRootObject());
+			this.resourceType = resource.getResourceType();
 		}
 	}
 
@@ -135,11 +140,12 @@ public class GenericOrmXml
 		XmlEntityMappings oldXmlEntityMappings = 
 			(this.entityMappings == null) ? null : this.entityMappings.getXmlEntityMappings();
 		XmlEntityMappings newXmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
+		JpaResourceType newResourceType = xmlResource.getResourceType();
 
 		// if the old and new xml entity mappings are different instances,
 		// we scrap the old and rebuild.  this can happen when the resource
 		// model drastically changes, such as a cvs checkout or an edit reversion
-		if (oldXmlEntityMappings != newXmlEntityMappings) {
+		if (oldXmlEntityMappings != newXmlEntityMappings || newXmlEntityMappings == null || valuesAreDifferent(this.resourceType, newResourceType)) {
 			if (this.entityMappings != null) {
 				this.getJpaFile(this.xmlResource.getFile()).removeRootStructureNode(this.xmlResource);
 				this.entityMappings.dispose();
@@ -149,12 +155,13 @@ public class GenericOrmXml
 		
 		if (newXmlEntityMappings != null) {
 			if (this.entityMappings != null) {
-				this.getJpaFile(this.xmlResource.getFile()).addRootStructureNode(this.xmlResource, this.entityMappings);
 				this.entityMappings.update();
 			} else {
 				this.setEntityMappings(this.buildEntityMappings(newXmlEntityMappings));
 			}
+			this.getJpaFile(this.xmlResource.getFile()).addRootStructureNode(this.xmlResource, this.entityMappings);
 		}
+		this.resourceType = newResourceType;
 	}
 	
 	protected EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings) {
