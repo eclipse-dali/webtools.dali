@@ -23,7 +23,6 @@
 			<property name="plugin-name" value="${plugin-name}"/>
 			<property name="classname" value="org.eclipse.jpt.utility.tests.internal.JptUtilityTests" />
 			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
-			<property name="extraVMargs" value=""/>
 		</ant>
 	</target>
 
