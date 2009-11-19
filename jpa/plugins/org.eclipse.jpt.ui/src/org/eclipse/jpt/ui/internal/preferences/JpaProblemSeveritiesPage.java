@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -21,6 +22,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -35,7 +37,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationPreferences;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiValidationPreferenceMessages;
-import org.eclipse.jpt.ui.internal.properties.JpaProjectPropertiesPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -682,6 +683,10 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	}
 
 	void performOk_(IProgressMonitor monitor) throws CoreException {
-		this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+		//if project is null this is a workspace preference page
+		if (this.getProject()==null) {
+			JavaPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+		}
+		else this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 	}
 }
