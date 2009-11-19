@@ -10,14 +10,24 @@
 package org.eclipse.jpt.ui.internal.preferences;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.layout.PixelConverter;
+import org.eclipse.jface.operation.IRunnableContext;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -25,6 +35,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationPreferences;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiValidationPreferenceMessages;
+import org.eclipse.jpt.ui.internal.properties.JpaProjectPropertiesPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -615,5 +626,62 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		else {
 			JpaValidationPreferences.setWorkspaceLevelProblemPreference(preferenceKey, value);
 		}
+	}
+	
+	// ********** OK/Revert/Apply behavior **********
+
+	@Override
+	public boolean performOk() {
+		super.performOk();
+
+		try {
+			// true=fork; false=uncancellable
+			this.buildOkProgressMonitorDialog().run(true, false, this.buildOkRunnableWithProgress());
+		}
+		catch (InterruptedException ex) {
+			return false;
+		} 
+		catch (InvocationTargetException ex) {
+			throw new RuntimeException(ex.getTargetException());
+		}
+
+		return true;
+	}
+
+	private IRunnableContext buildOkProgressMonitorDialog() {
+		return new ProgressMonitorDialog(this.getShell());
+	}
+
+	private IRunnableWithProgress buildOkRunnableWithProgress() {
+		return new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				IWorkspace ws = ResourcesPlugin.getWorkspace();
+				try {
+					// the build we execute in #performOk_() locks the workspace root,
+					// so we need to use the workspace root as our scheduling rule here
+					ws.run(
+							JpaProblemSeveritiesPage.this.buildOkWorkspaceRunnable(),
+							ws.getRoot(),
+							IWorkspace.AVOID_UPDATE,
+							monitor
+					);
+				}
+				catch (CoreException ex) {
+					throw new InvocationTargetException(ex);
+				}
+			}
+		};
+	}
+
+	IWorkspaceRunnable buildOkWorkspaceRunnable() {
+		return new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
+				JpaProblemSeveritiesPage.this.performOk_(monitor);
+			}
+		};
+	}
+
+	void performOk_(IProgressMonitor monitor) throws CoreException {
+		this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 	}
 }
