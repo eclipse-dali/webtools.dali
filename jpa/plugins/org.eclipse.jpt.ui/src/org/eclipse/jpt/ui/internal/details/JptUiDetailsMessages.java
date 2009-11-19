@@ -220,11 +220,10 @@ public class JptUiDetailsMessages {
 	public static String NullAttributeMappingUiProvider_label;
 	public static String OptionalComposite_false;
 	public static String OptionalComposite_true;
-	public static String OrderByComposite_customOrdering;
-	public static String OrderByComposite_noOrdering;
-	public static String OrderByComposite_orderByGroup;
-	public static String OrderByComposite_orderByLabel;
-	public static String OrderByComposite_primaryKeyOrdering;
+	public static String OrderingComposite_custom;
+	public static String OrderingComposite_none;
+	public static String OrderingComposite_orderingGroup;
+	public static String OrderingComposite_primaryKey;
 	public static String OrmSecondaryTablesComposite_defineInXml;
 	public static String OverridesComposite_association;
 	public static String OverridesComposite_attribute;
