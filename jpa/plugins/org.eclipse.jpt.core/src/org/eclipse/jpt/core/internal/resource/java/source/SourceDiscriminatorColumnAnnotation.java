@@ -70,12 +70,12 @@ public final class SourceDiscriminatorColumnAnnotation
 	// ********** JavaSourceNamedColumnAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.DISCRIMINATOR_COLUMN__NAME;
 	}
 
 	@Override
-	String getColumnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION;
 	}
 

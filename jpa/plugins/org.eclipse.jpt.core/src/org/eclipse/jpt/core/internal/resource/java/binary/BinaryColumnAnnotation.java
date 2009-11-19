@@ -51,12 +51,12 @@ public final class BinaryColumnAnnotation
 	// ********** JavaSourceNamedColumnAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.COLUMN__NAME;
 	}
 
 	@Override
-	String getColumnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.COLUMN__COLUMN_DEFINITION;
 	}
 

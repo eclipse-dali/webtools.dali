@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.ElementCollection2_0Anno
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToMany2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToOne2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverridesAnnotationDefinition;
@@ -150,6 +151,7 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(OneToMany2_0AnnotationDefinition.instance());
 		definitions.add(OneToOne2_0AnnotationDefinition.instance());
 		definitions.add(OrderByAnnotationDefinition.instance());
+		definitions.add(OrderColumn2_0AnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());
 		definitions.add(SequenceGenerator2_0AnnotationDefinition.instance());

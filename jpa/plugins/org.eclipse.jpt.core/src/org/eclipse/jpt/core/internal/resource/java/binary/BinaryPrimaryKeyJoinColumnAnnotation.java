@@ -45,12 +45,12 @@ public final class BinaryPrimaryKeyJoinColumnAnnotation
 	// ********** AbstractNamedColumn implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.PRIMARY_KEY_JOIN_COLUMN__NAME;
 	}
 
 	@Override
-	String getColumnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION;
 	}
 

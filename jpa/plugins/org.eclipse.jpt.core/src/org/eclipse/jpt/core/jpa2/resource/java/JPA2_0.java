@@ -48,6 +48,8 @@ public interface JPA2_0
 
 	String ONE_TO_ONE__ORPHAN_REMOVAL = "orphanRemoval";
 
+	String ORDER_COLUMN = PACKAGE_ + "OrderColumn";
+
 	String SEQUENCE_GENERATOR__CATALOG = "catalog";
 	String SEQUENCE_GENERATOR__SCHEMA = "schema";
 

@@ -23,6 +23,7 @@ public class JavaResource2_0Tests {
 		suite.addTestSuite(Cacheable2_0AnnotationTests.class);
 		suite.addTestSuite(ElementCollection2_0AnnotationTests.class);
 		suite.addTestSuite(MapsId2_0AnnotationTests.class);
+		suite.addTestSuite(OrderColumn2_0AnnotationTests.class);
 		suite.addTestSuite(SequenceGenerator2_0Tests.class);
 			
 		return suite;

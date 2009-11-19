@@ -45,12 +45,12 @@ public final class BinaryJoinColumnAnnotation
 	// ********** JavaSourceNamedColumnAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.JOIN_COLUMN__NAME;
 	}
 
 	@Override
-	String getColumnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.JOIN_COLUMN__COLUMN_DEFINITION;
 	}
 

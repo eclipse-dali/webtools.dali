@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * javax.persistence.DiscriminatorColumn
  * javax.persistence.PrimaryKeyJoinColumn.
  */
-abstract class BinaryNamedColumnAnnotation
+public abstract class BinaryNamedColumnAnnotation
 	extends BinaryAnnotation
 	implements NamedColumnAnnotation
 {
@@ -29,7 +29,7 @@ abstract class BinaryNamedColumnAnnotation
 	private String columnDefinition;
 
 
-	BinaryNamedColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryNamedColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.columnDefinition = this.buildColumnDefinition();
@@ -73,7 +73,7 @@ abstract class BinaryNamedColumnAnnotation
 		return (String) this.getJdtMemberValue(this.getNameElementName());
 	}
 
-	abstract String getNameElementName();
+	protected abstract String getNameElementName();
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -102,7 +102,7 @@ abstract class BinaryNamedColumnAnnotation
 		return (String) this.getJdtMemberValue(this.getColumnDefinitionElementName());
 	}
 
-	abstract String getColumnDefinitionElementName();
+	protected abstract String getColumnDefinitionElementName();
 
 	public TextRange getColumnDefinitionTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();

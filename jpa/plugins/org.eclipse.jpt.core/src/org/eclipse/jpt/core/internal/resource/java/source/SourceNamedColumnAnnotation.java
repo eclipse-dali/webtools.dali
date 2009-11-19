@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
  * javax.persistence.DiscriminatorColumn
  * javax.persistence.PrimaryKeyJoinColumn.
  */
-abstract class SourceNamedColumnAnnotation
+public abstract class SourceNamedColumnAnnotation
 	extends SourceAnnotation<Member>
 	implements NamedColumnAnnotation
 {
@@ -48,7 +48,7 @@ abstract class SourceNamedColumnAnnotation
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 	
-	SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildStringElementAdapter(this.getNameElementName());
 		this.nameAdapter = this.buildShortCircuitElementAdapter(this.nameDeclarationAdapter);
@@ -60,7 +60,7 @@ abstract class SourceNamedColumnAnnotation
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName);
 	}
 
-	DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
+	protected DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(this.daa, elementName, BooleanExpressionConverter.instance());
 	}
 
@@ -72,7 +72,7 @@ abstract class SourceNamedColumnAnnotation
 		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
-	AnnotationElementAdapter<Boolean> buildShortCircuitBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
+	protected AnnotationElementAdapter<Boolean> buildShortCircuitBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
 		return new ShortCircuitAnnotationElementAdapter<Boolean>(this.member, daea);
 	}
 
@@ -133,7 +133,7 @@ abstract class SourceNamedColumnAnnotation
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
-	abstract String getNameElementName();
+	protected abstract String getNameElementName();
 
 	// ***** column definition
 	public String getColumnDefinition() {
@@ -158,7 +158,7 @@ abstract class SourceNamedColumnAnnotation
 		return this.getElementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
 	}
 
-	abstract String getColumnDefinitionElementName();
+	protected abstract String getColumnDefinitionElementName();
 
 
 	// ********** NestableAnnotation implementation **********
