@@ -31,7 +31,7 @@ public class JpaFacetInstallDataModelProvider
 	
 	@Override
 	public Set<String> getPropertyNames() {
-		@SuppressWarnings("unchecked") Set<String> propertyNames = super.getPropertyNames();
+		Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
 		propertyNames.add(DB_DRIVER_NAME);
 		propertyNames.add(CREATE_ORM_XML);
@@ -76,7 +76,7 @@ public class JpaFacetInstallDataModelProvider
 			return this.getDefaultDriverName();
 		}
 		if (propertyName.equals(CREATE_ORM_XML)) {
-			return Boolean.TRUE;
+			return Boolean.FALSE;
 		}
 		
 		return super.getDefaultProperty(propertyName);

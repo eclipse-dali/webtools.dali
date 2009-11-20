@@ -12,12 +12,16 @@ package org.eclipse.jpt.core.tests.internal.context;
 import junit.framework.TestCase;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
+import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -36,7 +40,15 @@ public class JpaProjectTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.jpaProject = TestJpaProject.buildJpaProject(BASE_PROJECT_NAME, false); // false = no auto-build
+		this.jpaProject = TestJpaProject.buildJpaProject(BASE_PROJECT_NAME, false, buildJpaConfigDataModel()); // false = no auto-build
+	}
+	
+	protected IDataModel buildJpaConfigDataModel() {
+		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
+		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JptCorePlugin.JPA_FACET_VERSION_1_0);
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericJpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
+		return dataModel;
 	}
 	
 	@Override
@@ -72,7 +84,7 @@ public class JpaProjectTests extends TestCase
 	private void createPersistenceXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
-		config.setProperty(PersistenceFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
 		config.getDefaultOperation().execute(null, null);
 	}
 	
@@ -98,15 +110,15 @@ public class JpaProjectTests extends TestCase
 	private void createDefaultOrmXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
 		config.getDefaultOperation().execute(null, null);
 	}
 	
 	private void createOrmXmlFile(String filePath) throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
-		config.setProperty(OrmFileCreationDataModelProperties.FILE_PATH, filePath);
+		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(JpaFileCreationDataModelProperties.FILE_PATH, filePath);
 		config.getDefaultOperation().execute(null, null);
 	}
 
