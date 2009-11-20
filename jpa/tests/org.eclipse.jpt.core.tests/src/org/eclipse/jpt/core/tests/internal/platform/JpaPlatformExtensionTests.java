@@ -53,7 +53,7 @@ public class JpaPlatformExtensionTests extends ContextModelTestCase
 	protected IDataModel buildConfig() throws Exception {
 		IActionConfigFactory configFactory = new JpaFacetInstallDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
-		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JptCorePlugin.JPA_FACET_VERSION_1_0); //$NON-NLS-1$
+		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JptCorePlugin.JPA_FACET_VERSION_1_0);
 		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TEST_PLATFORM_ID);
 		return config;
 	}
