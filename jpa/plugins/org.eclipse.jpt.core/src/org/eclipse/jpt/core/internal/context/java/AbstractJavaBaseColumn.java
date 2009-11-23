@@ -45,11 +45,22 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	protected void initialize(T column) {
 		super.initialize(column);
 		this.defaultTable = this.buildDefaultTable();
-		this.specifiedTable = this.getResourceTable(column);
-		this.specifiedUnique = this.getResourceUnique(column);
-		this.specifiedNullable = this.getResourceNullable(column);
-		this.specifiedInsertable = this.getResourceInsertable(column);
-		this.specifiedUpdatable = this.getResourceUpdatable(column);
+		this.specifiedTable = this.getResourceTable();
+		this.specifiedUnique = this.getResourceUnique();
+		this.specifiedNullable = this.getResourceNullable();
+		this.specifiedInsertable = this.getResourceInsertable();
+		this.specifiedUpdatable = this.getResourceUpdatable();
+	}
+	
+	@Override
+	protected void update(T column) {
+		super.update(column);
+		this.setDefaultTable(this.buildDefaultTable());
+		this.setSpecifiedTable_(this.getResourceTable());
+		this.setSpecifiedUnique_(this.getResourceUnique());
+		this.setSpecifiedNullable_(this.getResourceNullable());
+		this.setSpecifiedInsertable_(this.getResourceInsertable());
+		this.setSpecifiedUpdatable_(this.getResourceUpdatable());
 	}
 	
 	@Override
@@ -57,8 +68,9 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		return (JavaBaseColumn.Owner) super.getOwner();
 	}
 
-	//************** IAbstractColumn implementation *******************
+	//************** BaseColumn implementation *******************
 	
+	//************** table *******************
 
 	public String getTable() {
 		return (this.getSpecifiedTable() == null) ? getDefaultTable() : this.getSpecifiedTable();
@@ -96,6 +108,12 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		this.defaultTable = newDefaultTable;
 		firePropertyChanged(BaseColumn.DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
 	}
+	
+	protected String getResourceTable() {
+		return getResourceColumn().getTable();
+	}
+	
+	//************** unique *******************
 
 	public boolean isUnique() {
 		return (this.getSpecifiedUnique() == null) ? this.isDefaultUnique() : this.getSpecifiedUnique().booleanValue();
@@ -128,6 +146,12 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
+	protected Boolean getResourceUnique() {
+		return getResourceColumn().getUnique();
+	}
+	
+	//************** nullable *******************
+	
 	public boolean isNullable() {
 		return (this.getSpecifiedNullable() == null) ? this.isDefaultNullable() : this.getSpecifiedNullable().booleanValue();
 	}
@@ -158,6 +182,12 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		this.specifiedNullable = newSpecifiedNullable;
 		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
+	
+	protected Boolean getResourceNullable() {
+		return getResourceColumn().getNullable();
+	}
+	
+	//************** insertable *******************
 	
 	public boolean isInsertable() {
 		return (this.getSpecifiedInsertable() == null) ? this.isDefaultInsertable() : this.getSpecifiedInsertable().booleanValue();
@@ -190,6 +220,12 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 	
+	protected Boolean getResourceInsertable() {
+		return getResourceColumn().getInsertable();
+	}
+	
+	//************** updatable *******************
+
 	public boolean isUpdatable() {
 		return (this.getSpecifiedUpdatable() == null) ? this.isDefaultUpdatable() : this.getSpecifiedUpdatable().booleanValue();
 	}
@@ -220,7 +256,11 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		this.specifiedUpdatable = newSpecifiedUpdatable;
 		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
-
+	
+	protected Boolean getResourceUpdatable() {
+		return getResourceColumn().getUpdatable();
+	}
+	
 	@Override
 	protected String getTableName() {
 		return this.getTable();
@@ -264,39 +304,9 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		}
 		return null;
 	}
-	
-	@Override
-	protected void update(T column) {
-		super.update(column);
-		this.setDefaultTable(this.buildDefaultTable());
-		this.setSpecifiedTable_(this.getResourceTable(column));
-		this.setSpecifiedUnique_(this.getResourceUnique(column));
-		this.setSpecifiedNullable_(this.getResourceNullable(column));
-		this.setSpecifiedInsertable_(this.getResourceInsertable(column));
-		this.setSpecifiedUpdatable_(this.getResourceUpdatable(column));
-	}
 
 	protected String buildDefaultTable() {
 		return this.getOwner().getDefaultTableName();
 	}
-	
-	protected String getResourceTable(BaseColumnAnnotation column) {
-		return column.getTable();
-	}
-	
-	protected Boolean getResourceUnique(BaseColumnAnnotation column) {
-		return column.getUnique();
-	}
-	
-	protected Boolean getResourceNullable(BaseColumnAnnotation column) {
-		return column.getNullable();
-	}
-	
-	protected Boolean getResourceInsertable(BaseColumnAnnotation column) {
-		return column.getInsertable();
-	}
-	
-	protected Boolean getResourceUpdatable(BaseColumnAnnotation column) {
-		return column.getUpdatable();
-	}
+
 }

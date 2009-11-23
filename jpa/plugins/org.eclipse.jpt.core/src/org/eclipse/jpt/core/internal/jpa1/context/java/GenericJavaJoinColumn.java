@@ -37,17 +37,25 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	protected String specifiedReferencedColumnName;
 
 	protected String defaultReferencedColumnName;
-
-	protected JoinColumnAnnotation joinColumn;
 	
 	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
 		super(parent, owner);
 	}
-
+	
 	@Override
-	protected JoinColumnAnnotation getResourceColumn() {
-		return this.joinColumn;
+	public void initialize(JoinColumnAnnotation annotation) {
+		super.initialize(annotation);
+		this.specifiedReferencedColumnName = annotation.getReferencedColumnName();
+		this.defaultReferencedColumnName = this.buildDefaultReferencedColumnName();
 	}
+	
+	@Override
+	public void update(JoinColumnAnnotation annotation) {
+		super.update(annotation);
+		this.setSpecifiedReferencedColumnName_(annotation.getReferencedColumnName());
+		this.setDefaultReferencedColumnName(this.buildDefaultReferencedColumnName());
+	}
+
 	
 	public String getReferencedColumnName() {
 		return (this.specifiedReferencedColumnName == null) ? this.defaultReferencedColumnName : this.specifiedReferencedColumnName;
@@ -60,7 +68,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		this.joinColumn.setReferencedColumnName(newSpecifiedReferencedColumnName);
+		this.getResourceColumn().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 
@@ -145,22 +153,6 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	@Override
-	public void initialize(JoinColumnAnnotation annotation) {
-		this.joinColumn = annotation;
-		super.initialize(annotation);
-		this.specifiedReferencedColumnName = annotation.getReferencedColumnName();
-		this.defaultReferencedColumnName = this.buildDefaultReferencedColumnName();
-	}
-	
-	@Override
-	public void update(JoinColumnAnnotation annotation) {
-		this.joinColumn = annotation;
-		super.update(annotation);
-		this.setSpecifiedReferencedColumnName_(annotation.getReferencedColumnName());
-		this.setDefaultReferencedColumnName(this.buildDefaultReferencedColumnName());
 	}
 	
 	@Override

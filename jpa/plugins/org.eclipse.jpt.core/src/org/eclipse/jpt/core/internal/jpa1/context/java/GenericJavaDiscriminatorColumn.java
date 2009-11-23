@@ -41,19 +41,14 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	public GenericJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner) {
 		super(parent, owner);
 	}
-
-	public void initialize(JavaResourcePersistentMember persistentResource) {
-		this.persistenceResource = persistentResource;
-		this.initialize(this.getResourceColumn());
-	}
 	
 	@Override
 	public void initialize(DiscriminatorColumnAnnotation column) {
 		super.initialize(column);
 		this.defaultDiscriminatorType = this.buildDefaultDiscriminatorType();
 		this.defaultLength = this.buildDefaultLength();
-		this.specifiedDiscriminatorType = this.getResourceDiscriminatorType(column);
-		this.specifiedLength = this.getResourceLength(column);
+		this.specifiedDiscriminatorType = this.getResourceDiscriminatorType();
+		this.specifiedLength = this.getResourceLength();
 	}
 	
 	@Override
@@ -63,12 +58,6 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	
 	protected JavaEntity getJavaEntity() {
 		return (JavaEntity) super.getParent();
-	}
-
-	@Override
-	protected DiscriminatorColumnAnnotation getResourceColumn() {
-		return (DiscriminatorColumnAnnotation) this.persistenceResource.
-				getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 	
 	public boolean isResourceSpecified() {
@@ -170,10 +159,11 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	@Override
 	public void update(DiscriminatorColumnAnnotation discriminatorColumn) {
 		//don't call super because postUpdate() handles updating the default column name
+		this.resourceColumn = discriminatorColumn;
 		this.setSpecifiedName_(discriminatorColumn.getName());
 		this.setColumnDefinition_(discriminatorColumn.getColumnDefinition());
-		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType(discriminatorColumn));
-		this.setSpecifiedLength_(this.getResourceLength(discriminatorColumn));
+		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType());
+		this.setSpecifiedLength_(this.getResourceLength());
 	}
 	
 	@Override
@@ -187,12 +177,12 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		this.setDefaultLength(this.buildDefaultLength());
 	}
 	
-	protected DiscriminatorType getResourceDiscriminatorType(DiscriminatorColumnAnnotation discriminatorColumn) {
-		return DiscriminatorType.fromJavaResourceModel(discriminatorColumn.getDiscriminatorType());
+	protected DiscriminatorType getResourceDiscriminatorType() {
+		return DiscriminatorType.fromJavaResourceModel(getResourceColumn().getDiscriminatorType());
 	}
 	
-	protected Integer getResourceLength(DiscriminatorColumnAnnotation discriminatorColumn) {
-		return discriminatorColumn.getLength();
+	protected Integer getResourceLength() {
+		return getResourceColumn().getLength();
 	}
 	
 	@Override

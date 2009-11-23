@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipRefe
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaCascade;
@@ -221,7 +222,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaCascade(parent);
 	}
 	
-	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {
+	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {
 		return new GenericJavaColumn(parent, owner);
 	}
 	

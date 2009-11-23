@@ -50,6 +50,7 @@ import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnot
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
@@ -209,7 +210,7 @@ public abstract class AbstractJavaEntity
 		this.defaultDiscriminatorValue = this.buildDefaultDiscriminatorValue();
 		this.specifiedDiscriminatorColumnIsAllowed = this.buildSpecifiedDiscriminatorColumnIsAllowed();
 		this.discriminatorColumnIsUndefined = this.buildDiscriminatorColumnIsUndefined();
-		this.discriminatorColumn.initialize(resourcePersistentType);
+		this.discriminatorColumn.initialize(this.getResourceDiscriminatorColumn());
 		this.specifiedTableIsAllowed = this.buildSpecifiedTableIsAllowed();
 		this.tableIsUndefined = this.buildTableIsUndefined();
 		this.table.initialize(resourcePersistentType);
@@ -268,6 +269,11 @@ public abstract class AbstractJavaEntity
 	protected DiscriminatorValueAnnotation getResourceDiscriminatorValue() {
 		return (DiscriminatorValueAnnotation) this.javaResourcePersistentType.
 				getNonNullAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME);
+	}
+	
+	protected DiscriminatorColumnAnnotation getResourceDiscriminatorColumn() {
+		return (DiscriminatorColumnAnnotation) this.javaResourcePersistentType.
+				getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void initializeIdClass() {
@@ -1158,7 +1164,7 @@ public abstract class AbstractJavaEntity
 	
 	protected void updateDiscriminatorColumn() {
 		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
-		getDiscriminatorColumn().update(this.javaResourcePersistentType);
+		getDiscriminatorColumn().update(this.getResourceDiscriminatorColumn());
 	}
 	
 	protected void postUpdateDiscriminatorColumn() {

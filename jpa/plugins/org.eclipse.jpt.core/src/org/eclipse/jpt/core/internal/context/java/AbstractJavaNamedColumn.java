@@ -36,6 +36,8 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 
 	protected String columnDefinition;
 
+	protected T resourceColumn;
+
 	protected AbstractJavaNamedColumn(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
@@ -44,16 +46,25 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	// ******************* initialization from java resource model ********************
 	
 	protected void initialize(T column) {
+		this.resourceColumn = column;
 		this.specifiedName = column.getName();
 		this.defaultName = this.buildDefaultName();
 		this.columnDefinition = column.getColumnDefinition();	
 	}
-	
 
-	protected abstract T getResourceColumn();
+	protected void update(T column) {
+		this.resourceColumn = column;
+		this.setSpecifiedName_(column.getName());
+		this.setDefaultName(this.buildDefaultName());
+		this.setColumnDefinition_(column.getColumnDefinition());
+	}	
+
+	protected T getResourceColumn() {
+		return this.resourceColumn;
+	}
 
 	
-	//************** INamedColumn implementation *****************
+	//************** NamedColumn implementation *****************
 	public String getName() {
 		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}
@@ -89,6 +100,13 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 		String oldDefaultName = this.defaultName;
 		this.defaultName = newDefaultName;
 		firePropertyChanged(NamedColumn.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+	}
+	
+	/**
+	 * Return the default column name.
+	 */
+	protected String buildDefaultName() {
+		return this.getOwner().getDefaultColumnName();
 	}
 
 	public String getColumnDefinition() {
@@ -174,21 +192,4 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
 	}
-	
-	
-	// ******************* update from java resource model ********************
-
-	protected void update(T column) {
-		this.setSpecifiedName_(column.getName());
-		this.setDefaultName(this.buildDefaultName());
-		this.setColumnDefinition_(column.getColumnDefinition());
-	}
-	
-	/**
-	 * Return the default column name.
-	 */
-	protected String buildDefaultName() {
-		return this.getOwner().getDefaultColumnName();
-	}
-
 }

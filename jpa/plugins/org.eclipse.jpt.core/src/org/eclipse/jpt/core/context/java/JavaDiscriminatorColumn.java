@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 
 /**
  * 
@@ -23,13 +23,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  */
 public interface JavaDiscriminatorColumn extends JavaNamedColumn, DiscriminatorColumn
 {	
-	void initialize(JavaResourcePersistentMember jrpm);
+	void initialize(DiscriminatorColumnAnnotation resourceColumn);
 	
 	/**
-	 * Update the JavaDiscriminatorColumn context model object to match the JavaResourcePersistentMember 
+	 * Update the JavaDiscriminatorColumn context model object to match the DiscriminatorColumnAnnotation 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(JavaResourcePersistentMember jrpm);
+	void update(DiscriminatorColumnAnnotation resourceColumn);
 		
 	/**
 	 * interface allowing columns to be used in multiple places

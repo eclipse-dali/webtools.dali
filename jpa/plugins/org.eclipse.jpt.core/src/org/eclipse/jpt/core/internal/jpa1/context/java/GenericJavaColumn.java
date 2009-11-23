@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseColumn;
@@ -26,26 +27,24 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 
 	protected Integer specifiedScale;
 	
-	public GenericJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {
+	public GenericJavaColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
 	@Override
 	public void initialize(ColumnAnnotation column) {
 		super.initialize(column);
-		this.specifiedLength = this.getResourceLength(column);
-		this.specifiedPrecision = this.getResourcePrecision(column);
-		this.specifiedScale = this.getResourceScale(column);
+		this.specifiedLength = this.getResourceLength();
+		this.specifiedPrecision = this.getResourcePrecision();
+		this.specifiedScale = this.getResourceScale();
 	}
 	
 	@Override
-	public JavaColumn.Owner getOwner() {
-		return (JavaColumn.Owner) super.getOwner();
-	}
-
-	@Override
-	protected ColumnAnnotation getResourceColumn() {
-		return this.getOwner().getResourceColumn();
+	public void update(ColumnAnnotation column) {
+		super.update(column);
+		this.setSpecifiedLength_(this.getResourceLength());
+		this.setSpecifiedPrecision_(this.getResourcePrecision());
+		this.setSpecifiedScale_(this.getResourceScale());
 	}
 	
 	public int getLength() {
@@ -72,6 +71,10 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 		this.specifiedLength = newSpecifiedLength;
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
+	
+	protected Integer getResourceLength() {
+		return getResourceColumn().getLength();
+	}
 
 	public int getPrecision() {
 		return (this.getSpecifiedPrecision() == null) ? getDefaultPrecision() : this.getSpecifiedPrecision().intValue();
@@ -96,6 +99,10 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 		Integer oldSpecifiedPrecision = this.specifiedPrecision;
 		this.specifiedPrecision = newSpecifiedPrecision;
 		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
+	}
+	
+	protected Integer getResourcePrecision() {
+		return getResourceColumn().getPrecision();
 	}
 
 	public int getScale() {
@@ -122,7 +129,11 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 		this.specifiedScale = newSpecifiedScale;
 		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
 	}
-
+	
+	protected Integer getResourceScale() {
+		return getResourceColumn().getScale();
+	}
+	
 	@Override
 	public boolean tableIsAllowed() {
 		return true;
@@ -131,25 +142,5 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = getResourceColumn().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
-	}
-	
-	@Override
-	public void update(ColumnAnnotation column) {
-		super.update(column);
-		this.setSpecifiedLength_(this.getResourceLength(column));
-		this.setSpecifiedPrecision_(this.getResourcePrecision(column));
-		this.setSpecifiedScale_(this.getResourceScale(column));
-	}
-	
-	protected Integer getResourceLength(ColumnAnnotation column) {
-		return column.getLength();
-	}
-	
-	protected Integer getResourcePrecision(ColumnAnnotation column) {
-		return column.getPrecision();
-	}
-	
-	protected Integer getResourceScale(ColumnAnnotation column) {
-		return column.getScale();
 	}
 }
