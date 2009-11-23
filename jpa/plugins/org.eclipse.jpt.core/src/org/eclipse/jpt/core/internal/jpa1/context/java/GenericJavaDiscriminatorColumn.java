@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -35,8 +34,6 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	protected Integer specifiedLength;
 	
 	protected int defaultLength;
-	
-	protected JavaResourcePersistentMember persistenceResource;
 	
 	public GenericJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner) {
 		super(parent, owner);
@@ -150,11 +147,6 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 
 	
 	// ********** java annotations -> persistence model **********
-	
-	public void update(JavaResourcePersistentMember persistentResource) {
-		this.persistenceResource = persistentResource;
-		this.update(this.getResourceColumn());
-	}
 	
 	@Override
 	public void update(DiscriminatorColumnAnnotation discriminatorColumn) {
