@@ -18,8 +18,6 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
-import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +27,6 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getOrderColumn <em>Order Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyClass <em>Map Key Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyEnumerated <em>Map Key Enumerated</em>}</li>
@@ -41,37 +38,10 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlManyToMany_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlManyToMany_2_0 extends JpaEObject
+public interface XmlManyToMany_2_0 extends XmlOrderable_2_0
 {
-	/**
-	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order Column</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order Column</em>' containment reference.
-	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlManyToMany_2_0_OrderColumn()
-	 * @model containment="true"
-	 * @generated
-	 */
-	XmlOrderColumn getOrderColumn();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getOrderColumn <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order Column</em>' containment reference.
-	 * @see #getOrderColumn()
-	 * @generated
-	 */
-	void setOrderColumn(XmlOrderColumn value);
-
 	/**
 	 * Returns the value of the '<em><b>Map Key Class</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

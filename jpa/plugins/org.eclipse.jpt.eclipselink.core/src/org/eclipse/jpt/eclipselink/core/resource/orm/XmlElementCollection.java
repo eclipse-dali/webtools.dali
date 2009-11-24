@@ -22,12 +22,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
@@ -1140,21 +1142,21 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	
 	@Override
 	public TextRange getEnumeratedTextRange() {
-		return getAttributeTextRange(EclipseLink2_0.ENUMERATED);
+		return getAttributeTextRange(JPA.ENUMERATED);
 	}
 	
 	@Override
 	public TextRange getLobTextRange() {
-		return getAttributeTextRange(EclipseLink2_0.LOB);
+		return getAttributeTextRange(JPA.LOB);
 	}
 	
 	@Override
 	public TextRange getTemporalTextRange() {
-		return getAttributeTextRange(EclipseLink2_0.TEMPORAL);
+		return getAttributeTextRange(JPA.TEMPORAL);
 	}
 	
 	public TextRange getConvertTextRange() {
-		return getElementTextRange(EclipseLink2_0.CONVERT);
+		return getElementTextRange(EclipseLink.CONVERT);
 	}
 	
 	
@@ -1175,46 +1177,46 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			buildFetchTranslator(),
 			buildAccessTranslator(),
 			buildOrderByTranslator(),
-			XmlOrderColumn.buildTranslator(EclipseLink2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_OrderColumn()),		
+			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn()),		
 			buildMapKeyTranslator(),
-			XmlMapKeyClass.buildTranslator(EclipseLink2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass()),		
+			XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass()),		
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
 			buildMapKeyConvertTranslator(),
-			XmlAttributeOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyAttributeOverrides()),		
+			XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyAttributeOverrides()),		
 			XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyAssociationOverrides()),		
-			XmlColumn.buildTranslator(EclipseLink2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),		
-			XmlJoinColumn.buildTranslator(EclipseLink2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),		
-			XmlColumn.buildTranslator(EclipseLink2_0.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),		
+			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),		
+			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),		
+			XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),		
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
 			buildConvertTranslator(),
-			XmlAttributeOverride.buildTranslator(EclipseLink2_0.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),		
-			XmlAssociationOverride.buildTranslator(EclipseLink2_0.ASSOCIATION_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AssociationOverrides()),
-			XmlConverter.buildTranslator(EclipseLink2_0.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter()),
-			XmlConverter.buildTranslator(EclipseLink2_0.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter()),
-			XmlConverter.buildTranslator(EclipseLink2_0.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter()),
-			XmlConverter.buildTranslator(EclipseLink2_0.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter()),
-			XmlCollectionTable.buildTranslator(EclipseLink2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable()),
+			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),		
+			XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AssociationOverrides()),
+			XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter()),
+			XmlConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter()),
+			XmlConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter()),
+			XmlConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter()),
+			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable()),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator()
 		};
 	}
 	
 	protected static Translator buildMapKeyConvertTranslator() {
-		return new Translator(EclipseLink2_0.MAP_KEY_CONVERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert());
+		return new Translator(JPA2_0.MAP_KEY_CONVERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert());
 	}
 	
 	protected static Translator buildConvertTranslator() {
-		return new Translator(EclipseLink2_0.CONVERT, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertibleMapping_Convert());
+		return new Translator(EclipseLink.CONVERT, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertibleMapping_Convert());
 	}
 	
 	protected static Translator buildPropertyTranslator() {
-		return XmlProperty.buildTranslator(EclipseLink2_0.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
 	
 	protected static Translator buildAccessMethodsTranslator() {
-		return XmlAccessMethods.buildTranslator(EclipseLink2_0.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
+		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
 }

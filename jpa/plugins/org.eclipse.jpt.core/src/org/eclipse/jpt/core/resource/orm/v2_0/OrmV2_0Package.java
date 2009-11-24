@@ -297,13 +297,22 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_20__ENUMERATED = OrmPackage.XML_CONVERTIBLE_MAPPING__ENUMERATED;
 
 	/**
+	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_20__ORDER_COLUMN = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__TARGET_CLASS = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 0;
+	public static final int XML_ELEMENT_COLLECTION_20__TARGET_CLASS = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -312,7 +321,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__FETCH = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_ELEMENT_COLLECTION_20__FETCH = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Order By</b></em>' attribute.
@@ -321,16 +330,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__ORDER_BY = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__ORDER_COLUMN = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_ELEMENT_COLLECTION_20__ORDER_BY = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
@@ -609,6 +609,34 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_GENERATOR_20_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0 <em>Xml Orderable 20</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderable_2_0()
+	 * @generated
+	 */
+	public static final int XML_ORDERABLE_20 = 29;
+
+	/**
+	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ORDERABLE_20__ORDER_COLUMN = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Orderable 20</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ORDERABLE_20_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0 <em>Xml Many To Many 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -625,7 +653,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__ORDER_COLUMN = 0;
+	public static final int XML_MANY_TO_MANY_20__ORDER_COLUMN = XML_ORDERABLE_20__ORDER_COLUMN;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
@@ -634,7 +662,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_CLASS = 1;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_CLASS = XML_ORDERABLE_20_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
@@ -643,7 +671,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_TEMPORAL = 2;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_TEMPORAL = XML_ORDERABLE_20_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
@@ -652,7 +680,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ENUMERATED = 3;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ENUMERATED = XML_ORDERABLE_20_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
@@ -661,7 +689,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = 4;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_ORDERABLE_20_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
@@ -670,7 +698,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_COLUMN = 5;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_COLUMN = XML_ORDERABLE_20_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
@@ -679,7 +707,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = 6;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = XML_ORDERABLE_20_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Xml Many To Many 20</em>' class.
@@ -688,7 +716,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20_FEATURE_COUNT = 7;
+	public static final int XML_MANY_TO_MANY_20_FEATURE_COUNT = XML_ORDERABLE_20_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
@@ -1244,7 +1272,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getLockModeType_2_0()
 	 * @generated
 	 */
-	public static final int LOCK_MODE_TYPE_20 = 29;
+	public static final int LOCK_MODE_TYPE_20 = 30;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1448,6 +1476,13 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlOrphanRemovable_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlOrderable_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1787,21 +1822,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderColumn <em>Order Column</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Order Column</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderColumn()
-	 * @see #getXmlElementCollection_2_0()
-	 * @generated
-	 */
-	public EReference getXmlElementCollection_2_0_OrderColumn()
-	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(3);
-	}
-
-
-	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKey <em>Map Key</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1812,7 +1832,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKey()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(4);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -1827,7 +1847,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyClass()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(5);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -1842,7 +1862,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlElementCollection_2_0_MapKeyTemporal()
 	{
-		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(6);
+		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -1857,7 +1877,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlElementCollection_2_0_MapKeyEnumerated()
 	{
-		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(7);
+		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(6);
 	}
 
 
@@ -1872,7 +1892,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyAttributeOverrides()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(8);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(7);
 	}
 
 
@@ -1887,7 +1907,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyColumn()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(9);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(8);
 	}
 
 
@@ -1902,7 +1922,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyJoinColumns()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(10);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(9);
 	}
 
 
@@ -1917,7 +1937,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_Column()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(11);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(10);
 	}
 
 
@@ -1932,7 +1952,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_AttributeOverrides()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(12);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(11);
 	}
 
 
@@ -1947,7 +1967,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_AssociationOverrides()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(13);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(12);
 	}
 
 
@@ -1962,7 +1982,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_CollectionTable()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(14);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(13);
 	}
 
 
@@ -2096,21 +2116,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getOrderColumn <em>Order Column</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Order Column</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getOrderColumn()
-	 * @see #getXmlManyToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlManyToMany_2_0_OrderColumn()
-	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyClass <em>Map Key Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2121,7 +2126,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlManyToMany_2_0_MapKeyClass()
 	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(1);
+		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -2136,7 +2141,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlManyToMany_2_0_MapKeyTemporal()
 	{
-		return (EAttribute)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(2);
+		return (EAttribute)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(1);
 	}
 
 
@@ -2151,7 +2156,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlManyToMany_2_0_MapKeyEnumerated()
 	{
-		return (EAttribute)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(3);
+		return (EAttribute)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(2);
 	}
 
 
@@ -2166,7 +2171,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlManyToMany_2_0_MapKeyAttributeOverrides()
 	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(4);
+		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -2181,7 +2186,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlManyToMany_2_0_MapKeyColumn()
 	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(5);
+		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -2196,7 +2201,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlManyToMany_2_0_MapKeyJoinColumns()
 	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(6);
+		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -2302,21 +2307,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrderColumn <em>Order Column</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Order Column</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrderColumn()
-	 * @see #getXmlOneToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlOneToMany_2_0_OrderColumn()
-	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyClass <em>Map Key Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2327,7 +2317,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlOneToMany_2_0_MapKeyClass()
 	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(1);
+		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -2342,7 +2332,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlOneToMany_2_0_MapKeyTemporal()
 	{
-		return (EAttribute)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(2);
+		return (EAttribute)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(1);
 	}
 
 
@@ -2357,7 +2347,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlOneToMany_2_0_MapKeyEnumerated()
 	{
-		return (EAttribute)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(3);
+		return (EAttribute)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(2);
 	}
 
 
@@ -2372,7 +2362,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlOneToMany_2_0_MapKeyAttributeOverrides()
 	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(4);
+		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -2387,7 +2377,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlOneToMany_2_0_MapKeyColumn()
 	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(5);
+		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -2402,7 +2392,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlOneToMany_2_0_MapKeyJoinColumns()
 	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(6);
+		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -2783,6 +2773,35 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0 <em>Xml Orderable 20</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Orderable 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0
+	 * @generated
+	 */
+	public EClass getXmlOrderable_2_0()
+	{
+		return xmlOrderable_2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0#getOrderColumn <em>Order Column</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Order Column</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0#getOrderColumn()
+	 * @see #getXmlOrderable_2_0()
+	 * @generated
+	 */
+	public EReference getXmlOrderable_2_0_OrderColumn()
+	{
+		return (EReference)xmlOrderable_2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0 <em>Lock Mode Type 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2851,7 +2870,6 @@ public class OrmV2_0Package extends EPackageImpl
 		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__TARGET_CLASS);
 		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__FETCH);
 		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__ORDER_BY);
-		createEReference(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__ORDER_COLUMN);
 		createEReference(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__MAP_KEY);
 		createEReference(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS);
 		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL);
@@ -2878,7 +2896,6 @@ public class OrmV2_0Package extends EPackageImpl
 		createEAttribute(xmlGenerator_2_0EClass, XML_GENERATOR_20__DESCRIPTION);
 
 		xmlManyToMany_2_0EClass = createEClass(XML_MANY_TO_MANY_20);
-		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__ORDER_COLUMN);
 		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_CLASS);
 		createEAttribute(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_TEMPORAL);
 		createEAttribute(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_ENUMERATED);
@@ -2896,7 +2913,6 @@ public class OrmV2_0Package extends EPackageImpl
 		createEAttribute(xmlNamedQuery_2_0EClass, XML_NAMED_QUERY_20__LOCK_MODE);
 
 		xmlOneToMany_2_0EClass = createEClass(XML_ONE_TO_MANY_20);
-		createEReference(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__ORDER_COLUMN);
 		createEReference(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_CLASS);
 		createEAttribute(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL);
 		createEAttribute(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED);
@@ -2942,6 +2958,9 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlOrphanRemovable_2_0EClass = createEClass(XML_ORPHAN_REMOVABLE_20);
 		createEAttribute(xmlOrphanRemovable_2_0EClass, XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL);
 
+		xmlOrderable_2_0EClass = createEClass(XML_ORDERABLE_20);
+		createEReference(xmlOrderable_2_0EClass, XML_ORDERABLE_20__ORDER_COLUMN);
+
 		// Create enums
 		lockModeType_2_0EEnum = createEEnum(LOCK_MODE_TYPE_20);
 	}
@@ -2981,9 +3000,12 @@ public class OrmV2_0Package extends EPackageImpl
 		// Add supertypes to classes
 		xmlAttributeMapping_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
+		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
 		xmlEntity_2_0EClass.getESuperTypes().add(this.getXmlCacheable_2_0());
+		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable_2_0());
+		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
 		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlSingleRelationshipMapping_2_0());
 		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable_2_0());
 		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlDerivedId_2_0());
@@ -3013,7 +3035,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEAttribute(getXmlElementCollection_2_0_TargetClass(), theXMLTypePackage.getString(), "targetClass", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlElementCollection_2_0_Fetch(), theOrmPackage.getFetchType(), "fetch", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlElementCollection_2_0_OrderBy(), theOrmPackage.getOrderBy(), "orderBy", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlElementCollection_2_0_OrderColumn(), theOrmPackage.getXmlOrderColumn(), null, "orderColumn", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_2_0_MapKey(), theOrmPackage.getMapKey(), null, "mapKey", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_2_0_MapKeyClass(), theOrmPackage.getXmlMapKeyClass(), null, "mapKeyClass", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlElementCollection_2_0_MapKeyTemporal(), theOrmPackage.getTemporalType(), "mapKeyTemporal", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3040,7 +3061,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEAttribute(getXmlGenerator_2_0_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlGenerator_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToMany_2_0EClass, XmlManyToMany_2_0.class, "XmlManyToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlManyToMany_2_0_OrderColumn(), theOrmPackage.getXmlOrderColumn(), null, "orderColumn", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlManyToMany_2_0_MapKeyClass(), theOrmPackage.getXmlMapKeyClass(), null, "mapKeyClass", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlManyToMany_2_0_MapKeyTemporal(), theOrmPackage.getTemporalType(), "mapKeyTemporal", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlManyToMany_2_0_MapKeyEnumerated(), theOrmPackage.getEnumType(), "mapKeyEnumerated", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3058,7 +3078,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEAttribute(getXmlNamedQuery_2_0_LockMode(), this.getLockModeType_2_0(), "lockMode", null, 0, 1, XmlNamedQuery_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_0EClass, XmlOneToMany_2_0.class, "XmlOneToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlOneToMany_2_0_OrderColumn(), theOrmPackage.getXmlOrderColumn(), null, "orderColumn", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlOneToMany_2_0_MapKeyClass(), theOrmPackage.getXmlMapKeyClass(), null, "mapKeyClass", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlOneToMany_2_0_MapKeyTemporal(), theOrmPackage.getTemporalType(), "mapKeyTemporal", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlOneToMany_2_0_MapKeyEnumerated(), theOrmPackage.getEnumType(), "mapKeyEnumerated", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3103,6 +3122,9 @@ public class OrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlOrphanRemovable_2_0EClass, XmlOrphanRemovable_2_0.class, "XmlOrphanRemovable_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOrphanRemovable_2_0_OrphanRemoval(), theXMLTypePackage.getBooleanObject(), "orphanRemoval", null, 0, 1, XmlOrphanRemovable_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlOrderable_2_0EClass, XmlOrderable_2_0.class, "XmlOrderable_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlOrderable_2_0_OrderColumn(), theOrmPackage.getXmlOrderColumn(), null, "orderColumn", null, 0, 1, XmlOrderable_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(lockModeType_2_0EEnum, LockModeType_2_0.class, "LockModeType_2_0");
@@ -3281,14 +3303,6 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EAttribute XML_ELEMENT_COLLECTION_20__ORDER_BY = eINSTANCE.getXmlElementCollection_2_0_OrderBy();
 
 		/**
-		 * The meta object literal for the '<em><b>Order Column</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ELEMENT_COLLECTION_20__ORDER_COLUMN = eINSTANCE.getXmlElementCollection_2_0_OrderColumn();
-
-		/**
 		 * The meta object literal for the '<em><b>Map Key</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3461,14 +3475,6 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EClass XML_MANY_TO_MANY_20 = eINSTANCE.getXmlManyToMany_2_0();
 
 		/**
-		 * The meta object literal for the '<em><b>Order Column</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MANY_TO_MANY_20__ORDER_COLUMN = eINSTANCE.getXmlManyToMany_2_0_OrderColumn();
-
-		/**
 		 * The meta object literal for the '<em><b>Map Key Class</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3579,14 +3585,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ONE_TO_MANY_20 = eINSTANCE.getXmlOneToMany_2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Order Column</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ONE_TO_MANY_20__ORDER_COLUMN = eINSTANCE.getXmlOneToMany_2_0_OrderColumn();
 
 		/**
 		 * The meta object literal for the '<em><b>Map Key Class</b></em>' containment reference feature.
@@ -3867,6 +3865,24 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL = eINSTANCE.getXmlOrphanRemovable_2_0_OrphanRemoval();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0 <em>Xml Orderable 20</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderable_2_0()
+		 * @generated
+		 */
+		public static final EClass XML_ORDERABLE_20 = eINSTANCE.getXmlOrderable_2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Order Column</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ORDERABLE_20__ORDER_COLUMN = eINSTANCE.getXmlOrderable_2_0_OrderColumn();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0 <em>Lock Mode Type 20</em>}' enum.

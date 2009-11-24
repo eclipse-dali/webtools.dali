@@ -371,7 +371,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/targetClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/fetch"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/orderBy"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/orderColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKey"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyTemporal"/>
@@ -396,7 +395,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlGenerator_2_0/description"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlManyToMany_2_0">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlManyToMany_2_0/orderColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlManyToMany_2_0/mapKeyClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlManyToMany_2_0/mapKeyTemporal"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlManyToMany_2_0/mapKeyEnumerated"/>
@@ -414,7 +412,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlNamedQuery_2_0/lockMode"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOneToMany_2_0">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlOneToMany_2_0/orderColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlOneToMany_2_0/mapKeyClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOneToMany_2_0/mapKeyTemporal"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOneToMany_2_0/mapKeyEnumerated"/>
@@ -457,6 +454,9 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrphanRemovable_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrphanRemovable_2_0/orphanRemoval"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrderable_2_0">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlOrderable_2_0/orderColumn"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

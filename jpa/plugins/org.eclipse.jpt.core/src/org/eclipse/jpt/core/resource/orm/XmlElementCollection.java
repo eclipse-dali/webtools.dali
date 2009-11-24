@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -96,6 +97,16 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected EnumType enumerated = ENUMERATED_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderColumn()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlOrderColumn orderColumn;
+
+	/**
 	 * The default value of the '{@link #getTargetClass() <em>Target Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -150,16 +161,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @ordered
 	 */
 	protected String orderBy = ORDER_BY_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlOrderColumn orderColumn;
 
 	/**
 	 * The cached value of the '{@link #getMapKey() <em>Map Key</em>}' containment reference.
@@ -533,7 +534,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Order Column</em>' containment reference.
 	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlElementCollection_2_0_OrderColumn()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrderable_2_0_OrderColumn()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1101,14 +1102,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getTemporal();
 			case OrmPackage.XML_ELEMENT_COLLECTION__ENUMERATED:
 				return getEnumerated();
+			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
+				return getOrderColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return getTargetClass();
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
 				return getFetch();
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				return getOrderBy();
-			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
-				return getOrderColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY:
 				return getMapKey();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
@@ -1155,6 +1156,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__ENUMERATED:
 				setEnumerated((EnumType)newValue);
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
+				setOrderColumn((XmlOrderColumn)newValue);
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass((String)newValue);
 				return;
@@ -1163,9 +1167,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				setOrderBy((String)newValue);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)newValue);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY:
 				setMapKey((MapKey)newValue);
@@ -1227,6 +1228,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__ENUMERATED:
 				setEnumerated(ENUMERATED_EDEFAULT);
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
+				setOrderColumn((XmlOrderColumn)null);
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
 				return;
@@ -1235,9 +1239,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)null);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY:
 				setMapKey((MapKey)null);
@@ -1292,14 +1293,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return temporal != TEMPORAL_EDEFAULT;
 			case OrmPackage.XML_ELEMENT_COLLECTION__ENUMERATED:
 				return enumerated != ENUMERATED_EDEFAULT;
+			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
+				return orderColumn != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
 				return fetch != FETCH_EDEFAULT;
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
-			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
-				return orderColumn != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY:
 				return mapKey != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
@@ -1344,6 +1345,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrderable_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN: return OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -1351,7 +1360,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__TARGET_CLASS;
 				case OrmPackage.XML_ELEMENT_COLLECTION__FETCH: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__FETCH;
 				case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ORDER_BY;
-				case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ORDER_COLUMN;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL;
@@ -1387,6 +1395,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrderable_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -1394,7 +1410,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__TARGET_CLASS: return OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__FETCH: return OrmPackage.XML_ELEMENT_COLLECTION__FETCH;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ORDER_BY: return OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY;
-				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ORDER_COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL;
@@ -1482,7 +1497,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			buildFetchTranslator(),
 			buildAccessTranslator(),
 			buildOrderByTranslator(),
-			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_OrderColumn()),		
+			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn()),		
 			buildMapKeyTranslator(),
 			XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass()),		
 			buildMapKeyTemporalTranslator(),

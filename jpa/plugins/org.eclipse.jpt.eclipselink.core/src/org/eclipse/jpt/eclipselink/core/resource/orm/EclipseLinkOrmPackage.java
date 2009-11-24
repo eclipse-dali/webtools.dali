@@ -1187,6 +1187,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ELEMENT_COLLECTION__ENUMERATED = OrmPackage.XML_ELEMENT_COLLECTION__ENUMERATED;
 	/**
+	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__ORDER_COLUMN = OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN;
+	/**
 	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1210,14 +1218,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ELEMENT_COLLECTION__ORDER_BY = OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY;
-	/**
-	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__ORDER_COLUMN = OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN;
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

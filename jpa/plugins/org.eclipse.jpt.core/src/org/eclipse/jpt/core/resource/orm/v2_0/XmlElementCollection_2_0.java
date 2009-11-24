@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
-import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -37,7 +36,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getTargetClass <em>Target Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getFetch <em>Fetch</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderBy <em>Order By</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderColumn <em>Order Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKey <em>Map Key</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyClass <em>Map Key Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}</li>
@@ -56,7 +54,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlElementCollection_2_0 extends XmlConvertibleMapping
+public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Target Class</b></em>' attribute.
@@ -138,32 +136,6 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping
 	 * @generated
 	 */
 	void setOrderBy(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order Column</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order Column</em>' containment reference.
-	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlElementCollection_2_0_OrderColumn()
-	 * @model containment="true"
-	 * @generated
-	 */
-	XmlOrderColumn getOrderColumn();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderColumn <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order Column</em>' containment reference.
-	 * @see #getOrderColumn()
-	 * @generated
-	 */
-	void setOrderColumn(XmlOrderColumn value);
 
 	/**
 	 * Returns the value of the '<em><b>Map Key</b></em>' containment reference.

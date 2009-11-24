@@ -29,7 +29,6 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrderColumn <em>Order Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyClass <em>Map Key Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyEnumerated <em>Map Key Enumerated</em>}</li>
@@ -43,34 +42,8 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlOneToMany_2_0 extends XmlOrphanRemovable_2_0
+public interface XmlOneToMany_2_0 extends XmlOrphanRemovable_2_0, XmlOrderable_2_0
 {
-	/**
-	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order Column</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order Column</em>' containment reference.
-	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToMany_2_0_OrderColumn()
-	 * @model containment="true"
-	 * @generated
-	 */
-	XmlOrderColumn getOrderColumn();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getOrderColumn <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order Column</em>' containment reference.
-	 * @see #getOrderColumn()
-	 * @generated
-	 */
-	void setOrderColumn(XmlOrderColumn value);
-
 	/**
 	 * Returns the value of the '<em><b>Map Key Class</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

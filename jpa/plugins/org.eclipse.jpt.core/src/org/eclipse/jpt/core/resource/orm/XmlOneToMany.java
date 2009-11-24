@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -211,7 +212,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Order Column</em>' containment reference.
 	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany_2_0_OrderColumn()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrderable_2_0_OrderColumn()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -738,11 +739,18 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrderable_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN: return OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlOneToMany_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN: return OrmV2_0Package.XML_ONE_TO_MANY_20__ORDER_COLUMN;
 				case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS: return OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_CLASS;
 				case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL;
 				case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_ENUMERATED: return OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED;
@@ -779,11 +787,18 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrderable_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN: return OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlOneToMany_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmV2_0Package.XML_ONE_TO_MANY_20__ORDER_COLUMN: return OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN;
 				case OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_CLASS: return OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS;
 				case OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL: return OrmPackage.XML_ONE_TO_MANY__MAP_KEY_TEMPORAL;
 				case OrmV2_0Package.XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED: return OrmPackage.XML_ONE_TO_MANY__MAP_KEY_ENUMERATED;
@@ -859,7 +874,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	}
 	
 	protected static Translator buildOrderColumnTranslator() {
-		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOneToMany_2_0_OrderColumn());
+		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn());
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
