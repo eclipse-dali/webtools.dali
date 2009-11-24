@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderColumn_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -392,14 +391,14 @@ public class XmlOrderColumn extends AbstractXmlNamedColumn implements XmlOrderCo
 	}
 		
 	protected static Translator buildNullableTranslator() {
-		return new BooleanTranslator(JPA2_0.NULLABLE, OrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_Nullable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.NULLABLE, OrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_Nullable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildInsertableTranslator() {
-		return new BooleanTranslator(JPA2_0.INSERTABLE, OrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_Insertable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.INSERTABLE, OrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_Insertable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildUpdatableTranslator() {
-		return new BooleanTranslator(JPA2_0.UPDATABLE, OrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_Updatable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.UPDATABLE, OrmV2_0Package.eINSTANCE.getXmlOrderColumn_2_0_Updatable(), Translator.DOM_ATTRIBUTE);
 	}
 }

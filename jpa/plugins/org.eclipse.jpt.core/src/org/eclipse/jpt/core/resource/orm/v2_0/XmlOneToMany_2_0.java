@@ -18,8 +18,6 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
-import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
