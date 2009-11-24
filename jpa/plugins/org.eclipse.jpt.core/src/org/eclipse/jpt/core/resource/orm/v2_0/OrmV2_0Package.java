@@ -3106,6 +3106,7 @@ public class OrmV2_0Package extends EPackageImpl
 
 		// Initialize enums and add enum literals
 		initEEnum(lockModeType_2_0EEnum, LockModeType_2_0.class, "LockModeType_2_0");
+		addEEnumLiteral(lockModeType_2_0EEnum, LockModeType_2_0.NONE);
 		addEEnumLiteral(lockModeType_2_0EEnum, LockModeType_2_0.READ);
 		addEEnumLiteral(lockModeType_2_0EEnum, LockModeType_2_0.WRITE);
 		addEEnumLiteral(lockModeType_2_0EEnum, LockModeType_2_0.OPTIMISTIC);

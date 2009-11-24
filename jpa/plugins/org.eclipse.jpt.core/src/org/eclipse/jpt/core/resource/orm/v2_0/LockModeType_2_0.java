@@ -28,6 +28,14 @@ import org.eclipse.emf.common.util.Enumerator;
 public enum LockModeType_2_0 implements Enumerator
 {
 	/**
+	 * The '<em><b>NONE</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #NONE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	NONE(0, "NONE", "NONE"), /**
 	 * The '<em><b>READ</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -35,7 +43,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	READ(0, "READ", "READ"),
+	READ(1, "READ", "READ"),
 
 	/**
 	 * The '<em><b>WRITE</b></em>' literal object.
@@ -45,7 +53,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	WRITE(0, "WRITE", "WRITE"),
+	WRITE(2, "WRITE", "WRITE"),
 
 	/**
 	 * The '<em><b>OPTIMISTIC</b></em>' literal object.
@@ -55,7 +63,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	OPTIMISTIC(0, "OPTIMISTIC", "OPTIMISTIC"),
+	OPTIMISTIC(3, "OPTIMISTIC", "OPTIMISTIC"),
 
 	/**
 	 * The '<em><b>OPTIMISTIC FORCE INCREMENT</b></em>' literal object.
@@ -65,7 +73,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	OPTIMISTIC_FORCE_INCREMENT(0, "OPTIMISTIC_FORCE_INCREMENT", "OPTIMISTIC_FORCE_INCREMENT"),
+	OPTIMISTIC_FORCE_INCREMENT(4, "OPTIMISTIC_FORCE_INCREMENT", "OPTIMISTIC_FORCE_INCREMENT"),
 
 	/**
 	 * The '<em><b>PESSIMISTIC READ</b></em>' literal object.
@@ -75,7 +83,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	PESSIMISTIC_READ(0, "PESSIMISTIC_READ", "PESSIMISTIC_READ"),
+	PESSIMISTIC_READ(5, "PESSIMISTIC_READ", "PESSIMISTIC_READ"),
 
 	/**
 	 * The '<em><b>PESSIMISTIC WRITE</b></em>' literal object.
@@ -85,7 +93,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	PESSIMISTIC_WRITE(0, "PESSIMISTIC_WRITE", "PESSIMISTIC_WRITE"),
+	PESSIMISTIC_WRITE(6, "PESSIMISTIC_WRITE", "PESSIMISTIC_WRITE"),
 
 	/**
 	 * The '<em><b>PESSIMISTIC FORCE INCREMENT</b></em>' literal object.
@@ -95,7 +103,22 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	PESSIMISTIC_FORCE_INCREMENT(0, "PESSIMISTIC_FORCE_INCREMENT", "PESSIMISTIC_FORCE_INCREMENT");
+	PESSIMISTIC_FORCE_INCREMENT(7, "PESSIMISTIC_FORCE_INCREMENT", "PESSIMISTIC_FORCE_INCREMENT");
+
+	/**
+	 * The '<em><b>NONE</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>NONE</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #NONE
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int NONE_VALUE = 0;
 
 	/**
 	 * The '<em><b>READ</b></em>' literal value.
@@ -110,7 +133,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int READ_VALUE = 0;
+	public static final int READ_VALUE = 1;
 
 	/**
 	 * The '<em><b>WRITE</b></em>' literal value.
@@ -125,7 +148,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int WRITE_VALUE = 0;
+	public static final int WRITE_VALUE = 2;
 
 	/**
 	 * The '<em><b>OPTIMISTIC</b></em>' literal value.
@@ -140,7 +163,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int OPTIMISTIC_VALUE = 0;
+	public static final int OPTIMISTIC_VALUE = 3;
 
 	/**
 	 * The '<em><b>OPTIMISTIC FORCE INCREMENT</b></em>' literal value.
@@ -155,7 +178,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int OPTIMISTIC_FORCE_INCREMENT_VALUE = 0;
+	public static final int OPTIMISTIC_FORCE_INCREMENT_VALUE = 4;
 
 	/**
 	 * The '<em><b>PESSIMISTIC READ</b></em>' literal value.
@@ -170,7 +193,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PESSIMISTIC_READ_VALUE = 0;
+	public static final int PESSIMISTIC_READ_VALUE = 5;
 
 	/**
 	 * The '<em><b>PESSIMISTIC WRITE</b></em>' literal value.
@@ -185,7 +208,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PESSIMISTIC_WRITE_VALUE = 0;
+	public static final int PESSIMISTIC_WRITE_VALUE = 6;
 
 	/**
 	 * The '<em><b>PESSIMISTIC FORCE INCREMENT</b></em>' literal value.
@@ -200,7 +223,7 @@ public enum LockModeType_2_0 implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PESSIMISTIC_FORCE_INCREMENT_VALUE = 0;
+	public static final int PESSIMISTIC_FORCE_INCREMENT_VALUE = 7;
 
 	/**
 	 * An array of all the '<em><b>Lock Mode Type 20</b></em>' enumerators.
@@ -211,6 +234,7 @@ public enum LockModeType_2_0 implements Enumerator
 	private static final LockModeType_2_0[] VALUES_ARRAY =
 		new LockModeType_2_0[]
 		{
+			NONE,
 			READ,
 			WRITE,
 			OPTIMISTIC,
@@ -276,7 +300,14 @@ public enum LockModeType_2_0 implements Enumerator
 	{
 		switch (value)
 		{
+			case NONE_VALUE: return NONE;
 			case READ_VALUE: return READ;
+			case WRITE_VALUE: return WRITE;
+			case OPTIMISTIC_VALUE: return OPTIMISTIC;
+			case OPTIMISTIC_FORCE_INCREMENT_VALUE: return OPTIMISTIC_FORCE_INCREMENT;
+			case PESSIMISTIC_READ_VALUE: return PESSIMISTIC_READ;
+			case PESSIMISTIC_WRITE_VALUE: return PESSIMISTIC_WRITE;
+			case PESSIMISTIC_FORCE_INCREMENT_VALUE: return PESSIMISTIC_FORCE_INCREMENT;
 		}
 		return null;
 	}

@@ -340,6 +340,7 @@
     <nestedGenPackages prefix="OrmV2_0" basePackage="org.eclipse.jpt.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" ecorePackage="orm.ecore#//v2_0">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//v2_0/LockModeType_2_0">
+        <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_0/LockModeType_2_0/NONE"/>
         <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_0/LockModeType_2_0/READ"/>
         <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_0/LockModeType_2_0/WRITE"/>
         <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_0/LockModeType_2_0/OPTIMISTIC"/>

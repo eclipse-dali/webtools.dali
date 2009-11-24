@@ -571,13 +571,14 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="LockModeType_2_0">
-      <eLiterals name="READ"/>
-      <eLiterals name="WRITE"/>
-      <eLiterals name="OPTIMISTIC"/>
-      <eLiterals name="OPTIMISTIC_FORCE_INCREMENT"/>
-      <eLiterals name="PESSIMISTIC_READ"/>
-      <eLiterals name="PESSIMISTIC_WRITE"/>
-      <eLiterals name="PESSIMISTIC_FORCE_INCREMENT"/>
+      <eLiterals name="NONE"/>
+      <eLiterals name="READ" value="1"/>
+      <eLiterals name="WRITE" value="2"/>
+      <eLiterals name="OPTIMISTIC" value="3"/>
+      <eLiterals name="OPTIMISTIC_FORCE_INCREMENT" value="4"/>
+      <eLiterals name="PESSIMISTIC_READ" value="5"/>
+      <eLiterals name="PESSIMISTIC_WRITE" value="6"/>
+      <eLiterals name="PESSIMISTIC_FORCE_INCREMENT" value="7"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlCacheable2_0" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
