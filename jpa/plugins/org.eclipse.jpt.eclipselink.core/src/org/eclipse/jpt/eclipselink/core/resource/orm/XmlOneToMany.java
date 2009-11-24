@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
@@ -679,7 +681,7 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 			buildMappedByTranslator(),
 			buildOrphanRemovalTranslator(),
 			buildOrderByTranslator(),
-			buildOrderColumnTranslator(),
+			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn()),		
 			buildMapKeyTranslator(),
 			buildMapKeyClassTranslator(),
 			buildMapKeyTemporalTranslator(),
@@ -704,7 +706,7 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 	}
 	
 	protected static Translator buildMapKeyConvertTranslator() {
-		return new Translator(EclipseLink2_0.MAP_KEY_CONVERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert());
+		return new Translator(JPA2_0.MAP_KEY_CONVERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert());
 	}
 	
 	protected static Translator buildMapKeyAssociationOverrideTranslator() {
@@ -712,19 +714,19 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 	}
 	
 	protected static Translator buildConverterTranslator() {
-		return XmlConverter.buildTranslator(EclipseLink2_0.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter());
+		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter());
 	}
 	
 	protected static Translator buildTypeConverterTranslator() {
-		return XmlTypeConverter.buildTranslator(EclipseLink2_0.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter());
+		return XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter());
 	}
 	
 	protected static Translator buildObjectTypeConverterTranslator() {
-		return XmlObjectTypeConverter.buildTranslator(EclipseLink2_0.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter());
+		return XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter());
 	}
 	
 	protected static Translator buildStructConverterTranslator() {
-		return XmlStructConverter.buildTranslator(EclipseLink2_0.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter());
+		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter());
 	}
 	
 	protected static Translator buildPrivateOwnedTranslator() {
