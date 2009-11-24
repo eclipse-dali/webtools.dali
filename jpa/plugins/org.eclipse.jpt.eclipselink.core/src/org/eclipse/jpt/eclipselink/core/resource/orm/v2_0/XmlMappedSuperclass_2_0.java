@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
 
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlMappedSuperclass_2_0 extends XmlCacheable2_0
+public interface XmlMappedSuperclass_2_0 extends XmlCacheable_2_0
 {
 
 } // XmlMappedSuperclass_2_0

@@ -381,7 +381,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20__CACHEABLE = OrmV2_0Package.XML_CACHEABLE2_0__CACHEABLE;
+	public static final int XML_MAPPED_SUPERCLASS_20__CACHEABLE = OrmV2_0Package.XML_CACHEABLE_20__CACHEABLE;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass 20</em>' class.
@@ -390,7 +390,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = OrmV2_0Package.XML_CACHEABLE2_0_FEATURE_COUNT + 0;
+	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = OrmV2_0Package.XML_CACHEABLE_20_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.
@@ -855,7 +855,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterHolder());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
-		xmlMappedSuperclass_2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlCacheable2_0());
+		xmlMappedSuperclass_2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlCacheable_2_0());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterHolder());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 

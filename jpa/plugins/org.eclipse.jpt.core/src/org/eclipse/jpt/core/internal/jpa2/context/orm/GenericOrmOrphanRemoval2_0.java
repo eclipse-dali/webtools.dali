@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -21,12 +21,12 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericOrmOrphanRemoval2_0 extends AbstractOrmXmlContextNode 
 	implements OrmOrphanRemovable2_0
 {
-	protected final XmlOrphanRemovable2_0 resource;
+	protected final XmlOrphanRemovable_2_0 resource;
 	protected boolean defaultOrphanRemoval;
 	protected Boolean specifiedOrphanRemoval;
 
 	// ********** constructor **********
-	public GenericOrmOrphanRemoval2_0(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable2_0 resource) {
+	public GenericOrmOrphanRemoval2_0(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable_2_0 resource) {
 		super(parent);
 		this.resource = resource;
 		this.specifiedOrphanRemoval = this.getResourceOrphanRemoval();

@@ -469,14 +469,14 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_EMBEDDED_20_FEATURE_COUNT = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0 <em>Xml Cacheable2 0</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0 <em>Xml Cacheable 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable2_0()
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable_2_0()
 	 * @generated
 	 */
-	public static final int XML_CACHEABLE2_0 = 27;
+	public static final int XML_CACHEABLE_20 = 27;
 
 	/**
 	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
@@ -485,16 +485,16 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHEABLE2_0__CACHEABLE = 0;
+	public static final int XML_CACHEABLE_20__CACHEABLE = 0;
 
 	/**
-	 * The number of structural features of the '<em>Xml Cacheable2 0</em>' class.
+	 * The number of structural features of the '<em>Xml Cacheable 20</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHEABLE2_0_FEATURE_COUNT = 1;
+	public static final int XML_CACHEABLE_20_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEntity_2_0 <em>Xml Entity 20</em>}' class.
@@ -513,7 +513,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_20__CACHEABLE = XML_CACHEABLE2_0__CACHEABLE;
+	public static final int XML_ENTITY_20__CACHEABLE = XML_CACHEABLE_20__CACHEABLE;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity 20</em>' class.
@@ -522,7 +522,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_20_FEATURE_COUNT = XML_CACHEABLE2_0_FEATURE_COUNT + 0;
+	public static final int XML_ENTITY_20_FEATURE_COUNT = XML_CACHEABLE_20_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEntityListener_2_0 <em>Xml Entity Listener 20</em>}' class.
@@ -775,14 +775,14 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_NAMED_QUERY_20_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0 <em>Xml Orphan Removable2 0</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0 <em>Xml Orphan Removable 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable2_0()
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORPHAN_REMOVABLE2_0 = 28;
+	public static final int XML_ORPHAN_REMOVABLE_20 = 28;
 
 	/**
 	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
@@ -791,16 +791,16 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL = 0;
+	public static final int XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL = 0;
 
 	/**
-	 * The number of structural features of the '<em>Xml Orphan Removable2 0</em>' class.
+	 * The number of structural features of the '<em>Xml Orphan Removable 20</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT = 1;
+	public static final int XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.
@@ -819,7 +819,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__ORPHAN_REMOVAL = XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL;
+	public static final int XML_ONE_TO_MANY_20__ORPHAN_REMOVAL = XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -828,7 +828,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__ORDER_COLUMN = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 0;
+	public static final int XML_ONE_TO_MANY_20__ORDER_COLUMN = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
@@ -837,7 +837,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_CLASS = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_CLASS = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
@@ -846,7 +846,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 2;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
@@ -855,7 +855,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 3;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
@@ -864,7 +864,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 4;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
@@ -873,7 +873,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_COLUMN = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 5;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_COLUMN = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
@@ -882,7 +882,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 6;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To Many 20</em>' class.
@@ -891,7 +891,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20_FEATURE_COUNT = XML_ORPHAN_REMOVABLE2_0_FEATURE_COUNT + 7;
+	public static final int XML_ONE_TO_MANY_20_FEATURE_COUNT = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0 <em>Xml Single Relationship Mapping 20</em>}' class.
@@ -1440,14 +1440,14 @@ public class OrmV2_0Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlCacheable2_0EClass = null;
+	private EClass xmlCacheable_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlOrphanRemovable2_0EClass = null;
+	private EClass xmlOrphanRemovable_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2725,60 +2725,60 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0 <em>Xml Cacheable2 0</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0 <em>Xml Cacheable 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Cacheable2 0</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0
+	 * @return the meta object for class '<em>Xml Cacheable 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0
 	 * @generated
 	 */
-	public EClass getXmlCacheable2_0()
+	public EClass getXmlCacheable_2_0()
 	{
-		return xmlCacheable2_0EClass;
+		return xmlCacheable_2_0EClass;
 	}
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0#getCacheable <em>Cacheable</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0#getCacheable <em>Cacheable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Cacheable</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0#getCacheable()
-	 * @see #getXmlCacheable2_0()
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0#getCacheable()
+	 * @see #getXmlCacheable_2_0()
 	 * @generated
 	 */
-	public EAttribute getXmlCacheable2_0_Cacheable()
+	public EAttribute getXmlCacheable_2_0_Cacheable()
 	{
-		return (EAttribute)xmlCacheable2_0EClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlCacheable_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0 <em>Xml Orphan Removable2 0</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0 <em>Xml Orphan Removable 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Orphan Removable2 0</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0
+	 * @return the meta object for class '<em>Xml Orphan Removable 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0
 	 * @generated
 	 */
-	public EClass getXmlOrphanRemovable2_0()
+	public EClass getXmlOrphanRemovable_2_0()
 	{
-		return xmlOrphanRemovable2_0EClass;
+		return xmlOrphanRemovable_2_0EClass;
 	}
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0#getOrphanRemoval <em>Orphan Removal</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0#getOrphanRemoval <em>Orphan Removal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Orphan Removal</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0#getOrphanRemoval()
-	 * @see #getXmlOrphanRemovable2_0()
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0#getOrphanRemoval()
+	 * @see #getXmlOrphanRemovable_2_0()
 	 * @generated
 	 */
-	public EAttribute getXmlOrphanRemovable2_0_OrphanRemoval()
+	public EAttribute getXmlOrphanRemovable_2_0_OrphanRemoval()
 	{
-		return (EAttribute)xmlOrphanRemovable2_0EClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlOrphanRemovable_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -2936,11 +2936,11 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlUniqueConstraint_2_0EClass = createEClass(XML_UNIQUE_CONSTRAINT_20);
 		createEAttribute(xmlUniqueConstraint_2_0EClass, XML_UNIQUE_CONSTRAINT_20__NAME);
 
-		xmlCacheable2_0EClass = createEClass(XML_CACHEABLE2_0);
-		createEAttribute(xmlCacheable2_0EClass, XML_CACHEABLE2_0__CACHEABLE);
+		xmlCacheable_2_0EClass = createEClass(XML_CACHEABLE_20);
+		createEAttribute(xmlCacheable_2_0EClass, XML_CACHEABLE_20__CACHEABLE);
 
-		xmlOrphanRemovable2_0EClass = createEClass(XML_ORPHAN_REMOVABLE2_0);
-		createEAttribute(xmlOrphanRemovable2_0EClass, XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL);
+		xmlOrphanRemovable_2_0EClass = createEClass(XML_ORPHAN_REMOVABLE_20);
+		createEAttribute(xmlOrphanRemovable_2_0EClass, XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL);
 
 		// Create enums
 		lockModeType_2_0EEnum = createEEnum(LOCK_MODE_TYPE_20);
@@ -2982,10 +2982,10 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlAttributeMapping_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
-		xmlEntity_2_0EClass.getESuperTypes().add(this.getXmlCacheable2_0());
-		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable2_0());
+		xmlEntity_2_0EClass.getESuperTypes().add(this.getXmlCacheable_2_0());
+		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable_2_0());
 		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlSingleRelationshipMapping_2_0());
-		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable2_0());
+		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable_2_0());
 		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlDerivedId_2_0());
 		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlMapsId_2_0());
 
@@ -3098,11 +3098,11 @@ public class OrmV2_0Package extends EPackageImpl
 		initEClass(xmlUniqueConstraint_2_0EClass, XmlUniqueConstraint_2_0.class, "XmlUniqueConstraint_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlUniqueConstraint_2_0_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlUniqueConstraint_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlCacheable2_0EClass, XmlCacheable2_0.class, "XmlCacheable2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlCacheable2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlCacheable2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlCacheable_2_0EClass, XmlCacheable_2_0.class, "XmlCacheable_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCacheable_2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlCacheable_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlOrphanRemovable2_0EClass, XmlOrphanRemovable2_0.class, "XmlOrphanRemovable2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlOrphanRemovable2_0_OrphanRemoval(), theXMLTypePackage.getBooleanObject(), "orphanRemoval", null, 0, 1, XmlOrphanRemovable2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlOrphanRemovable_2_0EClass, XmlOrphanRemovable_2_0.class, "XmlOrphanRemovable_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlOrphanRemovable_2_0_OrphanRemoval(), theXMLTypePackage.getBooleanObject(), "orphanRemoval", null, 0, 1, XmlOrphanRemovable_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(lockModeType_2_0EEnum, LockModeType_2_0.class, "LockModeType_2_0");
@@ -3833,14 +3833,14 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EAttribute XML_UNIQUE_CONSTRAINT_20__NAME = eINSTANCE.getXmlUniqueConstraint_2_0_Name();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0 <em>Xml Cacheable2 0</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0 <em>Xml Cacheable 20</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable2_0()
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable_2_0()
 		 * @generated
 		 */
-		public static final EClass XML_CACHEABLE2_0 = eINSTANCE.getXmlCacheable2_0();
+		public static final EClass XML_CACHEABLE_20 = eINSTANCE.getXmlCacheable_2_0();
 
 		/**
 		 * The meta object literal for the '<em><b>Cacheable</b></em>' attribute feature.
@@ -3848,17 +3848,17 @@ public class OrmV2_0Package extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_CACHEABLE2_0__CACHEABLE = eINSTANCE.getXmlCacheable2_0_Cacheable();
+		public static final EAttribute XML_CACHEABLE_20__CACHEABLE = eINSTANCE.getXmlCacheable_2_0_Cacheable();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0 <em>Xml Orphan Removable2 0</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0 <em>Xml Orphan Removable 20</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable2_0()
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable_2_0()
 		 * @generated
 		 */
-		public static final EClass XML_ORPHAN_REMOVABLE2_0 = eINSTANCE.getXmlOrphanRemovable2_0();
+		public static final EClass XML_ORPHAN_REMOVABLE_20 = eINSTANCE.getXmlOrphanRemovable_2_0();
 
 		/**
 		 * The meta object literal for the '<em><b>Orphan Removal</b></em>' attribute feature.
@@ -3866,7 +3866,7 @@ public class OrmV2_0Package extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ORPHAN_REMOVABLE2_0__ORPHAN_REMOVAL = eINSTANCE.getXmlOrphanRemovable2_0_OrphanRemoval();
+		public static final EAttribute XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL = eINSTANCE.getXmlOrphanRemovable_2_0_OrphanRemoval();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0 <em>Lock Mode Type 20</em>}' enum.

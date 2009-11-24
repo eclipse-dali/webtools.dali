@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
@@ -68,7 +68,7 @@ public class OrmEclipseLinkCachingImpl
 
 	protected final OrmCacheable2_0 cacheable;
 	
-	public OrmEclipseLinkCachingImpl(OrmTypeMapping parent, XmlCacheHolder resource, XmlCacheable2_0 cacheableResource, JavaEclipseLinkCaching javaCaching) {
+	public OrmEclipseLinkCachingImpl(OrmTypeMapping parent, XmlCacheHolder resource, XmlCacheable_2_0 cacheableResource, JavaEclipseLinkCaching javaCaching) {
 		super(parent);
 		this.resource = resource;
 		XmlCache resourceCache = getResourceCache();

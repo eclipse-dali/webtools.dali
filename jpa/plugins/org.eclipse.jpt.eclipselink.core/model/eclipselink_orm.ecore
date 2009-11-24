@@ -317,7 +317,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlConverterHolder #//v2_0/XmlCollectionMapping_2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass_2_0" abstract="true"
-        interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//v2_0/XmlCacheable2_0"/>
+        interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//v2_0/XmlCacheable_2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlConverterHolder #//v2_0/XmlCollectionMapping_2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn_2_0" abstract="true"

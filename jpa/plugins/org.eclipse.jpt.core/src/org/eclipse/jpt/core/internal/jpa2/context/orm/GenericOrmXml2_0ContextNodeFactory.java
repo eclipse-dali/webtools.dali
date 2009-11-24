@@ -60,10 +60,10 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
 
 public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNodeFactory
 {	
@@ -119,12 +119,12 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	}
 	
 	@Override
-	public OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource) {
+	public OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable_2_0 resource) {
 		return new GenericOrmCacheable2_0(parent, resource);
 	}
 	
 	@Override
-	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable2_0 resource) {
+	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable_2_0 resource) {
 		return new GenericOrmOrphanRemoval2_0(parent, resource);
 	}
 

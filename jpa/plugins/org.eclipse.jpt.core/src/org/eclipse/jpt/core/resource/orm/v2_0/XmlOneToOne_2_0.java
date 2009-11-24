@@ -21,7 +21,7 @@ package org.eclipse.jpt.core.resource.orm.v2_0;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlOneToOne_2_0 extends XmlSingleRelationshipMapping_2_0, XmlOrphanRemovable2_0
+public interface XmlOneToOne_2_0 extends XmlSingleRelationshipMapping_2_0, XmlOrphanRemovable_2_0
 {
 
 } // XmlOneToOne_2_0

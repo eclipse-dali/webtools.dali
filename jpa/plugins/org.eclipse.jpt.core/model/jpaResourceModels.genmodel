@@ -452,11 +452,11 @@
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlUniqueConstraint_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlUniqueConstraint_2_0/name"/>
       </genClasses>
-      <genClasses ecoreClass="orm.ecore#//v2_0/XmlCacheable2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlCacheable2_0/cacheable"/>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCacheable_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlCacheable_2_0/cacheable"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrphanRemovable2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrphanRemovable2_0/orphanRemoval"/>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrphanRemovable_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrphanRemovable_2_0/orphanRemoval"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

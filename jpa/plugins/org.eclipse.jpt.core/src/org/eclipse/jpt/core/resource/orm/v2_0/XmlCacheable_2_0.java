@@ -21,16 +21,16 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0#getCacheable <em>Cacheable</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0#getCacheable <em>Cacheable</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable2_0()
+ * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable_2_0()
  * @model kind="class" interface="true" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlCacheable2_0 extends JpaEObject
+public interface XmlCacheable_2_0 extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Cacheable</b></em>' attribute.
@@ -42,14 +42,14 @@ public interface XmlCacheable2_0 extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cacheable</em>' attribute.
 	 * @see #setCacheable(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable2_0_Cacheable()
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable_2_0_Cacheable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
 	Boolean getCacheable();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0#getCacheable <em>Cacheable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0#getCacheable <em>Cacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Cacheable</em>' attribute.

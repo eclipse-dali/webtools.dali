@@ -173,10 +173,10 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0ContextNodeFactory
@@ -391,11 +391,11 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		throw new UnsupportedOperationException();
 	}
 	
-	public OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource) {
+	public OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable_2_0 resource) {
 		return new NullOrmCacheable2_0(parent);
 	}
 	
-	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable2_0 resource) {
+	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable_2_0 resource) {
 		return new NullOrmOrphanRemoval2_0(parent);
 	}
 	

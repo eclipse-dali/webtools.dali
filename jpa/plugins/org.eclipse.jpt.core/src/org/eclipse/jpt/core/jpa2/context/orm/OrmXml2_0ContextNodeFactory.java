@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
 
 public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 {
@@ -42,7 +42,7 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 	XmlElementCollection buildVirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping);
 	
-	OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource);
+	OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent, XmlCacheable_2_0 resource);
 	
-	OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable2_0 resource);
+	OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable_2_0 resource);
 }

@@ -43,7 +43,7 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlOneToMany_2_0 extends XmlOrphanRemovable2_0
+public interface XmlOneToMany_2_0 extends XmlOrphanRemovable_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.

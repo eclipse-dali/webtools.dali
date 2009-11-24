@@ -12,20 +12,20 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericOrmCacheable2_0 extends AbstractOrmXmlContextNode 
 	implements OrmCacheable2_0
 {
-	protected final XmlCacheable2_0 resource;
+	protected final XmlCacheable_2_0 resource;
 	
 	protected boolean defaultCacheable;
 	
 	protected Boolean specifiedCacheable;
 	
 	
-	public GenericOrmCacheable2_0(OrmCacheableHolder2_0 parent, XmlCacheable2_0 resource) {
+	public GenericOrmCacheable2_0(OrmCacheableHolder2_0 parent, XmlCacheable_2_0 resource) {
 		super(parent);
 		this.resource = resource;
 		this.specifiedCacheable = this.getResourceCacheable();

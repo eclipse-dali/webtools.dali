@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlOrphanRemovable2_0.java,v 1.1 2009/10/27 16:16:08 kmoore Exp $
+ * $Id: XmlOrphanRemovable_2_0.java,v 1.1 2009/11/24 22:09:30 kmoore Exp $
  */
 package org.eclipse.jpt.core.resource.orm.v2_0;
 
@@ -16,16 +16,16 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0#getOrphanRemoval <em>Orphan Removal</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0#getOrphanRemoval <em>Orphan Removal</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable2_0()
+ * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable_2_0()
  * @model kind="class" interface="true" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlOrphanRemovable2_0 extends JpaEObject
+public interface XmlOrphanRemovable_2_0 extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Orphan Removal</b></em>' attribute.
@@ -37,14 +37,14 @@ public interface XmlOrphanRemovable2_0 extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Orphan Removal</em>' attribute.
 	 * @see #setOrphanRemoval(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable2_0_OrphanRemoval()
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable_2_0_OrphanRemoval()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
 	Boolean getOrphanRemoval();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable2_0#getOrphanRemoval <em>Orphan Removal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0#getOrphanRemoval <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Orphan Removal</em>' attribute.

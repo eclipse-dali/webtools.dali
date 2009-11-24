@@ -20,7 +20,7 @@ package org.eclipse.jpt.core.resource.orm.v2_0;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlEntity_2_0 extends XmlCacheable2_0
+public interface XmlEntity_2_0 extends XmlCacheable_2_0
 {
 
 } // XmlEntity_2_0
