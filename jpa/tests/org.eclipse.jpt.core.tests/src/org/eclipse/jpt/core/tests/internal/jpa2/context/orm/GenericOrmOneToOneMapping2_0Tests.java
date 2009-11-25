@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -29,13 +28,14 @@ import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class GenericOrmOneToOneMapping2_0Tests
-	extends Generic2_0OrmContextModelTestCase
+	extends Generic2_0ContextModelTestCase
 {
 	public GenericOrmOneToOneMapping2_0Tests(String name) {
 		super(name);

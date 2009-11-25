@@ -31,11 +31,12 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class GenericOrmAssociationOverride2_0Tests extends Generic2_0OrmContextModelTestCase
+public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextModelTestCase
 {
 	private static final String ASSOCIATION_OVERRIDE_NAME = "MY_ASSOCIATION_OVERRIDE_NAME";
 

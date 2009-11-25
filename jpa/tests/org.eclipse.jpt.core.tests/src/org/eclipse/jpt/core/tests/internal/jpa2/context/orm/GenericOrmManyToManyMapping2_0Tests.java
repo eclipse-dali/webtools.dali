@@ -18,12 +18,13 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class GenericOrmManyToManyMapping2_0Tests
-	extends Generic2_0OrmContextModelTestCase
+	extends Generic2_0ContextModelTestCase
 {
 	public GenericOrmManyToManyMapping2_0Tests(String name) {
 		super(name);

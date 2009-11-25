@@ -54,12 +54,13 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModelTestCase
+public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTestCase
 {
 	private static final String ATTRIBUTE_OVERRIDE_NAME = "city";
 	private static final String ATTRIBUTE_OVERRIDE_COLUMN_NAME = "E_CITY";
@@ -587,7 +588,6 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 		
 		//embedded mapping is specified, virtual attribute overrides should exist
 		persistentType.getAttributeNamed("address").makeSpecified();
-		getOrmXmlResource().save(null);
 		embeddedMapping = (OrmEmbeddedMapping) persistentType.getAttributeNamed("address").getMapping();
 		attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());
@@ -1384,8 +1384,6 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0OrmContextModel
 		createAddressEntity();
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
-		getPersistenceXmlResource().save(null);
-		getOrmXmlResource().save(null);
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -24,12 +23,13 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class GenericOrmOneToManyMapping2_0Tests
-	extends Generic2_0OrmContextModelTestCase
+	extends Generic2_0ContextModelTestCase
 {
 	public GenericOrmOneToManyMapping2_0Tests(String name) {
 		super(name);

@@ -26,11 +26,12 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmNullAttributeMap
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class GenericOrmPersistentAttribute2_0Tests
-	extends Generic2_0OrmContextModelTestCase
+	extends Generic2_0ContextModelTestCase
 {
 
 	public GenericOrmPersistentAttribute2_0Tests(String name) {

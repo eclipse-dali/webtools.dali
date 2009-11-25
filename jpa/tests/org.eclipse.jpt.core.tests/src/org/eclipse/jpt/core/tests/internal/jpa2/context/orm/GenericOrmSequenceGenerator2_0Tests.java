@@ -11,12 +11,13 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 
 /**
  *  Generic2_0OrmSequenceGenerator2_0Tests
  */
 public class GenericOrmSequenceGenerator2_0Tests
-	extends Generic2_0OrmContextModelTestCase
+	extends Generic2_0ContextModelTestCase
 {
 
 	public GenericOrmSequenceGenerator2_0Tests(String name) {
@@ -27,7 +28,7 @@ public class GenericOrmSequenceGenerator2_0Tests
 
 	public void testUpdateSpecifiedCatalog() throws Exception {
 		SequenceGenerator2_0 sequenceGenerator = (SequenceGenerator2_0) getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = (XmlSequenceGenerator) getXmlEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getXmlEntityMappings().getSequenceGenerators().get(0);
 
 		//set name in the resource model, verify context model updated
 		sequenceGeneratorResource.setCatalog("FOO");
@@ -42,7 +43,7 @@ public class GenericOrmSequenceGenerator2_0Tests
 	
 	public void testModifySpecifiedCatalog() throws Exception {
 		SequenceGenerator2_0 sequenceGenerator = (SequenceGenerator2_0) getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = (XmlSequenceGenerator) getXmlEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getXmlEntityMappings().getSequenceGenerators().get(0);
 	
 		//set name in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedCatalog("FOO");
@@ -59,7 +60,7 @@ public class GenericOrmSequenceGenerator2_0Tests
 
 	public void testUpdateSpecifiedSchema() throws Exception {
 		SequenceGenerator2_0 sequenceGenerator = (SequenceGenerator2_0) getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = (XmlSequenceGenerator) getXmlEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getXmlEntityMappings().getSequenceGenerators().get(0);
 
 		//set name in the resource model, verify context model updated
 		sequenceGeneratorResource.setSchema("FOO");
@@ -74,7 +75,7 @@ public class GenericOrmSequenceGenerator2_0Tests
 	
 	public void testModifySpecifiedSchema() throws Exception {
 		SequenceGenerator2_0 sequenceGenerator = (SequenceGenerator2_0) getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = (XmlSequenceGenerator) getXmlEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getXmlEntityMappings().getSequenceGenerators().get(0);
 	
 		//set name in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedSchema("FOO");

@@ -33,11 +33,12 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0OrmContextModelTestCase
+public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0ContextModelTestCase
 {
 	public GenericOrmElementCollectionMapping2_0Tests(String name) {
 		super(name);
