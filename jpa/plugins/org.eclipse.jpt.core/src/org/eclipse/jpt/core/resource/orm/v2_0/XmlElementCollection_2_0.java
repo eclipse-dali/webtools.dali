@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
+import org.eclipse.jpt.core.resource.orm.XmlOrderable;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -35,7 +36,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getTargetClass <em>Target Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getFetch <em>Fetch</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderBy <em>Order By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKey <em>Map Key</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyClass <em>Map Key Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}</li>
@@ -54,7 +54,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable_2_0
+public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable
 {
 	/**
 	 * Returns the value of the '<em><b>Target Class</b></em>' attribute.
@@ -110,32 +110,6 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrde
 	 * @generated
 	 */
 	void setFetch(FetchType value);
-
-	/**
-	 * Returns the value of the '<em><b>Order By</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order By</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order By</em>' attribute.
-	 * @see #setOrderBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlElementCollection_2_0_OrderBy()
-	 * @model dataType="org.eclipse.jpt.core.resource.orm.OrderBy"
-	 * @generated
-	 */
-	String getOrderBy();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderBy <em>Order By</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order By</em>' attribute.
-	 * @see #getOrderBy()
-	 * @generated
-	 */
-	void setOrderBy(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Map Key</b></em>' containment reference.

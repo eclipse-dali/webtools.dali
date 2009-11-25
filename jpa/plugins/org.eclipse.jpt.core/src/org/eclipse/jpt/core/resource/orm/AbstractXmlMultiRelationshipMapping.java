@@ -14,6 +14,8 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -32,7 +34,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getMapKey <em>Map Key</em>}</li>
  * </ul>
  * </p>
@@ -41,7 +42,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlMappedByMapping, XmlJoinTableMapping
+public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlMappedByMapping, XmlJoinTableMapping, XmlOrderable
 {
 	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
@@ -70,6 +71,15 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * @ordered
 	 */
 	protected XmlJoinTable joinTable;
+	/**
+	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderColumn()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlOrderColumn orderColumn;
 	/**
 	 * The default value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -215,6 +225,66 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Order Column</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Order Column</em>' containment reference.
+	 * @see #setOrderColumn(XmlOrderColumn)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrderable_2_0_OrderColumn()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlOrderColumn getOrderColumn()
+	{
+		return orderColumn;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetOrderColumn(XmlOrderColumn newOrderColumn, NotificationChain msgs)
+	{
+		XmlOrderColumn oldOrderColumn = orderColumn;
+		orderColumn = newOrderColumn;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN, oldOrderColumn, newOrderColumn);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getOrderColumn <em>Order Column</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Order Column</em>' containment reference.
+	 * @see #getOrderColumn()
+	 * @generated
+	 */
+	public void setOrderColumn(XmlOrderColumn newOrderColumn)
+	{
+		if (newOrderColumn != orderColumn)
+		{
+			NotificationChain msgs = null;
+			if (orderColumn != null)
+				msgs = ((InternalEObject)orderColumn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN, null, msgs);
+			if (newOrderColumn != null)
+				msgs = ((InternalEObject)newOrderColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN, null, msgs);
+			msgs = basicSetOrderColumn(newOrderColumn, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN, newOrderColumn, newOrderColumn));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Order By</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -224,8 +294,8 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Order By</em>' attribute.
 	 * @see #setOrderBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlMultiRelationshipMapping_OrderBy()
-	 * @model dataType="org.eclipse.jpt.core.resource.orm.OrderBy"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrderable_OrderBy()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getOrderBy() {
@@ -317,6 +387,8 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 		{
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
+				return basicSetOrderColumn(null, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
 				return basicSetMapKey(null, msgs);
 		}
@@ -337,6 +409,8 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return getMappedBy();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return getJoinTable();
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
+				return getOrderColumn();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				return getOrderBy();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
@@ -360,6 +434,9 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)newValue);
+				return;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
+				setOrderColumn((XmlOrderColumn)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				setOrderBy((String)newValue);
@@ -387,6 +464,9 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)null);
 				return;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
+				setOrderColumn((XmlOrderColumn)null);
+				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
 				return;
@@ -411,6 +491,8 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return joinTable != null;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
+				return orderColumn != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
@@ -443,6 +525,22 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOrderable_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN: return OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOrderable.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY: return OrmPackage.XML_ORDERABLE__ORDER_BY;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -467,6 +565,22 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 			switch (baseFeatureID)
 			{
 				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOrderable_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOrderable.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ORDERABLE__ORDER_BY: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				default: return -1;
 			}
 		}
@@ -499,7 +613,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	// ********** translators **********
 	
 	protected static Translator buildOrderByTranslator() {
-		return new Translator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getAbstractXmlMultiRelationshipMapping_OrderBy());
+		return new Translator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getXmlOrderable_OrderBy());
 	}
 	
 	protected static Translator buildMapKeyTranslator() {

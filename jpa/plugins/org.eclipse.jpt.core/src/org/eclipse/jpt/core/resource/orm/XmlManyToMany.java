@@ -47,15 +47,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 {
 
 	/**
-	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlOrderColumn orderColumn;
-	/**
 	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -141,66 +132,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 		return OrmPackage.Literals.XML_MANY_TO_MANY;
 	}
 	
-	/**
-	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order Column</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order Column</em>' containment reference.
-	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrderable_2_0_OrderColumn()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlOrderColumn getOrderColumn()
-	{
-		return orderColumn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetOrderColumn(XmlOrderColumn newOrderColumn, NotificationChain msgs)
-	{
-		XmlOrderColumn oldOrderColumn = orderColumn;
-		orderColumn = newOrderColumn;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, oldOrderColumn, newOrderColumn);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToMany#getOrderColumn <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order Column</em>' containment reference.
-	 * @see #getOrderColumn()
-	 * @generated
-	 */
-	public void setOrderColumn(XmlOrderColumn newOrderColumn)
-	{
-		if (newOrderColumn != orderColumn)
-		{
-			NotificationChain msgs = null;
-			if (orderColumn != null)
-				msgs = ((InternalEObject)orderColumn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, null, msgs);
-			if (newOrderColumn != null)
-				msgs = ((InternalEObject)newOrderColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, null, msgs);
-			msgs = basicSetOrderColumn(newOrderColumn, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN, newOrderColumn, newOrderColumn));
-	}
-
 	/**
 	 * Returns the value of the '<em><b>Map Key Class</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -453,8 +384,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				return basicSetOrderColumn(null, msgs);
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
 				return basicSetMapKeyClass(null, msgs);
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES:
@@ -477,8 +406,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				return getOrderColumn();
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
 				return getMapKeyClass();
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL:
@@ -506,9 +433,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)newValue);
-				return;
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
 				setMapKeyClass((XmlMapKeyClass)newValue);
 				return;
@@ -543,9 +467,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)null);
-				return;
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
 				setMapKeyClass((XmlMapKeyClass)null);
 				return;
@@ -578,8 +499,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN:
-				return orderColumn != null;
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS:
 				return mapKeyClass != null;
 			case OrmPackage.XML_MANY_TO_MANY__MAP_KEY_TEMPORAL:
@@ -604,14 +523,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlOrderable_2_0.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN: return OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlManyToMany_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -636,14 +547,6 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlOrderable_2_0.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN: return OrmPackage.XML_MANY_TO_MANY__ORDER_COLUMN;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlManyToMany_2_0.class)
 		{
 			switch (baseFeatureID)

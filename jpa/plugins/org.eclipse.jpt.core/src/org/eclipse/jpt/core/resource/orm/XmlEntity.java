@@ -676,7 +676,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @return the value of the '<em>Discriminator Value</em>' attribute.
 	 * @see #setDiscriminatorValue(String)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_DiscriminatorValue()
-	 * @model dataType="org.eclipse.jpt.core.resource.orm.DiscriminatorValue"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getDiscriminatorValue()

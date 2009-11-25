@@ -165,12 +165,6 @@ public class OrmFactory extends EFactoryImpl
 				return createInheritanceTypeFromString(eDataType, initialValue);
 			case OrmPackage.TEMPORAL_TYPE:
 				return createTemporalTypeFromString(eDataType, initialValue);
-			case OrmPackage.DISCRIMINATOR_VALUE:
-				return createDiscriminatorValueFromString(eDataType, initialValue);
-			case OrmPackage.ENUMERATED:
-				return createEnumeratedFromString(eDataType, initialValue);
-			case OrmPackage.ORDER_BY:
-				return createOrderByFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -200,12 +194,6 @@ public class OrmFactory extends EFactoryImpl
 				return convertInheritanceTypeToString(eDataType, instanceValue);
 			case OrmPackage.TEMPORAL_TYPE:
 				return convertTemporalTypeToString(eDataType, instanceValue);
-			case OrmPackage.DISCRIMINATOR_VALUE:
-				return convertDiscriminatorValueToString(eDataType, instanceValue);
-			case OrmPackage.ENUMERATED:
-				return convertEnumeratedToString(eDataType, instanceValue);
-			case OrmPackage.ORDER_BY:
-				return convertOrderByToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -968,66 +956,6 @@ public class OrmFactory extends EFactoryImpl
 	public String convertTemporalTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String createDiscriminatorValueFromString(EDataType eDataType, String initialValue)
-	{
-		return (String)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertDiscriminatorValueToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createEnumeratedFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEnumeratedToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String createOrderByFromString(EDataType eDataType, String initialValue)
-	{
-		return (String)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertOrderByToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

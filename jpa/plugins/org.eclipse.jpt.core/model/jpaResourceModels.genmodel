@@ -54,9 +54,6 @@
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//TemporalType/TIME"/>
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//TemporalType/TIMESTAMP"/>
     </genEnums>
-    <genDataTypes ecoreDataType="orm.ecore#//DiscriminatorValue"/>
-    <genDataTypes ecoreDataType="orm.ecore#//Enumerated"/>
-    <genDataTypes ecoreDataType="orm.ecore#//OrderBy"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlAttributeMapping"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/insertable"/>
@@ -67,7 +64,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlEmbedded"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlMultiRelationshipMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlMultiRelationshipMapping/orderBy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AbstractXmlMultiRelationshipMapping/mapKey"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlNamedColumn">
@@ -337,6 +333,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlUniqueConstraint/columnNames"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlVersion"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlOrderable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOrderable/orderBy"/>
+    </genClasses>
     <nestedGenPackages prefix="OrmV2_0" basePackage="org.eclipse.jpt.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" ecorePackage="orm.ecore#//v2_0">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//v2_0/LockModeType_2_0">
@@ -370,7 +369,6 @@
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlElementCollection_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/targetClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/fetch"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/orderBy"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKey"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyTemporal"/>

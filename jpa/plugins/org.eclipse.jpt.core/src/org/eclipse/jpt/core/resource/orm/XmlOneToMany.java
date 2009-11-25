@@ -77,16 +77,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	protected Boolean orphanRemoval = ORPHAN_REMOVAL_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getOrderColumn() <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlOrderColumn orderColumn;
-
-	/**
 	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -200,66 +190,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS);
 		}
 		return joinColumns;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order Column</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order Column</em>' containment reference.
-	 * @see #setOrderColumn(XmlOrderColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOrderable_2_0_OrderColumn()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlOrderColumn getOrderColumn()
-	{
-		return orderColumn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetOrderColumn(XmlOrderColumn newOrderColumn, NotificationChain msgs)
-	{
-		XmlOrderColumn oldOrderColumn = orderColumn;
-		orderColumn = newOrderColumn;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN, oldOrderColumn, newOrderColumn);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToMany#getOrderColumn <em>Order Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order Column</em>' containment reference.
-	 * @see #getOrderColumn()
-	 * @generated
-	 */
-	public void setOrderColumn(XmlOrderColumn newOrderColumn)
-	{
-		if (newOrderColumn != orderColumn)
-		{
-			NotificationChain msgs = null;
-			if (orderColumn != null)
-				msgs = ((InternalEObject)orderColumn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN, null, msgs);
-			if (newOrderColumn != null)
-				msgs = ((InternalEObject)newOrderColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN, null, msgs);
-			msgs = basicSetOrderColumn(newOrderColumn, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN, newOrderColumn, newOrderColumn));
 	}
 
 	/**
@@ -551,8 +481,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS:
 				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
-				return basicSetOrderColumn(null, msgs);
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS:
 				return basicSetMapKeyClass(null, msgs);
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES:
@@ -579,8 +507,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				return getJoinColumns();
 			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
 				return getOrphanRemoval();
-			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
-				return getOrderColumn();
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS:
 				return getMapKeyClass();
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_TEMPORAL:
@@ -614,9 +540,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
 				setOrphanRemoval((Boolean)newValue);
-				return;
-			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS:
 				setMapKeyClass((XmlMapKeyClass)newValue);
@@ -658,9 +581,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
 				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
 				return;
-			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
-				setOrderColumn((XmlOrderColumn)null);
-				return;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS:
 				setMapKeyClass((XmlMapKeyClass)null);
 				return;
@@ -697,8 +617,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				return joinColumns != null && !joinColumns.isEmpty();
 			case OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL:
 				return ORPHAN_REMOVAL_EDEFAULT == null ? orphanRemoval != null : !ORPHAN_REMOVAL_EDEFAULT.equals(orphanRemoval);
-			case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN:
-				return orderColumn != null;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS:
 				return mapKeyClass != null;
 			case OrmPackage.XML_ONE_TO_MANY__MAP_KEY_TEMPORAL:
@@ -739,14 +657,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlOrderable_2_0.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN: return OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlOneToMany_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -784,14 +694,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 			switch (baseFeatureID)
 			{
 				case OrmV2_0Package.XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL: return OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlOrderable_2_0.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmV2_0Package.XML_ORDERABLE_20__ORDER_COLUMN: return OrmPackage.XML_ONE_TO_MANY__ORDER_COLUMN;
 				default: return -1;
 			}
 		}

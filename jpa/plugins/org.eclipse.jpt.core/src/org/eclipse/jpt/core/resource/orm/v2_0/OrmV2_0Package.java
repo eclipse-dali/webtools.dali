@@ -306,13 +306,22 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_20__ORDER_COLUMN = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_20__ORDER_BY = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__TARGET_CLASS = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_ELEMENT_COLLECTION_20__TARGET_CLASS = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -321,16 +330,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__FETCH = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__ORDER_BY = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_ELEMENT_COLLECTION_20__FETCH = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
@@ -1807,21 +1807,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderBy <em>Order By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Order By</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getOrderBy()
-	 * @see #getXmlElementCollection_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlElementCollection_2_0_OrderBy()
-	{
-		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(2);
-	}
-
-
-	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKey <em>Map Key</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1832,7 +1817,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKey()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(3);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(2);
 	}
 
 
@@ -1847,7 +1832,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyClass()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(4);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -1862,7 +1847,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlElementCollection_2_0_MapKeyTemporal()
 	{
-		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(5);
+		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -1877,7 +1862,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EAttribute getXmlElementCollection_2_0_MapKeyEnumerated()
 	{
-		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(6);
+		return (EAttribute)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -1892,7 +1877,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyAttributeOverrides()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(7);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(6);
 	}
 
 
@@ -1907,7 +1892,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyColumn()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(8);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(7);
 	}
 
 
@@ -1922,7 +1907,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_MapKeyJoinColumns()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(9);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(8);
 	}
 
 
@@ -1937,7 +1922,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_Column()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(10);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(9);
 	}
 
 
@@ -1952,7 +1937,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_AttributeOverrides()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(11);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(10);
 	}
 
 
@@ -1967,7 +1952,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_AssociationOverrides()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(12);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(11);
 	}
 
 
@@ -1982,7 +1967,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 */
 	public EReference getXmlElementCollection_2_0_CollectionTable()
 	{
-		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(13);
+		return (EReference)xmlElementCollection_2_0EClass.getEStructuralFeatures().get(12);
 	}
 
 
@@ -2869,7 +2854,6 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlElementCollection_2_0EClass = createEClass(XML_ELEMENT_COLLECTION_20);
 		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__TARGET_CLASS);
 		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__FETCH);
-		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__ORDER_BY);
 		createEReference(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__MAP_KEY);
 		createEReference(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS);
 		createEAttribute(xmlElementCollection_2_0EClass, XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL);
@@ -3000,7 +2984,7 @@ public class OrmV2_0Package extends EPackageImpl
 		// Add supertypes to classes
 		xmlAttributeMapping_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
-		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
+		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlOrderable());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
 		xmlEntity_2_0EClass.getESuperTypes().add(this.getXmlCacheable_2_0());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
@@ -3034,7 +3018,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEClass(xmlElementCollection_2_0EClass, XmlElementCollection_2_0.class, "XmlElementCollection_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlElementCollection_2_0_TargetClass(), theXMLTypePackage.getString(), "targetClass", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlElementCollection_2_0_Fetch(), theOrmPackage.getFetchType(), "fetch", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlElementCollection_2_0_OrderBy(), theOrmPackage.getOrderBy(), "orderBy", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_2_0_MapKey(), theOrmPackage.getMapKey(), null, "mapKey", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlElementCollection_2_0_MapKeyClass(), theOrmPackage.getXmlMapKeyClass(), null, "mapKeyClass", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlElementCollection_2_0_MapKeyTemporal(), theOrmPackage.getTemporalType(), "mapKeyTemporal", null, 0, 1, XmlElementCollection_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3293,14 +3276,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ELEMENT_COLLECTION_20__FETCH = eINSTANCE.getXmlElementCollection_2_0_Fetch();
-
-		/**
-		 * The meta object literal for the '<em><b>Order By</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ELEMENT_COLLECTION_20__ORDER_BY = eINSTANCE.getXmlElementCollection_2_0_OrderBy();
 
 		/**
 		 * The meta object literal for the '<em><b>Map Key</b></em>' containment reference feature.
