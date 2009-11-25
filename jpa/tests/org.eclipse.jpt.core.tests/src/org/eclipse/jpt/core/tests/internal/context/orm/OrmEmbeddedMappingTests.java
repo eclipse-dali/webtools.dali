@@ -493,7 +493,6 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		
 		//embedded mapping is specified, virtual attribute overrides should exist
 		persistentType.getAttributeNamed("address").makeSpecified();
-		getOrmXmlResource().save(null);
 		embeddedMapping = (OrmEmbeddedMapping) persistentType.getAttributeNamed("address").getMapping();
 		attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());

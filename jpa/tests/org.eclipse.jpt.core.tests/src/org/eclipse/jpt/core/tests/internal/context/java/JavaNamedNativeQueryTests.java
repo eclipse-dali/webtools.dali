@@ -153,24 +153,18 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 	
 		
 		QueryHint queryHint = namedNativeQuery.addHint(0);
-		getOrmXmlResource().save(null);
 		queryHint.setName("FOO");
-		getOrmXmlResource().save(null);
 
 		assertEquals("FOO", javaNamedNativeQuery.hintAt(0).getName());
 		
 		QueryHint queryHint2 = namedNativeQuery.addHint(0);
-		getOrmXmlResource().save(null);
 		queryHint2.setName("BAR");
-		getOrmXmlResource().save(null);
 		
 		assertEquals("BAR", javaNamedNativeQuery.hintAt(0).getName());
 		assertEquals("FOO", javaNamedNativeQuery.hintAt(1).getName());
 		
 		QueryHint queryHint3 = namedNativeQuery.addHint(1);
-		getOrmXmlResource().save(null);
 		queryHint3.setName("BAZ");
-		getOrmXmlResource().save(null);
 		
 		assertEquals("BAR", javaNamedNativeQuery.hintAt(0).getName());
 		assertEquals("BAZ", javaNamedNativeQuery.hintAt(1).getName());

@@ -2108,7 +2108,6 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		entity.getJavaEntity().getAssociationOverrideContainer().virtualAssociationOverrides().next().setVirtual(false);
 		
-		getOrmXmlResource().save(null);
 
 		JavaAssociationOverride javaAssociationOverride = entity.getJavaEntity().getAssociationOverrideContainer().specifiedAssociationOverrides().next();
 		JavaJoinColumnJoiningStrategy javaJoiningStrategy = javaAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();

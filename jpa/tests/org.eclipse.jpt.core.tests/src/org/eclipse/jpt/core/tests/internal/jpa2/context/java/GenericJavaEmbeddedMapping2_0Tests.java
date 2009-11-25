@@ -1250,8 +1250,6 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
-		getPersistenceXmlResource().save(null);
-		getOrmXmlResource().save(null);
 		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
