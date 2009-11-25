@@ -43,6 +43,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		assertEquals(2, getJpaProject().jpaFilesSize());
 		JpaXmlResource ormResource = getOrmXmlResource();
 		ormResource.getContents().clear();
+		ormResource.save(null);
 		
 		//the ContentType of the orm.xml file is no longer orm, so the jpa file is removed
 		assertNull(getOrmXml());
@@ -51,6 +52,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 		xmlEntityMappings.setVersion("1.0");
 		ormResource.getContents().add(xmlEntityMappings);
+		ormResource.save(null);
 		
 		assertNotNull(getOrmXml().getEntityMappings());
 		assertEquals(2, getJpaProject().jpaFilesSize());
