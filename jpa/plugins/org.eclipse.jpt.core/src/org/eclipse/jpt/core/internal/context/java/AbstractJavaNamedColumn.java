@@ -157,7 +157,9 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	/**
 	 * Return the name of the column's table.
 	 */
-	protected abstract String getTableName();
+	protected String getTableName() {
+		return this.getOwner().getTypeMapping().getPrimaryTableName();
+	}
 
 	public boolean isResolved() {
 		return this.getDbColumn() != null;

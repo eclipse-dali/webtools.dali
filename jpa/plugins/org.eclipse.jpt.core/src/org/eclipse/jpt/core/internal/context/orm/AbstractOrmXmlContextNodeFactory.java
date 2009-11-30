@@ -51,10 +51,12 @@ import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -104,6 +106,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmNullAttributeMap
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmNullConverter;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmOneToManyMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmOneToOneMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmOrderable;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmPersistentType;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmPrimaryKeyJoinColumn;
@@ -121,6 +124,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.UnsupportedOrmAttributeMapping;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmMapsId2_0;
@@ -132,6 +136,8 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
@@ -371,6 +377,14 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 	
 	public OrmConverter buildOrmNullConverter(OrmAttributeMapping parent) {
 		return new GenericOrmNullConverter(parent);
+	}
+	
+	public OrmOrderable buildOrmOrderable(OrmAttributeMapping parent) {
+		return new GenericOrmOrderable(parent);
+	}
+	
+	public OrmOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmNamedColumn.Owner owner) {
+		return new GenericOrmOrderColumn2_0(parent, owner);
 	}
 	
 	public OrmDerivedId2_0 buildOrmDerivedId(

@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNamedColumnAnnotation;
+import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
+import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
@@ -77,6 +79,16 @@ public class SourceOrderColumn2_0Annotation
 		this.setNullable(this.buildNullable(astRoot));
 		this.setInsertable(this.buildInsertable(astRoot));
 		this.setUpdatable(this.buildUpdatable(astRoot));
+	}
+	
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName, false);
+	}
+	
+	@Override
+	protected DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(this.daa, elementName, false, BooleanExpressionConverter.instance());
 	}
 	
 	public String getAnnotationName() {

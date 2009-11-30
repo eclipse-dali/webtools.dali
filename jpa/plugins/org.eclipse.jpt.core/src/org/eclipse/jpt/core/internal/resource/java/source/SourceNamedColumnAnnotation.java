@@ -56,7 +56,7 @@ public abstract class SourceNamedColumnAnnotation
 		this.columnDefinitionAdapter = this.buildShortCircuitElementAdapter(this.columnDefinitionDeclarationAdapter);
 	}
 
-	DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
+	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName);
 	}
 

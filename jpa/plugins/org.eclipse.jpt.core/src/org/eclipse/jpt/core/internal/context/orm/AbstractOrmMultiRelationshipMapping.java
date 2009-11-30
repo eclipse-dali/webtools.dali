@@ -14,7 +14,9 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
@@ -29,27 +31,23 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	extends AbstractOrmRelationshipMapping<T>
 	implements OrmMultiRelationshipMapping
 {
-	protected String specifiedOrderBy;
-	protected boolean noOrdering = false;
-	protected boolean pkOrdering = false;
-	protected boolean customOrdering = false;
-	
+	protected final OrmOrderable orderable;
+		
 	protected String specifiedMapKey;
 	protected boolean noMapKey = false;
 	protected boolean pkMapKey = false;
 	protected boolean customMapKey = false;
 	
-	
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.initializeOrderBy();
+		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this);
 		this.initializeMapKey();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.updateOrderBy();
+		this.orderable.update();
 		this.updateMapKey();
 	}
 	
@@ -64,133 +62,9 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	
 	
 	// **************** order by ***********************************************
-	
-	public String getOrderBy() {
-		if (this.noOrdering) {
-			return null;
-		}
-		if (this.pkOrdering) {
-			return this.getTargetEntityIdAttributeName();
-		}
-		if (this.customOrdering) {
-			return this.specifiedOrderBy;
-		}
-		throw new IllegalStateException("unknown ordering"); //$NON-NLS-1$
-	}
-	
-	public String getSpecifiedOrderBy() {
-		return this.specifiedOrderBy;
-	}
 
-	public void setSpecifiedOrderBy(String orderBy) {
-		String old = this.specifiedOrderBy;
-		this.specifiedOrderBy = orderBy;
-		this.resourceAttributeMapping.setOrderBy(orderBy);
-		this.firePropertyChanged(SPECIFIED_ORDER_BY_PROPERTY, old, orderBy);
-	}
-	
-	protected void setSpecifiedOrderBy_(String orderBy) {
-		String old = this.specifiedOrderBy;
-		this.specifiedOrderBy = orderBy;
-		this.firePropertyChanged(SPECIFIED_ORDER_BY_PROPERTY, old, orderBy);
-	}
-
-	protected void initializeOrderBy() {
-		this.specifiedOrderBy = this.getXmlOrderBy();
-		if (this.specifiedOrderBy == null) { 
-			this.noOrdering = true;
-		} else if (this.specifiedOrderBy.equals("")) { //$NON-NLS-1$
-			this.pkOrdering = true;
-		} else {
-			this.customOrdering = true;
-		}
-	}
-	
-	protected void updateOrderBy() {
-		this.setSpecifiedOrderBy_(this.getXmlOrderBy());
-		if (this.specifiedOrderBy == null) { 
-			this.setNoOrdering_(true);
-			this.setPkOrdering_(false);
-			this.setCustomOrdering_(false);
-		} else if (this.specifiedOrderBy.equals("")) { //$NON-NLS-1$
-			this.setNoOrdering_(false);
-			this.setPkOrdering_(true);
-			this.setCustomOrdering_(false);
-		} else {
-			this.setNoOrdering_(false);
-			this.setPkOrdering_(false);
-			this.setCustomOrdering_(true);
-		}
-	}
-	
-	protected String getXmlOrderBy() {
-		return this.resourceAttributeMapping.getOrderBy();
-	}
-	
-	
-	// **************** no ordering ***********************************************
-		
-	public boolean isNoOrdering() {
-		return this.noOrdering;
-	}
-
-	public void setNoOrdering(boolean noOrdering) {
-		boolean old = this.noOrdering;
-		this.noOrdering = noOrdering;
-		if (noOrdering) {
-			this.resourceAttributeMapping.setOrderBy(null);
-		}
-		this.firePropertyChanged(NO_ORDERING_PROPERTY, old, noOrdering);			
-	}
-	
-	protected void setNoOrdering_(boolean noOrdering) {
-		boolean old = this.noOrdering;
-		this.noOrdering = noOrdering;
-		this.firePropertyChanged(NO_ORDERING_PROPERTY, old, noOrdering);			
-	}
-	
-	
-	// **************** pk ordering ***********************************************
-		
-	public boolean isPkOrdering() {
-		return this.pkOrdering;
-	}
-	
-	public void setPkOrdering(boolean pkOrdering) {
-		boolean old = this.pkOrdering;
-		this.pkOrdering = pkOrdering;
-		if (pkOrdering) {
-			this.resourceAttributeMapping.setOrderBy(""); //$NON-NLS-1$
-		}
-		this.firePropertyChanged(PK_ORDERING_PROPERTY, old, pkOrdering);	
-	}
-	
-	protected void setPkOrdering_(boolean pkOrdering) {
-		boolean old = this.pkOrdering;
-		this.pkOrdering = pkOrdering;
-		this.firePropertyChanged(PK_ORDERING_PROPERTY, old, pkOrdering);	
-	}
-	
-	
-	// **************** custom ordering ***********************************************
-		
-	public boolean isCustomOrdering() {
-		return this.customOrdering;
-	}
-
-	public void setCustomOrdering(boolean customOrdering) {
-		boolean old = this.customOrdering;
-		this.customOrdering = customOrdering;
-		if (customOrdering) {
-			this.setSpecifiedOrderBy(""); //$NON-NLS-1$
-		}
-		this.firePropertyChanged(CUSTOM_ORDERING_PROPERTY, old, customOrdering);
-	}
-	
-	protected void setCustomOrdering_(boolean customOrdering) {
-		boolean old = this.customOrdering;
-		this.customOrdering = customOrdering;
-		this.firePropertyChanged(CUSTOM_ORDERING_PROPERTY, old, customOrdering);
+	public Orderable getOrderable() {
+		return this.orderable;
 	}
 	
 	

@@ -12,12 +12,14 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -158,12 +160,22 @@ public class VirtualXmlManyToMany
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaAttributeMapping.getSpecifiedOrderBy();
+		return this.javaAttributeMapping.getOrderable().getSpecifiedOrderBy();
 	}
 	
 	@Override
 	public void setOrderBy(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	@Override
+	public XmlOrderColumn getOrderColumn() {
+		if (((Orderable2_0) this.javaAttributeMapping.getOrderable()).isOrderColumnOrdering()) {
+			return 	new VirtualXmlOrderColumn(
+				((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
+				this.ormTypeMapping.isMetadataComplete());
+		}
+		return null;
 	}
 	
 	@Override

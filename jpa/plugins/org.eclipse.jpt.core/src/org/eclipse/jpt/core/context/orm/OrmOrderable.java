@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,23 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
+import org.eclipse.jpt.core.context.Orderable;
+import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
- * ORM multi-valued (1:m, m:m) relationship mapping.
- * <p>
+ * 
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmMultiRelationshipMapping 
-	extends OrmRelationshipMapping, MultiRelationshipMapping
+public interface OrmOrderable extends Orderable, XmlContextNode
 {
-	AbstractXmlMultiRelationshipMapping getResourceAttributeMapping();
-	
-	
-	// nothing yet
+	void update();
+
 }

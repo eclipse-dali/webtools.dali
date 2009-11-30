@@ -164,6 +164,7 @@ public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
 
 	OrmConverter buildOrmNullConverter(OrmAttributeMapping parent);
 	
+	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent);
 	
 	// ********** ORM Virtual Resource Model **********
 	

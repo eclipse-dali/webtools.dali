@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
+import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkManyToManyMapping;
@@ -142,6 +143,11 @@ public class VirtualEclipseLinkXmlManyToMany extends XmlManyToMany
 	@Override
 	public void setOrderBy(String value) {
 		this.virtualXmlManyToMany.setOrderBy(value);
+	}
+	
+	@Override
+	public XmlOrderColumn getOrderColumn() {
+		return this.virtualXmlManyToMany.getOrderColumn();
 	}
 	
 	@Override

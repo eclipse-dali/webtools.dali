@@ -12,11 +12,12 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -43,7 +44,7 @@ import org.eclipse.swt.widgets.Text;
  * @version 3.0
  * @since 1.0
  */
-public class OrderingComposite extends AbstractOrderingComposite
+public abstract class AbstractOrderingComposite extends FormPane<MultiRelationshipMapping>
 {
 	/**
 	 * Creates a new <code>OrderingComposite</code>.
@@ -51,7 +52,7 @@ public class OrderingComposite extends AbstractOrderingComposite
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrderingComposite(FormPane<? extends MultiRelationshipMapping> parentPane,
+	protected AbstractOrderingComposite(FormPane<? extends MultiRelationshipMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -64,56 +65,82 @@ public class OrderingComposite extends AbstractOrderingComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrderingComposite(PropertyValueModel<? extends MultiRelationshipMapping> subjectHolder,
+	protected AbstractOrderingComposite(PropertyValueModel<? extends MultiRelationshipMapping> subjectHolder,
 	                         Composite parent,
 	                         WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
+
 	
-	@Override
-	protected void initializeLayout(Composite container) {
-		PropertyValueModel<Orderable> orderableHolder = buildOrderableHolder();
-		
-		// Order By group
-		Group orderByGroup = addTitledGroup(
-			container,
-			JptUiDetailsMessages.OrderingComposite_orderingGroup,
-			JpaHelpContextIds.MAPPING_ORDER_BY);
-
-		// No Ordering radio button
-		addRadioButton(
-			addSubPane(orderByGroup, 8),
-			JptUiDetailsMessages.OrderingComposite_none,
-			buildNoOrderingHolder(orderableHolder),
-			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
-		);
-
-		// Order by Primary Key radio button
-		addRadioButton(
-			orderByGroup,
-			JptUiDetailsMessages.OrderingComposite_primaryKey,
-			buildPrimaryKeyOrderingHolder(orderableHolder),
-			JpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
-		);
-
-		// Custom Ordering radio button
-		addRadioButton(
-			orderByGroup,
-			JptUiDetailsMessages.OrderingComposite_custom,
-			buildCustomOrderingHolder(orderableHolder),
-			JpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
-		);
-
-		// Custom Ordering text field
-		Text customOrderingText = addUnmanagedText(
-			addSubPane(orderByGroup, 0, 16),
-			buildSpecifiedOrderByHolder(orderableHolder),
-			JpaHelpContextIds.MAPPING_ORDER_BY
-		);
-
-		installCustomTextEnabler(customOrderingText, orderableHolder);
+	protected PropertyValueModel<Orderable> buildOrderableHolder() {
+		return new PropertyAspectAdapter<MultiRelationshipMapping, Orderable>(getSubjectHolder()) {
+			@Override
+			protected Orderable buildValue_() {
+				return this.subject.getOrderable();
+			}
+		};
 	}
 
+	protected WritablePropertyValueModel<Boolean> buildNoOrderingHolder(PropertyValueModel<Orderable> orderableHolder) {
+		return new PropertyAspectAdapter<Orderable, Boolean>(orderableHolder, Orderable.NO_ORDERING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isNoOrdering());
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setNoOrdering(value.booleanValue());
+			}
+		};
+	}
+
+	protected WritablePropertyValueModel<Boolean> buildPrimaryKeyOrderingHolder(PropertyValueModel<Orderable> orderableHolder) {
+		return new PropertyAspectAdapter<Orderable, Boolean>(orderableHolder, Orderable.PK_ORDERING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isPkOrdering());
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setPkOrdering(value.booleanValue());
+			}
+		};
+	}
+
+	protected WritablePropertyValueModel<Boolean> buildCustomOrderingHolder(PropertyValueModel<Orderable> orderableHolder) {
+		return new PropertyAspectAdapter<Orderable, Boolean>(orderableHolder, Orderable.CUSTOM_ORDERING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isCustomOrdering());
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setCustomOrdering(value.booleanValue());
+			}
+		};
+	}
+
+	protected WritablePropertyValueModel<String> buildSpecifiedOrderByHolder(PropertyValueModel<Orderable> orderableHolder) {
+		return new PropertyAspectAdapter<Orderable, String>(orderableHolder, Orderable.SPECIFIED_ORDER_BY_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getSpecifiedOrderBy();
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				this.subject.setSpecifiedOrderBy(value);
+			}
+		};
+	}
+
+	protected void installCustomTextEnabler(Text text, PropertyValueModel<Orderable> orderableHolder) {
+		PropertyValueModel<Boolean> enabler = buildCustomOrderingHolder(orderableHolder);
+		SWTTools.controlEnabledState(enabler, text);
+	}
 
 }

@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -157,6 +158,11 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	@Override
 	public void setOrderBy(String value) {
 		this.virtualXmlOneToMany.setOrderBy(value);
+	}
+	
+	@Override
+	public XmlOrderColumn getOrderColumn() {
+		return this.virtualXmlOneToMany.getOrderColumn();
 	}
 	
 	@Override

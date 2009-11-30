@@ -51,10 +51,12 @@ import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
@@ -105,6 +107,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaNullAttributeM
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaNullConverter;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOneToOneMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOrderable;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaPersistentType;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaPrimaryKeyJoinColumn;
@@ -122,6 +125,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverri
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
 import org.eclipse.jpt.core.internal.jpa2.NullMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapsId2_0;
@@ -136,6 +140,8 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -370,6 +376,10 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaNullConverter(parent);
 	}
 	
+	public JavaOrderable buildJavaOrderable(JavaAttributeMapping parent) {
+		return new GenericJavaOrderable(parent);
+	}
+	
 	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
 		return new NullJavaDerivedId2_0(parent);
 	}
@@ -389,4 +399,9 @@ public abstract class AbstractJpaFactory
 	public JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent) {
 		return new NullJavaOrphanRemoval2_0(parent);
 	}
+	
+	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
+		return new GenericJavaOrderColumn2_0(parent, owner);
+	}
+
 }

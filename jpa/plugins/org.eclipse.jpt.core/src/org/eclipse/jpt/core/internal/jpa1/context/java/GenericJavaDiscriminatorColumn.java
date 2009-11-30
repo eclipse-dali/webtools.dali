@@ -53,10 +53,6 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		return (JavaDiscriminatorColumn.Owner) super.getOwner();
 	}
 	
-	protected JavaEntity getJavaEntity() {
-		return (JavaEntity) super.getParent();
-	}
-	
 	public boolean isResourceSpecified() {
 		return getResourceColumn().isSpecified();
 	}
@@ -133,11 +129,6 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
-	}
-
-	@Override
-	protected String getTableName() {
-		return getJavaEntity().getPrimaryTableName();
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

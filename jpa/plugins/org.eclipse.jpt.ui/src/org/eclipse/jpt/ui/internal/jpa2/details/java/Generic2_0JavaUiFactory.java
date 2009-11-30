@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
@@ -76,6 +77,14 @@ public class Generic2_0JavaUiFactory
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new JavaEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createJavaManyToManyMappingComposite(
+			PropertyValueModel<JavaManyToManyMapping> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		return new JavaManyToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

@@ -26,6 +26,8 @@ public class JptUiDetailsMessages2_0 {
 	public static String Entity_cacheableLabel;
 	public static String Entity_cacheableWithDefaultLabel;
 
+	public static String OrderingComposite_orderColumn;
+	
 	public static String OrphanRemoval2_0Composite_orphanRemovalLabel;
 	public static String OrphanRemoval2_0Composite_orphanRemovalLabelDefault;
 	

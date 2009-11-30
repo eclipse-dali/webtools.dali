@@ -13,14 +13,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
-import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -34,6 +37,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	extends AbstractJavaRelationshipMapping<T> 
 	implements JavaMultiRelationshipMapping
 {
+	protected final JavaOrderable orderable;
+	
 	protected String specifiedOrderBy = null;
 	protected boolean noOrdering = false;
 	protected boolean pkOrdering = false;
@@ -47,19 +52,20 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.orderable = getJpaFactory().buildJavaOrderable(this);
 	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.initializeOrderBy();
+		this.orderable.initialize();
 		this.initializeMapKey();
 	}
 
 	@Override
 	protected void update() {
 		super.update();
-		this.updateOrderBy();
+		this.orderable.update();
 		this.updateMapKey();
 	}
 
@@ -67,12 +73,19 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	@Override
 	protected String[] buildSupportingAnnotationNames() {
-		return ArrayTools.addAll(
+		String[] annotationNames = ArrayTools.addAll(
 			super.buildSupportingAnnotationNames(),
 			JPA.JOIN_TABLE,
 			JPA.MAP_KEY,
-			JPA.ORDER_BY
-			);
+			JPA.ORDER_BY);
+		
+		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			annotationNames = ArrayTools.addAll(
+				annotationNames,
+				JPA2_0.ORDER_COLUMN);
+		}
+		
+		return annotationNames;
 	}
 
 	// ********** AbstractJavaRelationshipMapping implementation **********  
@@ -83,173 +96,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 
-	// ********** order by **********  
+	// ********** ordering **********  
 
-	public String getOrderBy() {
-		if (this.noOrdering) {
-			return null;
-		}
-		if (this.pkOrdering) {
-			return this.getTargetEntityIdAttributeName();
-		}
-		if (this.customOrdering) {
-			return this.specifiedOrderBy;
-		}
-		throw new IllegalStateException("unknown ordering"); //$NON-NLS-1$
-	}
-
-	public String getSpecifiedOrderBy() {
-		return this.specifiedOrderBy;
-	}
-
-	public void setSpecifiedOrderBy(String orderBy) {
-		String old = this.specifiedOrderBy;
-		this.specifiedOrderBy = orderBy;
-		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
-		if (orderBy == null) {
-			if (orderByAnnotation != null) { 
-				this.removeOrderByAnnotation();
-			}
-		} else {
-			if (orderByAnnotation == null) {
-				orderByAnnotation = this.addOrderByAnnotation();
-			}
-			orderByAnnotation.setValue(orderBy);
-		}
-		this.firePropertyChanged(SPECIFIED_ORDER_BY_PROPERTY, old, orderBy);
-	}
-
-	protected void setSpecifiedOrderBy_(String orderBy) {
-		String old = this.specifiedOrderBy;
-		this.specifiedOrderBy = orderBy;
-		this.firePropertyChanged(SPECIFIED_ORDER_BY_PROPERTY, old, orderBy);
-	}
-
-	protected void initializeOrderBy() {
-		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
-		if (orderByAnnotation == null) {
-			this.noOrdering = true;
-		} else {
-			this.specifiedOrderBy = orderByAnnotation.getValue();
-			if (this.specifiedOrderBy == null) {
-				this.pkOrdering = true;
-			} else {
-				this.customOrdering = true;
-			}
-		}
-	}
-
-	protected void updateOrderBy() {
-		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
-		if (orderByAnnotation == null) {
-			this.setSpecifiedOrderBy_(null);
-			this.setNoOrdering_(true);
-			this.setPkOrdering_(false);
-			this.setCustomOrdering_(false);
-		} else {
-			String ob = orderByAnnotation.getValue();
-			this.setSpecifiedOrderBy_(ob);
-			this.setNoOrdering_(false);
-			this.setPkOrdering_(ob == null);
-			this.setCustomOrdering_(ob != null);
-		}
-	}
-
-	protected OrderByAnnotation getOrderByAnnotation() {
-		return (OrderByAnnotation) this.getResourcePersistentAttribute().getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-	}
-
-	protected OrderByAnnotation addOrderByAnnotation() {
-		return (OrderByAnnotation) this.getResourcePersistentAttribute().addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-	}
-
-	protected void removeOrderByAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-	}
-
-
-	// ********** no ordering **********  
-
-	public boolean isNoOrdering() {
-		return this.noOrdering;
-	}
-
-	public void setNoOrdering(boolean noOrdering) {
-		boolean old = this.noOrdering;
-		this.noOrdering = noOrdering;
-		if (noOrdering) {
-			if (this.getOrderByAnnotation() != null) {
-				this.removeOrderByAnnotation();
-			}
-		} else {
-			// the 'noOrdering' flag is cleared as a
-			// side-effect of setting the other flags,
-			// via a call to #setNoOrdering_(boolean)
-		}
-		this.firePropertyChanged(NO_ORDERING_PROPERTY, old, noOrdering);
-	}
-
-	protected void setNoOrdering_(boolean noOrdering) {
-		boolean old = this.noOrdering;
-		this.noOrdering = noOrdering;
-		this.firePropertyChanged(NO_ORDERING_PROPERTY, old, noOrdering);	
-	}
-
-
-	// ********** pk ordering **********  
-
-	public boolean isPkOrdering() {
-		return this.pkOrdering;
-	}
-
-	public void setPkOrdering(boolean pkOrdering) {
-		boolean old = this.pkOrdering;
-		this.pkOrdering = pkOrdering;
-		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
-		if (pkOrdering) {
-			if (orderByAnnotation == null) {
-				this.addOrderByAnnotation();
-			} else {
-				orderByAnnotation.setValue(null);
-			}
-		} else {
-			// the 'pkOrdering' flag is cleared as a
-			// side-effect of setting the other flags,
-			// via a call to #setPkOrdering_(boolean)
-		}
-		this.firePropertyChanged(PK_ORDERING_PROPERTY, old, pkOrdering);
-	}
-
-	protected void setPkOrdering_(boolean pkOrdering) {
-		boolean old = this.pkOrdering;
-		this.pkOrdering = pkOrdering;
-		this.firePropertyChanged(PK_ORDERING_PROPERTY, old, pkOrdering);
-	}
-
-
-	// ********** custom ordering **********  
-
-	public boolean isCustomOrdering() {
-		return this.customOrdering;
-	}
-
-	public void setCustomOrdering(boolean customOrdering) {
-		boolean old = this.customOrdering;
-		this.customOrdering = customOrdering;
-		if (customOrdering) {
-			this.setSpecifiedOrderBy(""); //$NON-NLS-1$
-		} else {
-			// the 'customOrdering' flag is cleared as a
-			// side-effect of setting the other flags,
-			// via a call to #setCustomOrdering_(boolean)
-		}
-		this.firePropertyChanged(CUSTOM_ORDERING_PROPERTY, old, customOrdering);
-	}
-
-	protected void setCustomOrdering_(boolean customOrdering) {
-		boolean old = this.customOrdering;
-		this.customOrdering = customOrdering;
-		this.firePropertyChanged(CUSTOM_ORDERING_PROPERTY, old, customOrdering);
+	public Orderable getOrderable() {
+		return this.orderable;
 	}
 
 

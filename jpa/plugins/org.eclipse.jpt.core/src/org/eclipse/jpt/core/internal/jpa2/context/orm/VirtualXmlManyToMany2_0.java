@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -139,6 +140,11 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	@Override
 	public void setOrderBy(String value) {
 		this.virtualXmlManyToMany.setOrderBy(value);
+	}
+	
+	@Override
+	public XmlOrderColumn getOrderColumn() {
+		return this.virtualXmlManyToMany.getOrderColumn();
 	}
 	
 	@Override

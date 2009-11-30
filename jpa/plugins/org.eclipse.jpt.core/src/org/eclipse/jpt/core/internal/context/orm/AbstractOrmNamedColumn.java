@@ -50,6 +50,12 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> e
 	
 	protected abstract void addResourceColumn();
 
+	protected void removeResourceColumnIfFeaturesUnset() {
+		if (this.getResourceColumn().isUnset()) {
+			removeResourceColumn();
+		}		
+	}
+	
 	public Owner getOwner() {
 		return this.owner;
 	}
@@ -67,10 +73,8 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> e
 		this.specifiedName = newSpecifiedName;
 		if (this.attributeValueHasChanged(oldSpecifiedName, newSpecifiedName)) {
 			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setName(newSpecifiedName);						
-				if (this.getResourceColumn().isUnset()) {
-					removeResourceColumn();
-				}
+				this.getResourceColumn().setName(newSpecifiedName);
+				this.removeResourceColumnIfFeaturesUnset();
 			}
 			else if (newSpecifiedName != null) {
 				addResourceColumn();
@@ -105,10 +109,8 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> e
 		this.columnDefinition = newColumnDefinition;
 		if (this.attributeValueHasChanged(oldColumnDefinition, newColumnDefinition)) {
 			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setColumnDefinition(newColumnDefinition);						
-				if (this.getResourceColumn().isUnset()) {
-					removeResourceColumn();
-				}
+				this.getResourceColumn().setColumnDefinition(newColumnDefinition);
+				this.removeResourceColumnIfFeaturesUnset();
 			}
 			else if (newColumnDefinition != null) {
 				addResourceColumn();
@@ -133,7 +135,9 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> e
 		return getOwner().getDbTable(this.getOwningTableName());
 	}
 
-	protected abstract String getOwningTableName();
+	protected String getOwningTableName() {
+		return this.getOwner().getTypeMapping().getPrimaryTableName();
+	}
 
 	public boolean isResolved() {
 		return getDbColumn() != null;

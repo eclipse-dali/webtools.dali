@@ -9,21 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
-import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
-import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractManyToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.ManyToManyJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -68,8 +65,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkManyToManyMappingComposite 
-	extends FormPane<ManyToManyMapping>
+public class EclipseLinkManyToManyMappingComposite
+	extends AbstractManyToManyMappingComposite<ManyToManyMapping>
 	implements JpaComposite
 {
 	/**
@@ -96,29 +93,6 @@ public class EclipseLinkManyToManyMappingComposite
 		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
-	}
-
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
-	protected PropertyValueModel<ManyToManyRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, ManyToManyRelationshipReference>(
-				getSubjectHolder()) {
-			@Override
-			protected ManyToManyRelationshipReference transform_(ManyToManyMapping value) {
-				return value.getRelationshipReference();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(ManyToManyMapping value) {
-				return value.getCascade();
-			}
-		};
 	}
 
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {

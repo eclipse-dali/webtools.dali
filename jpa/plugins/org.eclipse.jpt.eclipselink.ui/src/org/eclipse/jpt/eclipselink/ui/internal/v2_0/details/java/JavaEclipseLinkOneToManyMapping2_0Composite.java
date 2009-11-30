@@ -25,6 +25,7 @@ import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -109,7 +110,7 @@ public class JavaEclipseLinkOneToManyMapping2_0Composite<T extends EclipseLinkOn
 		new EclipseLinkPrivateOwnedComposite(this, this.buildPrivateOwnableHolder(), this.addPane(container, groupBoxMargin));
 		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
 		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
-		new OrderingComposite(this, container);
+		new Ordering2_0Composite(this, container);
 	}
 
 	protected PropertyValueModel<EclipseLinkOneToManyRelationshipReference> buildEclipseLinkJoiningHolder() {

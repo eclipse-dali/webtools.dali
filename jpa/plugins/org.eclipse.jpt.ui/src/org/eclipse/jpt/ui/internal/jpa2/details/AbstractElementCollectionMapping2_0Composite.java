@@ -55,7 +55,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see BasicMapping
- * @see ColumnComposite
+ * @see OrderColumnComposite
  * @see EnumTypeComposite
  * @see FetchTypeComposite
  * @see LobComposite

@@ -78,6 +78,8 @@ public interface JpaHelpContextIds {
 	public static final String MAPPING_ORDER_BY_NO_ORDERING = PREFIX + "mapping_orderByNoOrdering";
 	public static final String MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING = PREFIX + "mapping_orderByPrimaryKeyOrdering";
 	public static final String MAPPING_ORDER_BY_CUSTOM_ORDERING = PREFIX + "mapping_orderByCustomOrdering";
+	public static final String MAPPING_ORDER_COLUMN_ORDERING = PREFIX + "mapping_orderColumnOrdering";
+	public static final String MAPPING_ORDER_COLUMN_ORDERING_COLUMN = PREFIX + "mapping_orderColumnOrderingColumn";
 	public static final String MAPPING_PRIMARY_KEY_GENERATION = PREFIX + "mapping_primaryKeyGeneration";
 	public static final String MAPPING_SEQUENCE_GENERATOR = PREFIX + "mapping_sequenceGenerator";
 	public static final String MAPPING_SEQUENCE_GENERATOR_NAME = PREFIX + "mapping_sequenceGeneratorName";

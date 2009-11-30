@@ -71,9 +71,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		if (oldDiscriminatorType != newSpecifiedDiscriminatorType) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setDiscriminatorType(DiscriminatorType.toOrmResourceModel(newSpecifiedDiscriminatorType));
-				if (this.getResourceColumn().isUnset()) {
-					removeResourceColumn();
-				}
+				this.removeResourceColumnIfFeaturesUnset();
 			}
 			else if (newSpecifiedDiscriminatorType != null) {
 				addResourceColumn();
@@ -113,9 +111,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		if (this.valuesAreDifferent(oldSpecifiedLength, newSpecifiedLength)) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setLength(newSpecifiedLength);
-				if (this.getResourceColumn().isUnset()) {
-					removeResourceColumn();
-				}
+				this.removeResourceColumnIfFeaturesUnset();
 			}
 			else if (newSpecifiedLength != null) {
 				addResourceColumn();
@@ -130,12 +126,6 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		this.specifiedLength = newSpecifiedLength;
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
-
-	@Override
-	protected String getOwningTableName() {
-		return this.getOwner().getTypeMapping().getPrimaryTableName();
-	}
-
 	
 	
 	@Override
