@@ -150,12 +150,13 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.ATTRIBUTE_LEVEL_CATEGORY);
 
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_UNRESOLVED_MAPPED_BY,      JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_INVALID_MAPPED_BY,         JpaValidationMessages.MAPPING_INVALID_MAPPED_BY);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE, JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,   JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_NOT_DEFINED,         JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,    JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_UNRESOLVED_MAPPED_BY,      		JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_INVALID_MAPPED_BY,         		JpaValidationMessages.MAPPING_INVALID_MAPPED_BY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE, 		JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,   		JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_NOT_DEFINED,         		JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,    		JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED, JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED);
 	}
 
 	/**

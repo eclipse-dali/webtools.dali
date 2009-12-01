@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
@@ -23,6 +24,8 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * ORM multi-relationship (m:m, 1:m) mapping
@@ -256,6 +259,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	public String getMetamodelFieldMapKeyTypeName() {
 		return MappingTools.getMetamodelFieldMapKeyTypeName(this);
+	}
+	
+	
+	// ********** validation **********
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.orderable.validate(messages, reporter);
 	}
 
 }

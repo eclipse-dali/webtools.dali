@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -29,6 +30,8 @@ import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java multi-relationship (m:m, 1:m) mapping
@@ -38,11 +41,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	implements JavaMultiRelationshipMapping
 {
 	protected final JavaOrderable orderable;
-	
-	protected String specifiedOrderBy = null;
-	protected boolean noOrdering = false;
-	protected boolean pkOrdering = false;
-	protected boolean customOrdering = false;
 
 	protected String specifiedMapKey;
 	protected boolean noMapKey = false;
@@ -328,6 +326,14 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	public String getMetamodelFieldMapKeyTypeName() {
 		return MappingTools.getMetamodelFieldMapKeyTypeName(this);
+	}
+	
+	// ********** validation **********
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.orderable.validate(messages, reporter, astRoot);
 	}
 
 }

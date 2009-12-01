@@ -70,7 +70,8 @@ public class JptUiValidationPreferenceMessages {
 	public static String MAPPING_MAPPED_BY_ON_BOTH_SIDES;
 	public static String TARGET_ENTITY_NOT_DEFINED;
 	public static String TARGET_ENTITY_IS_NOT_AN_ENTITY;
-
+	public static String ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED;
+	
 	public static String PHYSICAL_MAPPING_CATEGORY;
 	public static String TABLE_UNRESOLVED_CATALOG;
 	public static String TABLE_UNRESOLVED_SCHEMA;

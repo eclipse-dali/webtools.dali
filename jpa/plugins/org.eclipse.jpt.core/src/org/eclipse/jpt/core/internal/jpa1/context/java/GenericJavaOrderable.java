@@ -10,12 +10,15 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
@@ -25,6 +28,8 @@ import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericJavaOrderable
@@ -330,4 +335,24 @@ public class GenericJavaOrderable
 		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
 		return (orderByAnnotation == null) ? null : orderByAnnotation.getTextRange(astRoot);
 	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (getOrderColumnAnnotation() != null && getOrderByAnnotation() != null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
+					new String[] {getPersistentAttribute().getName()},
+					this.getParent(),
+					this.getOrderByAnnotationTextRange(astRoot)
+				)
+			);
+		}
+		if (isOrderColumnOrdering()) {
+			//TODO validation message if type is not List
+		}
+	}
+	
 }

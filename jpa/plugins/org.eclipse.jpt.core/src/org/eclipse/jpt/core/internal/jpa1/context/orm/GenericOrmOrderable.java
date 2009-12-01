@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -22,6 +23,8 @@ import org.eclipse.jpt.core.resource.orm.XmlOrderable;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * ORM multi-relationship (m:m, 1:m) mapping
@@ -253,9 +256,19 @@ public class GenericOrmOrderable
 		return getPersistentAttribute().getTypeMapping();
 	}
 	
+	
+	// ********** Validation **********  
 
 	public TextRange getValidationTextRange() {
 		return getResourceOrderable().getValidationTextRange();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		if (isOrderColumnOrdering()) {
+			//TODO validation message if type is not List
+		}
 	}
 
 }
