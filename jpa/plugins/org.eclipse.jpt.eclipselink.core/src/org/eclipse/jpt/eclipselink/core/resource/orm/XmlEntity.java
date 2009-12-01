@@ -27,6 +27,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlEntity_1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlPrimaryKey_1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -1497,6 +1499,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			buildDiscriminatorColumnTranslator(),
 			buildOptimisticLockingTranslator(),
 			buildCacheTranslator(),
+			buildCacheInterceptorTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
 			buildObjectTypeConverterTranslator(),
@@ -1510,6 +1513,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			buildNamedNativeQueryTranslator(),
 			buildNamedStoredProcedureQueryTranslator(),
 			buildSqlResultSetMappingTranslator(),
+			buildQueryRedirectorsTranslator(),
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
@@ -1545,6 +1549,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	
 	protected static Translator buildCacheTranslator() {
 		return XmlCache.buildTranslator(EclipseLink.CACHE, EclipseLinkOrmPackage.eINSTANCE.getXmlCacheHolder_Cache());
+	}
+	
+	protected static Translator buildCacheInterceptorTranslator() {
+		return XmlCacheInterceptor.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity2_0_CacheInterceptor());
+	}
+	
+	protected static Translator buildQueryRedirectorsTranslator() {
+		return XmlQueryRedirectors.buildTranslator(EclipseLink2_0.QUERY_REDIRECTORS, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity2_0_QueryRedirectors());
 	}
 	
 	protected static Translator buildConverterTranslator() {

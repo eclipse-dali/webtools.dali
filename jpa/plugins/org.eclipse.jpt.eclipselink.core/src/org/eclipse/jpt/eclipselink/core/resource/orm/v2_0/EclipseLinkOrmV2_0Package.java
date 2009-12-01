@@ -74,6 +74,34 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final EclipseLinkOrmV2_0Package eINSTANCE = org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package.init();
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0 <em>Xml Cache Interceptor2 0</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCacheInterceptor2_0()
+	 * @generated
+	 */
+	public static final int XML_CACHE_INTERCEPTOR2_0 = 0;
+
+	/**
+	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_INTERCEPTOR2_0__CLASS_NAME = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Cache Interceptor2 0</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_INTERCEPTOR2_0_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0 <em>Xml Collection Mapping 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -81,7 +109,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCollectionMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_COLLECTION_MAPPING_20 = 0;
+	public static final int XML_COLLECTION_MAPPING_20 = 1;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
@@ -118,7 +146,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlElementCollection_2_0()
 	 * @generated
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20 = 1;
+	public static final int XML_ELEMENT_COLLECTION_20 = 2;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -292,6 +320,52 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_20_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 14;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0 <em>Xml Entity2 0</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlEntity2_0()
+	 * @generated
+	 */
+	public static final int XML_ENTITY2_0 = 3;
+
+	/**
+	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY2_0__CACHEABLE = OrmV2_0Package.XML_ENTITY_20__CACHEABLE;
+
+	/**
+	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY2_0__CACHE_INTERCEPTOR = OrmV2_0Package.XML_ENTITY_20_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Query Redirectors</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY2_0__QUERY_REDIRECTORS = OrmV2_0Package.XML_ENTITY_20_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml Entity2 0</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY2_0_FEATURE_COUNT = OrmV2_0Package.XML_ENTITY_20_FEATURE_COUNT + 2;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlManyToMany_2_0 <em>Xml Many To Many 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -299,7 +373,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlManyToMany_2_0()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY_20 = 2;
+	public static final int XML_MANY_TO_MANY_20 = 4;
 
 	/**
 	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
@@ -372,7 +446,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMappedSuperclass_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20 = 3;
+	public static final int XML_MAPPED_SUPERCLASS_20 = 5;
 
 	/**
 	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
@@ -384,13 +458,22 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS_20__CACHEABLE = OrmV2_0Package.XML_CACHEABLE_20__CACHEABLE;
 
 	/**
+	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR = OrmV2_0Package.XML_CACHEABLE_20_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass 20</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = OrmV2_0Package.XML_CACHEABLE_20_FEATURE_COUNT + 0;
+	public static final int XML_MAPPED_SUPERCLASS_20_FEATURE_COUNT = OrmV2_0Package.XML_CACHEABLE_20_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.
@@ -400,7 +483,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlOneToMany_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_20 = 4;
+	public static final int XML_ONE_TO_MANY_20 = 6;
 
 	/**
 	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
@@ -473,7 +556,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlOrderColumn_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN_20 = 5;
+	public static final int XML_ORDER_COLUMN_20 = 7;
 
 	/**
 	 * The feature id for the '<em><b>Correction Type</b></em>' attribute.
@@ -494,6 +577,88 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ORDER_COLUMN_20_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0 <em>Xml Query Redirectors2 0</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0 = 8;
+
+	/**
+	 * The feature id for the '<em><b>All Queries</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0__ALL_QUERIES = 0;
+
+	/**
+	 * The feature id for the '<em><b>Read All</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0__READ_ALL = 1;
+
+	/**
+	 * The feature id for the '<em><b>Read Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0__READ_OBJECT = 2;
+
+	/**
+	 * The feature id for the '<em><b>Report</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0__REPORT = 3;
+
+	/**
+	 * The feature id for the '<em><b>Update</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0__UPDATE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Insert</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0__INSERT = 5;
+
+	/**
+	 * The feature id for the '<em><b>Delete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0__DELETE = 6;
+
+	/**
+	 * The number of structural features of the '<em>Xml Query Redirectors2 0</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_QUERY_REDIRECTORS2_0_FEATURE_COUNT = 7;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0 <em>Order Correction Type 20</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -501,7 +666,14 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderCorrectionType_2_0()
 	 * @generated
 	 */
-	public static final int ORDER_CORRECTION_TYPE_20 = 6;
+	public static final int ORDER_CORRECTION_TYPE_20 = 9;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCacheInterceptor2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -516,6 +688,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlElementCollection_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEntity2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -544,6 +723,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlOrderColumn_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlQueryRedirectors2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -629,6 +815,35 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0 <em>Xml Cache Interceptor2 0</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Cache Interceptor2 0</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0
+	 * @generated
+	 */
+	public EClass getXmlCacheInterceptor2_0()
+	{
+		return xmlCacheInterceptor2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0#getClassName <em>Class Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Class Name</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0#getClassName()
+	 * @see #getXmlCacheInterceptor2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlCacheInterceptor2_0_ClassName()
+	{
+		return (EAttribute)xmlCacheInterceptor2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0 <em>Xml Collection Mapping 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -683,6 +898,50 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0 <em>Xml Entity2 0</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Entity2 0</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0
+	 * @generated
+	 */
+	public EClass getXmlEntity2_0()
+	{
+		return xmlEntity2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0#getCacheInterceptor <em>Cache Interceptor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Cache Interceptor</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0#getCacheInterceptor()
+	 * @see #getXmlEntity2_0()
+	 * @generated
+	 */
+	public EReference getXmlEntity2_0_CacheInterceptor()
+	{
+		return (EReference)xmlEntity2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0#getQueryRedirectors <em>Query Redirectors</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Query Redirectors</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0#getQueryRedirectors()
+	 * @see #getXmlEntity2_0()
+	 * @generated
+	 */
+	public EReference getXmlEntity2_0_QueryRedirectors()
+	{
+		return (EReference)xmlEntity2_0EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlManyToMany_2_0 <em>Xml Many To Many 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -706,6 +965,21 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public EClass getXmlMappedSuperclass_2_0()
 	{
 		return xmlMappedSuperclass_2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheInterceptor <em>Cache Interceptor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Cache Interceptor</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheInterceptor()
+	 * @see #getXmlMappedSuperclass_2_0()
+	 * @generated
+	 */
+	public EReference getXmlMappedSuperclass_2_0_CacheInterceptor()
+	{
+		return (EReference)xmlMappedSuperclass_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -747,6 +1021,125 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public EAttribute getXmlOrderColumn_2_0_CorrectionType()
 	{
 		return (EAttribute)xmlOrderColumn_2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0 <em>Xml Query Redirectors2 0</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Query Redirectors2 0</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0
+	 * @generated
+	 */
+	public EClass getXmlQueryRedirectors2_0()
+	{
+		return xmlQueryRedirectors2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getAllQueries <em>All Queries</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>All Queries</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getAllQueries()
+	 * @see #getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlQueryRedirectors2_0_AllQueries()
+	{
+		return (EAttribute)xmlQueryRedirectors2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getReadAll <em>Read All</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Read All</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getReadAll()
+	 * @see #getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlQueryRedirectors2_0_ReadAll()
+	{
+		return (EAttribute)xmlQueryRedirectors2_0EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getReadObject <em>Read Object</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Read Object</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getReadObject()
+	 * @see #getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlQueryRedirectors2_0_ReadObject()
+	{
+		return (EAttribute)xmlQueryRedirectors2_0EClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getReport <em>Report</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Report</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getReport()
+	 * @see #getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlQueryRedirectors2_0_Report()
+	{
+		return (EAttribute)xmlQueryRedirectors2_0EClass.getEStructuralFeatures().get(3);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getUpdate <em>Update</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Update</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getUpdate()
+	 * @see #getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlQueryRedirectors2_0_Update()
+	{
+		return (EAttribute)xmlQueryRedirectors2_0EClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getInsert <em>Insert</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Insert</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getInsert()
+	 * @see #getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlQueryRedirectors2_0_Insert()
+	{
+		return (EAttribute)xmlQueryRedirectors2_0EClass.getEStructuralFeatures().get(5);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getDelete <em>Delete</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Delete</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0#getDelete()
+	 * @see #getXmlQueryRedirectors2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlQueryRedirectors2_0_Delete()
+	{
+		return (EAttribute)xmlQueryRedirectors2_0EClass.getEStructuralFeatures().get(6);
 	}
 
 
@@ -796,20 +1189,37 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		isCreated = true;
 
 		// Create classes and their features
+		xmlCacheInterceptor2_0EClass = createEClass(XML_CACHE_INTERCEPTOR2_0);
+		createEAttribute(xmlCacheInterceptor2_0EClass, XML_CACHE_INTERCEPTOR2_0__CLASS_NAME);
+
 		xmlCollectionMapping_2_0EClass = createEClass(XML_COLLECTION_MAPPING_20);
 		createEAttribute(xmlCollectionMapping_2_0EClass, XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT);
 		createEReference(xmlCollectionMapping_2_0EClass, XML_COLLECTION_MAPPING_20__MAP_KEY_ASSOCIATION_OVERRIDES);
 
 		xmlElementCollection_2_0EClass = createEClass(XML_ELEMENT_COLLECTION_20);
 
+		xmlEntity2_0EClass = createEClass(XML_ENTITY2_0);
+		createEReference(xmlEntity2_0EClass, XML_ENTITY2_0__CACHE_INTERCEPTOR);
+		createEReference(xmlEntity2_0EClass, XML_ENTITY2_0__QUERY_REDIRECTORS);
+
 		xmlManyToMany_2_0EClass = createEClass(XML_MANY_TO_MANY_20);
 
 		xmlMappedSuperclass_2_0EClass = createEClass(XML_MAPPED_SUPERCLASS_20);
+		createEReference(xmlMappedSuperclass_2_0EClass, XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR);
 
 		xmlOneToMany_2_0EClass = createEClass(XML_ONE_TO_MANY_20);
 
 		xmlOrderColumn_2_0EClass = createEClass(XML_ORDER_COLUMN_20);
 		createEAttribute(xmlOrderColumn_2_0EClass, XML_ORDER_COLUMN_20__CORRECTION_TYPE);
+
+		xmlQueryRedirectors2_0EClass = createEClass(XML_QUERY_REDIRECTORS2_0);
+		createEAttribute(xmlQueryRedirectors2_0EClass, XML_QUERY_REDIRECTORS2_0__ALL_QUERIES);
+		createEAttribute(xmlQueryRedirectors2_0EClass, XML_QUERY_REDIRECTORS2_0__READ_ALL);
+		createEAttribute(xmlQueryRedirectors2_0EClass, XML_QUERY_REDIRECTORS2_0__READ_OBJECT);
+		createEAttribute(xmlQueryRedirectors2_0EClass, XML_QUERY_REDIRECTORS2_0__REPORT);
+		createEAttribute(xmlQueryRedirectors2_0EClass, XML_QUERY_REDIRECTORS2_0__UPDATE);
+		createEAttribute(xmlQueryRedirectors2_0EClass, XML_QUERY_REDIRECTORS2_0__INSERT);
+		createEAttribute(xmlQueryRedirectors2_0EClass, XML_QUERY_REDIRECTORS2_0__DELETE);
 
 		// Create enums
 		orderCorrectionType_2_0EEnum = createEEnum(ORDER_CORRECTION_TYPE_20);
@@ -853,6 +1263,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConvertibleMapping());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConvertersHolder());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
+		xmlEntity2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlEntity_2_0());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterHolder());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 		xmlMappedSuperclass_2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlCacheable_2_0());
@@ -860,20 +1271,37 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 
 		// Initialize classes and features; add operations and parameters
+		initEClass(xmlCacheInterceptor2_0EClass, XmlCacheInterceptor2_0.class, "XmlCacheInterceptor2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCacheInterceptor2_0_ClassName(), ecorePackage.getEString(), "className", null, 0, 1, XmlCacheInterceptor2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(xmlCollectionMapping_2_0EClass, XmlCollectionMapping_2_0.class, "XmlCollectionMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCollectionMapping_2_0_MapKeyConvert(), ecorePackage.getEString(), "mapKeyConvert", null, 0, 1, XmlCollectionMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlCollectionMapping_2_0_MapKeyAssociationOverrides(), theOrmPackage.getXmlAssociationOverride(), null, "mapKeyAssociationOverrides", null, 0, -1, XmlCollectionMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlElementCollection_2_0EClass, XmlElementCollection_2_0.class, "XmlElementCollection_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(xmlEntity2_0EClass, XmlEntity2_0.class, "XmlEntity2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEntity2_0_CacheInterceptor(), this.getXmlCacheInterceptor2_0(), null, "cacheInterceptor", null, 0, 1, XmlEntity2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity2_0_QueryRedirectors(), this.getXmlQueryRedirectors2_0(), null, "queryRedirectors", null, 0, 1, XmlEntity2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(xmlManyToMany_2_0EClass, XmlManyToMany_2_0.class, "XmlManyToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlMappedSuperclass_2_0EClass, XmlMappedSuperclass_2_0.class, "XmlMappedSuperclass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMappedSuperclass_2_0_CacheInterceptor(), this.getXmlCacheInterceptor2_0(), null, "cacheInterceptor", null, 0, 1, XmlMappedSuperclass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_0EClass, XmlOneToMany_2_0.class, "XmlOneToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlOrderColumn_2_0EClass, XmlOrderColumn_2_0.class, "XmlOrderColumn_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOrderColumn_2_0_CorrectionType(), this.getOrderCorrectionType_2_0(), "correctionType", null, 0, 1, XmlOrderColumn_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlQueryRedirectors2_0EClass, XmlQueryRedirectors2_0.class, "XmlQueryRedirectors2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlQueryRedirectors2_0_AllQueries(), ecorePackage.getEString(), "allQueries", null, 0, 1, XmlQueryRedirectors2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlQueryRedirectors2_0_ReadAll(), ecorePackage.getEString(), "readAll", null, 0, 1, XmlQueryRedirectors2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlQueryRedirectors2_0_ReadObject(), ecorePackage.getEString(), "readObject", null, 0, 1, XmlQueryRedirectors2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlQueryRedirectors2_0_Report(), ecorePackage.getEString(), "report", null, 0, 1, XmlQueryRedirectors2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlQueryRedirectors2_0_Update(), ecorePackage.getEString(), "update", null, 0, 1, XmlQueryRedirectors2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlQueryRedirectors2_0_Insert(), ecorePackage.getEString(), "insert", null, 0, 1, XmlQueryRedirectors2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlQueryRedirectors2_0_Delete(), ecorePackage.getEString(), "delete", null, 0, 1, XmlQueryRedirectors2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(orderCorrectionType_2_0EEnum, OrderCorrectionType_2_0.class, "OrderCorrectionType_2_0");
@@ -896,6 +1324,24 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 */
 	public interface Literals
 	{
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0 <em>Xml Cache Interceptor2 0</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCacheInterceptor2_0()
+		 * @generated
+		 */
+		public static final EClass XML_CACHE_INTERCEPTOR2_0 = eINSTANCE.getXmlCacheInterceptor2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Class Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE_INTERCEPTOR2_0__CLASS_NAME = eINSTANCE.getXmlCacheInterceptor2_0_ClassName();
+
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0 <em>Xml Collection Mapping 20</em>}' class.
 		 * <!-- begin-user-doc -->
@@ -933,6 +1379,32 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		public static final EClass XML_ELEMENT_COLLECTION_20 = eINSTANCE.getXmlElementCollection_2_0();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0 <em>Xml Entity2 0</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlEntity2_0()
+		 * @generated
+		 */
+		public static final EClass XML_ENTITY2_0 = eINSTANCE.getXmlEntity2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Cache Interceptor</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY2_0__CACHE_INTERCEPTOR = eINSTANCE.getXmlEntity2_0_CacheInterceptor();
+
+		/**
+		 * The meta object literal for the '<em><b>Query Redirectors</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY2_0__QUERY_REDIRECTORS = eINSTANCE.getXmlEntity2_0_QueryRedirectors();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlManyToMany_2_0 <em>Xml Many To Many 20</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -951,6 +1423,14 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS_20 = eINSTANCE.getXmlMappedSuperclass_2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Cache Interceptor</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR = eINSTANCE.getXmlMappedSuperclass_2_0_CacheInterceptor();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.
@@ -979,6 +1459,72 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ORDER_COLUMN_20__CORRECTION_TYPE = eINSTANCE.getXmlOrderColumn_2_0_CorrectionType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0 <em>Xml Query Redirectors2 0</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlQueryRedirectors2_0()
+		 * @generated
+		 */
+		public static final EClass XML_QUERY_REDIRECTORS2_0 = eINSTANCE.getXmlQueryRedirectors2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>All Queries</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_QUERY_REDIRECTORS2_0__ALL_QUERIES = eINSTANCE.getXmlQueryRedirectors2_0_AllQueries();
+
+		/**
+		 * The meta object literal for the '<em><b>Read All</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_QUERY_REDIRECTORS2_0__READ_ALL = eINSTANCE.getXmlQueryRedirectors2_0_ReadAll();
+
+		/**
+		 * The meta object literal for the '<em><b>Read Object</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_QUERY_REDIRECTORS2_0__READ_OBJECT = eINSTANCE.getXmlQueryRedirectors2_0_ReadObject();
+
+		/**
+		 * The meta object literal for the '<em><b>Report</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_QUERY_REDIRECTORS2_0__REPORT = eINSTANCE.getXmlQueryRedirectors2_0_Report();
+
+		/**
+		 * The meta object literal for the '<em><b>Update</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_QUERY_REDIRECTORS2_0__UPDATE = eINSTANCE.getXmlQueryRedirectors2_0_Update();
+
+		/**
+		 * The meta object literal for the '<em><b>Insert</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_QUERY_REDIRECTORS2_0__INSERT = eINSTANCE.getXmlQueryRedirectors2_0_Insert();
+
+		/**
+		 * The meta object literal for the '<em><b>Delete</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_QUERY_REDIRECTORS2_0__DELETE = eINSTANCE.getXmlQueryRedirectors2_0_Delete();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0 <em>Order Correction Type 20</em>}' enum.

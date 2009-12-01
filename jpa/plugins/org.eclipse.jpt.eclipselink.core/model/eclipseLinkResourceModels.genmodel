@@ -86,6 +86,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCacheHolder/cache"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCacheHolder/existenceChecking"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCacheInterceptor"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlChangeTracking">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlChangeTracking/type"/>
     </genClasses>
@@ -205,6 +206,7 @@
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlQueryContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlQueryContainer/namedStoredProcedureQueries"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlQueryRedirectors"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlReadOnly">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlReadOnly/readOnly"/>
     </genClasses>
@@ -261,16 +263,34 @@
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0/READ_WRITE"/>
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_0/OrderCorrectionType_2_0/EXCEPTION"/>
       </genEnums>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlCacheInterceptor2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlCacheInterceptor2_0/className"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0/mapKeyConvert"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0/mapKeyAssociationOverrides"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlElementCollection_2_0"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlEntity2_0">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlEntity2_0/cacheInterceptor"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlEntity2_0/queryRedirectors"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlManyToMany_2_0"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlMappedSuperclass_2_0"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlMappedSuperclass_2_0">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlMappedSuperclass_2_0/cacheInterceptor"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlOneToMany_2_0"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlOrderColumn_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlOrderColumn_2_0/correctionType"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0/allQueries"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0/readAll"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0/readObject"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0/report"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0/update"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0/insert"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlQueryRedirectors2_0/delete"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

@@ -23,6 +23,19 @@ public interface EclipseLink2_0
 	
 	// EclipseLink 2.0 specific nodes
 
+	String CACHE_INTERCEPTOR = "cache-interceptor";
+	String CACHE_INTERCEPTOR__VALUE = "value";
+
 	String CORRECTION_TYPE = "correction-type";
 	String MAP_KEY_ASSOCIATION_OVERRIDE = "map-key-association-override";
+
+	String QUERY_REDIRECTORS = "query-redirectors";
+	String QUERY_REDIRECTORS__ALL_QUERIES = "all-queries";
+	String QUERY_REDIRECTORS__READ_ALL = "read-all";
+	String QUERY_REDIRECTORS__READ_OBJECT = "read-object";
+	String QUERY_REDIRECTORS__REPORT = "report";
+	String QUERY_REDIRECTORS__UPDATE = "update";
+	String QUERY_REDIRECTORS__INSERT = "insert";
+	String QUERY_REDIRECTORS__DELETE = "delete";
+
 }

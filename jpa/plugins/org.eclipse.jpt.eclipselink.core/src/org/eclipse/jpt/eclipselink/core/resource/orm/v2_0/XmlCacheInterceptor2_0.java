@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
 
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Mapped Superclass 20</b></em>'.
+ * A representation of the model object '<em><b>Xml Cache Interceptor2 0</b></em>'.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,41 +25,41 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheInterceptor <em>Cache Interceptor</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0#getClassName <em>Class Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMappedSuperclass_2_0()
+ * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCacheInterceptor2_0()
  * @model kind="class" interface="true" abstract="true"
+ * @extends JpaEObject
  * @generated
  */
-public interface XmlMappedSuperclass_2_0 extends XmlCacheable_2_0
+public interface XmlCacheInterceptor2_0 extends JpaEObject
 {
-
 	/**
-	 * Returns the value of the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cache Interceptor</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Class Name</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor2_0)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMappedSuperclass_2_0_CacheInterceptor()
-	 * @model containment="true"
+	 * @return the value of the '<em>Class Name</em>' attribute.
+	 * @see #setClassName(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCacheInterceptor2_0_ClassName()
+	 * @model
 	 * @generated
 	 */
-	XmlCacheInterceptor2_0 getCacheInterceptor();
+	String getClassName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheInterceptor <em>Cache Interceptor</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0#getClassName <em>Class Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #getCacheInterceptor()
+	 * @param value the new value of the '<em>Class Name</em>' attribute.
+	 * @see #getClassName()
 	 * @generated
 	 */
-	void setCacheInterceptor(XmlCacheInterceptor2_0 value);
+	void setClassName(String value);
 
-} // XmlMappedSuperclass_2_0
+} // XmlCacheInterceptor2_0
