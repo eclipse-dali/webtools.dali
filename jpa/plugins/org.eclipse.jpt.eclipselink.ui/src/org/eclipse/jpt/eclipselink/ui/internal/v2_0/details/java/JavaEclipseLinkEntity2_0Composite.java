@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.GeneratorContainer;
+import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.ui.internal.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.details.TableComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -85,6 +87,11 @@ public class JavaEclipseLinkEntity2_0Composite extends AbstractJavaEclipseLinkEn
 	@Override
 	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
 		new JavaEclipseLinkCaching2_0Composite(this, cachingHolder, container);
+	}
+
+	@Override
+	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+		new Queries2_0Composite(this, queryContainerHolder, container);
 	}
 
 }

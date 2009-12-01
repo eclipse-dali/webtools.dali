@@ -63,17 +63,21 @@ public class OrmQueriesComposite extends Pane<EntityMappings> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = addCollapsableSection(
+		container = this.addCollapsableSection(
 			container,
 			JptUiDetailsOrmMessages.OrmQueriesComposite_groupBox
 		);
 
-		QueriesComposite queriesComposite = new QueriesComposite(this, buildQueryContainer(), container);
+		QueriesComposite queriesComposite = this.buildQueriesComposite(container, this.buildQueryContainerHolder());
 
-		installPaneEnabler(queriesComposite);
+		this.installPaneEnabler(queriesComposite);
 	}
 
-	private PropertyValueModel<QueryContainer> buildQueryContainer() {
+	protected QueriesComposite buildQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+		return new QueriesComposite(this, queryContainerHolder, container);
+	}
+
+	private PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
 		return new PropertyAspectAdapter<EntityMappings, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {

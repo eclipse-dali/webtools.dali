@@ -31,6 +31,18 @@ public class JptUiDetailsMessages2_0 {
 	public static String OrphanRemoval2_0Composite_orphanRemovalLabel;
 	public static String OrphanRemoval2_0Composite_orphanRemovalLabelDefault;
 	
+	public static String LockModeComposite_lockModeLabel;
+
+	public static String LockModeComposite_read;
+	public static String LockModeComposite_write;
+	public static String LockModeComposite_optimistic;
+	public static String LockModeComposite_optimistic_force_increment;
+	public static String LockModeComposite_pessimistic_read;
+	public static String LockModeComposite_pessimistic_write;
+	public static String LockModeComposite_pessimistic_force_increment;
+	public static String LockModeComposite_none;
+
+	
 	private static final String BUNDLE_NAME = "jpt_ui_details2_0"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiDetailsMessages2_0.class;
 	static {

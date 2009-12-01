@@ -12,14 +12,15 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 
 /**
  * javax.persistence.NamedQuery
  */
-public final class BinaryNamedQueryAnnotation
+public abstract class BinaryNamedQueryAnnotation
 	extends BinaryBaseNamedQueryAnnotation
-	implements NestableNamedQueryAnnotation
+	implements NestableNamedQueryAnnotation, NamedQueryAnnotation
 {
 	public BinaryNamedQueryAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.GeneratorContainer;
+import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmJavaClassChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.Cacheable2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -79,6 +81,11 @@ public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
 	@Override
 	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
 		new Generation2_0Composite(this, generatorContainerHolder, container);
+	}
+
+	@Override
+	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+		new Queries2_0Composite(this, queryContainerHolder, container);
 	}
 
 }

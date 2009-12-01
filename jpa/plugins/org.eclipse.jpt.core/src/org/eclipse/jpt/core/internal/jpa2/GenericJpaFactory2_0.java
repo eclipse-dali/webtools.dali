@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaMapsId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
@@ -137,5 +139,10 @@ public class GenericJpaFactory2_0
 	@Override
 	public JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent) {
 		return new GenericJavaOrphanRemoval2_0(parent);
+	}
+
+	@Override
+	public JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent) {
+		return new GenericJavaNamedQuery2_0(parent);
 	}
 }

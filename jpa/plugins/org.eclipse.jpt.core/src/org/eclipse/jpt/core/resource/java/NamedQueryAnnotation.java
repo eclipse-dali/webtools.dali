@@ -20,7 +20,7 @@ package org.eclipse.jpt.core.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface NamedQueryAnnotation
-	extends BaseNamedQueryAnnotation
+	extends NestableNamedQueryAnnotation
 {
 	String ANNOTATION_NAME = JPA.NAMED_QUERY;
 }

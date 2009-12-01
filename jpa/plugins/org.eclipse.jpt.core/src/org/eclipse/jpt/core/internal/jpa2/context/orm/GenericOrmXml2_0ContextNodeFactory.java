@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -55,6 +56,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
@@ -126,6 +128,11 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	@Override
 	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable_2_0 resource) {
 		return new GenericOrmOrphanRemoval2_0(parent, resource);
+	}
+
+	@Override
+	public OrmNamedQuery buildOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
+		return new GenericOrmNamedQuery2_0(parent, resourceNamedQuery);
 	}
 
 	

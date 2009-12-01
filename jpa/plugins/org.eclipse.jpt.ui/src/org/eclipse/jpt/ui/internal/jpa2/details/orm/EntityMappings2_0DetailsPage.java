@@ -38,4 +38,9 @@ public class EntityMappings2_0DetailsPage extends AbstractEntityMappingsDetailsP
 		);
 	}
 
+	@Override
+	protected void buildOrmQueriesComposite(Composite container) {
+		new OrmQueries2_0Composite(this, container);
+	}
+
 }

@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmDerivedId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmMapsId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmNamedQuery2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOrphanRemoval2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlAssociationOverride2_0;
@@ -50,6 +52,7 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
+import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
@@ -133,6 +136,11 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 	@Override
 	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent, XmlOrphanRemovable_2_0 resource) {
 		return new GenericOrmOrphanRemoval2_0(parent, resource);
+	}
+
+	@Override
+	public OrmNamedQuery buildOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
+		return new GenericOrmNamedQuery2_0(parent, resourceNamedQuery);
 	}
 	
 	

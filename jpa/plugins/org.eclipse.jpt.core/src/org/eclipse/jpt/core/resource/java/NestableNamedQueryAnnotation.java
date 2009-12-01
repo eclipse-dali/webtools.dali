@@ -20,7 +20,7 @@ package org.eclipse.jpt.core.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface NestableNamedQueryAnnotation
-	extends NamedQueryAnnotation, NestableAnnotation
+	extends BaseNamedQueryAnnotation, NestableAnnotation
 {
 	// combines two annotation
 }

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -26,20 +27,26 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.core.jpa2.context.LockModeType_2_0;
+import org.eclipse.jpt.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -254,7 +261,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
-	
+
 	private void createTestEmbeddableZipCode() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -278,6 +285,233 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
 	}
 
+	
+	private LockModeType_2_0 lockModeOf(NamedQuery2_0Annotation resourceQuery) {
+		return resourceQuery == null ? null : LockModeType_2_0.fromJavaResourceModel(resourceQuery.getLockMode());
+	}
+	
+	public void testAddNamedQuery2_0() throws Exception {
+		this.createTestEntity();
+		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+	
+		JavaEntity entity = this.getJavaEntity();		
+		JavaResourcePersistentType typeResource = this.getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		
+		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(0);
+			namedQuery1.setName("FOO");
+			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+		
+		Iterator<NestableAnnotation> javaNamedQueries = typeResource.annotations(
+						NamedQueryAnnotation.ANNOTATION_NAME, 
+						NamedQueriesAnnotation.ANNOTATION_NAME);
+		NamedQuery2_0Annotation queryAnnotation = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("FOO", queryAnnotation.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(queryAnnotation));
+
+		NamedQuery2_0 namedQuery2 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(0);
+			namedQuery2.setName("BAR");
+			namedQuery2.setSpecifiedLockMode(LockModeType_2_0.READ);
+		
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		queryAnnotation = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("BAR", queryAnnotation.getName());
+			assertEquals(LockModeType_2_0.READ, this.lockModeOf(queryAnnotation));
+		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
+		
+		NamedQuery2_0 namedQuery3 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
+			namedQuery3.setName("BAZ");
+			namedQuery3.setSpecifiedLockMode(LockModeType_2_0.WRITE);
+		
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		assertEquals("BAR", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
+		queryAnnotation = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("BAZ", queryAnnotation.getName());
+			assertEquals(LockModeType_2_0.WRITE, this.lockModeOf(queryAnnotation));
+		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
+		
+		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
+		assertEquals(namedQuery2, namedQueries.next());
+		assertEquals(namedQuery3, namedQueries.next());
+		assertEquals(namedQuery1, namedQueries.next());
+		
+		namedQueries = entity.getQueryContainer().namedQueries();
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
+		
+		entity.getQueryContainer().addNamedNativeQuery(0).setName("foo");
+	}
+	
+	public void testRemoveNamedQuery2_0() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaEntity entity = getJavaEntity();		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+
+		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
+		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
+			namedQuery1.setName("BAR");
+			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.READ);
+		
+		NamedQuery2_0 namedQuery2 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(2);
+			namedQuery2.setName("BAZ");
+			namedQuery2.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+		
+		Iterator<NestableAnnotation> javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		
+		entity.getQueryContainer().removeNamedQuery(0);
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		assertEquals(2, CollectionTools.size(javaNamedQueries));
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		NamedQuery2_0Annotation annotation1 = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("BAR", annotation1.getName());
+			assertEquals(LockModeType_2_0.READ, this.lockModeOf(annotation1));
+		
+		NamedQuery2_0Annotation annotation2 = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("BAZ", annotation2.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation2));
+
+		entity.getQueryContainer().removeNamedQuery(0);
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		assertEquals(1, CollectionTools.size(javaNamedQueries));
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		annotation2 = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("BAZ", annotation2.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation2));
+		
+		entity.getQueryContainer().removeNamedQuery(0);
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		assertEquals(0, CollectionTools.size(javaNamedQueries));
+	}
+
+	public void testMoveNamedQuery2_0() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaEntity entity = getJavaEntity();		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+
+		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
+		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
+			namedQuery1.setName("BAR");
+			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+		entity.getQueryContainer().addNamedQuery(2).setName("BAZ");
+		
+		Iterator<NestableAnnotation> javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		
+		
+		entity.getQueryContainer().moveNamedQuery(2, 0);
+		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
+		namedQuery1 = (NamedQuery2_0) namedQueries.next();
+			assertEquals("BAR", namedQuery1.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
+
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		NamedQuery2_0Annotation annotation1 = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("BAR", annotation1.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation1));
+		assertEquals("BAZ", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
+		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
+
+
+		entity.getQueryContainer().moveNamedQuery(0, 1);
+		namedQueries = entity.getQueryContainer().namedQueries();
+		assertEquals("BAZ", namedQueries.next().getName());
+		namedQuery1 = (NamedQuery2_0) namedQueries.next();
+			assertEquals("BAR", namedQuery1.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+		assertEquals("FOO", namedQueries.next().getName());
+
+		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		assertEquals("BAZ", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
+		annotation1 = (NamedQuery2_0Annotation) javaNamedQueries.next();
+			assertEquals("BAR", annotation1.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation1));
+		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
+	}
+	
+	public void testUpdateNamedQueries2_0() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaEntity entity = getJavaEntity();		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(0, entity.getPersistenceUnit().queriesSize());
+		
+		((NamedQuery2_0Annotation) typeResource.addAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
+		((NamedQuery2_0Annotation) typeResource.addAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
+		NamedQuery2_0Annotation annotation1 = (NamedQuery2_0Annotation) typeResource.addAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+			annotation1.setName("BAZ");
+			annotation1.setLockMode(org.eclipse.jpt.core.jpa2.resource.java.LockModeType_2_0.OPTIMISTIC);
+		
+		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
+		assertEquals("FOO", namedQueries.next().getName());
+		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) namedQueries.next();
+			assertEquals("BAZ", namedQuery1.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+		assertEquals("BAR", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
+		assertEquals(3, entity.getPersistenceUnit().queriesSize());
+		
+		typeResource.moveAnnotation(2, 0, NamedQueriesAnnotation.ANNOTATION_NAME);
+		namedQueries = entity.getQueryContainer().namedQueries();
+		namedQuery1 = (NamedQuery2_0) namedQueries.next();
+			assertEquals("BAZ", namedQuery1.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
+		
+		typeResource.moveAnnotation(0, 1, NamedQueriesAnnotation.ANNOTATION_NAME);
+		namedQueries = entity.getQueryContainer().namedQueries();
+		assertEquals("BAR", namedQueries.next().getName());
+		namedQuery1 = (NamedQuery2_0) namedQueries.next();
+			assertEquals("BAZ", namedQuery1.getName());
+			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+		assertEquals("FOO", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
+		
+		typeResource.removeAnnotation(1,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		namedQueries = entity.getQueryContainer().namedQueries();
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
+		assertEquals(2, entity.getPersistenceUnit().queriesSize());
+		
+		typeResource.removeAnnotation(1,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		namedQueries = entity.getQueryContainer().namedQueries();
+		assertEquals("BAR", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
+		assertEquals(1, entity.getPersistenceUnit().queriesSize());
+		
+		typeResource.removeAnnotation(0,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		namedQueries = entity.getQueryContainer().namedQueries();
+		assertFalse(namedQueries.hasNext());
+		assertEquals(0, entity.getPersistenceUnit().queriesSize());
+	}
+	
+	public void testNamedQueries2_0Size() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaEntity entity = getJavaEntity();		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+	
+		assertEquals(0, entity.getQueryContainer().namedQueriesSize());
+
+		((NamedQuery2_0Annotation) typeResource.addAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
+		((NamedQuery2_0Annotation) typeResource.addAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
+		((NamedQuery2_0Annotation) typeResource.addAnnotation(2, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");
+		
+		assertEquals(3, entity.getQueryContainer().namedQueriesSize());
+	}
+	
 	public void testAttributeMappingKeyAllowed() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

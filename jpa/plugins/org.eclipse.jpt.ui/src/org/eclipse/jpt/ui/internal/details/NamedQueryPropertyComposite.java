@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class NamedQueryPropertyComposite extends Pane<NamedQuery>
+public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T>
 {
 	/**
 	 * Creates a new <code>NamedQueryPropertyComposite</code>.
@@ -53,13 +53,13 @@ public class NamedQueryPropertyComposite extends Pane<NamedQuery>
 	 * @param parent The parent container
 	 */
 	public NamedQueryPropertyComposite(Pane<?> parentPane,
-	                                   PropertyValueModel<? extends NamedQuery> subjectHolder,
+	                                   PropertyValueModel<T> subjectHolder,
 	                                   Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private WritablePropertyValueModel<String> buildQueryHolder() {
+	protected WritablePropertyValueModel<String> buildQueryHolder() {
 		return new PropertyAspectAdapter<NamedQuery, String>(getSubjectHolder(), Query.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {

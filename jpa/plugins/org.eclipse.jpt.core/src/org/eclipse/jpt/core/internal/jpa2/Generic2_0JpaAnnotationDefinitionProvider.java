@@ -19,6 +19,8 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverrides2_0A
 import org.eclipse.jpt.core.internal.jpa2.resource.java.Cacheable2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQueries2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQuery2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToMany2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToOne2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
@@ -48,8 +50,6 @@ import org.eclipse.jpt.core.internal.resource.java.MapKeyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclassAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueriesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueryAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.NamedQueriesAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.NamedQueryAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OrderByAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnsAnnotationDefinition;
@@ -105,8 +105,8 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(IdClassAnnotationDefinition.instance());
 		definitions.add(InheritanceAnnotationDefinition.instance());
 		definitions.add(MappedSuperclassAnnotationDefinition.instance());
-		definitions.add(NamedQueryAnnotationDefinition.instance());
-		definitions.add(NamedQueriesAnnotationDefinition.instance());
+		definitions.add(NamedQuery2_0AnnotationDefinition.instance());
+		definitions.add(NamedQueries2_0AnnotationDefinition.instance());
 		definitions.add(NamedNativeQueryAnnotationDefinition.instance());
 		definitions.add(NamedNativeQueriesAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());

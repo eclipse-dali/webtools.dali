@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import org.eclipse.jpt.core.internal.jpa1.resource.java.source.SourceNamedQuery1_0Annotation;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableQueryHintAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -26,12 +27,16 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 /**
  * javax.persistence.NamedQuery
  */
-public final class SourceNamedQueryAnnotation
+public abstract class SourceNamedQueryAnnotation
 	extends SourceBaseNamedQueryAnnotation
-	implements NestableNamedQueryAnnotation
+	implements NamedQueryAnnotation
 {
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
+	// ********** constructors **********
+	public SourceNamedQueryAnnotation(JavaResourceNode parent, Type type) {
+		super(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
+	}
 
 	public SourceNamedQueryAnnotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
@@ -67,14 +72,11 @@ public final class SourceNamedQueryAnnotation
 
 	// ********** static methods **********
 
-	public static SourceNamedQueryAnnotation createNamedQuery(JavaResourceNode parent, Type type) {
-		return new SourceNamedQueryAnnotation(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
-	}
-
 	static SourceNamedQueryAnnotation createNestedNamedQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(type, idaa);
-		return new SourceNamedQueryAnnotation(parent, type, idaa, annotationAdapter);
+
+		return new SourceNamedQuery1_0Annotation(parent, type, idaa, annotationAdapter);
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter namedQueriesAdapter) {

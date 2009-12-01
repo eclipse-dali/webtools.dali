@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.core.context.AccessHolder;
+import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaSecondaryTablesComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Cacheable2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -96,5 +98,10 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 	@Override
 	protected void addAttributeOverridesComposite(Composite container) {
 		new Entity2_0OverridesComposite(this, container);
+	}
+
+	@Override
+	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+		new Queries2_0Composite(this, queryContainerHolder, container);
 	}
 }

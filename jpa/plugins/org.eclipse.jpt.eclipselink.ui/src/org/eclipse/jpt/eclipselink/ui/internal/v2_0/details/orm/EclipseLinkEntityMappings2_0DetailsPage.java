@@ -19,6 +19,7 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmPackageChooser;
 import org.eclipse.jpt.ui.internal.details.orm.OrmQueriesComposite;
 import org.eclipse.jpt.ui.internal.details.orm.PersistenceUnitMetadataComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.EntityMappingsGenerators2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmQueries2_0Composite;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -96,6 +97,11 @@ public class EclipseLinkEntityMappings2_0DetailsPage extends AbstractEclipseLink
 			this,
 			container
 		);
+	}
+
+	@Override
+	protected void buildOrmQueriesComposite(Composite container) {
+		new OrmQueries2_0Composite(this, container);
 	}
 
 }

@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.NamedQueries
  */
-public final class SourceNamedQueriesAnnotation
+public class SourceNamedQueriesAnnotation
 	extends SourceAnnotation<Type>
 	implements NamedQueriesAnnotation
 {
@@ -90,7 +90,7 @@ public final class SourceNamedQueriesAnnotation
 		return namedQuery;
 	}
 
-	private NestableNamedQueryAnnotation buildNamedQuery(int index) {
+	protected NestableNamedQueryAnnotation buildNamedQuery(int index) {
 		return SourceNamedQueryAnnotation.createNestedNamedQuery(this, member, index, this.daa);
 	}
 

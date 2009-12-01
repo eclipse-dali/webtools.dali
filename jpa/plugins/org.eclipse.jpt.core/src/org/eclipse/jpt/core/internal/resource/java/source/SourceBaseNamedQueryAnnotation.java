@@ -76,7 +76,7 @@ abstract class SourceBaseNamedQueryAnnotation
 	/**
 	 * convenience method
 	 */
-	AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 

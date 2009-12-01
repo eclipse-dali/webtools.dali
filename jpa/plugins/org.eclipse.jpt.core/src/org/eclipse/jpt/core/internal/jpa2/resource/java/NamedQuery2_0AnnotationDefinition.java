@@ -1,17 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java;
+* Copyright (c) 2009 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+*******************************************************************************/
+package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.jpa1.resource.java.binary.BinaryNamedQuery1_0Annotation;
-import org.eclipse.jpt.core.internal.jpa1.resource.java.source.SourceNamedQuery1_0Annotation;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryNamedQuery2_0Annotation;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceNamedQuery2_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -22,11 +22,11 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 /**
  * javax.persistence.NamedQuery
  */
-public final class NamedQueryAnnotationDefinition
+public class NamedQuery2_0AnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new NamedQueryAnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new NamedQuery2_0AnnotationDefinition();
 
 	/**
 	 * Return the singleton.
@@ -38,12 +38,12 @@ public final class NamedQueryAnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private NamedQueryAnnotationDefinition() {
+	private NamedQuery2_0AnnotationDefinition() {
 		super();
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceNamedQuery1_0Annotation(parent, (Type) member);
+		return new SourceNamedQuery2_0Annotation(parent, (Type) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +51,7 @@ public final class NamedQueryAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryNamedQuery1_0Annotation(parent, jdtAnnotation);
+		return new BinaryNamedQuery2_0Annotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

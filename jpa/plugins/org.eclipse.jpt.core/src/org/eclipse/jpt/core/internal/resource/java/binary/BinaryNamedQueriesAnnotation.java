@@ -16,13 +16,14 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.persistence.NamedQueries
  */
-public final class BinaryNamedQueriesAnnotation
+public abstract class BinaryNamedQueriesAnnotation
 	extends BinaryContainerAnnotation<NestableNamedQueryAnnotation>
 	implements NamedQueriesAnnotation
 {
@@ -50,10 +51,12 @@ public final class BinaryNamedQueriesAnnotation
 		Object[] jdtQueries = this.getJdtMemberValues(JPA.NAMED_QUERIES__VALUE);
 		Vector<NestableNamedQueryAnnotation> result = new Vector<NestableNamedQueryAnnotation>(jdtQueries.length);
 		for (Object jdtQuery : jdtQueries) {
-			result.add(new BinaryNamedQueryAnnotation(this, (IAnnotation) jdtQuery));
+			result.add(this.buildNamedQuery(jdtQuery));
 		}
 		return result;
 	}
+
+	protected abstract NamedQueryAnnotation buildNamedQuery(Object jdtQuery);
 
 	@Override
 	public void update() {

@@ -75,10 +75,10 @@ public class QueriesComposite extends Pane<QueryContainer>
 {
 	private AddRemoveListPane<QueryContainer> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
-	private NamedQueryPropertyComposite namedQueryPane;
+	private NamedQueryPropertyComposite<? extends NamedQuery> namedQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
 
-	
+
 	public QueriesComposite(
 		Pane<?> parentPane, 
 		PropertyValueModel<? extends QueryContainer> subjectHolder,
@@ -111,7 +111,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 			throw new IllegalArgumentException();
 		}
 		query.setName(dialog.getName());
-		this.queryHolder.setValue(query);//so that it gets selected in the List for the user to edit
+		this.getQueryHolder().setValue(query);//so that it gets selected in the List for the user to edit
 	}
 
 	private ListValueModel<Query> buildDisplayableQueriesListHolder() {
@@ -128,7 +128,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 			container,
 			buildQueriesAdapter(),
 			buildDisplayableQueriesListHolder(),
-			this.queryHolder,
+			this.getQueryHolder(),
 			buildQueriesListLabelProvider(),
 			JpaHelpContextIds.MAPPING_NAMED_QUERIES
 		);
@@ -152,7 +152,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 	}
 
 	private PropertyValueModel<NamedNativeQuery> buildNamedNativeQueryHolder() {
-		return new TransformationPropertyValueModel<Query, NamedNativeQuery>(this.queryHolder) {
+		return new TransformationPropertyValueModel<Query, NamedNativeQuery>(this.getQueryHolder()) {
 			@Override
 			protected NamedNativeQuery transform_(Query value) {
 				return (value instanceof NamedNativeQuery) ? (NamedNativeQuery) value : null;
@@ -178,7 +178,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 	}
 
 	private PropertyValueModel<NamedQuery> buildNamedQueryHolder() {
-		return new TransformationPropertyValueModel<Query, NamedQuery>(this.queryHolder) {
+		return new TransformationPropertyValueModel<Query, NamedQuery>(this.getQueryHolder()) {
 			@Override
 			protected NamedQuery transform_(Query value) {
 				return (value instanceof NamedQuery) ? (NamedQuery) value : null;
@@ -276,30 +276,38 @@ public class QueriesComposite extends Pane<QueryContainer>
 	protected void initializeLayout(Composite container) {
 
 		// List pane
-		this.listPane = addListPane(container);
+		this.listPane = this.addListPane(container);
 
 		// Property pane
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Named Query property pane
-		this.namedQueryPane = new NamedQueryPropertyComposite(
-			this,
-			buildNamedQueryHolder(),
-			pageBook
-		);
+		this.namedQueryPane = this.buildNamedQueryPropertyComposite(pageBook);
 
 		// Named Native Query property pane
 		this.namedNativeQueryPane = new NamedNativeQueryPropertyComposite(
 			this,
-			buildNamedNativeQueryHolder(),
+			this.buildNamedNativeQueryHolder(),
 			pageBook
 		);
 
 		installPaneSwitcher(pageBook);
 	}
+	
+	protected NamedQueryPropertyComposite<? extends NamedQuery> buildNamedQueryPropertyComposite(PageBook pageBook) {
+		return new NamedQueryPropertyComposite<NamedQuery>(
+			this,
+			this.buildNamedQueryHolder(),
+			pageBook
+		);
+	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.queryHolder, buildPaneTransformer(), pageBook);
+		new ControlSwitcher(this.getQueryHolder(), this.buildPaneTransformer(), pageBook);
+	}
+	
+	protected WritablePropertyValueModel<Query> getQueryHolder() {
+		return queryHolder;
 	}
 }

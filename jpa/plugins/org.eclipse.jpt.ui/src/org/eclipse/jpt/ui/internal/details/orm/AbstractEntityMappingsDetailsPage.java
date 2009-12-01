@@ -243,10 +243,7 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 		this.buildEntityMappingsGeneratorsComposite(container);
 
 		// Queries pane
-		new OrmQueriesComposite(
-			this,
-			container
-		);
+		this.buildOrmQueriesComposite(container);
 	}
 
 	protected void buildEntityMappingsGeneratorsComposite(Composite container) {
@@ -254,5 +251,9 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 			this,
 			container
 		);
+	}
+
+	protected void buildOrmQueriesComposite(Composite container) {
+		new OrmQueriesComposite(this, container);
 	}
 }

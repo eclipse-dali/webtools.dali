@@ -137,10 +137,7 @@ public abstract class AbstractEclipseLinkEntityMappingsDetailsPage extends Abstr
 		this.buildEntityMappingsGeneratorsComposite(container);
 
 		// Queries pane
-		new OrmQueriesComposite(
-			this,
-			container
-		);
+		this.buildOrmQueriesComposite(container);
 		
 		// Converters section
 		container = addCollapsableSection(
