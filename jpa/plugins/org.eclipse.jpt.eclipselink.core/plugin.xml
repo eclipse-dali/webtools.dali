@@ -36,6 +36,12 @@
 	        label="%ECLIPSELINK1_1_x_PLATFORM"
 	        jpaFacetVersion="1.0">
 	    </jpaPlatform>
+     <jpaPlatform
+           id="eclipselink1_2"
+           factoryClass="org.eclipse.jpt.eclipselink.core.internal.v1_2.EclipseLink1_2JpaPlatformFactory"
+           label="%ECLIPSELINK1_2_x_PLATFORM">
+           jpaFacetVersion="1.0"
+     </jpaPlatform>
 
 	    <jpaPlatform
 	        id="eclipselink2_0"
@@ -107,6 +113,23 @@
 			</enablement>
 		</provider>
 		
+		<!-- eclipselink 1.2 library provider is for now a simple copy of eclipselink library provider -->
+		<provider id="jpa-eclipselink1_2-user-library-provider" extends="wtp-user-library-provider">
+			<param name="validator" value="org.eclipse.jst.common.project.facet.core.libprov.user.KeyClassesValidator"/>
+			<param name="validator.param.0" value="javax.persistence.Entity"/>
+			<param name="validator.param.1" value="org.eclipse.persistence.annotations.Cache"/>
+			<enablement>
+				<and>
+					<with variable="requestingProjectFacet">
+						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					</with>
+					<with variable="jpaPlatform">
+						<equals value="eclipselink1_2"/>
+					</with>
+				</and>
+			</enablement>
+		</provider>
+		
 		<!-- eclipselink 2.0 library provider is for now a simple copy of eclipselink library provider -->
 		<provider id="jpa-eclipselink2_0-user-library-provider" extends="wtp-user-library-provider">
 			<param name="validator" value="org.eclipse.jst.common.project.facet.core.libprov.user.KeyClassesValidator"/>
@@ -159,6 +182,10 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_1.xsd"
 				uri="schemas/eclipselink_orm_1_1.xsd" />
+			
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_2.xsd"
+				uri="schemas/eclipselink_orm_1_2.xsd" />
 			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_0.xsd"

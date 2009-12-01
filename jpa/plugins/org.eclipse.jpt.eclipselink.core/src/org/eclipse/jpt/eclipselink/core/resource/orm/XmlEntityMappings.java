@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -451,6 +452,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(EclipseLink.SCHEMA_VERSION, EclipseLink.SCHEMA_LOCATION);
 		map.put(EclipseLink1_1.SCHEMA_VERSION, EclipseLink1_1.SCHEMA_LOCATION);
+		map.put(EclipseLink1_2.SCHEMA_VERSION, EclipseLink1_2.SCHEMA_LOCATION);
 		map.put(EclipseLink2_0.SCHEMA_VERSION, EclipseLink2_0.SCHEMA_LOCATION);
 		return map;
 	}

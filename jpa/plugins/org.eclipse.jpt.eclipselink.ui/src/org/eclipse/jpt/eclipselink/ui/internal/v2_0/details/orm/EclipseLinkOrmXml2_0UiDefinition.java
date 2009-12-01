@@ -18,7 +18,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkBasicCo
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkBasicMapMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkVariableOneToOneMappingUiDefinition;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.structure.EclipseLink1_1OrmResourceModelStructureProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkOrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmTypeMappingUiDefinition;
@@ -72,8 +72,7 @@ public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDe
 	}
 	
 	public JpaStructureProvider getStructureProvider() {
-		//TODO need a 2_0 structure provider
-		return EclipseLink1_1OrmResourceModelStructureProvider.instance();
+		return EclipseLinkOrmResourceModelStructureProvider.instance();
 	}
 	
 	@Override

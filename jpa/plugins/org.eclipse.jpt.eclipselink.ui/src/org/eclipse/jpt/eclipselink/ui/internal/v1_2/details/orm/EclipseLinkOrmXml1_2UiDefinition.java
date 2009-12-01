@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
+package org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.JpaResourceType;
@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkBasicMa
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkOrmResourceModelStructureProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.EclipseLinkOrmXml1_1UiFactory;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmTypeMappingUiDefinition;
@@ -39,10 +40,10 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmTransientMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
-public class EclipseLinkOrmXml1_1UiDefinition extends AbstractOrmXmlResourceUiDefinition
+public class EclipseLinkOrmXml1_2UiDefinition extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml1_1UiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml1_2UiDefinition();
 	
 	
 	/**
@@ -56,7 +57,7 @@ public class EclipseLinkOrmXml1_1UiDefinition extends AbstractOrmXmlResourceUiDe
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkOrmXml1_1UiDefinition() {
+	private EclipseLinkOrmXml1_2UiDefinition() {
 		super();
 	}
 	
@@ -67,7 +68,7 @@ public class EclipseLinkOrmXml1_1UiDefinition extends AbstractOrmXmlResourceUiDe
 	}
 	
 	public boolean providesUi(JpaResourceType resourceType) {
-		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_1_RESOURCE_TYPE);
+		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_2_RESOURCE_TYPE);
 	}
 	
 	public JpaStructureProvider getStructureProvider() {

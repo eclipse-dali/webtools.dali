@@ -33,7 +33,7 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmTransientMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
-import org.eclipse.jpt.ui.internal.jpa2.structure.Orm2_0ResourceModelStructureProvider;
+import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
@@ -68,7 +68,7 @@ public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 	}
 	
 	public JpaStructureProvider getStructureProvider() {
-		return Orm2_0ResourceModelStructureProvider.instance();
+		return OrmResourceModelStructureProvider.instance();
 	}
 	
 	@Override

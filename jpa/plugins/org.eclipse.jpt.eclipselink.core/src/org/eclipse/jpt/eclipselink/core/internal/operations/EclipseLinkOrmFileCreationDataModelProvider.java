@@ -15,9 +15,11 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_2.EclipseLink1_2JpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
@@ -58,6 +60,7 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 	protected boolean fileVersionSupported(String fileVersion) {
 		return fileVersion.equals(EclipseLink.SCHEMA_VERSION)
 				|| fileVersion.equals(EclipseLink1_1.SCHEMA_VERSION)
+				|| fileVersion.equals(EclipseLink1_2.SCHEMA_VERSION)
 				|| fileVersion.equals(EclipseLink2_0.SCHEMA_VERSION);
 	}
 	
@@ -71,6 +74,7 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 	protected boolean isSupportedPlatformId(String id) {
 		return id.equals(EclipseLinkJpaPlatformProvider.ID) 
 				|| id.equals(EclipseLink1_1JpaPlatformProvider.ID)
+				|| id.equals(EclipseLink1_2JpaPlatformProvider.ID)
 				|| id.equals(EclipseLink2_0JpaPlatformProvider.ID);
 	}
 }

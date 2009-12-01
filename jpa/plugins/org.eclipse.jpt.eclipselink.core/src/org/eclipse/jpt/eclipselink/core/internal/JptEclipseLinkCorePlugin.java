@@ -17,6 +17,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -38,6 +42,11 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	public static final String ECLIPSELINK_PLATFORM_VERSION_1_1 = "1.1";  //$NON-NLS-1$
 	
 	/**
+	 * Version string for EclipseLink platform version 1.2
+	 */
+	public static final String ECLIPSELINK_PLATFORM_VERSION_1_2 = "1.2";  //$NON-NLS-1$
+	
+	/**
 	 * Version string for EclipseLink platform version 2.0
 	 */
 	public static final String ECLIPSELINK_PLATFORM_VERSION_2_0 = "2.0";  //$NON-NLS-1$
@@ -56,19 +65,25 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	 * The resource type for eclipselink-orm.xml version 1.0 mapping files
 	 */
 	public static final JpaResourceType ECLIPSELINK_ORM_XML_1_0_RESOURCE_TYPE
-			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink.SCHEMA_VERSION);
+			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, EclipseLink.SCHEMA_VERSION);
 	
 	/**
 	 * The resource type for eclipselink-orm.xml version 1.1 mapping files
 	 */
 	public static final JpaResourceType ECLIPSELINK_ORM_XML_1_1_RESOURCE_TYPE
-			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1.SCHEMA_VERSION);
+			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, EclipseLink1_1.SCHEMA_VERSION);
+	
+	/**
+	 * The resource type for eclipselink-orm.xml version 1.1 mapping files
+	 */
+	public static final JpaResourceType ECLIPSELINK_ORM_XML_1_2_RESOURCE_TYPE
+			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, EclipseLink1_2.SCHEMA_VERSION);
 	
 	/**
 	 * The resource type for eclipselink-orm.xml version 2.0 mapping files
 	 */
 	public static final JpaResourceType ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE
-			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0.SCHEMA_VERSION);
+			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, EclipseLink2_0.SCHEMA_VERSION);
 	
 	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
 	

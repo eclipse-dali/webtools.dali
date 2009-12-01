@@ -51,7 +51,5 @@ public class EclipseLinkPersistenceXml2_0UiDefinition extends AbstractPersistenc
 	
 	public JpaStructureProvider getStructureProvider() {
 		return EclipseLinkPersistenceResourceModelStructureProvider.instance();
-		//TODO do we need an EclipseLinkPersistence2_0ResourceModelStructureProvider??
-//		return Persistence2_0ResourceModelStructureProvider.instance();
 	}
 }

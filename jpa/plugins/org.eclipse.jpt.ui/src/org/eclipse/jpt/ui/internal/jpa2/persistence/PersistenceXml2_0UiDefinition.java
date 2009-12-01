@@ -13,9 +13,9 @@ package org.eclipse.jpt.ui.internal.jpa2.persistence;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
-import org.eclipse.jpt.ui.internal.jpa2.structure.Persistence2_0ResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.persistence.details.AbstractPersistenceXmlResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiFactory;
+import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class PersistenceXml2_0UiDefinition extends AbstractPersistenceXmlResourceUiDefinition
@@ -50,6 +50,6 @@ public class PersistenceXml2_0UiDefinition extends AbstractPersistenceXmlResourc
 	}
 	
 	public JpaStructureProvider getStructureProvider() {
-		return Persistence2_0ResourceModelStructureProvider.instance();
+		return PersistenceResourceModelStructureProvider.instance();
 	}
 }
