@@ -41,7 +41,7 @@ public final class SourceUniqueConstraintAnnotation
 	extends SourceAnnotation<Member>
 	implements NestableUniqueConstraintAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.UNIQUE_CONSTRAINT);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final DeclarationAnnotationElementAdapter<String[]> columnNamesDeclarationAdapter;
 	private final AnnotationElementAdapter<String[]> columnNamesAdapter;

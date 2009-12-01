@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -149,7 +150,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		id.getResourcePersistentAttribute().removeAnnotation(JPA.MANY_TO_ONE);
 		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
-		id.getResourcePersistentAttribute().setPrimaryAnnotation(null, new String[0]);
+		id.getResourcePersistentAttribute().setPrimaryAnnotation(null, EmptyIterable.<String>instance());
 		assertEquals(id.getMappingKey(), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);	
 	}
 }

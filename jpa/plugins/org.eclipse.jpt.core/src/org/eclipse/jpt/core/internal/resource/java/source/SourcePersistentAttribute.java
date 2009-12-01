@@ -157,13 +157,11 @@ final class SourcePersistentAttribute
 	
 	@Override
 	Annotation buildAnnotation(String annotationName) {
-		return this.getAnnotationProvider().
-			buildAttributeAnnotation(this, this.member, annotationName);
+		return this.getAnnotationProvider().buildAttributeAnnotation(this, this.member, annotationName);
 	}
 	
 	Annotation buildNullAnnotation_(String annotationName) {
-		return this.getAnnotationProvider().
-			buildNullAttributeAnnotation(this, annotationName);
+		return this.getAnnotationProvider().buildNullAttributeAnnotation(this, annotationName);
 	}
 	
 	public boolean isFor(MethodSignature signature, int occurrence) {
@@ -191,9 +189,12 @@ final class SourcePersistentAttribute
 	}
 	
 	public AccessType getSpecifiedAccess() {
-		Access2_0Annotation accessAnnotation = 
-				(Access2_0Annotation) getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
 		return (accessAnnotation == null) ? null : accessAnnotation.getValue();
+	}
+	
+	private Access2_0Annotation getAccessAnnotation() {
+		return (Access2_0Annotation) this.getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 	}
 	
 	public boolean typeIsSubTypeOf(String tn) {

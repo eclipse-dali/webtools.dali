@@ -123,8 +123,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstrai
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
-import org.eclipse.jpt.core.internal.jpa2.NullMetamodelSynchronizer;
-import org.eclipse.jpt.core.internal.jpa2.NullPersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
@@ -132,8 +130,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapsId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
@@ -169,12 +166,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJpaProject((JpaProject2_0.Config) config);
 	}
 	
-	public MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject) {
-		return NullMetamodelSynchronizer.instance();
-	}
-	
-	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentTypeMetamodelSynchronizer.Owner owner, PersistentType persistentType) {
-		return new NullPersistentTypeMetamodelSynchronizer();
+	public PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType) {
+		return null;
 	}
 	
 	public JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName) {

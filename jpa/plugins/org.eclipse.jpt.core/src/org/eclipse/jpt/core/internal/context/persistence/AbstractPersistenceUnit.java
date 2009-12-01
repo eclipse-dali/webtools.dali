@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +19,12 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -34,14 +41,14 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
-import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -59,7 +66,6 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -105,9 +111,9 @@ public abstract class AbstractPersistenceUnit
 
 	/* global query definitions, defined elsewhere in model */
 	protected final Vector<Query> queries = new Vector<Query>();
-	
-	protected final Set<String> rootEntities = new HashSet<String>();
-	
+
+	protected final Set<String> rootEntityNames = Collections.synchronizedSet(new HashSet<String>());
+
 	protected AccessType defaultAccess;
 	protected String defaultCatalog;
 	protected String defaultSchema;
@@ -122,6 +128,9 @@ public abstract class AbstractPersistenceUnit
 	
 	protected ValidationMode specifiedValidationMode;
 	protected ValidationMode defaultValidationMode;
+
+	protected final Set<IFile> metamodelFiles = Collections.synchronizedSet(new HashSet<IFile>());
+
 
 	// ********** construction/initialization **********
 
@@ -163,6 +172,8 @@ public abstract class AbstractPersistenceUnit
 
 		this.specifiedValidationMode = this.buildSpecifiedValidationMode();
 		this.defaultValidationMode = this.buildDefaultValidationMode();
+
+		this.initializeMetamodelFiles();
 	}
 
 	/**
@@ -177,83 +188,73 @@ public abstract class AbstractPersistenceUnit
 		nonUpdateAspectNames.add(QUERIES_LIST);
 	}
 
-	protected void initializeJarFileRefs() {
-		for (XmlJarFileRef xmlJarFileRef : this.xmlPersistenceUnit.getJarFiles()) {
-			this.jarFileRefs.add(this.buildJarFileRef(xmlJarFileRef));
-		}
-	}
+	
+	// ********** updating **********
 
-	protected void initializeProperties() {
-		this.connection = getContextNodeFactory().buildConnection(this);
-		this.options =  getContextNodeFactory().buildOptions(this);
+	public void update(XmlPersistenceUnit xpu) {
+		this.xmlPersistenceUnit = xpu;
 
-		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
-		if (xmlProperties == null) {
-			return;
-		}
-		for (XmlProperty xmlProperty : xmlProperties.getProperties()) {
-			this.properties.add(this.buildProperty(xmlProperty));
-		}
-	}
+		// the 'generators' and 'queries' lists are simply cleared out with each
+		// "update" and completely rebuilt as the "update" cascades through
+		// the persistence unit. When the persistence unit's "update" is
+		// complete, the lists have been populated and we fire the change event.
+		// @see #addGenerator(Generator) (and references)
+		// @see #addQuery(Query) (and references)
+		this.generators.clear();
+		this.queries.clear();
 
-	protected void initializeSpecifiedClassRefs() {
-		for (XmlJavaClassRef xmlJavaClassRef : this.xmlPersistenceUnit.getClasses()) {
-			this.specifiedClassRefs.add(this.buildClassRef(xmlJavaClassRef));
-		}
-	}
+		this.rootEntityNames.clear();
+		
+		this.setName(xpu.getName());
+		this.setSpecifiedTransactionType(this.buildSpecifiedTransactionType());
+		this.setDefaultTransactionType(this.buildDefaultTransactionType());
+		this.setDescription(xpu.getDescription());
+		this.setProvider(xpu.getProvider());
+		this.setJtaDataSource(xpu.getJtaDataSource());
+		this.setNonJtaDataSource(xpu.getNonJtaDataSource());
+		this.updateJarFileRefs();
 
-	protected void initializeMappingFileRefs() {
-		for (XmlMappingFileRef xmlMappingFileRef : this.xmlPersistenceUnit.getMappingFiles()) {
-			this.specifiedMappingFileRefs.add(this.buildSpecifiedMappingFileRef(xmlMappingFileRef));
-		}
-		if ( ! this.impliedMappingFileIsSpecified() && this.impliedMappingFileExists()) {
-			this.impliedMappingFileRef = this.buildImpliedMappingFileRef();
-		}
-	}
+		// update 'specifiedClassRefs' before 'mappingFileRefs' because of 
+		// JpaFile rootStructureNode, we want the mapping file to "win",
+		// as it would in a JPA runtime implementation
+		this.updateSpecifiedClassRefs();
+		this.updateMappingFileRefs();
 
-	protected void initializeImpliedClassRefs() {
-		if ( ! this.excludesUnlistedClasses()) {
-			this.initializeImpliedClassRefs_();
-		}
-	}
+		// update 'impliedClassRefs' last since it depends on the contents of
+		// both 'specifiedClassRefs' and 'mappingFileRefs'
+		this.updateImpliedClassRefs();
 
-	protected void initializeImpliedClassRefs_() {
-		for (Iterator<String> stream = this.getJpaProject().mappedJavaSourceClassNames(); stream.hasNext(); ) {
-			String typeName = stream.next();
-			if ( ! this.specifiesPersistentType(typeName)) {
-				this.impliedClassRefs.add(this.buildClassRef(typeName));
-			}
-		}
-	}
+		this.setSpecifiedExcludeUnlistedClasses(xpu.getExcludeUnlistedClasses());
+		this.updateProperties();
+		this.updatePersistenceUnitDefaults();
+		
+		this.setSpecifiedSharedCacheMode(this.buildSpecifiedSharedCacheMode());
+		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
+		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
+		this.setDefaultValidationMode(this.buildDefaultValidationMode());
 
-	protected void initializePersistenceUnitDefaults() {
-		MappingFilePersistenceUnitDefaults defaults = this.getDefaults();
-		this.defaultAccess = this.buildDefaultAccess(defaults);
-		this.defaultCatalog = this.buildDefaultCatalog(defaults);
-		this.defaultSchema = this.buildDefaultSchema(defaults);
-		this.defaultCascadePersist = this.buildDefaultCascadePersist(defaults);
-	}
-
-	protected XmlPersistenceUnit getXmlPersistenceUnit() {
-		return this.xmlPersistenceUnit;
-	}
-
-	protected SharedCacheMode buildSpecifiedSharedCacheMode() {
-		return SharedCacheMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getSharedCacheMode());
+		// see comment at top of method
+		this.fireListChanged(GENERATORS_LIST, this.generators);
+		this.fireListChanged(QUERIES_LIST, this.queries);
 	}
 	
-	protected SharedCacheMode buildDefaultSharedCacheMode() {
-		return SharedCacheMode.UNSPECIFIED;
-	}
-
-	protected ValidationMode buildSpecifiedValidationMode() {
-		return ValidationMode.fromXmlResourceModel(this.getXmlPersistenceUnit().getValidationMode());
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
+			classRef.postUpdate();
+		}
+		for (ClassRef classRef : this.getImpliedClassRefs()) {
+			classRef.postUpdate();
+		}
+		for (MappingFileRef mappingFileRef : CollectionTools.iterable(this.specifiedMappingFileRefs())) {
+			mappingFileRef.postUpdate();
+		}
+		if (this.impliedMappingFileRef != null) {
+			this.impliedMappingFileRef.postUpdate();
+		}
 	}
 	
-	protected ValidationMode buildDefaultValidationMode() {
-		return DEFAULT_VALIDATION_MODE; 
-	}
-
 
 	// ********** JpaContextNode implementation **********
 
@@ -327,6 +328,20 @@ public abstract class AbstractPersistenceUnit
 		PersistenceUnitTransactionType old = this.defaultTransactionType;
 		this.defaultTransactionType = defaultTransactionType;
 		this.firePropertyChanged(DEFAULT_TRANSACTION_TYPE_PROPERTY, old, defaultTransactionType);
+	}
+
+	protected PersistenceUnitTransactionType buildSpecifiedTransactionType() {
+		return PersistenceUnitTransactionType.fromXmlResourceModel(this.xmlPersistenceUnit.getTransactionType());
+	}
+
+	/**
+	 * TODO - calculate default
+	 * From the JPA spec: "In a Java EE environment, if this element is not
+	 * specified, the default is JTA. In a Java SE environment, if this element
+	 * is not specified, a default of RESOURCE_LOCAL may be assumed."
+	 */
+	protected PersistenceUnitTransactionType buildDefaultTransactionType() {
+		return PersistenceUnitTransactionType.JTA; //return JTA for now, fixing regression in bug 277524
 	}
 
 
@@ -416,6 +431,75 @@ public abstract class AbstractPersistenceUnit
 				return mappingFileRef.getPersistentType(typeName) != null;
 			}
 		};
+	}
+
+	protected void initializeMappingFileRefs() {
+		for (XmlMappingFileRef xmlMappingFileRef : this.xmlPersistenceUnit.getMappingFiles()) {
+			this.specifiedMappingFileRefs.add(this.buildSpecifiedMappingFileRef(xmlMappingFileRef));
+		}
+		if ( ! this.impliedMappingFileIsSpecified() && this.impliedMappingFileExists()) {
+			this.impliedMappingFileRef = this.buildImpliedMappingFileRef();
+		}
+	}
+
+	/**
+	 * Since this is a *list*, we simply loop through the elements and match
+	 * the context to the resource element by index, not by name like we do
+	 * with 'impliedClassRefs'.
+	 */
+	protected void updateMappingFileRefs() {
+		// first update the specified mapping file refs...
+		// make a copy of the XML file refs (to prevent ConcurrentModificationException)
+		Iterator<XmlMappingFileRef> xmlFileRefs = new CloneIterator<XmlMappingFileRef>(this.xmlPersistenceUnit.getMappingFiles());
+
+		for (Iterator<MappingFileRef> contextFileRefs = this.specifiedMappingFileRefs(); contextFileRefs.hasNext(); ) {
+			MappingFileRef contextFileRef = contextFileRefs.next();
+			if (xmlFileRefs.hasNext()) {
+				contextFileRef.update(xmlFileRefs.next());
+			} else {
+				this.removeSpecifiedMappingFileRef_(contextFileRef);
+			}
+		}
+
+		while (xmlFileRefs.hasNext()) {
+			this.addSpecifiedMappingFileRef_(this.buildSpecifiedMappingFileRef(xmlFileRefs.next()));
+		}
+
+		// ...then update the implied mapping file ref
+		if (this.impliedMappingFileIsSpecified()) {
+			if (this.impliedMappingFileRef != null) {
+				this.unsetImpliedMappingFileRef();
+			}
+		} else {
+			if (this.impliedMappingFileExists()) {
+				if (this.impliedMappingFileRef == null) {
+					this.setImpliedMappingFileRef();
+				}
+				this.impliedMappingFileRef.update(null);
+			} else {
+				if (this.impliedMappingFileRef != null) {
+					this.unsetImpliedMappingFileRef();
+				}
+			}
+		}
+	}
+
+	protected MappingFileRef buildSpecifiedMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
+		return this.getContextNodeFactory().buildMappingFileRef(this, xmlMappingFileRef);
+	}
+
+	protected boolean impliedMappingFileIsSpecified() {
+		String impliedMappingFileName = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
+		for (Iterator<MappingFileRef> stream = this.specifiedMappingFileRefs(); stream.hasNext(); ) {
+			if (impliedMappingFileName.equals(stream.next().getFileName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected boolean impliedMappingFileExists() {
+		return getJpaProject().getDefaultOrmXmlResource() != null;
 	}
 
 
@@ -552,15 +636,44 @@ public abstract class AbstractPersistenceUnit
 		this.removeItemFromList(jarFileRef, this.jarFileRefs, JAR_FILE_REFS_LIST);
 	}
 
+	protected void initializeJarFileRefs() {
+		for (XmlJarFileRef xmlJarFileRef : this.xmlPersistenceUnit.getJarFiles()) {
+			this.jarFileRefs.add(this.buildJarFileRef(xmlJarFileRef));
+		}
+	}
+
+	/**
+	 * Since this is a *list*, we simply loop through the elements and match
+	 * the context to the resource element by index, not by name like we do
+	 * with 'impliedClassRefs'.
+	 */
+	protected void updateJarFileRefs() {
+		// make a copy of the XML file refs (to prevent ConcurrentModificationException)
+		Iterator<XmlJarFileRef> xmlFileRefs = new CloneIterator<XmlJarFileRef>(this.xmlPersistenceUnit.getJarFiles());
+
+		for (Iterator<JarFileRef> contextFileRefs = this.jarFileRefs(); contextFileRefs.hasNext(); ) {
+			JarFileRef contextFileRef = contextFileRefs.next();
+			if (xmlFileRefs.hasNext()) {
+				contextFileRef.update(xmlFileRefs.next());
+			} else {
+				this.removeJarFileRef_(contextFileRef);
+			}
+		}
+
+		while (xmlFileRefs.hasNext()) {
+			this.addJarFileRef_(this.buildJarFileRef(xmlFileRefs.next()));
+		}
+	}
+
+	protected JarFileRef buildJarFileRef(XmlJarFileRef xmlJarFileRef) {
+		return this.getContextNodeFactory().buildJarFileRef(this, xmlJarFileRef);
+	}
+
 
 	// ********** class refs **********
 
-	@SuppressWarnings("unchecked")
 	public Iterator<ClassRef> classRefs() {
-		return new CompositeIterator<ClassRef>(
-						this.specifiedClassRefs(),
-						this.impliedClassRefs()
-					);
+		return this.getClassRefs().iterator();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -640,6 +753,38 @@ public abstract class AbstractPersistenceUnit
 		this.removeItemFromList(classRef, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
 	}
 
+	protected void initializeSpecifiedClassRefs() {
+		for (XmlJavaClassRef xmlJavaClassRef : this.xmlPersistenceUnit.getClasses()) {
+			this.specifiedClassRefs.add(this.buildClassRef(xmlJavaClassRef));
+		}
+	}
+
+	/**
+	 * Since this is a *list*, we simply loop through the elements and match
+	 * the context to the resource element by index, not by name like we do
+	 * with 'impliedClassRefs'.
+	 */
+	protected void updateSpecifiedClassRefs() {
+		// make a copy of the XML class refs (to prevent ConcurrentModificationException)
+		Iterator<XmlJavaClassRef> xmlClassRefs = new CloneIterator<XmlJavaClassRef>(this.xmlPersistenceUnit.getClasses());
+
+		for (ClassRef contextClassRef : this.getSpecifiedClassRefs()) {
+			if (xmlClassRefs.hasNext()) {
+				contextClassRef.update(xmlClassRefs.next());
+			} else {
+				this.removeSpecifiedClassRef_(contextClassRef);
+			}
+		}
+
+		while (xmlClassRefs.hasNext()) {
+			this.addSpecifiedClassRef_(this.buildClassRef(xmlClassRefs.next()));
+		}
+	}
+
+	protected ClassRef buildClassRef(XmlJavaClassRef xmlClassRef) {
+		return this.getContextNodeFactory().buildClassRef(this, xmlClassRef);
+	}
+
 
 	// ********** implied class refs **********
 
@@ -668,6 +813,67 @@ public abstract class AbstractPersistenceUnit
 	protected void removeImpliedClassRef(ClassRef classRef) {
 		classRef.dispose();
 		this.removeItemFromCollection(classRef, this.impliedClassRefs, IMPLIED_CLASS_REFS_COLLECTION);
+	}
+
+	protected void initializeImpliedClassRefs() {
+		if ( ! this.excludesUnlistedClasses()) {
+			this.initializeImpliedClassRefs_();
+		}
+	}
+
+	protected void initializeImpliedClassRefs_() {
+		for (Iterator<String> stream = this.getJpaProject().mappedJavaSourceClassNames(); stream.hasNext(); ) {
+			String typeName = stream.next();
+			if ( ! this.specifiesPersistentType(typeName)) {
+				this.impliedClassRefs.add(this.buildClassRef(typeName));
+			}
+		}
+	}
+
+	protected void updateImpliedClassRefs() {
+		if (this.excludesUnlistedClasses()) {
+			this.clearImpliedClassRefs_();
+		} else {
+			this.updateImpliedClassRefs_();
+		}
+	}
+
+	protected void updateImpliedClassRefs_() {
+		HashBag<ClassRef> impliedRefsToRemove = CollectionTools.bag(this.impliedClassRefs(), this.impliedClassRefsSize());
+		ArrayList<ClassRef> impliedRefsToUpdate = new ArrayList<ClassRef>(this.impliedClassRefsSize());
+
+		for (Iterator<String> mappedClassNames = this.getJpaProject().mappedJavaSourceClassNames(); mappedClassNames.hasNext(); ) {
+			String mappedClassName = mappedClassNames.next();
+			if ( ! this.specifiesPersistentType(mappedClassName)) {
+				boolean match = false;
+				for (Iterator<ClassRef> classRefs = impliedRefsToRemove.iterator(); classRefs.hasNext(); ) {
+					ClassRef classRef = classRefs.next();
+					if (mappedClassName.equals(classRef.getClassName())) {
+						classRefs.remove();
+						impliedRefsToUpdate.add(classRef);
+						match = true;
+						break;
+					}
+				}
+				if ( ! match) {
+					this.addImpliedClassRef(mappedClassName);
+				}
+			}
+		}
+		for (ClassRef classRef : impliedRefsToRemove) {
+			this.removeImpliedClassRef(classRef);
+		}
+		// handle adding and removing implied class refs first, update the
+		// remaining implied class refs last; this reduces the churn during "update"
+		for (ClassRef classRef : impliedRefsToUpdate) {
+			classRef.update(classRef.getClassName());
+		}
+	}
+
+	protected void clearImpliedClassRefs_() {
+		for (ClassRef classRef : this.getImpliedClassRefs()) {
+			this.removeImpliedClassRef(classRef);
+		}
 	}
 
 
@@ -898,13 +1104,61 @@ public abstract class AbstractPersistenceUnit
 		this.options.propertyRemoved(propertyName);
 	}
 	
-	public PersistenceUnitProperties getConnection() {
-		return this.connection;
+	protected void initializeProperties() {
+		this.connection = this.getContextNodeFactory().buildConnection(this);
+		this.options = this.getContextNodeFactory().buildOptions(this);
+
+		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
+		if (xmlProperties == null) {
+			return;
+		}
+		for (XmlProperty xmlProperty : xmlProperties.getProperties()) {
+			this.properties.add(this.buildProperty(xmlProperty));
+		}
 	}
 
-	public PersistenceUnitProperties getOptions() {
-		return this.options;
+	/**
+	 * Match the elements based on the XmlProperty resource object and also keep the order
+	 * the same as the source.
+	 */
+	protected void updateProperties() {		
+		HashBag<Property> contextPropertiesToRemove = CollectionTools.bag(this.properties(), this.propertiesSize());
+		int resourceIndex = 0;
+		
+		for (Iterator<XmlProperty> xmlProperties = this.xmlProperties(); xmlProperties.hasNext(); ) {
+			XmlProperty xmlProperty = xmlProperties.next();
+			boolean match = false;
+			for (Iterator<Property> contextProperties = contextPropertiesToRemove.iterator(); contextProperties.hasNext();) {
+				Property contextProperty = contextProperties.next();
+				if (contextProperty.getXmlProperty() == xmlProperty) {
+					contextProperties.remove();
+					this.moveProperty_(resourceIndex, contextProperty);
+					contextProperty.update();
+					match = true;
+					break;
+				}
+			}
+			if ( ! match) {
+				this.addProperty_(resourceIndex, this.buildProperty(xmlProperty));
+			}
+			resourceIndex++;
+		}
+		for (Property contextProperty : contextPropertiesToRemove) {
+			this.removeProperty_(contextProperty);
+		}
 	}
+
+	protected Iterator<XmlProperty> xmlProperties() {
+		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
+		// make a copy of the XML properties (to prevent ConcurrentModificationException)
+		return (xmlProperties != null) ? new CloneIterator<XmlProperty>(xmlProperties.getProperties()) : EmptyIterator.<XmlProperty>instance();
+	}
+	
+	protected int xmlPropertiesSize() {
+		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
+		return xmlProperties == null ? 0 : xmlProperties.getProperties().size();
+	}
+
 
 	// ********** ORM persistence unit defaults **********
 
@@ -918,6 +1172,10 @@ public abstract class AbstractPersistenceUnit
 		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, defaultAccess);
 	}
 
+	protected AccessType buildDefaultAccess(MappingFilePersistenceUnitDefaults defaults) {
+		return (defaults == null) ? null : defaults.getAccess();
+	}
+
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
 	}
@@ -926,6 +1184,11 @@ public abstract class AbstractPersistenceUnit
 		String old = this.defaultCatalog;
 		this.defaultCatalog = defaultCatalog;
 		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, defaultCatalog);
+	}
+
+	protected String buildDefaultCatalog(MappingFilePersistenceUnitDefaults defaults) {
+		String catalog = (defaults == null) ? null : defaults.getCatalog();
+		return (catalog != null) ? catalog : this.getJpaProject().getDefaultCatalog();
 	}
 
 	public String getDefaultSchema() {
@@ -938,6 +1201,11 @@ public abstract class AbstractPersistenceUnit
 		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, defaultSchema);
 	}
 
+	protected String buildDefaultSchema(MappingFilePersistenceUnitDefaults defaults) {
+		String schema = (defaults == null) ? null : defaults.getSchema();
+		return (schema != null) ? schema : this.getJpaProject().getDefaultSchema();
+	}
+
 	public boolean getDefaultCascadePersist() {
 		return this.defaultCascadePersist;
 	}
@@ -946,6 +1214,133 @@ public abstract class AbstractPersistenceUnit
 		boolean old = this.defaultCascadePersist;
 		this.defaultCascadePersist = defaultCascadePersist;
 		this.firePropertyChanged(DEFAULT_CASCADE_PERSIST_PROPERTY, old, defaultCascadePersist);
+	}
+
+	protected boolean buildDefaultCascadePersist(MappingFilePersistenceUnitDefaults defaults) {
+		return (defaults == null) ? false : defaults.isCascadePersist();
+	}
+
+	protected void initializePersistenceUnitDefaults() {
+		MappingFilePersistenceUnitDefaults defaults = this.getDefaults();
+		this.defaultAccess = this.buildDefaultAccess(defaults);
+		this.defaultCatalog = this.buildDefaultCatalog(defaults);
+		this.defaultSchema = this.buildDefaultSchema(defaults);
+		this.defaultCascadePersist = this.buildDefaultCascadePersist(defaults);
+	}
+
+	protected void updatePersistenceUnitDefaults() {
+		MappingFilePersistenceUnitDefaults defaults = this.getDefaults();
+		this.setDefaultAccess(this.buildDefaultAccess(defaults));
+		this.setDefaultCatalog(this.buildDefaultCatalog(defaults));
+		this.setDefaultSchema(this.buildDefaultSchema(defaults));
+		this.setDefaultCascadePersist(this.buildDefaultCascadePersist(defaults));
+	}
+
+	/**
+	 * return the first persistence unit defaults we encounter in a mapping file
+	 */
+	protected MappingFilePersistenceUnitDefaults getDefaults() {
+		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			MappingFileRef mappingFileRef = stream.next();
+			if (mappingFileRef.persistenceUnitDefaultsExists()) {
+				return mappingFileRef.getPersistenceUnitDefaults();
+			}
+		}
+		return null;
+	}
+
+	
+	//************** PersistenceUnit2_0 implementation ***********
+
+	public PersistenceUnitProperties getConnection() {
+		return this.connection;
+	}
+
+	public PersistenceUnitProperties getOptions() {
+		return this.options;
+	}
+
+	// ********** shared cache mode **********
+
+	public SharedCacheMode getSharedCacheMode() {
+		return (this.specifiedSharedCacheMode != null) ? this.specifiedSharedCacheMode : this.defaultSharedCacheMode;
+	}
+
+	public SharedCacheMode getSpecifiedSharedCacheMode() {
+		return this.specifiedSharedCacheMode;
+	}
+
+	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+		SharedCacheMode old = this.specifiedSharedCacheMode;
+		this.specifiedSharedCacheMode = specifiedSharedCacheMode;
+		this.xmlPersistenceUnit.setSharedCacheMode(SharedCacheMode.toXmlResourceModel(specifiedSharedCacheMode));
+		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, specifiedSharedCacheMode);
+	}
+
+	public SharedCacheMode getDefaultSharedCacheMode() {
+		return this.defaultSharedCacheMode;
+	}
+
+	protected void setDefaultSharedCacheMode(SharedCacheMode defaultSharedCacheMode) {
+		SharedCacheMode old = this.defaultSharedCacheMode;
+		this.defaultSharedCacheMode = defaultSharedCacheMode;
+		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
+	}
+	
+	public boolean calculateDefaultCacheable() {
+		switch (getSharedCacheMode()) {
+			case NONE:
+			case ENABLE_SELECTIVE:
+			case UNSPECIFIED:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+				return true;
+		}
+		return false;//null
+	}
+	
+	protected SharedCacheMode buildSpecifiedSharedCacheMode() {
+		return SharedCacheMode.fromXmlResourceModel(this.xmlPersistenceUnit.getSharedCacheMode());
+	}
+	
+	protected SharedCacheMode buildDefaultSharedCacheMode() {
+		return SharedCacheMode.UNSPECIFIED;
+	}
+
+	// ********** validation mode **********
+
+	public ValidationMode getValidationMode() {
+		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
+	}
+
+	public ValidationMode getSpecifiedValidationMode() {
+		return this.specifiedValidationMode;
+	}
+
+	public void setSpecifiedValidationMode(ValidationMode specifiedValidationMode) {
+		ValidationMode old = this.specifiedValidationMode;
+		this.specifiedValidationMode = specifiedValidationMode;
+		this.xmlPersistenceUnit.setValidationMode(ValidationMode.toXmlResourceModel(specifiedValidationMode));
+		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, specifiedValidationMode);
+	}
+
+	public ValidationMode getDefaultValidationMode() {
+		return this.defaultValidationMode;
+	}
+
+	protected void setDefaultValidationMode(ValidationMode defaultValidationMode) {
+		ValidationMode old = this.defaultValidationMode;
+		this.defaultValidationMode = defaultValidationMode;
+		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
+	}	
+
+	protected ValidationMode buildSpecifiedValidationMode() {
+		return ValidationMode.fromXmlResourceModel(this.xmlPersistenceUnit.getValidationMode());
+	}
+	
+	protected ValidationMode buildDefaultValidationMode() {
+		return DEFAULT_VALIDATION_MODE; 
 	}
 
 
@@ -993,402 +1388,15 @@ public abstract class AbstractPersistenceUnit
 		this.queries.add(query);
 	}
 
-	public void addRootWithSubEntities(String entityName) {
-		this.rootEntities.add(entityName);
+
+	// ********** root entities **********
+
+	public void addRootEntityWithSubEntities(String entityName) {
+		this.rootEntityNames.add(entityName);
 	}
 	
-	public boolean isRootWithSubEntities(String entityName) {
-		return this.rootEntities.contains(entityName);
-	}
-	
-	
-	//************** PersistenceUnit2_0 implementation ***********
-
-	// ********** shared cache mode **********
-
-	public SharedCacheMode getSharedCacheMode() {
-		return (this.specifiedSharedCacheMode != null) ? this.specifiedSharedCacheMode : this.defaultSharedCacheMode;
-	}
-
-	public SharedCacheMode getSpecifiedSharedCacheMode() {
-		return this.specifiedSharedCacheMode;
-	}
-
-	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
-		SharedCacheMode old = this.specifiedSharedCacheMode;
-		this.specifiedSharedCacheMode = specifiedSharedCacheMode;
-		this.getXmlPersistenceUnit().setSharedCacheMode(SharedCacheMode.toXmlResourceModel(specifiedSharedCacheMode));
-		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, specifiedSharedCacheMode);
-	}
-
-	public SharedCacheMode getDefaultSharedCacheMode() {
-		return this.defaultSharedCacheMode;
-	}
-
-	protected void setDefaultSharedCacheMode(SharedCacheMode defaultSharedCacheMode) {
-		SharedCacheMode old = this.defaultSharedCacheMode;
-		this.defaultSharedCacheMode = defaultSharedCacheMode;
-		this.firePropertyChanged(DEFAULT_SHARED_CACHE_MODE_PROPERTY, old, defaultSharedCacheMode);
-	}
-	
-	public boolean calculateDefaultCacheable() {
-		switch (getSharedCacheMode()) {
-			case NONE:
-			case ENABLE_SELECTIVE:
-			case UNSPECIFIED:
-				return false;
-			case ALL:
-			case DISABLE_SELECTIVE:
-				return true;
-		}
-		return false;//null
-	}
-	
-	// ********** validation mode **********
-
-	public ValidationMode getValidationMode() {
-		return (this.specifiedValidationMode != null) ? this.specifiedValidationMode : this.defaultValidationMode;
-	}
-
-	public ValidationMode getSpecifiedValidationMode() {
-		return this.specifiedValidationMode;
-	}
-
-	public void setSpecifiedValidationMode(ValidationMode specifiedValidationMode) {
-		ValidationMode old = this.specifiedValidationMode;
-		this.specifiedValidationMode = specifiedValidationMode;
-		this.getXmlPersistenceUnit().setValidationMode(ValidationMode.toXmlResourceModel(specifiedValidationMode));
-		this.firePropertyChanged(SPECIFIED_VALIDATION_MODE_PROPERTY, old, specifiedValidationMode);
-	}
-
-	public ValidationMode getDefaultValidationMode() {
-		return this.defaultValidationMode;
-	}
-
-	protected void setDefaultValidationMode(ValidationMode defaultValidationMode) {
-		ValidationMode old = this.defaultValidationMode;
-		this.defaultValidationMode = defaultValidationMode;
-		this.firePropertyChanged(DEFAULT_VALIDATION_MODE_PROPERTY, old, defaultValidationMode);
-	}	
-	// ********** updating **********
-
-	public void update(XmlPersistenceUnit xpu) {
-		this.xmlPersistenceUnit = xpu;
-
-		// the 'generators' and 'queries' lists are simply cleared out with each
-		// "update" and completely rebuilt as the "update" cascades through
-		// the persistence unit. When the persistence unit's "update" is
-		// complete, the lists have been populated and we fire the change event.
-		// @see #addGenerator(Generator) (and references)
-		// @see #addQuery(Query) (and references)
-		this.generators.clear();
-		this.queries.clear();
-
-		this.rootEntities.clear();
-		
-		this.setName(xpu.getName());
-		this.setSpecifiedTransactionType(this.buildSpecifiedTransactionType());
-		this.setDefaultTransactionType(this.buildDefaultTransactionType());
-		this.setDescription(xpu.getDescription());
-		this.setProvider(xpu.getProvider());
-		this.setJtaDataSource(xpu.getJtaDataSource());
-		this.setNonJtaDataSource(xpu.getNonJtaDataSource());
-		this.updateJarFileRefs();
-
-		// update 'specifiedClassRefs' before 'mappingFileRefs' because of 
-		// JpaFile rootStructureNode, we want the mapping file to "win",
-		// as it would in a JPA runtime implementation
-		this.updateSpecifiedClassRefs();
-		this.updateMappingFileRefs();
-
-		// update 'impliedClassRefs' last since it depends on the contents of
-		// both 'specifiedClassRefs' and 'mappingFileRefs'
-		this.updateImpliedClassRefs();
-
-		this.setSpecifiedExcludeUnlistedClasses(xpu.getExcludeUnlistedClasses());
-		this.updateProperties();
-		this.updatePersistenceUnitDefaults();
-		
-		this.setSpecifiedSharedCacheMode(this.buildSpecifiedSharedCacheMode());
-		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
-		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
-		this.setDefaultValidationMode(this.buildDefaultValidationMode());
-
-		// see comment at top of method
-		this.fireListChanged(GENERATORS_LIST, this.generators);
-		this.fireListChanged(QUERIES_LIST, this.queries);
-	}
-	
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		for (ClassRef classRef : CollectionTools.iterable(this.specifiedClassRefs())) {
-			classRef.postUpdate();
-		}
-		for (ClassRef classRef : CollectionTools.iterable(this.impliedClassRefs())) {
-			classRef.postUpdate();
-		}
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(this.specifiedMappingFileRefs())) {
-			mappingFileRef.postUpdate();
-		}
-		if (this.impliedMappingFileRef != null) {
-			this.impliedMappingFileRef.postUpdate();
-		}
-	}
-	
-	protected PersistenceUnitTransactionType buildSpecifiedTransactionType() {
-		return PersistenceUnitTransactionType.fromXmlResourceModel(this.xmlPersistenceUnit.getTransactionType());
-	}
-
-	/**
-	 * TODO - calculate default
-	 * From the JPA spec: "In a Java EE environment, if this element is not
-	 * specified, the default is JTA. In a Java SE environment, if this element
-	 * is not specified, a default of RESOURCE_LOCAL may be assumed."
-	 */
-	protected PersistenceUnitTransactionType buildDefaultTransactionType() {
-		return PersistenceUnitTransactionType.JTA; //return JTA for now, fixing regression in bug 277524
-	}
-
-	/**
-	 * Since this is a *list*, we simply loop through the elements and match
-	 * the context to the resource element by index, not by name like we do
-	 * with 'impliedClassRefs'.
-	 */
-	protected void updateJarFileRefs() {
-		// make a copy of the XML file refs (to prevent ConcurrentModificationException)
-		Iterator<XmlJarFileRef> xmlFileRefs = new CloneIterator<XmlJarFileRef>(this.xmlPersistenceUnit.getJarFiles());
-
-		for (Iterator<JarFileRef> contextFileRefs = this.jarFileRefs(); contextFileRefs.hasNext(); ) {
-			JarFileRef contextFileRef = contextFileRefs.next();
-			if (xmlFileRefs.hasNext()) {
-				contextFileRef.update(xmlFileRefs.next());
-			} else {
-				this.removeJarFileRef_(contextFileRef);
-			}
-		}
-
-		while (xmlFileRefs.hasNext()) {
-			this.addJarFileRef_(this.buildJarFileRef(xmlFileRefs.next()));
-		}
-	}
-
-	protected JarFileRef buildJarFileRef(XmlJarFileRef xmlJarFileRef) {
-		return this.getContextNodeFactory().buildJarFileRef(this, xmlJarFileRef);
-	}
-
-	/**
-	 * Since this is a *list*, we simply loop through the elements and match
-	 * the context to the resource element by index, not by name like we do
-	 * with 'impliedClassRefs'.
-	 */
-	protected void updateSpecifiedClassRefs() {
-		// make a copy of the XML class refs (to prevent ConcurrentModificationException)
-		Iterator<XmlJavaClassRef> xmlClassRefs = new CloneIterator<XmlJavaClassRef>(this.xmlPersistenceUnit.getClasses());
-
-		for (Iterator<ClassRef> contextClassRefs = this.specifiedClassRefs(); contextClassRefs.hasNext(); ) {
-			ClassRef contextClassRef = contextClassRefs.next();
-			if (xmlClassRefs.hasNext()) {
-				contextClassRef.update(xmlClassRefs.next());
-			} else {
-				this.removeSpecifiedClassRef_(contextClassRef);
-			}
-		}
-
-		while (xmlClassRefs.hasNext()) {
-			this.addSpecifiedClassRef_(this.buildClassRef(xmlClassRefs.next()));
-		}
-	}
-
-	protected ClassRef buildClassRef(XmlJavaClassRef xmlClassRef) {
-		return this.getContextNodeFactory().buildClassRef(this, xmlClassRef);
-	}
-
-	/**
-	 * Since this is a *list*, we simply loop through the elements and match
-	 * the context to the resource element by index, not by name like we do
-	 * with 'impliedClassRefs'.
-	 */
-	protected void updateMappingFileRefs() {
-		// first update the specified mapping file refs...
-		// make a copy of the XML file refs (to prevent ConcurrentModificationException)
-		Iterator<XmlMappingFileRef> xmlFileRefs = new CloneIterator<XmlMappingFileRef>(this.xmlPersistenceUnit.getMappingFiles());
-
-		for (Iterator<MappingFileRef> contextFileRefs = this.specifiedMappingFileRefs(); contextFileRefs.hasNext(); ) {
-			MappingFileRef contextFileRef = contextFileRefs.next();
-			if (xmlFileRefs.hasNext()) {
-				contextFileRef.update(xmlFileRefs.next());
-			} else {
-				this.removeSpecifiedMappingFileRef_(contextFileRef);
-			}
-		}
-
-		while (xmlFileRefs.hasNext()) {
-			this.addSpecifiedMappingFileRef_(this.buildSpecifiedMappingFileRef(xmlFileRefs.next()));
-		}
-
-		// ...then update the implied mapping file ref
-		if (this.impliedMappingFileIsSpecified()) {
-			if (this.impliedMappingFileRef != null) {
-				this.unsetImpliedMappingFileRef();
-			}
-		} else {
-			if (this.impliedMappingFileExists()) {
-				if (this.impliedMappingFileRef == null) {
-					this.setImpliedMappingFileRef();
-				}
-				this.impliedMappingFileRef.update(null);
-			} else {
-				if (this.impliedMappingFileRef != null) {
-					this.unsetImpliedMappingFileRef();
-				}
-			}
-		}
-	}
-
-	protected MappingFileRef buildSpecifiedMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
-		return this.getContextNodeFactory().buildMappingFileRef(this, xmlMappingFileRef);
-	}
-
-	protected boolean impliedMappingFileIsSpecified() {
-		String impliedMappingFileName = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
-		for (Iterator<MappingFileRef> stream = this.specifiedMappingFileRefs(); stream.hasNext(); ) {
-			if (impliedMappingFileName.equals(stream.next().getFileName())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean impliedMappingFileExists() {
-		return getJpaProject().getDefaultOrmXmlResource() != null;
-	}
-
-	protected void updateImpliedClassRefs() {
-		if (this.excludesUnlistedClasses()) {
-			this.clearImpliedClassRefs_();
-		} else {
-			this.updateImpliedClassRefs_();
-		}
-	}
-
-	protected void updateImpliedClassRefs_() {
-		HashBag<ClassRef> impliedRefsToRemove = CollectionTools.bag(this.impliedClassRefs(), this.impliedClassRefsSize());
-		ArrayList<ClassRef> impliedRefsToUpdate = new ArrayList<ClassRef>(this.impliedClassRefsSize());
-
-		for (Iterator<String> mappedClassNames = this.getJpaProject().mappedJavaSourceClassNames(); mappedClassNames.hasNext(); ) {
-			String mappedClassName = mappedClassNames.next();
-			if ( ! this.specifiesPersistentType(mappedClassName)) {
-				boolean match = false;
-				for (Iterator<ClassRef> classRefs = impliedRefsToRemove.iterator(); classRefs.hasNext(); ) {
-					ClassRef classRef = classRefs.next();
-					if (mappedClassName.equals(classRef.getClassName())) {
-						classRefs.remove();
-						impliedRefsToUpdate.add(classRef);
-						match = true;
-						break;
-					}
-				}
-				if ( ! match) {
-					this.addImpliedClassRef(mappedClassName);
-				}
-			}
-		}
-		for (ClassRef classRef : impliedRefsToRemove) {
-			this.removeImpliedClassRef(classRef);
-		}
-		// handle adding and removing implied class refs first, update the
-		// remaining implied class refs last; this reduces the churn during "update"
-		for (ClassRef classRef : impliedRefsToUpdate) {
-			classRef.update(classRef.getClassName());
-		}
-	}
-
-	protected void clearImpliedClassRefs_() {
-		for (Iterator<ClassRef> stream = this.impliedClassRefs(); stream.hasNext(); ) {
-			this.removeImpliedClassRef(stream.next());
-		}
-	}
-
-	/**
-	 * Match the elements based on the XmlProperty resource object and also keep the order
-	 * the same as the source.
-	 */
-	protected void updateProperties() {		
-		HashBag<Property> contextPropertiesToRemove = CollectionTools.bag(this.properties(), this.propertiesSize());
-		int resourceIndex = 0;
-		
-		for (Iterator<XmlProperty> xmlProperties = this.xmlProperties(); xmlProperties.hasNext(); ) {
-			XmlProperty xmlProperty = xmlProperties.next();
-			boolean match = false;
-			for (Iterator<Property> contextProperties = contextPropertiesToRemove.iterator(); contextProperties.hasNext();) {
-				Property contextProperty = contextProperties.next();
-				if (contextProperty.getXmlProperty() == xmlProperty) {
-					contextProperties.remove();
-					this.moveProperty_(resourceIndex, contextProperty);
-					contextProperty.update();
-					match = true;
-					break;
-				}
-			}
-			if ( ! match) {
-				this.addProperty_(resourceIndex, this.buildProperty(xmlProperty));
-			}
-			resourceIndex++;
-		}
-		for (Property contextProperty : contextPropertiesToRemove) {
-			this.removeProperty_(contextProperty);
-		}
-	}
-
-	protected Iterator<XmlProperty> xmlProperties() {
-		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
-		// make a copy of the XML properties (to prevent ConcurrentModificationException)
-		return (xmlProperties != null) ? new CloneIterator<XmlProperty>(xmlProperties.getProperties()) : EmptyIterator.<XmlProperty>instance();
-	}
-	
-	protected int xmlPropertiesSize() {
-		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
-		return xmlProperties == null ? 0 : xmlProperties.getProperties().size();
-	}
-
-	protected void updatePersistenceUnitDefaults() {
-		MappingFilePersistenceUnitDefaults defaults = this.getDefaults();
-		this.setDefaultAccess(this.buildDefaultAccess(defaults));
-		this.setDefaultCatalog(this.buildDefaultCatalog(defaults));
-		this.setDefaultSchema(this.buildDefaultSchema(defaults));
-		this.setDefaultCascadePersist(this.buildDefaultCascadePersist(defaults));
-	}
-
-	/**
-	 * return the first persistence unit defaults we encounter in a mapping file
-	 */
-	protected MappingFilePersistenceUnitDefaults getDefaults() {
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			MappingFileRef mappingFileRef = stream.next();
-			if (mappingFileRef.persistenceUnitDefaultsExists()) {
-				return mappingFileRef.getPersistenceUnitDefaults();
-			}
-		}
-		return null;
-	}
-
-	protected AccessType buildDefaultAccess(MappingFilePersistenceUnitDefaults defaults) {
-		return (defaults == null) ? null : defaults.getAccess();
-	}
-
-	protected String buildDefaultCatalog(MappingFilePersistenceUnitDefaults defaults) {
-		String catalog = (defaults == null) ? null : defaults.getCatalog();
-		return (catalog != null) ? catalog : this.getJpaProject().getDefaultCatalog();
-	}
-
-	protected String buildDefaultSchema(MappingFilePersistenceUnitDefaults defaults) {
-		String schema = (defaults == null) ? null : defaults.getSchema();
-		return (schema != null) ? schema : this.getJpaProject().getDefaultSchema();
-	}
-
-	protected boolean buildDefaultCascadePersist(MappingFilePersistenceUnitDefaults defaults) {
-		return (defaults == null) ? false : defaults.isCascadePersist();
+	public boolean entityIsRootWithSubEntities(String entityName) {
+		return this.rootEntityNames.contains(entityName);
 	}
 
 
@@ -1588,8 +1596,8 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public boolean specifiesPersistentType(String className) {
-		for (Iterator<ClassRef> stream = this.specifiedClassRefs(); stream.hasNext(); ) {
-			if (className.equals(stream.next().getClassName())) {
+		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
+			if (className.equals(classRef.getClassName())) {
 				return true;
 			}
 		}
@@ -1631,31 +1639,110 @@ public abstract class AbstractPersistenceUnit
 
 
 	// ********** metamodel **********
+	// put metamodel stuff here so it can be shared by Generic and EclipseLink implementations
+
+	public void initializeMetamodel() {
+		this.initializeMetamodelFiles();
+	}
+
+	protected void initializeMetamodelFiles() {
+		CollectionTools.addAll(this.metamodelFiles, this.getGeneratedMetamodelFiles());
+	}
+
+	protected Iterable<IFile> getGeneratedMetamodelFiles() {
+		return new TransformationIterable<JavaResourcePersistentType, IFile>(this.getGeneratedMetamodelTypes()) {
+			@Override
+			protected IFile transform(JavaResourcePersistentType jrpt) {
+				return jrpt.getFile();
+			}
+		};
+	}
+
+	protected Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes() {
+		return ((JpaProject2_0) this.getJpaProject()).getGeneratedMetamodelTypes();
+	}
 
 	/**
 	 * If we have the same persistent type in multiple locations, the last one
 	 * we encounter wins (i.e. the classes in the orm.xml take precedence).
 	 */
 	public void synchronizeMetamodel() {
-		HashMap<String, PersistentType> persistentTypes = new HashMap<String, PersistentType>();
+		// gather the persistent unit's types (eliminating duplicates, ignoring case)
+		HashMap<String, PersistentType2_0> persistentTypes = new HashMap<String, PersistentType2_0>();
 		this.addContainerPersistentTypesTo(this.getJarFileRefs(), persistentTypes);
 		this.addPersistentTypesTo(this.getNonNullClassRefPersistentTypes(), persistentTypes);
 		this.addContainerPersistentTypesTo(this.getMappingFileRefs(), persistentTypes);
-		for (PersistentType persistentType : persistentTypes.values()) {
+
+		// copy the list of metamodel files...
+		HashSet<IFile> deadMetamodelFiles = new HashSet<IFile>(this.metamodelFiles);
+		this.metamodelFiles.clear();
+		for (PersistentType2_0 persistentType : persistentTypes.values()) {
+			IFile metamodelFile = persistentType.getMetamodelFile();
+			// ...remove whatever files are still present...
+			deadMetamodelFiles.remove(metamodelFile);
+			// ...rebuild the list of metamodel files...
+			if (this.fileIsGeneratedMetamodel(metamodelFile)) {  // only add files with the Dali tag
+				this.metamodelFiles.add(metamodelFile);
+			}
+		}
+		// ...delete the files that are now gone
+		// [perform the deletes first - this is critical when a file has been
+		// renamed by only altering its name's case; since we will try to write
+		// out a new file that, on Windows, collides with the old file :-( ]
+		for (IFile deadMetamodelFile : deadMetamodelFiles) {
+			this.deleteMetamodelFile(deadMetamodelFile);
+		}
+		// now generate the metamodel classes
+		for (PersistentType2_0 persistentType : persistentTypes.values()) {
 			persistentType.synchronizeMetamodel();
 		}
 	}
 
-	protected void addContainerPersistentTypesTo(Iterable<? extends PersistentTypeContainer> ptContainers, HashMap<String, PersistentType> persistentTypeMap) {
+	protected void addContainerPersistentTypesTo(Iterable<? extends PersistentTypeContainer> ptContainers, HashMap<String, PersistentType2_0> persistentTypeMap) {
 		for (PersistentTypeContainer ptContainer : ptContainers) {
 			this.addPersistentTypesTo(ptContainer.getPersistentTypes(), persistentTypeMap);
 		}
 	}
 
-	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType> persistentTypeMap) {
+	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType2_0> persistentTypeMap) {
 		for (PersistentType persistentType : persistentTypes) {
-			persistentTypeMap.put(persistentType.getName(), persistentType);
+			// hopefully this is case-insensitive enough...
+			persistentTypeMap.put(persistentType.getName().toLowerCase(), (PersistentType2_0) persistentType);
 		}
+	}
+
+	protected void deleteMetamodelFile(IFile file) {
+		try {
+			this.deleteMetamodelFile_(file);
+		} catch (CoreException ex) {
+			JptCorePlugin.log(ex);
+		}
+	}
+
+	protected void deleteMetamodelFile_(IFile file) throws CoreException {
+		if (this.fileIsGeneratedMetamodel(file)) {
+			file.delete(true, null);  // true = force
+		}
+	}
+
+	protected boolean fileIsGeneratedMetamodel(IFile file) {
+		JavaResourceCompilationUnit jrcu = this.getJpaProject().getJavaResourceCompilationUnit(file);
+		if (jrcu == null) {
+			return false;  // hmmm...
+		}
+		Iterator<JavaResourcePersistentType> types = jrcu.persistentTypes();
+		if ( ! types.hasNext()) {
+			return false;  // no types in the file
+		}
+		JavaResourcePersistentType jrpt = types.next();
+		if (types.hasNext()) {
+			return false;  // should have only a single type in the file
+		}
+		return jrpt.isGeneratedMetamodel();
+	}
+
+	public void disposeMetamodel() {
+		this.metamodelFiles.clear();
 	}
 
 }

@@ -172,6 +172,13 @@ public interface JpaProject
 	// ********** Java resources **********
 
 	/**
+	 * Return the Java resource compilation unit corresponding to the specified
+	 * file. Return null if the file is not part of the JPA project or if the
+	 * file's content is not Java source code.
+	 */
+	JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file);
+
+	/**
 	 * Return the names of the JPA project's annotated Java classes
 	 * (ignoring classes in JARs referenced in the persistence.xml).
 	 */

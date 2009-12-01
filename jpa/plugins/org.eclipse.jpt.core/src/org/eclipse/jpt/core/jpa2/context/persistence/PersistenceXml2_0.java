@@ -7,12 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.jpa2;
+package org.eclipse.jpt.core.jpa2.context.persistence;
 
-import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 
 /**
- * JPA 2.0 Canonical Metamodel.
+ * JPA 2.0 <code>persistence.xml</code> file.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,12 +21,8 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistentTypeMetamodelSynchronizer {
-
-	void synchronize();
-
-	interface Owner {
-		IPackageFragmentRoot getSourceFolder();
-	}
-
+public interface PersistenceXml2_0
+	extends PersistenceXml, MetamodelSynchronizer
+{
+	// nothing yet...
 }

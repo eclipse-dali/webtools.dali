@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaTypeMapping;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 
 public class JavaTestTypeMapping extends AbstractJavaTypeMapping
 {
@@ -32,8 +31,8 @@ public class JavaTestTypeMapping extends AbstractJavaTypeMapping
 		return TEST_TYPE_MAPPING_KEY;
 	}
 
-	public Iterator<String> supportingAnnotationNames() {
-		return EmptyIterator.instance();
+	public Iterable<String> getSupportingAnnotationNames() {
+		return EmptyIterable.<String>instance();
 	}
 
 	public boolean isMapped() {

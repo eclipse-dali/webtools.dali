@@ -406,7 +406,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 					entity.setIdClass(model.getIdClassName());
 				}
 				for (String fieldName : model.getPKFields()) {
-					persistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, fieldName);
+					persistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, fieldName);
 				}
 
 				persistentType.setSpecifiedAccess(getModelAccessType(model));
@@ -451,7 +451,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 				}
 				
 				for (String fieldName : model.getPKFields()) {
-					persistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, fieldName);
+					persistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, fieldName);
 				}
 
 				persistentType.setSpecifiedAccess(getModelAccessType(model));

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.orm;
 
 import java.util.Iterator;
-import java.util.ListIterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -134,7 +134,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests
 		
 		assertEquals(0, ormPersistentType.virtualAttributesSize());
 		assertEquals(2, ormPersistentType.specifiedAttributesSize());
-		ListIterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.specifiedAttributes();
+		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.specifiedAttributes();
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
@@ -170,7 +170,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests
 		
 		assertEquals(1, ormPersistentType.virtualAttributesSize());
 		assertEquals(2, ormPersistentType.specifiedAttributesSize());
-		ListIterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.specifiedAttributes();
+		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.specifiedAttributes();
 		
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
@@ -206,7 +206,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		assertEquals(0, ormPersistentType.specifiedAttributesSize());
 		
-		ListIterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
+		Iterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
 		OrmPersistentAttribute virtualAttribute = virtualAttributes.next();		
 		assertEquals("id", virtualAttribute.getName());
 		virtualAttribute = virtualAttributes.next();		

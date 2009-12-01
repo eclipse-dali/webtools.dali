@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jpt.db.Schema;
 
 /**
@@ -89,7 +88,7 @@ public interface TypeMapping extends JpaContextNode {
 	/**
 	 * A convenience methods for getting the attribute mappings from PersistentType.attributes()
 	 */
-	<T extends AttributeMapping> ListIterator<T> attributeMappings();
+	<T extends AttributeMapping> Iterator<T> attributeMappings();
 	
 	/**
 	 * Return all the attribute mappings in the type mapping's

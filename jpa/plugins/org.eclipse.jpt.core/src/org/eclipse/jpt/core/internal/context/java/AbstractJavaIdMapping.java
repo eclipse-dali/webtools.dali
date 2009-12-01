@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
@@ -31,7 +32,6 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -98,14 +98,13 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		return ArrayTools.addAll(
-			super.buildSupportingAnnotationNames(),
-			JPA.COLUMN,
-			JPA.GENERATED_VALUE,
-			JPA.TEMPORAL,
-			JPA.TABLE_GENERATOR,
-			JPA.SEQUENCE_GENERATOR);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(JPA.COLUMN);
+		names.add(JPA.GENERATED_VALUE);
+		names.add(JPA.TEMPORAL);
+		names.add(JPA.TABLE_GENERATOR);
+		names.add(JPA.SEQUENCE_GENERATOR);
 	}
 	
 	public String getDefaultColumnName() {

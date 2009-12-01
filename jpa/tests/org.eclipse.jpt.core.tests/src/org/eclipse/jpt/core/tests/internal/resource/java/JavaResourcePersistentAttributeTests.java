@@ -10,8 +10,11 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceIdAnnotation;
@@ -31,6 +34,7 @@ import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Member.Editor;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -411,7 +415,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		assertSourceContains("@Basic", cu);
 		assertSourceContains("@Id", cu);
 		
-		attributeResource.setPrimaryAnnotation(JPA.ONE_TO_MANY, new String[0]);
+		attributeResource.setPrimaryAnnotation(JPA.ONE_TO_MANY, EmptyIterable.<String>instance());
 		assertEquals(1, attributeResource.annotationsSize());
 		javaAttributeMappingAnnotation = attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		assertTrue(javaAttributeMappingAnnotation instanceof OneToManyAnnotation);
@@ -426,7 +430,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertEquals(0, attributeResource.annotationsSize());
 		
-		attributeResource.setPrimaryAnnotation(JPA.ID, new String[0]);
+		attributeResource.setPrimaryAnnotation(JPA.ID, EmptyIterable.<String>instance());
 		assertTrue(attributeResource.getAnnotation(IdAnnotation.ANNOTATION_NAME) instanceof IdAnnotation);
 		assertSourceContains("@Id", cu);
 	}
@@ -437,7 +441,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertEquals(1, attributeResource.annotationsSize());
 		
-		attributeResource.setPrimaryAnnotation(JPA.ID, new String[] {ColumnAnnotation.ANNOTATION_NAME});
+		attributeResource.setPrimaryAnnotation(JPA.ID, Collections.singleton(ColumnAnnotation.ANNOTATION_NAME));
 		assertTrue(attributeResource.getAnnotation(IdAnnotation.ANNOTATION_NAME) instanceof IdAnnotation);
 		
 		assertSourceContains("@Id", cu);
@@ -452,9 +456,9 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		attributeResource.setPrimaryAnnotation(
 				JPA.BASIC, 
-				new String[] {
+				Arrays.asList(new String[] {
 					ColumnAnnotation.ANNOTATION_NAME,
-					GeneratedValueAnnotation.ANNOTATION_NAME});
+					GeneratedValueAnnotation.ANNOTATION_NAME}));
 		assertTrue(attributeResource.getAnnotation(BasicAnnotation.ANNOTATION_NAME) instanceof BasicAnnotation);
 		
 		assertSourceDoesNotContain("@Id", cu);
@@ -470,9 +474,9 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		attributeResource.setPrimaryAnnotation(
 				null, 
-				new String[] {
+				Arrays.asList(new String[] {
 					ColumnAnnotation.ANNOTATION_NAME,
-					GeneratedValueAnnotation.ANNOTATION_NAME});
+					GeneratedValueAnnotation.ANNOTATION_NAME}));
 		
 		assertEquals(2, attributeResource.annotationsSize());
 		assertSourceDoesNotContain("@Id", cu);

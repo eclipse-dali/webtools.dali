@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
@@ -33,7 +33,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -152,8 +151,8 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return true;
 	}
 
-	public ListIterator<OrmAttributeMapping> attributeMappings() {
-		return new TransformationListIterator<OrmPersistentAttribute, OrmAttributeMapping>(getPersistentType().attributes()) {
+	public Iterator<OrmAttributeMapping> attributeMappings() {
+		return new TransformationIterator<OrmPersistentAttribute, OrmAttributeMapping>(getPersistentType().attributes()) {
 			@Override
 			protected OrmAttributeMapping transform(OrmPersistentAttribute attribute) {
 				return attribute.getMapping();

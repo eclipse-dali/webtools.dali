@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -40,8 +40,8 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 		return false;
 	}
 	
-	public Iterator<String> supportingAnnotationNames() {
-		return EmptyIterator.instance();
+	public Iterable<String> getSupportingAnnotationNames() {
+		return EmptyIterable.instance();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {

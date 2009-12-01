@@ -67,7 +67,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -360,8 +360,10 @@ public abstract class AbstractJavaEntity
 		return EntityAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
+	public Iterable<String> getSupportingAnnotationNames() {
+		return SUPPORTING_ANNOTATION_NAMES;
+	}
+	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 			JPA.TABLE,
 			JPA.SECONDARY_TABLE,
 			JPA.SECONDARY_TABLES,
@@ -391,8 +393,9 @@ public abstract class AbstractJavaEntity
 			JPA.ATTRIBUTE_OVERRIDE,
 			JPA.ATTRIBUTE_OVERRIDES,
 			JPA.ASSOCIATION_OVERRIDE,
-			JPA.ASSOCIATION_OVERRIDES);
-	}
+			JPA.ASSOCIATION_OVERRIDES
+	};
+	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	//****************** Entity implementation *******************
 	
@@ -886,7 +889,7 @@ public abstract class AbstractJavaEntity
 	 * and has no descendants and no specified inheritance strategy has been defined.
 	 */
 	protected boolean isRootNoDescendantsNoStrategyDefined() {
-		return isRoot() && !getPersistenceUnit().isRootWithSubEntities(this.getName()) && getSpecifiedInheritanceStrategy() == null;
+		return isRoot() && !getPersistenceUnit().entityIsRootWithSubEntities(this.getName()) && getSpecifiedInheritanceStrategy() == null;
 	}
 
 	/**
@@ -1159,7 +1162,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	public void addSubEntity(Entity subEntity) {
-		getPersistenceUnit().addRootWithSubEntities(getName());
+		getPersistenceUnit().addRootEntityWithSubEntities(getName());
 	}
 	
 	protected void updateDiscriminatorColumn() {

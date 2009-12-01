@@ -9,23 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -33,12 +35,12 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericPersistence
 	extends AbstractPersistenceXmlContextNode
-	implements Persistence
+	implements Persistence2_0
 {	
 	protected XmlPersistence xmlPersistence;
 	
-	// the implementation here is a single persistence unit, although the API
-	// is for a list.  we will want to support multiple persistence units soon.
+	// The implementation here is a single persistence unit, although the API
+	// is for a list. We want to support multiple persistence units someday....
 	protected PersistenceUnit persistenceUnit;
 
 	public GenericPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
@@ -68,6 +70,14 @@ public class GenericPersistence
 	
 	protected ListIterator<PersistenceUnit> persistenceUnits_() {
 		return new SingleElementListIterator<PersistenceUnit>(this.persistenceUnit);
+	}
+
+	protected Iterable<PersistenceUnit> getPersistenceUnits() {
+		return (this.persistenceUnit == null) ? EmptyIterable.<PersistenceUnit>instance() : this.getPersistenceUnits_();
+	}
+	
+	protected Iterable<PersistenceUnit> getPersistenceUnits_() {
+		return new SingleElementIterable<PersistenceUnit>(this.persistenceUnit);
 	}
 	
 	public int persistenceUnitsSize() {
@@ -118,13 +128,27 @@ public class GenericPersistence
 		fireItemRemoved(PERSISTENCE_UNITS_LIST, 0, oldPersistenceUnit);
 	}
 	
+
 	// **************** metamodel **********************************
 
-	public void synchronizeMetamodel() {
-		for (Iterator<PersistenceUnit> stream = this.persistenceUnits(); stream.hasNext(); ) {
-			stream.next().synchronizeMetamodel();
+	public void initializeMetamodel() {
+		for (PersistenceUnit pu : this.getPersistenceUnits()) {
+			((PersistenceUnit2_0) pu).initializeMetamodel();
 		}
 	}
+
+	public void synchronizeMetamodel() {
+		for (PersistenceUnit pu : this.getPersistenceUnits()) {
+			((PersistenceUnit2_0) pu).synchronizeMetamodel();
+		}
+	}
+
+	public void disposeMetamodel() {
+		for (PersistenceUnit pu : this.getPersistenceUnits()) {
+			((PersistenceUnit2_0) pu).disposeMetamodel();
+		}
+	}
+
 
 	// **************** updating ***********************************************
 	
@@ -178,7 +202,7 @@ public class GenericPersistence
 	}
 	
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (PersistenceUnit pu : CollectionTools.iterable(persistenceUnits())) {
+		for (PersistenceUnit pu : this.getPersistenceUnits()) {
 			if (pu.containsOffset(textOffset)) {
 				return pu.getStructureNode(textOffset);
 			}
@@ -199,7 +223,7 @@ public class GenericPersistence
 	}
 
 	public void dispose() {
-		for (PersistenceUnit pu : CollectionTools.iterable(persistenceUnits())) {
+		for (PersistenceUnit pu : this.getPersistenceUnits()) {
 			pu.dispose();
 		}
 	}

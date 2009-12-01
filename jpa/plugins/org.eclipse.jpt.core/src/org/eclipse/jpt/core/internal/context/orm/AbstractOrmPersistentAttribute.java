@@ -137,14 +137,14 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	public boolean isVirtual() {
-		return getPersistentType().containsVirtualPersistentAttribute(this);
+		return getPersistentType().containsVirtualAttribute(this);
 	}
 
 	public void makeVirtual() {
 		if (isVirtual()) {
 			throw new IllegalStateException("Attribute is already virtual"); //$NON-NLS-1$
 		}
-		getPersistentType().makePersistentAttributeVirtual(this);
+		getPersistentType().makeAttributeVirtual(this);
 	}
 	
 	public void makeSpecified() {
@@ -154,14 +154,14 @@ public abstract class AbstractOrmPersistentAttribute
 		if (getMappingKey() == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 			throw new IllegalStateException("Use makeSpecified(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
-		getPersistentType().makePersistentAttributeSpecified(this);
+		getPersistentType().makeAttributeSpecified(this);
 	}
 	
 	public void makeSpecified(String mappingKey) {
 		if (!isVirtual()) {
 			throw new IllegalStateException("Attribute is already specified"); //$NON-NLS-1$
 		}
-		getPersistentType().makePersistentAttributeSpecified(this, mappingKey);
+		getPersistentType().makeAttributeSpecified(this, mappingKey);
 	}
 	
 	public String getPrimaryKeyColumnName() {

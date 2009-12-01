@@ -10,38 +10,40 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
- * 
- * 
+ * Java type mapping (Entity, MappedSuperclass, Embeddable).
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
+public interface JavaTypeMapping
+	extends TypeMapping, JavaJpaContextNode
 {
 	void initialize(JavaResourcePersistentType jrpt);
-	
+
 	/**
-	 * Update the JavaTypeMapping context model object to match the JavaResourcePersistentType 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * Update the context Java type mapping to match the resource model.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(JavaResourcePersistentType jrpt);
 
 	String getAnnotationName();
-	
-	Iterator<String> supportingAnnotationNames();
-	
-	
+
+	Iterable<String> getSupportingAnnotationNames();
+
+
 	// ********** covariant overrides **********
 
 	JavaPersistentType getPersistentType();
-	
+
 	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeMapping> attributeMappings();
+	Iterator<JavaAttributeMapping> attributeMappings();
+
 }

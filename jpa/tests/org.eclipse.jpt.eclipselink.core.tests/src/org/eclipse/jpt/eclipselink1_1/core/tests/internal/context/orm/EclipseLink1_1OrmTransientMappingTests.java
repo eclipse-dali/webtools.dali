@@ -52,7 +52,7 @@ public class EclipseLink1_1OrmTransientMappingTests
 		assertTrue(persistentAttribute.isVirtual());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
-		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "id");
+		ormPersistentType.addSpecifiedAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "id");
 
 		persistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(persistentAttribute.isVirtual());

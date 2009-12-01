@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -48,13 +48,33 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 {
 	protected T mappingAnnotation;
 	
-	private String[] supportingAnnotationNames;
+	protected Vector<String> supportingAnnotationNames;
 	
 
 	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void initialize(Annotation annotation) {
+		this.mappingAnnotation = (T) annotation;
+		this.initialize();
+	}
+
+	protected void initialize() {	
+		// do nothing by default
+	}
+
+	@SuppressWarnings("unchecked")
+	public void update(Annotation annotation) {
+		this.mappingAnnotation = (T) annotation;
+		this.update();
+	}
+	
+	protected void update() {
+		// do nothing by default
+	}
+
 	@Override
 	public JavaPersistentAttribute getParent() {
 		return (JavaPersistentAttribute) super.getParent();
@@ -167,47 +187,29 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 		return null;
 	}
 	
-	// ********** supporting annotation names **********
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayListIterator<String>(getSupportingAnnotationNames());
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
 	}
-	
-	protected synchronized String[] getSupportingAnnotationNames() {
+
+
+	// ********** supporting annotation names **********
+
+	public Iterable<String> getSupportingAnnotationNames() {
 		if (this.supportingAnnotationNames == null) {
 			this.supportingAnnotationNames = this.buildSupportingAnnotationNames();
 		}
 		return this.supportingAnnotationNames;
 	}
-	
-	protected String[] buildSupportingAnnotationNames() {
-		return new String[0];
+
+	protected Vector<String> buildSupportingAnnotationNames() {
+		Vector<String> names = new Vector<String>();
+		this.addSupportingAnnotationNamesTo(names);
+		return names;
 	}
 
-
-	@SuppressWarnings("unchecked")
-	public void initialize(Annotation annotation) {
-		this.mappingAnnotation = (T) annotation;
-		this.initialize();
-	}
-
-	protected void initialize() {	
-		// do nothing by default
-	}
-
-	@SuppressWarnings("unchecked")
-	public void update(Annotation annotation) {
-		this.mappingAnnotation = (T) annotation;
-		this.update();
-	}
-	
-	protected void update() {
-		// do nothing by default
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
+	protected void addSupportingAnnotationNamesTo(@SuppressWarnings("unused") Vector<String> names) {
+		// the default is none
 	}
 
 

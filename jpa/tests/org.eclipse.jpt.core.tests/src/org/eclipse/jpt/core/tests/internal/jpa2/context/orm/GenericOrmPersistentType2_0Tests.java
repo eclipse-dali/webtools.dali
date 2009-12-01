@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
-import java.util.ListIterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -155,7 +155,7 @@ public class GenericOrmPersistentType2_0Tests
 		createTestEntityAnnotatedFieldPropertySpecified();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
+		Iterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
 		OrmPersistentAttribute ormPersistentAttribute = virtualAttributes.next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
@@ -185,7 +185,7 @@ public class GenericOrmPersistentType2_0Tests
 		createTestEntityPropertySpecified();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
+		Iterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
 		OrmPersistentAttribute ormPersistentAttribute = virtualAttributes.next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
@@ -218,7 +218,7 @@ public class GenericOrmPersistentType2_0Tests
 		createTestEntityFieldSpecifiedPropertyAnnotated();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
+		Iterator<OrmPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
 		OrmPersistentAttribute ormPersistentAttribute = virtualAttributes.next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());

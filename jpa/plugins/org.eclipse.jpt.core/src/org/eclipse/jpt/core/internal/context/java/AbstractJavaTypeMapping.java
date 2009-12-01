@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
@@ -30,14 +30,13 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
 
 public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	implements JavaTypeMapping
 {
 	protected JavaResourcePersistentType javaResourcePersistentType;
-	
+
 
 	protected AbstractJavaTypeMapping(JavaPersistentType parent) {
 		super(parent);
@@ -103,8 +102,8 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		};
 	}
 
-	public ListIterator<JavaAttributeMapping> attributeMappings() {
-		return new TransformationListIterator<JavaPersistentAttribute, JavaAttributeMapping>(getPersistentType().attributes()) {
+	public Iterator<JavaAttributeMapping> attributeMappings() {
+		return new TransformationIterator<JavaPersistentAttribute, JavaAttributeMapping>(getPersistentType().attributes()) {
 			@Override
 			protected JavaAttributeMapping transform(JavaPersistentAttribute attribute) {
 				return attribute.getMapping();

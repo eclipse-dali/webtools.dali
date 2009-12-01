@@ -1025,7 +1025,7 @@ public abstract class AbstractOrmEntity
 	 * and has no descendants and no specified inheritance strategy has been defined.
 	 */
 	protected boolean isRootNoDescendantsNoStrategyDefined() {
-		return isRoot() && !getPersistenceUnit().isRootWithSubEntities(this.getName()) && getSpecifiedInheritanceStrategy() == null;
+		return isRoot() && !getPersistenceUnit().entityIsRootWithSubEntities(this.getName()) && getSpecifiedInheritanceStrategy() == null;
 	}
 
 	/**
@@ -1409,7 +1409,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	public void addSubEntity(Entity subEntity) {
-		getPersistenceUnit().addRootWithSubEntities(getName());
+		getPersistenceUnit().addRootEntityWithSubEntities(getName());
 	}
 	
 	protected void updateSpecifiedSecondaryTables() {

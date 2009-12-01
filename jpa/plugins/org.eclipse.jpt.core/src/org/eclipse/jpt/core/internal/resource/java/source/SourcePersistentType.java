@@ -14,7 +14,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
+
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -22,9 +26,13 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.GeneratedAnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
+import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.StaticMetamodelAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -61,6 +69,14 @@ final class SourcePersistentType
 	private final Vector<JavaResourcePersistentAttribute> methods;
 
 	private AccessType access;
+
+	private StaticMetamodelAnnotation staticMetamodelAnnotation;
+
+	private GeneratedAnnotation generatedAnnotation;
+
+
+	private static final StaticMetamodelAnnotationDefinition STATIC_METAMODEL_ANNOTATION_DEFINITION = StaticMetamodelAnnotationDefinition.instance();
+	private static final GeneratedAnnotationDefinition GENERATED_ANNOTATION_DEFINITION = GeneratedAnnotationDefinition.instance();
 
 
 	// ********** construction/initialization **********
@@ -124,40 +140,63 @@ final class SourcePersistentType
 		this.access = this.buildAccess();
 	}
 
-	private void initializeTypes(CompilationUnit astRoot) {
-		TypeDeclaration[] typeDeclarations = this.member.getTypes(astRoot);
-		CounterMap counters = new CounterMap(typeDeclarations.length);
-		for (TypeDeclaration td : typeDeclarations) {
-			String tdName = td.getName().getFullyQualifiedName();
-			int occurrence = counters.increment(tdName);
-			this.types.add(this.buildType(td, occurrence, astRoot));
-		}
-	}
-
-	private void initializeFields(CompilationUnit astRoot) {
-		FieldDeclaration[] fieldDeclarations = this.member.getFields(astRoot);
-		CounterMap counters = new CounterMap(fieldDeclarations.length);
-		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
-			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
-				String fieldName = fragment.getName().getFullyQualifiedName();
-				int occurrence = counters.increment(fieldName);
-				this.fields.add(this.buildField(fieldName, occurrence, astRoot));
+	@Override
+	void addInitialAnnotation(String jdtAnnotationName, CompilationUnit astRoot) {
+		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
+			if (this.staticMetamodelAnnotation == null) { // ignore duplicates
+				this.staticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				this.staticMetamodelAnnotation.initialize(astRoot);
 			}
+		} else if (jdtAnnotationName.equals(GENERATED_ANNOTATION_DEFINITION.getAnnotationName())) {
+			if (this.generatedAnnotation == null) { // ignore duplicates
+				this.generatedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				this.generatedAnnotation.initialize(astRoot);
+			}
+		} else {
+			super.addInitialAnnotation(jdtAnnotationName, astRoot);
 		}
 	}
 
-	private void initializeMethods(CompilationUnit astRoot) {
-		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
-		CounterMap counters = new CounterMap(methodDeclarations.length);
-		for (MethodDeclaration methodDeclaration : methodDeclarations) {
-			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
-			int occurrence = counters.increment(signature);
-			this.methods.add(this.buildMethod(signature, occurrence, astRoot));
+
+	// ********** update **********
+	
+	@Override
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
+		this.setName(this.buildName(astRoot));
+		this.setQualifiedName(this.buildQualifiedName(astRoot));
+		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
+		this.setAbstract(this.buildAbstract(astRoot));
+		this.updateTypes(astRoot);
+		this.updateFields(astRoot);
+		this.updateMethods(astRoot);
+		// need to wait until everything is built to calculate 'access'
+		this.setAccess(this.buildAccess());
+	}
+
+	@Override
+	void addOrUpdateAnnotation(String jdtAnnotationName, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
+		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
+			if (this.staticMetamodelAnnotation != null) {
+				this.staticMetamodelAnnotation.update(astRoot);
+			} else {
+				this.staticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				this.staticMetamodelAnnotation.initialize(astRoot);
+			}
+		} else if (jdtAnnotationName.equals(GENERATED_ANNOTATION_DEFINITION.getAnnotationName())) {
+			if (this.generatedAnnotation != null) {
+				this.generatedAnnotation.update(astRoot);
+			} else {
+				this.generatedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				this.generatedAnnotation.initialize(astRoot);
+			}
+		} else {
+			super.addOrUpdateAnnotation(jdtAnnotationName, astRoot, annotationsToRemove);
 		}
 	}
 
 
-	// ********** AbstractJavaResourcePersistentMember implementation **********
+	// ********** SourcePersistentMember implementation **********
 	
 	@Override
 	Iterator<String> validAnnotationNames() {
@@ -166,14 +205,12 @@ final class SourcePersistentType
 	
 	@Override
 	Annotation buildAnnotation(String mappingAnnotationName) {
-		return this.getAnnotationProvider().
-				buildTypeAnnotation(this, this.member, mappingAnnotationName);
+		return this.getAnnotationProvider().buildTypeAnnotation(this, this.member, mappingAnnotationName);
 	}
 	
 	@Override
 	Annotation buildNullAnnotation(String annotationName) {
-		return this.getAnnotationProvider().
-				buildNullTypeAnnotation(this, annotationName);
+		return this.getAnnotationProvider().buildNullTypeAnnotation(this, annotationName);
 	}
 	
 	@Override
@@ -299,22 +336,27 @@ final class SourcePersistentType
 	}
 	
 	public boolean isMapped() {
-		for (Annotation each : CollectionTools.iterable(annotations())) {
-			if (CollectionTools.contains(
-					getAnnotationProvider().typeMappingAnnotationNames(), 
-					each.getAnnotationName())) {
+		for (Annotation each : this.getAnnotations()) {
+			if (this.annotationIsMappingAnnotation(each)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private boolean annotationIsMappingAnnotation(Annotation annotation) {
+		return CollectionTools.contains(this.mappingAnnotationNames(), annotation.getAnnotationName());
+	}
+
+	private Iterator<String> mappingAnnotationNames() {
+		return this.getAnnotationProvider().typeMappingAnnotationNames();
 	}
 	
 	/**
 	 * check only persistable attributes
 	 */
 	public boolean hasAnyAnnotatedAttributes() {
-		for (Iterator<JavaResourcePersistentAttribute> stream = 
-					this.persistableAttributes(); stream.hasNext(); ) {
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistableAttributes(); stream.hasNext(); ) {
 			if (stream.next().isAnnotated()) {
 				return true;
 			}
@@ -363,6 +405,39 @@ final class SourcePersistentType
 		this.removeItemsFromCollection(remove, this.types, TYPES_COLLECTION);
 	}
 
+	private void initializeTypes(CompilationUnit astRoot) {
+		TypeDeclaration[] typeDeclarations = this.member.getTypes(astRoot);
+		CounterMap counters = new CounterMap(typeDeclarations.length);
+		for (TypeDeclaration td : typeDeclarations) {
+			String tdName = td.getName().getFullyQualifiedName();
+			int occurrence = counters.increment(tdName);
+			this.types.add(this.buildType(td, occurrence, astRoot));
+		}
+	}
+
+	private void updateTypes(CompilationUnit astRoot) {
+		TypeDeclaration[] typeDeclarations = this.member.getTypes(astRoot);
+		CounterMap counters = new CounterMap(typeDeclarations.length);
+		HashSet<JavaResourcePersistentType> typesToRemove = new HashSet<JavaResourcePersistentType>(this.types);
+		for (TypeDeclaration typeDeclaration : typeDeclarations) {
+			String tdName = typeDeclaration.getName().getFullyQualifiedName();
+			int occurrence = counters.increment(tdName);
+
+			JavaResourcePersistentType type = this.getType(tdName, occurrence);
+			if (type == null) {
+				this.addType(this.buildType(typeDeclaration, occurrence, astRoot));
+			} else {
+				typesToRemove.remove(type);
+				type.update(astRoot);
+			}
+		}
+		this.removeTypes(typesToRemove);
+	}
+
+	private JavaResourcePersistentType buildType(TypeDeclaration nestedTypeDeclaration, int occurrence, CompilationUnit astRoot) {
+		return newInstance(this.getJavaResourceCompilationUnit(), this.member, nestedTypeDeclaration, occurrence, astRoot);
+	}
+
 
 	// ********** fields **********
 
@@ -402,6 +477,43 @@ final class SourcePersistentType
 
 	private void removeFields(Collection<JavaResourcePersistentAttribute> remove) {
 		this.removeItemsFromCollection(remove, this.fields, FIELDS_COLLECTION);
+	}
+
+	private void initializeFields(CompilationUnit astRoot) {
+		FieldDeclaration[] fieldDeclarations = this.member.getFields(astRoot);
+		CounterMap counters = new CounterMap(fieldDeclarations.length);
+		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
+			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
+				String fieldName = fragment.getName().getFullyQualifiedName();
+				int occurrence = counters.increment(fieldName);
+				this.fields.add(this.buildField(fieldName, occurrence, astRoot));
+			}
+		}
+	}
+
+	private void updateFields(CompilationUnit astRoot) {
+		FieldDeclaration[] fieldDeclarations = this.member.getFields(astRoot);
+		CounterMap counters = new CounterMap(fieldDeclarations.length);
+		HashSet<JavaResourcePersistentAttribute> fieldsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.fields);
+		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
+			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
+				String fieldName = fragment.getName().getFullyQualifiedName();
+				int occurrence = counters.increment(fieldName);
+
+				JavaResourcePersistentAttribute field = this.getField(fieldName, occurrence);
+				if (field == null) {
+					this.addField(this.buildField(fieldName, occurrence, astRoot));
+				} else {
+					fieldsToRemove.remove(field);
+					field.update(astRoot);
+				}
+			}
+		}
+		this.removeFields(fieldsToRemove);
+	}
+
+	private JavaResourcePersistentAttribute buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
+		return SourcePersistentAttribute.newInstance(this, this.member, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
 
@@ -445,6 +557,39 @@ final class SourcePersistentType
 		this.removeItemsFromCollection(remove, this.methods, METHODS_COLLECTION);
 	}
 
+	private void initializeMethods(CompilationUnit astRoot) {
+		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
+		CounterMap counters = new CounterMap(methodDeclarations.length);
+		for (MethodDeclaration methodDeclaration : methodDeclarations) {
+			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
+			int occurrence = counters.increment(signature);
+			this.methods.add(this.buildMethod(signature, occurrence, astRoot));
+		}
+	}
+
+	private void updateMethods(CompilationUnit astRoot) {
+		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
+		CounterMap counters = new CounterMap(methodDeclarations.length);
+		HashSet<JavaResourcePersistentAttribute> methodsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.methods);
+		for (MethodDeclaration methodDeclaration : methodDeclarations) {
+			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
+			int occurrence = counters.increment(signature);
+
+			JavaResourcePersistentAttribute method = this.getMethod(signature, occurrence);
+			if (method == null) {
+				this.addMethod(this.buildMethod(signature, occurrence, astRoot));
+			} else {
+				methodsToRemove.remove(method);
+				method.update(astRoot);
+			}
+		}
+		this.removeMethods(methodsToRemove);
+	}
+
+	private JavaResourcePersistentAttribute buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
+		return SourcePersistentAttribute.newInstance(this, this.member, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	}
+
 
 	// ********** attributes **********
 
@@ -482,95 +627,46 @@ final class SourcePersistentType
 	}
 	
 
-	// ********** update from Java **********
+	// ********** misc **********
 
-	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setName(this.buildName(astRoot));
-		this.setQualifiedName(this.buildQualifiedName(astRoot));
-		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
-		this.setAbstract(this.buildAbstract(astRoot));
-		this.updateTypes(astRoot);
-		this.updateFields(astRoot);
-		this.updateMethods(astRoot);
-		// need to wait until everything is built to calculate 'access'
-		this.setAccess(this.buildAccess());
-	}
-
-	private void updateTypes(CompilationUnit astRoot) {
-		TypeDeclaration[] typeDeclarations = this.member.getTypes(astRoot);
-		CounterMap counters = new CounterMap(typeDeclarations.length);
-		HashSet<JavaResourcePersistentType> typesToRemove = new HashSet<JavaResourcePersistentType>(this.types);
-		for (TypeDeclaration typeDeclaration : typeDeclarations) {
-			String tdName = typeDeclaration.getName().getFullyQualifiedName();
-			int occurrence = counters.increment(tdName);
-
-			JavaResourcePersistentType type = this.getType(tdName, occurrence);
-			if (type == null) {
-				this.addType(this.buildType(typeDeclaration, occurrence, astRoot));
-			} else {
-				typesToRemove.remove(type);
-				type.update(astRoot);
-			}
+	/**
+	 * The type must be:<ul>
+	 * <li>in the specified source folder
+	 * <li>annotated with <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
+	 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with the appropriate
+	 *     <code>value</code>
+	 * </ul>
+	 */
+	public boolean isGeneratedMetamodel(IPackageFragmentRoot sourceFolder) {
+		if ( ! this.getSourceFolder().equals(sourceFolder)) {
+			return false;
 		}
-		this.removeTypes(typesToRemove);
+		return this.isGeneratedMetamodel();
 	}
 
-	private JavaResourcePersistentType buildType(TypeDeclaration nestedTypeDeclaration, int occurrence, CompilationUnit astRoot) {
-		return newInstance(this.getJavaResourceCompilationUnit(), this.member, nestedTypeDeclaration, occurrence, astRoot);
-	}
-
-	private void updateFields(CompilationUnit astRoot) {
-		FieldDeclaration[] fieldDeclarations = this.member.getFields(astRoot);
-		CounterMap counters = new CounterMap(fieldDeclarations.length);
-		HashSet<JavaResourcePersistentAttribute> fieldsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.fields);
-		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
-			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
-				String fieldName = fragment.getName().getFullyQualifiedName();
-				int occurrence = counters.increment(fieldName);
-
-				JavaResourcePersistentAttribute field = this.getField(fieldName, occurrence);
-				if (field == null) {
-					this.addField(this.buildField(fieldName, occurrence, astRoot));
-				} else {
-					fieldsToRemove.remove(field);
-					field.update(astRoot);
-				}
-			}
+	/**
+	 * The type must be:<ul>
+	 * <li>annotated with <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
+	 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with the appropriate
+	 *     <code>value</code>
+	 * </ul>
+	 */
+	public boolean isGeneratedMetamodel() {
+		if (this.staticMetamodelAnnotation == null) {
+			return false;
 		}
-		this.removeFields(fieldsToRemove);
-	}
-
-	private JavaResourcePersistentAttribute buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
-		return SourcePersistentAttribute.newInstance(this, this.member, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
-	}
-
-	private void updateMethods(CompilationUnit astRoot) {
-		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
-		CounterMap counters = new CounterMap(methodDeclarations.length);
-		HashSet<JavaResourcePersistentAttribute> methodsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.methods);
-		for (MethodDeclaration methodDeclaration : methodDeclarations) {
-			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
-			int occurrence = counters.increment(signature);
-
-			JavaResourcePersistentAttribute method = this.getMethod(signature, occurrence);
-			if (method == null) {
-				this.addMethod(this.buildMethod(signature, occurrence, astRoot));
-			} else {
-				methodsToRemove.remove(method);
-				method.update(astRoot);
-			}
+		if (this.generatedAnnotation == null) {
+			return false;
 		}
-		this.removeMethods(methodsToRemove);
+		if (this.generatedAnnotation.valuesSize() == 0) {
+			return false;
+		}
+		return this.generatedAnnotation.values().next().equals(METAMODEL_GENERATED_ANNOTATION_VALUE);
 	}
 
-	private JavaResourcePersistentAttribute buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
-		return SourcePersistentAttribute.newInstance(this, this.member, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	private IPackageFragmentRoot getSourceFolder() {
+		return (IPackageFragmentRoot) this.getJavaResourceCompilationUnit().getCompilationUnit().getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
 	}
-
-
-	// ********** static methods **********
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")

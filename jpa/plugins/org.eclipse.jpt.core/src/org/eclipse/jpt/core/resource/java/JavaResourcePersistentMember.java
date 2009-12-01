@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Java source code or binary persistent member.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -67,8 +67,7 @@ public interface JavaResourcePersistentMember
 	 */
 	// TODO tie the singular and plural annotations together so we can generate
 	// a validation error when both are specified
-	Iterator<NestableAnnotation> annotations(
-			String nestableAnnotationName, String containerAnnotationName);
+	Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName);
 	
 	/**
 	 * Add an annotation with the specified name.
@@ -108,15 +107,13 @@ public interface JavaResourcePersistentMember
 	 * the new one. If neither annotation exists, then create a new nestable
 	 * annotation.
 	 */
-	NestableAnnotation addAnnotation(
-			int index, String nestableAnnotationName, String containerAnnotationName);
+	NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 	
 	/**
 	 * Move the nestable annotation found in the specified container
 	 * annotation at the specified source index to the specified target index.
 	 */
-	void moveAnnotation(
-			int targetIndex, int sourceIndex, String containerAnnotationName);
+	void moveAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName);
 	
 	/**
 	 * Remove the specified annotation.
@@ -129,16 +126,14 @@ public interface JavaResourcePersistentMember
 	 * If there is no container, assume the index is zero and this does the same as 
 	 * {@link #removeAnnotation(String)}
 	 */
-	void removeAnnotation(
-			int index, String nestableAnnotationName, String containerAnnotationName);
+	void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 	
 	/**
 	 * Sets the specified primary annotation as the first annotation, and removes all known 
 	 * annotations (i.e. does not remove non-persistence annotations) which are not included
 	 * in the supporting annotations.
 	 */
-	Annotation setPrimaryAnnotation(
-			String primaryAnnotationName, String[] supportingAnnotationNames);
+	Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames);
 	
 	
 	// ********** queries **********

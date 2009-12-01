@@ -11,9 +11,11 @@ package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
 
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+
 /**
  * Java source code or binary persistent type.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -60,10 +62,29 @@ public interface JavaResourcePersistentType
 	boolean isMapped();
 	
 	/**
-	 * Return whether the type has any attributes that have
-	 * JPA annotations on them.
+	 * Return whether the type has any attributes that have JPA annotations
+	 * on them (which can be used to infer the type's access type).
 	 */
 	boolean hasAnyAnnotatedAttributes();
+
+	/**
+	 * Return whether the type is a metamodel type generated in the specified
+	 * source folder.
+	 */
+	boolean isGeneratedMetamodel(IPackageFragmentRoot sourceFolder);
+
+	/**
+	 * Return whether the type is a generated metamodel type.
+	 */
+	boolean isGeneratedMetamodel();
+
+	/**
+	 * The value used to tag a generated type:
+	 * <pre>
+	 * &#64;javax.annotation.Generated(value="Dali", date="2009-11-23T13:56:06.171-0500")
+	 * </pre>
+	 */
+	String METAMODEL_GENERATED_ANNOTATION_VALUE = "Dali"; //$NON-NLS-1$
 
 
 	// ********** types **********
@@ -135,7 +156,7 @@ public interface JavaResourcePersistentType
 	Iterator<JavaResourcePersistentAttribute> persistableAttributes();
 	
 	/**
-	 * Return the persitable properties and/or fields given the non-null specified access type
+	 * Return the persistable properties and/or fields given the non-null specified access type
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess);
 	

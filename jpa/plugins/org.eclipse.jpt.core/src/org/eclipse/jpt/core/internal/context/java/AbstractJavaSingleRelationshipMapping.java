@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
+import java.util.Vector;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.FetchType;
@@ -23,7 +25,6 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -64,21 +65,15 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}
 	
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		String[] annotationNames = ArrayTools.addAll(
-			super.buildSupportingAnnotationNames(),
-			JPA.JOIN_COLUMN,
-			JPA.JOIN_COLUMNS,
-			JPA.JOIN_TABLE);
-		
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			annotationNames = ArrayTools.addAll(
-				annotationNames,
-				JPA.ID,
-				JPA2_0.MAPS_ID);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(JPA.JOIN_COLUMN);
+		names.add(JPA.JOIN_COLUMNS);
+		names.add(JPA.JOIN_TABLE);
+		if (this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			names.add(JPA.ID);
+			names.add(JPA2_0.MAPS_ID);
 		}
-		
-		return annotationNames;
 	}
 	
 	

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -72,13 +71,19 @@ abstract class SourcePersistentMember<E extends Member>
 	}
 	
 	/**
-	 * called from InitialAnnotationVisitor 
+	 * called from {@link InitialAnnotationVisitor}
 	 */
-	void addInitialAnnotation(org.eclipse.jdt.core.dom.Annotation node, CompilationUnit astRoot) {
+	/* private */ void addInitialAnnotation(org.eclipse.jdt.core.dom.Annotation node, CompilationUnit astRoot) {
 		String jdtAnnotationName = JDTTools.resolveAnnotation(node);
-		if (jdtAnnotationName == null) {
-			return;
+		if (jdtAnnotationName != null) {
+			this.addInitialAnnotation(jdtAnnotationName, astRoot);
 		}
+	}
+
+	/**
+	 * pre-condition: jdtAnnotationName is not null
+	 */
+	void addInitialAnnotation(String jdtAnnotationName, CompilationUnit astRoot) {
 		if (this.annotationIsValid(jdtAnnotationName)) {
 			if (this.selectAnnotationNamed(this.annotations, jdtAnnotationName) == null) { // ignore duplicates
 				Annotation annotation = this.buildAnnotation(jdtAnnotationName);
@@ -95,7 +100,7 @@ abstract class SourcePersistentMember<E extends Member>
 		return this.getAnnotations().iterator();
 	}
 	
-	private Iterable<Annotation> getAnnotations() {
+	Iterable<Annotation> getAnnotations() {
 		return new LiveCloneIterable<Annotation>(this.annotations);
 	}
 	
@@ -112,15 +117,12 @@ abstract class SourcePersistentMember<E extends Member>
 		return (annotation != null) ? annotation : this.buildNullAnnotation(annotationName);
 	}
 	
-	public Iterator<NestableAnnotation> annotations(
-			String nestableAnnotationName, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = 
-				this.getContainerAnnotation(containerAnnotationName);
+	public Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = this.getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
 			return containerAnnotation.nestedAnnotations();
 		}
-		NestableAnnotation nestableAnnotation = 
-				getNestableAnnotation(nestableAnnotationName);
+		NestableAnnotation nestableAnnotation = this.getNestableAnnotation(nestableAnnotationName);
 		if (nestableAnnotation != null) {
 			return new SingleElementIterator<NestableAnnotation>(nestableAnnotation);
 		}
@@ -130,7 +132,7 @@ abstract class SourcePersistentMember<E extends Member>
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private ContainerAnnotation<NestableAnnotation> getContainerAnnotation(String annotationName) {
-		return (ContainerAnnotation<NestableAnnotation>) getAnnotation(annotationName);
+		return (ContainerAnnotation<NestableAnnotation>) this.getAnnotation(annotationName);
 	}
 	
 	private NestableAnnotation getNestableAnnotation(String annotationName) {
@@ -164,16 +166,13 @@ abstract class SourcePersistentMember<E extends Member>
 	 *     add a container annotation and move the stand-alone nested annotation to it
 	 *     and add a new nested annotation to it also
 	 */
-	public NestableAnnotation addAnnotation(
-			int index, String nestableAnnotationName, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = 
-				getContainerAnnotation(containerAnnotationName);
+	public NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = this.getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
 			// ignore any stand-alone nestable annotations and just add to the container annotation
 			return AnnotationContainerTools.addNestedAnnotation(index, containerAnnotation);
 		}
-		NestableAnnotation standAloneAnnotation = 
-				getNestableAnnotation(nestableAnnotationName);
+		NestableAnnotation standAloneAnnotation = this.getNestableAnnotation(nestableAnnotationName);
 		if (standAloneAnnotation == null) {
 			// add a stand-alone nestable annotation since neither the nestable nor the container exist
 			return (NestableAnnotation) this.addAnnotation(nestableAnnotationName);
@@ -191,10 +190,8 @@ abstract class SourcePersistentMember<E extends Member>
 	 * place when the context model gets an "update" and looks at the resource
 	 * model to determine what has changed
 	 */
-	private NestableAnnotation addSecondNestedAnnotation(
-			int index, String containerAnnotationName, NestableAnnotation standAloneAnnotation) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = 
-				buildContainerAnnotation(containerAnnotationName);
+	private NestableAnnotation addSecondNestedAnnotation(int index, String containerAnnotationName, NestableAnnotation standAloneAnnotation) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = this.buildContainerAnnotation(containerAnnotationName);
 		this.annotations.add(containerAnnotation);
 		containerAnnotation.newAnnotation();
 		
@@ -216,19 +213,16 @@ abstract class SourcePersistentMember<E extends Member>
 		return (index == 0) ? nestedAnnotation0 : nestedAnnotation1;
 	}
 	
-	public void moveAnnotation(
-			int targetIndex, int sourceIndex, String containerAnnotationName) {
-		moveAnnotation(targetIndex, sourceIndex, getContainerAnnotation(containerAnnotationName));
+	public void moveAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName) {
+		this.moveAnnotation(targetIndex, sourceIndex, this.getContainerAnnotation(containerAnnotationName));
 	}
 	
-	private void moveAnnotation(
-			int targetIndex, int sourceIndex, 
-			ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+	private void moveAnnotation(int targetIndex, int sourceIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, containerAnnotation);
 	}
 
 	public void removeAnnotation(String annotationName) {
-		Annotation annotation = getAnnotation(annotationName);
+		Annotation annotation = this.getAnnotation(annotationName);
 		if (annotation != null) {
 			this.removeAnnotation(annotation);
 		}
@@ -240,15 +234,12 @@ abstract class SourcePersistentMember<E extends Member>
 		this.fireItemRemoved(ANNOTATIONS_COLLECTION, annotation);
 	}
 	
-	public void removeAnnotation(
-			int index, String nestableAnnotationName, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = 
-				getContainerAnnotation(containerAnnotationName);
+	public void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = this.getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation == null) {  // assume the index is 0
-			removeAnnotation(getAnnotation(nestableAnnotationName));
-		} 
-		else {
-			removeAnnotation(index, containerAnnotation);
+			this.removeAnnotation(this.getAnnotation(nestableAnnotationName));
+		} else {
+			this.removeAnnotation(index, containerAnnotation);
 		}
 	}
 	
@@ -257,8 +248,7 @@ abstract class SourcePersistentMember<E extends Member>
 	 * either remove the container (if it is empty) or convert the last nested
 	 * annotation to a stand-alone annotation
 	 */
-	private void removeAnnotation(
-			int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+	private void removeAnnotation(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		AnnotationContainerTools.removeNestedAnnotation(index, containerAnnotation);
 		switch (containerAnnotation.nestedAnnotationsSize()) {
 			case 0:
@@ -281,14 +271,12 @@ abstract class SourcePersistentMember<E extends Member>
 	 * place when the context model gets an "update" and looks at the resource
 	 * model to determine what has changed
 	 */
-	private void convertLastNestedAnnotation(
-			ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+	private void convertLastNestedAnnotation(ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		NestableAnnotation lastNestedAnnotation = containerAnnotation.nestedAnnotations().next();
 		annotations.remove(containerAnnotation);
 		containerAnnotation.removeAnnotation();
 		
-		NestableAnnotation standAloneAnnotation = 
-				buildNestableAnnotation(lastNestedAnnotation.getAnnotationName());
+		NestableAnnotation standAloneAnnotation = this.buildNestableAnnotation(lastNestedAnnotation.getAnnotationName());
 		this.annotations.add(standAloneAnnotation);
 		standAloneAnnotation.newAnnotation();
 		this.fireItemRemoved(ANNOTATIONS_COLLECTION, containerAnnotation);
@@ -296,26 +284,26 @@ abstract class SourcePersistentMember<E extends Member>
 		standAloneAnnotation.initializeFrom(lastNestedAnnotation);
 	}
 	
-	public Annotation setPrimaryAnnotation(
-			String primaryAnnotationName, String[] supportingAnnotationNames) {
-		Annotation newPrimaryAnnotation = null;
-		String[] annotationNamesToKeep = supportingAnnotationNames;
+	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
+		ArrayList<String> annotationNames = new ArrayList<String>();
+		CollectionTools.addAll(annotationNames, supportingAnnotationNames);
 		if (primaryAnnotationName != null) {
-			annotationNamesToKeep = ArrayTools.add(supportingAnnotationNames, primaryAnnotationName);
+			annotationNames.add(primaryAnnotationName);
 		}
-		for (Annotation existingAnnotation : getAnnotations()) {
-			if (! ArrayTools.contains(annotationNamesToKeep, existingAnnotation.getAnnotationName())) {
-				this.annotations.remove(existingAnnotation);
-				existingAnnotation.removeAnnotation();
+		for (Annotation annotation : this.getAnnotations()) {
+			if ( ! CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
+				this.annotations.remove(annotation);
+				annotation.removeAnnotation();
 			}
 		}
-		if (primaryAnnotationName != null && getAnnotation(primaryAnnotationName) == null) {
-			newPrimaryAnnotation = buildAnnotation(primaryAnnotationName);
+		Annotation newPrimaryAnnotation = null;
+		if ((primaryAnnotationName != null) && (this.getAnnotation(primaryAnnotationName) == null)) {
+			newPrimaryAnnotation = this.buildAnnotation(primaryAnnotationName);
 			this.annotations.add(newPrimaryAnnotation);
 			newPrimaryAnnotation.newAnnotation();
 		}
 		// fire collection change event after all annotation changes are done
-		fireCollectionChanged(ANNOTATIONS_COLLECTION, Collections.unmodifiableCollection(this.annotations));
+		this.fireCollectionChanged(ANNOTATIONS_COLLECTION, this.annotations);
 		return newPrimaryAnnotation;
 	}
 	
@@ -332,12 +320,11 @@ abstract class SourcePersistentMember<E extends Member>
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private ContainerAnnotation<NestableAnnotation> buildContainerAnnotation(String annotationName) {
-		return (ContainerAnnotation<NestableAnnotation>) buildAnnotation(annotationName);
+		return (ContainerAnnotation<NestableAnnotation>) this.buildAnnotation(annotationName);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private NestableAnnotation buildNestableAnnotation(String annotationName) {
-		return (NestableAnnotation) buildAnnotation(annotationName);
+		return (NestableAnnotation) this.buildAnnotation(annotationName);
 	}
 	
 	
@@ -386,45 +373,47 @@ abstract class SourcePersistentMember<E extends Member>
 	}
 	
 	private void updateAnnotations(CompilationUnit astRoot) {
-		HashSet<Annotation> annotationsToRemove = 
-				new HashSet<Annotation>(this.annotations);
+		HashSet<Annotation> annotationsToRemove = new HashSet<Annotation>(this.annotations);
 		
-		this.member.getBodyDeclaration(astRoot).accept(
-				this.buildUpdateAnnotationVisitor(astRoot, annotationsToRemove));
+		this.member.getBodyDeclaration(astRoot).accept(this.buildUpdateAnnotationVisitor(astRoot, annotationsToRemove));
 		
 		for (Annotation annotation : annotationsToRemove) {
 			this.removeItemFromCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
 		}
 	}
 	
-	private ASTVisitor buildUpdateAnnotationVisitor(
-			CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
-		return new UpdateAnnotationVisitor(
-				astRoot, this.member.getBodyDeclaration(astRoot), annotationsToRemove);
+	private ASTVisitor buildUpdateAnnotationVisitor(CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
+		return new UpdateAnnotationVisitor(astRoot, this.member.getBodyDeclaration(astRoot), annotationsToRemove);
 	}
 	
-	void addOrUpdateAnnotation(
-			org.eclipse.jdt.core.dom.Annotation node, CompilationUnit astRoot, 
-			Set<Annotation> annotationsToRemove) {
+	/**
+	 * called from {@link UpdateAnnotationVisitor}
+	 */
+	/* private */ void addOrUpdateAnnotation(org.eclipse.jdt.core.dom.Annotation node, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
 		String jdtAnnotationName = JDTTools.resolveAnnotation(node);
-		if (jdtAnnotationName == null) {
-			return;
-		}
-		if (this.annotationIsValid(jdtAnnotationName)) {
+		if (jdtAnnotationName != null) {
 			this.addOrUpdateAnnotation(jdtAnnotationName, astRoot, annotationsToRemove);
-			return;
+		}
+	}
+
+	/**
+	 * pre-condition: jdtAnnotationName is not null
+	 */
+	void addOrUpdateAnnotation(String jdtAnnotationName, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
+		if (this.annotationIsValid(jdtAnnotationName)) {
+			this.addOrUpdateAnnotation_(jdtAnnotationName, astRoot, annotationsToRemove);
 		}
 	}
 	
-	private void addOrUpdateAnnotation(
-			String jdtAnnotationName, CompilationUnit astRoot, 
-			Set<Annotation> annotationsToRemove) {
+	/**
+	 * pre-condition: jdtAnnotationName is valid
+	 */
+	private void addOrUpdateAnnotation_(String jdtAnnotationName, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
 		Annotation annotation = this.selectAnnotationNamed(annotationsToRemove, jdtAnnotationName);
 		if (annotation != null) {
 			annotation.update(astRoot);
 			annotationsToRemove.remove(annotation);
-		}
-		else {
+		} else {
 			annotation = this.buildAnnotation(jdtAnnotationName);
 			annotation.initialize(astRoot);
 			this.addItemToCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
@@ -438,8 +427,8 @@ abstract class SourcePersistentMember<E extends Member>
 		this.setPersistable(this.buildPersistable(astRoot));
 	}
 	
-	private Annotation selectAnnotationNamed(Iterable<Annotation> annotations, String annotationName) {
-		for (Annotation annotation : annotations) {
+	private Annotation selectAnnotationNamed(Iterable<Annotation> list, String annotationName) {
+		for (Annotation annotation : list) {
 			if (annotation.getAnnotationName().equals(annotationName)) {
 				return annotation;
 			}
@@ -533,17 +522,14 @@ abstract class SourcePersistentMember<E extends Member>
 	{
 		protected final Set<Annotation> annotationsToRemove;
 		
-		protected UpdateAnnotationVisitor(
-				CompilationUnit astRoot, BodyDeclaration bodyDeclaration, 
-				Set<Annotation> annotationsToRemove) {
+		protected UpdateAnnotationVisitor(CompilationUnit astRoot, BodyDeclaration bodyDeclaration, Set<Annotation> annotationsToRemove) {
 			super(astRoot, bodyDeclaration);
 			this.annotationsToRemove = annotationsToRemove;
 		}
 		
 		@Override
 		protected void visitChildAnnotation(org.eclipse.jdt.core.dom.Annotation node) {
-			SourcePersistentMember.this.addOrUpdateAnnotation(
-					node, this.astRoot, this.annotationsToRemove);
+			SourcePersistentMember.this.addOrUpdateAnnotation(node, this.astRoot, this.annotationsToRemove);
 		}		
 	}
 }

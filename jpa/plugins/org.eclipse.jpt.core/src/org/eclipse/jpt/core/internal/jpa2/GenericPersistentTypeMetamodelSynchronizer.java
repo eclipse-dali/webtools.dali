@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa2;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Comparator;
 import java.util.Date;
@@ -19,17 +20,21 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -41,98 +46,141 @@ import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.text.SimpleDateFormat;
 
 /**
- * 
+ * For now, the "synchronization" is simple brute-force: we generate the source
+ * code and then compare it with what is already present in the file.
+ * If the new source is different, we replace the file contents; otherwise, we
+ * leave the file unchanged.
  */
 @SuppressWarnings("nls")
 public class GenericPersistentTypeMetamodelSynchronizer
-	implements PersistentTypeMetamodelSynchronizer
+	implements PersistentType2_0.MetamodelSynchronizer
 {
-	protected final Owner owner;
-	protected final PersistentType persistentType;
-	protected final String metamodelClassName;
+	protected final PersistentType2_0 persistentType;
 
 
-	public GenericPersistentTypeMetamodelSynchronizer(Owner owner, PersistentType persistentType) {
+	public GenericPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType) {
 		super();
-		this.owner = owner;
 		this.persistentType = persistentType;
-		this.metamodelClassName = this.buildMetamodelClassName();
 	}
 
-	// TODO
-	protected String buildMetamodelClassName() {
-		return this.buildMetamodelClassName(this.persistentType.getName());
+	public IFile getFile() {
+		return (IFile) this.getPackageFragment().getCompilationUnit(this.getFileName()).getResource();
 	}
 
-	protected String buildMetamodelClassName(String className) {
-		return className + '_';
-	}
 
-	// TODO
-	protected String getPackageName() {
-		return ClassTools.packageNameForClassNamed(this.metamodelClassName);
-	}
-
-	protected IPackageFragment buildPackageFragment() {
-		IPackageFragmentRoot sourceFolder = this.owner.getSourceFolder();
-		String pkgName = this.getPackageName();
-		IPackageFragment packageFragment = sourceFolder.getPackageFragment(pkgName);
-		if (packageFragment.exists()) {
-			return packageFragment;
-		}
-		try {
-			return sourceFolder.createPackageFragment(pkgName, true, null);
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
+	// ********** synchronize **********
 
 	public void synchronize() {
 		try {
 			this.synchronize_();
 		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
+			JptCorePlugin.log(ex);
 		}
 	}
 
 	protected void synchronize_() throws JavaModelException {
-		IPackageFragment pkg = this.buildPackageFragment();
-		String fileName = ClassTools.shortNameForClassNamed(this.metamodelClassName) + ".java";
+		IPackageFragment pkg = this.getPackageFragment();
+		String fileName = this.getFileName();
 
-		ISourceReference oldSourceRef = pkg.getCompilationUnit(fileName);
-		String oldSource = oldSourceRef.exists() ? oldSourceRef.getSource() : null;
-
-		if (oldSource == null) {  // write a new file
+		ICompilationUnit compilationUnit = pkg.getCompilationUnit(fileName);
+		if (compilationUnit.exists()) {
+			// overwrite existing file if it has changed (ignoring the timestamp)
+			String newSource = this.buildSource(compilationUnit.getSource());
+			if (newSource != null) {
+				pkg.createCompilationUnit(fileName, newSource, true, null);  // true=force
+			}
+		} else {
+			// write a new file, creating the package folders if necessary
+			if ( ! pkg.exists()) {
+				this.getSourceFolder().createPackageFragment(pkg.getElementName(), true, null);  // true=force
+			}
 			pkg.createCompilationUnit(fileName, this.buildSource(), false, null);  // false=no force
-			return;
-		}
-
-		int oldBegin = oldSource.indexOf(DALI_TAG);
-		if (oldBegin == -1) {
-			return;
-		}
-		oldBegin += DALI_TAG_LENGTH;
-
-		int oldEnd = oldSource.indexOf('"', oldBegin);
-		if (oldEnd == -1) {
-			return;
-		}
-		String oldSource2 = oldSource.replace(oldSource.substring(oldBegin, oldEnd), "");
-
-		String newSource = this.buildSource();
-		int newBegin = newSource.indexOf(DALI_TAG) + DALI_TAG_LENGTH;
-		int newEnd = newSource.indexOf('"', newBegin);
-		String newSource2 = newSource.replace(newSource.substring(newBegin, newEnd), "");
-
-		if ( ! newSource2.equals(oldSource2)) {  // replace the old file
-			pkg.createCompilationUnit(fileName, newSource, true, null);
 		}
 	}
 
-	protected static final String DALI_TAG = "@Generated(\"Dali";
-	protected static final int DALI_TAG_LENGTH = DALI_TAG.length();
+	/**
+	 * return null if the old source should not be replaced
+	 */
+	protected String buildSource(String oldSource) {
+		int oldLength = oldSource.length();
+
+		int oldDateBegin = oldSource.indexOf(DATE_TAG);
+		if (oldDateBegin == -1) {
+			return null;  // hmmm...
+		}
+		oldDateBegin += DATE_TAG_LENGTH;
+
+		int oldDateEnd = oldSource.indexOf('"', oldDateBegin);
+		if (oldDateEnd == -1) {
+			return null;  // hmmm...
+		}
+
+		String newSource = this.buildSource();
+		int newLength = newSource.length();
+		if (newLength != oldLength) {
+			return newSource;
+		}
+
+		int newDateBegin = newSource.indexOf(DATE_TAG) + DATE_TAG_LENGTH;
+		if (newDateBegin != oldDateBegin) {
+			return newSource;
+		}
+
+		int newDateEnd = newSource.indexOf('"', newDateBegin);
+		if (newDateEnd != oldDateEnd) {
+			return newSource;
+		}
+
+		if (newSource.regionMatches(0, oldSource, 0, oldDateBegin) &&
+					newSource.regionMatches(oldDateEnd, oldSource, oldDateEnd, oldLength - oldDateEnd)) {
+			return null;
+		}
+		return newSource;
+	}
+
+	protected static final String DATE_TAG = "date=\"";
+	protected static final int DATE_TAG_LENGTH = DATE_TAG.length();
+
+
+	// ********** package/file **********
+
+	protected IPackageFragment getPackageFragment() {
+		return this.getSourceFolder().getPackageFragment(this.getPackageName());
+	}
+
+	protected IPackageFragmentRoot getSourceFolder() {
+		return this.getJpaProject().getMetamodelPackageFragmentRoot();
+	}
+
+	protected JpaProject2_0 getJpaProject() {
+		return (JpaProject2_0) this.persistentType.getJpaProject();
+	}
+
+	// TODO
+	protected String getPackageName() {
+		// the default is to store the metamodel in the same package as the model
+		return ClassTools.packageNameForClassNamed(this.getMetamodelClassName());
+	}
+
+	protected String getFileName() {
+		return ClassTools.shortNameForClassNamed(this.getMetamodelClassName()) + ".java";
+	}
+
+	// TODO
+	protected String getMetamodelClassName() {
+		return this.buildMetamodelClassName(this.persistentType.getName());
+	}
+
+	protected String buildMetamodelClassName(String className) {
+		// the default is to simply append an underscore to the model class name
+		return className + '_';
+	}
+
+
+	// ********** source code **********
 
 	/**
 	 * build the "body" source first; then build the "package" and "imports" source
@@ -150,7 +198,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 	}
 
 	protected BodySourceWriter buildBodySourceWriter() {
-		BodySourceWriter pw = new BodySourceWriter(this.getPackageName(), this.metamodelClassName);
+		BodySourceWriter pw = new BodySourceWriter(this.getPackageName(), this.getMetamodelClassName());
 		this.printBodySourceOn(pw);
 		return pw;
 	}
@@ -176,7 +224,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		this.printStaticMetamodelAnnotationOn(pw);
 
 		pw.print("public class ");
-		pw.printTypeDeclaration(this.metamodelClassName);
+		pw.printTypeDeclaration(this.getMetamodelClassName());
 		PersistentType superPersistentType = this.persistentType.getSuperPersistentType();
 		if (superPersistentType != null) {
 			pw.print(" extends ");
@@ -193,14 +241,29 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		pw.println();
 	}
 
-	// TODO - comment?
 	protected void printGeneratedAnnotationOn(BodySourceWriter pw) {
 		pw.printAnnotation("javax.annotation.Generated");
 		pw.print('(');
-		pw.printStringLiteral("Dali" + ' ' + DateFormat.getDateTimeInstance().format(new Date()));
+		pw.print("value=");
+		pw.printStringLiteral(JavaResourcePersistentType.METAMODEL_GENERATED_ANNOTATION_VALUE);
+		pw.print(", ");
+		pw.print("date=");
+		pw.printStringLiteral(format(new Date()));
 		pw.print(')');
 		pw.println();
 	}
+
+	/**
+	 * {@link SimpleDateFormat} is not thread-safe.
+	 */
+	protected static synchronized String format(Date date) {
+		return DATE_FORMAT.format(date);
+	}
+	/**
+	 * Recommended date format is ISO 8601.
+	 * @see javax.annotation.Generated
+	 */
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 
 	// ********** attributes **********
@@ -466,7 +529,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		protected static final Comparator<Map.Entry<String, ImportPackage>> IMPORT_ENTRIES_COMPARATOR = new ImportEntriesComparator();
 
 		protected static class ImportEntriesComparator
-			implements Comparator<Map.Entry<String, ImportPackage>>
+			implements Comparator<Map.Entry<String, ImportPackage>>, Serializable
 		{
 			public int compare(Map.Entry<String, ImportPackage> e1, Map.Entry<String, ImportPackage> e2) {
 				Collator collator = Collator.getInstance();

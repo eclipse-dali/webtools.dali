@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.jpa2;
 
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
  * JPA 2.0 project.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.PersistentType;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaProject2_0
-	extends JpaProject, MetamodelGenerator
+	extends JpaProject, MetamodelSynchronizer
 {
 
 	// ********** Canonical Metamodel **********
@@ -53,16 +53,17 @@ public interface JpaProject2_0
 	IPackageFragmentRoot getMetamodelPackageFragmentRoot();
 
 	/**
-	 * Synchronize the source for the metamodel class corresponding to the
-	 * specified persistent type.
+	 * Return a list of the names of the Java source folders. (These
+	 * can be used to hold the generated Canonical Metamodel.)
 	 */
-	void synchronizeMetamodel(PersistentType persistentType);
+	Iterable<String> getJavaSourceFolderNames();
 
 	/**
-	 * Return a list of the names of the Java source folders (that
-	 * can be used to hold the generated Canonical Metamodel).
+	 * Return the JPA project's generated metamodel Java resource persistent
+	 * types.
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourcePersistentType#isGeneratedMetamodel(IPackageFragmentRoot)
 	 */
-	Iterable<String> getSourceFolderNames();
+	Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes();
 
 
 	// ********** construction config **********

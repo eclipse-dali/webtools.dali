@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.internal.jpa2.GenericMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.GenericPersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
@@ -33,9 +32,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
-import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
-import org.eclipse.jpt.core.jpa2.PersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
@@ -63,13 +60,8 @@ public class EclipseLink2_0JpaFactory
 	// ********** Core Model **********
 	
 	@Override
-	public MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject) {
-		return new GenericMetamodelSynchronizer(jpaProject);
-	}
-	
-	@Override
-	public PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentTypeMetamodelSynchronizer.Owner owner, PersistentType persistentType) {
-		return new GenericPersistentTypeMetamodelSynchronizer(owner, persistentType);
+	public PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType) {
+		return new GenericPersistentTypeMetamodelSynchronizer(persistentType);
 	}
 	
 	// ********** Java Context Model **********

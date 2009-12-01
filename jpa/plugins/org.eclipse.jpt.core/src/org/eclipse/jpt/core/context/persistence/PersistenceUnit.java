@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.jpa2.MetamodelGenerator;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
@@ -36,7 +35,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PersistenceUnit
-	extends XmlContextNode, JpaStructureNode, MetamodelGenerator
+	extends XmlContextNode, JpaStructureNode
 {
 	/**
 	 * Covariant override.
@@ -634,18 +633,19 @@ public interface PersistenceUnit
 	// ********** root entities **********
 	
 	/**
-	 * The entity with the given name should be a root entity that has sub entities.
+	 * The entity with the given name is a root entity that has sub entities.
 	 * This will be stored by the persistence unit so that the entity can later
-	 * call {@link #isRootWithSubEntities(String)}
+	 * call {@link #entityIsRootWithSubEntities(String)}
 	 */
-	void addRootWithSubEntities(String entityName);
+	void addRootEntityWithSubEntities(String entityName);
 	
 	/**
 	 * Return whether the entity with the given name is a root entity
 	 * that also has sub entities.
-	 * @see #addRootWithSubEntities(String)
+	 * @see #addRootEntityWithSubEntities(String)
 	 */
-	boolean isRootWithSubEntities(String entityName);
+	boolean entityIsRootWithSubEntities(String entityName);
+
 
 	// ********** updating **********
 	 

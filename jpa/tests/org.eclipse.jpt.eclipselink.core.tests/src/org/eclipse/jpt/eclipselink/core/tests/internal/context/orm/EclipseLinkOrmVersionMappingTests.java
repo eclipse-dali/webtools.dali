@@ -80,7 +80,7 @@ public class EclipseLinkOrmVersionMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "id");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "id");
 		OrmEclipseLinkVersionMapping contextVersion = 
 			(OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -137,7 +137,7 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		// remove attribute from xml, test default mutable from java
 		
-		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		contextVersion = (OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
 		
@@ -163,7 +163,7 @@ public class EclipseLinkOrmVersionMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "myDate");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "myDate");
 		OrmEclipseLinkVersionMapping contextVersion = 
 			(OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -236,7 +236,7 @@ public class EclipseLinkOrmVersionMappingTests
 		
 		// remove attribute from xml, test default mutable from java
 		
-		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		contextVersion = (OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
 		
@@ -261,7 +261,7 @@ public class EclipseLinkOrmVersionMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "basic");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "basic");
 		OrmEclipseLinkVersionMapping contextVersion = 
 			(OrmEclipseLinkVersionMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -308,7 +308,7 @@ public class EclipseLinkOrmVersionMappingTests
 		createTestEntityWithVersionMapping();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "id");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion basicResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		JavaVersionMapping javaVersionMapping = (JavaVersionMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
@@ -335,7 +335,7 @@ public class EclipseLinkOrmVersionMappingTests
 		assertEquals("foo", ((EclipseLinkConvert) javaVersionMapping.getSpecifiedConverter()).getSpecifiedConverterName());
 		
 		
-		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
@@ -358,7 +358,7 @@ public class EclipseLinkOrmVersionMappingTests
 	
 	public void testModifyConvert() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion basicResource = (XmlVersion) getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 	

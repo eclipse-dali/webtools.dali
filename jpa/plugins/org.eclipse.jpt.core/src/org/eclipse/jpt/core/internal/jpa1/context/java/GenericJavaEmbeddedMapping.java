@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
+import java.util.Vector;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -26,7 +28,6 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -147,14 +148,12 @@ public class GenericJavaEmbeddedMapping
 	
 	//****************** AbstractJavaAttributeMapping implementation *******************
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return ArrayTools.addAll(
-				super.buildSupportingAnnotationNames(),
-				JPA.ASSOCIATION_OVERRIDE,
-				JPA.ASSOCIATION_OVERRIDES);
-			}
-		return super.buildSupportingAnnotationNames();
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		if (this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			names.add(JPA.ASSOCIATION_OVERRIDE);
+			names.add(JPA.ASSOCIATION_OVERRIDES);
+		}
 	}
 	
 	

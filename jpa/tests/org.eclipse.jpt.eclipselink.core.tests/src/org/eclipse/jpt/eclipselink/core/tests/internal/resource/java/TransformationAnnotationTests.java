@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -72,10 +73,10 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 		
 		assertNotNull(attributeResource.getAnnotation(EclipseLink.TRANSFORMATION));
 		
-		attributeResource.setPrimaryAnnotation(null, new String[0]);		
+		attributeResource.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
 		assertNull(attributeResource.getAnnotation(EclipseLink.TRANSFORMATION));
 		
-		attributeResource.setPrimaryAnnotation(EclipseLink.TRANSFORMATION, new String[0]);
+		attributeResource.setPrimaryAnnotation(EclipseLink.TRANSFORMATION, EmptyIterable.<String>instance());
 		assertNotNull(attributeResource.getAnnotation(EclipseLink.TRANSFORMATION));
 	}
 

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceEmbeddableAnnotation;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Member.Editor;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -496,7 +498,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		assertSourceContains("@Entity", cu);
 		assertSourceContains("@Embeddable", cu);
 		
-		typeResource.setPrimaryAnnotation(JPA.MAPPED_SUPERCLASS, new String[0]);
+		typeResource.setPrimaryAnnotation(JPA.MAPPED_SUPERCLASS, EmptyIterable.<String>instance());
 		assertEquals(1, typeResource.annotationsSize());
 		javaTypeMappingAnnotation = typeResource.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME);
 		assertTrue(javaTypeMappingAnnotation instanceof MappedSuperclassAnnotation);
@@ -510,7 +512,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		assertEquals(0, typeResource.annotationsSize());
 		
-		typeResource.setPrimaryAnnotation(JPA.ENTITY, new String[0]);
+		typeResource.setPrimaryAnnotation(JPA.ENTITY, EmptyIterable.<String>instance());
 		assertTrue(typeResource.getAnnotation(EntityAnnotation.ANNOTATION_NAME) instanceof EntityAnnotation);
 		assertSourceContains("@Entity", cu);
 	}

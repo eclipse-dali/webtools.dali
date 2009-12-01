@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
@@ -72,20 +72,14 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	// ********** AbstractJavaAttributeMapping implementation **********  
 
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		String[] annotationNames = ArrayTools.addAll(
-			super.buildSupportingAnnotationNames(),
-			JPA.JOIN_TABLE,
-			JPA.MAP_KEY,
-			JPA.ORDER_BY);
-		
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			annotationNames = ArrayTools.addAll(
-				annotationNames,
-				JPA2_0.ORDER_COLUMN);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(JPA.JOIN_TABLE);
+		names.add(JPA.MAP_KEY);
+		names.add(JPA.ORDER_BY);
+		if (this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			names.add(JPA2_0.ORDER_COLUMN);
 		}
-		
-		return annotationNames;
 	}
 
 	// ********** AbstractJavaRelationshipMapping implementation **********  

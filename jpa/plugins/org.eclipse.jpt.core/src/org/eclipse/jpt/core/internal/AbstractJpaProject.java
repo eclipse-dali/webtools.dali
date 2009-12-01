@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -47,15 +46,13 @@ import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
+import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -80,7 +77,6 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -184,10 +180,12 @@ public abstract class AbstractJpaProject
 	 */
 	protected final ThreadLocalCommandExecutor modifySharedDocumentCommandExecutor;
 
-	// ********** metamodel **********
+	/**
+	 * The name of the Java project source folder that holds the generated
+	 * metamodel. If the name is <code>null</code> the metamodel is not
+	 * generated.
+	 */
 	protected String metamodelSourceFolderName;
-	protected final MetamodelSynchronizer metamodelSynchronizer;
-	protected final Job metamodelSynchronizationJob;
 
 
 	// ********** constructor/initialization **********
@@ -213,14 +211,12 @@ public abstract class AbstractJpaProject
 
 		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
 
-		this.rootContextNode = this.buildRootContextNode();
-
 		this.metamodelSourceFolderName = config.getMetamodelSourceFolderName();
 		if (this.metamodelSoureFolderNameIsInvalid()) {
 			this.metamodelSourceFolderName = null;
 		}
-		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
-		this.metamodelSynchronizationJob = this.buildMetamodelSynchronizationJob();
+
+		this.rootContextNode = this.buildRootContextNode();
 
 		// "update" the project before returning
 		this.setUpdater_(new SynchronousJpaProjectUpdater(this));
@@ -264,28 +260,6 @@ public abstract class AbstractJpaProject
 		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
 	}
 
-	protected MetamodelSynchronizer buildMetamodelSynchronizer() {
-		return this.isJpa2_0Compatible() ?
-					((JpaFactory2_0) this.getJpaFactory()).buildMetamodelSynchronizer(this) :
-					null;
-	}
-
-	protected Job buildMetamodelSynchronizationJob() {
-		return this.isJpa2_0Compatible() ?
-					this.buildMetamodelSynchronizationJob_() :
-					null;
-	}
-
-	protected Job buildMetamodelSynchronizationJob_() {
-		Job job = new MetamodelSynchronizationJob(this.buildMetamodelSynchronizationJobName());
-		job.setRule(this.project);
-		return job;
-	}
-
-	protected String buildMetamodelSynchronizationJobName() {
-		return NLS.bind(JptCoreMessages.SYNCHRONIZE_METAMODEL_JOB_NAME, this.getName());
-	}
-
 	// ***** inner class
 	protected class InitialResourceProxyVisitor implements IResourceProxyVisitor {
 		protected InitialResourceProxyVisitor() {
@@ -314,18 +288,6 @@ public abstract class AbstractJpaProject
 				default :
 					return false;  // no children
 			}
-		}
-	}
-
-	// ***** inner class
-	protected class MetamodelSynchronizationJob extends Job {
-		protected MetamodelSynchronizationJob(String name) {
-			super(name);
-		}
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			AbstractJpaProject.this.synchronizeMetamodel_();
-			return Status.OK_STATUS;
 		}
 	}
 
@@ -724,7 +686,8 @@ public abstract class AbstractJpaProject
 	public JpaXmlResource getPersistenceXmlResource() {
 		return (JpaXmlResource) this.getResourceModel(
 				JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH,
-				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
+				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE
+			);
 	}
 
 	public JpaXmlResource getDefaultOrmXmlResource() {
@@ -759,12 +722,11 @@ public abstract class AbstractJpaProject
 	// ********** annotated Java source classes **********
 	
 	public Iterator<String> annotatedJavaSourceClassNames() {
-		return getAnnotatedJavaSourceClassNames().iterator();
+		return this.getAnnotatedJavaSourceClassNames().iterator();
 	}
 	
 	protected Iterable<String> getAnnotatedJavaSourceClassNames() {
-		return new TransformationIterable<JavaResourcePersistentType, String>(
-				getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
+		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected String transform(JavaResourcePersistentType jrpType) {
 				return jrpType.getQualifiedName();
@@ -778,8 +740,7 @@ public abstract class AbstractJpaProject
 	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
 	protected Iterable<JavaResourcePersistentType> getInternalAnnotatedSourceJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(
-				getInternalSourceJavaResourcePersistentTypes()) {
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
 				return jrpType.isPersistable() && jrpType.isAnnotated();  // i.e. the type is valid and has a valid type annotation
@@ -792,30 +753,28 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<String> getMappedJavaSourceClassNames() {
-		return new TransformationIterable<JavaResourcePersistentType, String>(
-				getInternalMappedSourceJavaResourcePersistentTypes()) {
+		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalMappedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected String transform(JavaResourcePersistentType jrpType) {
 				return jrpType.getQualifiedName();
 			}
 		};
 	}
-	
+
 	/**
 	 * return only those valid "mapped" (i.e. annotated with @Entity, @Embeddable, etc.) Java 
 	 * resource persistent types that are part of the JPA project, ignoring those in JARs 
 	 * referenced in persistence.xml
 	 */
 	protected Iterable<JavaResourcePersistentType> getInternalMappedSourceJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(
-				getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
 				return jrpType.isMapped();  // i.e. the type is already persistable and annotated
 			}
 		};
 	}
-	
+
 	/**
 	 * return only those Java resource persistent types that are
 	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
@@ -855,6 +814,26 @@ public abstract class AbstractJpaProject
 	 */
 	protected Iterable<JpaFile> getJavaSourceJpaFiles() {
 		return this.getJpaFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+	}
+
+
+	// ********** metamodel **********
+
+	public Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes() {
+		if (this.metamodelSourceFolderName == null) {
+			return EmptyIterable.instance();
+		}
+		final IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
+			@Override
+			protected boolean accept(JavaResourcePersistentType jrpt) {
+				return jrpt.isGeneratedMetamodel(genSourceFolder);
+			}
+		};
+	}
+
+	public JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {
+		return (JavaResourceCompilationUnit) this.getResourceModel(file, JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 
 
@@ -963,8 +942,21 @@ public abstract class AbstractJpaProject
 	public void setMetamodelSourceFolderName(String metamodelSourceFolderName) {
 		String old = this.metamodelSourceFolderName;
 		this.metamodelSourceFolderName = metamodelSourceFolderName;
-		JptCorePlugin.setMetamodelSourceFolderName(this.project, metamodelSourceFolderName);
-		this.firePropertyChanged(METAMODEL_SOURCE_FOLDER_NAME_PROPERTY, old, metamodelSourceFolderName);
+		if (this.attributeValueHasChanged(old, metamodelSourceFolderName)) {
+			JptCorePlugin.setMetamodelSourceFolderName(this.project, metamodelSourceFolderName);
+			this.firePropertyChanged(METAMODEL_SOURCE_FOLDER_NAME_PROPERTY, old, metamodelSourceFolderName);
+			if (metamodelSourceFolderName == null) {
+				this.disposeMetamodel();
+			} else {
+				this.initializeMetamodel();
+			}
+		}
+	}
+
+	public void initializeMetamodel() {
+		if (this.isJpa2_0Compatible()) {
+			((JpaRootContextNode2_0) this.rootContextNode).initializeMetamodel();
+		}
 	}
 
 	/**
@@ -973,17 +965,15 @@ public abstract class AbstractJpaProject
 	public void synchronizeMetamodel() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.metamodelSourceFolderName != null) {
-				this.metamodelSynchronizationJob.schedule();
+				((JpaRootContextNode2_0) this.rootContextNode).synchronizeMetamodel();
 			}
 		}
 	}
 
-	protected void synchronizeMetamodel_() {
-		this.getRootContextNode().synchronizeMetamodel();
-	}
-
-	public void synchronizeMetamodel(PersistentType persistentType) {
-		this.metamodelSynchronizer.synchronize(persistentType);
+	public void disposeMetamodel() {
+		if (this.isJpa2_0Compatible()) {
+			((JpaRootContextNode2_0) this.rootContextNode).disposeMetamodel();
+		}
 	}
 
 	public IPackageFragmentRoot getMetamodelPackageFragmentRoot() {
@@ -995,7 +985,7 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * If the metamodel source folder is not longer a Java project source
+	 * If the metamodel source folder is no longer a Java project source
 	 * folder, clear it out.
 	 */
 	protected void checkMetamodelSourceFolderName() {
@@ -1005,27 +995,27 @@ public abstract class AbstractJpaProject
 	}
 
 	protected boolean metamodelSoureFolderNameIsInvalid() {
-		return ! this.metamodelSoureFolderNameIsValid();
+		return ! this.metamodelSourceFolderNameIsValid();
 	}
 
-	protected boolean metamodelSoureFolderNameIsValid() {
-		return CollectionTools.contains(this.getSourceFolderNames(), this.metamodelSourceFolderName);
+	protected boolean metamodelSourceFolderNameIsValid() {
+		return CollectionTools.contains(this.getJavaSourceFolderNames(), this.metamodelSourceFolderName);
 	}
 
 
-	// ********** source folder names **********
+	// ********** Java source folder names **********
 
-	public Iterable<String> getSourceFolderNames() {
+	public Iterable<String> getJavaSourceFolderNames() {
 		try {
-			return this.getSourceFolderNames_();
+			return this.getJavaSourceFolderNames_();
 		} catch (JavaModelException ex) {
 			JptCorePlugin.log(ex);
 			return EmptyIterable.instance();
 		}
 	}
 
-	protected Iterable<String> getSourceFolderNames_() throws JavaModelException {
-		return new TransformationIterable<IPackageFragmentRoot, String>(this.getSourceFolders()) {
+	protected Iterable<String> getJavaSourceFolderNames_() throws JavaModelException {
+		return new TransformationIterable<IPackageFragmentRoot, String>(this.getJavaSourceFolders()) {
 			@Override
 			protected String transform(IPackageFragmentRoot pfr) {
 				return pfr.getElementName();
@@ -1033,7 +1023,7 @@ public abstract class AbstractJpaProject
 		};
 	}
 
-	protected Iterable<IPackageFragmentRoot> getSourceFolders() throws JavaModelException {
+	protected Iterable<IPackageFragmentRoot> getJavaSourceFolders() throws JavaModelException {
 		return new FilteringIterable<IPackageFragmentRoot, IPackageFragmentRoot>(
 				this.getPackageFragmentRoots(),
 				SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER

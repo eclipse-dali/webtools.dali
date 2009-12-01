@@ -49,6 +49,7 @@ import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -724,7 +725,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
 		
 		basic.setOptional(Boolean.FALSE);
-		attributeResource.setPrimaryAnnotation(null, new String[0]);
+		attributeResource.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(true, ((BasicMapping) persistentAttribute.getMapping()).isOptional());

@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -25,7 +27,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -58,11 +59,10 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	//****************** JavaAttributeMapping implementation *******************
 
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		return ArrayTools.addAll(
-			super.buildSupportingAnnotationNames(),
-			JPA.ATTRIBUTE_OVERRIDE,
-			JPA.ATTRIBUTE_OVERRIDES);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(JPA.ATTRIBUTE_OVERRIDE);
+		names.add(JPA.ATTRIBUTE_OVERRIDES);
 	}
 
 	public Embeddable getEmbeddable() {

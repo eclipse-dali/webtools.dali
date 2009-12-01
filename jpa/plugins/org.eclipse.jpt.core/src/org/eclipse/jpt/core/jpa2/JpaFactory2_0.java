@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.jpa2;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
@@ -44,9 +44,7 @@ public interface JpaFactory2_0
 	
 	// ********** Core Model **********
 
-	MetamodelSynchronizer buildMetamodelSynchronizer(JpaProject2_0 jpaProject);
-
-	PersistentTypeMetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentTypeMetamodelSynchronizer.Owner owner, PersistentType persistentType);
+	PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType);
 
 	
 	// ********** Java Context Model **********

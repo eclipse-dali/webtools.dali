@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.ListIterator;
+import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
@@ -82,6 +83,6 @@ public interface OrmTypeMapping
 	OrmPersistentType getPersistentType();
 	
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeMapping> attributeMappings();
+	Iterator<OrmAttributeMapping> attributeMappings();
 
 }

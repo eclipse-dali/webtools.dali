@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.Iterator;
-
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.resource.java.Annotation;
 
@@ -50,6 +48,6 @@ public interface JavaAttributeMapping
 	 * Return all fully qualified annotation names that are supported with this mapping type.
 	 * This includes all possible annotations, not just the ones that currently exist on the attribute.
 	 */
-	Iterator<String> supportingAnnotationNames();
+	Iterable<String> getSupportingAnnotationNames();
 
 }

@@ -18,63 +18,64 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
 public abstract class AbstractJpaAnnotationDefintionProvider
-	implements JpaAnnotationDefinitionProvider
+		implements JpaAnnotationDefinitionProvider
 {
 	private AnnotationDefinition[] typeAnnotationDefinitions;
-	
+
 	private AnnotationDefinition[] typeMappingAnnotationDefinitions;
-	
+
 	private AnnotationDefinition[] attributeAnnotationDefinitions;
-	
-	
+
+
 	protected AbstractJpaAnnotationDefintionProvider() {
 		super();
 	}
-	
-	
+
 	// ********** type annotation definitions **********
-	
+
 	public synchronized Iterator<AnnotationDefinition> typeAnnotationDefinitions() {
 		if (this.typeAnnotationDefinitions == null) {
 			this.typeAnnotationDefinitions = this.buildTypeAnnotationDefinitions();
 		}
 		return new ArrayIterator<AnnotationDefinition>(this.typeAnnotationDefinitions);
 	}
-	
+
 	protected AnnotationDefinition[] buildTypeAnnotationDefinitions() {
 		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
 		this.addTypeAnnotationDefinitionsTo(definitions);
 		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
-	
+
 	/**
 	 * Subclasses must override this to specify type annotation definitions.
 	 */
-	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addTypeAnnotationDefinitionsTo(@SuppressWarnings("unused") List<AnnotationDefinition> definitions) {
 		// no op
 	}
-	
+
+	// ********** type mapping annotation definitions **********
+
 	public synchronized Iterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
 		if (this.typeMappingAnnotationDefinitions == null) {
 			this.typeMappingAnnotationDefinitions = this.buildTypeMappingAnnotationDefinitions();
 		}
 		return new ArrayIterator<AnnotationDefinition>(this.typeMappingAnnotationDefinitions);
 	}
-	
+
 	protected AnnotationDefinition[] buildTypeMappingAnnotationDefinitions() {
 		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
 		this.addTypeMappingAnnotationDefinitionsTo(definitions);
 		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
-	
+
 	/**
-	 * Subclasses must override this to specify type mapping annotation definitions.
+	 * Subclasses must override this to specify type mapping annotation
+	 * definitions.
 	 */
-	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addTypeMappingAnnotationDefinitionsTo(@SuppressWarnings("unused") List<AnnotationDefinition> definitions) {
 		// no op
 	}
-	
-	
+
 	// ********** attribute annotation definitions **********
 
 	public synchronized Iterator<AnnotationDefinition> attributeAnnotationDefinitions() {
@@ -83,17 +84,18 @@ public abstract class AbstractJpaAnnotationDefintionProvider
 		}
 		return new ArrayListIterator<AnnotationDefinition>(this.attributeAnnotationDefinitions);
 	}
-	
+
 	protected AnnotationDefinition[] buildAttributeAnnotationDefinitions() {
 		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
 		this.addAttributeAnnotationDefinitionsTo(definitions);
 		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
-	
+
 	/**
-	 * Subclasses must override this to specify attribute annotation definitions.
+	 * Subclasses must override this to specify attribute annotation
+	 * definitions.
 	 */
-	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addAttributeAnnotationDefinitionsTo(@SuppressWarnings("unused") List<AnnotationDefinition> definitions) {
 		// no op
 	}
 }

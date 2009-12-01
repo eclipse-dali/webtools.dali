@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
@@ -31,7 +32,6 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -81,13 +81,12 @@ public abstract class AbstractJavaBasicMapping
 	}
 	
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		return ArrayTools.addAll(
-			super.buildSupportingAnnotationNames(),
-			JPA.COLUMN,
-			JPA.LOB,
-			JPA.TEMPORAL,
-			JPA.ENUMERATED);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(JPA.COLUMN);
+		names.add(JPA.LOB);
+		names.add(JPA.TEMPORAL);
+		names.add(JPA.ENUMERATED);
 	}
 	
 	public String getDefaultColumnName() {

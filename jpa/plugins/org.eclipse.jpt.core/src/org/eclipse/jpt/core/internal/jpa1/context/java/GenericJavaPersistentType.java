@@ -14,6 +14,10 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
+/**
+ * JPA 1.0 Java persistent type.
+ * The specified access is always null.
+ */
 public class GenericJavaPersistentType
 	extends AbstractJavaPersistentType
 {
@@ -23,11 +27,11 @@ public class GenericJavaPersistentType
 	}
 	
 	
-	// **************** access type *******************************************
+	// ********** access **********
 	
 	/**
-	 * GenericJavaPersistentType does not support specified access (no Access annotation in 1.0), 
-	 * so we return null
+	 * GenericJavaPersistentType does not support specified access (no Access
+	 * annotation in 1.0), so we return null
 	 */
 	@Override
 	protected AccessType buildSpecifiedAccess() {
@@ -35,9 +39,11 @@ public class GenericJavaPersistentType
 	}
 	
 	/**
-	 * GenericJavaPersistentType does not support specified access (no Access annotation in 1.0)
+	 * GenericJavaPersistentType does not support specified access
+	 * (no Access annotation in 1.0)
 	 */
 	public void setSpecifiedAccess(AccessType specifiedAccess) {
 		throw new UnsupportedOperationException();
 	}
+
 }

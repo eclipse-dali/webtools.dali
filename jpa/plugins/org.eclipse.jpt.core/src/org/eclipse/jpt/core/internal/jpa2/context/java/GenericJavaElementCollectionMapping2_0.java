@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
+import java.util.Vector;
+
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -17,7 +19,6 @@ import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 
 
 public class GenericJavaElementCollectionMapping2_0
@@ -53,28 +54,26 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 	
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		return ArrayTools.addAll(
-			super.buildSupportingAnnotationNames(),
-			JPA.ASSOCIATION_OVERRIDE,
-			JPA.ASSOCIATION_OVERRIDES,
-			JPA.ATTRIBUTE_OVERRIDE,
-			JPA.ATTRIBUTE_OVERRIDES,
-			//JPA2_0.COLLECTION_TABLE,
-			JPA.COLUMN,
-			JPA.ENUMERATED,
-			JPA.LOB,
-			JPA.MAP_KEY,
-			//JPA2_0.MAP_KEY_CLASS,
-			//JPA2_0.MAP_KEY_COLUMN,
-			//JPA2_0.MAP_KEY_ENUMERATED,
-			//JPA2_0.MAP_KEY_JOIN_COLUMN,
-			//JPA2_0.MAP_KEY_JOIN_COLUMNS,
-			//JPA2_0.MAP_KEY_TEMPORAL,
-			JPA.ORDER_BY,
-			//JPA2_0.ORDER_COLUMN,
-			JPA.TEMPORAL
-			);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(JPA.ASSOCIATION_OVERRIDE);
+		names.add(JPA.ASSOCIATION_OVERRIDES);
+		names.add(JPA.ATTRIBUTE_OVERRIDE);
+		names.add(JPA.ATTRIBUTE_OVERRIDES);
+//		names.add(JPA2_0.COLLECTION_TABLE);
+		names.add(JPA.COLUMN);
+		names.add(JPA.ENUMERATED);
+		names.add(JPA.LOB);
+		names.add(JPA.MAP_KEY);
+//		names.add(JPA2_0.MAP_KEY_CLASS);
+//		names.add(JPA2_0.MAP_KEY_COLUMN);
+//		names.add(JPA2_0.MAP_KEY_ENUMERATED);
+//		names.add(JPA2_0.MAP_KEY_JOIN_COLUMN);
+//		names.add(JPA2_0.MAP_KEY_JOIN_COLUMNS);
+//		names.add(JPA2_0.MAP_KEY_TEMPORAL);
+		names.add(JPA.ORDER_BY);
+//		names.add(JPA2_0.ORDER_COLUMN);
+		names.add(JPA.TEMPORAL);
 	}
 	
 	

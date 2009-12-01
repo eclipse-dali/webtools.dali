@@ -1386,7 +1386,7 @@ public class JpaProjectPropertiesPage
 		@Override
 		protected Iterable<String> getIterable() {
 			return this.jpaProjectIsJpa2_0() ?
-					((JpaProject2_0) this.subject).getSourceFolderNames() :
+					((JpaProject2_0) this.subject).getJavaSourceFolderNames() :
 					EmptyIterable.<String>instance();
 		}
 

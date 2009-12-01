@@ -18,10 +18,11 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -30,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericPersistenceXml
 	extends AbstractPersistenceXmlContextNode
-	implements PersistenceXml
+	implements PersistenceXml2_0
 {
 	protected JpaXmlResource persistenceXmlResource;
 	
@@ -89,13 +90,26 @@ public class GenericPersistenceXml
 	
 	
 	// **************** metamodel ********************
-	
-	public void synchronizeMetamodel() {
+
+	public void initializeMetamodel() {
 		if (this.persistence != null) {
-			this.persistence.synchronizeMetamodel();
+			((Persistence2_0) this.persistence).initializeMetamodel();
 		}
 	}
-	
+
+	public void synchronizeMetamodel() {
+		if (this.persistence != null) {
+			((Persistence2_0) this.persistence).synchronizeMetamodel();
+		}
+	}
+
+	public void disposeMetamodel() {
+		if (this.persistence != null) {
+			((Persistence2_0) this.persistence).disposeMetamodel();
+		}
+	}
+
+
 	// **************** updating ***********************************************
 
 	//TODO I haven't yet figured out if we do not need the resource object passed in now.

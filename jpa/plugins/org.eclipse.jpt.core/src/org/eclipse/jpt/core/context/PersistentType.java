@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.jpa2.MetamodelGenerator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -28,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PersistentType
-	extends JpaContextNode, JpaStructureNode, AccessHolder, MetamodelGenerator
+	extends JpaContextNode, JpaStructureNode, AccessHolder
 {
 
 	// ********** name **********

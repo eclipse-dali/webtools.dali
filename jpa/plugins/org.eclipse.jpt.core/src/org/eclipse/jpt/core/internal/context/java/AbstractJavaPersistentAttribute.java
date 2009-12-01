@@ -36,7 +36,7 @@ import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -456,8 +456,7 @@ public abstract class AbstractJavaPersistentAttribute
 		
 		String newAnnotation = (newMapping == null) ? null : newMapping.getAnnotationName();
 		JavaAttributeMapping mapping = (newMapping == null) ? this.defaultMapping : newMapping;
-		String[] newSupportingAnnotationNames = ArrayTools.array(mapping.supportingAnnotationNames(), EMPTY_STRING_ARRAY);
-		this.resourcePersistentAttribute.setPrimaryAnnotation(newAnnotation, newSupportingAnnotationNames);
+		this.resourcePersistentAttribute.setPrimaryAnnotation(newAnnotation, mapping.getSupportingAnnotationNames());
 		this.firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, old, newMapping);
 	}
 	protected static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -478,9 +477,9 @@ public abstract class AbstractJavaPersistentAttribute
 		return mapping;
 	}
 
-	protected Iterator<String> supportingAnnotationNames() {
+	protected Iterable<String> getSupportingAnnotationNames() {
 		JavaAttributeMapping mapping = this.getMapping();
-		return (mapping != null) ? mapping.supportingAnnotationNames() : EmptyIterator.<String>instance();
+		return (mapping != null) ? mapping.getSupportingAnnotationNames() : EmptyIterable.<String>instance();
 	}
 
 	protected void updateSpecifiedMapping() {

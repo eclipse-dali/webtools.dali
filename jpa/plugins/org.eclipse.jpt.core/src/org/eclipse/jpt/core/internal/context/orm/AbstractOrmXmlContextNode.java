@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
  */
 public abstract class AbstractOrmXmlContextNode
 	extends AbstractXmlContextNode
-	implements XmlContextNode
 {
 
 	// ********** constructor **********

@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -18,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMapping
 	implements JavaMappedSuperclass
@@ -42,8 +40,10 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 		return MappedSuperclassAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
+	public Iterable<String> getSupportingAnnotationNames() {
+		return SUPPORTING_ANNOTATION_NAMES;
+	}
+	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 			JPA.ID_CLASS,
 			JPA.EXCLUDE_DEFAULT_LISTENERS,
 			JPA.EXCLUDE_SUPERCLASS_LISTENERS,
@@ -54,8 +54,9 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 			JPA.POST_REMOVE,
 			JPA.PRE_UPDATE,
 			JPA.POST_UPDATE,
-			JPA.POST_LOAD);
-	}
+			JPA.POST_LOAD
+	};
+	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 	
 	public char getIdClassEnclosingTypeSeparator() {
 		return '.';

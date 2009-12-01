@@ -91,7 +91,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
 		EclipseLinkRelationshipMapping contextManyToMany = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -130,7 +130,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
 		EclipseLinkRelationshipMapping contextManyToMany = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -209,7 +209,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 
 		//set metadata-complete and verify JoinTable info is not taken from the java
 		departmentPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		departmentPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		departmentPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		OrmOneToManyMapping oneToMany = (OrmOneToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 		
 		assertEquals(true, oneToMany.getPersistentAttribute().isVirtual());
@@ -232,7 +232,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		assertEquals("empId", ormJoinTable.specifiedInverseJoinColumns().next().getReferencedColumnName());
 
 		
-		departmentPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "employees");
+		departmentPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "employees");
 		manyToMany = (OrmManyToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 		assertEquals(false, manyToMany.getPersistentAttribute().isVirtual());
 		ormJoinTable = manyToMany.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();

@@ -41,10 +41,9 @@ public class GenericJpaAnnotationProvider
 	}
 	
 	
-	// ********** static methods **********
+	// ********** convenience methods **********
 	
-	protected static Iterator<String> annotationNames(
-			Iterator<AnnotationDefinition> annotationDefinitions) {
+	protected Iterator<String> annotationNames(Iterator<AnnotationDefinition> annotationDefinitions) {
 		return new TransformationIterator<AnnotationDefinition, String>(annotationDefinitions) {
 			@Override
 			protected String transform(AnnotationDefinition annotationDefinition) {
@@ -53,8 +52,7 @@ public class GenericJpaAnnotationProvider
 		};
 	}
 	
-	protected static AnnotationDefinition getAnnotationDefinition(
-			String annotationName, Iterator<AnnotationDefinition> annotationDefinitions) {
+	protected AnnotationDefinition selectAnnotationDefinition(Iterator<AnnotationDefinition> annotationDefinitions, String annotationName) {
 		while (annotationDefinitions.hasNext()) {
 			AnnotationDefinition annotationDefinition = annotationDefinitions.next();
 			if (annotationDefinition.getAnnotationName().equals(annotationName)) {
@@ -74,109 +72,92 @@ public class GenericJpaAnnotationProvider
 
 	// ********** type annotations **********
 	
-	@SuppressWarnings("unchecked")
 	public Iterator<String> typeAnnotationNames() {
-		return new CompositeIterator<String>(
-				annotationNames(typeAnnotationDefinitions()));
+		return this.annotationNames(this.typeAnnotationDefinitions());
 	}
 	
 	protected Iterator<AnnotationDefinition> typeAnnotationDefinitions() {
 		return new CompositeIterator<AnnotationDefinition> ( 
-			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(
-					this.annotationDefinitionProviders()) {
+			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
 				@Override
-				protected Iterator<AnnotationDefinition> transform(
-						JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
 					return annotationDefinitionProvider.typeAnnotationDefinitions();
 				}
-			});
+			}
+		);
 	}
 	
 	public Iterator<String> typeMappingAnnotationNames() {
-		return new CompositeIterator<String>(
-				annotationNames(typeMappingAnnotationDefinitions()));
+		return this.annotationNames(typeMappingAnnotationDefinitions());
 	}
 	
 	protected Iterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
 		return new CompositeIterator<AnnotationDefinition> ( 
-			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(
-					this.annotationDefinitionProviders()) {
+			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
 				@Override
-				protected Iterator<AnnotationDefinition> transform(
-						JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
 					return annotationDefinitionProvider.typeMappingAnnotationDefinitions();
 				}
-			});
+			}
+		);
 	}
 	
-	public Annotation buildTypeAnnotation(
-			JavaResourcePersistentType parent, Type type, String annotationName) {
+	public Annotation buildTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
 		return this.getTypeAnnotationDefinition(annotationName).buildAnnotation(parent, type);
 	}
 	
-	public Annotation buildTypeAnnotation(
-			JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
-		return this.getTypeAnnotationDefinition(jdtAnnotation.getElementName()).
-				buildAnnotation(parent, jdtAnnotation);
+	public Annotation buildTypeAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
+		return this.getTypeAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
 	
 	protected AnnotationDefinition getTypeAnnotationDefinition(String annotationName) {
-		AnnotationDefinition annotationDefinition = 
-				getAnnotationDefinition(annotationName, this.typeAnnotationDefinitions());
+		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.typeAnnotationDefinitions(), annotationName);
 		if (annotationDefinition == null) {
 			throw new IllegalArgumentException("unsupported type annotation: " + annotationName); //$NON-NLS-1$
 		}
 		return annotationDefinition;
 	}
 	
-	public Annotation buildNullTypeAnnotation(
-			JavaResourcePersistentType parent, String annotationName) {
+	public Annotation buildNullTypeAnnotation(JavaResourcePersistentType parent, String annotationName) {
 		return this.getTypeAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
 	
 	
 	// ********** attribute annotations **********
 	
-	@SuppressWarnings("unchecked")
 	public Iterator<String> attributeAnnotationNames() {
-		return new CompositeIterator<String>(
-				annotationNames(attributeAnnotationDefinitions()));
+		return this.annotationNames(attributeAnnotationDefinitions());
 	}
 	
 	protected Iterator<AnnotationDefinition> attributeAnnotationDefinitions() {
 		return new CompositeIterator<AnnotationDefinition> ( 
-			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(
-					this.annotationDefinitionProviders()) {
+			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
 				@Override
-				protected Iterator<AnnotationDefinition> transform(
-						JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
 					return annotationDefinitionProvider.attributeAnnotationDefinitions();
 				}
-			});
+			}
+		);
 	}
 	
-	public Annotation buildAttributeAnnotation(
-			JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
+	public Annotation buildAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
 		return this.getAttributeAnnotationDefinition(annotationName).buildAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildAttributeAnnotation(
-			JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
-		return this.getAttributeAnnotationDefinition(jdtAnnotation.getElementName()).
-				buildAnnotation(parent, jdtAnnotation);
+	public Annotation buildAttributeAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+		return this.getAttributeAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
 	
-	public Annotation buildNullAttributeAnnotation(
-			JavaResourcePersistentAttribute parent, String annotationName) {
+	public Annotation buildNullAttributeAnnotation(JavaResourcePersistentAttribute parent, String annotationName) {
 		return this.getAttributeAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
 	
 	protected AnnotationDefinition getAttributeAnnotationDefinition(String annotationName) {
-		AnnotationDefinition annotationDefinition = 
-				getAnnotationDefinition(annotationName, this.attributeAnnotationDefinitions());
+		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.attributeAnnotationDefinitions(), annotationName);
 		if (annotationDefinition == null) {
 			throw new IllegalArgumentException("unsupported attribute annotation: " + annotationName); //$NON-NLS-1$
 		}
 		return annotationDefinition;
 	}
+
 }

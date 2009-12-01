@@ -83,7 +83,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -115,7 +115,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -144,7 +144,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -183,7 +183,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+			ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 

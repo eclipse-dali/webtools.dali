@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.jpa2.MetamodelGenerator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -26,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaRootContextNode
-	extends JpaContextNode, MetamodelGenerator
+	extends JpaContextNode
 {
 
 	// ********** persistence.xml **********

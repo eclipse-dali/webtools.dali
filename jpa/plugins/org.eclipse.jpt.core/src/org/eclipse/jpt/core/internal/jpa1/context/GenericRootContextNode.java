@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -25,6 +25,8 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -36,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericRootContextNode
 	extends AbstractJpaContextNode
-	implements JpaRootContextNode
+	implements JpaRootContextNode2_0
 {
 	/* This object has no parent, so it must point to the JPA project explicitly. */
 	protected final JpaProject jpaProject;
@@ -108,14 +110,28 @@ public class GenericRootContextNode
 		this.firePropertyChanged(PERSISTENCE_XML_PROPERTY, old, persistenceXml);
 	}
 	
+
 	// *************** metamodel ****************
+
+	public void initializeMetamodel() {
+		if (this.persistenceXml != null) {
+			((PersistenceXml2_0) this.persistenceXml).initializeMetamodel();
+		}
+	}
 
 	public void synchronizeMetamodel() {
 		if (this.persistenceXml != null) {
-			this.persistenceXml.synchronizeMetamodel();
+			((PersistenceXml2_0) this.persistenceXml).synchronizeMetamodel();
 		}
 	}
-	
+
+	public void disposeMetamodel() {
+		if (this.persistenceXml != null) {
+			((PersistenceXml2_0) this.persistenceXml).disposeMetamodel();
+		}
+	}
+
+
 	// **************** updating ***********************************************
 	
 	public void update(IProgressMonitor monitor) {
@@ -223,7 +239,7 @@ public class GenericRootContextNode
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
 						new String[] {jrpt.getName()},
-						jrcu.getFile(),
+						jrpt.getFile(),
 						jrpt.getNameTextRange(jrcu.buildASTRoot())
 					)
 				);
@@ -234,7 +250,7 @@ public class GenericRootContextNode
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
 						new String[] {jrpt.getName()},
-						jrcu.getFile(),
+						jrpt.getFile(),
 						jrpt.getNameTextRange(jrcu.buildASTRoot())
 					)
 				);

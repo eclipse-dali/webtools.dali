@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -18,7 +19,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkOneToOneMapping2_0;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -38,11 +38,10 @@ public class JavaEclipseLinkOneToOneMapping
 	}
 	
 	@Override
-	protected String[] buildSupportingAnnotationNames() {
-		return ArrayTools.addAll(
-			super.buildSupportingAnnotationNames(),
-			EclipseLink.JOIN_FETCH,
-			EclipseLink.PRIVATE_OWNED);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(EclipseLink.JOIN_FETCH);
+		names.add(EclipseLink.PRIVATE_OWNED);
 	}
 	
 	public EclipseLinkJoinFetch getJoinFetch() {

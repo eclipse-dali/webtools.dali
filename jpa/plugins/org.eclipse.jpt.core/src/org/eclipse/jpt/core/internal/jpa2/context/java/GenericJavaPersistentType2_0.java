@@ -11,32 +11,41 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
-import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
+/**
+ * JPA 2.0 Java persistent type.
+ * Support for specified access and metamodel generation.
+ */
 public class GenericJavaPersistentType2_0
 	extends AbstractJavaPersistentType
+	implements JavaPersistentType2_0
 {
+	protected final PersistentType2_0.MetamodelSynchronizer metamodelSynchronizer;
+
 	public GenericJavaPersistentType2_0(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent, jrpt);
+		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
 	}
-	
-	/**
-	 * covariant override
-	 */
-	@Override
-	public JpaProject2_0 getJpaProject() {
-		return (JpaProject2_0) super.getJpaProject();
+
+	protected PersistentType2_0.MetamodelSynchronizer buildMetamodelSynchronizer() {
+		return ((JpaFactory2_0) this.getJpaFactory()).buildPersistentTypeMetamodelSynchronizer(this);
 	}
-	
+
+
+	// ********** access **********
+
 	protected Access2_0Annotation getAccessAnnotation() {
-		return (Access2_0Annotation) this.resourcePersistentType.
-				getNonNullAnnotation(getAccessAnnotationName());
+		return (Access2_0Annotation) this.resourcePersistentType.getNonNullAnnotation(this.getAccessAnnotationName());
 	}
 	
 	protected String getAccessAnnotationName() {
@@ -45,7 +54,7 @@ public class GenericJavaPersistentType2_0
 	
 	@Override
 	protected AccessType buildSpecifiedAccess() {
-		return this.getResourceAccess();
+		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
 	}
 	
 	public void setSpecifiedAccess(AccessType specifiedAccess) {
@@ -63,19 +72,34 @@ public class GenericJavaPersistentType2_0
 	
 	@Override
 	protected Iterator<JavaResourcePersistentAttribute> resourceAttributes() {
-		return (this.specifiedAccess == null)
-			? super.resourceAttributes()
-			: this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(this.specifiedAccess));
+		return (this.specifiedAccess == null) ?
+				super.resourceAttributes() :
+				this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(this.specifiedAccess));
 	}
 	
 	@Override
 	public void updateAccess() {
 		super.updateAccess();
-		this.setSpecifiedAccess_(this.getResourceAccess());
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 	}
 
-	protected AccessType getResourceAccess() {
-		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
+
+	// ********** metamodel **********
+
+	public IFile getMetamodelFile() {
+		return this.metamodelSynchronizer.getFile();
+	}
+
+	public void initializeMetamodel() {
+		// do nothing - probably shouldn't be called...
+	}
+
+	public void synchronizeMetamodel() {
+		this.metamodelSynchronizer.synchronize();
+	}
+	
+	public void disposeMetamodel() {
+		// do nothing - probably shouldn't be called...
 	}
 
 }

@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -511,7 +512,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertSame(oneToOneMapping, persistentAttribute.getSpecifiedMapping());
 		
 		oneToOne.setOrphanRemoval(Boolean.FALSE);
-		attributeResource.setPrimaryAnnotation(null, new String[0]);
+		attributeResource.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
 	}

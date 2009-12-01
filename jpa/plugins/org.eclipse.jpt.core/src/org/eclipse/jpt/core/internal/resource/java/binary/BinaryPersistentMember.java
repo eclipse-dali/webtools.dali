@@ -264,8 +264,7 @@ abstract class BinaryPersistentMember
 		throw new UnsupportedOperationException();
 	}
 	
-	public Annotation setPrimaryAnnotation(
-			String primaryAnnotationName, String[] supportingAnnotationNames) {
+	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
 		throw new UnsupportedOperationException();
 	}
 	

@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 
 
 public abstract class AbstractJavaEmbeddable
@@ -33,8 +32,8 @@ public abstract class AbstractJavaEmbeddable
 		return EmbeddableAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterator<String> supportingAnnotationNames() {
-		return EmptyIterator.instance();
+	public Iterable<String> getSupportingAnnotationNames() {
+		return EmptyIterable.instance();
 	}
 	
 	public boolean isMapped() {

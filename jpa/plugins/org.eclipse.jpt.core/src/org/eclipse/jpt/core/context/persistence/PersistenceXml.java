@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.context.XmlFile;
-import org.eclipse.jpt.core.jpa2.MetamodelGenerator;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
@@ -23,9 +22,9 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PersistenceXml
-	extends XmlFile, MetamodelGenerator
+	extends XmlFile
 {
-	// **************** persistence *******************************************
+	// ********** persistence **********
 	
 	/**
 	 * String constant associated with changes to the persistence property
@@ -33,18 +32,18 @@ public interface PersistenceXml
 	public final static String PERSISTENCE_PROPERTY = "persistence"; //$NON-NLS-1$
 	
 	/**
-	 * Return the content represented by the root of the persistence.xml file.
+	 * Return the content represented by the root of the <code>persistence.xml</code> file.
 	 * This may be null.
 	 */
 	Persistence getPersistence();
 	
 	
-	// **************** updating **********************************************
+	// ********** updating **********
 	
 	/**
-	 * Update the PersistenceXml context model object to match the JpaXmlResource 
-	 * resource model object.
+	 * Update the context persistence XML model to match the resource model.
 	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(JpaXmlResource resource);
+
 }

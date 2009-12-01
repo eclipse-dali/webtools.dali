@@ -52,9 +52,9 @@ public interface OrmPersistentType
 	int specifiedAttributesSize();
 	
 	//TODO these are currently only used by tests, possibly remove them.  OrmPersistenAttributes.setVirtual(boolean) is used by the UI
-	OrmPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName);
+	OrmPersistentAttribute addSpecifiedAttribute(String mappingKey, String attributeName);
 
-	void removeSpecifiedPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute);
+	void removeSpecifiedAttribute(OrmPersistentAttribute specifiedAttribute);
 	
 	
 	//***************** virtual attributes *************************************
@@ -77,28 +77,28 @@ public interface OrmPersistentType
 	/**
 	 * Return whether this persistent type contains the given virtual persistent attribute.
 	 */
-	boolean containsVirtualPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute);
+	boolean containsVirtualAttribute(OrmPersistentAttribute ormPersistentAttribute);
 	
 	/**
 	 * Remove the given specified orm persistent attribute from the orm.xml. The attribute 
 	 * will be removed from the orm.xml and moved from the list of specified attributes 
 	 * to the list of virtual attributes.
 	 */
-	void makePersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute);
+	void makeAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute);
 		
 	/**
 	 * Add the given virtual orm persistent attribute to the orm.xml. The attribute will
 	 * be added to the orm.xml and moved from the list of virtual attributes to the list
 	 * of specified attributes
 	 */
-	void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute);
+	void makeAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute);
 
 	/**
 	 * Add the given virtual orm persistent attribute to the orm.xml with a mapping of 
 	 * type mappingKey. The attribute will be added to the orm.xml and moved from 
 	 * the list of virtual attributes to the list of specified attributes
 	 */
-	void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute, String mappingKey);
+	void makeAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute, String mappingKey);
 
 
 	//******************* mapping morphing *******************

@@ -21,11 +21,13 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.EclipseLink2_0ContextModelTestCase;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 /**
  *  EclipseLink2_0JavaOneToManyMappingTests
  */
+@SuppressWarnings("nls")
 public class EclipseLink2_0JavaOneToManyMappingTests
 	extends EclipseLink2_0ContextModelTestCase
 {
@@ -212,7 +214,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertSame(oneToManyMapping, persistentAttribute.getSpecifiedMapping());
 		
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
-		attributeResource.setPrimaryAnnotation(null, new String[0]);
+		attributeResource.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
 	}
