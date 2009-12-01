@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- *  SequenceGenerator2_0AnnotationDefinition
+ * javax.persistence.SequenceGenerator
  */
 public final class SequenceGenerator2_0AnnotationDefinition
 	implements AnnotationDefinition

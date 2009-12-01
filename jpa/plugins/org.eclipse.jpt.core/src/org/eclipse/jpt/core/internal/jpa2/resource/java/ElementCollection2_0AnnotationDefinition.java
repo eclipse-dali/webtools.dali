@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.OneToOne
+ * javax.persistence.ElementCollection
  */
 public final class ElementCollection2_0AnnotationDefinition
 	implements AnnotationDefinition

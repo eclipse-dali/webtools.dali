@@ -51,7 +51,7 @@ public class LiveCloneIterable<E>
 	 * Construct a "live" iterable for the specified collection.
 	 * The {@link Iterator#remove()} operation will not be supported
 	 * by the iterator returned by {@link #iterator()}
-	 * unless a subclass overrides them iterable's {@link #remove(Object)}
+	 * unless a subclass overrides the iterable's {@link #remove(Object)}
 	 * method.
 	 */
 	public LiveCloneIterable(Collection<? extends E> collection) {

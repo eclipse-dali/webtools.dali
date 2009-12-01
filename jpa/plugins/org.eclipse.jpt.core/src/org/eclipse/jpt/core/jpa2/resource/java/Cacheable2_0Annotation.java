@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Corresponds to the EclipseLink annotation
- * org.eclipse.persistence.annotations.ReadOnly
- * 
+ * Corresponds to the JPA 2.0 annotation
+ * javax.persistence.Cacheable
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

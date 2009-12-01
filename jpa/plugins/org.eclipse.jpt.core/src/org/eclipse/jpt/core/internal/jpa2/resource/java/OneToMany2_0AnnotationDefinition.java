@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- *  OneToMany2_0AnnotationDefinition
+ * javax.persistence.OneToMany
  */
 public final class OneToMany2_0AnnotationDefinition
 	implements AnnotationDefinition

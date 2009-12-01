@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.AssociationOverride
+ * javax.persistence.Cacheable
  */
 public final class Cacheable2_0AnnotationDefinition
 	implements AnnotationDefinition
