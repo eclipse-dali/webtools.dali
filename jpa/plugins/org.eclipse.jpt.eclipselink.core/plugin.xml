@@ -39,8 +39,8 @@
      <jpaPlatform
            id="eclipselink1_2"
            factoryClass="org.eclipse.jpt.eclipselink.core.internal.v1_2.EclipseLink1_2JpaPlatformFactory"
-           label="%ECLIPSELINK1_2_x_PLATFORM">
-           jpaFacetVersion="1.0"
+           label="%ECLIPSELINK1_2_x_PLATFORM"
+           jpaFacetVersion="1.0">
      </jpaPlatform>
 
 	    <jpaPlatform
