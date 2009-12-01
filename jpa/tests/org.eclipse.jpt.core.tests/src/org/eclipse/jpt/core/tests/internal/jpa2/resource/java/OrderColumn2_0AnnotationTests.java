@@ -128,7 +128,9 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		column.setName(null);
 		assertNull(column.getName());
 		
-		assertSourceDoesNotContain("@OrderColumn", cu);
+		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		assertNotNull(column);
+		assertSourceContains("@OrderColumn", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -155,7 +157,9 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 
 		
 		column.setColumnDefinition(null);
-		assertSourceDoesNotContain("@OrderColumn", cu);
+		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		assertNotNull(column);
+		assertSourceContains("@OrderColumn", cu);
 	}
 	
 	public void testGetNullable() throws Exception {
@@ -182,7 +186,9 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		assertSourceContains("@OrderColumn(nullable = false)", cu);
 		
 		column.setNullable(null);
-		assertSourceDoesNotContain("@OrderColumn", cu);
+		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		assertNotNull(column);
+		assertSourceContains("@OrderColumn", cu);
 	}
 
 	public void testGetInsertable() throws Exception {
@@ -209,7 +215,9 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		assertSourceContains("@OrderColumn(insertable = false)", cu);
 		
 		column.setInsertable(null);
-		assertSourceDoesNotContain("@OrderColumn", cu);
+		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		assertNotNull(column);
+		assertSourceContains("@OrderColumn", cu);
 	}
 	
 	public void testGetUpdatable() throws Exception {
@@ -236,7 +244,10 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		assertSourceContains("@OrderColumn(updatable = false)", cu);
 		
 		column.setUpdatable(null);
-		assertSourceDoesNotContain("@OrderColumn", cu);
+		
+		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		assertNotNull(column);
+		assertSourceContains("@OrderColumn", cu);
 	}
 
 }
