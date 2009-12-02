@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -590,6 +592,8 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			 * the last time the state was persisted. Pass checkExisting true so that the 
 			 * associations restored above are not overwritten.*/
 			addForeignKeyAssociations(true/*checkExisting*/);
+			// sort on restore
+			sortAssociations( mAssociations );
 		}
 	}
 	/**
@@ -785,5 +789,23 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			mVersion = FILE_VERSION;
 		}
 		int mVersion;
+	}
+	
+	private void sortAssociations( List< Association > list ) {
+	   Collections.sort( list, new Comparator< Association >() {
+	      public int compare( Association lhs, Association rhs ) {
+	         // sort by referrer table name first...
+	         int test = lhs.getReferrerTableName().compareTo( rhs.getReferrerTableName() );
+            if( test != 0 )
+               return test;
+            // then by referenced table name...
+            test = lhs.getReferencedTableName().compareTo( rhs.getReferencedTableName() );
+            if( test != 0 )
+               return test;
+            // if referrer and referenced tables are the same, they should
+            // appear next to each other
+            return 0;
+	      }
+	   } );
 	}
 }
