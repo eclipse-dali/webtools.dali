@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.resource.java;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 
 /**
  * Java source code or binary persistent type.
@@ -66,25 +67,6 @@ public interface JavaResourcePersistentType
 	 * on them (which can be used to infer the type's access type).
 	 */
 	boolean hasAnyAnnotatedAttributes();
-
-	/**
-	 * Return whether the type is a metamodel type generated in the specified
-	 * source folder.
-	 */
-	boolean isGeneratedMetamodel(IPackageFragmentRoot sourceFolder);
-
-	/**
-	 * Return whether the type is a generated metamodel type.
-	 */
-	boolean isGeneratedMetamodel();
-
-	/**
-	 * The value used to tag a generated type:
-	 * <pre>
-	 * &#64;javax.annotation.Generated(value="Dali", date="2009-11-23T13:56:06.171-0500")
-	 * </pre>
-	 */
-	String METAMODEL_GENERATED_ANNOTATION_VALUE = "Dali"; //$NON-NLS-1$
 
 
 	// ********** types **********
@@ -160,4 +142,31 @@ public interface JavaResourcePersistentType
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess);
 	
+
+	// ********** metamodel **********
+
+	/**
+	 * Return the <code>javax.annotation.Generated</code> annotation.
+	 */
+	GeneratedAnnotation getGeneratedAnnotation();
+
+	/**
+	 * Return whether the type is a metamodel type generated in the specified
+	 * source folder.
+	 */
+	boolean isGeneratedMetamodel(IPackageFragmentRoot sourceFolder);
+
+	/**
+	 * Return whether the type is a generated metamodel type.
+	 */
+	boolean isGeneratedMetamodel();
+
+	/**
+	 * The value used to tag a generated type:
+	 * <pre>
+	 * &#64;javax.annotation.Generated(value="Dali", date="2009-11-23T13:56:06.171-0500")
+	 * </pre>
+	 */
+	String METAMODEL_GENERATED_ANNOTATION_VALUE = "Dali"; //$NON-NLS-1$
+
 }

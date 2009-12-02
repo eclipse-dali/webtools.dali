@@ -19,10 +19,6 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
-import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -41,13 +37,16 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
-import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
@@ -1726,19 +1725,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected boolean fileIsGeneratedMetamodel(IFile file) {
-		JavaResourceCompilationUnit jrcu = this.getJpaProject().getJavaResourceCompilationUnit(file);
-		if (jrcu == null) {
-			return false;  // hmmm...
-		}
-		Iterator<JavaResourcePersistentType> types = jrcu.persistentTypes();
-		if ( ! types.hasNext()) {
-			return false;  // no types in the file
-		}
-		JavaResourcePersistentType jrpt = types.next();
-		if (types.hasNext()) {
-			return false;  // should have only a single type in the file
-		}
-		return jrpt.isGeneratedMetamodel();
+		return ((JpaProject2_0) this.getJpaProject()).getGeneratedMetamodelType(file) != null;
 	}
 
 	public void disposeMetamodel() {

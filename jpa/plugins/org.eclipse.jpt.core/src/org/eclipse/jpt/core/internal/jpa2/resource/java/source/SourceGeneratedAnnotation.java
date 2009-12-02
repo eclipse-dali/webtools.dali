@@ -102,6 +102,10 @@ public final class SourceGeneratedAnnotation
 		return this.values.size();
 	}
 
+	public String getValue(int index) {
+		return this.values.get(index);
+	}
+
 	public void addValue(String value) {
 		this.addValue(this.values.size(), value);
 	}

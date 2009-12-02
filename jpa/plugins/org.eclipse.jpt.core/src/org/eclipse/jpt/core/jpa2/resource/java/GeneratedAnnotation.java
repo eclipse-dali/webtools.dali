@@ -52,6 +52,12 @@ public interface GeneratedAnnotation
 	 * Corresponds to the <code>value<code> element of the <code>Generated</code>
 	 * annotation.
 	 */
+	String getValue(int index);
+
+	/**
+	 * Corresponds to the <code>value<code> element of the <code>Generated</code>
+	 * annotation.
+	 */
 	void addValue(String value);
 
 	/**

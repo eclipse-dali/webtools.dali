@@ -42,6 +42,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.IntReference;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -140,6 +141,11 @@ final class SourcePersistentType
 		this.access = this.buildAccess();
 	}
 
+	/**
+	 * Handle the <code>StaticMetamodel</code> and <code>Generated</code>
+	 * annotations differently, since they are not really JPA "mapping"
+	 * annotations....
+	 */
 	@Override
 	void addInitialAnnotation(String jdtAnnotationName, CompilationUnit astRoot) {
 		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
@@ -174,6 +180,11 @@ final class SourcePersistentType
 		this.setAccess(this.buildAccess());
 	}
 
+	/**
+	 * Handle the <code>StaticMetamodel</code> and <code>Generated</code>
+	 * annotations differently, since they are not really JPA "mapping"
+	 * annotations....
+	 */
 	@Override
 	void addOrUpdateAnnotation(String jdtAnnotationName, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
 		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
@@ -516,6 +527,12 @@ final class SourcePersistentType
 		return SourcePersistentAttribute.newInstance(this, this.member, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	private static List<VariableDeclarationFragment> fragments(FieldDeclaration fd) {
+		return fd.fragments();
+	}
+
 
 	// ********** methods **********
 
@@ -627,7 +644,11 @@ final class SourcePersistentType
 	}
 	
 
-	// ********** misc **********
+	// ********** metamodel **********
+
+	public GeneratedAnnotation getGeneratedAnnotation() {
+		return this.generatedAnnotation;
+	}
 
 	/**
 	 * The type must be:<ul>
@@ -648,7 +669,7 @@ final class SourcePersistentType
 	 * The type must be:<ul>
 	 * <li>annotated with <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
 	 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with the appropriate
-	 *     <code>value</code>
+	 *     <code>value</code> and <code>date</code>
 	 * </ul>
 	 */
 	public boolean isGeneratedMetamodel() {
@@ -658,20 +679,20 @@ final class SourcePersistentType
 		if (this.generatedAnnotation == null) {
 			return false;
 		}
-		if (this.generatedAnnotation.valuesSize() == 0) {
+		if (this.generatedAnnotation.valuesSize() != 1) {
 			return false;
 		}
-		return this.generatedAnnotation.values().next().equals(METAMODEL_GENERATED_ANNOTATION_VALUE);
+		if ( ! this.generatedAnnotation.getValue(0).equals(METAMODEL_GENERATED_ANNOTATION_VALUE)) {
+			return false;
+		}
+		if (StringTools.stringIsEmpty(this.generatedAnnotation.getDate())) {
+			return false;
+		}
+		return true;
 	}
 
 	private IPackageFragmentRoot getSourceFolder() {
 		return (IPackageFragmentRoot) this.getJavaResourceCompilationUnit().getCompilationUnit().getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
-	}
-
-	// minimize scope of suppressed warnings
-	@SuppressWarnings("unchecked")
-	private static List<VariableDeclarationFragment> fragments(FieldDeclaration fd) {
-		return fd.fragments();
 	}
 
 

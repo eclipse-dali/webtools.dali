@@ -817,26 +817,6 @@ public abstract class AbstractJpaProject
 	}
 
 
-	// ********** metamodel **********
-
-	public Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes() {
-		if (this.metamodelSourceFolderName == null) {
-			return EmptyIterable.instance();
-		}
-		final IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentType jrpt) {
-				return jrpt.isGeneratedMetamodel(genSourceFolder);
-			}
-		};
-	}
-
-	public JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {
-		return (JavaResourceCompilationUnit) this.getResourceModel(file, JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
-	}
-
-
 	// ********** Java resource persistent type look-up **********
 
 	public JavaResourcePersistentType getJavaResourcePersistentType(String typeName) {
@@ -935,6 +915,39 @@ public abstract class AbstractJpaProject
 
 	// ********** metamodel **********
 
+	public Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes() {
+		if (this.metamodelSourceFolderName == null) {
+			return EmptyIterable.instance();
+		}
+		final IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
+			@Override
+			protected boolean accept(JavaResourcePersistentType jrpt) {
+				return jrpt.isGeneratedMetamodel(genSourceFolder);
+			}
+		};
+	}
+
+	public JavaResourcePersistentType getGeneratedMetamodelType(IFile file) {
+		JavaResourceCompilationUnit jrcu = this.getJavaResourceCompilationUnit(file);
+		if (jrcu == null) {
+			return null;  // hmmm...
+		}
+		Iterator<JavaResourcePersistentType> types = jrcu.persistentTypes();
+		if ( ! types.hasNext()) {
+			return null;  // no types in the file
+		}
+		JavaResourcePersistentType jrpt = types.next();
+		if (types.hasNext()) {
+			return null;  // should have only a single type in the file
+		}
+		return jrpt.isGeneratedMetamodel() ? jrpt : null;
+	}
+
+	protected JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {
+		return (JavaResourceCompilationUnit) this.getResourceModel(file, JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+	}
+
 	public String getMetamodelSourceFolderName() {
 		return this.metamodelSourceFolderName;
 	}
@@ -1018,7 +1031,14 @@ public abstract class AbstractJpaProject
 		return new TransformationIterable<IPackageFragmentRoot, String>(this.getJavaSourceFolders()) {
 			@Override
 			protected String transform(IPackageFragmentRoot pfr) {
-				return pfr.getElementName();
+				try {
+					return this.transform_(pfr);
+				} catch (JavaModelException ex) {
+					return "Error: " + pfr.getPath(); //$NON-NLS-1$
+				}
+			}
+			private String transform_(IPackageFragmentRoot pfr) throws JavaModelException {
+				return pfr.getUnderlyingResource().getProjectRelativePath().toString();
 			}
 		};
 	}

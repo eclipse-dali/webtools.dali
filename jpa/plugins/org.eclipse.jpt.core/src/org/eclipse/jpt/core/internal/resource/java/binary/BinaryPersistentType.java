@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
+import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -546,6 +547,10 @@ final class BinaryPersistentType
 	}
 
 	public boolean isGeneratedMetamodel() {
+		throw new UnsupportedOperationException();
+	}
+
+	public GeneratedAnnotation getGeneratedAnnotation() {
 		throw new UnsupportedOperationException();
 	}
 

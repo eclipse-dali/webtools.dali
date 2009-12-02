@@ -88,7 +88,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		ICompilationUnit compilationUnit = pkg.getCompilationUnit(fileName);
 		if (compilationUnit.exists()) {
 			// overwrite existing file if it has changed (ignoring the timestamp)
-			String newSource = this.buildSource(compilationUnit.getSource());
+			String newSource = this.buildSource(compilationUnit);
 			if (newSource != null) {
 				pkg.createCompilationUnit(fileName, newSource, true, null);  // true=force
 			}
@@ -102,21 +102,19 @@ public class GenericPersistentTypeMetamodelSynchronizer
 	}
 
 	/**
-	 * return null if the old source should not be replaced
+	 * pre-condition: the compilation unit exists
+	 * 
+	 * return null if the old source is not to be replaced
 	 */
-	protected String buildSource(String oldSource) {
+	protected String buildSource(ICompilationUnit compilationUnit) throws JavaModelException {
+		IFile file = (IFile) compilationUnit.getResource();
+		JavaResourcePersistentType genType = this.getJpaProject().getGeneratedMetamodelType(file);
+		if (genType == null) {
+			return null;  // the file exists, but its source is not a generated metamodel class
+		}
+
+		String oldSource = compilationUnit.getSource();
 		int oldLength = oldSource.length();
-
-		int oldDateBegin = oldSource.indexOf(DATE_TAG);
-		if (oldDateBegin == -1) {
-			return null;  // hmmm...
-		}
-		oldDateBegin += DATE_TAG_LENGTH;
-
-		int oldDateEnd = oldSource.indexOf('"', oldDateBegin);
-		if (oldDateEnd == -1) {
-			return null;  // hmmm...
-		}
 
 		String newSource = this.buildSource();
 		int newLength = newSource.length();
@@ -124,25 +122,22 @@ public class GenericPersistentTypeMetamodelSynchronizer
 			return newSource;
 		}
 
-		int newDateBegin = newSource.indexOf(DATE_TAG) + DATE_TAG_LENGTH;
-		if (newDateBegin != oldDateBegin) {
-			return newSource;
+		String date = genType.getGeneratedAnnotation().getDate();  // if we get here, this will be non-empty
+		int dateBegin = oldSource.indexOf(date);
+		if (dateBegin == -1) {
+			return null;  // hmmm...
+		}
+		int dateEnd = dateBegin + date.length();
+		if (dateEnd > oldLength) {
+			return null;  // hmmm...
 		}
 
-		int newDateEnd = newSource.indexOf('"', newDateBegin);
-		if (newDateEnd != oldDateEnd) {
-			return newSource;
-		}
-
-		if (newSource.regionMatches(0, oldSource, 0, oldDateBegin) &&
-					newSource.regionMatches(oldDateEnd, oldSource, oldDateEnd, oldLength - oldDateEnd)) {
+		if (newSource.regionMatches(0, oldSource, 0, dateBegin) &&
+					newSource.regionMatches(dateEnd, oldSource, dateEnd, oldLength - dateEnd)) {
 			return null;
 		}
 		return newSource;
 	}
-
-	protected static final String DATE_TAG = "date=\"";
-	protected static final int DATE_TAG_LENGTH = DATE_TAG.length();
 
 
 	// ********** package/file **********
@@ -169,11 +164,11 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		return ClassTools.shortNameForClassNamed(this.getMetamodelClassName()) + ".java";
 	}
 
-	// TODO
 	protected String getMetamodelClassName() {
 		return this.buildMetamodelClassName(this.persistentType.getName());
 	}
 
+	// TODO
 	protected String buildMetamodelClassName(String className) {
 		// the default is to simply append an underscore to the model class name
 		return className + '_';

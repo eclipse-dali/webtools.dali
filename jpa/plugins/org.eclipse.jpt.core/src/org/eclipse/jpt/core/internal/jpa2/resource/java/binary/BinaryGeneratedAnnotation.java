@@ -66,6 +66,10 @@ public final class BinaryGeneratedAnnotation
 		return this.values.size();
 	}
 
+	public String getValue(int index) {
+		return this.values.get(index);
+	}
+
 	private Vector<String> buildValues() {
 		Object[] jdtValues = this.getJdtMemberValues(VALUE_ELEMENT_NAME);
 		Vector<String> result = new Vector<String>(jdtValues.length);
