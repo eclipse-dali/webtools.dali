@@ -84,9 +84,26 @@ public abstract class AnnotationTestCase extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 //		this.dumpSource();
-		this.javaProject.getProject().delete(true, true, null);
+		this.deleteProject();
 		TestTools.clear(this);
 		super.tearDown();
+	}
+	
+	protected void deleteProject() throws Exception {
+		int i = 1;
+		boolean deleted = false;
+		while ( ! deleted) {
+			try {
+				this.javaProject.getProject().delete(true, true, null);
+				deleted = true;
+			} catch (CoreException ex) {
+				if (i == 4) {
+					throw ex;
+				}
+				Thread.sleep(1000);
+				i++;
+			}
+		}
 	}
 
 	protected void dumpSource(ICompilationUnit cu) throws Exception {
