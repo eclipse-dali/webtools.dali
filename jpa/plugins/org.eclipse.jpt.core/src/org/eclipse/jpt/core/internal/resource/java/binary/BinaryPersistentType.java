@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
@@ -22,6 +23,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -38,7 +40,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
  */
 final class BinaryPersistentType
 	extends BinaryPersistentMember
-	implements JavaResourcePersistentType
+	implements JavaResourcePersistentType2_0
 {
 	private String name;
 

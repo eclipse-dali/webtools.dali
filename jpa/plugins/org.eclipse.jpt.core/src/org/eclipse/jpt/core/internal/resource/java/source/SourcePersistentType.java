@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.StaticMetamodelAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -53,7 +54,7 @@ import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
  */
 final class SourcePersistentType
 	extends SourcePersistentMember<Type>
-	implements JavaResourcePersistentType
+	implements JavaResourcePersistentType2_0
 {
 	private String name;
 

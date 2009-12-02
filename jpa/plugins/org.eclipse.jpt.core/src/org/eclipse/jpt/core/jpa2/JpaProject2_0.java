@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.jpa2;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 
 /**
  * JPA 2.0 project.
@@ -64,7 +64,7 @@ public interface JpaProject2_0
 	 * types.
 	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourcePersistentType#isGeneratedMetamodel(IPackageFragmentRoot)
 	 */
-	Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes();
+	Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTypes();
 
 	/**
 	 * Return the generated metamodel Java resource persistent type in the
@@ -77,7 +77,7 @@ public interface JpaProject2_0
 	 *     <code>javax.annotation.Generated</code> annotation
 	 * <ul>
 	 */
-	JavaResourcePersistentType getGeneratedMetamodelType(IFile file);
+	JavaResourcePersistentType2_0 getGeneratedMetamodelType(IFile file);
 
 
 	// ********** construction config **********

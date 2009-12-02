@@ -34,7 +34,7 @@ import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -108,7 +108,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 	 */
 	protected String buildSource(ICompilationUnit compilationUnit) throws JavaModelException {
 		IFile file = (IFile) compilationUnit.getResource();
-		JavaResourcePersistentType genType = this.getJpaProject().getGeneratedMetamodelType(file);
+		JavaResourcePersistentType2_0 genType = this.getJpaProject().getGeneratedMetamodelType(file);
 		if (genType == null) {
 			return null;  // the file exists, but its source is not a generated metamodel class
 		}
@@ -240,7 +240,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		pw.printAnnotation("javax.annotation.Generated");
 		pw.print('(');
 		pw.print("value=");
-		pw.printStringLiteral(JavaResourcePersistentType.METAMODEL_GENERATED_ANNOTATION_VALUE);
+		pw.printStringLiteral(JavaResourcePersistentType2_0.METAMODEL_GENERATED_ANNOTATION_VALUE);
 		pw.print(", ");
 		pw.print("date=");
 		pw.printStringLiteral(format(new Date()));

@@ -53,6 +53,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -917,20 +918,20 @@ public abstract class AbstractJpaProject
 
 	// ********** metamodel **********
 
-	public Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes() {
+	public Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTypes() {
 		if (this.metamodelSourceFolderName == null) {
 			return EmptyIterable.instance();
 		}
 		final IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpt) {
-				return jrpt.isGeneratedMetamodel(genSourceFolder);
+				return ((JavaResourcePersistentType2_0) jrpt).isGeneratedMetamodel(genSourceFolder);
 			}
 		};
 	}
 
-	public JavaResourcePersistentType getGeneratedMetamodelType(IFile file) {
+	public JavaResourcePersistentType2_0 getGeneratedMetamodelType(IFile file) {
 		JavaResourceCompilationUnit jrcu = this.getJavaResourceCompilationUnit(file);
 		if (jrcu == null) {
 			return null;  // hmmm...
@@ -939,7 +940,7 @@ public abstract class AbstractJpaProject
 		if ( ! types.hasNext()) {
 			return null;  // no types in the file
 		}
-		JavaResourcePersistentType jrpt = types.next();
+		JavaResourcePersistentType2_0 jrpt = (JavaResourcePersistentType2_0) types.next();
 		if (types.hasNext()) {
 			return null;  // should have only a single type in the file
 		}

@@ -47,7 +47,7 @@ import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -1649,15 +1649,15 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<IFile> getGeneratedMetamodelFiles() {
-		return new TransformationIterable<JavaResourcePersistentType, IFile>(this.getGeneratedMetamodelTypes()) {
+		return new TransformationIterable<JavaResourcePersistentType2_0, IFile>(this.getGeneratedMetamodelTypes()) {
 			@Override
-			protected IFile transform(JavaResourcePersistentType jrpt) {
+			protected IFile transform(JavaResourcePersistentType2_0 jrpt) {
 				return jrpt.getFile();
 			}
 		};
 	}
 
-	protected Iterable<JavaResourcePersistentType> getGeneratedMetamodelTypes() {
+	protected Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTypes() {
 		return ((JpaProject2_0) this.getJpaProject()).getGeneratedMetamodelTypes();
 	}
 
