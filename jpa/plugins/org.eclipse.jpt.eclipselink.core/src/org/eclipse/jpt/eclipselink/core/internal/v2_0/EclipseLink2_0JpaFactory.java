@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0;
 
+import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer.Owner;
@@ -32,6 +33,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
+import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
@@ -45,6 +47,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 
 /**
@@ -58,6 +61,14 @@ public class EclipseLink2_0JpaFactory
 	}
 	
 	// ********** Core Model **********
+	
+	@Override
+	public EclipseLinkJpaProject buildJpaProject(Config config) {
+		if ( ! (config instanceof JpaProject2_0.Config)) {
+			throw new IllegalArgumentException("config must be 2.0-compatible: " + config); //$NON-NLS-1$
+		}
+		return super.buildJpaProject(config);
+	}
 	
 	@Override
 	public PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType) {

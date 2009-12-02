@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
-import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 
@@ -21,7 +21,7 @@ public class EclipseLinkJpaProjectImpl
 	extends AbstractJpaProject
 	implements EclipseLinkJpaProject
 {
-	public EclipseLinkJpaProjectImpl(JpaProject2_0.Config config) {
+	public EclipseLinkJpaProjectImpl(JpaProject.Config config) {
 		super(config);
 	}
 

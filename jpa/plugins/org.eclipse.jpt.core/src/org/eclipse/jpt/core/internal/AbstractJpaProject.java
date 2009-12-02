@@ -190,7 +190,7 @@ public abstract class AbstractJpaProject
 
 	// ********** constructor/initialization **********
 
-	protected AbstractJpaProject(JpaProject2_0.Config config) {
+	protected AbstractJpaProject(JpaProject.Config config) {
 		super(null);  // JPA project is the root of the containment tree
 		if ((config.getProject() == null) || (config.getJpaPlatform() == null)) {
 			throw new NullPointerException();
@@ -211,9 +211,11 @@ public abstract class AbstractJpaProject
 
 		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
 
-		this.metamodelSourceFolderName = config.getMetamodelSourceFolderName();
-		if (this.metamodelSoureFolderNameIsInvalid()) {
-			this.metamodelSourceFolderName = null;
+		if (this.isJpa2_0Compatible()) {
+			this.metamodelSourceFolderName = ((JpaProject2_0.Config) config).getMetamodelSourceFolderName();
+			if (this.metamodelSoureFolderNameIsInvalid()) {
+				this.metamodelSourceFolderName = null;
+			}
 		}
 
 		this.rootContextNode = this.buildRootContextNode();
