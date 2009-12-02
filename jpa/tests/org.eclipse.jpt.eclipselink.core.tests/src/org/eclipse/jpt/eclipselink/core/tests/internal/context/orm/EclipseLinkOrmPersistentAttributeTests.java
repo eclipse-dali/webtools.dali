@@ -146,7 +146,6 @@ public class EclipseLinkOrmPersistentAttributeTests
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
 		assertEquals(specifiedOrmPersistentAttribute.getMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		System.out.println(specifiedOrmPersistentAttribute.getMapping().getClass().getName());
 		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkOneToOneMapping);
 		
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
