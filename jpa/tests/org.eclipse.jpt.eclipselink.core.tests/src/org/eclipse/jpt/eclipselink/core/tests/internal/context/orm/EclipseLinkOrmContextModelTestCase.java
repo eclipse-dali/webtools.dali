@@ -33,11 +33,6 @@ public abstract class EclipseLinkOrmContextModelTestCase
 	}
 	
 	@Override
-	protected EclipseLinkJpaProject getJpaProject() {
-		return (EclipseLinkJpaProject) super.getJpaProject();
-	}
-	
-	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.eclipseLinkOrmXmlResource = getJpaProject().getDefaultEclipseLinkOrmXmlResource();
