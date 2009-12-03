@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.FlushClearCache;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * EclipseLinkCaching encapsulates EclipseLink Caching properties.
@@ -47,7 +49,6 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 */
 	@Override
 	protected void initializeProperties() {
-		// TOREVIEW - handle incorrect String in persistence.xml
 		this.entities = new ArrayList<Entity>();
 		this.cacheTypeDefault = 
 			this.getEnumValue(ECLIPSELINK_CACHE_TYPE_DEFAULT, CacheType.values());
@@ -544,6 +545,15 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	public ListIterator<Entity> entities() {
 		return new CloneListIterator<Entity>(this.entities);
+	}
+
+	public Iterator<String> entityNames() {
+		return new TransformationIterator<Entity, String>(this.entities()) {
+			@Override
+			protected String transform(Entity entity) {
+				return entity.getName();
+			}
+		};
 	}
 
 	public int entitiesSize() {

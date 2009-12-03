@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Profil
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  *  EclipseLinkCustomization
@@ -54,7 +56,6 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 */
 	@Override
 	protected void initializeProperties() {
-		// TOREVIEW - handle incorrect String in persistence.xml
 		this.entities = new ArrayList<Entity>();
 
 		this.throwExceptions = 
@@ -734,6 +735,15 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	public ListIterator<Entity> entities() {
 		return new CloneListIterator<Entity>(this.entities);
+	}
+
+	public Iterator<String> entityNames() {
+		return new TransformationIterator<Entity, String>(this.entities()) {
+			@Override
+			protected String transform(Entity entity) {
+				return entity.getName();
+			}
+		};
 	}
 
 	public int entitiesSize() {

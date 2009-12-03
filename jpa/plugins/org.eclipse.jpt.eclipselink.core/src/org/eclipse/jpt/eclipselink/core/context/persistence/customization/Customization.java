@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.persistence.customization;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
@@ -95,6 +96,7 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer"; //$NON-NLS-1$
 
 	ListIterator<Entity> entities();
+	Iterator<String> entityNames();
 	int entitiesSize();
 	boolean entityExists(String entity);
 	Entity addEntity(String entity);

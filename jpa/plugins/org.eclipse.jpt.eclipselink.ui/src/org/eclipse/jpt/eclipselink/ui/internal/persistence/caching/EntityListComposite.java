@@ -32,6 +32,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -49,9 +50,17 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite<T extends Caching> extends Pane<T>
 {
+	WritablePropertyValueModel<Entity> entityHolder;
+	
 	public EntityListComposite(Pane<T> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.entityHolder = this.buildEntityHolder();
 	}
 
 	@Override
@@ -61,7 +70,6 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 			container,
 			EclipseLinkUiMessages.CachingEntityListComposite_groupTitle
 		);
-		WritablePropertyValueModel<Entity> entityHolder = this.buildEntityHolder();
 
 		// Entities add/remove list pane
 		new AddRemoveListPane<Caching>(
@@ -69,7 +77,7 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 			container,
 			this.buildEntitiesAdapter(),
 			this.buildEntitiesListHolder(),
-			entityHolder,
+			this.entityHolder,
 			this.buildEntityLabelProvider(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CACHING
 		);
@@ -77,10 +85,10 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		// Entity Caching property pane
 		EntityCachingPropertyComposite pane = new EntityCachingPropertyComposite(
 			this,
-			entityHolder,
+			this.entityHolder,
 			container
 		);
-		this.installPaneEnabler(entityHolder, pane);
+		this.installPaneEnabler(this.entityHolder, pane);
 	}
 	
 	private AddRemoveListPane.Adapter buildEntitiesAdapter() {
@@ -111,8 +119,10 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 			
 			if( ! this.getSubject().entityExists(entityName)) {
 				this.getSubject().addEntity(entityName);
-
-				listSelectionModel.setSelectedValue(entityName);
+				int index = CollectionTools.indexOf(this.getSubject().entityNames(), entityName);
+				Entity entity = (Entity) listSelectionModel.getListModel().getElementAt(index);
+				listSelectionModel.setSelectedValue(entity);
+				this.entityHolder.setValue(entity);
 			}
 		}
 	}

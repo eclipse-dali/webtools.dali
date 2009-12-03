@@ -119,8 +119,9 @@ public class EntityListComposite extends Pane<Customization>
 			
 			if( ! this.getSubject().entityExists(entityName)) {
 				this.getSubject().addEntity(entityName);
-				int index = CollectionTools.indexOf(this.getSubject().entities(), entityName);
+				int index = CollectionTools.indexOf(this.getSubject().entityNames(), entityName);
 				Entity entity = (Entity) listSelectionModel.getListModel().getElementAt(index);
+				listSelectionModel.setSelectedValue(entity);
 				this.entityHolder.setValue(entity);
 			}
 		}

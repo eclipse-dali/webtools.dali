@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.persistence.caching;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
@@ -78,6 +79,7 @@ public interface Caching extends PersistenceUnitProperties
 
 
 	ListIterator<Entity> entities();
+	Iterator<String> entityNames();
 	int entitiesSize();
 	boolean entityExists(String entity);
 	Entity addEntity(String entity);
