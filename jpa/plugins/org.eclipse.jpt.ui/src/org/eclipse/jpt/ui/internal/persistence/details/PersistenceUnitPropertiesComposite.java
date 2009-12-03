@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -107,14 +108,17 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 
 	private AddRemoveTablePane.Adapter buildTableAdapter() {
 		return new AddRemoveTablePane.AbstractAdapter() {
+
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 
+				Table table = tablePane.getMainControl();
 				PersistenceUnit.Property property = getSubject().addProperty();
 				propertyHolder.setValue(property);
 
-				int index = getSubject().propertiesSize() - 1;
-				TableItem tableItem = tablePane.getMainControl().getItem(index);
-				tablePane.getMainControl().showItem(tableItem);
+				int propertiesSize = getSubject().propertiesSize();
+				table.setItemCount(propertiesSize);
+				int index = propertiesSize - 1;
+				table.showItem(table.getItem(index));
 
 				tablePane.getTableViewer().editElement(
 					property,
