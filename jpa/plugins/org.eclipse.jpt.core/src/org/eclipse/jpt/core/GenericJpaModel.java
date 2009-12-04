@@ -93,7 +93,7 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  *     -> {@link IResource#PROJECT}
  *     -> {@link IResourceDelta#ADDED}
  *     -> {@link IResourceDelta#OPEN}
- * <li>Project renamed<p>
+ * <li>Project renamed (PRE_DELETE event removes old project)<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}
  *     -> {@link IResource#PROJECT}
  *     -> {@link IResourceDelta#ADDED}
@@ -596,7 +596,7 @@ class GenericJpaModel
 	}
 
 	/* private */ void jpaFacetedProjectPreUninstall_(IProject project) {
-		// assume(?) this is the first event to indicate we need to remove the JPA project to the JPA model
+		// assume(?) this is the first event to indicate we need to remove the JPA project from the JPA model
 		this.removeJpaProject(this.getJpaProject_(project));
 	}
 
@@ -804,10 +804,14 @@ class GenericJpaModel
 		}
 
 		/**
+		 * We handle adding/removing of jpa project with facet events where possible.
+		 * These are the cases where we have to listen for resource events.
+		 * <p>
 		 * Check for:<ul>
-		 * <li>project close/delete
-		 * <li>file add/remove
-		 * <li>project open/rename
+		 * <li>project delete
+		 * <li>project rename
+		 * <li>project import
+		 * <li>project clean
 		 * </ul>
 		 */
 		public void resourceChanged(IResourceChangeEvent event) {
@@ -836,13 +840,6 @@ class GenericJpaModel
 			}
 		}
 
-		/**
-		 * A resource has changed somehow.
-		 * Check for files being added or removed.
-		 * (The JPA project only handles added and removed files here
-		 * File changes are handled via the Java Element Changed event.)
-		 * Also check for opened projects.
-		 */
 		private void processPostChangeEvent(IResourceChangeEvent event) {
 			debug("Resource POST_CHANGE"); //$NON-NLS-1$
 			this.processPostChangeDelta(event.getDelta());
@@ -879,19 +876,21 @@ class GenericJpaModel
 
 
 		/**
-		 * Crawl the specified delta, looking for projects being opened.
+		 * Crawl the specified delta, looking for projects being imported or renamed.
 		 * Projects being deleted are handled in {@link IResourceChangeEvent#PRE_DELETE}.
 		 * Projects being closed are handled in {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED}.
+		 * <p>
+		 * pre-condition: change event is IResourceChangeEvent#POST_CHANGE
 		 */
 		private void checkForOpenedProject(IProject project, IResourceDelta delta) {
 			switch (delta.getKind()) {
-				case IResourceDelta.ADDED :  // all but project import and rename handled with the facet POST_INSTALL event
+				case IResourceDelta.ADDED :  // all but project import and rename are handled with facet events
 					this.checkDeltaFlagsForRenamedProject(project, delta);
+					this.checkDeltaFlagsForOpenedProject(project, delta);
 					break;
-				case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
+				case IResourceDelta.REMOVED :  // already handled with the resource PRE_DELETE event
 					break;
 				case IResourceDelta.CHANGED : 
-					this.checkDeltaFlagsForOpenedProject(project, delta);
 					break;
 				case IResourceDelta.ADDED_PHANTOM :
 					break;  // ignore
@@ -910,7 +909,12 @@ class GenericJpaModel
 		 * also triggers a {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED} event
 		 * and that is where we add the JPA project, not here.
 		 * <p>
-		 * pre-condition: delta kind is CHANGED
+		 * There is currently a bug in the facet framework that sometimes we get this resource change event
+		 * when importing from a directory and the JPA facet is not yet there.  Then we have to rely on the
+		 * PROJECT_MODIFIED event that occurs. https://bugs.eclipse.org/bugs/show_bug.cgi?id=296872.  We need 
+		 * to keep both because we aren't supposed to rely on the PROJECT_MODIFIED event actually being thrown.
+		 * <p>
+		 * pre-condition: delta kind is ADDED
 		 */
 		private void checkDeltaFlagsForOpenedProject(IProject project, IResourceDelta delta) {
 			if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
