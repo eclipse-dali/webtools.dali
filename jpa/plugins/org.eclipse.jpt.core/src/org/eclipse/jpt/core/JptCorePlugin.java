@@ -60,6 +60,7 @@ public class JptCorePlugin extends Plugin {
 
 	private volatile GenericJpaModel jpaModel;
 	private volatile ServiceTracker parserTracker;
+	private static volatile boolean flushPreferences = true;
 
 
 	// ********** public constants **********
@@ -513,12 +514,26 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
+	 * This method is called (via reflection) when the test plug-in is loaded.
+	 * The prefs end up getting flushed after the test case has deleted the
+	 * project, resulting resource exceptions in the log, e.g.
+	 *     Resource '/JpaModelTests' is not open.
+	 * @see JptCoreTestsPlugin#start(BundleContext)
+	 */
+	@SuppressWarnings("unused")
+	private static void doNotFlushPreferences() {
+		flushPreferences = false;
+	}
+
+	/**
 	 * Flush preferences in an asynchronous Job because the flush request will
 	 * trigger a lock on the project, which can cause us some deadlocks (e.g.
 	 * when deleting the metamodel source folder).
 	 */
 	private static void flush(IEclipsePreferences prefs) {
-		new PreferencesFlushJob(prefs).schedule();
+		if (flushPreferences) {
+			new PreferencesFlushJob(prefs).schedule();
+		}
 	}
 
 	private static class PreferencesFlushJob extends Job {

@@ -362,7 +362,7 @@ class GenericJpaModel
 	private JpaProject buildJpaProject(JpaPlatform jpaPlatform, JpaProject.Config config) {
 		try {
 			return jpaPlatform.getJpaFactory().buildJpaProject(config);
-		} catch (Exception ex) {
+		} catch (RuntimeException ex) {
 			JptCorePlugin.log(ex);
 			return null;
 		}
@@ -785,6 +785,8 @@ class GenericJpaModel
 			try {
 				GenericJpaModel.this.lock.acquire();
 				this.execute_();
+			} catch (RuntimeException ex) {
+				JptCorePlugin.log(ex);
 			} finally {
 				GenericJpaModel.this.lock.release();
 			}

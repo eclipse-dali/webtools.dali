@@ -46,6 +46,7 @@ public class JptCoreTestsPlugin extends Plugin {
 		super.start(context);
 		JpaModel jpaModel = JptCorePlugin.getJpaModel();
 		ClassTools.executeMethod(jpaModel, "handleEventsSynchronously");
+		ClassTools.executeStaticMethod(JptCorePlugin.class, "doNotFlushPreferences");
 	}
 
 	@Override
