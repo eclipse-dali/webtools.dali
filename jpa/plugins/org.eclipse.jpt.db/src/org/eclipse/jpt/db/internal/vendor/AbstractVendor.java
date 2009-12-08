@@ -105,8 +105,9 @@ abstract class AbstractVendor
 	// ********** name -> identifier **********
 
 	public String convertNameToIdentifier(String name, String defaultName) {
-		return this.nameRequiresDelimiters(name) ? this.delimitName(name)
-						: this.normalNamesMatch(name, defaultName) ? null : name;
+		return this.nameRequiresDelimiters(name) ?
+						this.delimitName(name) :
+						this.normalNamesMatch(name, defaultName) ? null : name;
 	}
 
 	public String convertNameToIdentifier(String name) {
@@ -233,8 +234,7 @@ abstract class AbstractVendor
 	 */
 	boolean normalNamesMatch(String name1, String name2) {
 		return this.normalIdentifiersAreCaseSensitive() ?
-						name1.equals(name2)
-					:
+						name1.equals(name2) :
 						name1.equalsIgnoreCase(name2);
 	}
 
@@ -260,11 +260,11 @@ abstract class AbstractVendor
 	// both "" and "\"\"" are converted to "" ...
 	// convert "" to 'null' since empty strings must be delimited?
 	public String convertIdentifierToName(String identifier) {
-		return (identifier == null) ? null :
+		return (identifier == null) ?
+					null :
 					this.identifierIsDelimited(identifier) ?
-						StringTools.undelimit(identifier)
-					:
-						this.getFoldingStrategy().fold(identifier);
+							StringTools.undelimit(identifier) :
+							this.getFoldingStrategy().fold(identifier);
 	}
 
 	/**

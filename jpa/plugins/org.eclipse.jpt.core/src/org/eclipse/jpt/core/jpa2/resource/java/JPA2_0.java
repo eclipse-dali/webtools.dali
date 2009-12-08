@@ -32,7 +32,8 @@ public interface JPA2_0
 	String ACCESS = PACKAGE_ + "Access";
 		String ACCESS__VALUE = "value";
 
-	String ASSOCIATION_OVERRIDE__JOIN_TABLE = "joinTable";
+	// ASSOCIATION_OVERRIDE
+		String ASSOCIATION_OVERRIDE__JOIN_TABLE = "joinTable";
 
 	String CACHEABLE = PACKAGE_ + "Cacheable";
 		String CACHEABLE__VALUE = "value";
@@ -44,16 +45,20 @@ public interface JPA2_0
 	String MAPS_ID = PACKAGE_ + "MapsId";
 		String MAPS_ID__VALUE = "value";
 
-	String NAMED_QUERY__LOCK_MODE = "lockMode";
+	// NAMED_QUERY
+		String NAMED_QUERY__LOCK_MODE = "lockMode";
 
-	String ONE_TO_MANY__ORPHAN_REMOVAL = "orphanRemoval";
+	// ONE_TO_MANY
+		String ONE_TO_MANY__ORPHAN_REMOVAL = "orphanRemoval";
 
-	String ONE_TO_ONE__ORPHAN_REMOVAL = "orphanRemoval";
+	// ONE_TO_ONE
+		String ONE_TO_ONE__ORPHAN_REMOVAL = "orphanRemoval";
 
 	String ORDER_COLUMN = PACKAGE_ + "OrderColumn";
 
-	String SEQUENCE_GENERATOR__CATALOG = "catalog";
-	String SEQUENCE_GENERATOR__SCHEMA = "schema";
+	// SEQUENCE_GENERATOR
+		String SEQUENCE_GENERATOR__CATALOG = "catalog";
+		String SEQUENCE_GENERATOR__SCHEMA = "schema";
 
 
 	// JPA 2.0 enums

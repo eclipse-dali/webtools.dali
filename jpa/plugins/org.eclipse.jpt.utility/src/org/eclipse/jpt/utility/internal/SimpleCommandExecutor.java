@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal;
 import org.eclipse.jpt.utility.Command;
 
 /**
- * Straightforward implementation of {@link CallbackStatefulCommandExecutor}.
+ * Straightforward implementation of {@link StatefulCommandExecutor}.
  */
 public class SimpleCommandExecutor
 	implements StatefulCommandExecutor

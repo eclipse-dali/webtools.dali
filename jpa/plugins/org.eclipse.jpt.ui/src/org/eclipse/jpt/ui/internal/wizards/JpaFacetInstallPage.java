@@ -206,7 +206,7 @@ public class JpaFacetInstallPage
 		}
 		
 		private ConnectionProfile getConnectionProfile() {
-			// we just use the connection profile to log in, so go the the db plug-in
+			// we just use the connection profile to log in, so go to the the db plug-in
 			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
 	}
