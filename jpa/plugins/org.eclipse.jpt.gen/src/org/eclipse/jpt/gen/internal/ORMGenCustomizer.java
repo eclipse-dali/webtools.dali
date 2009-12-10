@@ -696,6 +696,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			for( Association association : mAssociations ){
 				if( newAssociation.equals( association )){
 					it.remove();
+					break;
 				}
 			}
 		}
