@@ -25,8 +25,6 @@ public interface JavaResourcePersistentTypeCache
 	extends JavaResourceNode.Root
 {
 
-	String PERSISTENT_TYPES_COLLECTION = "persistentTypes"; //$NON-NLS-1$
-
 	/**
 	 * Return the size of the cache's persistent types.
 	 */

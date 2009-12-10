@@ -73,6 +73,7 @@ public interface JavaResourceNode
 		 * Return the root's Java resource persistent types.
 		 */
 		Iterator<JavaResourcePersistentType> persistentTypes();
+			String PERSISTENT_TYPES_COLLECTION = "persistentTypes"; //$NON-NLS-1$
 
 		/**
 		 * Called (via a hook in change notification) whenever anything in the

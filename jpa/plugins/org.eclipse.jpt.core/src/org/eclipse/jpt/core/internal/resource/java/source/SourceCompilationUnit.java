@@ -107,6 +107,13 @@ public final class SourceCompilationUnit
 		return (td == null) ? null : this.buildPersistentType(astRoot, td);
 	}
 
+
+	private void setPersistentType(JavaResourcePersistentType newPersistentType) {
+		JavaResourcePersistentType old = this.persistentType;
+		this.persistentType = newPersistentType;
+		this.firePropertyChanged(PERSISTENT_TYPES_COLLECTION, old, newPersistentType);
+	}
+
 	@Override
 	protected boolean requiresParent() {
 		return false;
@@ -140,10 +147,10 @@ public final class SourceCompilationUnit
 	public void update(CompilationUnit astRoot) {
 		TypeDeclaration td = this.getPrimaryType(astRoot);
 		if (td == null) {
-			this.persistentType = null;
+			this.setPersistentType(null);
 		} else {
 			if (this.persistentType == null) {
-				this.persistentType = this.buildPersistentType(astRoot, td);
+				this.setPersistentType(this.buildPersistentType(astRoot, td));
 			} else {
 				this.persistentType.update(astRoot);
 			}
