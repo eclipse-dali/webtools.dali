@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -39,7 +40,6 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.AsynchronousCommandExecutor;
-import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.SimpleCommandExecutor;
 import org.eclipse.jpt.utility.internal.StatefulCommandExecutor;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -82,29 +82,39 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  *     {@link IFacetedProjectEvent.Type#POST_INSTALL}
  * <li>Project facet uninstalled<p>
  *     {@link IFacetedProjectEvent.Type#PRE_UNINSTALL}
+ * <p>
  * 
  * <li>Project opened<p>
- *     {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED}
+ *     {@link IResourceChangeEvent#POST_CHANGE}
+ *     -> {@link IResource#FILE}
+ *     -> {@link IResourceDelta#ADDED} /.settings/org.eclipse.wst.common.project.facet.core.xml (facet settings file)
  * <li>Project closed<p>
- *     {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED}
+ *     {@link IResourceChangeEvent#POST_CHANGE}
+ *     -> {@link IResource#FILE}
+ *     -> {@link IResourceDelta#REMOVED} facet settings file
  * 
  * <li>Pre-existing project imported from directory or archive (created and opened)<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}
- *     -> {@link IResource#PROJECT}
- *     -> {@link IResourceDelta#ADDED}
- *     -> {@link IResourceDelta#OPEN}
- * <li>Project renamed (PRE_DELETE event removes old project)<p>
+ *     -> {@link IResource#FILE}
+ *     -> {@link IResourceDelta#ADDED} facet settings file
+ * <li>Project renamed<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}
- *     -> {@link IResource#PROJECT}
- *     -> {@link IResourceDelta#ADDED}
- *     -> {@link IResourceDelta#MOVED_FROM}
+ *     -> {@link IResource#FILE}
+ *     -> {@link IResourceDelta#REMOVED} facet settings file of old project
+ *     -> {@link IResourceDelta#ADDED} facet settings file of new project
  * <li>Project deleted<p>
- *     {@link IResourceChangeEvent#PRE_DELETE}
+ *     {@link IResourceChangeEvent#POST_CHANGE}
+ *     -> {@link IResource#FILE}
+ *     -> {@link IResourceDelta#REMOVED} facet settings file
  * 
  * <li>Project facet installed by editing the facets settings file directly<p>
- *     {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED}
+ *     {@link IResourceChangeEvent#POST_CHANGE}
+ *     -> {@link IResource#FILE}
+ *     -> {@link IResourceDelta#CHANGED} facet settings file
  * <li>Project facet uninstalled by editing the facets settings file directly<p>
- *     {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED}
+ *     {@link IResourceChangeEvent#POST_CHANGE}
+ *     -> {@link IResource#FILE}
+ *     -> {@link IResourceDelta#CHANGED} facet settings file
  * </ul>
  */
 class GenericJpaModel
@@ -141,7 +151,6 @@ class GenericJpaModel
 	 * {@link #resourceChangeListener}.
 	 */
 	private static final int RESOURCE_CHANGE_EVENT_TYPES =
-			IResourceChangeEvent.PRE_DELETE |
 			IResourceChangeEvent.POST_CHANGE |
 			IResourceChangeEvent.POST_BUILD;
 
@@ -806,13 +815,12 @@ class GenericJpaModel
 		}
 
 		/**
-		 * We handle adding/removing of jpa project with facet events where possible.
-		 * These are the cases where we have to listen for resource events.
+		 * POST_INSTALL and PRE_UNINSTALL fare the only facet events we use for 
+		 * adding/removing jpa projects. These are the cases where we listen for resource events.
 		 * <p>
 		 * Check for:<ul>
-		 * <li>project delete
-		 * <li>project rename
-		 * <li>project import
+		 * <li>facet settings file added/removed/changed (/.settings/org.eclipse.wst.common.project.facet.core.xml)
+		 * <li>file add/remove - forwarded to the individual jpa projects
 		 * <li>project clean
 		 * </ul>
 		 */
@@ -835,8 +843,7 @@ class GenericJpaModel
 				case IResourceChangeEvent.PRE_CLOSE :  
 					break;  // ignore
 				case IResourceChangeEvent.PRE_DELETE :
-					this.processPreDeleteEvent(event);
-					break;
+					break; //ignore
 				default :
 					break;
 			}
@@ -854,12 +861,19 @@ class GenericJpaModel
 					this.processPostChangeDeltaChildren(delta);
 					break;
 				case IResource.PROJECT :
-					this.processPostChangeProjectDelta((IProject) resource, delta);
+					//process the project first for the Opening project case. The jpa project will not be built
+					//until the children are processed and we see that the facet metadata file is added.
+					//Otherwise the JPA project would be built and then we would process the ADDED deltas
+					//for all the files in the project.
+					this.processPostChangeProjectDelta(delta);
+					this.processPostChangeDeltaChildren(delta);
 					break;
 				case IResource.FOLDER :
-					break;  // ignore
+					this.processPostChangeSettingsFolderDelta((IFolder) resource, delta);
+					break;
 				case IResource.FILE :
-					break;  // ignore
+					this.processPostChangeFacetFileDelta((IFile) resource, delta);
+					break;
 				default :
 					break;
 			}
@@ -871,28 +885,28 @@ class GenericJpaModel
 			}
 		}
 
-		private void processPostChangeProjectDelta(IProject project, IResourceDelta delta) {
+		private void processPostChangeProjectDelta(IResourceDelta delta) {
 			GenericJpaModel.this.projectChanged(delta);
-			this.checkForOpenedProject(project, delta);
 		}
-
-
-		/**
-		 * Crawl the specified delta, looking for projects being imported or renamed.
-		 * Projects being deleted are handled in {@link IResourceChangeEvent#PRE_DELETE}.
-		 * Projects being closed are handled in {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED}.
-		 * <p>
-		 * pre-condition: change event is IResourceChangeEvent#POST_CHANGE
-		 */
-		private void checkForOpenedProject(IProject project, IResourceDelta delta) {
+		
+		private void processPostChangeSettingsFolderDelta(IFolder folder, IResourceDelta delta) {
+			if (folder.getName().equals(".settings")) { //$NON-NLS-1$
+				processPostChangeDeltaChildren(delta);
+			}
+		}
+		
+		private void processPostChangeFacetFileDelta(IFile file, IResourceDelta delta) {
+			if (file.getName().equals(FacetedProjectFramework.PLUGIN_ID + ".xml")) { //$NON-NLS-1$
+				checkForFacetFileChanges(file, delta);
+			}
+		}
+		
+		private void checkForFacetFileChanges(IFile file, IResourceDelta delta) {
 			switch (delta.getKind()) {
-				case IResourceDelta.ADDED :  // all but project import and rename are handled with facet events
-					this.checkDeltaFlagsForRenamedProject(project, delta);
-					this.checkDeltaFlagsForOpenedProject(project, delta);
-					break;
-				case IResourceDelta.REMOVED :  // already handled with the resource PRE_DELETE event
-					break;
+				case IResourceDelta.ADDED :
+				case IResourceDelta.REMOVED :
 				case IResourceDelta.CHANGED : 
+					GenericJpaModel.this.checkForJpaFacetTransition(file.getProject());
 					break;
 				case IResourceDelta.ADDED_PHANTOM :
 					break;  // ignore
@@ -900,41 +914,6 @@ class GenericJpaModel
 					break;  // ignore
 				default :
 					break;
-			}
-		}
-
-		/**
-		 * We don't get any events from the Facets Framework when a pre-existing
-		 * project is imported, so we need to check for the newly imported project here.
-		 * <p>
-		 * This event also occurs when a project is simply opened. Project opening
-		 * also triggers a {@link IFacetedProjectEvent.Type#PROJECT_MODIFIED} event
-		 * and that is where we add the JPA project, not here.
-		 * <p>
-		 * There is currently a bug in the facet framework that sometimes we get this resource change event
-		 * when importing from a directory and the JPA facet is not yet there.  Then we have to rely on the
-		 * PROJECT_MODIFIED event that occurs. https://bugs.eclipse.org/bugs/show_bug.cgi?id=296872.  We need 
-		 * to keep both because we aren't supposed to rely on the PROJECT_MODIFIED event actually being thrown.
-		 * <p>
-		 * pre-condition: delta kind is ADDED
-		 */
-		private void checkDeltaFlagsForOpenedProject(IProject project, IResourceDelta delta) {
-			if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
-				debug("\tProject CHANGED - OPEN: ", project.getName()); //$NON-NLS-1$
-				GenericJpaModel.this.checkForJpaFacetTransition(project);
-			}
-		}
-
-		/**
-		 * We don't get any events from the Facets Framework when a project is renamed,
-		 * so we need to check for the renamed projects here.
-		 * <p>
-		 * pre-condition: delta kind is ADDED
-		 */
-		private void checkDeltaFlagsForRenamedProject(IProject project, IResourceDelta delta) {
-			if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.MOVED_FROM) && project.isOpen()) {
-				debug("\tProject ADDED - MOVED_FROM: ", delta.getMovedFromPath()); //$NON-NLS-1$
-				GenericJpaModel.this.checkForJpaFacetTransition(project);
 			}
 		}
 
@@ -978,16 +957,6 @@ class GenericJpaModel
 			GenericJpaModel.this.projectPostCleanBuild(project);
 		}
 
-		/**
-		 * A project is being deleted. Remove its corresponding
-		 * JPA project if appropriate.
-		 */
-		private void processPreDeleteEvent(IResourceChangeEvent event) {
-			IProject project = (IProject) event.getResource();
-			debug("Resource (Project) PRE_DELETE: ", project); //$NON-NLS-1$
-			GenericJpaModel.this.projectPreDelete(project);
-		}
-
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);
@@ -1011,7 +980,6 @@ class GenericJpaModel
 		 * Check for:<ul>
 		 * <li>install of JPA facet
 		 * <li>un-install of JPA facet
-		 * <li>any other appearance or disappearance of the JPA facet
 		 * </ul>
 		 */
 		public void handleEvent(IFacetedProjectEvent event) {
@@ -1022,8 +990,7 @@ class GenericJpaModel
 				case PRE_UNINSTALL :
 					this.processPreUninstallEvent((IProjectFacetActionEvent) event);
 					break;
-				case PROJECT_MODIFIED :
-					this.processProjectModifiedEvent(event.getProject().getProject());
+				case PROJECT_MODIFIED : //ignore, we use resource events instead
 					break;
 				default :
 					break;
@@ -1042,19 +1009,6 @@ class GenericJpaModel
 			if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 				GenericJpaModel.this.jpaFacetedProjectPreUninstall(event);
 			}
-		}
-
-		/**
-		 * This event is triggered for any change to a faceted project.
-		 * We use the event to watch for the following:<ul>
-		 * <li>an open project is closed
-		 * <li>a closed project is opened
-		 * <li>one of a project's (facet) metadata files is edited directly
-		 * </ul>
-		 */
-		private void processProjectModifiedEvent(IProject project) {
-			debug("Facet PROJECT_MODIFIED: ", project.getName()); //$NON-NLS-1$
-			GenericJpaModel.this.checkForJpaFacetTransition(project);
 		}
 
 		@Override
