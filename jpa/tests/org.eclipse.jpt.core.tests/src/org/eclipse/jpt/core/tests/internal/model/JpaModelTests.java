@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.model;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import junit.framework.TestCase;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -123,14 +125,14 @@ public class JpaModelTests extends TestCase {
 		assertNotNull(jpaProject);
 
 		this.testProject.getProject().close(null);
-		assertFalse(this.testProject.getProject().isOpen());
+		assertFalse("Project is not closed", this.testProject.getProject().isOpen());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
-		assertNull(jpaProject);
+		assertNull("JpaProject is not null", jpaProject);
 
 		this.testProject.getProject().open(null);
 		assertTrue(this.testProject.getProject().isOpen());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
-		assertNotNull(jpaProject);
+		assertNotNull("JpaProject is null", jpaProject);
 		assertEquals(4, jpaProject.jpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
@@ -187,9 +189,7 @@ public class JpaModelTests extends TestCase {
 		assertNull(jpaProject);
 	}
 
-	//TODO - Commented out this test, since it was failing in the I-Build and we're not sure why.
-	//See bug 221757 and bug 289149
-/*	public void testEditFacetSettingsFile() throws Exception {
+	public void testEditFacetSettingsFileAddThenRemoveJpaFacet() throws Exception {
 		assertNull(JptCorePlugin.getJpaProject(this.testProject.getProject()));
 
 		// add the JPA facet by modifying the facet settings file directly
@@ -207,35 +207,65 @@ public class JpaModelTests extends TestCase {
 
 		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
 
-		// TODO moved more stuff to the error console until we can figure out why it fails intermittently  ~kfb
-//		assertEquals(1, JptCorePlugin.getJpaModel().jpaProjectsSize());
-//		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
-//		assertNotNull(jpaProject);
-//		// persistence.xml and orm.xml do not get created in this situation (?)
-//		assertEquals(2, jpaProject.jpaFilesSize());
-//		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
-//		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
+		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
+		assertNotNull(jpaProject);
+		// persistence.xml and orm.xml do not get created in this situation (?)
+		assertEquals(2, jpaProject.jpaFilesSize());
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
 ////		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
 ////		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
-		int size = JptCorePlugin.getJpaModel().jpaProjectsSize();
-		if (size != 1) {
-			System.err.println("bogus size: " + size);
-			System.err.println("bogus project: " + JptCorePlugin.getJpaProject(this.testProject.getProject()));
-		}
+//		int size = JptCorePlugin.getJpaModel().getJpaProjectsSize();
+//		if (size != 1) {
+//			System.err.println("bogus size: " + size);
+//			System.err.println("bogus project: " + JptCorePlugin.getJpaProject(this.testProject.getProject()));
+//		}
 
 		// now remove the JPA facet
 		facetSettingsFile.setContents(new ByteArrayInputStream(oldDocument.getBytes()), false, false, null);
-// TODO moved this stuff to the error console until we can figure out why it fails intermittently  ~bjv
-//		assertEquals(0, JptCorePlugin.jpaModel().jpaProjectsSize());
-//		jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
-//		assertNull(jpaProject);
-		int newSize = JptCorePlugin.getJpaModel().jpaProjectsSize();
-		if (newSize != 0) {
-			System.err.println("bogus size: " + newSize);
-			System.err.println("bogus project: " + JptCorePlugin.getJpaProject(this.testProject.getProject()));
-		}
+		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
+		assertNull(jpaProject);
+//		int newSize = JptCorePlugin.getJpaModel().getJpaProjectsSize();
+//		if (newSize != 0) {
+//			System.err.println("bogus size: " + newSize);
+//			System.err.println("bogus project: " + JptCorePlugin.getJpaProject(this.testProject.getProject()));
+//		}
 	}
-*/
+	
+	public void testEditFacetSettingsFileRemoveThenAddJpaFacet() throws Exception {
+		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0", buildJpaConfigDataModel());
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
+		assertNotNull(jpaProject);
 
+		// remove the JPA facet by modifying the facet settings file directly
+		IFile facetSettingsFile = this.getFile(this.testProject, ".settings/org.eclipse.wst.common.project.facet.core.xml");
+		InputStream inStream = new BufferedInputStream(facetSettingsFile.getContents());
+		int fileSize = inStream.available();
+		byte[] buf = new byte[fileSize];
+		inStream.read(buf);
+		inStream.close();
 
+		String oldDocument = new String(buf);
+		String oldString = "<installed facet=\"jst.utility\" version=\"1.0\"/>" + CR + "  " + "<installed facet=\"jpt.jpa\" version=\"1.0\"/>";
+		String newString = "<installed facet=\"jst.utility\" version=\"1.0\"/>";
+		String newDocument = oldDocument.replaceAll(oldString, newString);
+
+		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
+		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
+		assertNull(jpaProject);
+
+		// now add the JPA facet back
+		facetSettingsFile.setContents(new ByteArrayInputStream(oldDocument.getBytes()), false, false, null);
+		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
+		assertNotNull(jpaProject);
+		assertEquals(4, jpaProject.jpaFilesSize());
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
+	}
 }
