@@ -8,6 +8,7 @@ Bundle-Activator: org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePl
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.commands;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
@@ -67,4 +68,3 @@ Export-Package: org.eclipse.jpt.eclipselink.core,
  org.eclipse.jpt.eclipselink.core.v2_0.context,
  org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection,
  org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
