@@ -214,24 +214,15 @@ public class JpaModelTests extends TestCase {
 		assertEquals(2, jpaProject.jpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
-////		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
-////		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
-//		int size = JptCorePlugin.getJpaModel().getJpaProjectsSize();
-//		if (size != 1) {
-//			System.err.println("bogus size: " + size);
-//			System.err.println("bogus project: " + JptCorePlugin.getJpaProject(this.testProject.getProject()));
-//		}
+//		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
+//		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
+
 
 		// now remove the JPA facet
 		facetSettingsFile.setContents(new ByteArrayInputStream(oldDocument.getBytes()), false, false, null);
 		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
-//		int newSize = JptCorePlugin.getJpaModel().getJpaProjectsSize();
-//		if (newSize != 0) {
-//			System.err.println("bogus size: " + newSize);
-//			System.err.println("bogus project: " + JptCorePlugin.getJpaProject(this.testProject.getProject()));
-//		}
 	}
 	
 	public void testEditFacetSettingsFileRemoveThenAddJpaFacet() throws Exception {
