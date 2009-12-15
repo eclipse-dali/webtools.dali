@@ -17,7 +17,6 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -90,7 +89,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	// ********** ordering **********  
 
-	public Orderable getOrderable() {
+	public JavaOrderable getOrderable() {
 		return this.orderable;
 	}
 
@@ -282,6 +281,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getOrderable().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}

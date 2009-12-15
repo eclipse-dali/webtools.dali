@@ -23,5 +23,6 @@ import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 public interface JavaMultiRelationshipMapping
 	extends JavaRelationshipMapping, MultiRelationshipMapping
 {
+	JavaOrderable getOrderable();
 	
 }
