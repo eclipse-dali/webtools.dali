@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCollectionTable_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -231,6 +230,6 @@ public class XmlCollectionTable extends AbstractXmlTable implements XmlCollectio
 	}
 	
 	protected static Translator buildJoinColumnsTranslator() {
-		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA2_0.JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlCollectionTable_2_0_JoinColumns());
+		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlCollectionTable_2_0_JoinColumns());
 	}
 }

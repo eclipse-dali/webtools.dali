@@ -1562,7 +1562,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
