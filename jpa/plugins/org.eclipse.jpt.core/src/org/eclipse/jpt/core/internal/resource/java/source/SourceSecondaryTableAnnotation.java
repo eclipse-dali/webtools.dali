@@ -70,30 +70,30 @@ public final class SourceSecondaryTableAnnotation
 	}
 
 
-	// ********** AbstractBaseTableAnnotation implementation **********
+	// ********** SourceBaseTableAnnotation implementation **********
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__NAME);
 	}
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__SCHEMA);
 	}
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__CATALOG);
 	}
 
 	@Override
-	String getUniqueConstraintsElementName() {
+	protected String getUniqueConstraintsElementName() {
 		return JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS;
 	}
 
 
-	// ************* SecondaryTable implementation *******************
+	// ************* SecondaryTableAnnotation implementation *******************
 
 	// ***** pk join columns
 	public ListIterator<PrimaryKeyJoinColumnAnnotation> pkJoinColumns() {

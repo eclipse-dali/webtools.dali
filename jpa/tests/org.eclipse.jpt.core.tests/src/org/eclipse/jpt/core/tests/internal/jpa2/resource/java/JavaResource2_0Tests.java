@@ -21,6 +21,7 @@ public class JavaResource2_0Tests {
 		suite.addTestSuite(AssociationOverride2_0Tests.class);
 		suite.addTestSuite(AssociationOverrides2_0Tests.class);
 		suite.addTestSuite(Cacheable2_0AnnotationTests.class);
+		suite.addTestSuite(CollectionTable2_0Tests.class);
 		suite.addTestSuite(ElementCollection2_0AnnotationTests.class);
 		suite.addTestSuite(MapsId2_0AnnotationTests.class);
 		suite.addTestSuite(OrderColumn2_0AnnotationTests.class);

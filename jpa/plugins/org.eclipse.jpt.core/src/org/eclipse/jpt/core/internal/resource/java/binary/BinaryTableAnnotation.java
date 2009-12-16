@@ -33,22 +33,22 @@ public final class BinaryTableAnnotation
 	// ********** BinaryBaseTableAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.TABLE__NAME;
 	}
 
 	@Override
-	String getSchemaElementName() {
+	protected String getSchemaElementName() {
 		return JPA.TABLE__SCHEMA;
 	}
 
 	@Override
-	String getCatalogElementName() {
+	protected String getCatalogElementName() {
 		return JPA.TABLE__CATALOG;
 	}
 
 	@Override
-	String getUniqueConstraintElementName() {
+	protected String getUniqueConstraintElementName() {
 		return JPA.TABLE__UNIQUE_CONSTRAINTS;
 	}
 

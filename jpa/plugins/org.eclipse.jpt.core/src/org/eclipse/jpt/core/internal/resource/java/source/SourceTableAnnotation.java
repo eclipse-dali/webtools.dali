@@ -43,28 +43,28 @@ public final class SourceTableAnnotation
 	}
 
 
-	// ********** AbstractBaseTableAnnotation implementation **********
+	// ********** SourceBaseTableAnnotation implementation **********
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return NAME_ADAPTER;
 	}
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return SCHEMA_ADAPTER;
 	}
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return CATALOG_ADAPTER;
 	}
 
 	@Override
-	String getUniqueConstraintsElementName() {
+	protected String getUniqueConstraintsElementName() {
 		return JPA.TABLE__UNIQUE_CONSTRAINTS;
 	}
 

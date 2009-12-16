@@ -39,8 +39,9 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
  * javax.persistence.Table
  * javax.persistence.JoinTable
  * javax.persistence.SecondaryTable
+ * javax.persistence.CollectionTable
  */
-abstract class SourceBaseTableAnnotation
+public abstract class SourceBaseTableAnnotation
 	extends SourceAnnotation<Member>
 	implements BaseTableAnnotation
 {
@@ -60,11 +61,11 @@ abstract class SourceBaseTableAnnotation
 	final UniqueConstraintsAnnotationContainer uniqueConstraintsContainer = new UniqueConstraintsAnnotationContainer();
 
 
-	SourceBaseTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
+	protected SourceBaseTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 
-	SourceBaseTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceBaseTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.getNameAdapter(daa);
 		this.schemaDeclarationAdapter = this.getSchemaAdapter(daa);
@@ -95,7 +96,7 @@ abstract class SourceBaseTableAnnotation
 	/**
 	 * Return the uniqueConstraints element name
 	 */
-	abstract String getUniqueConstraintsElementName();
+	protected abstract String getUniqueConstraintsElementName();
 
 	@Override
 	public void toString(StringBuilder sb) {
@@ -139,7 +140,7 @@ abstract class SourceBaseTableAnnotation
 	/**
 	 * Build and return a declaration element adapter for the table's 'name' element
 	 */
-	abstract DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	// ***** schema
 	public String getSchema() {
@@ -171,7 +172,7 @@ abstract class SourceBaseTableAnnotation
 	/**
 	 * Build and return a declaration element adapter for the table's 'schema' element
 	 */
-	abstract DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	// ***** catalog
 	public String getCatalog() {
@@ -203,7 +204,7 @@ abstract class SourceBaseTableAnnotation
 	/**
 	 * Build and return a declaration element adapter for the table's 'catalog' element
 	 */
-	abstract DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	// ***** unique constraints
 	public ListIterator<UniqueConstraintAnnotation> uniqueConstraints() {

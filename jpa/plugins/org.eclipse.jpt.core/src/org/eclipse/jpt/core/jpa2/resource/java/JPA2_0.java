@@ -38,9 +38,50 @@ public interface JPA2_0
 	String CACHEABLE = PACKAGE_ + "Cacheable";
 		String CACHEABLE__VALUE = "value";
 
+	String COLLECTION_TABLE = PACKAGE_ + "CollectionTable";
+		String COLLECTION_TABLE__NAME = "name";
+		String COLLECTION_TABLE__SCHEMA = "schema";
+		String COLLECTION_TABLE__CATALOG = "catalog";
+		String COLLECTION_TABLE__JOIN_COLUMNS = "joinColumns";
+		String COLLECTION_TABLE__UNIQUE_CONSTRAINTS = "uniqueConstraints";
+	
 	String ELEMENT_COLLECTION = PACKAGE_ + "ElementCollection";
 		String ELEMENT_COLLECTION__FETCH = "fetch";
 		String ELEMENT_COLLECTION__TARGET_CLASS = "targetClass";
+
+	String MAP_KEY_CLASS = PACKAGE_ + "MapKeyClass";
+		String MAP_KEY_CLASS__VALUE = "value";
+	
+	String MAP_KEY_COLUMN = PACKAGE_ + "MapKeyColumn";
+		String MAP_KEY_COLUMN__NAME = "name";
+		String MAP_KEY_COLUMN__UNIQUE = "unique";
+		String MAP_KEY_COLUMN__NULLABLE = "nullable";
+		String MAP_KEY_COLUMN__INSERTABLE = "insertable";
+		String MAP_KEY_COLUMN__UPDATABLE = "updatable";
+		String MAP_KEY_COLUMN__COLUMN_DEFINITION = "columnDefinition";
+		String MAP_KEY_COLUMN__TABLE = "table";
+		String MAP_KEY_COLUMN__LENGTH = "length";
+		String MAP_KEY_COLUMN__PRECISION = "precision";
+		String MAP_KEY_COLUMN__SCALE = "scale";
+
+	String MAP_KEY_ENUMERATED = PACKAGE_ + "MapKeyEnumerated";
+		String MAP_KEY_ENUMERATED__VALUE = "fetch";
+		
+	String MAP_KEY_JOIN_COLUMN = PACKAGE_ + "MapKeyJoinColumn";
+		String MAP_KEY_JOIN_COLUMN__NAME = "name";
+		String MAP_KEY_JOIN_COLUMN__REFERNECED_COLUMN_NAME = "referencedColumnName";
+		String MAP_KEY_JOIN_COLUMN__UNIQUE = "unique";
+		String MAP_KEY_JOIN_COLUMN__NULLABLE = "nullable";
+		String MAP_KEY_JOIN_COLUMN__INSERTABLE = "insertable";
+		String MAP_KEY_JOIN_COLUMN__UPDATABLE = "updatable";
+		String MAP_KEY_JOIN_COLUMN__COLUMN_DEFINITION = "columnDefinition";
+		String MAP_KEY_JOIN_COLUMN__TABLE = "table";
+		
+	String MAP_KEY_JOIN_COLUMNS = PACKAGE_ + "MapKeyJoinColumns";
+		String MAP_KEY_JOIN_COLUMNS__VALUE = "value";
+
+	String MAP_KEY_TEMPORAL = PACKAGE_ + "MapKeyTemporal";
+		String MAP_KEY_TEMPORAL__VALUE = "fetch";
 
 	String MAPS_ID = PACKAGE_ + "MapsId";
 		String MAPS_ID__VALUE = "value";

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,23 +7,26 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java.source;
+package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
 import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceBaseTableAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableJoinTableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
@@ -33,27 +36,30 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
- * javax.persistence.JoinTable
+ * javax.persistence.CollectionTable
  */
-public class SourceJoinTableAnnotation
+public class SourceCollectionTable2_0Annotation
 	extends SourceBaseTableAnnotation
-	implements NestableJoinTableAnnotation
+	implements CollectionTable2_0Annotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JoinTableAnnotation.ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(CollectionTable2_0Annotation.ANNOTATION_NAME);
+
+	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.COLLECTION_TABLE__NAME);
+
+	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.COLLECTION_TABLE__SCHEMA);
+
+	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.COLLECTION_TABLE__CATALOG);
 
 
 	private final Vector<NestableJoinColumnAnnotation> joinColumns = new Vector<NestableJoinColumnAnnotation>();
 	private final JoinColumnsAnnotationContainer joinColumnsContainer = new JoinColumnsAnnotationContainer();
 
-	private final Vector<NestableJoinColumnAnnotation> inverseJoinColumns = new Vector<NestableJoinColumnAnnotation>();
-	private final InverseJoinColumnsContainerAnnotation inverseJoinColumnsContainer = new InverseJoinColumnsContainerAnnotation();
 
-
-	public SourceJoinTableAnnotation(JavaResourceNode parent, Member member) {
+	public SourceCollectionTable2_0Annotation(JavaResourceNode parent, Member member) {
 		this(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
-	public SourceJoinTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
+	public SourceCollectionTable2_0Annotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 	}
 
@@ -65,14 +71,12 @@ public class SourceJoinTableAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		AnnotationContainerTools.initialize(this.joinColumnsContainer, astRoot);
-		AnnotationContainerTools.initialize(this.inverseJoinColumnsContainer, astRoot);
 	}
 
 	@Override
 	public void update(CompilationUnit astRoot) {
 		super.update(astRoot);
 		AnnotationContainerTools.update(this.joinColumnsContainer, astRoot);
-		AnnotationContainerTools.update(this.inverseJoinColumnsContainer, astRoot);
 	}
 
 
@@ -80,25 +84,28 @@ public class SourceJoinTableAnnotation
 
 	@Override
 	protected DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.JOIN_TABLE__NAME);
+		// ignore the daa passed in, @CollectionTable is never nested
+		return NAME_ADAPTER;
 	}
 
 	@Override
 	protected DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.JOIN_TABLE__SCHEMA);
+		// ignore the daa passed in, @CollectionTable is never nested
+		return SCHEMA_ADAPTER;
 	}
 
 	@Override
 	protected DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.JOIN_TABLE__CATALOG);
+		// ignore the daa passed in, @CollectionTable is never nested
+		return CATALOG_ADAPTER;
 	}
 
 	@Override
 	protected String getUniqueConstraintsElementName() {
-		return JPA.JOIN_TABLE__UNIQUE_CONSTRAINTS;
+		return JPA2_0.COLLECTION_TABLE__UNIQUE_CONSTRAINTS;
 	}
 
-	// ********** JoinTableAnnotation implementation **********
+	// ********** CollectionTable2_0Annotation implementation **********
 
 	// ***** join columns
 	public ListIterator<JoinColumnAnnotation> joinColumns() {
@@ -171,90 +178,16 @@ public class SourceJoinTableAnnotation
 		return this.addJoinColumnInternal();
 	}
 
-	// ***** inverse join columns
-	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
-		return new CloneListIterator<JoinColumnAnnotation>(this.inverseJoinColumns);
-	}
-
-	ListIterator<NestableJoinColumnAnnotation> nestableInverseJoinColumns() {
-		return new CloneListIterator<NestableJoinColumnAnnotation>(this.inverseJoinColumns);
-	}
-
-	public int inverseJoinColumnsSize() {
-		return this.inverseJoinColumns.size();
-	}
-
-	public NestableJoinColumnAnnotation inverseJoinColumnAt(int index) {
-		return this.inverseJoinColumns.get(index);
-	}
-
-	public int indexOfInverseJoinColumn(JoinColumnAnnotation joinColumn) {
-		return this.inverseJoinColumns.indexOf(joinColumn);
-	}
-
-	public NestableJoinColumnAnnotation addInverseJoinColumn(int index) {
-		return (NestableJoinColumnAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.inverseJoinColumnsContainer);
-	}
-
-	NestableJoinColumnAnnotation addInverseJoinColumnInternal() {
-		NestableJoinColumnAnnotation joinColumn = this.buildInverseJoinColumn(this.inverseJoinColumns.size());
-		this.inverseJoinColumns.add(joinColumn);
-		return joinColumn;
-	}
-
-	private NestableJoinColumnAnnotation buildInverseJoinColumn(int index) {
-		return new SourceJoinColumnAnnotation(this, this.member, buildInverseJoinColumnAnnotationAdapter(index));
-	}
-
-	private IndexedDeclarationAnnotationAdapter buildInverseJoinColumnAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(this.daa, JPA.JOIN_TABLE__INVERSE_JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
-	}
-
-	void inverseJoinColumnAdded(int index, NestableJoinColumnAnnotation joinColumn) {
-		this.fireItemAdded(INVERSE_JOIN_COLUMNS_LIST, index, joinColumn);
-	}
-
-	public void moveInverseJoinColumn(int targetIndex, int sourceIndex) {
-		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.inverseJoinColumnsContainer);
-	}
-
-	NestableJoinColumnAnnotation moveInverseJoinColumnInternal(int targetIndex, int sourceIndex) {
-		return CollectionTools.move(this.inverseJoinColumns, targetIndex, sourceIndex).get(targetIndex);
-	}
-
-	void inverseJoinColumnMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
-	}
-
-	public void removeInverseJoinColumn(int index) {
-		AnnotationContainerTools.removeNestedAnnotation(index, this.inverseJoinColumnsContainer);
-	}
-
-	NestableJoinColumnAnnotation removeInverseJoinColumnInternal(int index) {
-		return this.inverseJoinColumns.remove(index);
-	}
-
-	void inverseJoinColumnRemoved(int index, NestableJoinColumnAnnotation joinColumn) {
-		this.fireItemRemoved(INVERSE_JOIN_COLUMNS_LIST, index, joinColumn);
-	}
-
-	public JoinColumnAnnotation initializeInverseJoinColumns() {
-		return this.addInverseJoinColumnInternal();
-	}
 
 	// ********** NestableAnnotation implementation **********
 
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		JoinTableAnnotation oldJoinTable = (JoinTableAnnotation) oldAnnotation;
-		for (JoinColumnAnnotation oldJoinColumn : CollectionTools.iterable(oldJoinTable.joinColumns())) {
-			NestableJoinColumnAnnotation newJoinColumn = this.addJoinColumn(oldJoinTable.indexOfJoinColumn(oldJoinColumn));
+		CollectionTable2_0Annotation oldCollectionTable = (CollectionTable2_0Annotation) oldAnnotation;
+		for (JoinColumnAnnotation oldJoinColumn : CollectionTools.iterable(oldCollectionTable.joinColumns())) {
+			NestableJoinColumnAnnotation newJoinColumn = this.addJoinColumn(oldCollectionTable.indexOfJoinColumn(oldJoinColumn));
 			newJoinColumn.initializeFrom((NestableAnnotation) oldJoinColumn);
-		}
-		for (JoinColumnAnnotation oldInverseJoinColumn : CollectionTools.iterable(oldJoinTable.inverseJoinColumns())) {
-			NestableJoinColumnAnnotation newInverseJoinColumn = this.addInverseJoinColumn(oldJoinTable.indexOfInverseJoinColumn(oldInverseJoinColumn));
-			newInverseJoinColumn.initializeFrom((NestableAnnotation) oldInverseJoinColumn);
 		}
 	}
 
@@ -273,11 +206,11 @@ public class SourceJoinTableAnnotation
 		implements AnnotationContainer<NestableJoinColumnAnnotation>
 	{
 		public String getContainerAnnotationName() {
-			return SourceJoinTableAnnotation.this.getAnnotationName();
+			return SourceCollectionTable2_0Annotation.this.getAnnotationName();
 		}
 
 		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceJoinTableAnnotation.this.getJdtAnnotation(astRoot);
+			return SourceCollectionTable2_0Annotation.this.getJdtAnnotation(astRoot);
 		}
 
 		public String getNestableAnnotationName() {
@@ -298,84 +231,39 @@ public class SourceJoinTableAnnotation
 		extends AbstractJoinColumnAnnotationContainer
 	{
 		public String getElementName() {
-			return JPA.JOIN_TABLE__JOIN_COLUMNS;
+			return JPA2_0.COLLECTION_TABLE__JOIN_COLUMNS;
 		}
 
 		public ListIterator<NestableJoinColumnAnnotation> nestedAnnotations() {
-			return SourceJoinTableAnnotation.this.nestableJoinColumns();
+			return SourceCollectionTable2_0Annotation.this.nestableJoinColumns();
 		}
 
 		public int nestedAnnotationsSize() {
-			return SourceJoinTableAnnotation.this.joinColumnsSize();
+			return SourceCollectionTable2_0Annotation.this.joinColumnsSize();
 		}
 
 		public NestableJoinColumnAnnotation addNestedAnnotationInternal() {
-			return SourceJoinTableAnnotation.this.addJoinColumnInternal();
+			return SourceCollectionTable2_0Annotation.this.addJoinColumnInternal();
 		}
 
 		public void nestedAnnotationAdded(int index, NestableJoinColumnAnnotation nestedAnnotation) {
-			SourceJoinTableAnnotation.this.joinColumnAdded(index, nestedAnnotation);
+			SourceCollectionTable2_0Annotation.this.joinColumnAdded(index, nestedAnnotation);
 		}
 
 		public NestableJoinColumnAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
-			return SourceJoinTableAnnotation.this.moveJoinColumnInternal(targetIndex, sourceIndex);
+			return SourceCollectionTable2_0Annotation.this.moveJoinColumnInternal(targetIndex, sourceIndex);
 		}
 
 		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-			SourceJoinTableAnnotation.this.joinColumnMoved(targetIndex, sourceIndex);
+			SourceCollectionTable2_0Annotation.this.joinColumnMoved(targetIndex, sourceIndex);
 		}
 
 		public NestableJoinColumnAnnotation removeNestedAnnotationInternal(int index) {
-			return SourceJoinTableAnnotation.this.removeJoinColumnInternal(index);
+			return SourceCollectionTable2_0Annotation.this.removeJoinColumnInternal(index);
 		}
 
 		public void nestedAnnotationRemoved(int index, NestableJoinColumnAnnotation nestedAnnotation) {
-			SourceJoinTableAnnotation.this.joinColumnRemoved(index, nestedAnnotation);
+			SourceCollectionTable2_0Annotation.this.joinColumnRemoved(index, nestedAnnotation);
 		}
 	}
-
-
-	/**
-	 * adapt the AnnotationContainer interface to the join table's inverse join columns
-	 */
-	class InverseJoinColumnsContainerAnnotation
-		extends AbstractJoinColumnAnnotationContainer
-	{
-		public String getElementName() {
-			return JPA.JOIN_TABLE__INVERSE_JOIN_COLUMNS;
-		}
-
-		public ListIterator<NestableJoinColumnAnnotation> nestedAnnotations() {
-			return SourceJoinTableAnnotation.this.nestableInverseJoinColumns();
-		}
-
-		public int nestedAnnotationsSize() {
-			return SourceJoinTableAnnotation.this.inverseJoinColumnsSize();
-		}
-
-		public NestableJoinColumnAnnotation addNestedAnnotationInternal() {
-			return SourceJoinTableAnnotation.this.addInverseJoinColumnInternal();
-		}
-
-		public void nestedAnnotationAdded(int index, NestableJoinColumnAnnotation nestedAnnotation) {
-			SourceJoinTableAnnotation.this.inverseJoinColumnAdded(index, nestedAnnotation);
-		}
-
-		public NestableJoinColumnAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
-			return SourceJoinTableAnnotation.this.moveInverseJoinColumnInternal(targetIndex, sourceIndex);
-		}
-
-		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-			SourceJoinTableAnnotation.this.inverseJoinColumnMoved(targetIndex, sourceIndex);
-		}
-
-		public NestableJoinColumnAnnotation removeNestedAnnotationInternal(int index) {
-			return SourceJoinTableAnnotation.this.removeInverseJoinColumnInternal(index);
-		}
-
-		public void nestedAnnotationRemoved(int index, NestableJoinColumnAnnotation nestedAnnotation) {
-			SourceJoinTableAnnotation.this.inverseJoinColumnRemoved(index, nestedAnnotation);
-		}
-	}
-
 }

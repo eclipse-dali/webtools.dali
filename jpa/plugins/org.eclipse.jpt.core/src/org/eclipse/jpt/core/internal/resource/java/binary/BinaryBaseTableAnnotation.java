@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
  * javax.persistence.JoinTable
  * javax.persistence.SecondaryTable
  */
-abstract class BinaryBaseTableAnnotation
+public abstract class BinaryBaseTableAnnotation
 	extends BinaryAnnotation
 	implements BaseTableAnnotation
 {
@@ -35,7 +35,7 @@ abstract class BinaryBaseTableAnnotation
 	final Vector<UniqueConstraintAnnotation> uniqueConstraints;
 
 
-	BinaryBaseTableAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryBaseTableAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.schema = this.buildSchema();
@@ -83,7 +83,7 @@ abstract class BinaryBaseTableAnnotation
 		return (String) this.getJdtMemberValue(this.getNameElementName());
 	}
 
-	abstract String getNameElementName();
+	protected abstract String getNameElementName();
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -112,7 +112,7 @@ abstract class BinaryBaseTableAnnotation
 		return (String) this.getJdtMemberValue(this.getSchemaElementName());
 	}
 
-	abstract String getSchemaElementName();
+	protected abstract String getSchemaElementName();
 
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -141,7 +141,7 @@ abstract class BinaryBaseTableAnnotation
 		return (String) this.getJdtMemberValue(this.getCatalogElementName());
 	}
 
-	abstract String getCatalogElementName();
+	protected abstract String getCatalogElementName();
 
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -189,7 +189,7 @@ abstract class BinaryBaseTableAnnotation
 		return result;
 	}
 
-	abstract String getUniqueConstraintElementName();
+	protected abstract String getUniqueConstraintElementName();
 
 	// TODO
 	private void updateUniqueConstraints() {

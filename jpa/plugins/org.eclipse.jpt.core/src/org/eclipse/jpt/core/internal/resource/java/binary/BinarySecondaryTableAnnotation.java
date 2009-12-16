@@ -47,27 +47,27 @@ public final class BinarySecondaryTableAnnotation
 	// ********** BinaryBaseTableAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.SECONDARY_TABLE__NAME;
 	}
 
 	@Override
-	String getSchemaElementName() {
+	protected String getSchemaElementName() {
 		return JPA.SECONDARY_TABLE__SCHEMA;
 	}
 
 	@Override
-	String getCatalogElementName() {
+	protected String getCatalogElementName() {
 		return JPA.SECONDARY_TABLE__CATALOG;
 	}
 
 	@Override
-	String getUniqueConstraintElementName() {
+	protected String getUniqueConstraintElementName() {
 		return JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS;
 	}
 
 
-	// ************* SecondaryTable implementation *******************
+	// ************* SecondaryTableAnnotation implementation *******************
 
 	// ***** pk join columns
 	public ListIterator<PrimaryKeyJoinColumnAnnotation> pkJoinColumns() {
