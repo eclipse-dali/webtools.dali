@@ -62,10 +62,15 @@ public class GenericJavaNamedQuery2_0 extends AbstractJavaQuery
 		firePropertyChanged(DEFAULT_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 
+	protected LockModeType_2_0 buildDefaultLockMode() {
+		return LockModeType_2_0.NONE;
+	}
+
 	// ********** resource => context **********
 
 	public void initialize(NamedQueryAnnotation resourceQuery) {
 		super.initialize(resourceQuery);
+		this.defaultLockMode = this.buildDefaultLockMode();
 		this.specifiedLockMode = this.getResourceQueryLockMode(resourceQuery);
 	}
 

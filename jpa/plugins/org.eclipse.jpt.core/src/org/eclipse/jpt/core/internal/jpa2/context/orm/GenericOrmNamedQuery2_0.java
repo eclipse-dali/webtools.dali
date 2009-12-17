@@ -62,19 +62,22 @@ public class GenericOrmNamedQuery2_0 extends AbstractOrmQuery<XmlNamedQuery>
 		this.firePropertyChanged(DEFAULT_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 
+	protected LockModeType_2_0 buildDefaultLockMode() {
+		return LockModeType_2_0.NONE;
+	}
+
 	// ********** resource => context **********
 
 	@Override
 	protected void initialize(XmlNamedQuery xmlQuery) {
 		super.initialize(xmlQuery);
-
+		this.defaultLockMode = this.buildDefaultLockMode();
 		this.specifiedLockMode = this.getResourceLockModeOf(xmlQuery);
 	}
 
 	@Override
 	public void update(XmlNamedQuery xmlQuery) {
 		super.update(xmlQuery);
-
 		this.setSpecifiedLockMode_(this.getResourceLockModeOf(xmlQuery));
 	}
 
