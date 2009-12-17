@@ -111,7 +111,6 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 
-				Table table = tablePane.getMainControl();
 				PersistenceUnit.Property property = getSubject().addProperty();
 				propertyHolder.setValue(property);
 
