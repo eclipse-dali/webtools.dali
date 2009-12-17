@@ -115,11 +115,6 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 				PersistenceUnit.Property property = getSubject().addProperty();
 				propertyHolder.setValue(property);
 
-				int propertiesSize = getSubject().propertiesSize();
-				table.setItemCount(propertiesSize);
-				int index = propertiesSize - 1;
-				table.showItem(table.getItem(index));
-
 				tablePane.getTableViewer().editElement(
 					property,
 					PropertyColumnAdapter.NAME_COLUMN
