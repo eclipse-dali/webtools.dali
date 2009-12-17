@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.platform;
 
-import org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUi;
 import org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkNavigatorProvider;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
@@ -28,7 +27,7 @@ public class EclipseLink2_0JpaPlatformUiFactory implements JpaPlatformUiFactory
 	}
 
 	public JpaPlatformUi buildJpaPlatformUi() {
-		return new EclipseLinkJpaPlatformUi(
+		return new EclipseLink2_0JpaPlatformUi(
 			new EclipseLinkNavigatorProvider(),
 			EclipseLink2_0JpaPlatformUiProvider.instance()
 		);

@@ -80,6 +80,9 @@ public class EclipseLinkDDLGenerator
 	static public String BUNDLE_CLASSPATH = "Bundle-ClassPath";	  //$NON-NLS-1$
 	static public String PROPERTIES_FILE_NAME = "login.properties";	  //$NON-NLS-1$
 	static public String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
+	static public String TRUE = "true";	  //$NON-NLS-1$
+	static public String FALSE = "false";	  //$NON-NLS-1$
+	static public String NONE = "NONE";	  //$NON-NLS-1$
 	private IVMInstall jre;
 	private ILaunchConfigurationWorkingCopy launchConfig;
 	private ILaunch launch;
@@ -98,7 +101,7 @@ public class EclipseLinkDDLGenerator
 		new EclipseLinkDDLGenerator(puName, project, projectLocation, monitor).generate();
 	}
 
-	private EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, String projectLocation, @SuppressWarnings("unused") IProgressMonitor monitor) {
+	protected EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, String projectLocation, @SuppressWarnings("unused") IProgressMonitor monitor) {
 		super();
 		this.puName = puName;
 		this.jpaProject = jpaProject;
@@ -124,7 +127,7 @@ public class EclipseLinkDDLGenerator
 
 	protected void generate() {
 		this.preGenerate();
-		String propertiesFile  = this.projectLocation + "/" + PROPERTIES_FILE_NAME;
+		String propertiesFile  = this.projectLocation + "/" + PROPERTIES_FILE_NAME; 	  //$NON-NLS-1$
 		
 		this.initializeLaunchConfiguration(this.projectLocation, propertiesFile);
 
@@ -138,13 +141,13 @@ public class EclipseLinkDDLGenerator
 
 		this.specifyJRE(this.jre.getName(), this.jre.getVMInstallType().getId());
 		
-		this.specifyProject(this.jpaProject.getProject().getName()); 
+		this.specifyProject(this.getJpaProject().getProject().getName()); 
 		this.specifyMainType(ECLIPSELINK_DDL_GEN_CLASS);	
 		
 		this.specifyProgramArguments(this.puName, propertiesFile);  // -pu & -p
 		this.specifyWorkingDir(projectLocation); 
 
-		this.specifyClasspathProperties(this.jpaProject, this.buildJdbcJarPath(), this.buildBootstrapJarPath());
+		this.specifyClasspathProperties(this.getJpaProject(), this.buildJdbcJarPath(), this.buildBootstrapJarPath());
 	}
 	
 	private void addLaunchListener() {
@@ -154,7 +157,7 @@ public class EclipseLinkDDLGenerator
 	
 	protected void preGenerate() {
 		//disconnect since the runtime provider will need to connect to generate the tables
-		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
+		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp != null) {
 			cp.disconnect();
 		}
@@ -166,11 +169,11 @@ public class EclipseLinkDDLGenerator
 				this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 			}
 		}
-		catch ( CoreException e) {
+		catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
 		//reconnect since we disconnected in preGenerate(), 
-		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
+		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp != null) {
 			cp.connect();
 		}
@@ -179,7 +182,7 @@ public class EclipseLinkDDLGenerator
 	}
 
 	protected void validateProject() {
-		IProject project = this.jpaProject.getProject();
+		IProject project = this.getJpaProject().getProject();
 		ValidateJob job = new ValidateJob(project);
 		job.setRule(project);
 		job.schedule();
@@ -218,7 +221,7 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private String getJpaProjectConnectionDriverJarList() {
-		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
+		ConnectionProfile cp = this.getConnectionProfile();
 		return (cp == null) ? "" : cp.getDriverJarList(); //$NON-NLS-1$
 	}
 	
@@ -446,12 +449,12 @@ public class EclipseLinkDDLGenerator
 			OutputMode.DATABASE);
 	}
 	
-	private void buildConnectionProperties(Properties properties) {
-		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
+	protected void buildConnectionProperties(Properties properties) {
+		ConnectionProfile cp = this.getConnectionProfile();
 
 		this.putProperty(properties,  
 			Connection.ECLIPSELINK_BIND_PARAMETERS,
-			"false");
+			FALSE);
 		this.putProperty(properties, 
 			Connection.ECLIPSELINK_DRIVER,
 			(cp == null) ? "" : cp.getDriverClassName());
@@ -469,7 +472,7 @@ public class EclipseLinkDDLGenerator
 	private void buildConnectionPoolingProperties(Properties properties) {
 		this.putProperty(properties,
 			Connection.ECLIPSELINK_READ_CONNECTIONS_SHARED,
-			"true");
+			TRUE);
 	}
 	
 	private void buildLoggingProperties(Properties properties) {
@@ -478,42 +481,48 @@ public class EclipseLinkDDLGenerator
 			LoggingLevel.FINE);
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_TIMESTAMP,
-			"false");
+			FALSE);
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_THREAD,
-			"false");
+			FALSE);
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_SESSION,
-			"false");
+			FALSE);
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_EXCEPTIONS,
-			"true");
+			TRUE);
 	}
 	
-	private void buildCustomizationProperties(Properties properties) {
+	protected void buildCustomizationProperties(Properties properties) {
 		this.putProperty(properties,
 			Customization.ECLIPSELINK_THROW_EXCEPTIONS,
-			"true");
+			TRUE);
 	}
 	
-	private void putProperty(Properties properties, String key, String value) {
-		properties.put(key, (value == null) ? "" : value);
+	protected void putProperty(Properties properties, String key, String value) {
+		properties.put(key, (value == null) ? "" : value);	  //$NON-NLS-1$
+	}
+	
+	protected void buildAllProperties(Properties properties, String projectLocation) {
+		
+		this.buildConnectionProperties(properties);
+		
+		this.buildConnectionPoolingProperties(properties);
+		
+		this.buildLoggingProperties(properties);
+		
+		this.buildCustomizationProperties(properties);
+		
+		this.buildDDLModeProperties(properties);
+
+		this.buildProjectLocationProperty(properties, projectLocation);
 	}
 	
 	private void saveLoginProperties(String projectLocation, String propertiesFile) {
 		Properties elProperties = new Properties();
-		
-		this.buildConnectionProperties(elProperties);
-		
-		this.buildConnectionPoolingProperties(elProperties);
-		
-		this.buildLoggingProperties(elProperties);
-		
-		this.buildCustomizationProperties(elProperties);
-		
-		this.buildDDLModeProperties(elProperties);
 
-		this.buildProjectLocationProperty(elProperties, projectLocation);
+		this.buildAllProperties(elProperties, projectLocation);
+
 	    try {
 	        File file = new File(propertiesFile);
 			if (!file.exists() && ! file.createNewFile()) {
@@ -532,21 +541,30 @@ public class EclipseLinkDDLGenerator
 	// ********** Main arguments **********
 
 	private String buildPuNameArgument(String puName) {
-		return " -pu \"" + puName + "\"";
+		return " -pu \"" + puName + "\"";	  //$NON-NLS-1$
 	}
 	
 	private String buildPropertiesFileArgument(String propertiesFile) {
-		return " -p \"" + propertiesFile + "\"";
+		return " -p \"" + propertiesFile + "\"";	  //$NON-NLS-1$
 	}
 	
 	private String buildDebugArgument() {
-		return (this.isDebug) ? " -debug" : "";
+		return (this.isDebug) ? " -debug" : "";	  //$NON-NLS-1$
 	}
 	
 	// ********** Queries **********
 	
 	protected JpaPlatform getPlatform() {
-		return this.jpaProject.getJpaPlatform();
+		return this.getJpaProject().getJpaPlatform();
+	}
+	
+	protected JpaProject getJpaProject() {
+		return this.jpaProject;
+	}
+	
+	
+	protected ConnectionProfile getConnectionProfile() {
+		return this.getJpaProject().getConnectionProfile();
 	}
 	
 	protected ILaunch getLaunch() {
@@ -558,7 +576,7 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private IVMInstall getProjectJRE() throws CoreException {
-		return JavaRuntime.getVMInstall(this.jpaProject.getJavaProject());
+		return JavaRuntime.getVMInstall(this.getJpaProject().getJavaProject());
 	}
 
 	// ********** Bundles *********
@@ -587,7 +605,7 @@ public class EclipseLinkDDLGenerator
 	private IPath getClassPath(Bundle bundle) {
 		String path = (String) bundle.getHeaders().get(BUNDLE_CLASSPATH);
 		if (path == null) {
-			path = ".";
+			path = ".";	  //$NON-NLS-1$
 		}
 		ManifestElement[] elements = null;
 		try {
@@ -600,7 +618,7 @@ public class EclipseLinkDDLGenerator
 			for (int i = 0; i < elements.length; ++i) {
 				ManifestElement element = elements[i];
 				String value = element.getValue();
-				if (".".equals(value)) {
+				if (".".equals(value)) {	  //$NON-NLS-1$
 					value = "/";		//$NON-NLS-1$
 				}
 				URL url = bundle.getEntry(value);

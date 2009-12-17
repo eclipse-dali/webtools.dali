@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2008 Oracle. All rights reserved.
+* Copyright (c) 2007, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -46,7 +46,7 @@ public class EclipseLinkDDLGeneratorUi
 		new EclipseLinkDDLGeneratorUi(project).generate();
 	}
 
-	private EclipseLinkDDLGeneratorUi(JpaProject project) {
+	protected EclipseLinkDDLGeneratorUi(JpaProject project) {
 		super();
 		if (project == null) {
 			throw new NullPointerException();
@@ -73,13 +73,17 @@ public class EclipseLinkDDLGeneratorUi
 				return;
 			}
 		}
-		IWorkspaceRunnable runnable = new GenerateDDLRunnable(puName, this.project);
+		IWorkspaceRunnable runnable = this.buildGenerateDDLRunnable(puName, this.project);
 		try {
 			ResourcesPlugin.getWorkspace().run(runnable, new NullProgressMonitor());
 		} 
 		catch (CoreException ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+	
+	protected IWorkspaceRunnable buildGenerateDDLRunnable(String puName, JpaProject project) {
+		return new GenerateDDLRunnable(puName, project);
 	}
 	
 	private Shell getCurrentShell() {
@@ -113,11 +117,11 @@ public class EclipseLinkDDLGeneratorUi
 
 	// ********** runnable **********
 
-	static class GenerateDDLRunnable implements IWorkspaceRunnable {
+	protected static class GenerateDDLRunnable implements IWorkspaceRunnable {
 		private final String puName;
 		private final JpaProject project;
 
-		GenerateDDLRunnable(String puName, JpaProject project) {
+		public GenerateDDLRunnable(String puName, JpaProject project) {
 			super();
 			this.puName = puName;
 			this.project = project;
@@ -126,7 +130,7 @@ public class EclipseLinkDDLGeneratorUi
 		public void run(IProgressMonitor monitor) {
 			String projectLocation = this.project.getProject().getLocation().toString();
 			try {
-				EclipseLinkDDLGenerator.generate(this.puName, this.project, projectLocation, monitor);
+				this.ddlGeneratorGenerate(this.puName, this.project, projectLocation, monitor);
 			} 
 			catch (OperationCanceledException e) {
 				return;
@@ -139,6 +143,10 @@ public class EclipseLinkDDLGeneratorUi
 				this.logError(message);
 				throw new RuntimeException(re);
 			}
+		}
+
+		protected void ddlGeneratorGenerate(String puName, JpaProject project, String projectLocation, IProgressMonitor monitor) {
+			EclipseLinkDDLGenerator.generate(puName, project, projectLocation, monitor);
 		}
 
 		protected void logError(String message) {
