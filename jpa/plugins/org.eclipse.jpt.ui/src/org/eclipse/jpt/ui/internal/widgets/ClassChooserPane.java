@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -96,16 +97,19 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 
 		super(parentPane, subjectHolder, parent);
 	}
-	
+
 	@Override
 	protected Control addLeftControl(Composite container) {
-		Hyperlink labelLink = addHyperlink(container,
-			getLabelText(),
-			buildHyperLinkAction()
+		if( ! this.allowTypeCreation()) {
+			return this.addLabel(container, this.getLabelText());
+		}
+		Hyperlink labelLink = this.addHyperlink(container,
+			this.getLabelText(),
+			this.buildHyperLinkAction()
 		);
 		return labelLink;
 	}
-	
+
 	private Runnable buildHyperLinkAction() {
 		return new Runnable() {
 			public void run() {
