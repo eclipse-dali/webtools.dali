@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
-import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
+import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.IdDerivedIdentityStrategy2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,8 +23,12 @@ import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
  * @version 3.0
  * @since 3.0
  */
-public interface OrmSingleRelationshipMapping2_0
-	extends OrmSingleRelationshipMapping, SingleRelationshipMapping2_0
+public interface OrmIdDerivedIdentityStrategy2_0 
+	extends XmlContextNode, IdDerivedIdentityStrategy2_0
 {
-	public OrmDerivedIdentity2_0 getDerivedIdentity();
+	OrmSingleRelationshipMapping2_0 getMapping();
+	
+	void initializeFrom(OrmIdDerivedIdentityStrategy2_0 oldStrategy);
+	
+	void update();
 }

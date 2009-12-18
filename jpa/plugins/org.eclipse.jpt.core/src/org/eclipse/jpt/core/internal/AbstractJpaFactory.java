@@ -125,17 +125,15 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverri
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedId2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapsId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
@@ -372,16 +370,12 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaOrderable(parent);
 	}
 	
-	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
-		return new NullJavaDerivedId2_0(parent);
+	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {
+		return new NullJavaDerivedIdentity2_0(parent);
 	}
 	
 	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		throw new UnsupportedOperationException();
-	}
-	
-	public JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent) {
-		return new NullJavaMapsId2_0(parent);
 	}
 	
 	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
@@ -395,5 +389,4 @@ public abstract class AbstractJpaFactory
 	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
 		return new GenericJavaOrderColumn2_0(parent, owner);
 	}
-
 }

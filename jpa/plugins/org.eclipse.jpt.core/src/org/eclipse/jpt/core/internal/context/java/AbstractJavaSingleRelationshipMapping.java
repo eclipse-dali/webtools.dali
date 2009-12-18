@@ -18,9 +18,7 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
-import org.eclipse.jpt.core.jpa2.context.MapsId2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -37,31 +35,26 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 {
 	protected Boolean specifiedOptional;
 
-	protected final JavaDerivedId2_0 derivedId;
-	
-	protected final JavaMapsId2_0 mapsId;
+	protected final JavaDerivedIdentity2_0 derivedIdentity;
 	
 	
 	protected AbstractJavaSingleRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.derivedId = buildDerivedId();
-		this.mapsId = buildMapsId();
+		this.derivedIdentity = buildDerivedIdentity();
 	}
 	
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.specifiedOptional = this.getResourceOptional();
-		this.derivedId.initialize();
-		this.mapsId.initialize();
+		this.derivedIdentity.initialize();
 	}
 	
 	@Override
 	protected void update() {
 		super.update();
 		this.setSpecifiedOptional_(this.getResourceOptional());
-		this.derivedId.update();
-		this.mapsId.update();
+		this.derivedIdentity.update();
 	}
 	
 	@Override
@@ -109,30 +102,19 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	protected abstract void setResourceOptional(Boolean newOptional);
 	
 	
-	// ********** 2.0 derived id **********
+	// ********** 2.0 derived identity **********
 	
-	protected JavaDerivedId2_0 buildDerivedId() {
-		return ((JpaFactory2_0) getJpaFactory()).buildJavaDerivedId(this);
+	protected JavaDerivedIdentity2_0 buildDerivedIdentity() {
+		return ((JpaFactory2_0) getJpaFactory()).buildJavaDerivedIdentity(this);
 	}
 	
-	public JavaDerivedId2_0 getDerivedId() {
-		return this.derivedId;
+	public JavaDerivedIdentity2_0 getDerivedIdentity() {
+		return this.derivedIdentity;
 	}
 	
 	@Override
 	public boolean isIdMapping() {
-		return this.derivedId.getValue();
-	}
-	
-	
-	// ********** 2.0 maps id **********
-	
-	protected JavaMapsId2_0 buildMapsId() {
-		return ((JpaFactory2_0) getJpaFactory()).buildJavaMapsId(this);
-	}
-	
-	public MapsId2_0 getMapsId() {
-		return this.mapsId;
+		return this.derivedIdentity.usesIdDerivedIdentityStrategy();
 	}
 	
 	
@@ -153,6 +135,6 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.derivedId.validate(messages, reporter, astRoot);
+		this.derivedIdentity.validate(messages, reporter, astRoot);
 	}
 }

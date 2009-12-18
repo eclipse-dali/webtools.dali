@@ -181,12 +181,25 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		boolean javaIdValue = this.javaAttributeMapping.getDerivedId().getValue();
+		boolean javaIdValue = this.javaAttributeMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue();
 		return (javaIdValue) ? Boolean.TRUE : null;
 	}
 	
 	@Override
 	public void setId(Boolean newId) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	@Override
+	public String getMapsId() {
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
+		return this.javaAttributeMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue();
+	}
+	
+	@Override
+	public void setMapsId(String newMapsId) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

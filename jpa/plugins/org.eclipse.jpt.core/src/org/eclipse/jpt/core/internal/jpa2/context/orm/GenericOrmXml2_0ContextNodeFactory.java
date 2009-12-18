@@ -40,10 +40,9 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
@@ -63,9 +62,8 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
 
 public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNodeFactory
 {	
@@ -100,10 +98,9 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	}
 	
 	@Override
-	public OrmDerivedId2_0 buildOrmDerivedId(
-			OrmSingleRelationshipMapping2_0 parent, XmlDerivedId_2_0 resource) {
-		
-		return new GenericOrmDerivedId2_0(parent, resource);
+	public OrmDerivedIdentity2_0 buildOrmDerivedIdentity(
+			OrmSingleRelationshipMapping2_0 parent, XmlSingleRelationshipMapping_2_0 resource) {
+		return new GenericOrmDerivedIdentity2_0(parent, resource);
 	}
 	
 	@Override
@@ -111,13 +108,6 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 			OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		
 		return new GenericOrmElementCollectionMapping2_0(parent, resourceMapping);
-	}
-	
-	@Override
-	public OrmMapsId2_0 buildOrmMapsId(
-			OrmSingleRelationshipMapping2_0 parent, XmlMapsId_2_0 resource) {
-		
-		return new GenericOrmMapsId2_0(parent, resource);
 	}
 	
 	@Override

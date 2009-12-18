@@ -13,7 +13,8 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -22,25 +23,44 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericJavaDerivedId2_0
+public class GenericJavaIdDerivedIdentityStrategy2_0
 	extends AbstractJavaJpaContextNode
-	implements JavaDerivedId2_0
+	implements JavaIdDerivedIdentityStrategy2_0
 {
 	protected boolean value;
 	
 	
-	public GenericJavaDerivedId2_0(JavaSingleRelationshipMapping2_0 parent) {
+	public GenericJavaIdDerivedIdentityStrategy2_0(JavaDerivedIdentity2_0 parent) {
 		super(parent);
 	}
 	
 	
-	@Override
-	public JavaSingleRelationshipMapping2_0 getParent() {
-		return (JavaSingleRelationshipMapping2_0) super.getParent();
+	public JavaDerivedIdentity2_0 getDerivedIdentity() {
+		return (JavaDerivedIdentity2_0) super.getParent();
+	}
+	
+	public JavaSingleRelationshipMapping2_0 getMapping() {
+		return getDerivedIdentity().getMapping();
 	}
 	
 	protected JavaResourcePersistentAttribute getResourceAttribute() {
-		return getParent().getPersistentAttribute().getResourcePersistentAttribute();
+		return getMapping().getPersistentAttribute().getResourcePersistentAttribute();
+	}
+	
+	protected IdAnnotation getAnnotation() {
+		return (IdAnnotation) getResourceAttribute().getAnnotation(JPA.ID);
+	}
+	
+	protected boolean getResourceValue() {
+		return getAnnotation() != null;
+	}
+	
+	protected void addAnnotation() {
+		getResourceAttribute().addAnnotation(JPA.ID);
+	}
+	
+	protected void removeAnnotation() {
+		getResourceAttribute().removeAnnotation(JPA.ID);
 	}
 	
 	public boolean getValue() {
@@ -55,10 +75,10 @@ public class GenericJavaDerivedId2_0
 		this.value = newValue;
 		
 		if (newValue) {
-			addIdAnnotation();
+			addAnnotation();
 		}
 		else {
-			removeIdAnnotation();
+			removeAnnotation();
 		}
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
@@ -69,32 +89,32 @@ public class GenericJavaDerivedId2_0
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	protected boolean getResourceDerivedId() {
-		return getIdAnnotation() != null;
+	public boolean isSpecified() {
+		return getAnnotation() != null;
 	}
 	
-	protected IdAnnotation getIdAnnotation() {
-		return (IdAnnotation) getResourceAttribute().getAnnotation(JPA.ID);
+	public void addStrategy() {
+		if (getAnnotation() == null) {
+			addAnnotation();
+		}
 	}
 	
-	protected void addIdAnnotation() {
-		getResourceAttribute().addAnnotation(JPA.ID);
-	}
-	
-	protected void removeIdAnnotation() {
-		getResourceAttribute().removeAnnotation(JPA.ID);
+	public void removeStrategy() {
+		if (getAnnotation() != null) {
+			removeAnnotation();
+		}
 	}
 	
 	public void initialize() {
-		this.value = getResourceDerivedId();
+		this.value = getResourceValue();
 	}
 	
 	public void update() {
-		this.setValue_(getResourceDerivedId());
+		this.setValue_(getResourceValue());
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		IdAnnotation annotation = this.getIdAnnotation();
+		IdAnnotation annotation = this.getAnnotation();
 		return annotation == null ? null : annotation.getTextRange(astRoot);
 	}
 	

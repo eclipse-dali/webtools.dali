@@ -8,11 +8,9 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
+package org.eclipse.jpt.core.jpa2.context;
 
-package org.eclipse.jpt.core.jpa2.context.orm;
-
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.jpa2.context.MapsId2_0;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -24,8 +22,31 @@ import org.eclipse.jpt.core.jpa2.context.MapsId2_0;
  * @version 3.0
  * @since 3.0
  */
-public interface OrmMapsId2_0
-	extends XmlContextNode, MapsId2_0
+public interface DerivedIdentityStrategy2_0
+	extends JpaContextNode
 {
-	void update();
+	/**
+	 * Return the mapping that employs this strategy
+	 */
+	SingleRelationshipMapping2_0 getMapping();
+	
+	/**
+	 * Return the derived identity container
+	 */
+	DerivedIdentity2_0 getDerivedIdentity();
+	
+	/**
+	 * Return whether the strategy is specified on the resource model
+	 */
+	boolean isSpecified();
+	
+	/**
+	 * Add this strategy to the relationship reference
+	 */
+	void addStrategy();
+	
+	/**
+	 * Remove this strategy from the relationship reference
+	 */
+	void removeStrategy();
 }

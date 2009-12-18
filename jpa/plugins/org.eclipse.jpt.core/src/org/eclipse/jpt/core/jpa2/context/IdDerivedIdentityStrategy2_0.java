@@ -8,10 +8,8 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.orm;
+package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.jpa2.context.DerivedId2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,8 +21,21 @@ import org.eclipse.jpt.core.jpa2.context.DerivedId2_0;
  * @version 3.0
  * @since 3.0
  */
-public interface OrmDerivedId2_0 
-	extends XmlContextNode, DerivedId2_0
+public interface IdDerivedIdentityStrategy2_0
+	extends DerivedIdentityStrategy2_0
 {
-	void update();
+	/**
+	 * String associated with changes to the value property of this object
+	 */
+	public static final String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+	
+	/**
+	 * Return whether this object uses a derived id
+	 */
+	boolean getValue();
+	
+	/**
+	 * Set whether this object uses a derived id
+	 */
+	void setValue(boolean newValue);
 }

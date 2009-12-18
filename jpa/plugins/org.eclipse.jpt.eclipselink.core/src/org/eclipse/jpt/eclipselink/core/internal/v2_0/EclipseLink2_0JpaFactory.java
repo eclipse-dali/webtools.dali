@@ -25,9 +25,8 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOve
 import org.eclipse.jpt.core.internal.jpa2.GenericPersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaMapsId2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
@@ -37,10 +36,9 @@ import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -98,18 +96,13 @@ public class EclipseLink2_0JpaFactory
 	}
 	
 	@Override
-	public JavaDerivedId2_0 buildJavaDerivedId(JavaSingleRelationshipMapping2_0 parent) {
-		return new GenericJavaDerivedId2_0(parent);
+	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {
+		return new GenericJavaDerivedIdentity2_0(parent);
 	}
 	
 	@Override
 	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		return new GenericJavaElementCollectionMapping2_0(parent);
-	}
-	
-	@Override
-	public JavaMapsId2_0 buildJavaMapsId(JavaSingleRelationshipMapping2_0 parent) {
-		return new GenericJavaMapsId2_0(parent);
 	}
 	
 	@Override

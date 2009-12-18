@@ -14,14 +14,11 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
-import org.eclipse.jpt.core.jpa2.context.MapsId2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -32,25 +29,21 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 {
 	protected Boolean specifiedOptional;
 	
-	protected final OrmDerivedId2_0 derivedId;
-	
-	protected final OrmMapsId2_0 mapsId;
+	protected final OrmDerivedIdentity2_0 derivedIdentity;
 	
 	
 	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.specifiedOptional = this.getResourceOptional();
 		//TODO defaultOptional
-		this.derivedId = buildDerivedId();
-		this.mapsId = buildMapsId();
+		this.derivedIdentity = buildDerivedIdentity();
 	}
 	
 	
 	@Override
 	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
 		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
-		getDerivedId().setValue(((OrmSingleRelationshipMapping2_0) oldMapping).getDerivedId().getValue());
-		getMapsId().setValue(((OrmSingleRelationshipMapping2_0) oldMapping).getMapsId().getValue());
+		getDerivedIdentity().initializeFrom(((OrmSingleRelationshipMapping2_0) oldMapping).getDerivedIdentity());
 	}
 	
 	@Override
@@ -91,32 +84,20 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	}
 	
 	
-	// ********** 2.0 derived id **********
+	// ********** 2.0 derived identity **********
 	
-	protected OrmDerivedId2_0 buildDerivedId() {
+	protected OrmDerivedIdentity2_0 buildDerivedIdentity() {
 		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
-				buildOrmDerivedId(this, (XmlDerivedId_2_0) this.resourceAttributeMapping);
+				buildOrmDerivedIdentity(this, (XmlSingleRelationshipMapping_2_0) this.resourceAttributeMapping);
 	}
 	
-	public OrmDerivedId2_0 getDerivedId() {
-		return this.derivedId;
+	public OrmDerivedIdentity2_0 getDerivedIdentity() {
+		return this.derivedIdentity;
 	}
 	
 	@Override
 	public boolean isIdMapping() {
-		return this.derivedId.getValue();
-	}
-	
-	
-	// ********** 2.0 maps id **********
-	
-	protected OrmMapsId2_0 buildMapsId() {
-		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
-				buildOrmMapsId(this, (XmlMapsId_2_0) this.resourceAttributeMapping);
-	}
-	
-	public MapsId2_0 getMapsId() {
-		return this.mapsId;
+		return this.derivedIdentity.usesIdDerivedIdentityStrategy();
 	}
 	
 	
@@ -126,8 +107,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	public void update() {
 		super.update();
 		this.setSpecifiedOptional_(this.getResourceOptional());
-		this.derivedId.update();
-		this.mapsId.update();
+		this.derivedIdentity.update();
 	}
 	
 	protected Boolean getResourceOptional() {
@@ -140,7 +120,6 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.derivedId.validate(messages, reporter);
-		this.mapsId.validate(messages, reporter);
+		this.derivedIdentity.validate(messages, reporter);
 	}
 }

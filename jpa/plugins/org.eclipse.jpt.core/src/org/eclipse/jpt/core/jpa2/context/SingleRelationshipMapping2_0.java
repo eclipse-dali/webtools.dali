@@ -25,7 +25,5 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
 public interface SingleRelationshipMapping2_0
 	extends SingleRelationshipMapping
 {
-	DerivedId2_0 getDerivedId();
-	
-	MapsId2_0 getMapsId();
+	DerivedIdentity2_0 getDerivedIdentity();
 }

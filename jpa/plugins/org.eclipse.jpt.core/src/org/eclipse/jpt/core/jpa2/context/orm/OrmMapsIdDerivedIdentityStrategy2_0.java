@@ -8,10 +8,11 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.jpa2.context.DerivedId2_0;
+package org.eclipse.jpt.core.jpa2.context.orm;
+
+import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,16 +24,10 @@ import org.eclipse.jpt.core.jpa2.context.DerivedId2_0;
  * @version 3.0
  * @since 3.0
  */
-public interface JavaDerivedId2_0
-	extends JavaJpaContextNode, DerivedId2_0
+public interface OrmMapsIdDerivedIdentityStrategy2_0
+	extends XmlContextNode, MapsIdDerivedIdentityStrategy2_0
 {
-	/**
-	 * Initialize model without throwing any events
-	 */
-	void initialize();
+	void initializeFrom(OrmMapsIdDerivedIdentityStrategy2_0 oldStrategy);
 	
-	/**
-	 * Update model, throwing events as necessary
-	 */
 	void update();
 }

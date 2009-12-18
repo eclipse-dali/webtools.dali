@@ -8,10 +8,10 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context.orm;
+package org.eclipse.jpt.core.jpa2.context.java;
 
-import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
-import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.jpa2.context.IdDerivedIdentityStrategy2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,8 +23,16 @@ import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
  * @version 3.0
  * @since 3.0
  */
-public interface OrmSingleRelationshipMapping2_0
-	extends OrmSingleRelationshipMapping, SingleRelationshipMapping2_0
+public interface JavaIdDerivedIdentityStrategy2_0
+	extends JavaJpaContextNode, IdDerivedIdentityStrategy2_0
 {
-	public OrmDerivedIdentity2_0 getDerivedIdentity();
+	/**
+	 * Initialize model without throwing any events
+	 */
+	void initialize();
+	
+	/**
+	 * Update model, throwing events as necessary
+	 */
+	void update();
 }

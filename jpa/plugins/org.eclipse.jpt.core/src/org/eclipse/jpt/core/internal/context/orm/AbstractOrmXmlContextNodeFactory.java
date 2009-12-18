@@ -126,16 +126,14 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMeta
 import org.eclipse.jpt.core.internal.jpa1.context.orm.UnsupportedOrmAttributeMapping;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedId2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmMapsId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsId2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
@@ -180,9 +178,8 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0ContextNodeFactory
@@ -387,16 +384,9 @@ public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0Conte
 		return new GenericOrmOrderColumn2_0(parent, owner);
 	}
 	
-	public OrmDerivedId2_0 buildOrmDerivedId(
-			OrmSingleRelationshipMapping2_0 parent, XmlDerivedId_2_0 resource) {
-		
-		return new NullOrmDerivedId2_0(parent);
-	}
-	
-	public OrmMapsId2_0 buildOrmMapsId(
-			OrmSingleRelationshipMapping2_0 parent, XmlMapsId_2_0 resource) {
-		
-		return new NullOrmMapsId2_0(parent);
+	public OrmDerivedIdentity2_0 buildOrmDerivedIdentity(
+			OrmSingleRelationshipMapping2_0 parent, XmlSingleRelationshipMapping_2_0 resource) {
+		return new NullOrmDerivedIdentity2_0(parent);
 	}
 	
 	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(

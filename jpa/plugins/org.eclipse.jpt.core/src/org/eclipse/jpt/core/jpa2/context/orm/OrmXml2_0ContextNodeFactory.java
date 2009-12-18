@@ -18,10 +18,19 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
 
+/**
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.0
+ * @since 3.0
+ */
 public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 {
 	// ********** ORM Context Model **********
@@ -31,14 +40,11 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 			OrmAssociationOverrideContainer.Owner owner, 
 			XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
 	
-	OrmDerivedId2_0 buildOrmDerivedId(
-			OrmSingleRelationshipMapping2_0 parent, XmlDerivedId_2_0 resource);
+	OrmDerivedIdentity2_0 buildOrmDerivedIdentity(
+			OrmSingleRelationshipMapping2_0 parent, XmlSingleRelationshipMapping_2_0 resource);
 	
 	OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(
 			OrmPersistentAttribute parent, XmlElementCollection resourceMapping);
-	
-	OrmMapsId2_0 buildOrmMapsId(
-			OrmSingleRelationshipMapping2_0 parent, XmlMapsId_2_0 resource);
 	
 	XmlElementCollection buildVirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping);

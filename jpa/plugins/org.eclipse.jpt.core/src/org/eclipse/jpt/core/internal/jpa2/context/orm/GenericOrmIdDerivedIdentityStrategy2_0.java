@@ -12,32 +12,37 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedId2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericOrmDerivedId2_0 
+public class GenericOrmIdDerivedIdentityStrategy2_0 
 	extends AbstractOrmXmlContextNode
-	implements OrmDerivedId2_0
+	implements OrmIdDerivedIdentityStrategy2_0
 {
 	protected XmlDerivedId_2_0 resource;
 	
 	protected boolean value;
 	
 	
-	public GenericOrmDerivedId2_0(OrmSingleRelationshipMapping2_0 parent, XmlDerivedId_2_0 resource) {
+	public GenericOrmIdDerivedIdentityStrategy2_0(
+			OrmDerivedIdentity2_0 parent, XmlDerivedId_2_0 resource) {
 		super(parent);
 		this.resource = resource;
 		this.value = getResourceToContextValue();
 	}
 	
 	
-	@Override
-	public OrmSingleRelationshipMapping2_0 getParent() {
-		return (OrmSingleRelationshipMapping2_0) super.getParent();
+	public OrmDerivedIdentity2_0 getDerivedIdentity() {
+		return (OrmDerivedIdentity2_0) getParent();
+	}
+	
+	public OrmSingleRelationshipMapping2_0 getMapping() {
+		return getDerivedIdentity().getMapping();
 	}
 	
 	public boolean getValue() {
@@ -69,8 +74,24 @@ public class GenericOrmDerivedId2_0
 		return (this.value) ? Boolean.TRUE : null;
 	}
 	
+	public boolean isSpecified() {
+		return this.resource.getId() != null;
+	}
+	
+	public void addStrategy() {
+		this.resource.setId(true);
+	}
+	
+	public void removeStrategy() {
+		this.resource.setId(null);
+	}
+	
+	public void initializeFrom(OrmIdDerivedIdentityStrategy2_0 oldStrategy) {
+		setValue(oldStrategy.getValue());
+	}
+	
 	public TextRange getValidationTextRange() {
-		return this.resource.getDerivedIdTextRange();
+		return this.resource.getIdTextRange();
 	}
 	
 	@Override

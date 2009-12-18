@@ -68,5 +68,5 @@ public interface XmlDerivedId_2_0 extends JpaEObject
 	/**
 	 * Return the text range of the derived id part of the XML document
 	 */
-	TextRange getDerivedIdTextRange();
+	TextRange getIdTextRange();
 }

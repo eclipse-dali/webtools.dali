@@ -8,9 +8,11 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
+package org.eclipse.jpt.core.jpa2.context.java;
+
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,21 +24,16 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 3.0
  * @since 3.0
  */
-public interface DerivedId2_0
-	extends JpaContextNode
+public interface JavaMapsIdDerivedIdentityStrategy2_0
+	extends JavaJpaContextNode, MapsIdDerivedIdentityStrategy2_0
 {
 	/**
-	 * String associated with changes to the value property of this object
+	 * Initialize model without throwing any events
 	 */
-	public static final String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+	void initialize();
 	
 	/**
-	 * Return whether this object uses a derived id
+	 * Update model, throwing events as necessary
 	 */
-	boolean getValue();
-	
-	/**
-	 * Set whether this object uses a derived id
-	 */
-	void setValue(boolean newValue);
+	void update();
 }
