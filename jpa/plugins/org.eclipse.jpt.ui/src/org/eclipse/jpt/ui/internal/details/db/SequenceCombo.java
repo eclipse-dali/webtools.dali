@@ -45,7 +45,7 @@ public abstract class SequenceCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values() {
+	protected Iterator<String> values_() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema != null) ? dbSchema.sortedSequenceIdentifiers() : EmptyIterator.<String>instance();
 	}

@@ -45,7 +45,7 @@ public abstract class CatalogCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values() {
+	protected Iterator<String> values_() {
 		Database db = this.getDatabase();
 		return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String>instance();
 	}

@@ -315,7 +315,7 @@ public class ColumnComposite extends FormPane<Column> {
 			}
 
 			@Override
-			protected Iterator<String> values() {
+			protected Iterator<String> values_() {
 				return this.getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
 			}
 			@Override

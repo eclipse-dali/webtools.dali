@@ -45,7 +45,7 @@ public abstract class ColumnCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values() {
+	protected Iterator<String> values_() {
 		Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String>instance();
 	}

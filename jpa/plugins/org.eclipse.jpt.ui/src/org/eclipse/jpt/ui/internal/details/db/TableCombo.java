@@ -45,7 +45,7 @@ public abstract class TableCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values() {
+	protected Iterator<String> values_() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema != null) ? dbSchema.sortedTableIdentifiers() : EmptyIterator.<String>instance();
 	}

@@ -45,7 +45,7 @@ public abstract class SchemaCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values() {
+	protected Iterator<String> values_() {
 		SchemaContainer sc = this.getDbSchemaContainer();
 		return (sc != null) ? sc.sortedSchemaIdentifiers() : EmptyIterator.<String>instance();
 	}
