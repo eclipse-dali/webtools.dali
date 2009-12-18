@@ -24,25 +24,26 @@ import org.eclipse.ui.part.PageBook;
 /**
  *  Queries2_0Composite
  */
-public class Queries2_0Composite extends QueriesComposite
+public class Queries2_0Composite
+	extends QueriesComposite
 {
-
 	public Queries2_0Composite(
-		Pane<?> parentPane, 
-		PropertyValueModel<? extends QueryContainer> subjectHolder,
-		Composite parent) {
-
+			Pane<?> parentPane, 
+			PropertyValueModel<? extends QueryContainer> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
-
+	
+	
+	@Override
 	protected NamedQueryPropertyComposite<NamedQuery2_0> buildNamedQueryPropertyComposite(PageBook pageBook) {
 		return new NamedQueryProperty2_0Composite(
 			this,
 			this.buildNamedQuery2_0Holder(),
-			pageBook
-		);
+			pageBook);
 	}
-
+	
 	protected PropertyValueModel<NamedQuery2_0> buildNamedQuery2_0Holder() {
 		return new TransformationPropertyValueModel<Query, NamedQuery2_0>(this.getQueryHolder()) {
 			@Override
@@ -51,5 +52,4 @@ public class Queries2_0Composite extends QueriesComposite
 			}
 		};
 	}
-	
 }

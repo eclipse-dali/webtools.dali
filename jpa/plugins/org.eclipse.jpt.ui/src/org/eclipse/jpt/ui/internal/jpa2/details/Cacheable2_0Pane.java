@@ -11,9 +11,10 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.DerivedId2_0;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEntity2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
