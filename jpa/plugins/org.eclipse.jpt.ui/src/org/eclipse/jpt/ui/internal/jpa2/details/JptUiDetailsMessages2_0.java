@@ -17,9 +17,14 @@ import org.eclipse.osgi.util.NLS;
  * @version 3.0
  * @since 3.0
  */
-public class JptUiDetailsMessages2_0 {
-
-	public static String DerivedIdPane_derivedIdCheckboxLabel;
+public class JptUiDetailsMessages2_0 
+{
+	public static String DerivedIdentity_title;
+	public static String DerivedIdentity_nullDerivedIdentity;
+	public static String DerivedIdentity_idDerivedIdentity;
+	public static String DerivedIdentity_mapsIdDerivedIdentity;
+	public static String DerivedIdentity_mapsIdUnspecifiedValue;
+	
 	public static String ElementCollectionMapping2_0_label;
 	public static String ElementCollectionMapping2_0_linkLabel;
 	

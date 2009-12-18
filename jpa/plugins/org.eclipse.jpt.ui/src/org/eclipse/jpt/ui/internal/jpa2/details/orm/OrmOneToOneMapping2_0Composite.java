@@ -22,7 +22,7 @@ import org.eclipse.jpt.ui.internal.details.OneToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.DerivedId2_0Pane;
+import org.eclipse.jpt.ui.internal.jpa2.details.DerivedIdentity2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | DerivedId2_0Pane                                                      | |
+ * | | DerivedIdentity2_0Pane                                                | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -101,18 +101,18 @@ public class OrmOneToOneMapping2_0Composite<T extends OrmOneToOneMapping2_0>
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 		
-		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
-		new DerivedId2_0Pane(this, this.buildDerivedIdHolder(), this.addPane(container, groupBoxMargin));
-		new OneToOneJoiningStrategyPane(this, this.buildJoiningHolder(), container);
-		new AccessTypeComposite(this, this.buildAccessHolderHolder(), this.addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
-		new OptionalComposite(this, this.addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
-		new CascadeComposite(this, this.buildCascadeHolder(),  this.addSubPane(container, 5));
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
+		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new OrphanRemoval2_0Composite(this, buildOrphanRemovableHolder(), addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
 		
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmOneToOneMapping, AccessHolder>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmOneToOneMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
@@ -121,7 +121,7 @@ public class OrmOneToOneMapping2_0Composite<T extends OrmOneToOneMapping2_0>
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();

@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractManyToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.DerivedId2_0Pane;
+import org.eclipse.jpt.ui.internal.jpa2.details.DerivedIdentity2_0Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | DerivedId2_0Pane                                                      | |
+ * | | DerivedIdentity2_0Pane                                                | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -86,7 +86,7 @@ public class OrmEclipseLinkManyToOneMapping2_0Composite<T extends OrmManyToOneMa
 		int groupBoxMargin = getGroupBoxMargin();
 		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new DerivedId2_0Pane(this, buildDerivedIdHolder(), addPane(container, groupBoxMargin));
+		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
 		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
@@ -102,5 +102,4 @@ public class OrmEclipseLinkManyToOneMapping2_0Composite<T extends OrmManyToOneMa
 			}
 		};
 	}
-
 }

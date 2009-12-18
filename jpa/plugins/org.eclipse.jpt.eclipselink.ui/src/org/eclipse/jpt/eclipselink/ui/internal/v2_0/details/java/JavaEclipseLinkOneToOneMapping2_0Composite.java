@@ -24,7 +24,7 @@ import org.eclipse.jpt.ui.internal.details.OneToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.DerivedId2_0Pane;
+import org.eclipse.jpt.ui.internal.jpa2.details.DerivedIdentity2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | DerivedId2_0Pane                                                      | |
+ * | | DerivedIdentity2_0Pane                                                | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -96,20 +96,20 @@ public class JavaEclipseLinkOneToOneMapping2_0Composite<T extends JavaOneToOneMa
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = this.getGroupBoxMargin();
 		
-		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
-		new DerivedId2_0Pane(this, this.buildDerivedIdHolder(), this.addPane(container, groupBoxMargin));
-		new OneToOneJoiningStrategyPane(this, this.buildJoiningHolder(), container);
-		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
-		new EclipseLinkJoinFetchComposite(this, this.buildJoinFetchableHolder(), this.addPane(container, groupBoxMargin));
-		new OptionalComposite(this, this.addPane(container, groupBoxMargin));
-		new EclipseLinkPrivateOwnedComposite(this, this.buildPrivateOwnableHolder(), this.addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
-		new CascadeComposite(this, this.buildCascadeHolder(),  this.addSubPane(container, 5));
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
+		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
+		new OrphanRemoval2_0Composite(this, buildOrphanRemovableHolder(), addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
 	
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
 				return ((EclipseLinkOneToOneMapping) this.subject).getJoinFetch();
