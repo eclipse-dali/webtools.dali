@@ -12,13 +12,14 @@ package org.eclipse.jpt.ui.internal.jpa2.details;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.ui.internal.details.AssociationOverrideComposite;
+import org.eclipse.jpt.ui.internal.details.EntityOverridesComposite;
+import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.ui.internal.details.JoinTableJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * Here the layout of this pane:
@@ -36,7 +37,8 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.2
  * @since 1.0
  */
-public class AssociationOverride2_0Composite extends AssociationOverrideComposite
+public class AssociationOverride2_0Composite
+	extends AssociationOverrideComposite
 {
 	/**
 	 * Creates a new <code>AssociationOverrideComposite</code>.
@@ -46,28 +48,30 @@ public class AssociationOverride2_0Composite extends AssociationOverrideComposit
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AssociationOverride2_0Composite(FormPane<?> parentPane, 
-								PropertyValueModel<? extends AssociationOverride> subjectHolder,
-								Composite parent) {
-
+			PropertyValueModel<? extends AssociationOverride> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
-
+	
+	
 	@Override
 	protected void initializeLayout(Composite container) {
-		// joining strategy group pane
-		Group groupPane = addTitledGroup(
-			container,
-			JptUiDetailsMessages.Joining_title
-		);
+		Composite composite = addTitledGroup(
+				container,
+				JptUiDetailsMessages.Joining_title);
 		
-		addJoinColumnJoiningStrategyPane(groupPane);
-		addJoinTableJoiningStrategyPane(groupPane);
+		addJoinColumnJoiningStrategyPane(composite);
+		
+		addJoinTableJoiningStrategyPane(composite);
+		
+		addSubPane(composite, 5);
 	}
-
+	
 	protected void addJoinTableJoiningStrategyPane(Composite container) {
 		new JoinTableJoiningStrategyPane(this, buildRelationshipReferenceHolder(), container);		
 	}
-
+	
 	private PropertyValueModel<AssociationOverrideRelationshipReference2_0> buildRelationshipReferenceHolder() {
 		return new TransformationPropertyValueModel<AssociationOverride, AssociationOverrideRelationshipReference2_0>(getSubjectHolder()) {
 			@Override
@@ -82,5 +86,4 @@ public class AssociationOverride2_0Composite extends AssociationOverrideComposit
 		super.enableWidgets(enabled);
 //		this.joinColumnsComposite.enableWidgets(enabled);
 	}
-
 }

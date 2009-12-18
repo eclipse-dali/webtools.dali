@@ -15,7 +15,6 @@ import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * Here the layout of this pane:
@@ -33,9 +32,9 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.2
  * @since 1.0
  */
-public class AssociationOverrideComposite extends FormPane<AssociationOverride>
+public class AssociationOverrideComposite
+	extends FormPane<AssociationOverride>
 {
-
 	/**
 	 * Creates a new <code>AssociationOverrideComposite</code>.
 	 *
@@ -44,23 +43,24 @@ public class AssociationOverrideComposite extends FormPane<AssociationOverride>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AssociationOverrideComposite(FormPane<?> parentPane, 
-								PropertyValueModel<? extends AssociationOverride> subjectHolder,
-								Composite parent) {
-
+			PropertyValueModel<? extends AssociationOverride> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
-
+	
+	
 	@Override
 	protected void initializeLayout(Composite container) {
-		// joining strategy group pane
-		Group groupPane = addTitledGroup(
-			container,
-			JptUiDetailsMessages.Joining_title
-		);
+		Composite composite = addTitledGroup(
+				container,
+				JptUiDetailsMessages.Joining_title);
 		
-		addJoinColumnJoiningStrategyPane(groupPane);
+		addJoinColumnJoiningStrategyPane(composite);
+		
+		addSubPane(composite, 5);
 	}
-
+	
 	protected void addJoinColumnJoiningStrategyPane(Composite container) {
 		JoinColumnJoiningStrategyPane.
 			buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
@@ -77,5 +77,4 @@ public class AssociationOverrideComposite extends FormPane<AssociationOverride>
 			}
 		};
 	}
-
 }

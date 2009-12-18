@@ -44,9 +44,9 @@ public class JoinColumnJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
 		<JoinColumnEnabledRelationshipReference, JoinColumnJoiningStrategy>
 {
-
 	private final boolean includeOverrideCheckBox;
-
+	
+	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
 		FormPane<? extends JoinColumnEnabledRelationshipReference> parentPane, 
 		Composite parent) {
@@ -72,7 +72,8 @@ public class JoinColumnJoiningStrategyPane
         Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, subjectHolder, parent, false);
 	}
-
+	
+	
 	private JoinColumnJoiningStrategyPane(
 			FormPane<? extends JoinColumnEnabledRelationshipReference> parentPane, 
 			Composite parent,
@@ -83,14 +84,15 @@ public class JoinColumnJoiningStrategyPane
 	}
 	
 	private JoinColumnJoiningStrategyPane(FormPane<?> parentPane,
-		PropertyValueModel<? extends JoinColumnEnabledRelationshipReference> subjectHolder,
-        Composite parent,
-        boolean includeOverrideCheckBox) {
-
+			PropertyValueModel<? extends JoinColumnEnabledRelationshipReference> subjectHolder,
+			Composite parent,
+			boolean includeOverrideCheckBox) {
+		
 		super(parentPane, subjectHolder, parent);
 		this.includeOverrideCheckBox = includeOverrideCheckBox;
 		initializeLayout2(getControl());
 	}
+	
 	
 	@Override
 	protected void initializeLayout(Composite container) {

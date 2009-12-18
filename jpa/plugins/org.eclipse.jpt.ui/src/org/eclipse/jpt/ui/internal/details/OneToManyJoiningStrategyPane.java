@@ -13,9 +13,9 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * Here is the layout of this pane:  
@@ -50,20 +50,22 @@ public class OneToManyJoiningStrategyPane
 			FormPane<?> parentPane, 
 			PropertyValueModel<OneToManyRelationshipReference> subjectHolder, 
 			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
 	
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		// joining strategy group pane
-		Group groupPane = addTitledGroup(
-			container,
-			JptUiDetailsMessages.Joining_title
-		);
+		Composite composite = addCollapsableSection(
+				container,
+				JptUiDetailsMessages.Joining_title,
+				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 		
-		new MappedByJoiningStrategyPane(this, groupPane);
+		new MappedByJoiningStrategyPane(this, composite);
 		
-		new JoinTableJoiningStrategyPane(this, groupPane);
+		new JoinTableJoiningStrategyPane(this, composite);
+		
+		addSubPane(composite, 5);
 	}
 }

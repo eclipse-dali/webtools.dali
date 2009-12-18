@@ -13,9 +13,9 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * Here is the layout of this pane:  
@@ -55,25 +55,25 @@ public class OneToOneJoiningStrategyPane
 			FormPane<?> parentPane, 
 			PropertyValueModel<OneToOneRelationshipReference> subjectHolder, 
 			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
 	
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		// joining strategy group pane
-		Group groupPane = addTitledGroup(
-			container,
-			JptUiDetailsMessages.Joining_title
-		);
+		Composite composite = addCollapsableSection(
+				container,
+				JptUiDetailsMessages.Joining_title,
+				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 		
-		new MappedByJoiningStrategyPane(this, groupPane);
+		new MappedByJoiningStrategyPane(this, composite);
 		
-		new PrimaryKeyJoinColumnJoiningStrategyPane(this, groupPane);
+		new PrimaryKeyJoinColumnJoiningStrategyPane(this, composite);
 		
 		JoinColumnJoiningStrategyPane.
-			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
-				this, 
-				groupPane);
+				buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(this, composite);
+		
+		addSubPane(composite, 5);
 	}
 }
