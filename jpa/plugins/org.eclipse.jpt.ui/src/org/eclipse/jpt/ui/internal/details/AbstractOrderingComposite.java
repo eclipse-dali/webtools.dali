@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
@@ -37,14 +37,14 @@ import org.eclipse.swt.widgets.Text;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see MultiRelationshipMapping
+ * @see CollectionMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
  *
  * @version 3.0
  * @since 1.0
  */
-public abstract class AbstractOrderingComposite extends FormPane<MultiRelationshipMapping>
+public abstract class AbstractOrderingComposite extends FormPane<CollectionMapping>
 {
 	/**
 	 * Creates a new <code>OrderingComposite</code>.
@@ -52,7 +52,7 @@ public abstract class AbstractOrderingComposite extends FormPane<MultiRelationsh
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected AbstractOrderingComposite(FormPane<? extends MultiRelationshipMapping> parentPane,
+	protected AbstractOrderingComposite(FormPane<? extends CollectionMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -65,7 +65,7 @@ public abstract class AbstractOrderingComposite extends FormPane<MultiRelationsh
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	protected AbstractOrderingComposite(PropertyValueModel<? extends MultiRelationshipMapping> subjectHolder,
+	protected AbstractOrderingComposite(PropertyValueModel<? extends CollectionMapping> subjectHolder,
 	                         Composite parent,
 	                         WidgetFactory widgetFactory) {
 
@@ -74,7 +74,7 @@ public abstract class AbstractOrderingComposite extends FormPane<MultiRelationsh
 
 	
 	protected PropertyValueModel<Orderable> buildOrderableHolder() {
-		return new PropertyAspectAdapter<MultiRelationshipMapping, Orderable>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<CollectionMapping, Orderable>(getSubjectHolder()) {
 			@Override
 			protected Orderable buildValue_() {
 				return this.subject.getOrderable();

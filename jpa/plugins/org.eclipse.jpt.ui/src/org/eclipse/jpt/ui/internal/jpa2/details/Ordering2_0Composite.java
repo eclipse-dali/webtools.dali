@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
@@ -25,7 +25,6 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -45,7 +44,7 @@ import org.eclipse.swt.widgets.Text;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see MultiRelationshipMapping
+ * @see CollectionMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
  *
@@ -60,7 +59,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public Ordering2_0Composite(FormPane<? extends MultiRelationshipMapping> parentPane,
+	public Ordering2_0Composite(FormPane<? extends CollectionMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -73,7 +72,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public Ordering2_0Composite(PropertyValueModel<? extends MultiRelationshipMapping> subjectHolder,
+	public Ordering2_0Composite(PropertyValueModel<? extends CollectionMapping> subjectHolder,
 	                         Composite parent,
 	                         WidgetFactory widgetFactory) {
 
@@ -84,15 +83,14 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 	protected void initializeLayout(Composite container) {
 		PropertyValueModel<Orderable> orderableHolder = buildOrderableHolder();
 
-		// Ordering group
-		Group orderingGroup = addTitledGroup(
+		container = addCollapsableSection(
 			container,
-			JptUiDetailsMessages.OrderingComposite_orderingGroup,
-			JpaHelpContextIds.MAPPING_ORDER_BY);
+			JptUiDetailsMessages.OrderingComposite_orderingGroup
+		);
 
 		// No Ordering radio button
 		addRadioButton(
-			addSubPane(orderingGroup, 8),
+			container,
 			JptUiDetailsMessages.OrderingComposite_none,
 			buildNoOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
@@ -100,7 +98,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 
 		// Order by Primary Key radio button
 		addRadioButton(
-			orderingGroup,
+			container,
 			JptUiDetailsMessages.OrderingComposite_primaryKey,
 			buildPrimaryKeyOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
@@ -108,7 +106,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 
 		// Custom Ordering radio button
 		addRadioButton(
-			orderingGroup,
+			container,
 			JptUiDetailsMessages.OrderingComposite_custom,
 			buildCustomOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
@@ -116,7 +114,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 
 		// Custom Ordering text field
 		Text customOrderingText = addUnmanagedText(
-			addSubPane(orderingGroup, 0, 16),
+			addSubPane(container, 0, 16),
 			buildSpecifiedOrderByHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY
 		);
@@ -126,7 +124,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 		
 		// Order Column Ordering radio button
 		addRadioButton(
-			orderingGroup,
+			container,
 			JptUiDetailsMessages2_0.OrderingComposite_orderColumn,
 			buildOrderColumnOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_COLUMN_ORDERING
@@ -135,7 +133,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 		OrderColumnComposite orderColumnComposite = new OrderColumnComposite(
 			this,
 			buildOrderColumnHolder(orderableHolder), 
-			addSubPane(orderingGroup, 0, 16));
+			addSubPane(container, 0, 16));
 
 		installOrderColumnCompositeEnabler(orderableHolder, orderColumnComposite);
 	}

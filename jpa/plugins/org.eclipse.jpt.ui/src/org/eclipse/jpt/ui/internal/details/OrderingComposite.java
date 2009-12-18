@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -36,7 +35,7 @@ import org.eclipse.swt.widgets.Text;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see MultiRelationshipMapping
+ * @see CollectionMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
  *
@@ -51,7 +50,7 @@ public class OrderingComposite extends AbstractOrderingComposite
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrderingComposite(FormPane<? extends MultiRelationshipMapping> parentPane,
+	public OrderingComposite(FormPane<? extends CollectionMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -64,7 +63,7 @@ public class OrderingComposite extends AbstractOrderingComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrderingComposite(PropertyValueModel<? extends MultiRelationshipMapping> subjectHolder,
+	public OrderingComposite(PropertyValueModel<? extends CollectionMapping> subjectHolder,
 	                         Composite parent,
 	                         WidgetFactory widgetFactory) {
 
@@ -75,15 +74,14 @@ public class OrderingComposite extends AbstractOrderingComposite
 	protected void initializeLayout(Composite container) {
 		PropertyValueModel<Orderable> orderableHolder = buildOrderableHolder();
 		
-		// Order By group
-		Group orderByGroup = addTitledGroup(
+		container = addCollapsableSection(
 			container,
-			JptUiDetailsMessages.OrderingComposite_orderingGroup,
-			JpaHelpContextIds.MAPPING_ORDER_BY);
+			JptUiDetailsMessages.OrderingComposite_orderingGroup
+		);
 
 		// No Ordering radio button
 		addRadioButton(
-			addSubPane(orderByGroup, 8),
+			container,
 			JptUiDetailsMessages.OrderingComposite_none,
 			buildNoOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
@@ -91,7 +89,7 @@ public class OrderingComposite extends AbstractOrderingComposite
 
 		// Order by Primary Key radio button
 		addRadioButton(
-			orderByGroup,
+			container,
 			JptUiDetailsMessages.OrderingComposite_primaryKey,
 			buildPrimaryKeyOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
@@ -99,7 +97,7 @@ public class OrderingComposite extends AbstractOrderingComposite
 
 		// Custom Ordering radio button
 		addRadioButton(
-			orderByGroup,
+			container,
 			JptUiDetailsMessages.OrderingComposite_custom,
 			buildCustomOrderingHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
@@ -107,7 +105,7 @@ public class OrderingComposite extends AbstractOrderingComposite
 
 		// Custom Ordering text field
 		Text customOrderingText = addUnmanagedText(
-			addSubPane(orderByGroup, 0, 16),
+			addSubPane(container, 0, 16),
 			buildSpecifiedOrderByHolder(orderableHolder),
 			JpaHelpContextIds.MAPPING_ORDER_BY
 		);

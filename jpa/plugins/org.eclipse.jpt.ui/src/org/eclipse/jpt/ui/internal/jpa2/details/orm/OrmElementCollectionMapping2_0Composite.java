@@ -15,6 +15,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -39,6 +40,7 @@ public class OrmElementCollectionMapping2_0Composite extends AbstractElementColl
 	protected void initializeGeneralPane(Composite container) {
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 		new FetchTypeComposite(this, container);
+		new Ordering2_0Composite(this, container);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
