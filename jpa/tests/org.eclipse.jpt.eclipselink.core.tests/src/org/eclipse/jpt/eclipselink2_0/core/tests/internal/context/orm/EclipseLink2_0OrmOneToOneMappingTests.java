@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
@@ -41,37 +42,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 	}
 	
 	
-	private void createTestEntity() throws Exception {
-		createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE);
-			}
-			
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity");
-				sb.append(CR);
-			}
-			
-			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append(CR);
-				sb.append("    @OneToOne");
-				sb.append(CR);
-				sb.append("    private Address address;");
-				sb.append(CR);
-				sb.append(CR);
-				sb.append("    @Id");			
-			}
-		});
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
-			each.makeSpecified();
-		}
-	}
-	
-	private void createTestEntityWithDerivedId() throws Exception {
+	private void createTestEntityWithIdDerivedIdentity() throws Exception {
 		createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -86,6 +57,31 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    @OneToOne @Id").append(CR);				
+				sb.append("    private " + TYPE_NAME + " oneToOne;").append(CR);
+				sb.append(CR);				
+			}
+		});
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.makeSpecified();
+		}
+	}
+	
+	private void createTestEntityWithMapsIdDerivedIdentity() throws Exception {
+		createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE, JPA2_0.MAPS_ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToOne @MapsId").append(CR);				
 				sb.append("    private " + TYPE_NAME + " oneToOne;").append(CR);
 				sb.append(CR);				
 			}
@@ -175,7 +171,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 	}
 	
 	public void testUpdateDerivedId() throws Exception {
-		createTestEntityWithDerivedId();
+		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
@@ -183,23 +179,23 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
-		assertFalse(contextMapping.getDerivedId().getValue());
+		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		resourceMapping.setId(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, resourceMapping.getId());
-		assertFalse(contextMapping.getDerivedId().getValue());
+		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		resourceMapping.setId(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
-		assertTrue(contextMapping.getDerivedId().getValue());
+		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		resourceMapping.setId(null);
 		assertNull(resourceMapping.getId());
-		assertFalse(contextMapping.getDerivedId().getValue());
+		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 	}
 	
 	public void testSetDerivedId() throws Exception {
-		createTestEntityWithDerivedId();
+		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
@@ -207,89 +203,97 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
-		assertFalse(contextMapping.getDerivedId().getValue());
+		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
-		contextMapping.getDerivedId().setValue(true);
+		contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().setValue(true);
 		assertEquals(Boolean.TRUE, resourceMapping.getId());
-		assertTrue(contextMapping.getDerivedId().getValue());
+		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
-		contextMapping.getDerivedId().setValue(false);
+		contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().setValue(false);
 		assertNull(resourceMapping.getId());
-		assertFalse(contextMapping.getDerivedId().getValue());
+		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 	}
 	
 	public void testUpdateMapsId() throws Exception {
-		createTestEntity();
+		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("address");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getMapsId().getValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		resourceMapping.setMapsId("foo");
 		assertEquals("foo", resourceMapping.getMapsId());
-		assertEquals("foo", contextMapping.getMapsId().getValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		resourceMapping.setMapsId("bar");
 		assertEquals("bar", resourceMapping.getMapsId());
-		assertEquals("bar", contextMapping.getMapsId().getValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		resourceMapping.setMapsId(null);
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getMapsId().getValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 	}
 	
 	public void testSetMapsId() throws Exception {
-		createTestEntity();
+		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("address");
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getMapsId().getValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextMapping.getMapsId().setValue("foo");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("foo");
 		assertEquals("foo", resourceMapping.getMapsId());
-		assertEquals("foo", contextMapping.getMapsId().getValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextMapping.getMapsId().setValue("bar");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("bar");
 		assertEquals("bar", resourceMapping.getMapsId());
-		assertEquals("bar", contextMapping.getMapsId().getValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextMapping.getMapsId().setValue(null);
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue(null);
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getMapsId().getValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 	}
 	
 	public void testMorphMapping() throws Exception {
-		createTestEntityWithDerivedId();
+		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
 		
 		XmlOneToOne resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
-		resourceOneToOne.setId(Boolean.TRUE);
 		resourceOneToOne.setMapsId("foo");
-		assertEquals(Boolean.TRUE, resourceOneToOne.getId());
+		assertNull(resourceOneToOne.getId());
+		assertFalse(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
+				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertEquals("foo", resourceOneToOne.getMapsId());
-		assertTrue(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
+		assertEquals("foo", ((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		XmlManyToOne resourceManyToOne = resourceEntity.getAttributes().getManyToOnes().get(0);
-		assertEquals(Boolean.TRUE, resourceManyToOne.getId());
+		assertNull(resourceManyToOne.getId());
+		assertFalse(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).
+				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertEquals("foo", resourceManyToOne.getMapsId());
-		assertTrue(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
+		assertEquals("foo", ((OrmManyToOneMapping2_0) contextAttribute.getMapping()).
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
-		assertEquals(Boolean.TRUE, resourceOneToOne.getId());
+		assertNull(resourceOneToOne.getId());
+		assertFalse(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
+				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertEquals("foo", resourceOneToOne.getMapsId());
-		assertTrue(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).getDerivedId().getValue());
+		assertEquals("foo", ((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 	}
 	
 	public void testCandidateMappedByAttributeNames() throws Exception {
