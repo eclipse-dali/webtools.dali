@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverrides2_0A
 import org.eclipse.jpt.core.internal.jpa2.resource.java.Cacheable2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.CollectionTable2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.MapKeyClass2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQueries2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQuery2_0AnnotationDefinition;
@@ -150,6 +151,7 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(ManyToOneAnnotationDefinition.instance());
 		definitions.add(MapsId2_0AnnotationDefinition.instance());
 		definitions.add(MapKeyAnnotationDefinition.instance());
+		definitions.add(MapKeyClass2_0AnnotationDefinition.instance());
 		definitions.add(OneToMany2_0AnnotationDefinition.instance());
 		definitions.add(OneToOne2_0AnnotationDefinition.instance());
 		definitions.add(OrderByAnnotationDefinition.instance());
