@@ -54,7 +54,7 @@ public class JavaEclipseLinkOneToManyMappingDefinition
 	
 	@Override
 	public boolean testDefault(JavaPersistentAttribute persistentAttribute) {
-		String targetEntity = persistentAttribute.getMultiReferenceEntityTypeName();
+		String targetEntity = persistentAttribute.getMultiReferenceTargetTypeName();
 		return (targetEntity != null) 
 				&& (persistentAttribute.getPersistenceUnit().getEntity(targetEntity) != null);
 	}

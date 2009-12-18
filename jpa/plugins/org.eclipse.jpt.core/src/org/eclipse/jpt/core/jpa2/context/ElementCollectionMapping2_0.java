@@ -10,11 +10,33 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.Fetchable;
+import org.eclipse.jpt.core.context.CollectionMapping;
+import org.eclipse.jpt.core.context.Embeddable;
 
 public interface ElementCollectionMapping2_0
-	extends AttributeMapping2_0, Fetchable
+	extends AttributeMapping2_0, CollectionMapping
 {
-	FetchType DEFAULT_FETCH_TYPE = FetchType.LAZY;	
+	
+	// **************** target class **************************************
+	
+	String getTargetClass();
+
+	String getSpecifiedTargetClass();
+	void setSpecifiedTargetClass(String value);
+		String SPECIFIED_TARGET_CLASS_PROPERTY = "specifiedTargetClass"; //$NON-NLS-1$
+
+	String getDefaultTargetClass();
+		String DEFAULT_TARGET_CLASS_PROPERTY = "defaultTargetClass"; //$NON-NLS-1$
+
+	/**
+	 * If the target class is a basic type this will return null.
+	 */
+	Embeddable getResolvedTargetEmbeddable();
+		String RESOLVED_TARGET_EMBEDDABLE_PROPERTY = "resolvedTargetEmbeddable"; //$NON-NLS-1$
+	/**
+	 * Return the char to be used for browsing or creating the target class IType.
+	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
+	 */
+	char getTargetClassEnclosingTypeSeparator();
+
 }

@@ -75,6 +75,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		names.add(JPA.MAP_KEY);
 		names.add(JPA.ORDER_BY);
 		if (this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+			names.add(JPA2_0.MAP_KEY_CLASS);
+			names.add(JPA2_0.MAP_KEY_COLUMN);
+			names.add(JPA2_0.MAP_KEY_ENUMERATED);
+			names.add(JPA2_0.MAP_KEY_JOIN_COLUMN);
+			names.add(JPA2_0.MAP_KEY_JOIN_COLUMNS);
+			names.add(JPA2_0.MAP_KEY_TEMPORAL);
 			names.add(JPA2_0.ORDER_COLUMN);
 		}
 	}
@@ -83,7 +89,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	@Override
 	protected String buildDefaultTargetEntity() {
-		return this.getPersistentAttribute().getMultiReferenceEntityTypeName();
+		return this.getPersistentAttribute().getMultiReferenceTargetTypeName();
 	}
 
 

@@ -145,4 +145,14 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	public void setAccess(AccessType value) {
 		this.virtualXmlElementCollection.setAccess(value);
 	}
+	
+	@Override
+	public String getTargetClass() {
+		return this.virtualXmlElementCollection.getTargetClass();
+	}
+	
+	@Override
+	public void setTargetClass(String newTargetClass) {
+		this.virtualXmlElementCollection.setTargetClass(newTargetClass);
+	}
 }

@@ -122,7 +122,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	@Override
 	protected String buildDefaultTargetEntity() {
-		return this.getPersistentAttribute().getSingleReferenceEntityTypeName();
+		return this.getPersistentAttribute().getSingleReferenceTargetTypeName();
 	}
 	
 	

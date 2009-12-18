@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
@@ -67,21 +68,21 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
-				sb.append("    @ElementCollection(fetch=FetchType.LAZY)");
+				sb.append("    @ElementCollection(targetClass=String.class, fetch=FetchType.EAGER)");
 				sb.append(CR);
-				sb.append("    private Address address;").append(CR);
+				sb.append("    private java.util.Collection<Address> address;").append(CR);
 				sb.append(CR);
 				sb.append("    @Id");				
 			}
 		});
 	}	
 	
-	private void createTestTargetEntityAddress() throws Exception {
+	private void createTestTargetEmbeddableAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
 					sb.append("import ");
-					sb.append(JPA.ENTITY);
+					sb.append(JPA.EMBEDDABLE);
 					sb.append(";");
 					sb.append(CR);
 					sb.append("import ");
@@ -149,61 +150,13 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertNull(ormElementCollectionMapping.getName());
 		assertNull(elementCollection.getName());
 	}
-	
-	public void testUpdateSpecifiedFetch() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
-		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
-		
-		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
-		assertNull(elementCollection.getFetch());
-				
-		//set fetch in the resource model, verify context model updated
-		elementCollection.setFetch(org.eclipse.jpt.core.resource.orm.FetchType.EAGER);
-		assertEquals(FetchType.EAGER, ormElementCollectionMapping.getSpecifiedFetch());
-		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.EAGER, elementCollection.getFetch());
-	
-		elementCollection.setFetch(org.eclipse.jpt.core.resource.orm.FetchType.LAZY);
-		assertEquals(FetchType.LAZY, ormElementCollectionMapping.getSpecifiedFetch());
-		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.LAZY, elementCollection.getFetch());
-
-		//set fetch to null in the resource model
-		elementCollection.setFetch(null);
-		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
-		assertNull(elementCollection.getFetch());
-	}
-	
-	public void testModifySpecifiedFetch() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
-		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
-		
-		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
-		assertNull(elementCollection.getFetch());
-				
-		//set fetch in the context model, verify resource model updated
-		ormElementCollectionMapping.setSpecifiedFetch(FetchType.EAGER);
-		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.EAGER, elementCollection.getFetch());
-		assertEquals(FetchType.EAGER, ormElementCollectionMapping.getSpecifiedFetch());
-	
-		ormElementCollectionMapping.setSpecifiedFetch(FetchType.LAZY);
-		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.LAZY, elementCollection.getFetch());
-		assertEquals(FetchType.LAZY, ormElementCollectionMapping.getSpecifiedFetch());
-
-		//set fetch to null in the context model
-		ormElementCollectionMapping.setSpecifiedFetch(null);
-		assertNull(elementCollection.getFetch());
-		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
-	}
 
 	public void testMappingNoUnderylingJavaAttribute() throws Exception {
 		createTestEntityElementCollectionMapping();
-		createTestTargetEntityAddress();
+		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "foo");
 		assertEquals(3, ormPersistentType.virtualAttributesSize());
 		
@@ -219,24 +172,34 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	
 	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
 		createTestEntityElementCollectionMapping();
-		createTestTargetEntityAddress();
+		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormElementCollectionMapping.getName());
-		assertEquals(FetchType.LAZY, ormElementCollectionMapping.getSpecifiedFetch());
+		assertEquals(FetchType.EAGER, ormElementCollectionMapping.getSpecifiedFetch());
+		assertEquals("String", ormElementCollectionMapping.getSpecifiedTargetClass());
+		
+		ormPersistentAttribute.makeSpecified();
+		ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();	
+		assertEquals("address", ormElementCollectionMapping.getName());
+		assertEquals(null, ormElementCollectionMapping.getSpecifiedFetch());
+		assertEquals(FetchType.LAZY, ormElementCollectionMapping.getDefaultFetch());
+		assertEquals(null, ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertEquals(PACKAGE_NAME + ".Address", ormElementCollectionMapping.getDefaultTargetClass());
 	}
 	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
 		createTestEntityElementCollectionMapping();
-		createTestTargetEntityAddress();
+		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
@@ -253,10 +216,10 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	
 	public void testSpecifiedMapping() throws Exception {
 		createTestEntityElementCollectionMapping();
-		createTestTargetEntityAddress();
+		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 
 		ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "address");
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
@@ -417,4 +380,94 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 //TODO	assertEquals(FetchType.EAGER, ((IBasicMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
 	}
+	
+	public void testUpdateSpecifiedFetch() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
+		assertNull(elementCollection.getFetch());
+				
+		//set fetch in the resource model, verify context model updated
+		elementCollection.setFetch(org.eclipse.jpt.core.resource.orm.FetchType.EAGER);
+		assertEquals(FetchType.EAGER, ormElementCollectionMapping.getSpecifiedFetch());
+		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.EAGER, elementCollection.getFetch());
+	
+		elementCollection.setFetch(org.eclipse.jpt.core.resource.orm.FetchType.LAZY);
+		assertEquals(FetchType.LAZY, ormElementCollectionMapping.getSpecifiedFetch());
+		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.LAZY, elementCollection.getFetch());
+
+		//set fetch to null in the resource model
+		elementCollection.setFetch(null);
+		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
+		assertNull(elementCollection.getFetch());
+	}
+	
+	public void testModifySpecifiedFetch() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
+		assertNull(elementCollection.getFetch());
+				
+		//set fetch in the context model, verify resource model updated
+		ormElementCollectionMapping.setSpecifiedFetch(FetchType.EAGER);
+		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.EAGER, elementCollection.getFetch());
+		assertEquals(FetchType.EAGER, ormElementCollectionMapping.getSpecifiedFetch());
+	
+		ormElementCollectionMapping.setSpecifiedFetch(FetchType.LAZY);
+		assertEquals(org.eclipse.jpt.core.resource.orm.FetchType.LAZY, elementCollection.getFetch());
+		assertEquals(FetchType.LAZY, ormElementCollectionMapping.getSpecifiedFetch());
+
+		//set fetch to null in the context model
+		ormElementCollectionMapping.setSpecifiedFetch(null);
+		assertNull(elementCollection.getFetch());
+		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
+	}	
+	
+	public void testUpdateSpecifiedTargetClass() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+				
+		//set target class in the resource model, verify context model updated
+		elementCollection.setTargetClass("newTargetClass");
+		assertEquals("newTargetClass", ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertEquals("newTargetClass", elementCollection.getTargetClass());
+	
+		//set target class to null in the resource model
+		elementCollection.setTargetClass(null);
+		assertNull(ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+	}
+	
+	public void testModifySpecifiedTargetClass() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+				
+		//set target class in the context model, verify resource model updated
+		ormElementCollectionMapping.setSpecifiedTargetClass("newTargetClass");
+		assertEquals("newTargetClass", ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertEquals("newTargetClass", elementCollection.getTargetClass());
+	
+		//set target class to null in the context model
+		ormElementCollectionMapping.setSpecifiedTargetClass(null);
+		assertNull(ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+	}
+
+	
 }

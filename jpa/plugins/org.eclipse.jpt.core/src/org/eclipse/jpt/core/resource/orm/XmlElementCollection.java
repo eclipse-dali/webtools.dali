@@ -1511,21 +1511,21 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			buildFetchTranslator(),
 			buildAccessTranslator(),
 			buildOrderByTranslator(),
-			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn()),		
+			buildOrderColumnTranslator(),
 			buildMapKeyTranslator(),
-			XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass()),		
+			buildMapKeyClassTranslator(),
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyAttributeOverrides()),		
-			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),		
-			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),		
-			XmlColumn.buildTranslator(JPA2_0.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),		
+			XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyAttributeOverrides()),
+			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),
+			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),
+			XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA2_0.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),		
-			XmlAssociationOverride.buildTranslator(JPA2_0.ASSOCIATION_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AssociationOverrides()),		
-			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable())			
+			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),
+			XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AssociationOverrides()),
+			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable())
 		};
 	}
 	
@@ -1539,6 +1539,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	
 	protected static Translator buildOrderByTranslator() {
 		return new BooleanTranslator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getXmlOrderable_OrderBy());
+	}
+	
+	protected static Translator buildOrderColumnTranslator() {
+		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn());
 	}
 	
 	protected static Translator buildColumnTranslator() {
@@ -1558,7 +1562,11 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildMapKeyTranslator() {
-		return new EmptyTagBooleanTranslator(JPA.MAP_KEY, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKey());
+		return MapKey.buildTranslator(JPA.MAP_KEY, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKey());
+	}
+	
+	protected static Translator buildMapKeyClassTranslator() {
+		return XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass());
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {

@@ -48,7 +48,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	
 	@Override
 	protected String getResourceDefaultTargetEntity() {
-		return this.getJavaPersistentAttribute().getSingleReferenceEntityTypeName();
+		return this.getJavaPersistentAttribute().getSingleReferenceTargetTypeName();
 	}
 	
 	public FetchType getDefaultFetch() {

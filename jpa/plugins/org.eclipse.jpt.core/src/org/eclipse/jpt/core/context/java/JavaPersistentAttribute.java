@@ -95,18 +95,18 @@ public interface JavaPersistentAttribute
 	boolean typeIsBasic();
 
 	/**
-	 * Return the attribute's type name if it is valid as a target entity type
+	 * Return the attribute's type name if it is valid as a target type
 	 * (i.e. the type is neither an array nor a "container").
 	 */
-	String getSingleReferenceEntityTypeName();
+	String getSingleReferenceTargetTypeName();
 
 	/**
 	 * If the attribute's type is an appropriate "container" type,
-	 * return the type parameter that can be used as a target entity.
+	 * return the type parameter that can be used as a target type.
 	 * Return null if the attribute is not a container or if the type
-	 * parameter is not valid as a target entity type (i.e. it is either
+	 * parameter is not valid as a target type (i.e. it is either
 	 * an array or a "container").
 	 */
-	String getMultiReferenceEntityTypeName();
+	String getMultiReferenceTargetTypeName();
 
 }

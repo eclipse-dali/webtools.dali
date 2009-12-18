@@ -12,9 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmOrderable;
@@ -56,11 +55,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	
 	@Override
 	protected String getResourceDefaultTargetEntity() {
-		return this.getJavaPersistentAttribute().getMultiReferenceEntityTypeName();
+		return this.getJavaPersistentAttribute().getMultiReferenceTargetTypeName();
 	}
 	
 	public FetchType getDefaultFetch() {
-		return MultiRelationshipMapping.DEFAULT_FETCH_TYPE;
+		return CollectionMapping.DEFAULT_FETCH_TYPE;
 	}
 	
 	

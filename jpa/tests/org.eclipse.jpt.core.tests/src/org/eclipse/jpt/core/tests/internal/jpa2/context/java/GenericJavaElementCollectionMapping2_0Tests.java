@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
@@ -22,7 +23,10 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TransientMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
@@ -39,6 +43,7 @@ import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -59,6 +64,150 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ElementCollection").append(CR);
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithGenericElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Collection<Address> addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithNonGenericElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Collection addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityWithValidGenericMapElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Map<Integer, Address> addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidNonGenericMapElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Map addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+
+	private void createTestTargetEmbeddableAddress() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("Address").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    private String city;").append(CR);
+				sb.append(CR);
+				sb.append("    @Embedded").append(CR);
+				sb.append("    private State state;").append(CR);
+				sb.append(CR);
+				sb.append("    private int zip;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+	}
+	
+	private ICompilationUnit createTestEntityWithGenericElementCollectionBasicType() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Collection<String> addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
 			}
 		});
 	}
@@ -245,58 +394,194 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(attributeResource.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
 	}
-
-//	
-//	public void testUpdateSpecifiedTargetEntity() throws Exception {
-//		createTestEntityWithOneToOneMapping();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//		
-//		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-//		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-//		
-//		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-//		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-//		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
-//		
-//		assertNull(oneToOneMapping.getSpecifiedTargetEntity());
-//		assertNull(oneToOne.getTargetEntity());
-//				
-//		//set target entity in the resource model, verify context model updated
-//		oneToOne.setTargetEntity("newTargetEntity");
-//		assertEquals("newTargetEntity", oneToOneMapping.getSpecifiedTargetEntity());
-//		assertEquals("newTargetEntity", oneToOne.getTargetEntity());
-//	
-//		//set target entity to null in the resource model
-//		oneToOne.setTargetEntity(null);
-//		assertNull(oneToOneMapping.getSpecifiedTargetEntity());
-//		assertNull(oneToOne.getTargetEntity());
-//	}
-//	
-//	public void testModifySpecifiedTargetEntity() throws Exception {
-//		createTestEntityWithOneToOneMapping();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//		
-//		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-//		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
-//		
-//		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-//		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-//		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
-//		
-//		assertNull(oneToOneMapping.getSpecifiedTargetEntity());
-//		assertNull(oneToOne.getTargetEntity());
-//				
-//		//set target entity in the context model, verify resource model updated
-//		oneToOneMapping.setSpecifiedTargetEntity("newTargetEntity");
-//		assertEquals("newTargetEntity", oneToOneMapping.getSpecifiedTargetEntity());
-//		assertEquals("newTargetEntity", oneToOne.getTargetEntity());
-//	
-//		//set target entity to null in the context model
-//		oneToOneMapping.setSpecifiedTargetEntity(null);
-//		assertNull(oneToOneMapping.getSpecifiedTargetEntity());
-//		assertNull(oneToOne.getTargetEntity());
-//	}
 	
+	public void testUpdateSpecifiedTargetEntity() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) attributeResource.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
+		
+		assertNull(elementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+				
+		//set target class in the resource model, verify context model updated
+		elementCollection.setTargetClass("newTargetClass");
+		assertEquals("newTargetClass", elementCollectionMapping.getSpecifiedTargetClass());
+		assertEquals("newTargetClass", elementCollection.getTargetClass());
+	
+		//set target class to null in the resource model
+		elementCollection.setTargetClass(null);
+		assertNull(elementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+	}
+	
+	public void testModifySpecifiedTargetClass() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) attributeResource.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME);
+		
+		assertNull(elementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+				
+		//set target class in the context model, verify resource model updated
+		elementCollectionMapping.setSpecifiedTargetClass("newTargetClass");
+		assertEquals("newTargetClass", elementCollectionMapping.getSpecifiedTargetClass());
+		assertEquals("newTargetClass", elementCollection.getTargetClass());
+	
+		//set target class to null in the context model
+		elementCollectionMapping.setSpecifiedTargetClass(null);
+		assertNull(elementCollectionMapping.getSpecifiedTargetClass());
+		assertNull(elementCollection.getTargetClass());
+	}
+	
+	public void testDefaultTargetClass() throws Exception {
+		createTestEntityWithGenericElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		//targetEntity not in the persistence unit, default still set, handled by validation
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
+		
+		//add targetEntity to the persistence unit
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
+
+		//test default still the same when specified target entity it set
+		elementCollectionMapping.setSpecifiedTargetClass("foo");
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
+		
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		classRefs.next();
+		ClassRef addressClassRef = classRefs.next();
+		JavaPersistentType addressPersistentType = addressClassRef.getJavaPersistentType();
+
+		//test target is not an Embeddable, default target entity still exists, this case handled with validation
+		addressPersistentType.setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
+	}
+	
+	public void testDefaultTargetClassNonGenericCollection() throws Exception {
+		createTestEntityWithNonGenericElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+	
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertNull(elementCollectionMapping.getDefaultTargetClass());
+	}
+	
+	public void testDefaultTargetClassGenericCollection() throws Exception {
+		createTestEntityWithGenericElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+	
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
+	}
+
+	public void testDefaultTargetClassNonGenericMap() throws Exception {
+		createTestEntityWithValidNonGenericMapElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+	
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertNull(elementCollectionMapping.getDefaultTargetClass());
+	}
+	
+	public void testDefaultTargetClassGenericMap() throws Exception {
+		createTestEntityWithValidGenericMapElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+	
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getDefaultTargetClass());
+	}
+	
+	public void testTargetClass() throws Exception {
+		createTestEntityWithGenericElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getTargetClass());
+
+		elementCollectionMapping.setSpecifiedTargetClass("foo");
+		assertEquals("foo", elementCollectionMapping.getTargetClass());
+		
+		elementCollectionMapping.setSpecifiedTargetClass(null);
+		assertEquals(PACKAGE_NAME + ".Address", elementCollectionMapping.getTargetClass());
+	}
+	
+	public void testResolvedTargetEmbeddable() throws Exception {
+		createTestEntityWithGenericElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		//target embeddable not in the persistence unit
+		assertNull(elementCollectionMapping.getResolvedTargetEmbeddable());
+		
+		//add target embeddable to the persistence unit, now target embeddable should resolve
+		createTestTargetEmbeddableAddress();
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		classRefs.next();
+		ClassRef addressClassRef = classRefs.next();
+		TypeMapping addressTypeMapping = addressClassRef.getJavaPersistentType().getMapping();
+		assertEquals(addressTypeMapping, elementCollectionMapping.getResolvedTargetEmbeddable());
+
+		//test default still the same when specified target entity it set
+		elementCollectionMapping.setSpecifiedTargetClass("foo");
+		assertNull(elementCollectionMapping.getResolvedTargetEmbeddable());
+		
+		
+		elementCollectionMapping.setSpecifiedTargetClass(PACKAGE_NAME + ".Address");
+		assertEquals(addressTypeMapping, elementCollectionMapping.getResolvedTargetEmbeddable());
+		
+
+		elementCollectionMapping.setSpecifiedTargetClass(null);
+		assertEquals(addressTypeMapping, elementCollectionMapping.getResolvedTargetEmbeddable());
+	}
+	
+	public void testResolvedTargetEmbeddableWithBasicType() throws Exception {
+		createTestEntityWithGenericElementCollectionBasicType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		//target is a basic type, so resolved target embeddable is null
+		assertNull(elementCollectionMapping.getResolvedTargetEmbeddable());
+	}
+
 	public void testUpdateSpecifiedFetch() throws Exception {
 		createTestEntityWithElementCollectionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

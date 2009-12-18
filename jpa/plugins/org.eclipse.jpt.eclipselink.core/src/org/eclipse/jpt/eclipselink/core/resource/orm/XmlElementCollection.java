@@ -28,7 +28,6 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -1177,22 +1176,22 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			buildFetchTranslator(),
 			buildAccessTranslator(),
 			buildOrderByTranslator(),
-			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn()),		
+			buildOrderColumnTranslator(),		
 			buildMapKeyTranslator(),
-			XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass()),		
+			buildMapKeyClassTranslator(),
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
 			buildMapKeyConvertTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyAttributeOverrides()),		
-			XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyAssociationOverrides()),		
-			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),		
-			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),		
-			XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),		
+			XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyAttributeOverrides()),
+			XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCollectionMapping_2_0_MapKeyAssociationOverrides()),
+			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),
+			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),
+			XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
 			buildConvertTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),		
+			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),
 			XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AssociationOverrides()),
 			XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter()),
 			XmlConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter()),

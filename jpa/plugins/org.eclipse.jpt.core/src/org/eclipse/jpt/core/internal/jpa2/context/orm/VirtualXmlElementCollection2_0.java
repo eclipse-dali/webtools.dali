@@ -61,7 +61,7 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	public TextRange getNameTextRange() {
 		return this.virtualXmlAttributeMapping.getNameTextRange();
 	}
-	
+
 	@Override
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
@@ -86,19 +86,19 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
-//
-//	@Override
-//	public String getTargetClass() {
-//		if (this.isOrmMetadataComplete()) {
-//			return this.javaAttributeMapping.getDefaultTargetClass();
-//		}
-//		return this.javaAttributeMapping.getTargetClass();
-//	}
-//
-//	@Override
-//	public void setTargetClass(String value) {
-//		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-//	}
+
+	@Override
+	public String getTargetClass() {
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.getDefaultTargetClass();
+		}
+		return this.javaAttributeMapping.getTargetClass();
+	}
+
+	@Override
+	public void setTargetClass(String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
 
 	@Override
 	public TextRange getTargetClassTextRange() {

@@ -289,7 +289,7 @@ public abstract class AbstractJavaPersistentAttribute
 	protected static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
 
 	// ***** reference entities
-	public String getSingleReferenceEntityTypeName() {
+	public String getSingleReferenceTargetTypeName() {
 		// 'typeName' may include array brackets ("[]")
 		// but not generic type arguments (e.g. "<java.lang.String>")
 		String typeName = this.resourcePersistentAttribute.getTypeName();
@@ -305,12 +305,12 @@ public abstract class AbstractJavaPersistentAttribute
 		return typeName;
 	}
 
-	public String getMultiReferenceEntityTypeName() {
+	public String getMultiReferenceTargetTypeName() {
 		// 'typeName' may include array brackets ("[]")
 		// but not generic type arguments (e.g. "<java.lang.String>")
 		String typeName = this.resourcePersistentAttribute.getTypeName();
 		return (typeName == null) ? null :
-				this.getJpaContainer(typeName).getMultiReferenceEntityTypeName(this.resourcePersistentAttribute);
+				this.getJpaContainer(typeName).getMultiReferenceTargetTypeName(this.resourcePersistentAttribute);
 	}
 
 	/**
@@ -601,7 +601,7 @@ public abstract class AbstractJavaPersistentAttribute
 	protected interface JpaContainer {
 		String getTypeName();
 		boolean isContainer();
-		String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
+		String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
 		String getMetamodelContainerFieldTypeName();
 		String getMetamodelContainerFieldMapKeyTypeName(MultiRelationshipMapping mapping);
 
@@ -620,7 +620,7 @@ public abstract class AbstractJavaPersistentAttribute
 			public boolean isContainer() {
 				return false;
 			}
-			public String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 				return null;
 			}
 			public String getMetamodelContainerFieldTypeName() {
@@ -679,7 +679,7 @@ public abstract class AbstractJavaPersistentAttribute
 			super(collectionClass, staticMetamodelTypeDeclarationTypeName);
 		}
 
-		public String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 1) ?
 						resourcePersistentAttribute.getTypeTypeArgumentName(0) :
 						null;
@@ -698,7 +698,7 @@ public abstract class AbstractJavaPersistentAttribute
 			super(mapClass, staticMetamodelTypeDeclarationTypeName);
 		}
 
-		public String getMultiReferenceEntityTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
 						resourcePersistentAttribute.getTypeTypeArgumentName(1) :
 						null;
