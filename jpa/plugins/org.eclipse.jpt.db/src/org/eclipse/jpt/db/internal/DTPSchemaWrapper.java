@@ -10,21 +10,17 @@
 package org.eclipse.jpt.db.internal;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.modelbase.sql.tables.SQLTablesPackage;
-
+import org.eclipse.jpt.db.DatabaseObject;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-
-import com.ibm.icu.text.Collator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  *  Wrap a DTP Schema
@@ -33,20 +29,20 @@ final class DTPSchemaWrapper
 	extends DTPDatabaseObjectWrapper
 	implements Schema
 {
-	// the wrapped DTP schema
+	/** the wrapped DTP schema */
 	private final org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema;
 
-	// lazy-initialized
+	/** lazy-initialized */
 	private DTPTableWrapper[] tables;
 
-	// lazy-initialized
+	/** lazy-initialized */
 	private DTPSequenceWrapper[] sequences;
 
 	
 	// ********** constants **********
 	
-	//used for adopter product customization
-	private static final String PERSISTENT_AND_VIEW_TABLES_ONLY = "supportPersistentAndViewTablesOnly";
+	/** used for adopter product customization */
+	private static final String PERSISTENT_AND_VIEW_TABLES_ONLY = "supportPersistentAndViewTablesOnly"; //$NON-NLS-1$
 
 
 	// ********** constructor **********
@@ -78,66 +74,63 @@ final class DTPSchemaWrapper
 
 	// ***** tables
 
-	public Iterator<Table> tables() {
-		return new ArrayIterator<Table>(this.getTables());
+	public Iterable<Table> getTables() {
+		return new ArrayIterable<Table>(this.getTableArray());
 	}
 
-	private Iterator<DTPTableWrapper> tableWrappers() {
-		return new ArrayIterator<DTPTableWrapper>(this.getTables());
+	private Iterable<DTPTableWrapper> getTableWrappers() {
+		return new ArrayIterable<DTPTableWrapper>(this.getTableArray());
 	}
 
-	private synchronized DTPTableWrapper[] getTables() {
+	private synchronized DTPTableWrapper[] getTableArray() {
 		if (this.tables == null) {
-			this.tables = this.buildTables();
+			this.tables = this.buildTableArray();
 		}
 		return this.tables;
 	}
 
-	private DTPTableWrapper[] buildTables() {
+	private DTPTableWrapper[] buildTableArray() {
 		List<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables = this.getDTPTables();
 		DTPTableWrapper[] result = new DTPTableWrapper[dtpTables.size()];
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPTableWrapper(this, dtpTables.get(i));
 		}
-		return ArrayTools.sort(result, this.buildTableComparator());
+		return ArrayTools.sort(result, DEFAULT_COMPARATOR);
 	}
 
-	private Comparator<Table> buildTableComparator() {
-		return new Comparator<Table>() {
-			public int compare(Table table1, Table table2) {
-				return Collator.getInstance().compare(table1.getName(), table2.getName());
-			}
-		};
+	private List<org.eclipse.datatools.modelbase.sql.tables.Table> getDTPTables() {
+		List<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables = this.getDTPTables_();
+		return this.hack() ? this.hack(dtpTables) : dtpTables;
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	private List<org.eclipse.datatools.modelbase.sql.tables.Table> getDTPTables() {
-
-		//if product customization flag is set to true return only persistent and view tables.
-		//this will filter out synonyms where they are not fully supported and potentially other 
-		//problematic table types - see bug 269057
-		String supportPersistentAndViewTablesOnly = Platform.getProduct().getProperty(PERSISTENT_AND_VIEW_TABLES_ONLY);
-		if ( supportPersistentAndViewTablesOnly != null && supportPersistentAndViewTablesOnly.equals("true") ) {
-            List<org.eclipse.datatools.modelbase.sql.tables.Table> result =
-            	new ArrayList<org.eclipse.datatools.modelbase.sql.tables.Table>();
-            for (Iterator iterT = this.dtpSchema.getTables().iterator();iterT.hasNext();) {
-                    org.eclipse.datatools.modelbase.sql.tables.Table table
-                    	= (org.eclipse.datatools.modelbase.sql.tables.Table) iterT.next();
-                    if (SQLTablesPackage.eINSTANCE.getPersistentTable().isSuperTypeOf(table.eClass()) ||
-                    	 SQLTablesPackage.eINSTANCE.getViewTable().isSuperTypeOf(table.eClass()) ) {
-                            result.add(table);
-                    }
-            }
-            return result;
-		}
-		else {
-			return this.dtpSchema.getTables();
-		}
+	private List<org.eclipse.datatools.modelbase.sql.tables.Table> getDTPTables_() {
+		return this.dtpSchema.getTables();
 	}
 
-	public int tablesSize() {
-		return this.getTables().length;
+	private boolean hack() {
+		String hack = Platform.getProduct().getProperty(PERSISTENT_AND_VIEW_TABLES_ONLY);
+		return (hack != null) && hack.equals("true"); //$NON-NLS-1$
+	}
+
+	private List<org.eclipse.datatools.modelbase.sql.tables.Table> hack(List<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables) {
+		List<org.eclipse.datatools.modelbase.sql.tables.Table> result = new ArrayList<org.eclipse.datatools.modelbase.sql.tables.Table>();
+		for (org.eclipse.datatools.modelbase.sql.tables.Table dtpTable : dtpTables) {
+			if (this.hack(dtpTable)) {
+				result.add(dtpTable);
+			}
+		}
+		return result;
+	}
+
+	private boolean hack(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
+		return SQLTablesPackage.eINSTANCE.getPersistentTable().isSuperTypeOf(dtpTable.eClass()) ||
+					SQLTablesPackage.eINSTANCE.getViewTable().isSuperTypeOf(dtpTable.eClass());
+	}
+
+	public int getTablesSize() {
+		return this.getTableArray().length;
 	}
 
 	/**
@@ -146,8 +139,7 @@ final class DTPSchemaWrapper
 	DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
 		// try to short-circuit the search
 		return this.wraps(dtpTable.getSchema()) ?
-						this.getTable_(dtpTable)
-					:
+						this.getTable_(dtpTable) :
 						this.getContainer().getTable(dtpTable);
 	}
 
@@ -155,7 +147,7 @@ final class DTPSchemaWrapper
 	 * assume the schema contains the specified table
 	 */
 	DTPTableWrapper getTable_(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
-		for (DTPTableWrapper table : this.getTables()) {
+		for (DTPTableWrapper table : this.getTableArray()) {
 			if (table.wraps(dtpTable)) {
 				return table;
 			}
@@ -164,55 +156,42 @@ final class DTPSchemaWrapper
 	}
 
 	public DTPTableWrapper getTableNamed(String name) {
-		return this.selectDatabaseObjectNamed(this.getTables(), name);
+		return this.selectDatabaseObjectNamed(this.getTableWrappers(), name);
 	}
 
-	public Iterator<String> sortedTableIdentifiers() {
+	public Iterable<String> getSortedTableIdentifiers() {
 		// the tables are already sorted
-		return new TransformationIterator<DTPTableWrapper, String>(this.tableWrappers()) {
-			@Override
-			protected String transform(DTPTableWrapper table) {
-				 return table.getIdentifier();
-			}
-		};
+		return new TransformationIterable<DatabaseObject, String>(this.getTableWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
 	public DTPTableWrapper getTableForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getTables(), identifier);
+		return this.selectDatabaseObjectForIdentifier(this.getTableWrappers(), identifier);
 	}
 
 	// ***** sequences
 
-	public Iterator<Sequence> sequences() {
-		return new ArrayIterator<Sequence>(this.getSequences());
+	public Iterable<Sequence> getSequences() {
+		return new ArrayIterable<Sequence>(this.getSequenceArray());
 	}
 
-	private Iterator<DTPSequenceWrapper> sequenceWrappers() {
-		return new ArrayIterator<DTPSequenceWrapper>(this.getSequences());
+	private Iterable<DTPSequenceWrapper> getSequenceWrappers() {
+		return new ArrayIterable<DTPSequenceWrapper>(this.getSequenceArray());
 	}
 
-	private synchronized DTPSequenceWrapper[] getSequences() {
+	private synchronized DTPSequenceWrapper[] getSequenceArray() {
 		if (this.sequences == null) {
-			this.sequences = this.buildSequences();
+			this.sequences = this.buildSequenceArray();
 		}
 		return this.sequences;
 	}
 
-	private DTPSequenceWrapper[] buildSequences() {
+	private DTPSequenceWrapper[] buildSequenceArray() {
 		List<org.eclipse.datatools.modelbase.sql.schema.Sequence> dtpSequences = this.getDTPSequences();
 		DTPSequenceWrapper[] result = new DTPSequenceWrapper[dtpSequences.size()];
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPSequenceWrapper(this, dtpSequences.get(i));
 		}
-		return ArrayTools.sort(result, this.buildSequenceComparator());
-	}
-
-	private Comparator<Sequence> buildSequenceComparator() {
-		return new Comparator<Sequence>() {
-			public int compare(Sequence sequence1, Sequence sequence2) {
-				return Collator.getInstance().compare(sequence1.getName(), sequence2.getName());
-			}
-		};
+		return ArrayTools.sort(result, DEFAULT_COMPARATOR);
 	}
 
 	// minimize scope of suppressed warnings
@@ -221,26 +200,21 @@ final class DTPSchemaWrapper
 		return this.dtpSchema.getSequences();
 	}
 
-	public int sequencesSize() {
-		return this.getSequences().length;
+	public int getSequencesSize() {
+		return this.getSequenceArray().length;
 	}
 
 	public DTPSequenceWrapper getSequenceNamed(String name) {
-		return this.selectDatabaseObjectNamed(this.getSequences(), name);
+		return this.selectDatabaseObjectNamed(this.getSequenceWrappers(), name);
 	}
 
-	public Iterator<String> sortedSequenceIdentifiers() {
+	public Iterable<String> getSortedSequenceIdentifiers() {
 		// the sequences are already sorted
-		return new TransformationIterator<DTPSequenceWrapper, String>(this.sequenceWrappers()) {
-			@Override
-			protected String transform(DTPSequenceWrapper sequence) {
-				 return sequence.getIdentifier();
-			}
-		};
+		return new TransformationIterable<DatabaseObject, String>(this.getSequenceWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
 	public DTPSequenceWrapper getSequenceForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getSequences(), identifier);
+		return this.selectDatabaseObjectForIdentifier(this.getSequenceWrappers(), identifier);
 	}
 
 
@@ -256,8 +230,7 @@ final class DTPSchemaWrapper
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		// try to short-circuit the search
 		return this.wraps(dtpColumn.getTable().getSchema()) ?
-						this.getColumn_(dtpColumn)
-					:
+						this.getColumn_(dtpColumn) :
 						this.getContainer().getColumn(dtpColumn);
 	}
 

@@ -225,9 +225,9 @@ public class DerbyTests extends DTPPlatformTests {
 
 		// FOO
 		Table fooTable = schema.getTableNamed("FOO");
-		assertEquals(4, fooTable.columnsSize());
-		assertEquals(1, fooTable.primaryKeyColumnsSize());
-		assertEquals(1, fooTable.foreignKeysSize());
+		assertEquals(4, fooTable.getColumnsSize());
+		assertEquals(1, fooTable.getPrimaryKeyColumnsSize());
+		assertEquals(1, fooTable.getForeignKeysSize());
 
 		Column pkColumn = fooTable.getPrimaryKeyColumn();
 		assertEquals("ID", pkColumn.getName());
@@ -260,8 +260,8 @@ public class DerbyTests extends DTPPlatformTests {
 		assertEquals(2, salaryColumn.getScale());
 		assertEquals(-1, salaryColumn.getLength());
 
-		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
-		assertEquals(1, barFK.columnPairsSize());
+		ForeignKey barFK = fooTable.getForeignKeys().iterator().next();  // there should only be 1 foreign key
+		assertEquals(1, barFK.getColumnPairsSize());
 		assertEquals("BAR", barFK.getAttributeName());
 		assertNull(barFK.getJoinColumnAnnotationIdentifier("bar"));
 		assertEquals("BAR_ID", barFK.getJoinColumnAnnotationIdentifier("primaryBar"));
@@ -272,9 +272,9 @@ public class DerbyTests extends DTPPlatformTests {
 
 		// BAR
 		Table barTable = schema.getTableNamed("BAR");
-		assertEquals(3, barTable.columnsSize());
-		assertEquals(1, barTable.primaryKeyColumnsSize());
-		assertEquals(0, barTable.foreignKeysSize());
+		assertEquals(3, barTable.getColumnsSize());
+		assertEquals(1, barTable.getPrimaryKeyColumnsSize());
+		assertEquals(0, barTable.getForeignKeysSize());
 		assertEquals("ID", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
 
@@ -298,9 +298,9 @@ public class DerbyTests extends DTPPlatformTests {
 
 		// FOO_BAZ
 		Table foo_bazTable = schema.getTableNamed("FOO_BAZ");
-		assertEquals(2, foo_bazTable.columnsSize());
-		assertEquals(0, foo_bazTable.primaryKeyColumnsSize());
-		assertEquals(2, foo_bazTable.foreignKeysSize());
+		assertEquals(2, foo_bazTable.getColumnsSize());
+		assertEquals(0, foo_bazTable.getPrimaryKeyColumnsSize());
+		assertEquals(2, foo_bazTable.getForeignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
 		assertTrue(foo_bazTable.getColumnNamed("FOO_ID").isPartOfForeignKey());
@@ -441,13 +441,13 @@ public class DerbyTests extends DTPPlatformTests {
 		assertNotNull(schema2);
 		Table empTable = schema2.getTableNamed("EMP");
 		assertNotNull(empTable);
-		assertEquals(1, empTable.foreignKeysSize());
-		ForeignKey fk = empTable.foreignKeys().next();
+		assertEquals(1, empTable.getForeignKeysSize());
+		ForeignKey fk = empTable.getForeignKeys().iterator().next();
 		Table refTable = fk.getReferencedTable();
 		assertNotNull(refTable);
 		assertEquals("ORG", refTable.getName());
-		assertEquals(1, fk.columnPairsSize());
-		ForeignKey.ColumnPair cp = fk.columnPairs().next();
+		assertEquals(1, fk.getColumnPairsSize());
+		ForeignKey.ColumnPair cp = fk.getColumnPairs().iterator().next();
 		Column baseColumn = cp.getBaseColumn();
 		assertEquals("ORG_ID", baseColumn.getName());
 		Column refColumn = cp.getReferencedColumn();

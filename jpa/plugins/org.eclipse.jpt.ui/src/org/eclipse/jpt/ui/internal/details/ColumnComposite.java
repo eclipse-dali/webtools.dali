@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -18,10 +19,10 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.details.db.DatabaseObjectCombo;
-import org.eclipse.jpt.ui.internal.details.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -315,7 +316,11 @@ public class ColumnComposite extends FormPane<Column> {
 			}
 
 			@Override
-			protected Iterator<String> values_() {
+			protected Iterable<String> getValues_() {
+				return CollectionTools.iterable(this.values());
+			}
+
+			protected Iterator<String> values() {
 				return this.getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
 			}
 			@Override
@@ -448,7 +453,7 @@ public class ColumnComposite extends FormPane<Column> {
 		);
 
 		// Details sub-pane
-		container = addCollapsableSubSection(
+		container = addCollapsibleSubSection(
 			container,
 			JptUiDetailsMessages.ColumnComposite_details,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)

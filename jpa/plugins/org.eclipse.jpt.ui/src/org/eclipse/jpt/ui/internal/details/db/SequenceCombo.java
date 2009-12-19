@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.db;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -45,9 +44,9 @@ public abstract class SequenceCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values_() {
+	protected Iterable<String> getValues_() {
 		Schema dbSchema = this.getDbSchema();
-		return (dbSchema != null) ? dbSchema.sortedSequenceIdentifiers() : EmptyIterator.<String>instance();
+		return (dbSchema != null) ? dbSchema.getSortedSequenceIdentifiers() : EmptyIterable.<String>instance();
 	}
 
 	protected Schema getDbSchema() {

@@ -56,26 +56,30 @@ abstract class AbstractVendor
 	/**
 	 * Typically, the name of the default catalog is the user name.
 	 */
-	public final List<String> getDefaultCatalogIdentifiers(Database database, String userName) {
+	public final Iterable<String> getDefaultCatalogNames(Database database, String userName) {
 		if ( ! this.supportsCatalogs(database)) {
 			return Collections.emptyList();
 		}
-		ArrayList<String> identifiers = new ArrayList<String>();
-		this.addDefaultCatalogIdentifiersTo(database, userName, identifiers);
-		return identifiers;
+		ArrayList<String> names = new ArrayList<String>();
+		this.addDefaultCatalogNamesTo(database, userName, names);
+		return names;
 	}
 
-	void addDefaultCatalogIdentifiersTo(@SuppressWarnings("unused") Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(this.convertNameToIdentifier(userName));
+	/**
+	 * See comment at
+	 * {@link #addDefaultSchemaNamesTo(Database, String, ArrayList)}.
+	 */
+	void addDefaultCatalogNamesTo(@SuppressWarnings("unused") Database database, String userName, ArrayList<String> names) {
+		names.add(this.convertIdentifierToName(userName));
 	}
 
 	/**
 	 * Typically, the name of the default schema is the user name.
 	 */
-	public final List<String> getDefaultSchemaIdentifiers(Database database, String userName) {
-		ArrayList<String> identifiers = new ArrayList<String>();
-		this.addDefaultSchemaIdentifiersTo(database, userName, identifiers);
-		return identifiers;
+	public final Iterable<String> getDefaultSchemaNames(Database database, String userName) {
+		ArrayList<String> names = new ArrayList<String>();
+		this.addDefaultSchemaNamesTo(database, userName, names);
+		return names;
 	}
 
 	/**
@@ -88,15 +92,15 @@ abstract class AbstractVendor
 	 * "SCOTT". DTP stores the original string "scott", while the Oracle JDBC
 	 * driver stores the folded string "SCOTT".
 	 */
-	void addDefaultSchemaIdentifiersTo(@SuppressWarnings("unused") Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(userName);
+	void addDefaultSchemaNamesTo(@SuppressWarnings("unused") Database database, String userName, ArrayList<String> names) {
+		names.add(this.convertIdentifierToName(userName));
 	}
 
 
 	// ********** folding strategy used to convert names and identifiers **********
 
 	/**
-	 * The SQL spec says a "normal" (non-delimited) identifier should be
+	 * The SQL spec says a "regular" (non-delimited) identifier should be
 	 * folded to uppercase; but some databases do otherwise (e.g. Sybase).
 	 */
 	abstract FoldingStrategy getFoldingStrategy();
@@ -107,7 +111,7 @@ abstract class AbstractVendor
 	public String convertNameToIdentifier(String name, String defaultName) {
 		return this.nameRequiresDelimiters(name) ?
 						this.delimitName(name) :
-						this.normalNamesMatch(name, defaultName) ? null : name;
+						this.regularNamesMatch(name, defaultName) ? null : name;
 	}
 
 	public String convertNameToIdentifier(String name) {
@@ -125,22 +129,22 @@ abstract class AbstractVendor
 	 */
 	boolean nameRequiresDelimiters(String name) {
 		return (name.length() == 0)  //  an empty string must be delimited(?)
-					|| this.nameContainsAnyNonNormalCharacters(name)
+					|| this.nameContainsAnySpecialCharacters(name)
 					|| this.nameIsNotFolded(name);
 	}
 
 	/**
-	 * Return whether the specified name contains any "non-normal" characters
+	 * Return whether the specified name contains any "special" characters
 	 * that require the name to be delimited.
 	 * Pre-condition: the specified name is not empty
 	 */
-	boolean nameContainsAnyNonNormalCharacters(String name) {
+	boolean nameContainsAnySpecialCharacters(String name) {
 		char[] string = name.toCharArray();
-		if (this.characterIsNonNormalNameStart(string[0])) {
+		if (this.characterIsNonRegularNameStart(string[0])) {
 			return true;
 		}
 		for (int i = string.length; i-- > 1; ) {  // note: stop at 1
-			if (this.characterIsNonNormalNamePart(string[i])) {
+			if (this.characterIsNonRegularNamePart(string[i])) {
 				return true;
 			}
 		}
@@ -148,76 +152,76 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return whether the specified character is "non-normal" for the first
+	 * Return whether the specified character is "non-regular" for the first
 	 * character of a name.
 	 * Typically, databases are more restrictive about what characters can
 	 * be used to *start* an identifier (as opposed to the characters
 	 * allowed for the remainder of the identifier).
 	 */
-	boolean characterIsNonNormalNameStart(char c) {
-		return ! this.characterIsNormalNameStart(c);
+	boolean characterIsNonRegularNameStart(char c) {
+		return ! this.characterIsRegularNameStart(c);
 	}
 
 	/**
-	 * Return whether the specified character is "normal" for the first
+	 * Return whether the specified character is "regular" for the first
 	 * character of a name.
 	 * The first character of an identifier can be:
 	 *   - a letter
-	 *   - any of the extended, vendor-specific, "normal" start characters
+	 *   - any of the extended, vendor-specific, "regular" start characters
 	 */
-	boolean characterIsNormalNameStart(char c) {
+	boolean characterIsRegularNameStart(char c) {
 		// all vendors allow a letter
 		return Character.isLetter(c)
-				|| this.characterIsExtendedNormalNameStart(c);
+				|| this.characterIsExtendedRegularNameStart(c);
 	}
 
-	boolean characterIsExtendedNormalNameStart(char c) {
-		return arrayContains(this.getExtendedNormalNameStartCharacters(), c);
+	boolean characterIsExtendedRegularNameStart(char c) {
+		return arrayContains(this.getExtendedRegularNameStartCharacters(), c);
 	}
 
 	/**
-	 * Return the "normal" characters, beyond letters, for the
+	 * Return the "regular" characters, beyond letters, for the
 	 * first character of a name.
 	 * Return null if there are no "extended" characters.
 	 */
-	char[] getExtendedNormalNameStartCharacters() {
+	char[] getExtendedRegularNameStartCharacters() {
 		return null;
 	}
 
 	/**
-	 * Return whether the specified character is "non-normal" for the second
+	 * Return whether the specified character is "non-regular" for the second
 	 * and subsequent characters of a name.
 	 */
-	boolean characterIsNonNormalNamePart(char c) {
-		return ! this.characterIsNormalNamePart(c);
+	boolean characterIsNonRegularNamePart(char c) {
+		return ! this.characterIsRegularNamePart(c);
 	}
 
 	/**
-	 * Return whether the specified character is "normal" for the second and
+	 * Return whether the specified character is "regular" for the second and
 	 * subsequent characters of a name.
-	 * The second and subsequent characters of a "normal" name can be:
+	 * The second and subsequent characters of a "regular" name can be:
 	 *   - a letter
 	 *   - a digit
-	 *   - any of the extended, vendor-specific, "normal" start characters
-	 *   - any of the extended, vendor-specific, "normal" part characters
+	 *   - any of the extended, vendor-specific, "regular" start characters
+	 *   - any of the extended, vendor-specific, "regular" part characters
 	 */
-	boolean characterIsNormalNamePart(char c) {
+	boolean characterIsRegularNamePart(char c) {
 		// all vendors allow a letter or digit
 		return Character.isLetterOrDigit(c)
-				|| this.characterIsExtendedNormalNameStart(c)
-				|| this.characterIsExtendedNormalNamePart(c);
+				|| this.characterIsExtendedRegularNameStart(c)
+				|| this.characterIsExtendedRegularNamePart(c);
 	}
 
-	boolean characterIsExtendedNormalNamePart(char c) {
-		return arrayContains(this.getExtendedNormalNamePartCharacters(), c);
+	boolean characterIsExtendedRegularNamePart(char c) {
+		return arrayContains(this.getExtendedRegularNamePartCharacters(), c);
 	}
 
 	/**
-	 * Return the "normal" characters, beyond letters and digits and the
-	 * "normal" first characters, for the second and subsequent characters
+	 * Return the "regular" characters, beyond letters and digits and the
+	 * "regular" first characters, for the second and subsequent characters
 	 * of an identifier. Return null if there are no additional characters.
 	 */
-	char[] getExtendedNormalNamePartCharacters() {
+	char[] getExtendedRegularNamePartCharacters() {
 		return null;
 	}
 
@@ -230,19 +234,19 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return whether the specified "normal" names match.
+	 * Return whether the specified "regular" names match.
 	 */
-	boolean normalNamesMatch(String name1, String name2) {
-		return this.normalIdentifiersAreCaseSensitive() ?
+	boolean regularNamesMatch(String name1, String name2) {
+		return this.regularIdentifiersAreCaseSensitive() ?
 						name1.equals(name2) :
 						name1.equalsIgnoreCase(name2);
 	}
 
 	/**
-	 * Typically, "normal" identifiers are case-insensitive.
+	 * Typically, "regular" identifiers are case-insensitive.
 	 */
-	boolean normalIdentifiersAreCaseSensitive() {
-		return this.getFoldingStrategy().normalIdentifiersAreCaseSensitive();
+	boolean regularIdentifiersAreCaseSensitive() {
+		return this.getFoldingStrategy().regularIdentifiersAreCaseSensitive();
 	}
 
 	/**

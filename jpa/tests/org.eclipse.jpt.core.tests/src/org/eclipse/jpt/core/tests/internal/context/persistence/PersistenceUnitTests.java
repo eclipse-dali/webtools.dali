@@ -1085,17 +1085,17 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(null, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
+		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
 		assertEquals(AccessType.PROPERTY, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);	
-		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().resourceExists());
+		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(null);	
+		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().resourceExists());
 		assertEquals(null, persistenceUnit.getDefaultAccess());
 				
-		orm2MappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		orm2MappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 	}
 	
@@ -1109,14 +1109,14 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(null, persistenceUnit.getDefaultSchema());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");		
+		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");		
 		assertEquals("FOO", persistenceUnit.getDefaultSchema());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);	
-		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().resourceExists());
+		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema(null);	
+		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().resourceExists());
 		assertEquals(null, persistenceUnit.getDefaultSchema());
 				
-		orm2MappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("BAR");	
+		orm2MappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("BAR");	
 		assertEquals("BAR", persistenceUnit.getDefaultSchema());
 	}
 	
@@ -1130,14 +1130,14 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(null, persistenceUnit.getDefaultCatalog());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");		
+		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");		
 		assertEquals("FOO", persistenceUnit.getDefaultCatalog());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);	
-		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().resourceExists());
+		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog(null);	
+		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().resourceExists());
 		assertEquals(null, persistenceUnit.getDefaultCatalog());
 				
-		orm2MappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("BAR");	
+		orm2MappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("BAR");	
 		assertEquals("BAR", persistenceUnit.getDefaultCatalog());
 	}
 	

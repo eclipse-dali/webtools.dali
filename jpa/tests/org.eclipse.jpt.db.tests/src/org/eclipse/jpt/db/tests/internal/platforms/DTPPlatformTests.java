@@ -48,7 +48,7 @@ import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.ConnectionProfileListener;
 import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.DatabaseFinder;
+import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
@@ -115,7 +115,7 @@ public abstract class DTPPlatformTests extends TestCase {
 		this.platformProperties = this.loadPlatformProperties();
 		this.buildDTPDriverDefinitionFile();
 		this.buildDTPConnectionProfile();
-		this.connectionProfile = this.getConnectionProfileFactory().buildConnectionProfile(this.getProfileName(), DatabaseFinder.Default.instance());
+		this.connectionProfile = this.getConnectionProfileFactory().buildConnectionProfile(this.getProfileName(), DatabaseIdentifierAdapter.Default.instance());
 	}
 
 	@Override
@@ -367,15 +367,15 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	private void verifyDatabaseContent() {
 		Database database = this.connectionProfile.getDatabase();
-		assertTrue(database.schemataSize() >= 0);
+		assertTrue(database.getSchemataSize() >= 0);
 
 		Schema schema = database.getDefaultSchema();
 		if (schema != null) {
-			if (schema.tablesSize() > 0) {
-				Table table = schema.tables().next();
-				assertTrue(table.columnsSize() >= 0);
-				assertTrue(table.primaryKeyColumnsSize() >= 0);
-				assertTrue(table.foreignKeysSize() >= 0);
+			if (schema.getTablesSize() > 0) {
+				Table table = schema.getTables().iterator().next();
+				assertTrue(table.getColumnsSize() >= 0);
+				assertTrue(table.getPrimaryKeyColumnsSize() >= 0);
+				assertTrue(table.getForeignKeysSize() >= 0);
 			}
 		}
 	}
@@ -511,7 +511,7 @@ public abstract class DTPPlatformTests extends TestCase {
 				schema = this.getDatabase().getSchemaNamed(dtpSchema.getName());
 			}
 		}
-		assertTrue(schema.tablesSize() >= 0);  // force tables to be loaded
+		assertTrue(schema.getTablesSize() >= 0);  // force tables to be loaded
 		((ICatalogObject) dtpSchema).refresh();
 		assertSame(schema, listener.changedSchema);
 
@@ -527,11 +527,11 @@ public abstract class DTPPlatformTests extends TestCase {
 		boolean supportsCatalogs = this.supportsCatalogs();
 		assertEquals(supportsCatalogs, this.connectionProfile.getDatabase().supportsCatalogs());
 		if (supportsCatalogs) {
-			assertTrue(this.connectionProfile.getDatabase().catalogsSize() > 0);
-			assertEquals(0, this.connectionProfile.getDatabase().schemataSize());
+			assertTrue(this.connectionProfile.getDatabase().getCatalogsSize() > 0);
+			assertEquals(0, this.connectionProfile.getDatabase().getSchemataSize());
 		} else {
-			assertEquals(0, this.connectionProfile.getDatabase().catalogsSize());
-			assertTrue(this.connectionProfile.getDatabase().schemataSize() > 0);
+			assertEquals(0, this.connectionProfile.getDatabase().getCatalogsSize());
+			assertTrue(this.connectionProfile.getDatabase().getSchemataSize() > 0);
 		}
 
 		this.connectionProfile.removeConnectionListener(listener);
@@ -782,8 +782,8 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.print("database: ");
 		pw.println(database.getName());
 		if (database.supportsCatalogs()) {
-			for (Iterator<Catalog> stream = database.catalogs(); stream.hasNext(); ) {
-				this.dumpCatalogOn(stream.next(), pw, deep);
+			for (Catalog catalog : database.getCatalogs()) {
+				this.dumpCatalogOn(catalog, pw, deep);
 			}
 		} else {
 			this.dumpSchemaContainerOn(database, pw, deep);
@@ -799,8 +799,8 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected void dumpSchemaContainerOn(SchemaContainer schemaContainer, IndentingPrintWriter pw, boolean deep) {
-		for (Iterator<Schema> stream = schemaContainer.schemata(); stream.hasNext(); ) {
-			this.dumpSchemaOn(stream.next(), pw, deep);
+		for (Schema schema : schemaContainer.getSchemata()) {
+			this.dumpSchemaOn(schema, pw, deep);
 		}
 	}
 
@@ -822,11 +822,11 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.println(schema.getName());
 		if (deep) {
 			pw.indent();
-				for (Iterator<Table> stream = schema.tables(); stream.hasNext(); ) {
-					this.dumpTableOn(stream.next(), pw);
+				for (Table table : schema.getTables()) {
+					this.dumpTableOn(table, pw);
 				}
-				for (Iterator<Sequence> stream = schema.sequences(); stream.hasNext(); ) {
-					this.dumpSequenceOn(stream.next(), pw);
+				for (Sequence sequence : schema.getSequences()) {
+					this.dumpSequenceOn(sequence, pw);
 				}
 			pw.undent();
 		}
@@ -836,11 +836,11 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.print("table: ");
 		pw.println(table.getName());
 		pw.indent();
-			for (Iterator<Column> stream = table.columns(); stream.hasNext(); ) {
-				this.dumpColumnOn(stream.next(), pw);
+			for (Column column : table.getColumns()) {
+				this.dumpColumnOn(column, pw);
 			}
-			for (Iterator<ForeignKey> stream = table.foreignKeys(); stream.hasNext(); ) {
-				this.dumpForeignKeyOn(stream.next(), pw);
+			for (ForeignKey foreignKey : table.getForeignKeys()) {
+				this.dumpForeignKeyOn(foreignKey, pw);
 			}
 		pw.undent();
 	}
@@ -862,7 +862,7 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.print("=>");
 		pw.print(foreignKey.getReferencedTable().getName());
 		pw.print(" (");
-		for (Iterator<ColumnPair> stream = foreignKey.columnPairs(); stream.hasNext(); ) {
+		for (Iterator<ColumnPair> stream = foreignKey.getColumnPairs().iterator(); stream.hasNext(); ) {
 			ColumnPair cp = stream.next();
 			pw.print(cp.getBaseColumn().getName());
 			pw.print("=>");

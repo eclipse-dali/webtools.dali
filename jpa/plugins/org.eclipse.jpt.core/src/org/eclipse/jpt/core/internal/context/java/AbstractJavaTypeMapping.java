@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -94,7 +95,11 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	 * and terminates at the root entity (or at the point of cyclicity).
 	 */
 	public Iterator<TypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
+		return this.getInheritanceHierarchy().iterator();
+	}
+
+	public Iterable<TypeMapping> getInheritanceHierarchy() {
+		return new TransformationIterable<PersistentType, TypeMapping>(CollectionTools.iterable(getPersistentType().inheritanceHierarchy())) {
 			@Override
 			protected TypeMapping transform(PersistentType type) {
 				return type.getMapping();

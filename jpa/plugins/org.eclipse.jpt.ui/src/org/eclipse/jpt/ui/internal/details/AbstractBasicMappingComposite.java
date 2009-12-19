@@ -113,7 +113,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	
 	private void initializeTypePane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.TypeSection_type
 		);

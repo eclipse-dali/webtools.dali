@@ -62,7 +62,7 @@ public class OneToOneJoiningStrategyPane
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite composite = addCollapsableSection(
+		Composite composite = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages.Joining_title,
 				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));

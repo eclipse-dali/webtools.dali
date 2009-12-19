@@ -130,7 +130,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 	protected void initializeQueriesPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.EntityComposite_queries
 		);
@@ -153,7 +153,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 	protected void initializeAttributeOverridesPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.OverridesComposite_attributeOverridesSection
 		);
@@ -167,7 +167,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 	protected void initializeInheritancePane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.EntityComposite_inheritance
 		);
@@ -177,7 +177,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 	protected void initializeGeneratorsPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection
 		);
@@ -200,7 +200,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 	protected void initializeSecondaryTablesPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.SecondaryTablesComposite_secondaryTables
 		);

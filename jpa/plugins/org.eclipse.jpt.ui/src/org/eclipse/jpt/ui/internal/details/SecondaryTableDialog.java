@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.Iterator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.core.JpaProject;
@@ -199,8 +198,8 @@ public class SecondaryTableDialog extends Dialog {
 		}
 
 		if (database != null) {
-			for (Iterator<String> stream = database.sortedCatalogIdentifiers(); stream.hasNext(); ) {
-				this.catalogCombo.add(stream.next());
+			for (String identifier : database.getSortedCatalogIdentifiers()) {
+				this.catalogCombo.add(identifier);
 			}
 		}
 	}
@@ -229,8 +228,8 @@ public class SecondaryTableDialog extends Dialog {
 
 		SchemaContainer sc = this.getCurrentDbSchemaContainer();
 		if (sc != null) {
-			for (Iterator<String> stream = sc.sortedSchemaIdentifiers(); stream.hasNext(); ) {
-				this.schemaCombo.add(stream.next());
+			for (String identifier : sc.getSortedSchemaIdentifiers()) {
+				this.schemaCombo.add(identifier);
 			}
 		}
 	}
@@ -251,8 +250,8 @@ public class SecondaryTableDialog extends Dialog {
 		// we don't need to add a "default" to the table combo
 		Schema dbSchema = this.getCurrentDbSchema();
 		if (dbSchema != null) {
-			for (Iterator<String> stream = dbSchema.sortedTableIdentifiers(); stream.hasNext(); ) {
-				this.tableCombo.add(stream.next());
+			for (String identifier : dbSchema.getSortedTableIdentifiers()) {
+				this.tableCombo.add(identifier);
 			}
 		}
 	}

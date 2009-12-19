@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 
 /**
  * JPA <code>orm.xml</code> file.
@@ -23,14 +21,8 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmXml
-	extends XmlContextNode, MappingFile
+	extends MappingFile
 {
-	/**
-	 * covariant override
-	 */
-	MappingFileRef getParent();
-
-
 	// ********** entity mappings **********
 
 	/**
@@ -39,7 +31,7 @@ public interface OrmXml
 	public final static String ENTITY_MAPPINGS_PROPERTY = "entityMappings"; //$NON-NLS-1$
 
 	/**
-	 * Return the content represented by the root of the orm.xml file.
+	 * Return the content represented by the root of the <code>orm.xml</code> file.
 	 * This may be null.
 	 */
 	EntityMappings getEntityMappings();

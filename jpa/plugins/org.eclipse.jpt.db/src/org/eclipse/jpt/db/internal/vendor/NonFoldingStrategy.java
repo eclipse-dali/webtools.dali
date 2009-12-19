@@ -54,7 +54,7 @@ class NonFoldingStrategy
 		return true;
 	}
 
-	public boolean normalIdentifiersAreCaseSensitive() {
+	public boolean regularIdentifiersAreCaseSensitive() {
 		return true;
 	}
 

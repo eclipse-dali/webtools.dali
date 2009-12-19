@@ -14,17 +14,20 @@ import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
+/**
+ * <code>orm.xml</code> file
+ * <br>
+ * <code>entity-mappings</code> element
+ */
 public class GenericEntityMappings
 	extends AbstractEntityMappings
 {
 	public GenericEntityMappings(OrmXml parent, XmlEntityMappings resource) {
 		super(parent, resource);
 	}
-	
-	
+
 	@Override
 	protected String latestDocumentVersion() {
-		return getJpaPlatform().getMostRecentSupportedResourceType(
-				JptCorePlugin.ORM_XML_CONTENT_TYPE).getVersion();
+		return this.getJpaPlatform().getMostRecentSupportedResourceType(JptCorePlugin.ORM_XML_CONTENT_TYPE).getVersion();
 	}
 }

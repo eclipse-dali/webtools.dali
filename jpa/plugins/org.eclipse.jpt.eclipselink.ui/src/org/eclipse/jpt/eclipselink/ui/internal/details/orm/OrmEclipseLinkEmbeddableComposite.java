@@ -78,7 +78,7 @@ public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddabl
 
 	protected void initializeConvertersPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			addSubPane(container, 5),
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label
 		);

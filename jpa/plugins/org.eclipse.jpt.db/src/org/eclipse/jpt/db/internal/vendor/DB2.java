@@ -54,9 +54,9 @@ class DB2
 	}
 
 	@Override
-	char[] getExtendedNormalNamePartCharacters() {
-		return EXTENDED_NORMAL_NAME_PART_CHARACTERS;
+	char[] getExtendedRegularNamePartCharacters() {
+		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
 	}
-	private static final char[] EXTENDED_NORMAL_NAME_PART_CHARACTERS = new char[] { '_' };
+	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '_' };
 
 }

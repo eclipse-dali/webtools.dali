@@ -36,7 +36,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	protected OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
-		return getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+		return getEntityMappings().getPersistenceUnitDefaults();
 	}
 	
 	public void testIsAllFeaturesUnset() throws Exception {

@@ -73,10 +73,9 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	
 	@Override
 	public Iterator<String> allOverrideableAttributeMappingNames() {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return embeddableOverrideableAttributeMappingNames();
-		}
-		return super.allOverrideableAttributeMappingNames();
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverrideableAttributeMappingNames() :
+				super.allOverrideableAttributeMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
@@ -99,10 +98,9 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 
 	@Override
 	public Iterator<String> allOverrideableAssociationMappingNames() {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return embeddableOverrideableAssociationMappingNames();
-		}
-		return super.allOverrideableAssociationMappingNames();
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverrideableAssociationMappingNames() :
+				super.allOverrideableAssociationMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
@@ -128,7 +126,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		if (getName() == null) {
 			return null;
 		}
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(attributeName.substring(0, dotIndex))) {

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
@@ -74,7 +73,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		names.add(JPA.JOIN_TABLE);
 		names.add(JPA.MAP_KEY);
 		names.add(JPA.ORDER_BY);
-		if (this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			names.add(JPA2_0.MAP_KEY_CLASS);
 			names.add(JPA2_0.MAP_KEY_COLUMN);
 			names.add(JPA2_0.MAP_KEY_ENUMERATED);

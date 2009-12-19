@@ -221,7 +221,7 @@ public abstract class PersistenceUnitGeneralComposite extends FormPane<Persisten
 
 	protected void initializeMappedClassesPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_mappedClasses
 		);

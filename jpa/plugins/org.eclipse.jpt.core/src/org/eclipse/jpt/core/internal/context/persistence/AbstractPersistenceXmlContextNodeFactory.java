@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
@@ -26,7 +25,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericMappingFile
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceUnitProperty;
-import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
@@ -35,14 +33,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public abstract class AbstractPersistenceXmlContextNodeFactory implements PersistenceXmlContextNodeFactory
 {
-	
-	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
-		return new GenericPersistenceXml(parent, resource);
-	}
 	
 	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
 		return new GenericPersistence(parent, xmlPersistence);

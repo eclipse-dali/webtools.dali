@@ -7,13 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.core.jpa2.context.orm;
 
-import org.eclipse.jpt.core.ResourceDefinition;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
+import org.eclipse.jpt.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
 
 /**
- * A JPA platform can support multiple mapping files. Each will
- * have a unique resource type and must be defined with a mapping file definition.
+ * Context <code>orm.xml</code> persistence unit defaults.
+ * Context model corresponding to the
+ * XML resource model {@link XmlPersistenceUnitDefaults},
+ * which corresponds to the <code>persistence-unit-defaults</code> element
+ * in the <code>orm.xml</code> file.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,8 +25,10 @@ import org.eclipse.jpt.core.ResourceDefinition;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappingFileDefinition
-	extends ResourceDefinition
+public interface OrmPersistenceUnitDefaults2_0
+	extends MappingFilePersistenceUnitDefaults2_0, OrmPersistenceUnitDefaults
 {
-	// nothing yet
+	boolean isDelimitedIdentifiers();
+	void setDelimitedIdentifiers(boolean value);
+		String DELIMITED_IDENTIFIERS_PROPERTY = "delimitedIdentifiers"; //$NON-NLS-1$
 }

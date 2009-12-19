@@ -157,6 +157,7 @@ public abstract class AbstractJpaProject
 	/**
 	 * The data source that wraps the DTP model.
 	 */
+	// TODO move to persistence unit... :-(
 	protected final JpaDataSource dataSource;
 	
 	/**
@@ -257,10 +258,6 @@ public abstract class AbstractJpaProject
 
 	protected JpaRootContextNode buildRootContextNode() {
 		return this.getJpaFactory().buildRootContextNode(this);
-	}
-
-	protected boolean isJpa2_0Compatible() {
-		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
 	}
 
 	// ***** inner class

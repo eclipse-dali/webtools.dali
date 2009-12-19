@@ -20,7 +20,7 @@ final class DTPCatalogWrapper
 	extends DTPSchemaContainerWrapper
 	implements Catalog
 {
-	// the wrapped DTP catalog
+	/** the wrapped DTP catalog */
 	private final org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog;
 
 
@@ -53,8 +53,7 @@ final class DTPCatalogWrapper
 	DTPSchemaWrapper getSchema(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
 		// try to short-circuit the search
 		return this.wraps(dtpSchema.getCatalog()) ?
-						this.getSchema_(dtpSchema)
-					:
+						this.getSchema_(dtpSchema) :
 						this.getDatabase().getSchemaFromCatalogs(dtpSchema);
 	}
 
@@ -62,8 +61,7 @@ final class DTPCatalogWrapper
 	DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
 		// try to short-circuit the search
 		return this.wraps(dtpTable.getSchema().getCatalog()) ?
-						this.getTable_(dtpTable)
-					:
+						this.getTable_(dtpTable) :
 						this.getDatabase().getTableFromCatalogs(dtpTable);
 	}
 
@@ -71,8 +69,7 @@ final class DTPCatalogWrapper
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		// try to short-circuit the search
 		return this.wraps(dtpColumn.getTable().getSchema().getCatalog()) ?
-						this.getColumn_(dtpColumn)
-					:
+						this.getColumn_(dtpColumn) :
 						this.getDatabase().getColumnFromCatalogs(dtpColumn);
 	}
 

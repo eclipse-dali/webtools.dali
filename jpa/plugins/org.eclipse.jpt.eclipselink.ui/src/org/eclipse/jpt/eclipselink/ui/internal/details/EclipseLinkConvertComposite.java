@@ -94,7 +94,7 @@ public class EclipseLinkConvertComposite extends FormPane<EclipseLinkConvert>
 		);
 		SWTUtil.attachDefaultValueHandler(combo);
 		
-		Composite subSection = addCollapsableSubSection(
+		Composite subSection = addCollapsibleSubSection(
 			container, 
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_defineConverterSection, 
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE));

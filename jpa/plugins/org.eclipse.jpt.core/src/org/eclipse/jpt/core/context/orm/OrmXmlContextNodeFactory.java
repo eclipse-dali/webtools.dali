@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.XmlContextNodeFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -26,7 +25,6 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
@@ -63,20 +61,16 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
-public interface OrmXmlContextNodeFactory extends XmlContextNodeFactory
+public interface OrmXmlContextNodeFactory
 {
 	// ********** ORM Context Model **********
 
-	//covariant override
-	OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
-
 	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 	
-	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings entityMappings);
+	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent);
 	
-	OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings entityMappings);
+	OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent);
 	
 	OrmPersistentType buildOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping);
 	

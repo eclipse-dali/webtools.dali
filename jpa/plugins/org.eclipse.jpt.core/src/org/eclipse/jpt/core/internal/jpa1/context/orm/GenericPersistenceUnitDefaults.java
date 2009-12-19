@@ -3,16 +3,16 @@
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
@@ -23,14 +23,14 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
- * 
+ * <code>orm.xml</code> file
+ * <br>
+ * <code>persistence-unit-defaults</code> element
  */
 public class GenericPersistenceUnitDefaults
 	extends AbstractOrmXmlContextNode
-	implements OrmPersistenceUnitDefaults
+	implements OrmPersistenceUnitDefaults2_0
 {
-	protected final XmlEntityMappings xmlEntityMappings;
-	
 	protected AccessType access;
 
 	protected String specifiedCatalog;
@@ -40,41 +40,42 @@ public class GenericPersistenceUnitDefaults
 	protected String defaultSchema;
 
 	protected boolean cascadePersist;
+	protected boolean delimitedIdentifiers;
 
 
 	// ********** constructor/initialization **********
 
-	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
+	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
 		super(parent);
-		this.xmlEntityMappings = xmlEntityMappings;
-		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-		if (resourceDefaults != null) {
-			this.access = AccessType.fromOrmResourceModel(resourceDefaults.getAccess());
-			this.specifiedCatalog = resourceDefaults.getCatalog();
-			this.specifiedSchema = resourceDefaults.getSchema();
-			this.cascadePersist = resourceDefaults.isCascadePersist();
+		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
+		if (xmlDefaults != null) {
+			this.access = AccessType.fromOrmResourceModel(xmlDefaults.getAccess());
+			this.specifiedCatalog = xmlDefaults.getCatalog();
+			this.specifiedSchema = xmlDefaults.getSchema();
+			this.cascadePersist = xmlDefaults.isCascadePersist();
+			this.delimitedIdentifiers = xmlDefaults.isDelimitedIdentifiers();
 		}
 		this.defaultCatalog = this.getJpaProject().getDefaultCatalog();
 		this.defaultSchema = this.getJpaProject().getDefaultSchema();
 	}
-	
+
 	public boolean resourceExists() {
-		return getResourceDefaults() != null;
+		return this.getXmlDefaults() != null;
 	}
-	
+
 	@Override
 	public PersistenceUnitMetadata getParent() {
 		return (PersistenceUnitMetadata) super.getParent();
 	}
-	
-	protected XmlPersistenceUnitMetadata getResourcePersistenceUnitMetadata() {
-		return getParent().getResourcePersistenceUnitMetadata();
+
+	protected XmlPersistenceUnitMetadata getXmlPersistenceUnitMetadata() {
+		return this.getParent().getXmlPersistenceUnitMetadata();
 	}
-	
-	protected XmlPersistenceUnitMetadata createResourcePersistenceUnitMetadata() {
-		return getParent().createResourcePersistenceUnitMetadata();
+
+	protected XmlEntityMappings getXmlEntityMappings() {
+		return this.getParent().getXmlEntityMappings();
 	}
-	
+
 	// ********** access **********
 
 	public AccessType getAccess() {
@@ -85,12 +86,9 @@ public class GenericPersistenceUnitDefaults
 		AccessType old = this.access;
 		this.access = access;
 		if (access != old) {
-			XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-			if (resourceDefaults == null) {
-				resourceDefaults = this.buildResourceDefaults();
-			}
-			resourceDefaults.setAccess(AccessType.toOrmResourceModel(access));
-			this.checkResourceDefaults(resourceDefaults);
+			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
+			xmlDefaults.setAccess(AccessType.toOrmResourceModel(access));
+			this.checkXmlDefaults(xmlDefaults);
 			this.firePropertyChanged(ACCESS_PROPERTY, old, access);
 		}
 	}
@@ -100,7 +98,7 @@ public class GenericPersistenceUnitDefaults
 		this.access = access;
 		this.firePropertyChanged(ACCESS_PROPERTY, old, access);
 	}
-	
+
 
 	// ********** schema container **********
 
@@ -129,16 +127,13 @@ public class GenericPersistenceUnitDefaults
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
 		if (this.attributeValueHasChanged(old, catalog)) {
-			XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-			if (resourceDefaults == null) {
-				resourceDefaults = this.buildResourceDefaults();
-			}
-			resourceDefaults.setCatalog(catalog);
-			this.checkResourceDefaults(resourceDefaults);
+			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
+			xmlDefaults.setCatalog(catalog);
+			this.checkXmlDefaults(xmlDefaults);
 			this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
 		}
 	}
-	
+
 	protected void setSpecifiedCatalog_(String catalog) {
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
@@ -148,7 +143,7 @@ public class GenericPersistenceUnitDefaults
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
 	}
-	
+
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
 		this.defaultCatalog = catalog;
@@ -179,22 +174,19 @@ public class GenericPersistenceUnitDefaults
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
 		if (this.attributeValueHasChanged(old, schema)) {
-			XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-			if (resourceDefaults == null) {
-				resourceDefaults = this.buildResourceDefaults();
-			}
-			resourceDefaults.setSchema(schema);
-			this.checkResourceDefaults(resourceDefaults);
+			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
+			xmlDefaults.setSchema(schema);
+			this.checkXmlDefaults(xmlDefaults);
 			this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 		}
 	}
-	
+
 	protected void setSpecifiedSchema_(String schema) {
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
 		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
-	
+
 	public String getDefaultSchema() {
 		return this.defaultSchema;
 	}
@@ -211,7 +203,7 @@ public class GenericPersistenceUnitDefaults
 	}
 
 
-	// ********** cascadePersist **********
+	// ********** cascade persist **********
 
 	public boolean isCascadePersist() {
 		return this.cascadePersist;
@@ -221,12 +213,9 @@ public class GenericPersistenceUnitDefaults
 		boolean old = this.cascadePersist;
 		this.cascadePersist = cascadePersist;
 		if (cascadePersist != old) {
-			XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-			if (resourceDefaults == null) {
-				resourceDefaults = this.buildResourceDefaults();
-			}
-			resourceDefaults.setCascadePersist(cascadePersist);
-			this.checkResourceDefaults(resourceDefaults);
+			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
+			xmlDefaults.setCascadePersist(cascadePersist);
+			this.checkXmlDefaults(xmlDefaults);
 			this.firePropertyChanged(CASCADE_PERSIST_PROPERTY, old, cascadePersist);
 		}
 	}
@@ -236,61 +225,99 @@ public class GenericPersistenceUnitDefaults
 		this.cascadePersist = cp;
 		this.firePropertyChanged(CASCADE_PERSIST_PROPERTY, old, cp);
 	}
-	
+
+
+	// ********** delimited identifiers **********
+
+	public boolean isDelimitedIdentifiers() {
+		return this.delimitedIdentifiers;
+	}
+
+	public void setDelimitedIdentifiers(boolean delimitedIdentifiers) {
+		boolean old = this.delimitedIdentifiers;
+		this.delimitedIdentifiers = delimitedIdentifiers;
+		if (delimitedIdentifiers != old) {
+			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
+			xmlDefaults.setDelimitedIdentifiers(delimitedIdentifiers);
+			this.checkXmlDefaults(xmlDefaults);
+			this.firePropertyChanged(DELIMITED_IDENTIFIERS_PROPERTY, old, delimitedIdentifiers);
+		}
+	}
+
+	protected void setDelimitedIdentifiers_(boolean di) {
+		boolean old = this.delimitedIdentifiers;
+		this.delimitedIdentifiers = di;
+		this.firePropertyChanged(DELIMITED_IDENTIFIERS_PROPERTY, old, di);
+	}
+
 
 	// ********** behavior **********
 
 	/**
-	 * build the resource defaults and the resource metadata if necessary
+	 * If the XML does not exist, build it before returning it
 	 */
-	protected XmlPersistenceUnitDefaults buildResourceDefaults() {
-		XmlPersistenceUnitMetadata resourceMetadata = getResourcePersistenceUnitMetadata();
+	protected XmlPersistenceUnitDefaults getXmlDefaultsForUpdate() {
+		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
+		return (xmlDefaults != null) ? xmlDefaults : this.buildXmlDefaults();
+	}
+
+	/**
+	 * build the XML defaults and the XML metadata if necessary
+	 */
+	protected XmlPersistenceUnitDefaults buildXmlDefaults() {
+		XmlPersistenceUnitMetadata resourceMetadata = this.getXmlPersistenceUnitMetadata();
 		if (resourceMetadata == null) {
-			resourceMetadata = createResourcePersistenceUnitMetadata();
-			this.xmlEntityMappings.setPersistenceUnitMetadata(resourceMetadata);
+			resourceMetadata = this.buildXmlPersistenceUnitMetadata();
+			this.getXmlEntityMappings().setPersistenceUnitMetadata(resourceMetadata);
 		}
-		XmlPersistenceUnitDefaults resourceDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
-		resourceMetadata.setPersistenceUnitDefaults(resourceDefaults);
-		return resourceDefaults;
+		XmlPersistenceUnitDefaults xmlDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+		resourceMetadata.setPersistenceUnitDefaults(xmlDefaults);
+		return xmlDefaults;
+	}
+
+	protected XmlPersistenceUnitMetadata buildXmlPersistenceUnitMetadata() {
+		return this.getParent().buildXmlPersistenceUnitMetadata();
 	}
 
 	/**
 	 * clear the resource defaults and the resource metadata if appropriate
 	 */
-	protected void checkResourceDefaults(XmlPersistenceUnitDefaults resourceDefaults) {
-		if (resourceDefaults.isUnset()) {
-			XmlPersistenceUnitMetadata metadata = this.xmlEntityMappings.getPersistenceUnitMetadata();
+	protected void checkXmlDefaults(XmlPersistenceUnitDefaults xmlDefaults) {
+		if (xmlDefaults.isUnset()) {
+			XmlPersistenceUnitMetadata metadata = this.getXmlEntityMappings().getPersistenceUnitMetadata();
 			metadata.setPersistenceUnitDefaults(null);
 			if (metadata.isUnset()) {
-				this.xmlEntityMappings.setPersistenceUnitMetadata(null);
+				this.getXmlEntityMappings().setPersistenceUnitMetadata(null);
 			}
 		}
 	}
 
 	public void update() {
-		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-		if (resourceDefaults == null) {
+		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
+		if (xmlDefaults == null) {
 			this.setAccess_(null);
 			this.setSpecifiedCatalog_(null);
 			this.setSpecifiedSchema_(null);
 			this.setCascadePersist_(false);
+			this.setDelimitedIdentifiers_(false);
 		} else {
-			this.setAccess_(AccessType.fromOrmResourceModel(resourceDefaults.getAccess()));
-			this.setSpecifiedCatalog_(resourceDefaults.getCatalog());
-			this.setSpecifiedSchema_(resourceDefaults.getSchema());
-			this.setCascadePersist_(resourceDefaults.isCascadePersist());
+			this.setAccess_(AccessType.fromOrmResourceModel(xmlDefaults.getAccess()));
+			this.setSpecifiedCatalog_(xmlDefaults.getCatalog());
+			this.setSpecifiedSchema_(xmlDefaults.getSchema());
+			this.setCascadePersist_(xmlDefaults.isCascadePersist());
+			this.setDelimitedIdentifiers_(xmlDefaults.isDelimitedIdentifiers());
 		}
 		this.setDefaultCatalog(this.getJpaProject().getDefaultCatalog());
 		this.setDefaultSchema(this.getJpaProject().getDefaultSchema());
 	}
 
 	public TextRange getValidationTextRange() {
-		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-		return (resourceDefaults != null) ? resourceDefaults.getValidationTextRange() : this.xmlEntityMappings.getValidationTextRange();
+		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
+		return (xmlDefaults != null) ? xmlDefaults.getValidationTextRange() : this.getXmlEntityMappings().getValidationTextRange();
 	}
 
-	protected XmlPersistenceUnitDefaults getResourceDefaults() {
-		XmlPersistenceUnitMetadata metadata = getResourcePersistenceUnitMetadata();
+	protected XmlPersistenceUnitDefaults getXmlDefaults() {
+		XmlPersistenceUnitMetadata metadata = this.getXmlPersistenceUnitMetadata();
 		return (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
 	}
 

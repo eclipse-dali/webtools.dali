@@ -11,8 +11,8 @@
 
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
-import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -115,9 +115,9 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return (this.specifiedValue != null) ? this.specifiedValue : this.defaultValue;
 	}
 	
-	public Iterator<String> sortedValueChoices() {
+	public Iterable<String> getSortedValueChoices() {
 		// TODO
-		return EmptyIterator.<String>instance();
+		return EmptyIterable.<String>instance();
 	}
 	
 	public boolean isSpecified() {

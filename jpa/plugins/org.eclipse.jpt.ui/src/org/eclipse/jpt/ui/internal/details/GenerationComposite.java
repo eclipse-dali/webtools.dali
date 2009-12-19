@@ -95,7 +95,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	private void initializeSequenceGeneratorPane(Composite container) {
 
 		// Sequence Generator sub-section
-		container = this.addCollapsableSubSection(
+		container = this.addCollapsibleSubSection(
 			this.addSubPane(container, 10),
 			JptUiDetailsMessages.GeneratorsComposite_sequenceGeneratorSection,
 			this.sequenceGeneratorExpansionStateHolder
@@ -162,7 +162,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
  	private void initializeTableGeneratorPane(Composite container) {
 
 		// Table Generator sub-section
-		container = addCollapsableSubSection(
+		container = addCollapsibleSubSection(
 			container,
 			JptUiDetailsMessages.GeneratorsComposite_tableGeneratorSection,
 			this.tableGeneratorExpansionStateHolder

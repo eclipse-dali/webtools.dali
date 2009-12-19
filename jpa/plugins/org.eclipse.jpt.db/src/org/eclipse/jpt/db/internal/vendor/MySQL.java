@@ -76,8 +76,8 @@ class MySQL
 	}
 
 	@Override
-	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(this.convertNameToIdentifier(database.getName()));  // hmmm... ~bjv
+	void addDefaultSchemaNamesTo(Database database, String userName, ArrayList<String> names) {
+		names.add(database.getName());
 	}
 
 	/**
@@ -85,15 +85,15 @@ class MySQL
 	 * Although, the name cannnot be *all* digits.
 	 */
 	@Override
-	boolean characterIsNormalNameStart(char c) {
-		return Character.isDigit(c) || super.characterIsNormalNameStart(c);
+	boolean characterIsRegularNameStart(char c) {
+		return Character.isDigit(c) || super.characterIsRegularNameStart(c);
 	}
 
 	@Override
-	char[] getExtendedNormalNameStartCharacters() {
-		return EXTENDED_NORMAL_NAME_START_CHARACTERS;
+	char[] getExtendedRegularNameStartCharacters() {
+		return EXTENDED_REGULAR_NAME_START_CHARACTERS;
 	}
-	private static final char[] EXTENDED_NORMAL_NAME_START_CHARACTERS = new char[] { '_', '$' };
+	private static final char[] EXTENDED_REGULAR_NAME_START_CHARACTERS = new char[] { '_', '$' };
 
 	/**
 	 * By default, MySQL delimits identifiers with backticks (`); but it

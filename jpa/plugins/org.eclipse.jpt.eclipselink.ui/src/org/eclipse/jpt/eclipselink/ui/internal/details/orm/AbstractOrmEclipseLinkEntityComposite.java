@@ -45,7 +45,7 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 	}
 	
 	protected void initializeCachingPane(Composite container) {
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			addSubPane(container, 5),
 			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
 		addCachingComposite(container, buildCachingHolder());
@@ -67,7 +67,7 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 
 	protected void initializeConvertersPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label
 		);

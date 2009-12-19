@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2;
 
+import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
@@ -25,6 +26,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
+import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 
 /**
  * JPA 2.0 factory
@@ -42,6 +44,13 @@ public interface JpaFactory2_0
 {
 	
 	// ********** Core Model **********
+
+	/**
+	 * Return an identifier adapter that can be used to convert database
+	 * identifiers to names and vice versa, respecting the <code>delimited-identifiers</code>
+	 * in <code>persistence.xml</code>.
+	 */
+	DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource);
 
 	PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType);
 

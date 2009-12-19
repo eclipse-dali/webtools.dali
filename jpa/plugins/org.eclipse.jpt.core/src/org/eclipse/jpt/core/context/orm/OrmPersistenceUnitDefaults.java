@@ -17,6 +17,12 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
+ * Context <code>orm.xml</code> persistence unit defaults.
+ * Context model corresponding to the
+ * XML resource model {@link XmlPersistenceUnitDefaults},
+ * which corresponds to the <code>persistence-unit-defaults</code> element
+ * in the <code>orm.xml</code> file.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -57,10 +63,10 @@ public interface OrmPersistenceUnitDefaults
 	boolean isCascadePersist();
 	void setCascadePersist(boolean value);
 		String CASCADE_PERSIST_PROPERTY = "cascadePersist"; //$NON-NLS-1$
-	
+
 	/**
-	 * Update the OrmPersistenceUnitDefaults context model object to match the XmlEntityMappings 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * Update the ORM persistence unit defaults context model to match the resource model.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update();
 

@@ -233,7 +233,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
-		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
+		OrmPersistentType departmentPersistentType = getEntityMappings().getPersistentTypes().iterator().next();
 		OrmEclipseLinkOneToManyMapping oneToMany = (OrmEclipseLinkOneToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 
 		assertNull(oneToMany.getJoinFetch().getValue());
@@ -257,7 +257,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
-		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
+		OrmPersistentType departmentPersistentType = getEntityMappings().getPersistentTypes().iterator().next();
 		OrmOneToManyMapping oneToMany = (OrmOneToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 		
 		assertEquals(true, oneToMany.getPersistentAttribute().isVirtual());

@@ -108,7 +108,7 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 	
 	protected void initializeTypePane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.TypeSection_type
 		);

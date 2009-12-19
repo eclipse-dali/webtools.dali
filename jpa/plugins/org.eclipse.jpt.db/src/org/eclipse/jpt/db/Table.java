@@ -9,18 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
-import java.util.Iterator;
-
 /**
  * Database table
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * This interface is not intended to be implemented by clients.
  */
 public interface Table extends DatabaseObject {
 
@@ -35,12 +31,12 @@ public interface Table extends DatabaseObject {
 	/**
 	 * Return the table's columns.
 	 */
-	Iterator<Column> columns();
+	Iterable<Column> getColumns();
 
 	/**
 	 * Return the number of columns the table contains.
 	 */
-	int columnsSize();
+	int getColumnsSize();
 
 	/**
 	 * Return the column with specified name. The name must be an exact match
@@ -51,14 +47,16 @@ public interface Table extends DatabaseObject {
 
 	/**
 	 * Return the table's column identifers, sorted by name.
+	 * @see #getColumnForIdentifier(String)
 	 */
-	Iterator<String> sortedColumnIdentifiers();
+	Iterable<String> getSortedColumnIdentifiers();
 
 	/**
 	 * Return the column for the specified identifier. The identifier should
 	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
 	 * special characters, unquoted otherwise).
 	 * @see #getColumnNamed(String)
+	 * @see #getSortedColumnIdentifiers()
 	 */
 	Column getColumnForIdentifier(String identifier);
 
@@ -68,16 +66,16 @@ public interface Table extends DatabaseObject {
 	/**
 	 * Return the table's primary key columns.
 	 */
-	Iterator<Column> primaryKeyColumns();
+	Iterable<Column> getPrimaryKeyColumns();
 
 	/**
 	 * Return the number of primary key columns the table contains.
 	 */
-	int primaryKeyColumnsSize();
+	int getPrimaryKeyColumnsSize();
 
 	/**
 	 * Return the table's single primary key column. Throw an
-	 * IllegalStateException if the table has more than one primary key column.
+	 * {@link IllegalStateException} if the table has more than one primary key column.
 	 */
 	Column getPrimaryKeyColumn();
 
@@ -87,19 +85,19 @@ public interface Table extends DatabaseObject {
 	/**
 	 * Return the table's foreign keys.
 	 */
-	Iterator<ForeignKey> foreignKeys();
+	Iterable<ForeignKey> getForeignKeys();
 
 	/**
 	 * Return the number of foreign keys the table contains.
 	 */
-	int foreignKeysSize();
+	int getForeignKeysSize();
 
 
 	// ********** join table support **********
 
 	/**
 	 * Return whether the table is possibly a "join" table
-	 * (i.e. it contains only 2 foreign keys). Whether the table *actually* is
+	 * (i.e. it contains only 2 foreign keys). Whether the table <em>actually</em> is
 	 * a "join" table is determined by the semantics of the database design.
 	 */
 	boolean isPossibleJoinTable();
@@ -120,7 +118,7 @@ public interface Table extends DatabaseObject {
 
 	/**
 	 * Assuming the table is a "join" table, return whether its name matches
-	 * the JPA default (i.e. "OWNINGTABLE_NONOWNINGTABLE").
+	 * the JPA default (i.e. <code>"OWNINGTABLE_NONOWNINGTABLE"</code>).
 	 * @see #isPossibleJoinTable()
 	 */
 	boolean joinTableNameIsDefault();

@@ -29,9 +29,10 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * Java table
@@ -389,7 +390,7 @@ public abstract class AbstractJavaTable
 
 	public Iterator<String> candidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String>instance();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
 	}
 
 
@@ -428,53 +429,53 @@ public abstract class AbstractJavaTable
 			return result;
 		}
 		if (this.nameTouches(pos, astRoot)) {
-			return this.javaCandidateNames(filter);
+			return this.getJavaCandidateNames(filter).iterator();
 		}
 		if (this.schemaTouches(pos, astRoot)) {
-			return this.javaCandidateSchemata(filter);
+			return this.getJavaCandidateSchemata(filter).iterator();
 		}
 		if (this.catalogTouches(pos, astRoot)) {
-			return this.javaCandidateCatalogs(filter);
+			return this.getJavaCandidateCatalogs(filter).iterator();
 		}
 		return null;
 	}
 
-	protected Iterator<String> javaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateNames(filter));
+	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateNames(filter));
 	}
 
-	protected Iterator<String> candidateNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateNames(), filter);
+	protected Iterable<String> getCandidateNames(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateNames(), filter);
 	}
 
-	protected Iterator<String> candidateNames() {
+	protected Iterable<String> getCandidateNames() {
 		Schema dbSchema = this.getDbSchema();
-		return (dbSchema != null) ? dbSchema.sortedTableIdentifiers() : EmptyIterator.<String> instance();
+		return (dbSchema != null) ? dbSchema.getSortedTableIdentifiers() : EmptyIterable.<String> instance();
 	}
 
-	protected Iterator<String> javaCandidateSchemata(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateSchemata(filter));
+	protected Iterable<String> getJavaCandidateSchemata(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateSchemata(filter));
 	}
 
-	protected Iterator<String> candidateSchemata(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateSchemata(), filter);
+	protected Iterable<String> getCandidateSchemata(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateSchemata(), filter);
 	}
 
-	protected Iterator<String> candidateSchemata() {
-		return this.getDbSchemaContainer().sortedSchemaIdentifiers();
+	protected Iterable<String> getCandidateSchemata() {
+		return this.getDbSchemaContainer().getSortedSchemaIdentifiers();
 	}
 
-	protected Iterator<String> javaCandidateCatalogs(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateCatalogs(filter));
+	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateCatalogs(filter));
 	}
 
-	protected Iterator<String> candidateCatalogs(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateCatalogs(), filter);
+	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateCatalogs(), filter);
 	}
 
-	protected Iterator<String> candidateCatalogs() {
+	protected Iterable<String> getCandidateCatalogs() {
 		Database db = this.getDatabase();
-		return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String> instance();
+		return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 

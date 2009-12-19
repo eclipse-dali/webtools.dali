@@ -28,7 +28,7 @@ final class DTPColumnWrapper
 	extends DTPDatabaseObjectWrapper
 	implements Column
 {
-	// the wrapped DTP column
+	/** the wrapped DTP column */
 	private final org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn;
 
 
@@ -87,32 +87,28 @@ final class DTPColumnWrapper
 	public int getPrecision() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof NumericalDataType) ?
-						((NumericalDataType) dataType).getPrecision()
-					:
+						((NumericalDataType) dataType).getPrecision() :
 						-1;
 	}
 
 	public int getScale(){
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof ExactNumericDataType) ?
-						((ExactNumericDataType) dataType).getScale()
-					:
+						((ExactNumericDataType) dataType).getScale() :
 						-1;
 	}
 
 	public int getLength() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof CharacterStringDataType) ?
-						((CharacterStringDataType) dataType).getLength()
-					:
+						((CharacterStringDataType) dataType).getLength() :
 						-1;
 	}
 
 	public boolean isLOB() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
-						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
-					:
+						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType()) :
 						false;
 	}
 
@@ -123,8 +119,7 @@ final class DTPColumnWrapper
 	public JavaType getJavaType() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
-			convertToJPAJavaType(this.getJavaType((PredefinedDataType) dataType))
-		:
+			convertToJPAJavaType(this.getJavaType((PredefinedDataType) dataType)) :
 			DEFAULT_JAVA_TYPE;
 	}
 
@@ -177,12 +172,13 @@ final class DTPColumnWrapper
 
 	/**
 	 * The JPA spec [2.1.4] says only the following types are allowed in
-	 * primary key fields:
-	 *     [variable] primitives
-	 *     [variable] primitive wrappers
-	 *     java.lang.String
-	 *     java.util.Date
-	 *     java.sql.Date
+	 * primary key fields:<ul>
+	 *     <li>[variable] primitives
+	 *     <li>[variable] primitive wrappers
+	 *     <li>{@link java.lang.String}
+	 *     <li>{@link java.util.Date}
+	 *     <li>{@link java.sql.Date}
+	 * </ul>
 	 */
 	private static JavaType convertToJPAPrimaryKeyJavaType(JavaType javaType) {
 		if (javaType.isVariablePrimitive()

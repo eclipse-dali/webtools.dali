@@ -15,6 +15,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -30,10 +31,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
  *     implement this method to add the appropriate listener to the subject
  * <li>{@link #disengageSubject_()}<p>
  *     implement this method to remove the appropriate listener from the subject
- * <li>{@link #listIterator_()}<p>
- *     at the very minimum, override this method to return a list iterator
- *     on the subject's list aspect; it does not need to be overridden if
- *     {@link #listIterator()} is overridden and its behavior changed
+ * <li>{@link #getListIterable()}<p>
+ *     at the very minimum, override this method to return a list iterable containing the
+ *     subject's list aspect; it does not need to be overridden if either
+ *     {@link #listIterator_()} or {@link #listIterator()} is overridden and its behavior changed
  * <li>{@link #get(int)}<p>
  *     override this method to improve performance
  * <li>{@link #size_()}<p>
@@ -42,6 +43,11 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
  * <li>{@link #toArray_()}<p>
  *     override this method to improve performance; it does not need to be overridden if
  *     {@link #toArray()} is overridden and its behavior changed
+ * <li>{@link #listIterator_()}<p>
+ *     override this method to return a list iterator on the subject's list
+ *     aspect if it is not possible to implement {@link #getListIterable()};
+ *     it does not need to be overridden if
+ *     {@link #listIterator()} is overridden and its behavior changed
  * <li>{@link #listIterator()}<p>
  *     override this method only if returning an empty list iterator when the
  *     subject is null is unacceptable
@@ -95,6 +101,15 @@ public abstract class AspectListValueModelAdapter<S, E>
 	 * @see #listIterator()
 	 */
 	protected ListIterator<E> listIterator_() {
+		return this.getListIterable().iterator();
+	}
+
+	/**
+	 * Return the elements of the subject's list aspect.
+	 * At this point we can be sure the subject is not null.
+	 * @see #listIterator_()
+	 */
+	protected ListIterable<E> getListIterable() {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 

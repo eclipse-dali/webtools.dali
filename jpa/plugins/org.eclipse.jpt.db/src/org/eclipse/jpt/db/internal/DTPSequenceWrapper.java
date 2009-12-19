@@ -18,7 +18,7 @@ final class DTPSequenceWrapper
 	extends DTPDatabaseObjectWrapper
 	implements Sequence
 {
-	// the wrapped DTP sequence
+	/** the wrapped DTP sequence */
 	private final org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence;
 
 

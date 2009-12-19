@@ -329,7 +329,7 @@ public class GenericOrmTableGenerator
 
 	public Iterator<String> candidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String>instance();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
 	}
 
 

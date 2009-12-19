@@ -11,14 +11,14 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import java.util.Collection;
-import java.util.Iterator;
+
 import org.eclipse.jpt.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -39,7 +39,7 @@ public class DerivedIdentity2_0Pane<T extends DerivedIdentity2_0>
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite composite = addCollapsableSection(
+		Composite composite = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages2_0.DerivedIdentity_title);
 		
@@ -204,8 +204,8 @@ public class DerivedIdentity2_0Pane<T extends DerivedIdentity2_0>
 		}
 		
 		@Override
-		protected Iterator<String> values() {
-			return (getSubject() == null) ? EmptyIterator.<String>instance() : getSubject().sortedValueChoices();
+		protected Iterable<String> getValues() {
+			return (getSubject() == null) ? EmptyIterable.<String>instance() : getSubject().getSortedValueChoices();
 		}
 		
 		@Override

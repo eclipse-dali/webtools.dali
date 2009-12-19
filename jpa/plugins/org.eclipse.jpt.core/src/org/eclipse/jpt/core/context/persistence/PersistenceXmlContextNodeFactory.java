@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
-import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.java.JarFile;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -19,12 +17,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 public interface PersistenceXmlContextNodeFactory
 {	
-	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource);
-	
 	Persistence buildPersistence(PersistenceXml parent, XmlPersistence resourcePersistence);
 	
 	PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit resourcePersistenceUnit);

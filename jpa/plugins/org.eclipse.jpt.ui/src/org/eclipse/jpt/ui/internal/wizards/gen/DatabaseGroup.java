@@ -32,8 +32,8 @@ import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -184,7 +184,7 @@ public class DatabaseGroup
 	}
 
 	private SortedSet<String> buildSortedConnectionProfileNames() {
-		return CollectionTools.sortedSet(JptDbPlugin.instance().getConnectionProfileFactory().connectionProfileNames());
+		return CollectionTools.sortedSet(JptDbPlugin.instance().getConnectionProfileFactory().getConnectionProfileNames());
 	}
 
 	/**
@@ -204,8 +204,8 @@ public class DatabaseGroup
 	 */
 	private void updateSchemaComboBox() {
 		this.schemaComboBox.removeAll();
-		for (Iterator<String> stream = this.schemaNames(); stream.hasNext(); ) {
-			this.schemaComboBox.add(stream.next());
+		for (String name : this.getSchemaNames()) {
+			this.schemaComboBox.add(name);
 		}
 		// the current schema *should* be in the current connection profile
 		if (this.selectedSchema != null) {
@@ -213,10 +213,10 @@ public class DatabaseGroup
 		}
 	}
 
-	private Iterator<String> schemaNames() {
+	private Iterable<String> getSchemaNames() {
 		SchemaContainer sc = this.jpaProject.getDefaultDbSchemaContainer();
 		// use schema *names* since the combo-box is read-only
-		return (sc != null) ? sc.sortedSchemaNames() : EmptyIterator.<String>instance();
+		return (sc != null) ? sc.getSortedSchemaNames() : EmptyIterable.<String>instance();
 	}
 
 	/**

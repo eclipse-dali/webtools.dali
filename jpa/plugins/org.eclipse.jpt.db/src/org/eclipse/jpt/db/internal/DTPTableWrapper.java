@@ -9,20 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
 import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.DatabaseObject;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-
-import com.ibm.icu.text.Collator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  *  Wrap a DTP Table
@@ -31,16 +28,16 @@ final class DTPTableWrapper
 	extends DTPDatabaseObjectWrapper
 	implements Table
 {
-	// the wrapped DTP table
+	/** the wrapped DTP table */
 	private final org.eclipse.datatools.modelbase.sql.tables.Table dtpTable;
 
-	// lazy-initialized
+	/** lazy-initialized */
 	private DTPColumnWrapper[] columns;
 
-	// lazy-initialized
+	/** lazy-initialized */
 	private DTPColumnWrapper[] primaryKeyColumns;
 
-	// lazy-initialized
+	/** lazy-initialized */
 	private DTPForeignKeyWrapper[] foreignKeys;
 
 
@@ -77,36 +74,28 @@ final class DTPTableWrapper
 
 	// ***** columns
 
-	public Iterator<Column> columns() {
-		return new ArrayIterator<Column>(this.getColumns());
+	public Iterable<Column> getColumns() {
+		return new ArrayIterable<Column>(this.getColumnArray());
 	}
 
-	private Iterator<DTPColumnWrapper> columnWrappers() {
-		return new ArrayIterator<DTPColumnWrapper>(this.getColumns());
+	private Iterable<DTPColumnWrapper> getColumnWrappers() {
+		return new ArrayIterable<DTPColumnWrapper>(this.getColumnArray());
 	}
 
-	private synchronized DTPColumnWrapper[] getColumns() {
+	private synchronized DTPColumnWrapper[] getColumnArray() {
 		if (this.columns == null) {
-			this.columns = this.buildColumns();
+			this.columns = this.buildColumnArray();
 		}
 		return this.columns;
 	}
 
-	private DTPColumnWrapper[] buildColumns() {
+	private DTPColumnWrapper[] buildColumnArray() {
 		List<org.eclipse.datatools.modelbase.sql.tables.Column> dtpColumns = this.getDTPColumns();
 		DTPColumnWrapper[] result = new DTPColumnWrapper[dtpColumns.size()];
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPColumnWrapper(this, dtpColumns.get(i));
 		}
-		return ArrayTools.sort(result, this.buildColumnComparator());
-	}
-
-	private Comparator<Column> buildColumnComparator() {
-		return new Comparator<Column>() {
-			public int compare(Column column1, Column column2) {
-				return Collator.getInstance().compare(column1.getName(), column2.getName());
-			}
-		};
+		return ArrayTools.sort(result, DEFAULT_COMPARATOR);
 	}
 
 	// minimize scope of suppressed warnings
@@ -115,12 +104,12 @@ final class DTPTableWrapper
 		return this.dtpTable.getColumns();
 	}
 
-	public int columnsSize() {
-		return this.getColumns().length;
+	public int getColumnsSize() {
+		return this.getColumnArray().length;
 	}
 
 	public DTPColumnWrapper getColumnNamed(String name) {
-		return this.selectDatabaseObjectNamed(this.getColumns(), name);
+		return this.selectDatabaseObjectNamed(this.getColumnWrappers(), name);
 	}
 
 	/**
@@ -129,8 +118,7 @@ final class DTPTableWrapper
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		// try to short-circuit the search
 		return this.wraps(dtpColumn.getTable()) ?
-						this.getColumn_(dtpColumn)
-					:
+						this.getColumn_(dtpColumn) :
 						this.getSchema().getColumn(dtpColumn);
 	}
 
@@ -138,7 +126,7 @@ final class DTPTableWrapper
 	 * assume the table contains the specified column
 	 */
 	DTPColumnWrapper getColumn_(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
-		for (DTPColumnWrapper column : this.getColumns()) {
+		for (DTPColumnWrapper column : this.getColumnArray()) {
 			if (column.wraps(dtpColumn)) {
 				return column;
 			}
@@ -146,42 +134,37 @@ final class DTPTableWrapper
 		throw new IllegalArgumentException("invalid DTP column: " + dtpColumn);  //$NON-NLS-1$
 	}
 
-	public Iterator<String> sortedColumnIdentifiers() {
+	public Iterable<String> getSortedColumnIdentifiers() {
 		// the columns are already sorted
-		return new TransformationIterator<DTPColumnWrapper, String>(this.columnWrappers()) {
-			@Override
-			protected String transform(DTPColumnWrapper next) {
-				 return next.getIdentifier();
-			}
-		};
+		return new TransformationIterable<DatabaseObject, String>(this.getColumnWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
 	public DTPColumnWrapper getColumnForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getColumns(), identifier);
+		return this.selectDatabaseObjectForIdentifier(this.getColumnWrappers(), identifier);
 	}
 
 	// ***** primaryKeyColumns
 
-	public Iterator<Column> primaryKeyColumns() {
-		return new ArrayIterator<Column>(this.getPrimaryKeyColumns());
+	public Iterable<Column> getPrimaryKeyColumns() {
+		return new ArrayIterable<Column>(this.getPrimaryKeyColumnArray());
 	}
 
 	public DTPColumnWrapper getPrimaryKeyColumn() {
-		DTPColumnWrapper[] pkColumns = this.getPrimaryKeyColumns();
+		DTPColumnWrapper[] pkColumns = this.getPrimaryKeyColumnArray();
 		if (pkColumns.length != 1) {
 			throw new IllegalStateException("multiple primary key columns: " + pkColumns.length);  //$NON-NLS-1$
 		}
 		return pkColumns[0];
 	}
 
-	private synchronized DTPColumnWrapper[] getPrimaryKeyColumns() {
+	private synchronized DTPColumnWrapper[] getPrimaryKeyColumnArray() {
 		if (this.primaryKeyColumns == null) {
-			this.primaryKeyColumns = this.buildPrimaryKeyColumns();
+			this.primaryKeyColumns = this.buildPrimaryKeyColumnArray();
 		}
 		return this.primaryKeyColumns;
 	}
 
-	private DTPColumnWrapper[] buildPrimaryKeyColumns() {
+	private DTPColumnWrapper[] buildPrimaryKeyColumnArray() {
 		if ( ! (this.dtpTable instanceof BaseTable)) {
 			return EMPTY_COLUMNS;
 		}
@@ -204,28 +187,28 @@ final class DTPTableWrapper
 		return pk.getMembers();
 	}
 
-	public int primaryKeyColumnsSize() {
-		return this.getPrimaryKeyColumns().length;
+	public int getPrimaryKeyColumnsSize() {
+		return this.getPrimaryKeyColumnArray().length;
 	}
 
 	boolean primaryKeyColumnsContains(Column column) {
-		return ArrayTools.contains(this.getPrimaryKeyColumns(), column);
+		return ArrayTools.contains(this.getPrimaryKeyColumnArray(), column);
 	}
 
 	// ***** foreignKeys
 
-	public Iterator<ForeignKey> foreignKeys() {
-		return new ArrayIterator<ForeignKey>(this.getForeignKeys());
+	public Iterable<ForeignKey> getForeignKeys() {
+		return new ArrayIterable<ForeignKey>(this.getForeignKeyArray());
 	}
 
-	private synchronized DTPForeignKeyWrapper[] getForeignKeys() {
+	private synchronized DTPForeignKeyWrapper[] getForeignKeyArray() {
 		if (this.foreignKeys == null) {
-			this.foreignKeys = this.buildForeignKeys();
+			this.foreignKeys = this.buildForeignKeyArray();
 		}
 		return this.foreignKeys;
 	}
 
-	private DTPForeignKeyWrapper[] buildForeignKeys() {
+	private DTPForeignKeyWrapper[] buildForeignKeyArray() {
 		if ( ! (this.dtpTable instanceof BaseTable)) {
 			return EMPTY_FOREIGN_KEYS;
 		}
@@ -242,8 +225,8 @@ final class DTPTableWrapper
 		return ((BaseTable) this.dtpTable).getForeignKeys();
 	}
 
-	public int foreignKeysSize() {
-		return this.getForeignKeys().length;
+	public int getForeignKeysSize() {
+		return this.getForeignKeyArray().length;
 	}
 
 	/**
@@ -251,7 +234,7 @@ final class DTPTableWrapper
 	 * of the the table's foreign keys
 	 */
 	boolean foreignKeyBaseColumnsContains(Column column) {
-		for (DTPForeignKeyWrapper fkWrapper : this.getForeignKeys()) {
+		for (DTPForeignKeyWrapper fkWrapper : this.getForeignKeyArray()) {
 			if (fkWrapper.baseColumnsContains(column)) {
 				return true;
 			}
@@ -262,7 +245,7 @@ final class DTPTableWrapper
 	// ***** join table
 
 	public boolean isPossibleJoinTable() {
-		if (this.getForeignKeys().length != 2) {
+		if (this.getForeignKeyArray().length != 2) {
 			return false;  // the table must have exactly 2 foreign keys
 		}
 		for (Column column : this.getColumns()) {
@@ -274,25 +257,27 @@ final class DTPTableWrapper
 	}
 
 	/**
-	 * If the table name is FOO_BAR and it joins tables FOO and BAR,
-	 * return the foreign key to FOO;
-	 * if the table name is BAR_FOO and it joins tables FOO and BAR,
-	 * return the foreign key to BAR;
+	 * If the table name is <code>FOO_BAR</code>
+	 * and it joins tables <code>FOO</code> and <code>BAR</code>,
+	 * return the foreign key to <code>FOO</code>;
+	 * if the table name is <code>BAR_FOO</code>
+	 * and it joins tables <code>FOO</code> and <code>BAR</code>,
+	 * return the foreign key to <code>BAR</code>;
 	 * otherwise simply return the first foreign key in the array.
 	 */
 	public ForeignKey getJoinTableOwningForeignKey() {
-		ForeignKey fk0 = this.getForeignKeys()[0];
+		ForeignKey fk0 = this.getForeignKeyArray()[0];
 		String name0 = fk0.getReferencedTable().getName();
 
-		ForeignKey fk1 = this.getForeignKeys()[1];
+		ForeignKey fk1 = this.getForeignKeyArray()[1];
 		String name1 = fk1.getReferencedTable().getName();
 
 		return this.getName().equals(name1 + '_' + name0) ? fk1 : fk0;
 	}
 
 	public ForeignKey getJoinTableNonOwningForeignKey() {
-		ForeignKey fk0 = this.getForeignKeys()[0];
-		ForeignKey fk1 = this.getForeignKeys()[1];
+		ForeignKey fk0 = this.getForeignKeyArray()[0];
+		ForeignKey fk1 = this.getForeignKeyArray()[1];
 		ForeignKey ofk = this.getJoinTableOwningForeignKey();
 		return (ofk == fk0) ? fk1 : fk0;
 	}

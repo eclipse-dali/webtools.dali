@@ -1104,7 +1104,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		public Iterator<String> iterator() {
-			return this.getConnectionProfileFactory().connectionProfileNames();
+			return this.getConnectionProfileFactory().getConnectionProfileNames().iterator();
 		}
 
 		public int size() {
@@ -1606,10 +1606,10 @@ public class JpaProjectPropertiesPage
 		}
 
 		@Override
-		protected Iterator<String> iterator_() {
+		protected Iterable<String> getIterable() {
 			Database db = this.subject.getDatabase();
 			// use catalog *identifiers* since the string ends up being the "default" for various text entries
-			return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String>instance();
+			return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String>instance();
 		}
 	}
 
@@ -1660,10 +1660,10 @@ public class JpaProjectPropertiesPage
 		}
 
 		@Override
-		protected Iterator<String> iterator_() {
+		protected Iterable<String> getIterable() {
 			SchemaContainer sc = this.getSchemaContainer();
 			// use schema *identifiers* since the string ends up being the "default" for various text entries
-			return (sc != null) ? sc.sortedSchemaIdentifiers() : EmptyIterator.<String>instance();
+			return (sc != null) ? sc.getSortedSchemaIdentifiers() : EmptyIterable.<String>instance();
 		}
 
 		private SchemaContainer getSchemaContainer() {

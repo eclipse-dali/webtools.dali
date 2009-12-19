@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
 /**
@@ -28,9 +27,10 @@ public interface MappingFilePersistenceUnitDefaults
 	boolean isCascadePersist();
 	
 	/**
-	 * Return whether the underlying resource exists for the MappingFilePersistenceUnitDefaults object
-	 * If there is a node in the orm.xml file for persistence-unit-default, this returns true, otherwise false.
-	 * @return
+	 * Return whether the mapping file's underlying resource exists.
+	 * If there is a node in the <code>orm.xml</code> file for the
+	 * <code>persistence-unit-defaults</code> element,
+	 * return true; otherwise false.
 	 */
 	boolean resourceExists();
 }

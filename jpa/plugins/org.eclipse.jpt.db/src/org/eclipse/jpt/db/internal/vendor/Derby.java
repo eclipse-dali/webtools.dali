@@ -49,23 +49,25 @@ class Derby
 	}
 
 	@Override
-	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(this.buildDefaultSchemaIdentifier(userName));
+	void addDefaultSchemaNamesTo(Database database, String userName, ArrayList<String> names) {
+		names.add(this.buildDefaultSchemaName(userName));
 	}
 
 	/**
 	 * The default user name on Derby is "APP" when the user connects without
 	 * a user name.
 	 */
-	private String buildDefaultSchemaIdentifier(String userName) {
-		return ((userName != null) && (userName.length() != 0)) ? userName : DEFAULT_USER_IDENTIFIER;
+	private String buildDefaultSchemaName(String userName) {
+		return ((userName != null) && (userName.length() != 0)) ?
+				this.convertIdentifierToName(userName) :
+				DEFAULT_USER_NAME;
 	}
-	private static final String DEFAULT_USER_IDENTIFIER = "APP";  //$NON-NLS-1$
+	private static final String DEFAULT_USER_NAME = "APP";  //$NON-NLS-1$
 
 	@Override
-	char[] getExtendedNormalNamePartCharacters() {
-		return EXTENDED_NORMAL_NAME_PART_CHARACTERS;
+	char[] getExtendedRegularNamePartCharacters() {
+		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
 	}
-	private static final char[] EXTENDED_NORMAL_NAME_PART_CHARACTERS = new char[] { '_' };
+	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '_' };
 
 }

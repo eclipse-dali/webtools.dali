@@ -456,10 +456,9 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 	public String[] getTableColumns(String tableName){
 		Schema schema = (Schema)getWizardDataModel().get(NewAssociationWizard.ASSOCIATION_SCHEMA);
 		Table table = schema.getTableNamed(tableName);
-		Iterator<Column> columns = table.columns() ;
 		List<String> list = new ArrayList<String>();
-		while( columns.hasNext() ){
-			list.add(columns.next().getName());
+		for (Column column : table.getColumns()) {
+			list.add(column.getName());
 		}
 		String[] ret = new String[list.size()];
 		list.toArray(ret);

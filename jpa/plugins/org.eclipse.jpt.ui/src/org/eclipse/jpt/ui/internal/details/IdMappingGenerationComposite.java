@@ -111,7 +111,7 @@ public class IdMappingGenerationComposite extends FormPane<IdMapping>
 	protected void initializeLayout(Composite container) {
 
 		// Primary Key Generation section
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection,
 			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
@@ -178,7 +178,7 @@ public class IdMappingGenerationComposite extends FormPane<IdMapping>
 	private void initializeSequenceGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 
 		// Sequence Generator sub-section
-		container = addCollapsableSubSection(
+		container = addCollapsibleSubSection(
 			container,
 			JptUiDetailsMessages.IdMappingComposite_sequenceGeneratorSection,
 			this.sequenceGeneratorExpansionStateHolder
@@ -263,7 +263,7 @@ public class IdMappingGenerationComposite extends FormPane<IdMapping>
 	private void initializeTableGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 
 		// Table Generator sub-section
-		container = addCollapsableSubSection(
+		container = addCollapsibleSubSection(
 			container,
 			JptUiDetailsMessages.IdMappingComposite_tableGeneratorSection,
 			this.tableGeneratorExpansionStateHolder

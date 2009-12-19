@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -87,13 +86,11 @@ public class GenericRootContextNode
 	
 	@Override
 	public PersistenceUnit getPersistenceUnit() {
-		// No PersistenceUnit in this context
 		return null;
 	}
 	
 	@Override
 	public MappingFileRoot getMappingFileRoot() {
-		// No MappingFileRoot in this context
 		return null;
 	}
 	
@@ -161,15 +158,7 @@ public class GenericRootContextNode
 	}
 	
 	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
-		PersistenceXmlDefinition persistenceXmlDef;
-		try {
-			persistenceXmlDef = (PersistenceXmlDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
-		}
-		catch (IllegalArgumentException iae) {
-			JptCorePlugin.log(iae);
-			return null;
-		}
-		return (persistenceXmlDef == null) ? null : persistenceXmlDef.getContextNodeFactory().buildPersistenceXml(this, resource);
+		return this.getJpaFactory().buildPersistenceXml(this, resource);
 	}
 	
 	

@@ -129,7 +129,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 	
 	protected void initializeTypePane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.TypeSection_type
 		);

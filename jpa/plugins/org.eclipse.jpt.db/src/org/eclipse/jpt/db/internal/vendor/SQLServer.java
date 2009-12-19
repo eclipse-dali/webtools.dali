@@ -58,9 +58,9 @@ class SQLServer
 	 * found, it will default to 'master'.
 	 */
 	@Override
-	void addDefaultCatalogIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(database.getName());
-		identifiers.add(MASTER_CATALOG_IDENTIFIER);
+	void addDefaultCatalogNamesTo(Database database, String userName, ArrayList<String> names) {
+		names.add(database.getName());
+		names.add(MASTER_CATALOG_IDENTIFIER);
 	}
 	private static final String MASTER_CATALOG_IDENTIFIER = "master";  //$NON-NLS-1$
 
@@ -68,22 +68,22 @@ class SQLServer
 	 * The default schema on SQL Server for any database (catalog) is 'dbo'.
 	 */
 	@Override
-	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(DEFAULT_SCHEMA_IDENTIFIER);
+	void addDefaultSchemaNamesTo(Database database, String userName, ArrayList<String> names) {
+		names.add(DEFAULT_SCHEMA_NAME);
 	}
-	private static final String DEFAULT_SCHEMA_IDENTIFIER = "dbo";  //$NON-NLS-1$
+	private static final String DEFAULT_SCHEMA_NAME = "dbo";  //$NON-NLS-1$
 
 	@Override
-	char[] getExtendedNormalNameStartCharacters() {
-		return EXTENDED_NORMAL_NAME_START_CHARACTERS;
+	char[] getExtendedRegularNameStartCharacters() {
+		return EXTENDED_REGULAR_NAME_START_CHARACTERS;
 	}
-	private static final char[] EXTENDED_NORMAL_NAME_START_CHARACTERS = new char[] { '_', '@', '#' };
+	private static final char[] EXTENDED_REGULAR_NAME_START_CHARACTERS = new char[] { '_', '@', '#' };
 
 	@Override
-	char[] getExtendedNormalNamePartCharacters() {
-		return EXTENDED_NORMAL_NAME_PART_CHARACTERS;
+	char[] getExtendedRegularNamePartCharacters() {
+		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
 	}
-	private static final char[] EXTENDED_NORMAL_NAME_PART_CHARACTERS = new char[] { '$' };
+	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '$' };
 
 	/**
 	 * By default, SQL Server delimits identifiers with brackets ([]); but it

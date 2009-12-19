@@ -21,8 +21,7 @@ import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.DatabaseFinder;
-import org.eclipse.jpt.db.DatabaseObject;
+import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -32,23 +31,25 @@ import org.eclipse.jpt.utility.internal.StringTools;
 final class DTPConnectionProfileWrapper
 	implements DTPDatabaseObject, ConnectionProfile
 {
-	// the wrapped DTP connection profile
+	/** the wrapped DTP connection profile */
 	private final IConnectionProfile dtpConnectionProfile;
 
-	// finder supplied by the JPA platform (determines case-sensitivity, etc.)
-	private final DatabaseFinder finder;
+	/** adapter supplied by the client (determines identifier delimiters, etc.) */
+	private final DatabaseIdentifierAdapter identifierAdapter;
 
-	// callback passed to the finder
-	private final DatabaseFinder.DefaultCallback databaseFinderCallback;
+	/** callback passed to the identifier adapter */
+	private final DatabaseIdentifierAdapter.DefaultCallback identifierAdapterCallback;
 
-	// the DTP managed connection we listen to
+	/** the DTP managed connection we listen to */
 	private final IManagedConnection dtpManagedConnection;
 
-	// forward events from the DTP managed connection above;
-	// we listen and propagate events iff we have listeners ourselves
+	/**
+	 * forward events from the DTP managed connection above;
+	 * we listen and propagate events iff we have listeners ourselves
+	 */
 	private final LocalConnectionListener connectionListener;
 
-	// lazy-initialized, and deleted at disconnect
+	/** lazy-initialized, and deleted at disconnect */
 	private DTPDatabaseWrapper database;
 
 
@@ -63,11 +64,11 @@ final class DTPConnectionProfileWrapper
 
 	// ********** constructor **********
 
-	DTPConnectionProfileWrapper(IConnectionProfile dtpConnectionProfile, DatabaseFinder finder) {
+	DTPConnectionProfileWrapper(IConnectionProfile dtpConnectionProfile, DatabaseIdentifierAdapter adapter) {
 		super();
 		this.dtpConnectionProfile = dtpConnectionProfile;
-		this.finder = finder;
-		this.databaseFinderCallback = new DatabaseFinderCallback();
+		this.identifierAdapter = adapter;
+		this.identifierAdapterCallback = new IdentifierAdapterCallback();
 		this.dtpManagedConnection = this.buildDTPManagedConnection();
 		this.connectionListener = new LocalConnectionListener();
 		// don't listen to the managed connection yet
@@ -313,22 +314,43 @@ final class DTPConnectionProfileWrapper
 	}
 
 	/**
-	 * This is called whenever we need to find a component by identifier
-	 * (e.g. Table.getColumnForIdentifier(String)). We channel all the calls to here
-	 * and then we delegate to the JPA platform-supplied "database finder".
+	 * This is called whenever we need to convert an identifier to a name
+	 * (e.g. {@link org.eclipse.jpt.db.Table#getColumnForIdentifier(String)}).
+	 * We channel all the calls to here and then we delegate to the
+	 * client-supplied "database identifier adapter".
 	 */
-	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier) {
-		return this.finder.selectDatabaseObjectForIdentifier(databaseObjects, identifier, this.databaseFinderCallback);
+	String convertIdentifierToName(String identifier) {
+		return this.identifierAdapter.convertIdentifierToName(identifier, this.identifierAdapterCallback);
 	}
 
 	/**
-	 * The default "database finder" calls back to here so we can delegate to
+	 * The default "database identifier adapter" calls back to here so we can delegate to
 	 * the database, which contains all the information necessary to properly
-	 * match identifiers.
+	 * convert identifiers.
 	 */
-	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier_(T[] databaseObjects, String identifier) {
+	String convertIdentifierToName_(String identifier) {
 		// the database should not be null here - call its internal method
-		return this.database.selectDatabaseObjectForIdentifier_(databaseObjects, identifier);
+		return this.database.convertIdentifierToName_(identifier);
+	}
+
+	/**
+	 * This is called whenever we need to convert a name to an identifier
+	 * (e.g. {@link org.eclipse.jpt.db.Table#getColumnForIdentifier(String)}).
+	 * We channel all the calls to here and then we delegate to the
+	 * client-supplied "database identifier adapter".
+	 */
+	String convertNameToIdentifier(String name) {
+		return this.identifierAdapter.convertNameToIdentifier(name, this.identifierAdapterCallback);
+	}
+
+	/**
+	 * The default "database identifier adapter" calls back to here so we can delegate to
+	 * the database, which contains all the information necessary to properly
+	 * convert names.
+	 */
+	String convertNameToIdentifier_(String name) {
+		// the database should not be null here - call its internal method
+		return this.database.convertNameToIdentifier_(name);
 	}
 
 	void databaseChanged(DTPDatabaseWrapper db) {
@@ -379,8 +401,8 @@ final class DTPConnectionProfileWrapper
 	// ********** DTP connection listener **********
 
 	/**
-	 * This listener translates and forwards IManagedConnectionListener and
-	 * IManagedConnectionOfflineListener events to ConnectionListeners.
+	 * This listener translates and forwards {@link org.eclipse.datatools.connectivity.IManagedConnectionListener} and
+	 * {@link IManagedConnectionOfflineListener} events to {@link ConnectionListener}s.
 	 */
 	class LocalConnectionListener implements IManagedConnectionOfflineListener {
 		private ListenerList<ConnectionListener> listenerList = new ListenerList<ConnectionListener>(ConnectionListener.class);
@@ -538,10 +560,14 @@ final class DTPConnectionProfileWrapper
 
 	// ********** default DatabaseFinder **********
 
-	class DatabaseFinderCallback implements DatabaseFinder.DefaultCallback {
-		public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier) {
+	class IdentifierAdapterCallback implements DatabaseIdentifierAdapter.DefaultCallback {
+		public String convertIdentifierToName(String identifier) {
 			// call back to the internal method
-			return DTPConnectionProfileWrapper.this.selectDatabaseObjectForIdentifier_(databaseObjects, identifier);
+			return DTPConnectionProfileWrapper.this.convertIdentifierToName_(identifier);
+		}
+		public String convertNameToIdentifier(String name) {
+			// call back to the internal method
+			return DTPConnectionProfileWrapper.this.convertNameToIdentifier_(name);
 		}
 	}
 

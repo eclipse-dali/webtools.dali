@@ -295,16 +295,15 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 				ORMGenTable table = (ORMGenTable) parentElement;
 				List<ORMGenColumn> columns = table.getColumns();
 				List<ORMGenColumn> ret = new ArrayList<ORMGenColumn>();
-				boolean isCompositePk = table.getDbTable().primaryKeyColumnsSize()>1;
+				boolean isCompositePk = table.getDbTable().getPrimaryKeyColumnsSize()>1;
 				for( ORMGenColumn col : columns){
 					if( col.isForeignKey() )
 						continue;
 					if( col.isPrimaryKey() ){
 						if( isCompositePk ){
 							continue;
-						}else{
-							ret.add(0,col );
 						}
+						ret.add(0,col );
 					}else{
 						ret.add(col);
 					}

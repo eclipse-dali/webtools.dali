@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.db;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaProject;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.ui.internal.listeners.SWTConnectionListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -149,17 +148,14 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 	}
 	
 	@Override
-	protected final Iterator<String> values() {
-		if (connectionProfileIsActive()) {
-			return values_();
-		}
-		return EmptyIterator.<String>instance();
+	protected final Iterable<String> getValues() {
+		return this.connectionProfileIsActive() ? this.getValues_() : EmptyIterable.<String>instance();
 	}
 	
 	/**
 	 * Called only when connection profile is active
 	 */
-	protected abstract Iterator<String> values_();
+	protected abstract Iterable<String> getValues_();
 	
 	
 	// ********** convenience methods **********
@@ -278,6 +274,12 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 		} else {
 			super.log(flag, message);
 		}
+	}
+
+	// broaden accessibility a bit
+	@Override
+	protected void repopulateComboBox() {
+		super.repopulateComboBox();
 	}
 	
 	

@@ -9,21 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
-import java.util.Iterator;
-
-
 /**
  * Database schema
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * This interface is not intended to be implemented by clients.
  */
 public interface Schema extends DatabaseObject {
+
 	/**
 	 * Return the schema's container; either a catalog or a database.
 	 */
@@ -35,12 +31,12 @@ public interface Schema extends DatabaseObject {
 	/**
 	 * Return the schema's tables.
 	 */
-	Iterator<Table> tables();
+	Iterable<Table> getTables();
 
 	/**
 	 * Return the number of tables the schema contains.
 	 */
-	int tablesSize();
+	int getTablesSize();
 
 	/**
 	 * Return the table with specified name. The name must be an exact match
@@ -51,14 +47,16 @@ public interface Schema extends DatabaseObject {
 
 	/**
 	 * Return the schema's table identifiers, sorted by name.
+	 * @see #getTableForIdentifier(String)
 	 */
-	Iterator<String> sortedTableIdentifiers();
+	Iterable<String> getSortedTableIdentifiers();
 
 	/**
 	 * Return the table for the specified identifier. The identifier should
 	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
 	 * special characters, unquoted otherwise).
 	 * @see #getTableNamed(String)
+	 * @see #getSortedTableIdentifiers()
 	 */
 	Table getTableForIdentifier(String identifier);
 
@@ -68,12 +66,12 @@ public interface Schema extends DatabaseObject {
 	/**
 	 * Return the schema's sequences.
 	 */
-	Iterator<Sequence> sequences();
+	Iterable<Sequence> getSequences();
 
 	/**
 	 * Return the number of sequences the schema contains.
 	 */
-	int sequencesSize();
+	int getSequencesSize();
 
 	/**
 	 * Return the sequence with specified name. The name must be an exact match
@@ -84,14 +82,16 @@ public interface Schema extends DatabaseObject {
 
 	/**
 	 * Return the schema's sequence identifers, sorted by name.
+	 * @see #getSequenceForIdentifier(String)
 	 */
-	Iterator<String> sortedSequenceIdentifiers();
+	Iterable<String> getSortedSequenceIdentifiers();
 
 	/**
 	 * Return the sequence for the specified identifier. The identifier should
 	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
 	 * special characters, unquoted otherwise).
 	 * @see #getSequenceNamed(String)
+	 * @see #getSortedSequenceIdentifiers()
 	 */
 	Sequence getSequenceForIdentifier(String identifier);
 

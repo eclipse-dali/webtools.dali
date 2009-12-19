@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -25,13 +25,13 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.DatabaseFinder;
+import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.osgi.util.NLS;
@@ -442,7 +442,7 @@ public abstract class JpaFacetDataModelProvider
 	 * put a null entry at the top of the list (for <none>)
 	 */
 	protected List<String> buildValidConnectionNames() {
-		List<String> connectionNames = CollectionTools.sort(CollectionTools.list(this.connectionProfileNames()));
+		List<String> connectionNames = CollectionTools.sort(CollectionTools.list(this.getConnectionProfileNames()));
 		connectionNames.add(0, null);
 		return connectionNames;
 	}
@@ -457,7 +457,7 @@ public abstract class JpaFacetDataModelProvider
 	 */
 	protected List<String> buildValidCatalogIdentifiers(Database db) {
 		// use catalog *identifiers* since the string ends up being the "default" for various text entries
-		return this.buildValidStrings(db.sortedCatalogIdentifiers(), this.getDefaultCatalogIdentifier());
+		return this.buildValidStrings(db.getSortedCatalogIdentifiers(), this.getDefaultCatalogIdentifier());
 	}
 	
 	protected DataModelPropertyDescriptor[] buildValidSchemaDescriptors() {
@@ -466,24 +466,24 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected List<String> buildValidSchemaIdentifiers() {
-		return this.buildValidStrings(this.schemaIdentifiers(), this.getDefaultSchemaIdentifier());
+		return this.buildValidStrings(this.getSchemaIdentifiers(), this.getDefaultSchemaIdentifier());
 	}
 	
-	protected Iterator<String> schemaIdentifiers() {
+	protected Iterable<String> getSchemaIdentifiers() {
 		SchemaContainer sc = this.getSchemaContainer();
 		// use schema *identifiers* since the string ends up being the "default" for various text entries
-		return (sc != null) ? sc.sortedSchemaIdentifiers() : EmptyIterator.<String>instance();
+		return (sc != null) ? sc.getSortedSchemaIdentifiers() : EmptyIterable.<String>instance();
 	}
 	
 	/**
 	 * put an entry for the default at the top of the list
 	 */
-	protected List<String> buildValidStrings(Iterator<String> stream, String defaultString) {
-		List<String> strings = CollectionTools.list(stream);
-		if ((defaultString != null) && ! strings.contains(defaultString)) {
-			strings.add(0, defaultString);
+	protected List<String> buildValidStrings(Iterable<String> strings, String defaultString) {
+		List<String> validStrings = CollectionTools.list(strings);
+		if ((defaultString != null) && ! validStrings.contains(defaultString)) {
+			validStrings.add(0, defaultString);
 		}
-		return strings;
+		return validStrings;
 	}
 	
 	protected DataModelPropertyDescriptor[] buildDescriptors(List<String> strings) {
@@ -578,11 +578,11 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected ConnectionProfile buildConnectionProfile(String name) {
-		return this.getConnectionProfileFactory().buildConnectionProfile(name, DatabaseFinder.Default.instance());
+		return this.getConnectionProfileFactory().buildConnectionProfile(name, DatabaseIdentifierAdapter.Default.instance());
 	}
 	
-	protected Iterator<String> connectionProfileNames() {
-		return this.getConnectionProfileFactory().connectionProfileNames();
+	protected Iterable<String> getConnectionProfileNames() {
+		return this.getConnectionProfileFactory().getConnectionProfileNames();
 	}
 	
 	protected ConnectionProfileFactory getConnectionProfileFactory() {

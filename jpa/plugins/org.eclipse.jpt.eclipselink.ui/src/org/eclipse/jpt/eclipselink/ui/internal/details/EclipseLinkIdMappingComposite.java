@@ -103,7 +103,7 @@ public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<Id
 	@Override
 	protected void initializeTypePane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			addSubPane(container, 5),
 			JptUiDetailsMessages.TypeSection_type
 		);

@@ -30,7 +30,7 @@ public class EclipseLinkEntityAdvancedComposite extends FormPane<Entity> {
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_advanced
 		);

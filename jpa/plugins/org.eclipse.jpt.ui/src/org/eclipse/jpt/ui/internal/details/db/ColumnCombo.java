@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.db;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -45,9 +44,9 @@ public abstract class ColumnCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values_() {
+	protected Iterable<String> getValues_() {
 		Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String>instance();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String>instance();
 	}
 
 	protected Table getDbTable() {

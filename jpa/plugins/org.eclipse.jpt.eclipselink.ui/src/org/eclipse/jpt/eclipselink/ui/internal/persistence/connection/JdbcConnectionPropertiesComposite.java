@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Comparator;
-import java.util.Iterator;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -241,8 +241,8 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 
 			try {
 				// Add the connection names to the dialog
-				for (Iterator<String> stream = this.connectionProfileNames(); stream.hasNext(); ) {
-					provider.add(stream.next(), itemsFilter);
+				for (String name : this.getConnectionProfileNames()) {
+					provider.add(name, itemsFilter);
 				}
 			}
 			finally {
@@ -250,8 +250,8 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 			}
 		}
 
-		private Iterator<String> connectionProfileNames() {
-			return JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory().connectionProfileNames();
+		private Iterable<String> getConnectionProfileNames() {
+			return JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory().getConnectionProfileNames();
 		}
 
 		/*

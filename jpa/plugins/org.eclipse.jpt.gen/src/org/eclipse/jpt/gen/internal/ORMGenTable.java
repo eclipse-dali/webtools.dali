@@ -312,9 +312,7 @@ public class ORMGenTable
 	public List<ORMGenColumn> getColumns() {
 		if (mColumns == null) {
 			mColumns = new ArrayList<ORMGenColumn>();
-			Iterator<Column> cols = mDbTable.columns();
-			while (cols.hasNext()) {
-				Column c = cols.next();
+			for (Column c : mDbTable.getColumns()) {
 				ORMGenColumn genColumn = getCustomizer().createGenColumn(c);
 				genColumn.setGenTable(this);
 				mColumns.add(genColumn);
@@ -324,10 +322,8 @@ public class ORMGenTable
 	}
 
 	public List<String> getColumnNames() {
-		Iterator<Column> cols = mDbTable.columns();
 		List<String> ret = new ArrayList<String>();
-		while (cols.hasNext()) {
-			Column c = cols.next();
+		for (Column c : mDbTable.getColumns()) {
 			ret.add(c.getName());
 		}
 		return ret;
@@ -339,8 +335,8 @@ public class ORMGenTable
 	 */
 	public List<ORMGenColumn> getPrimaryKeyColumns() {
 		List<ORMGenColumn> ret = new ArrayList<ORMGenColumn>();
-		for (Iterator<Column> stream = mDbTable.primaryKeyColumns(); stream.hasNext(); ) {
-			ret.add(new ORMGenColumn(stream.next(), this.mCustomizer));
+		for (Column column : mDbTable.getPrimaryKeyColumns()) {
+			ret.add(new ORMGenColumn(column, this.mCustomizer));
 		}
 		return ret;
 	}
@@ -379,7 +375,7 @@ public class ORMGenTable
 	 * Returns true if there is more than 1 pk column.
 	 */
 	public boolean isCompositeKey() {
-		return mDbTable.primaryKeyColumnsSize() > 1;
+		return mDbTable.getPrimaryKeyColumnsSize() > 1;
 	}
 
 	/**
@@ -649,7 +645,7 @@ public class ORMGenTable
 			/* resolve the ${table} and ${pk} patterns */
 			sequence = StringUtil.strReplace(sequence, TABLE_SEQ_PATTERN, getName());
 			if (sequence.indexOf(PK_SEQ_PATTERN) >= 0) {
-				Iterator<Column> pkCols = getDbTable().primaryKeyColumns();
+				Iterator<Column> pkCols = getDbTable().getPrimaryKeyColumns().iterator();
 				String pkName = pkCols.hasNext() ? pkCols.next().getName() : null;
 				sequence = StringUtil.strReplace(sequence, PK_SEQ_PATTERN, pkName);
 			}

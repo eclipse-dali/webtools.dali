@@ -63,7 +63,7 @@ public class OrmQueriesComposite extends Pane<EntityMappings> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = this.addCollapsableSection(
+		container = this.addCollapsibleSection(
 			container,
 			JptUiDetailsOrmMessages.OrmQueriesComposite_groupBox
 		);

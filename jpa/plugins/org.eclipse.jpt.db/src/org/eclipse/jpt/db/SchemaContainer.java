@@ -9,46 +9,40 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
-import java.util.Iterator;
-
 /**
  * Schema "container" (i.e. Database or Catalog)
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * This interface is not intended to be implemented by clients.
  */
-public interface SchemaContainer
-	extends DatabaseObject
-{
+public interface SchemaContainer extends DatabaseObject {
 
 	/**
 	 * Return the container's schemata.
 	 */
-	Iterator<Schema> schemata();
+	Iterable<Schema> getSchemata();
 
 	/**
 	 * Return the number of schemata in the container.
 	 */
-	int schemataSize();
+	int getSchemataSize();
 
 	/**
 	 * Return the container's schema names, sorted.
 	 * This is useful when the user is selecting a schema from a read-only
 	 * combo-box (e.g. in a wizard).
 	 * @see #getSchemaNamed(String)
-	 * @see #sortedSchemaIdentifiers()
+	 * @see #getSortedSchemaIdentifiers()
 	 */
-	Iterator<String> sortedSchemaNames();
+	Iterable<String> getSortedSchemaNames();
 
 	/**
 	 * Return the schema with specified name. The name must be an exact match
 	 * of the schema's name.
-	 * @see #sortedSchemaNames()
+	 * @see #getSortedSchemaNames()
 	 * @see #getSchemaForIdentifier(String)
 	 */
 	Schema getSchemaNamed(String name);
@@ -58,15 +52,15 @@ public interface SchemaContainer
 	 * This is useful when the user is selecting an identifier that will be
 	 * placed in a text file (e.g. in a Java annotation).
 	 * @see #getSchemaForIdentifier(String)
-	 * @see #sortedSchemaNames()
+	 * @see #getSortedSchemaNames()
 	 */
-	Iterator<String> sortedSchemaIdentifiers();
+	Iterable<String> getSortedSchemaIdentifiers();
 
 	/**
 	 * Return the schema for the specified identifier. The identifier should
 	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
 	 * special characters, unquoted otherwise).
-	 * @see #sortedSchemaIdentifiers()
+	 * @see #getSortedSchemaIdentifiers()
 	 * @see #getSchemaNamed(String)
 	 */
 	Schema getSchemaForIdentifier(String identifier);

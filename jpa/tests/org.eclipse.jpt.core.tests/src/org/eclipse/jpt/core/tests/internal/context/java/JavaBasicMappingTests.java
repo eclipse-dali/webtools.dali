@@ -246,7 +246,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		createOrmXmlFile();
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 		assertNull(basicMapping.getSpecifiedFetch());

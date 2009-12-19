@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.db.SchemaContainer;
 /**
  * Common protocol for JPA objects that have a context, as opposed to
  * resource objects.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -36,13 +36,13 @@ public interface JpaContextNode
 	
 	/**
 	 * Return the persistence unit if the context node is within a 
-	 * persistence.xml context.  Otherwise return null.
+	 * persistence unit. Otherwise throw an exception.
 	 */
 	PersistenceUnit getPersistenceUnit();
 	
 	/**
-	 * Return the mapping file root object if the context node is within a 
-	 * mapping file context.  Otherwise return null.
+	 * Return the mapping file root if the context node is within a 
+	 * mapping file. Otherwise throw an exception.
 	 */
 	MappingFileRoot getMappingFileRoot();
 

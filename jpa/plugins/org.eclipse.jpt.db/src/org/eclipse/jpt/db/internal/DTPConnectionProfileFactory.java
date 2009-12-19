@@ -9,18 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.util.Iterator;
-
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IProfileListener1;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.ConnectionProfileListener;
-import org.eclipse.jpt.db.DatabaseFinder;
+import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.utility.internal.ListenerList;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  * Wrap the DTP ProfileManager in yet another singleton.
@@ -72,21 +70,21 @@ public final class DTPConnectionProfileFactory
 
 	// ********** connection profiles **********
 
-	public synchronized ConnectionProfile buildConnectionProfile(String name, DatabaseFinder finder) {
+	public synchronized ConnectionProfile buildConnectionProfile(String name, DatabaseIdentifierAdapter adapter) {
 		for (IConnectionProfile dtpProfile : this.dtpProfileManager.getProfiles()) {
 			if (dtpProfile.getName().equals(name)) {
-				return new DTPConnectionProfileWrapper(dtpProfile, finder);
+				return new DTPConnectionProfileWrapper(dtpProfile, adapter);
 			}
 		}
 		return null;
 	}
 
 	public ConnectionProfile buildConnectionProfile(String name) {
-		return this.buildConnectionProfile(name, DatabaseFinder.Simple.instance());
+		return this.buildConnectionProfile(name, DatabaseIdentifierAdapter.Default.instance());
 	}
 
-	public Iterator<String> connectionProfileNames() {
-		return new TransformationIterator<IConnectionProfile, String>(this.dtpConnectionProfiles()) {
+	public Iterable<String> getConnectionProfileNames() {
+		return new TransformationIterable<IConnectionProfile, String>(this.getDTPConnectionProfiles()) {
 			@Override
 			protected String transform(IConnectionProfile dtpProfile) {
 				 return dtpProfile.getName();
@@ -94,8 +92,8 @@ public final class DTPConnectionProfileFactory
 		};
 	}
 
-	private synchronized Iterator<IConnectionProfile> dtpConnectionProfiles() {
-		return new ArrayIterator<IConnectionProfile>(this.dtpProfileManager.getProfiles());
+	private synchronized Iterable<IConnectionProfile> getDTPConnectionProfiles() {
+		return new ArrayIterable<IConnectionProfile>(this.dtpProfileManager.getProfiles());
 	}
 
 

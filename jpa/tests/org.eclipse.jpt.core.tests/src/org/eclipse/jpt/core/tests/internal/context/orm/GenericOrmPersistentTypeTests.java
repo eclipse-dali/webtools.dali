@@ -139,7 +139,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 //	
 	
 	public void testMorphXmlTypeMapping() throws Exception {
-		assertFalse(getEntityMappings().persistentTypes().hasNext());
+		assertFalse(getEntityMappings().getPersistentTypes().iterator().hasNext());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertTrue(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -148,7 +148,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
 		OrmPersistentType mappedSuperclassPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 	
-		OrmPersistentType ormPersistentType = getEntityMappings().persistentTypes().next();
+		OrmPersistentType ormPersistentType = getEntityMappings().getPersistentTypes().iterator().next();
 		assertEquals(mappedSuperclassPersistentType, ormPersistentType);
 		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, ormPersistentType.getMapping().getKey());
 	
@@ -157,7 +157,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(1, getXmlEntityMappings().getEntities().size());
 		assertEquals(2, getXmlEntityMappings().getEmbeddables().size());
 		
-		Iterator<OrmPersistentType> ormPersistentTypes = getEntityMappings().persistentTypes();
+		Iterator<OrmPersistentType> ormPersistentTypes = getEntityMappings().getPersistentTypes().iterator();
 		//the same OrmPersistentTypes should still be in the context model
 		assertEquals(ormPersistentTypes.next(), entityPersistentType);
 		assertEquals(ormPersistentTypes.next(), embeddablePersistentType);

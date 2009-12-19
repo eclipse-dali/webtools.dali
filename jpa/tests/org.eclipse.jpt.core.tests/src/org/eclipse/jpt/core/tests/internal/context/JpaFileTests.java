@@ -348,7 +348,7 @@ public class JpaFileTests extends ContextModelTestCase
 	
 		ormPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
-		javaPersistentType = getEntityMappings().persistentTypes().next().getJavaPersistentType();
+		javaPersistentType = getEntityMappings().getPersistentTypes().iterator().next().getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
 		getEntityMappings().removePersistentType(0);
@@ -368,7 +368,7 @@ public class JpaFileTests extends ContextModelTestCase
 		MappingFileRef mappingFileRef = getPersistenceUnit().mappingFileRefs().next();
 		mappingFileRef.setFileName("foo");
 		
-		ormPersistentType = ((EntityMappings) getPersistenceUnit().getImpliedMappingFileRef().getMappingFile().getMappingFileRoot()).persistentTypes().next();
+		ormPersistentType = ((EntityMappings) getPersistenceUnit().getImpliedMappingFileRef().getMappingFile().getRoot()).getPersistentTypes().iterator().next();
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
 		IFile file = getPersistenceXmlResource().getFile();

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
@@ -93,18 +92,16 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	
 	@Override
 	public Iterator<String> allOverrideableAttributeMappingNames() {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return embeddableOverrideableAttributeMappingNames();
-		}
-		return super.allOverrideableAttributeMappingNames();
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverrideableAttributeMappingNames() :
+				super.allOverrideableAttributeMappingNames();
 	}
 	
 	@Override
 	public Iterator<String> allOverrideableAssociationMappingNames() {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return embeddableOverrideableAssociationMappingNames();
-		}
-		return super.allOverrideableAssociationMappingNames();
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverrideableAssociationMappingNames() :
+				super.allOverrideableAssociationMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
@@ -145,7 +142,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 
 	@Override
 	public Column resolveOverridenColumn(String attributeName) {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(attributeName.substring(0, dotIndex))) {

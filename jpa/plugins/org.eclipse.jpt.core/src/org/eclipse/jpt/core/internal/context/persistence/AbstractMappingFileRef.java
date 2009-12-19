@@ -3,22 +3,21 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.MappingFileDefinition;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -30,12 +29,21 @@ import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * <code>persistence.xml</code> file
+ * <br>
+ * <code>mapping-file</code> element
+ */
 public abstract class AbstractMappingFileRef
 	extends AbstractPersistenceXmlContextNode
 	implements MappingFileRef
 {
 	protected String fileName;
 
+	/**
+	 * the mapping file corresponding to the ref's file name;
+	 * this can be null if the name is invalid
+	 */
 	protected MappingFile mappingFile;
 
 
@@ -47,17 +55,21 @@ public abstract class AbstractMappingFileRef
 		this.mappingFile = this.buildMappingFile();
 	}
 
-	protected MappingFile buildMappingFile() {
-		JpaXmlResource xmlResource = this.getXmlResource();
-		return (xmlResource == null) ? null : this.buildMappingFile(xmlResource);
-	}
-	
+
+	// ********** overrides **********
+
 	@Override
 	public PersistenceUnit getParent() {
 		return (PersistenceUnit) super.getParent();
 	}
 
-	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(this.fileName);
+	}
+
+
 	// ********** JpaStructureNode implementation **********
 
 	public String getId() {
@@ -77,23 +89,26 @@ public abstract class AbstractMappingFileRef
 
 	// ********** queries **********
 
+	public boolean persistenceUnitDefaultsExists() {
+		MappingFilePersistenceUnitDefaults defaults = this.getPersistenceUnitDefaults();
+		return (defaults != null) && defaults.resourceExists();
+	}
+
 	public MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults() {
-		MappingFileRoot root = this.getMappingFileRoot_();
+		MappingFileRoot root = this.getChildMappingFileRoot();
 		return (root == null) ? null : root.getPersistenceUnitDefaults();
 	}
 
 	/**
-	 * #getMappingFileRoot() is already defined by JpaContextNode for the
-	 * descendants of a "mapping file root" - we want something slightly
-	 * different here...
+	 * The method {@link #getMappingFileRoot()} is already defined by
+	 * {@link org.eclipse.jpt.core.internal.context.AbstractJpaContextNode}
+	 * for getting what would be the "mapping file root" that <em>contains</em>
+	 * the context node. We want something slightly different here: i.e. the
+	 * "mapping file root" contained by the mapping file ref (since, actually,
+	 * the mapping file ref is not even contained by a "mapping file root").
 	 */
-	protected MappingFileRoot getMappingFileRoot_() {
+	protected MappingFileRoot getChildMappingFileRoot() {
 		return (this.mappingFile == null) ? null : this.mappingFile.getRoot();
-	}
-
-	public boolean persistenceUnitDefaultsExists() {
-		MappingFilePersistenceUnitDefaults defaults = this.getPersistenceUnitDefaults();
-		return (defaults != null) && defaults.resourceExists();
 	}
 
 	public PersistentType getPersistentType(String typeName) {
@@ -120,7 +135,50 @@ public abstract class AbstractMappingFileRef
 		this.firePropertyChanged(MAPPING_FILE_PROPERTY, old, mappingFile);
 	}
 
-	
+	protected MappingFile buildMappingFile() {
+		JpaXmlResource xmlResource = this.resolveMappingFileXmlResource();
+		return (xmlResource == null) ? null : this.buildMappingFile(xmlResource);
+	}
+
+	protected void updateMappingFile() {
+		JpaXmlResource newXmlResource = this.resolveMappingFileXmlResource();
+		if (newXmlResource == null) {
+			if (this.mappingFile != null) {
+				this.mappingFile.dispose();
+				this.setMappingFile(null);
+			}
+		} else {
+			if (this.mappingFile == null) {
+				this.setMappingFile(this.buildMappingFile(newXmlResource));
+			} else {
+				if (this.mappingFile.getXmlResource() == newXmlResource) {
+					this.mappingFile.update();
+				} else {
+					// if the resource's content type has changed, we completely rebuild the mapping file
+					this.mappingFile.dispose();
+					this.setMappingFile(this.buildMappingFile(newXmlResource));
+				}
+			}
+		}
+	}
+
+	/**
+	 * The mapping file ref resource is in the persistence xml resource
+	 * (<code>persistence.xml</code>). This returns the resource of
+	 * the mapping file itself (<code>orm.xml</code>).
+	 */
+	protected JpaXmlResource resolveMappingFileXmlResource() {
+		return (this.fileName == null) ? null : this.getJpaProject().getMappingFileXmlResource(this.fileName);
+	}
+
+	/**
+	 * pre-condition: 'resource' is not null
+	 */
+	protected MappingFile buildMappingFile(JpaXmlResource resource) {
+		return this.getJpaFactory().buildMappingFile(this, resource);
+	}
+
+
 	// ********** PersistentTypeContainer implementation **********
 
 	public Iterable<? extends PersistentType> getPersistentTypes() {
@@ -133,48 +191,6 @@ public abstract class AbstractMappingFileRef
 		this.updateMappingFile();
 	}
 
-	protected void updateMappingFile() {
-		JpaXmlResource xmlResource = this.getXmlResource();
-		if (xmlResource != null) {
-			if (this.mappingFile == null) {
-				this.setMappingFile(this.buildMappingFile(xmlResource));
-			} else {
-				// if the resource type has changed, rebuild the mapping file
-				if (this.mappingFile.getXmlResource() != xmlResource) {
-					this.mappingFile.dispose();
-					this.setMappingFile(this.buildMappingFile(xmlResource));
-				} else {
-					this.mappingFile.update(xmlResource);
-				}
-			}
-		} else {
-			if (this.mappingFile != null) {
-				this.mappingFile.dispose();
-				this.setMappingFile(null);
-			}
-		}
-	}
-
-	/**
-	 * The XmlMappingFileRef resource is the Persistence xml resource.
-	 * This returns the resource of the mapping file itself.
-	 */
-	protected JpaXmlResource getXmlResource() {
-		return this.fileName == null ? null : this.getJpaProject().getMappingFileXmlResource(this.fileName);
-	}
-	
-	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		MappingFileDefinition mappingFileDef;
-		try {
-			mappingFileDef = (MappingFileDefinition) getJpaPlatform().getResourceDefinition(resource.getResourceType());
-		}
-		catch (IllegalArgumentException iae) {
-			JptCorePlugin.log(iae);
-			return null;
-		}
-		return (mappingFileDef == null) ? null : mappingFileDef.getContextNodeFactory().buildMappingFile(this, resource);
-	}
-	
 	@Override
 	public void postUpdate() {
 		super.postUpdate();
@@ -182,8 +198,8 @@ public abstract class AbstractMappingFileRef
 			this.mappingFile.postUpdate();
 		}
 	}
-	
-	
+
+
 	// ********** validation **********
 
 	@Override
@@ -232,22 +248,12 @@ public abstract class AbstractMappingFileRef
 
 	protected String buildMissingMappingFileMessageID() {
 		return this.getPlatformFile().exists() ?
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT
-				:
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
 					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE;
 	}
 
 	protected IFile getPlatformFile() {
 		return this.getJpaProject().convertToPlatformFile(this.fileName);
-	}
-
-
-	// ********** misc **********
-
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.fileName);
 	}
 
 }

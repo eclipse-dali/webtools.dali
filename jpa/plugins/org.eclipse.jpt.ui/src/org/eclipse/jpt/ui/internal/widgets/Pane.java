@@ -746,10 +746,10 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite addCollapsableSection(Composite container,
+	protected final Composite addCollapsibleSection(Composite container,
 	                                                  String sectionText) {
 
-		return this.addCollapsableSection(
+		return this.addCollapsibleSection(
 			container,
 			sectionText,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
@@ -767,11 +767,11 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite addCollapsableSection(Composite container,
+	protected final Composite addCollapsibleSection(Composite container,
 	                                                  String sectionText,
 	                                                  String description) {
 
-		return this.addCollapsableSection(
+		return this.addCollapsibleSection(
 			container,
 			sectionText,
 			description,
@@ -792,12 +792,12 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Composite addCollapsableSection(Composite container,
+	private Composite addCollapsibleSection(Composite container,
 	                                          String sectionText,
 	                                          int type,
 	                                          PropertyValueModel<Boolean> expandedStateHolder) {
 		
-		return addCollapsableSection(container, sectionText, null, type, expandedStateHolder);
+		return addCollapsibleSection(container, sectionText, null, type, expandedStateHolder);
 	}
 	
 	/**
@@ -815,7 +815,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Composite addCollapsableSection(Composite container,
+	private Composite addCollapsibleSection(Composite container,
 	                                          String sectionText,
 	                                          String description,
 	                                          int type,
@@ -854,11 +854,11 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite addCollapsableSection(Composite container,
+	protected final Composite addCollapsibleSection(Composite container,
 	                                                  String sectionText,
 	                                                  PropertyValueModel<Boolean> expandedStateHolder) {
 
-		return this.addCollapsableSection(
+		return this.addCollapsibleSection(
 			container,
 			sectionText,
 			ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE,
@@ -879,12 +879,12 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite addCollapsableSection(Composite container,
+	protected final Composite addCollapsibleSection(Composite container,
 	                                                  String sectionText,
 	                                                  String description,
 	                                                  PropertyValueModel<Boolean> expandedStateHolder) {
 
-		return this.addCollapsableSection(
+		return this.addCollapsibleSection(
 			container,
 			sectionText,
 			description,
@@ -905,11 +905,11 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite addCollapsableSubSection(Composite container,
+	protected final Composite addCollapsibleSubSection(Composite container,
 	                                          String sectionText,
 	                                          PropertyValueModel<Boolean> expandedStateHolder) {
 
-		return this.addCollapsableSection(
+		return this.addCollapsibleSection(
 			container,
 			sectionText,
 			SWT.NULL,
@@ -2968,7 +2968,7 @@ public abstract class Pane<T extends Model>
 	protected final Composite addSubSection(Composite container,
 	                                          String sectionText) {
 
-		return this.addCollapsableSubSection(
+		return this.addCollapsibleSubSection(
 			container,
 			sectionText,
 			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)

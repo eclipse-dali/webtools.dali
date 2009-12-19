@@ -141,9 +141,9 @@ public class SybaseTests extends DTPPlatformTests {
 
 		// foo
 		Table fooTable = schema.getTableNamed("foo");
-		assertEquals(3, fooTable.columnsSize());
-		assertEquals(1, fooTable.primaryKeyColumnsSize());
-		assertEquals(1, fooTable.foreignKeysSize());
+		assertEquals(3, fooTable.getColumnsSize());
+		assertEquals(1, fooTable.getPrimaryKeyColumnsSize());
+		assertEquals(1, fooTable.getForeignKeysSize());
 
 		Column pkColumn = fooTable.getPrimaryKeyColumn();
 		assertEquals("id", pkColumn.getName());
@@ -182,8 +182,8 @@ public class SybaseTests extends DTPPlatformTests {
 		assertTrue(barColumn.isPartOfForeignKey());
 		assertFalse(barColumn.isPartOfPrimaryKey());
 
-		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
-		assertEquals(1, barFK.columnPairsSize());
+		ForeignKey barFK = fooTable.getForeignKeys().iterator().next();  // there should only be 1 foreign key
+		assertEquals(1, barFK.getColumnPairsSize());
 		assertEquals("bar", barFK.getAttributeName());
 		assertNull(barFK.getJoinColumnAnnotationIdentifier("bar"));
 		assertEquals("bar_id", barFK.getJoinColumnAnnotationIdentifier("primaryBar"));
@@ -194,9 +194,9 @@ public class SybaseTests extends DTPPlatformTests {
 
 		// BAR
 		Table barTable = schema.getTableNamed("bar");
-		assertEquals(2, barTable.columnsSize());
-		assertEquals(1, barTable.primaryKeyColumnsSize());
-		assertEquals(0, barTable.foreignKeysSize());
+		assertEquals(2, barTable.getColumnsSize());
+		assertEquals(1, barTable.getPrimaryKeyColumnsSize());
+		assertEquals(0, barTable.getForeignKeysSize());
 		assertEquals("id", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
 		Column chunkColumn = barTable.getColumnNamed("chunk");
@@ -208,9 +208,9 @@ public class SybaseTests extends DTPPlatformTests {
 
 		// BAZ
 		Table bazTable = schema.getTableNamed("baz");
-		assertEquals(4, bazTable.columnsSize());
-		assertEquals(1, bazTable.primaryKeyColumnsSize());
-		assertEquals(0, bazTable.foreignKeysSize());
+		assertEquals(4, bazTable.getColumnsSize());
+		assertEquals(1, bazTable.getPrimaryKeyColumnsSize());
+		assertEquals(0, bazTable.getForeignKeysSize());
 
 		Column nicknameColumn = bazTable.getColumnNamed("nickname");
 		assertTrue(nicknameColumn.isNullable());
@@ -229,9 +229,9 @@ public class SybaseTests extends DTPPlatformTests {
 
 		// FOO_BAZ
 		Table foo_bazTable = schema.getTableNamed("foo_baz");
-		assertEquals(2, foo_bazTable.columnsSize());
-		assertEquals(0, foo_bazTable.primaryKeyColumnsSize());
-		assertEquals(2, foo_bazTable.foreignKeysSize());
+		assertEquals(2, foo_bazTable.getColumnsSize());
+		assertEquals(0, foo_bazTable.getPrimaryKeyColumnsSize());
+		assertEquals(2, foo_bazTable.getForeignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
 		assertTrue(foo_bazTable.getColumnNamed("foo_id").isPartOfForeignKey());
@@ -416,13 +416,13 @@ public class SybaseTests extends DTPPlatformTests {
 		assertNotNull(schema2);
 		Table empTable = schema2.getTableNamed("emp");
 		assertNotNull(empTable);
-		assertEquals(1, empTable.foreignKeysSize());
-		ForeignKey fk = empTable.foreignKeys().next();
+		assertEquals(1, empTable.getForeignKeysSize());
+		ForeignKey fk = empTable.getForeignKeys().iterator().next();
 		Table refTable = fk.getReferencedTable();
 		assertNotNull(refTable);
 		assertEquals("org", refTable.getName());
-		assertEquals(1, fk.columnPairsSize());
-		ForeignKey.ColumnPair cp = fk.columnPairs().next();
+		assertEquals(1, fk.getColumnPairsSize());
+		ForeignKey.ColumnPair cp = fk.getColumnPairs().iterator().next();
 		Column baseColumn = cp.getBaseColumn();
 		assertEquals("org_id", baseColumn.getName());
 		Column refColumn = cp.getReferencedColumn();

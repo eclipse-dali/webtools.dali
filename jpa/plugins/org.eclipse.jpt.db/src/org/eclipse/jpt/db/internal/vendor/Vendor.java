@@ -49,10 +49,11 @@ public interface Vendor {
 	List<Catalog> getCatalogs(Database database);
 
 	/**
-	 * Return the specified database's default catalog identifiers for the
-	 * specified user.
+	 * Return the specified database's default catalog names for the
+	 * specified user. The first name in the list that identifies a catalog
+	 * that exists is "the" default.
 	 */
-	List<String> getDefaultCatalogIdentifiers(Database database, String userName);
+	Iterable<String> getDefaultCatalogNames(Database database, String userName);
 
 	/**
 	 * Return the specified database's schemas.
@@ -60,10 +61,11 @@ public interface Vendor {
 	List<Schema> getSchemas(Database database);
 
 	/**
-	 * Return the specified database's default schema identifiers for the
-	 * specified user.
+	 * Return the specified database's default schema names for the
+	 * specified user. The first name in the list that identifies a schema
+	 * that exists is "the" default.
 	 */
-	List<String> getDefaultSchemaIdentifiers(Database database, String userName);
+	Iterable<String> getDefaultSchemaNames(Database database, String userName);
 
 	/**
 	 * Convert the specified database object name to a vendor identifier.

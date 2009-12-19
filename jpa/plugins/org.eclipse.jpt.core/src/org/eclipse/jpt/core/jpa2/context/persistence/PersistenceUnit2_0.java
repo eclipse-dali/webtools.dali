@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 public interface PersistenceUnit2_0
 	extends PersistenceUnit, MetamodelSynchronizer
 {
-
 	// ********** shared cache mode **********
 
 	/** 
@@ -102,10 +101,24 @@ public interface PersistenceUnit2_0
 	
 	ValidationMode DEFAULT_VALIDATION_MODE = ValidationMode.AUTO;
 
-
 	// ********** properties **********
 
 	PersistenceUnitProperties getConnection();
 
 	PersistenceUnitProperties getOptions();
+
+	// ********** ORM persistence unit defaults **********
+
+	/**
+	 * String constant associated with changes to the persistence unit's
+	 * default "delimited identifiers" flag.
+	 */
+	String DEFAULT_DELIMITED_IDENTIFIERS_PROPERTY = "defaultDelimitedIdentifiers"; //$NON-NLS-1$
+
+	/**
+	 * Return the default "delimited identifiers" flag from the first persistence unit defaults
+	 * found in the persistence unit's list of mapping files.
+	 */
+	boolean getDefaultDelimitedIdentifiers();
+
 }

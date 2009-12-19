@@ -78,7 +78,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 	
 	protected void initializeConversionPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.TypeSection_type
 		);

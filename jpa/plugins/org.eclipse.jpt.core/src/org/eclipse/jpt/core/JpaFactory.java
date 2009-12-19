@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -69,10 +70,13 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * Use a JPA factory to build any core (e.g. {@link JpaProject})
@@ -130,8 +134,15 @@ public interface JpaFactory
 	 * @see JpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
-			
-	
+
+
+	// ********** XML Context Model **********
+
+	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource);
+
+	MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
+
+
 	// ********** Java Context Model **********
 	
 	JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt);

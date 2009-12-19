@@ -62,12 +62,8 @@ class PostgreSQL
 	 * the database.
 	 */
 	@Override
-	void addDefaultCatalogIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(this.buildDefaultCatalogIdentifier(database));
-	}
-
-	private String buildDefaultCatalogIdentifier(Database database) {
-		return this.convertNameToIdentifier(this.buildDefaultCatalogName(database));
+	void addDefaultCatalogNamesTo(Database database, String userName, ArrayList<String> names) {
+		names.add(this.buildDefaultCatalogName(database));
 	}
 
 	private String buildDefaultCatalogName(Database database) {
@@ -80,22 +76,22 @@ class PostgreSQL
 	 * If the "$user" schema is not found, use the "public" schema.
 	 */
 	@Override
-	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		super.addDefaultSchemaIdentifiersTo(database, userName, identifiers);
-		identifiers.add(PUBLIC_SCHEMA_IDENTIFIER);
+	void addDefaultSchemaNamesTo(Database database, String userName, ArrayList<String> names) {
+		super.addDefaultSchemaNamesTo(database, userName, names);
+		names.add(PUBLIC_SCHEMA_NAME);
 	}
-	private static final String PUBLIC_SCHEMA_IDENTIFIER = "public";  //$NON-NLS-1$
+	private static final String PUBLIC_SCHEMA_NAME = "public";  //$NON-NLS-1$
 
 	@Override
-	char[] getExtendedNormalNameStartCharacters() {
-		return EXTENDED_NORMAL_NAME_START_CHARACTERS;
+	char[] getExtendedRegularNameStartCharacters() {
+		return EXTENDED_REGULAR_NAME_START_CHARACTERS;
 	}
-	private static final char[] EXTENDED_NORMAL_NAME_START_CHARACTERS = new char[] { '_' };
+	private static final char[] EXTENDED_REGULAR_NAME_START_CHARACTERS = new char[] { '_' };
 
 	@Override
-	char[] getExtendedNormalNamePartCharacters() {
-		return EXTENDED_NORMAL_NAME_PART_CHARACTERS;
+	char[] getExtendedRegularNamePartCharacters() {
+		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
 	}
-	private static final char[] EXTENDED_NORMAL_NAME_PART_CHARACTERS = new char[] { '$' };
+	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '$' };
 
 }

@@ -47,6 +47,10 @@ public class JpaXmlResource
 	extends TranslatorResourceImpl
 	implements JpaResourceModel
 {
+	/**
+	 * cache the content type - if the content type changes, the JPA project
+	 * will throw out the JPA file holding the xml resource and build a new one
+	 */
 	protected final IContentType contentType;
 	
 	protected final Translator rootTranslator;
@@ -150,11 +154,11 @@ public class JpaXmlResource
 	
 	@Override
 	public JpaRootEObject getRootObject() {
+		EObject root = super.getRootObject();
 		try {
-			return (JpaRootEObject) super.getRootObject();
-		}
-		catch (ClassCastException cce) {
-			throw new IllegalStateException("Root objects of JPA XML resources must implement JpaRootEObject", cce);
+			return (JpaRootEObject) root;
+		} catch (ClassCastException ex) {
+			throw new IllegalStateException("The root object of a JPA XML resource must implement JpaRootEObject: " + root, ex); //$NON-NLS-1$
 		}
 	}
 	

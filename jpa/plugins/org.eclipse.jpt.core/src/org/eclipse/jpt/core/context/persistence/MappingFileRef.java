@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 public interface MappingFileRef
 	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
 {
-
 	// ********** file name **********
 
 	/**
@@ -58,7 +57,7 @@ public interface MappingFileRef
 	String MAPPING_FILE_PROPERTY = "mappingFile"; //$NON-NLS-1$
 
 	/**
-	 * Return the mapping file ref's mapping file corresponding to the file name.
+	 * Return mapping file corresponding to the mapping file ref's file name.
 	 */
 	MappingFile getMappingFile();
 
@@ -66,8 +65,11 @@ public interface MappingFileRef
 	// ********** updating **********
 
 	/**
-	 * Update the MappingFileRef context model object to match the XmlMappingFileRef 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * Update the mapping file ref context model to match the specified
+	 * resource model. The refs are ordered within the <code>persistence.xml</code>
+	 * file, so they are updated sequentially, in place, not matched up by name
+	 * (i.e. the resource model can change).
+	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(XmlMappingFileRef mappingFileRef);
 
@@ -76,7 +78,7 @@ public interface MappingFileRef
 
 	/**
 	 * Return whether the mapping file ref is "implied" by, or explicitly
-	 * specified in, the persistence.xml.
+	 * specified in, the <code>persistence.xml</code>.
 	 */
 	boolean isImplied();
 
@@ -97,8 +99,8 @@ public interface MappingFileRef
 	PersistentType getPersistentType(String typeName);
 
 	/**
-	 * Return whether the text representation of the mapping file contains
-	 * the specified text offset.
+	 * Return whether the specified text offset is within
+	 * the text representation of the mapping file.
 	 */
 	boolean containsOffset(int textOffset);
 }

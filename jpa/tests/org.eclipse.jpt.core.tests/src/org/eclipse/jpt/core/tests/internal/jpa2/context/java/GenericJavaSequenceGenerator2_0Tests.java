@@ -149,7 +149,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		
 		assertNull(sequenceGenerator.getDefaultSchema());
 		
-		this.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		this.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", sequenceGenerator.getDefaultSchema());
 		
 		this.getEntityMappings().setSpecifiedSchema("BAR");

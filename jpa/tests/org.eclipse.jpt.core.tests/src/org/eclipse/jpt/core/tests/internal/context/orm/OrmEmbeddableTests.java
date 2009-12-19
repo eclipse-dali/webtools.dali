@@ -243,7 +243,7 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormEntity.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, embeddablePersistentType.getSpecifiedAccess());
 		
-		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().persistentTypes();
+		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().getPersistentTypes().iterator();
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 	}
@@ -287,7 +287,7 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, embeddablePersistentType.getSpecifiedAccess());
 		
-		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().persistentTypes();
+		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().getPersistentTypes().iterator();
 		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 	}

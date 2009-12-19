@@ -38,7 +38,8 @@ public class GenericJpaFile
 	protected final IFile file;
 
 	/**
-	 * cache the content type
+	 * cache the content type - if the content type changes, the JPA project
+	 * will throw out the JPA file and build a new one
 	 */
 	protected final IContentType contentType;
 

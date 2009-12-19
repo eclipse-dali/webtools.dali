@@ -161,12 +161,6 @@ public class GenericPersistenceXml
 	
 	// *************************************************************************
 	
-	@Override
-	public PersistenceUnit getPersistenceUnit() {
-		throw new UnsupportedOperationException("No Persistence Unit in this context"); //$NON-NLS-1$
-	}
-	
-	
 	public JpaStructureNode getStructureNode(int textOffset) {
 		if (this.persistence.containsOffset(textOffset)) {
 			return this.persistence.getStructureNode(textOffset);

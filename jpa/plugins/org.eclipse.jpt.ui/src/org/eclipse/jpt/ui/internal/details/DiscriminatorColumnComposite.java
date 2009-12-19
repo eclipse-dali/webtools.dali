@@ -100,7 +100,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> 
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
 		);
 
-		container = addCollapsableSubSection(
+		container = addCollapsibleSubSection(
 			discriminatorColumnContainer,
 			JptUiDetailsMessages.InheritanceComposite_detailsGroupBox,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)

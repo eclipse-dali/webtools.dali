@@ -886,6 +886,35 @@ public final class CollectionTools {
 	}
 
 
+	// ********** last **********
+
+	/**
+	 * Return the specified iterable's last element.
+	 * <p>
+	 * <code>Iterable.last()</code>
+	 * 
+     * @exception NoSuchElementException iterable is empty.
+	 */
+	public static <E> E last(Iterable<E> iterable) {
+		return last(iterable.iterator());
+	}
+
+	/**
+	 * Return the specified iterator's last element.
+	 * <p>
+	 * <code>Iterator.last()</code>
+	 * 
+     * @exception NoSuchElementException iterator is empty.
+	 */
+	public static <E> E last(Iterator<E> iterator) {
+		E last;
+		do {
+			last = iterator.next();
+		} while (iterator.hasNext());
+		return last;
+	}
+
+
 	// ********** last index of **********
 
 	/**
@@ -1228,8 +1257,8 @@ public final class CollectionTools {
 		}
 		if (modified) {
 			int i = 0;
-			for (Iterator<E> stream = temp.iterator(); stream.hasNext(); ) {
-				list.set(i, stream.next());
+			for (E e : temp) {
+				list.set(i, e);
 				i++;
 			}
 			int tempSize = temp.size();

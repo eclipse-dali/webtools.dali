@@ -31,20 +31,26 @@ import org.eclipse.jpt.db.Table;
 public class MappingTools {
 
 	/**
-	 * Default join table name from the JPA spec:
-	 * 	The concatenated names of the two associated primary
-	 * 	entity tables, separated by a underscore.
-	 * 
+	 * Default join table name from the JPA spec:<br>
+	 * 	"The concatenated names of the two associated primary
+	 * 	entity tables, separated by a underscore."
+	 * <pre>
 	 * [owning table name]_[target table name]
-	 * 
-	 * NB: The *names* are concatenated, *not* the *identifiers*.
-	 * E.g. the join table for "Foo" and "baR" (where the "delimited" identifier
-	 * is required) is
+	 * </pre>
+	 * <strong>NB:</strong> The <em>names</em> are concatenated,
+	 * <em>not</em> the <em>identifiers</em>.
+	 * E.g. the join table for <code>"Foo"</code> and <code>"baR"</code>
+	 * (where the "delimited" identifier is required) is:
+	 * <pre>
 	 *     "Foo_baR"
+	 * </pre>
 	 * not
+	 * <pre>
 	 *     "Foo"_"baR"
+	 * </pre>
 	 * As a result, we cannot honestly calculate the default name without a
-	 * database connection.
+	 * database connection. We need the database to convert the resulting name
+	 * to an identifier appropriate to the current database.
 	 */
 	public static String buildJoinTableDefaultName(RelationshipReference relationshipReference) {
 		if (relationshipReference.getJpaProject().getDataSource().connectionProfileIsActive()) {

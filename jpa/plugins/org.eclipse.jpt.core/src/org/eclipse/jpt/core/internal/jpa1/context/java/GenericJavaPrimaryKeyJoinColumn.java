@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -21,8 +22,8 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 
 public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<PrimaryKeyJoinColumnAnnotation>
@@ -113,22 +114,22 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 			return result;
 		}
 		if (this.referencedColumnNameTouches(pos, astRoot)) {
-			return this.javaCandidateReferencedColumnNames(filter);
+			return this.getJavaCandidateReferencedColumnNames(filter).iterator();
 		}
 		return null;
 	}
 
-	private Iterator<String> javaCandidateReferencedColumnNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateReferencedColumnNames(filter));
+	private Iterable<String> getJavaCandidateReferencedColumnNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateReferencedColumnNames(filter));
 	}
 
-	private Iterator<String> candidateReferencedColumnNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateReferencedColumnNames(), filter);
+	private Iterable<String> getCandidateReferencedColumnNames(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateReferencedColumnNames(), filter);
 	}
 
-	private Iterator<String> candidateReferencedColumnNames() {
+	private Iterable<String> getCandidateReferencedColumnNames() {
 		Table table = this.getOwner().getReferencedColumnDbTable();
-		return (table != null) ? table.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
+		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 	public boolean isReferencedColumnResolved() {

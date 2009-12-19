@@ -163,7 +163,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
-		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
+		OrmPersistentType departmentPersistentType = getEntityMappings().getPersistentTypes().iterator().next();
 		OrmEclipseLinkManyToOneMapping manyToOne = (OrmEclipseLinkManyToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 
 		assertNull(manyToOne.getJoinFetch().getValue());

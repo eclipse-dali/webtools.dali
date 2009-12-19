@@ -237,7 +237,7 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		
 		assertNull(tableGenerator.getDefaultSchema());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", tableGenerator.getDefaultSchema());
 		
 		getEntityMappings().setSpecifiedSchema("BAR");

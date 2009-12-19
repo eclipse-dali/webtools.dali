@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
@@ -14,27 +14,32 @@ import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 
+/**
+ * <code>persistence.xml</code> file
+ * <br>
+ * <code>mapping-file</code> element
+ */
 public class GenericMappingFileRef
 	extends AbstractMappingFileRef
 {
 	protected XmlMappingFileRef xmlMappingFileRef;
 
 
-	// **************** construction/initialization ****************************
+	// ********** construction/initialization **********
 
 	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
 		super(parent, xmlMappingFileRef.getFileName());
 		this.xmlMappingFileRef = xmlMappingFileRef;
 	}
-	
-	
-	// **************** file name **********************************************
-	
-	public void setFileName(String newFileName) {
+
+
+	// ********** file name **********
+
+	public void setFileName(String fileName) {
 		String old = this.fileName;
-		this.fileName = newFileName;
-		this.xmlMappingFileRef.setFileName(newFileName);
-		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
+		this.fileName = fileName;
+		this.xmlMappingFileRef.setFileName(fileName);
+		this.firePropertyChanged(FILE_NAME_PROPERTY, old, fileName);
 	}
 
 	protected void setFileName_(String newFileName) {
@@ -42,35 +47,34 @@ public class GenericMappingFileRef
 		this.fileName = newFileName;
 		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
 	}
-	
-	
-	// **************** MappingFileRef impl ************************************
-	
+
+
+	// ********** MappingFileRef implementation **********
+
 	public void update(XmlMappingFileRef mappingFileRef) {
 		this.xmlMappingFileRef = mappingFileRef;
-		this.setFileName_(this.getResourceFileName());
-		super.update();
+		this.setFileName_(mappingFileRef.getFileName());
+		this.update();
 	}
-	
-	protected String getResourceFileName() {
-		return this.xmlMappingFileRef.getFileName();
-	}
-	
+
 	public boolean isImplied() {
 		return false;
 	}
-	
+
 	public boolean containsOffset(int textOffset) {
 		return this.xmlMappingFileRef.containsOffset(textOffset);
 	}
-	
-	
-	// **************** JpaStructureNode impl **********************************
-	
+
+
+	// ********** JpaStructureNode implementation **********
+
 	public TextRange getSelectionTextRange() {
 		return this.xmlMappingFileRef.getSelectionTextRange();
 	}
-	
+
+
+	// ********** XmlContextNode implementation **********
+
 	public TextRange getValidationTextRange() {
 		return this.xmlMappingFileRef.getValidationTextRange();
 	}

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -63,7 +62,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		names.add(JPA.JOIN_COLUMN);
 		names.add(JPA.JOIN_COLUMNS);
 		names.add(JPA.JOIN_TABLE);
-		if (this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			names.add(JPA.ID);
 			names.add(JPA2_0.MAPS_ID);
 		}

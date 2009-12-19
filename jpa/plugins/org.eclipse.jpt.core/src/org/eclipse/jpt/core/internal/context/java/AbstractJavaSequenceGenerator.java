@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -18,8 +19,8 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 /**
  * 
@@ -89,7 +90,7 @@ public abstract class AbstractJavaSequenceGenerator extends AbstractJavaGenerato
 			return result;
 		}
 		if (this.sequenceNameTouches(pos, astRoot)) {
-			return this.javaCandidateSequences(filter);
+			return this.getJavaCandidateSequences(filter).iterator();
 		}
 		return null;
 	}
@@ -98,17 +99,17 @@ public abstract class AbstractJavaSequenceGenerator extends AbstractJavaGenerato
 		return this.getResourceGenerator().sequenceNameTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateSequences(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateSequences(filter));
+	protected Iterable<String> getJavaCandidateSequences(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateSequences(filter));
 	}
 
-	protected Iterator<String> candidateSequences(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateSequences(), filter);
+	protected Iterable<String> getCandidateSequences(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateSequences(), filter);
 	}
 
-	protected Iterator<String> candidateSequences() {
+	protected Iterable<String> getCandidateSequences() {
 		Schema dbSchema = this.getDbSchema();
-		return (dbSchema != null) ? dbSchema.sortedSequenceIdentifiers() : EmptyIterator.<String> instance();
+		return (dbSchema != null) ? dbSchema.getSortedSequenceIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 

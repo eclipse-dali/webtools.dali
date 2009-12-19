@@ -13,14 +13,12 @@ import org.eclipse.jpt.utility.JavaType;
 
 /**
  * Database column
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * This interface is not intended to be implemented by clients.
  */
 public interface Column extends DatabaseObject {
 
@@ -33,12 +31,12 @@ public interface Column extends DatabaseObject {
 	// ********** constraints **********
 
 	/**
-	 * Return whether the column is part of it's table's primary key.
+	 * Return whether the column is part of its table's primary key.
 	 */
 	boolean isPartOfPrimaryKey();
 
 	/**
-	 * Return whether the column is part of one of it's table's foreign keys.
+	 * Return whether the column is part of one of its table's foreign keys.
 	 */
 	boolean isPartOfForeignKey();
 

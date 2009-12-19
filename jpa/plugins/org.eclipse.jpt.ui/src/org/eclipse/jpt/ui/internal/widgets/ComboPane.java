@@ -1,16 +1,14 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import java.util.Iterator;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -87,7 +85,7 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	 * Return the possible values to be added to the combo during
 	 * population.
 	 */
-	protected abstract Iterator<String> values();
+	protected abstract Iterable<String> getValues();
 	
 	/**
 	 * Return the default value, or <code>null</code> if no default is
@@ -142,8 +140,8 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 		
 		this.comboBox.add(this.buildDefaultValueEntry());
 		
-		for (Iterator<String> stream = this.values(); stream.hasNext(); ) {
-			this.comboBox.add(stream.next());
+		for (String value : this.getValues()) {
+			this.comboBox.add(value);
 		}
 		
 		this.updateSelectedItem_();

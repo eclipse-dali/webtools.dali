@@ -75,7 +75,7 @@ public class JavaEclipseLinkEmbeddable1_1Composite extends FormPane<JavaEmbeddab
 
 	protected void initializeConvertersPane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			addSubPane(container, 5),
 			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
 		);

@@ -99,7 +99,7 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 		panes.add(new EclipseLinkCacheSizeComposite(this, subPane));
 		
 		// Advanced sub-pane
-		Composite advancedSection = addCollapsableSubSection(
+		Composite advancedSection = addCollapsibleSubSection(
 			subPane,
 			EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_advanced,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)

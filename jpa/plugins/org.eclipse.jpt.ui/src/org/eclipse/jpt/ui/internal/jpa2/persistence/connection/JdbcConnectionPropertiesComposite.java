@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.jpa2.persistence.connection;
 
 import java.util.Comparator;
-import java.util.Iterator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -227,8 +226,8 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 
 			try {
 				// Add the connection names to the dialog
-				for (Iterator<String> stream = this.connectionProfileNames(); stream.hasNext(); ) {
-					provider.add(stream.next(), itemsFilter);
+				for (String name : this.getConnectionProfileNames()) {
+					provider.add(name, itemsFilter);
 				}
 			}
 			finally {
@@ -236,8 +235,8 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 			}
 		}
 
-		private Iterator<String> connectionProfileNames() {
-			return JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory().connectionProfileNames();
+		private Iterable<String> getConnectionProfileNames() {
+			return JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory().getConnectionProfileNames();
 		}
 
 		@Override

@@ -43,6 +43,7 @@ import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -60,8 +61,11 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.NotNullFilter;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -73,7 +77,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * persistence-unit
+ * <code>persistence.xml</code> file
+ * <br>
+ * <code>persistence-unit</code> element
  */
 public abstract class AbstractPersistenceUnit
 	extends AbstractPersistenceXmlContextNode
@@ -117,6 +123,7 @@ public abstract class AbstractPersistenceUnit
 	protected String defaultCatalog;
 	protected String defaultSchema;
 	protected boolean defaultCascadePersist;
+	protected boolean defaultDelimitedIdentifiers;
 
 	//****** PersistenceUnit2_0 features
 	private PersistenceUnitProperties connection;
@@ -279,11 +286,11 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void dispose() {
-		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			stream.next().dispose();
+		for (ClassRef classRef : this.getClassRefs()) {
+			classRef.dispose();
 		}
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			stream.next().dispose();
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			mappingFileRef.dispose();
 		}
 	}
 
@@ -400,10 +407,10 @@ public abstract class AbstractPersistenceUnit
 	// ********** mapping file refs **********
 
 	public ListIterator<MappingFileRef> mappingFileRefs() {
-		return (this.impliedMappingFileRef == null) ? this.specifiedMappingFileRefs() : this.combinedMappingFileRefs();
+		return this.getMappingFileRefs().iterator();
 	}
 
-	protected Iterable<MappingFileRef> getMappingFileRefs() {
+	protected ListIterable<MappingFileRef> getMappingFileRefs() {
 		return (this.impliedMappingFileRef == null) ? this.getSpecifiedMappingFileRefs() : this.getCombinedMappingFileRefs();
 	}
 
@@ -411,8 +418,8 @@ public abstract class AbstractPersistenceUnit
 		return new CompositeListIterator<MappingFileRef>(this.specifiedMappingFileRefs(), this.impliedMappingFileRef);
 	}
 
-	protected Iterable<MappingFileRef> getCombinedMappingFileRefs() {
-		return new CompositeIterable<MappingFileRef>(this.getSpecifiedMappingFileRefs(), this.impliedMappingFileRef);
+	protected ListIterable<MappingFileRef> getCombinedMappingFileRefs() {
+		return new CompositeListIterable<MappingFileRef>(this.getSpecifiedMappingFileRefs(), this.impliedMappingFileRef);
 	}
 
 	public int mappingFileRefsSize() {
@@ -505,11 +512,11 @@ public abstract class AbstractPersistenceUnit
 	// ********** specified mapping file refs **********
 
 	public ListIterator<MappingFileRef> specifiedMappingFileRefs() {
-		return new CloneListIterator<MappingFileRef>(this.specifiedMappingFileRefs);
+		return this.getSpecifiedMappingFileRefs().iterator();
 	}
 
-	protected Iterable<MappingFileRef> getSpecifiedMappingFileRefs() {
-		return new LiveCloneIterable<MappingFileRef>(this.specifiedMappingFileRefs);
+	protected ListIterable<MappingFileRef> getSpecifiedMappingFileRefs() {
+		return new LiveCloneListIterable<MappingFileRef>(this.specifiedMappingFileRefs);
 	}
 
 	public int specifiedMappingFileRefsSize() {
@@ -1219,12 +1226,28 @@ public abstract class AbstractPersistenceUnit
 		return (defaults == null) ? false : defaults.isCascadePersist();
 	}
 
+	public boolean getDefaultDelimitedIdentifiers() {
+		return this.defaultDelimitedIdentifiers;
+	}
+
+	protected void setDefaultDelimitedIdentifiers(boolean defaultDelimitedIdentifiers) {
+		boolean old = this.defaultDelimitedIdentifiers;
+		this.defaultDelimitedIdentifiers = defaultDelimitedIdentifiers;
+		this.firePropertyChanged(DEFAULT_DELIMITED_IDENTIFIERS_PROPERTY, old, defaultDelimitedIdentifiers);
+	}
+
+	protected boolean buildDefaultDelimitedIdentifiers(MappingFilePersistenceUnitDefaults defaults) {
+		return ( ! this.isJpa2_0Compatible()) ? false :
+				(defaults == null) ? false : ((MappingFilePersistenceUnitDefaults2_0) defaults).isDelimitedIdentifiers();
+	}
+
 	protected void initializePersistenceUnitDefaults() {
 		MappingFilePersistenceUnitDefaults defaults = this.getDefaults();
 		this.defaultAccess = this.buildDefaultAccess(defaults);
 		this.defaultCatalog = this.buildDefaultCatalog(defaults);
 		this.defaultSchema = this.buildDefaultSchema(defaults);
 		this.defaultCascadePersist = this.buildDefaultCascadePersist(defaults);
+		this.defaultDelimitedIdentifiers = this.buildDefaultDelimitedIdentifiers(defaults);
 	}
 
 	protected void updatePersistenceUnitDefaults() {
@@ -1232,15 +1255,14 @@ public abstract class AbstractPersistenceUnit
 		this.setDefaultAccess(this.buildDefaultAccess(defaults));
 		this.setDefaultCatalog(this.buildDefaultCatalog(defaults));
 		this.setDefaultSchema(this.buildDefaultSchema(defaults));
-		this.setDefaultCascadePersist(this.buildDefaultCascadePersist(defaults));
+		this.setDefaultDelimitedIdentifiers(this.buildDefaultDelimitedIdentifiers(defaults));
 	}
 
 	/**
 	 * return the first persistence unit defaults we encounter in a mapping file
 	 */
 	protected MappingFilePersistenceUnitDefaults getDefaults() {
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			MappingFileRef mappingFileRef = stream.next();
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			if (mappingFileRef.persistenceUnitDefaultsExists()) {
 				return mappingFileRef.getPersistenceUnitDefaults();
 			}
@@ -1412,29 +1434,27 @@ public abstract class AbstractPersistenceUnit
 	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
 		this.checkForMultiplePersistenceUnitDefaults(messages);
 		this.checkForDuplicateMappingFiles(messages);
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext();) {
-			stream.next().validate(messages, reporter);
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			mappingFileRef.validate(messages, reporter);
 		}
 	}
 
 	protected void checkForMultiplePersistenceUnitDefaults(List<IMessage> messages) {
-		Iterator<MappingFileRef> stream = mappingFileRefs();
-		while (stream.hasNext()) {
-			if (stream.next().persistenceUnitDefaultsExists()) {
-				break;
-			}
-		}
-		while (stream.hasNext()) {
-			MappingFileRef mappingFileRef = stream.next();
+		boolean first = true;
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			if (mappingFileRef.persistenceUnitDefaultsExists()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS,
-						new String[] {mappingFileRef.getFileName()},
-						mappingFileRef
-					)
-				);
+				if (first) {
+					first = false;
+				} else {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.NORMAL_SEVERITY,
+							JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS,
+							new String[] {mappingFileRef.getFileName()},
+							mappingFileRef
+						)
+					);
+				}
 			}
 		}
 	}
@@ -1442,8 +1462,7 @@ public abstract class AbstractPersistenceUnit
 	protected void checkForDuplicateMappingFiles(List<IMessage> messages) {
 		HashBag<String> fileNames = new HashBag<String>();
 		CollectionTools.addAll(fileNames, this.mappingFileRefNames());
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			MappingFileRef mappingFileRef = stream.next();
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			String fileName = mappingFileRef.getFileName();
 			if (fileNames.count(fileName) > 1) {
 				messages.add(
@@ -1549,8 +1568,7 @@ public abstract class AbstractPersistenceUnit
 				return jarFileRef;
 			}
 		}
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			MappingFileRef mappingFileRef = stream.next();
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			if (mappingFileRef.containsOffset(textOffset)) {
 				return mappingFileRef;
 			}
@@ -1573,8 +1591,8 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public PersistentType getPersistentType(String typeName) {
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			PersistentType persistentType = stream.next().getPersistentType(typeName);
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			PersistentType persistentType = mappingFileRef.getPersistentType(typeName);
 			if (persistentType != null) {
 				return persistentType;
 			}
@@ -1600,8 +1618,8 @@ public abstract class AbstractPersistenceUnit
 				return true;
 			}
 		}
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			if (stream.next().getPersistentType(className) != null) {
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			if (mappingFileRef.getPersistentType(className) != null) {
 				return true;
 			}
 		}

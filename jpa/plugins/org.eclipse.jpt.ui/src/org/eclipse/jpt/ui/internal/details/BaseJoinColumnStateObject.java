@@ -116,14 +116,14 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		if (table == null) {
 			return EmptyListIterator.instance();
 		}
-		return CollectionTools.list(table.sortedColumnIdentifiers()).listIterator();
+		return CollectionTools.list(table.getSortedColumnIdentifiers()).listIterator();
 	}
 	
 	private static int columnsSize(Table table) {
 		if (table == null) {
 			return 0;
 		}
-		return table.columnsSize();
+		return table.getColumnsSize();
 	}
 	
 	public final String displayString() {

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -28,9 +29,10 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * 
@@ -309,7 +311,7 @@ public class GenericJavaTableGenerator
 
 	public Iterator<String> candidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String>instance();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
 	}
 
 
@@ -417,19 +419,19 @@ public class GenericJavaTableGenerator
 			return result;
 		}
 		if (this.tableTouches(pos, astRoot)) {
-			return this.javaCandidateTables(filter);
+			return this.getJavaCandidateTables(filter).iterator();
 		}
 		if (this.schemaTouches(pos, astRoot)) {
-			return this.javaCandidateSchemata(filter);
+			return this.getJavaCandidateSchemata(filter).iterator();
 		}
 		if (this.catalogTouches(pos, astRoot)) {
-			return this.javaCandidateCatalogs(filter);
+			return this.getJavaCandidateCatalogs(filter).iterator();
 		}
 		if (this.pkColumnNameTouches(pos, astRoot)) {
-			return this.javaCandidateColumnNames(filter);
+			return this.getJavaCandidateColumnNames(filter).iterator();
 		}
 		if (this.valueColumnNameTouches(pos, astRoot)) {
-			return this.javaCandidateColumnNames(filter);
+			return this.getJavaCandidateColumnNames(filter).iterator();
 		}
 		return null;
 	}
@@ -440,17 +442,17 @@ public class GenericJavaTableGenerator
 		return this.getResourceGenerator().tableTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateTables(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateTables(filter));
+	protected Iterable<String> getJavaCandidateTables(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateTables(filter));
 	}
 
-	protected Iterator<String> candidateTables(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateTables(), filter);
+	protected Iterable<String> getCandidateTables(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateTables(), filter);
 	}
 
-	protected Iterator<String> candidateTables() {
+	protected Iterable<String> getCandidateTables() {
 		Schema dbSchema = this.getDbSchema();
-		return (dbSchema != null) ? dbSchema.sortedTableIdentifiers() : EmptyIterator.<String> instance();
+		return (dbSchema != null) ? dbSchema.getSortedTableIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 	// ********** code assist: schema
@@ -459,17 +461,17 @@ public class GenericJavaTableGenerator
 		return this.getResourceGenerator().schemaTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateSchemata(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateSchemata(filter));
+	protected Iterable<String> getJavaCandidateSchemata(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateSchemata(filter));
 	}
 
-	protected Iterator<String> candidateSchemata(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateSchemata(), filter);
+	protected Iterable<String> getCandidateSchemata(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateSchemata(), filter);
 	}
 
-	protected Iterator<String> candidateSchemata() {
+	protected Iterable<String> getCandidateSchemata() {
 		SchemaContainer schemaContainer = this.getDbSchemaContainer();
-		return (schemaContainer != null) ? schemaContainer.sortedSchemaIdentifiers() : EmptyIterator.<String> instance();
+		return (schemaContainer != null) ? schemaContainer.getSortedSchemaIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 	// ********** code assist: catalog
@@ -478,17 +480,17 @@ public class GenericJavaTableGenerator
 		return this.getResourceGenerator().catalogTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateCatalogs(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateCatalogs(filter));
+	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateCatalogs(filter));
 	}
 
-	protected Iterator<String> candidateCatalogs(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateCatalogs(), filter);
+	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateCatalogs(), filter);
 	}
 
-	protected Iterator<String> candidateCatalogs() {
+	protected Iterable<String> getCandidateCatalogs() {
 		Database db = this.getDatabase();
-		return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String> instance();
+		return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 	// ********** code assist: pkColumnName
@@ -497,17 +499,17 @@ public class GenericJavaTableGenerator
 		return this.getResourceGenerator().pkColumnNameTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateColumnNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateColumnNames(filter));
+	protected Iterable<String> getJavaCandidateColumnNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateColumnNames(filter));
 	}
 
-	protected Iterator<String> candidateColumnNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateColumnNames(), filter);
+	protected Iterable<String> getCandidateColumnNames(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateColumnNames(), filter);
 	}
 
-	protected Iterator<String> candidateColumnNames() {
+	protected Iterable<String> getCandidateColumnNames() {
 		Table table = this.getDbTable();
-		return (table != null) ? table.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
+		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 	// ********** code assist: valueColumnName

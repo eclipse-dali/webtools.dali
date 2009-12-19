@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details.orm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Transformer;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -114,10 +114,10 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		String generatorType = dialog.getGeneratorType();
 		OrmGenerator generator;
 		if (generatorType == Generator.TABLE_GENERATOR) {
-			generator = this.getSubject().addTableGenerator(getSubject().tableGeneratorsSize());
+			generator = this.getSubject().addTableGenerator(getSubject().getTableGeneratorsSize());
 		}
 		else if (generatorType == Generator.SEQUENCE_GENERATOR) {
-			generator = this.getSubject().addSequenceGenerator(getSubject().sequenceGeneratorsSize());
+			generator = this.getSubject().addSequenceGenerator(getSubject().getSequenceGeneratorsSize());
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -171,10 +171,10 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 					int index = -1;
 
 					if (generator instanceof OrmSequenceGenerator) {
-						index = CollectionTools.indexOf(getSubject().sequenceGenerators(), generator);
+						index = CollectionTools.indexOf(getSubject().getSequenceGenerators(), generator);
 					}
 					else {
-						index = CollectionTools.indexOf(getSubject().tableGenerators(), generator);
+						index = CollectionTools.indexOf(getSubject().getTableGenerators(), generator);
 					}
 
 					name = NLS.bind(JptUiDetailsOrmMessages.OrmGeneratorsComposite_displayString, Integer.valueOf(index));
@@ -233,13 +233,12 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 			EntityMappings.SEQUENCE_GENERATORS_LIST)
 		{
 			@Override
-			protected ListIterator<OrmSequenceGenerator> listIterator_() {
-				return this.subject.sequenceGenerators();
+			protected ListIterable<OrmSequenceGenerator> getListIterable() {
+				return this.subject.getSequenceGenerators();
 			}
-
 			@Override
 			protected int size_() {
-				return this.subject.sequenceGeneratorsSize();
+				return this.subject.getSequenceGeneratorsSize();
 			}
 		};
 	}
@@ -259,13 +258,12 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 			EntityMappings.TABLE_GENERATORS_LIST)
 		{
 			@Override
-			protected ListIterator<OrmTableGenerator> listIterator_() {
-				return this.subject.tableGenerators();
+			protected ListIterable<OrmTableGenerator> getListIterable() {
+				return this.subject.getTableGenerators();
 			}
-
 			@Override
 			protected int size_() {
-				return this.subject.tableGeneratorsSize();
+				return this.subject.getTableGeneratorsSize();
 			}
 		};
 	}
@@ -280,7 +278,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsOrmMessages.OrmGeneratorsComposite_groupBox
 		);

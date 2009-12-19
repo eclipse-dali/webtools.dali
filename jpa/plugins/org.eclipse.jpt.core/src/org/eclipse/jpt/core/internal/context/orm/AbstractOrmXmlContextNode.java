@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -28,16 +28,16 @@ public abstract class AbstractOrmXmlContextNode
 	protected AbstractOrmXmlContextNode(JpaContextNode parent) {
 		super(parent);
 	}
-	
-	public OrmXmlDefinition getMappingFileDefinition() {
-		return (OrmXmlDefinition) getJpaPlatform().getResourceDefinition(getResourceType());
+
+	protected OrmXmlDefinition getMappingFileDefinition() {
+		return (OrmXmlDefinition) this.getJpaPlatform().getResourceDefinition(this.getResourceType());
 	}
-	
-	public EFactory getResourceNodeFactory() {
-		return getMappingFileDefinition().getResourceNodeFactory();
+
+	protected EFactory getResourceNodeFactory() {
+		return this.getMappingFileDefinition().getResourceNodeFactory();
 	}
-	
-	public OrmXmlContextNodeFactory getXmlContextNodeFactory() {
-		return getMappingFileDefinition().getContextNodeFactory();
+
+	protected OrmXmlContextNodeFactory getXmlContextNodeFactory() {
+		return this.getMappingFileDefinition().getContextNodeFactory();
 	}
 }

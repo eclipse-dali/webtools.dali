@@ -236,13 +236,13 @@ public class EntityGenerator {
 	}
 
 	private void printPrimaryKeyFieldsOn(EntitySourceWriter pw, boolean readOnly, boolean printIdAnnotation) {
-		for (Iterator<Column> stream = this.primaryKeyColumns(readOnly); stream.hasNext(); ) {
-			this.printPrimaryKeyFieldOn(stream.next(), pw, readOnly, printIdAnnotation);
+		for (Column column : this.getPrimaryKeyColumns(readOnly)) {
+			this.printPrimaryKeyFieldOn(column, pw, readOnly, printIdAnnotation);
 		}
 	}
 
-	private Iterator<Column> primaryKeyColumns(boolean readOnly) {
-		return readOnly ? this.genTable.readOnlyPrimaryKeyColumns() : this.genTable.writablePrimaryKeyColumns();
+	private Iterable<Column> getPrimaryKeyColumns(boolean readOnly) {
+		return readOnly ? this.genTable.getReadOnlyPrimaryKeyColumns() : this.genTable.getWritablePrimaryKeyColumns();
 	}
 
 	// TODO if the field's type is java.util/sql.Date, it needs @Temporal(DATE)
@@ -280,8 +280,8 @@ public class EntityGenerator {
 	// ********** basic fields **********
 
 	private void printEntityNonPrimaryKeyBasicFieldsOn(EntitySourceWriter pw) {
-		for (Iterator<Column> stream = this.genTable.nonPrimaryKeyBasicColumns(); stream.hasNext(); ) {
-			this.printEntityNonPrimaryKeyBasicFieldOn(stream.next(), pw);
+		for (Column column : this.genTable.getNonPrimaryKeyBasicColumns()) {
+			this.printEntityNonPrimaryKeyBasicFieldOn(column, pw);
 		}
 	}
 
@@ -345,14 +345,14 @@ public class EntityGenerator {
 	}
 
 	private void printManyToOneJoinColumnsAnnotationOn(ForeignKey foreignKey, EntitySourceWriter pw) {
-		if (foreignKey.columnPairsSize() > 1) {
+		if (foreignKey.getColumnPairsSize() > 1) {
 			pw.printAnnotation(JPA.JOIN_COLUMNS);
 			pw.print("({");  //$NON-NLS-1$
 			pw.println();
 			pw.indent();
 		}
 		this.printJoinColumnAnnotationsOn(foreignKey, pw);
-		if (foreignKey.columnPairsSize() > 1) {
+		if (foreignKey.getColumnPairsSize() > 1) {
 			pw.undent();
 			pw.println();
 			pw.print("})");  //$NON-NLS-1$
@@ -361,7 +361,7 @@ public class EntityGenerator {
 	}
 
 	private void printJoinColumnAnnotationsOn(ForeignKey foreignKey, EntitySourceWriter pw) {
-		for (Iterator<ForeignKey.ColumnPair> stream = foreignKey.columnPairs(); stream.hasNext(); ) {
+		for (Iterator<ForeignKey.ColumnPair> stream = foreignKey.getColumnPairs().iterator(); stream.hasNext(); ) {
 			this.printJoinColumnAnnotationOn(stream.next(), pw);
 			if (stream.hasNext()) {
 				pw.println(',');
@@ -529,13 +529,13 @@ public class EntityGenerator {
 	private void printJoinTableJoinColumnAnnotationsOn(String elementName, ForeignKey foreignKey, EntitySourceWriter pw) {
 		pw.print(elementName);
 		pw.print('=');
-		if (foreignKey.columnPairsSize() > 1) {
+		if (foreignKey.getColumnPairsSize() > 1) {
 			pw.print('{');
 			pw.println();
 			pw.indent();
 		}
 		this.printJoinColumnAnnotationsOn(foreignKey, pw);
-		if (foreignKey.columnPairsSize() > 1) {
+		if (foreignKey.getColumnPairsSize() > 1) {
 			pw.undent();
 			pw.println();
 			pw.print('}');
@@ -622,8 +622,8 @@ public class EntityGenerator {
 	}
 
 	private void printPrimaryKeyPropertiesOn(EntitySourceWriter pw, boolean readOnly, boolean printIdAnnotation) {
-		for (Iterator<Column> stream = this.primaryKeyColumns(readOnly); stream.hasNext(); ) {
-			this.printPrimaryKeyPropertyOn(stream.next(), pw, readOnly, printIdAnnotation);
+		for (Column column : this.getPrimaryKeyColumns(readOnly)) {
+			this.printPrimaryKeyPropertyOn(column, pw, readOnly, printIdAnnotation);
 		}
 	}
 
@@ -650,8 +650,8 @@ public class EntityGenerator {
 	// ********** basic properties **********
 
 	private void printEntityNonPrimaryKeyBasicPropertiesOn(EntitySourceWriter pw) {
-		for (Iterator<Column> stream = this.genTable.nonPrimaryKeyBasicColumns(); stream.hasNext(); ) {
-			this.printEntityNonPrimaryKeyBasicPropertyOn(stream.next(), pw);
+		for (Column column : this.genTable.getNonPrimaryKeyBasicColumns()) {
+			this.printEntityNonPrimaryKeyBasicPropertyOn(column, pw);
 		}
 	}
 
@@ -772,8 +772,8 @@ public class EntityGenerator {
 				}
 			}
 
-			this.printPrimaryKeyEqualsMethodOn(this.config.getPrimaryKeyMemberClassName(), this.getTable().primaryKeyColumns(), pw);
-			this.printPrimaryKeyHashCodeMethodOn(this.getTable().primaryKeyColumns(), pw);
+			this.printPrimaryKeyEqualsMethodOn(this.config.getPrimaryKeyMemberClassName(), this.getTable().getPrimaryKeyColumns(), pw);
+			this.printPrimaryKeyHashCodeMethodOn(this.getTable().getPrimaryKeyColumns(), pw);
 		pw.undent();
 
 		pw.print('}');
@@ -793,8 +793,8 @@ public class EntityGenerator {
 	}
 
 	private void printIdFieldsOn(EntitySourceWriter pw) {
-		for (Iterator<Column> stream = this.getTable().primaryKeyColumns(); stream.hasNext(); ) {
-			this.printIdFieldOn(stream.next(), pw);
+		for (Column column : this.getTable().getPrimaryKeyColumns()) {
+			this.printIdFieldOn(column, pw);
 		}
 	}
 
@@ -814,8 +814,8 @@ public class EntityGenerator {
 	}
 
 	private void printIdPropertiesOn(EntitySourceWriter pw) {
-		for (Iterator<Column> stream = this.getTable().primaryKeyColumns(); stream.hasNext(); ) {
-			this.printIdPropertyOn(stream.next(), pw);
+		for (Column column : this.getTable().getPrimaryKeyColumns()) {
+			this.printIdPropertyOn(column, pw);
 		}
 	}
 
@@ -826,7 +826,7 @@ public class EntityGenerator {
 
 	// ********** compound primary key class equals **********
 
-	private void printPrimaryKeyEqualsMethodOn(String className, Iterator<Column> columns, EntitySourceWriter pw) {
+	private void printPrimaryKeyEqualsMethodOn(String className, Iterable<Column> columns, EntitySourceWriter pw) {
 		pw.printAnnotation("java.lang.Override");  //$NON-NLS-1$
 		pw.println();
 
@@ -857,9 +857,9 @@ public class EntityGenerator {
 
 			pw.print("return ");  //$NON-NLS-1$
 			pw.indent();
-				while (columns.hasNext()) {
-					this.printPrimaryKeyEqualsClauseOn(columns.next(), pw);
-					if (columns.hasNext()) {
+				for (Iterator<Column> stream = columns.iterator(); stream.hasNext(); ) {
+					this.printPrimaryKeyEqualsClauseOn(stream.next(), pw);
+					if (stream.hasNext()) {
 						pw.println();
 						pw.print("&& ");  //$NON-NLS-1$
 					}
@@ -902,7 +902,7 @@ public class EntityGenerator {
 
 	// ********** compound primary key class hash code **********
 
-	private void printPrimaryKeyHashCodeMethodOn(Iterator<Column> columns, EntitySourceWriter pw) {
+	private void printPrimaryKeyHashCodeMethodOn(Iterable<Column> columns, EntitySourceWriter pw) {
 		pw.printAnnotation("java.lang.Override");  //$NON-NLS-1$
 		pw.println();
 
@@ -910,9 +910,9 @@ public class EntityGenerator {
 		pw.indent();
 			pw.println("final int prime = 31;");  //$NON-NLS-1$
 			pw.println("int hash = 17;");  //$NON-NLS-1$
-			while (columns.hasNext()) {
+			for (Column column : columns) {
 				pw.print("hash = hash * prime + ");  //$NON-NLS-1$
-				this.printPrimaryKeyHashCodeClauseOn(columns.next(), pw);
+				this.printPrimaryKeyHashCodeClauseOn(column, pw);
 				pw.print(';');
 				pw.println();
 			}
@@ -1077,7 +1077,7 @@ public class EntityGenerator {
 	}
 
 	private boolean primaryKeyClassIsRequired() {
-		return this.getTable().primaryKeyColumnsSize() > 1;
+		return this.getTable().getPrimaryKeyColumnsSize() > 1;
 	}
 
 	private String fullyQualify(String shortClassName) {

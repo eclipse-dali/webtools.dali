@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -89,13 +88,9 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	//defined within an embedded id class are not supported  by the 2.0 spec.
 	@Override
 	public Iterator<String> allMappingNames() {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return new CompositeIterator<String>(
-				getName(),
-				embeddableAttributeMappingNames()
-			);
-		}
-		return super.allMappingNames();
+		return this.isJpa2_0Compatible() ?
+				new CompositeIterator<String>(this.getName(),this.embeddableAttributeMappingNames()) :
+				super.allMappingNames();
 	}
 
 	protected Iterator<String> embeddableAttributeMappingNames() {
@@ -125,7 +120,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 		if (resolvedMapping != null) {
 			return resolvedMapping;
 		}
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = name.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(name.substring(0, dotIndex))) {
@@ -146,7 +141,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 		if (getName() == null) {
 			return null;
 		}
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(attributeName.substring(0, dotIndex))) {

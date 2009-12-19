@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -116,6 +117,10 @@ public abstract class AbstractJpaNode
 	
 	protected JpaPlatform.Version getJpaPlatformVersion() {
 		return this.getJpaPlatform().getJpaVersion();
+	}
+
+	protected boolean isJpa2_0Compatible() {
+		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
 	}
 
 	protected JpaFactory getJpaFactory() {

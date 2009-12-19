@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -20,8 +21,8 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 
 public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> extends AbstractJavaJpaContextNode
@@ -172,22 +173,22 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 			return result;
 		}
 		if (this.nameTouches(pos, astRoot)) {
-			return this.javaCandidateNames(filter);
+			return this.getJavaCandidateNames(filter).iterator();
 		}
 		return null;
 	}
 
-	private Iterator<String> javaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateNames(filter));
+	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateNames(filter));
 	}
 
-	private Iterator<String> candidateNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateNames(), filter);
+	private Iterable<String> getCandidateNames(Filter<String> filter) {
+		return new FilteringIterable<String, String>(this.getCandidateNames(), filter);
 	}
 
-	private Iterator<String> candidateNames() {
+	private Iterable<String> getCandidateNames() {
 		Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
@@ -112,8 +113,7 @@ class GenTable {
 	 * converted to "entity" tables
 	 */
 	void addReferencedGenTablesTo(Set<GenTable> referencedTables) {
-		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
-			ForeignKey fk = stream.next();
+		for (ForeignKey fk : this.table.getForeignKeys()) {
 			GenTable genTable = this.scope.getGenTable(fk.getReferencedTable());
 			if (genTable != null) {
 				referencedTables.add(genTable);
@@ -134,8 +134,7 @@ class GenTable {
 	 * find "in-scope" foreign keys
 	 */
 	void buildManyToOneRelations() {
-		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
-			ForeignKey fk = stream.next();
+		for (ForeignKey fk : this.table.getForeignKeys()) {
 			GenTable referencedGenTable = this.scope.getGenTable(fk.getReferencedTable());
 			if (referencedGenTable != null) {
 				this.manyToOneRelations.add(new ManyToOneRelation(this, fk, referencedGenTable));
@@ -151,7 +150,7 @@ class GenTable {
 		this.buildAttributeNameForEmbeddedId();
 
 		// gather up all the table's columns...
-		Set<Column> columns = CollectionTools.set(this.table.columns(), this.table.columnsSize());
+		Set<Column> columns = CollectionTools.set(this.table.getColumns(), this.table.getColumnsSize());
 		// ...remove the columns that belong exclusively to many-to-one foreign keys...
 		this.buildManyToOneAttributeNames(columns);
 		// ...and use the remaining columns to generate "basic" attribute names
@@ -166,8 +165,8 @@ class GenTable {
 	 * return the columns that are part of the table's primary key
 	 * but are also part of an "in-scope" foreign key
 	 */
-	Iterator<Column> readOnlyPrimaryKeyColumns() {
-		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
+	Iterable<Column> getReadOnlyPrimaryKeyColumns() {
+		return new FilteringIterable<Column, Column>(this.table.getPrimaryKeyColumns()) {
 			@Override
 			protected boolean accept(Column pkColumn) {
 				return pkColumn.isPartOfForeignKey();
@@ -179,8 +178,8 @@ class GenTable {
 	 * return the columns that are part of the table's primary key
 	 * but are NOT part of any "in-scope" foreign key
 	 */
-	Iterator<Column> writablePrimaryKeyColumns() {
-		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
+	Iterable<Column> getWritablePrimaryKeyColumns() {
+		return new FilteringIterable<Column, Column>(this.table.getPrimaryKeyColumns()) {
 			@Override
 			protected boolean accept(Column pkColumn) {
 				return ! pkColumn.isPartOfForeignKey();
@@ -192,8 +191,8 @@ class GenTable {
 	 * return the columns that NEITHER part of the table's primary key
 	 * NOR part of any foreign key
 	 */
-	Iterator<Column> nonPrimaryKeyBasicColumns() {
-		return new FilteringIterator<Column, Column>(this.table.columns()) {
+	Iterable<Column> getNonPrimaryKeyBasicColumns() {
+		return new FilteringIterable<Column, Column>(this.table.getColumns()) {
 			@Override
 			protected boolean accept(Column column) {
 				return ! (column.isPartOfPrimaryKey() || column.isPartOfForeignKey());
@@ -293,7 +292,7 @@ class GenTable {
 	 * attribute names for the columns etc.
 	 */
 	private void buildAttributeNameForEmbeddedId() {
-		if ((this.table.primaryKeyColumnsSize() > 1) && this.getEntityConfig().generateEmbeddedIdForCompoundPK()) {
+		if ((this.table.getPrimaryKeyColumnsSize() > 1) && this.getEntityConfig().generateEmbeddedIdForCompoundPK()) {
 			this.attributeNameForEmbeddedId = this.configureAttributeName(this.getEntityConfig().getEmbeddedIdAttributeName());
 		}
 	}
@@ -307,8 +306,8 @@ class GenTable {
 	 */
 	private void buildManyToOneAttributeNames(Set<Column> columns) {
 		for (ManyToOneRelation relation : this.manyToOneRelations) {
-			CollectionTools.removeAll(columns, relation.getForeignKey().nonPrimaryKeyBaseColumns());
-			CollectionTools.addAll(this.foreignKeyColumns, relation.getForeignKey().baseColumns());
+			CollectionTools.removeAll(columns, relation.getForeignKey().getNonPrimaryKeyBaseColumns());
+			CollectionTools.addAll(this.foreignKeyColumns, relation.getForeignKey().getBaseColumns());
 			String attributeName = this.configureAttributeName(relation.getAttributeName());
 			relation.setMappedBy(attributeName);
 			this.manyToOneAttributeNames.put(relation, attributeName);

@@ -140,7 +140,7 @@ public abstract class AbstractEclipseLinkEntityMappingsDetailsPage extends Abstr
 		this.buildOrmQueriesComposite(container);
 		
 		// Converters section
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label
 		);

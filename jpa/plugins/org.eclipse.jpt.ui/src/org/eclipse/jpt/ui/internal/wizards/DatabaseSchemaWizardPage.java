@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.wizards;
 
 import java.util.EventListener;
-import java.util.Iterator;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -25,7 +24,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.properties.JpaProjectPropertiesPage;
 import org.eclipse.jpt.utility.internal.ListenerList;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -272,8 +271,8 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 		 */
 		private void updateSchemaComboBox() {
 			this.schemaComboBox.removeAll();
-			for (Iterator<String> stream = this.schemaNames(); stream.hasNext(); ) {
-				this.schemaComboBox.add(stream.next());
+			for (String name : this.getSchemaNames()) {
+				this.schemaComboBox.add(name);
 			}
 			// the current schema *should* be in the current connection profile
 			if (this.selectedSchema != null) {
@@ -281,10 +280,10 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 			}
 		}
 
-		private Iterator<String> schemaNames() {
+		private Iterable<String> getSchemaNames() {
 			SchemaContainer sc = this.getDefaultSchemaContainer();
 			// use schema *names* since the combo-box is read-only
-			return (sc != null) ? sc.sortedSchemaNames() : EmptyIterator.<String>instance();
+			return (sc != null) ? sc.getSortedSchemaNames() : EmptyIterable.<String>instance();
 		}
 
 		// ********** listener callbacks **********

@@ -65,9 +65,11 @@ import org.eclipse.jpt.core.resource.java.SecondaryTablesAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -319,19 +321,14 @@ public abstract class AbstractJavaEntity
 		return getTable().getDbTable();
 	}
 
-	private static final org.eclipse.jpt.db.Table[] EMPTY_DB_TABLE_ARRAY = new org.eclipse.jpt.db.Table[0];
-
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-		// the JPA platform searches database objects for us
-		return this.getDataSource().selectDatabaseObjectForIdentifier(
-						ArrayTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
-						tableName
-					);
+		// matching database objects and identifiers is database platform-specific
+		return this.getDataSource().selectDatabaseObjectForIdentifier(this.getAssociatedDbTablesIncludingInherited(), tableName);
 	}
 
-	protected Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited() {
-		return new FilteringIterator<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.associatedDbTablesIncludingInherited_()) {
+	protected Iterable<org.eclipse.jpt.db.Table> getAssociatedDbTablesIncludingInherited() {
+		return new FilteringIterable<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.getAssociatedDbTablesIncludingInherited_()) {
 			@Override
 			protected boolean accept(org.eclipse.jpt.db.Table t) {
 				return t != null;
@@ -339,8 +336,8 @@ public abstract class AbstractJavaEntity
 		};
 	}
 
-	protected Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited_() {
-		return new TransformationIterator<Table, org.eclipse.jpt.db.Table>(this.associatedTablesIncludingInherited()) {
+	protected Iterable<org.eclipse.jpt.db.Table> getAssociatedDbTablesIncludingInherited_() {
+		return new TransformationIterable<Table, org.eclipse.jpt.db.Table>(this.getAssociatedTablesIncludingInherited()) {
 			@Override
 			protected org.eclipse.jpt.db.Table transform(Table t) {
 				return t.getDbTable();
@@ -989,10 +986,14 @@ public abstract class AbstractJavaEntity
 
 	@Override
 	public Iterator<Table> associatedTablesIncludingInherited() {
-		return new CompositeIterator<Table>(new TransformationIterator<TypeMapping, Iterator<Table>>(this.inheritanceHierarchy()) {
+		return this.getAssociatedTablesIncludingInherited().iterator();
+	}
+
+	protected Iterable<Table> getAssociatedTablesIncludingInherited() {
+		return new CompositeIterable<Table>(new TransformationIterable<TypeMapping, Iterable<Table>>(this.getInheritanceHierarchy()) {
 			@Override
-			protected Iterator<Table> transform(TypeMapping mapping) {
-				return new FilteringIterator<Table, Table>(mapping.associatedTables()) {
+			protected Iterable<Table> transform(TypeMapping mapping) {
+				return new FilteringIterable<Table, Table>(CollectionTools.iterable(mapping.associatedTables())) {
 					@Override
 					protected boolean accept(Table o) {
 						return true;

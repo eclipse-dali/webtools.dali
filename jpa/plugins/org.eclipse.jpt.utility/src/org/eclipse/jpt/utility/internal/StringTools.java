@@ -14,6 +14,7 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -1330,13 +1331,28 @@ public final class StringTools {
 	 * copy of the delimiter at the front and back of the resulting string.
 	 * Escape any occurrences of the delimiter in a string with another delimiter.
 	 */
-	public static Iterator<String> delimit(Iterator<String> strings, final char delimiter) {
-		return new TransformationIterator<String, String>(strings) {
-			@Override
-			protected String transform(String string) {
-				return StringTools.delimit(string, delimiter);
-			}
-		};
+	public static Iterable<String> delimit(Iterable<String> strings, char delimiter) {
+		return new TransformationIterable<String, String>(strings, new CharStringDelimiter(delimiter));
+	}
+
+	/**
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in a string with another delimiter.
+	 */
+	public static Iterator<String> delimit(Iterator<String> strings, char delimiter) {
+		return new TransformationIterator<String, String>(strings, new CharStringDelimiter(delimiter));
+	}
+
+	private static class CharStringDelimiter implements Transformer<String, String> {
+		private char delimiter;
+		CharStringDelimiter(char delimiter) {
+			super();
+			this.delimiter = delimiter;
+		}
+		public String transform(String string) {
+			return StringTools.delimit(string, this.delimiter);
+		}
 	}
 
 	/**
@@ -1400,16 +1416,33 @@ public final class StringTools {
 	 * Escape any occurrences of a single-character delimiter in a string with
 	 * another delimiter.
 	 */
-	public static Iterator<String> delimit(Iterator<String> strings, final String delimiter) {
-		if (delimiter.length() == 1) {
-			return delimit(strings, delimiter.charAt(0));
+	public static Iterable<String> delimit(Iterable<String> strings, String delimiter) {
+		return (delimiter.length() == 1) ?
+				delimit(strings, delimiter.charAt(0)) :
+				new TransformationIterable<String, String>(strings, new StringStringDelimiter(delimiter));
+	}
+
+	/**
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in a string with
+	 * another delimiter.
+	 */
+	public static Iterator<String> delimit(Iterator<String> strings, String delimiter) {
+		return (delimiter.length() == 1) ?
+				delimit(strings, delimiter.charAt(0)) :
+				new TransformationIterator<String, String>(strings, new StringStringDelimiter(delimiter));
+	}
+
+	private static class StringStringDelimiter implements Transformer<String, String> {
+		private String delimiter;
+		StringStringDelimiter(String delimiter) {
+			super();
+			this.delimiter = delimiter;
 		}
-		return new TransformationIterator<String, String>(strings) {
-			@Override
-			protected String transform(String string) {
-				return StringTools.delimit(string, delimiter);
-			}
-		};
+		public String transform(String string) {
+			return StringTools.delimit(string, this.delimiter);
+		}
 	}
 
 	/**
@@ -1518,13 +1551,29 @@ public final class StringTools {
 	 * Escape any occurrences of the delimiter in a string with another delimiter.
 	 */
 	// cannot name method simply 'delimit' because of type-erasure...
-	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, final char delimiter) {
-		return new TransformationIterator<char[], char[]>(strings) {
-			@Override
-			protected char[] transform(char[] string) {
-				return StringTools.delimit(string, delimiter);
-			}
-		};
+	public static Iterable<char[]> delimitCharArrays(Iterable<char[]> strings, char delimiter) {
+		return new TransformationIterable<char[], char[]>(strings, new CharCharArrayDelimiter(delimiter));
+	}
+
+	/**
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in a string with another delimiter.
+	 */
+	// cannot name method simply 'delimit' because of type-erasure...
+	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, char delimiter) {
+		return new TransformationIterator<char[], char[]>(strings, new CharCharArrayDelimiter(delimiter));
+	}
+
+	private static class CharCharArrayDelimiter implements Transformer<char[], char[]> {
+		private char delimiter;
+		CharCharArrayDelimiter(char delimiter) {
+			super();
+			this.delimiter = delimiter;
+		}
+		public char[] transform(char[] string) {
+			return StringTools.delimit(string, this.delimiter);
+		}
 	}
 
 	/**
@@ -1601,13 +1650,30 @@ public final class StringTools {
 	 * another delimiter.
 	 */
 	// cannot name method simply 'delimit' because of type-erasure...
-	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, final char[] delimiter) {
-		return new TransformationIterator<char[], char[]>(strings) {
-			@Override
-			protected char[] transform(char[] string) {
-				return StringTools.delimit(string, delimiter);
-			}
-		};
+	public static Iterable<char[]> delimitCharArrays(Iterable<char[]> strings, char[] delimiter) {
+		return new TransformationIterable<char[], char[]>(strings, new CharArrayCharArrayDelimiter(delimiter));
+	}
+
+	/**
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in a string with
+	 * another delimiter.
+	 */
+	// cannot name method simply 'delimit' because of type-erasure...
+	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, char[] delimiter) {
+		return new TransformationIterator<char[], char[]>(strings, new CharArrayCharArrayDelimiter(delimiter));
+	}
+
+	private static class CharArrayCharArrayDelimiter implements Transformer<char[], char[]> {
+		private char[] delimiter;
+		CharArrayCharArrayDelimiter(char[] delimiter) {
+			super();
+			this.delimiter = delimiter;
+		}
+		public char[] transform(char[] string) {
+			return StringTools.delimit(string, this.delimiter);
+		}
 	}
 
 
@@ -2952,13 +3018,31 @@ public final class StringTools {
 	 * Modify each of the specified strings, capitalizing the first letter of
 	 * each.
 	 */
+	public static Iterable<String> capitalize(Iterable<String> strings) {
+		return new TransformationIterable<String, String>(strings, STRING_CAPITALIZER);
+	}
+
+	/**
+	 * Modify each of the specified strings, capitalizing the first letter of
+	 * each.
+	 */
 	public static Iterator<String> capitalize(Iterator<String> strings) {
-		return new TransformationIterator<String, String>(strings) {
-			@Override
-			protected String transform(String string) {
-				return StringTools.capitalize(string);
-			}
-		};
+		return new TransformationIterator<String, String>(strings, STRING_CAPITALIZER);
+	}
+
+	private static final Transformer<String, String> STRING_CAPITALIZER = new Transformer<String, String>() {
+		public String transform(String string) {
+			return StringTools.capitalize(string);
+		}
+	};
+
+	/**
+	 * Modify each of the specified strings, capitalizing the first letter of
+	 * each.
+	 */
+	// cannot name method simply 'capitalize' because of type-erasure...
+	public static Iterable<char[]> capitalizeCharArrays(Iterable<char[]> strings) {
+		return new TransformationIterable<char[], char[]>(strings, CHAR_ARRAY_CAPITALIZER);
 	}
 
 	/**
@@ -2967,13 +3051,14 @@ public final class StringTools {
 	 */
 	// cannot name method simply 'capitalize' because of type-erasure...
 	public static Iterator<char[]> capitalizeCharArrays(Iterator<char[]> strings) {
-		return new TransformationIterator<char[], char[]>(strings) {
-			@Override
-			protected char[] transform(char[] string) {
-				return StringTools.capitalize(string);
-			}
-		};
+		return new TransformationIterator<char[], char[]>(strings, CHAR_ARRAY_CAPITALIZER);
 	}
+
+	private static final Transformer<char[], char[]> CHAR_ARRAY_CAPITALIZER = new Transformer<char[], char[]>() {
+		public char[] transform(char[] string) {
+			return StringTools.capitalize(string);
+		}
+	};
 
 	/*
 	 * no zero-length check or upper case check
@@ -4102,24 +4187,35 @@ public final class StringTools {
 		return result;
 	}
 
+	public static Iterable<String> convertToJavaStringLiterals(Iterable<String> strings) {
+		return new TransformationIterable<String, String>(strings, STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER);
+	}
+
 	public static Iterator<String> convertToJavaStringLiterals(Iterator<String> strings) {
-		return new TransformationIterator<String, String>(strings) {
-			@Override
-			protected String transform(String string) {
-				return StringTools.convertToJavaStringLiteral(string);
-			}
-		};
+		return new TransformationIterator<String, String>(strings, STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER);
+	}
+
+	private static final Transformer<String, String> STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER = new Transformer<String, String>() {
+		public String transform(String string) {
+			return StringTools.convertToJavaStringLiteral(string);
+		}
+	};
+
+	// cannot name method simply 'convertToJavaStringLiterals' because of type-erasure...
+	public static Iterable<char[]> convertToJavaCharArrayLiterals(Iterable<char[]> strings) {
+		return new TransformationIterable<char[], char[]>(strings, CHAR_ARRAY_TO_JAVA_STRING_LITERAL_TRANSFORMER);
 	}
 
 	// cannot name method simply 'convertToJavaStringLiterals' because of type-erasure...
 	public static Iterator<char[]> convertToJavaCharArrayLiterals(Iterator<char[]> strings) {
-		return new TransformationIterator<char[], char[]>(strings) {
-			@Override
-			protected char[] transform(char[] string) {
-				return StringTools.convertToJavaStringLiteral(string);
-			}
-		};
+		return new TransformationIterator<char[], char[]>(strings, CHAR_ARRAY_TO_JAVA_STRING_LITERAL_TRANSFORMER);
 	}
+
+	private static final Transformer<char[], char[]> CHAR_ARRAY_TO_JAVA_STRING_LITERAL_TRANSFORMER = new Transformer<char[], char[]>() {
+		public char[] transform(char[] string) {
+			return StringTools.convertToJavaStringLiteral(string);
+		}
+	};
 
 	public static void convertToJavaStringLiteralOn(String string, StringBuffer sb) {
 		int len = string.length();

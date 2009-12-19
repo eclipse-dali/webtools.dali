@@ -3,14 +3,14 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * JPA mapping file (typically <code>orm.xml</code>).
@@ -25,22 +25,25 @@ public interface MappingFile
 	extends XmlFile, PersistentTypeContainer
 {
 	/**
-	 * Return the root object of this mapping file
+	 * covariant override
+	 */
+	MappingFileRef getParent();
+
+	/**
+	 * Return the mapping file's root.
 	 */
 	MappingFileRoot getRoot();
-	
+
 	/**
-	 * Return the PersistentType listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if none exists.
+	 * Return the specified persistent type if it is listed in the mapping file;
+	 * otherwise return null.
 	 */
-	PersistentType getPersistentType(String fullyQualifiedTypeName);
-	
-	
-	// **************** updating **********************************************
-	
+	PersistentType getPersistentType(String name);
+
 	/**
-	 * Update the MappingFile context model object to match the JpaXmlResource 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * Update the context mapping file to match its resource mapping file.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
-	void update(JpaXmlResource mappingFileResource);
+	void update();
+
 }

@@ -9,14 +9,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.platform.generic;
 
-import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -48,12 +47,12 @@ public class OrmXmlItemContentProvider
 				buildEntityMappingsHolder(),
 				EntityMappings.PERSISTENT_TYPES_LIST) {
 			@Override
-			protected ListIterator<OrmPersistentType> listIterator_() {
-				return subject.persistentTypes();
+			protected ListIterable<OrmPersistentType> getListIterable() {
+				return subject.getPersistentTypes();
 			}
 			@Override
 			protected int size_() {
-				return subject.persistentTypesSize();
+				return subject.getPersistentTypesSize();
 			}
 		});
 	}

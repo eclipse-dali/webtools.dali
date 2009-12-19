@@ -193,13 +193,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(getEntityMappings().getSpecifiedSchema());
 		assertNull(getXmlEntityMappings().getSchema());
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("DEFAULT_SCHEMA");
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("DEFAULT_SCHEMA");
 		assertEquals("DEFAULT_SCHEMA", getEntityMappings().getDefaultSchema());
 		assertEquals("DEFAULT_SCHEMA", getEntityMappings().getSchema());
 		assertNull(getEntityMappings().getSpecifiedSchema());
 		assertNull(getXmlEntityMappings().getSchema());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(getEntityMappings().getDefaultSchema());
 		assertNull(getEntityMappings().getSchema());
 		assertNull(getEntityMappings().getSpecifiedSchema());
@@ -260,13 +260,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(getEntityMappings().getSpecifiedCatalog());
 		assertNull(getXmlEntityMappings().getCatalog());
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("DEFAULT_CATALOG");
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("DEFAULT_CATALOG");
 		assertEquals("DEFAULT_CATALOG", getEntityMappings().getDefaultCatalog());
 		assertEquals("DEFAULT_CATALOG", getEntityMappings().getCatalog());
 		assertNull(getEntityMappings().getSpecifiedCatalog());
 		assertNull(getXmlEntityMappings().getCatalog());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(getEntityMappings().getDefaultCatalog());
 		assertNull(getEntityMappings().getCatalog());
 		assertNull(getEntityMappings().getSpecifiedCatalog());
@@ -345,13 +345,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(getEntityMappings().getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getAccess());
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+		getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, getEntityMappings().getDefaultAccess());
 		assertEquals(AccessType.FIELD, getEntityMappings().getAccess());
 		assertNull(getEntityMappings().getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getAccess());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
+		getEntityMappings().getPersistenceUnitDefaults().setAccess(null);
 		assertNull(getEntityMappings().getDefaultAccess());
 		assertNull(getEntityMappings().getAccess());
 		assertNull(getEntityMappings().getSpecifiedAccess());
@@ -360,7 +360,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 
 	
 	public void testUpdateOrmPersistentTypes() throws Exception {
-		assertFalse(getEntityMappings().persistentTypes().hasNext());
+		assertFalse(getEntityMappings().getPersistentTypes().iterator().hasNext());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertTrue(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -369,8 +369,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		XmlEmbeddable embeddable = OrmFactory.eINSTANCE.createXmlEmbeddable();
 		getXmlEntityMappings().getEmbeddables().add(embeddable);
 		embeddable.setClassName("model.Foo");
-		assertTrue(getEntityMappings().persistentTypes().hasNext());
-		assertEquals("model.Foo", getEntityMappings().persistentTypes().next().getMapping().getClass_());
+		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
+		assertEquals("model.Foo", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -380,8 +380,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
 		getXmlEntityMappings().getEntities().add(entity);
 		entity.setClassName("model.Foo2");
-		assertTrue(getEntityMappings().persistentTypes().hasNext());
-		assertEquals("model.Foo2", getEntityMappings().persistentTypes().next().getMapping().getClass_());
+		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
+		assertEquals("model.Foo2", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -391,8 +391,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
 		getXmlEntityMappings().getMappedSuperclasses().add(mappedSuperclass);
 		mappedSuperclass.setClassName("model.Foo3");
-		assertTrue(getEntityMappings().persistentTypes().hasNext());
-		assertEquals("model.Foo3", getEntityMappings().persistentTypes().next().getMapping().getClass_());
+		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
+		assertEquals("model.Foo3", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
 		assertFalse(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -401,16 +401,16 @@ public class EntityMappingsTests extends ContextModelTestCase
 	
 	
 	public void testAddOrmPersistentType() throws Exception {
-		assertFalse(getEntityMappings().persistentTypes().hasNext());
+		assertFalse(getEntityMappings().getPersistentTypes().iterator().hasNext());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertTrue(getXmlEntityMappings().getEmbeddables().isEmpty());
 		
 		//add embeddable in the context model, verify resource model modified
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
-		assertTrue(getEntityMappings().persistentTypes().hasNext());
-		assertEquals("model.Foo", getEntityMappings().persistentTypes().next().getMapping().getClass_());
-		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, getEntityMappings().persistentTypes().next().getMapping().getKey());
+		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
+		assertEquals("model.Foo", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, getEntityMappings().getPersistentTypes().iterator().next().getMapping().getKey());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -418,9 +418,9 @@ public class EntityMappingsTests extends ContextModelTestCase
 
 		//add entity in the context model, verify resource model modified
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		assertTrue(getEntityMappings().persistentTypes().hasNext());
-		assertEquals("model.Foo2", getEntityMappings().persistentTypes().next().getMapping().getClass_());
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getEntityMappings().persistentTypes().next().getMapping().getKey());
+		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
+		assertEquals("model.Foo2", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getEntityMappings().getPersistentTypes().iterator().next().getMapping().getKey());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -428,9 +428,9 @@ public class EntityMappingsTests extends ContextModelTestCase
 
 		//add mapped-superclass in the context model, verify resource model modified
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
-		assertTrue(getEntityMappings().persistentTypes().hasNext());
-		assertEquals("model.Foo3", getEntityMappings().persistentTypes().next().getMapping().getClass_());
-		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, getEntityMappings().persistentTypes().next().getMapping().getKey());
+		assertTrue(getEntityMappings().getPersistentTypes().iterator().hasNext());
+		assertEquals("model.Foo3", getEntityMappings().getPersistentTypes().iterator().next().getMapping().getClass_());
+		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, getEntityMappings().getPersistentTypes().iterator().next().getMapping().getKey());
 		assertFalse(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertFalse(getXmlEntityMappings().getEntities().isEmpty());
 		assertFalse(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -438,7 +438,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveOrmPersistentType() throws Exception {
-		assertFalse(getEntityMappings().persistentTypes().hasNext());
+		assertFalse(getEntityMappings().getPersistentTypes().iterator().hasNext());
 		assertTrue(getXmlEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(getXmlEntityMappings().getEntities().isEmpty());
 		assertTrue(getXmlEntityMappings().getEmbeddables().isEmpty());
@@ -465,7 +465,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateTableGenerators() throws Exception {
-		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getEntityMappings().getTableGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getTableGenerators().size());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
@@ -473,7 +473,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getTableGenerators().add(tableGeneratorResource);
 		tableGeneratorResource.setName("FOO");
 		
-		TableGenerator tableGenerator = getEntityMappings().tableGenerators().next();
+		TableGenerator tableGenerator = getEntityMappings().getTableGenerators().iterator().next();
 		assertEquals("FOO", tableGenerator.getName());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
@@ -481,7 +481,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getTableGenerators().add(0, tableGeneratorResource2);
 		tableGeneratorResource2.setName("BAR");
 		
-		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
@@ -491,7 +491,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getTableGenerators().add(1, tableGeneratorResource3);
 		tableGeneratorResource3.setName("BAZ");
 		
-		tableGenerators = getEntityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("BAZ", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
@@ -499,7 +499,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(3, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
 		getXmlEntityMappings().getTableGenerators().move(2, 0);
-		tableGenerators = getEntityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertEquals("BAZ", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertEquals("BAR", tableGenerators.next().getName());
@@ -507,26 +507,26 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(3, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
 		getXmlEntityMappings().getTableGenerators().remove(0);
-		tableGenerators = getEntityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
 		assertEquals(2, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
 		getXmlEntityMappings().getTableGenerators().remove(1);
-		tableGenerators = getEntityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
 		getXmlEntityMappings().getTableGenerators().clear();
-		tableGenerators = getEntityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertFalse(tableGenerators.hasNext());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().generatorsSize());
 	}
 	
 	public void testAddTableGenerator() throws Exception {
-		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getEntityMappings().getTableGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getTableGenerators().size());
 		getEntityMappings().addTableGenerator(0).setName("FOO");
 		
@@ -537,14 +537,14 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", getXmlEntityMappings().getTableGenerators().get(1).getName());
 		assertEquals(2, getXmlEntityMappings().getTableGenerators().size());
 		
-		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
 	}
 	
 	public void testRemoveTableGenerator() throws Exception {
-		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getEntityMappings().getTableGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getTableGenerators().size());
 		
 		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);
@@ -562,7 +562,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("BAR", getXmlEntityMappings().getTableGenerators().get(0).getName());
 		assertEquals("BAZ", getXmlEntityMappings().getTableGenerators().get(1).getName());
 		
-		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		OrmTableGenerator xmlTableGenerator = tableGenerators.next();
 		assertEquals("BAR", xmlTableGenerator.getName());
 		assertEquals(tableGenerator2, xmlTableGenerator);
@@ -574,7 +574,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		
 		getEntityMappings().removeTableGenerator(1);
 		assertEquals("BAR", getXmlEntityMappings().getTableGenerators().get(0).getName());
-		tableGenerators = getEntityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		xmlTableGenerator = tableGenerators.next();
 		assertEquals("BAR", xmlTableGenerator.getName());
 		assertEquals(tableGenerator2, xmlTableGenerator);
@@ -583,12 +583,12 @@ public class EntityMappingsTests extends ContextModelTestCase
 		
 		getEntityMappings().removeTableGenerator(0);
 		assertEquals(0, getXmlEntityMappings().getTableGenerators().size());
-		tableGenerators = getEntityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().getTableGenerators().iterator();
 		assertFalse(tableGenerators.hasNext());		
 	}
 	
 	public void testMoveTableGenerator() throws Exception {
-		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getEntityMappings().getTableGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getTableGenerators().size());
 		
 		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);
@@ -616,7 +616,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}
 	
 	public void testTableGeneratorsSize() throws Exception {
-		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getEntityMappings().getTableGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getTableGenerators().size());
 		
 		
@@ -627,14 +627,14 @@ public class EntityMappingsTests extends ContextModelTestCase
 		TableGenerator tableGenerator3 = getEntityMappings().addTableGenerator(2);
 		tableGenerator3.setName("BAZ");
 	
-		assertEquals(3, getEntityMappings().tableGeneratorsSize());
+		assertEquals(3, getEntityMappings().getTableGeneratorsSize());
 		
 		getXmlEntityMappings().getTableGenerators().remove(0);
-		assertEquals(2, getEntityMappings().tableGeneratorsSize());
+		assertEquals(2, getEntityMappings().getTableGeneratorsSize());
 	}
 
 	public void testUpdateSequenceGenerators() throws Exception {
-		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getEntityMappings().getSequenceGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getSequenceGenerators().size());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
@@ -642,7 +642,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getSequenceGenerators().add(sequenceGeneratorResource);
 		sequenceGeneratorResource.setName("FOO");
 		
-		SequenceGenerator sequenceGenerator = getEntityMappings().sequenceGenerators().next();
+		SequenceGenerator sequenceGenerator = getEntityMappings().getSequenceGenerators().iterator().next();
 		assertEquals("FOO", sequenceGenerator.getName());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
@@ -650,7 +650,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getSequenceGenerators().add(0, sequenceGeneratorResource2);
 		sequenceGeneratorResource2.setName("BAR");
 		
-		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
@@ -660,7 +660,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getSequenceGenerators().add(1, sequenceGeneratorResource3);
 		sequenceGeneratorResource3.setName("BAZ");
 
-		sequenceGenerators = getEntityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("BAZ", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
@@ -668,33 +668,33 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(3, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
 		getXmlEntityMappings().getSequenceGenerators().move(2, 0);
-		sequenceGenerators = getEntityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertEquals("BAZ", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
 		
 		getXmlEntityMappings().getSequenceGenerators().remove(0);
-		sequenceGenerators = getEntityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
 		assertEquals(2, getEntityMappings().getPersistenceUnit().generatorsSize());
 
 		getXmlEntityMappings().getSequenceGenerators().remove(1);
-		sequenceGenerators = getEntityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
 		getXmlEntityMappings().getSequenceGenerators().clear();
-		sequenceGenerators = getEntityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertFalse(sequenceGenerators.hasNext());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().generatorsSize());
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
-		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getEntityMappings().getSequenceGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getSequenceGenerators().size());
 		
 		getEntityMappings().addSequenceGenerator(0).setName("FOO");
@@ -706,14 +706,14 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", getXmlEntityMappings().getSequenceGenerators().get(1).getName());
 		assertEquals(2, getXmlEntityMappings().getSequenceGenerators().size());
 		
-		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
 	}
 	
 	public void testRemoveSequenceGenerator() throws Exception {
-		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getEntityMappings().getSequenceGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getSequenceGenerators().size());
 		
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);
@@ -731,7 +731,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("BAR", getXmlEntityMappings().getSequenceGenerators().get(0).getName());
 		assertEquals("BAZ", getXmlEntityMappings().getSequenceGenerators().get(1).getName());
 		
-		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		SequenceGenerator xmlSequenceGenerator = sequenceGenerators.next();
 		assertEquals("BAR", xmlSequenceGenerator.getName());
 		assertEquals(sequenceGenerator2, xmlSequenceGenerator);
@@ -743,7 +743,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		
 		getEntityMappings().removeSequenceGenerator(1);
 		assertEquals("BAR", getXmlEntityMappings().getSequenceGenerators().get(0).getName());
-		sequenceGenerators = getEntityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		xmlSequenceGenerator = sequenceGenerators.next();
 		assertEquals("BAR", xmlSequenceGenerator.getName());
 		assertEquals(sequenceGenerator2, xmlSequenceGenerator);
@@ -752,12 +752,12 @@ public class EntityMappingsTests extends ContextModelTestCase
 		
 		getEntityMappings().removeSequenceGenerator(0);
 		assertEquals(0, getXmlEntityMappings().getSequenceGenerators().size());
-		sequenceGenerators = getEntityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().getSequenceGenerators().iterator();
 		assertFalse(sequenceGenerators.hasNext());		
 	}
 	
 	public void testMoveSequenceGenerator() throws Exception {
-		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getEntityMappings().getSequenceGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getSequenceGenerators().size());
 		
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);
@@ -786,7 +786,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}
 	
 	public void testSequenceGeneratorsSize() throws Exception {
-		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getEntityMappings().getSequenceGeneratorsSize());
 		assertEquals(0, getXmlEntityMappings().getSequenceGenerators().size());
 		
 		
@@ -797,10 +797,10 @@ public class EntityMappingsTests extends ContextModelTestCase
 		SequenceGenerator sequenceGenerator3 = getEntityMappings().addSequenceGenerator(2);
 		sequenceGenerator3.setName("BAZ");
 	
-		assertEquals(3, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(3, getEntityMappings().getSequenceGeneratorsSize());
 		
 		getXmlEntityMappings().getSequenceGenerators().remove(0);
-		assertEquals(2, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(2, getEntityMappings().getSequenceGeneratorsSize());
 	}
 
 	

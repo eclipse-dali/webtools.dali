@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.db;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -45,9 +42,8 @@ public abstract class CatalogCombo<T extends JpaNode>
 	}
 
 	@Override
-	protected Iterator<String> values_() {
-		Database db = this.getDatabase();
-		return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String>instance();
+	protected Iterable<String> getValues_() {
+		return this.getDatabase().getSortedCatalogIdentifiers();
 	}
 
 }

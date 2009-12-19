@@ -10,8 +10,6 @@
 package org.eclipse.jpt.db.internal;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.db.Column;
@@ -19,11 +17,9 @@ import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-
-import com.ibm.icu.text.Collator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  *  Wrap a DTP ForeignKey
@@ -32,16 +28,16 @@ final class DTPForeignKeyWrapper
 	extends DTPDatabaseObjectWrapper
 	implements ForeignKey
 {
-	// the wrapped DTP foreign key
+	/** the wrapped DTP foreign key */
 	private final org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey;
 
-	// lazy-initialized
+	/** lazy-initialized */
 	private DTPTableWrapper referencedTable;
 
-	// lazy-initialized
+	/** lazy-initialized */
 	private LocalColumnPair[] columnPairs;
 
-	// lazy-initialized - but it can be 'null' so we use a flag
+	/** lazy-initialized - but it can be 'null' so we use a flag */
 	private String defaultAttributeName;
 	private boolean defaultAttributeNameCalculated = false;
 
@@ -64,7 +60,7 @@ final class DTPForeignKeyWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getName() + ": " + Arrays.asList(this.getColumnPairs()));  //$NON-NLS-1$
+		return StringTools.buildToStringFor(this, this.getName() + ": " + Arrays.asList(this.getColumnPairArray()));  //$NON-NLS-1$
 	}
 
 
@@ -86,10 +82,10 @@ final class DTPForeignKeyWrapper
 	}
 
 	public boolean referencesSingleColumnPrimaryKey() {
-		if (this.columnPairsSize() != 1) {
+		if (this.getColumnPairsSize() != 1) {
 			return false;
 		}
-		if (this.getReferencedTable().primaryKeyColumnsSize() != 1) {
+		if (this.getReferencedTable().getPrimaryKeyColumnsSize() != 1) {
 			return false;
 		}
 		return this.getColumnPair().getReferencedColumn() == this.getReferencedTable().getPrimaryKeyColumn();
@@ -97,30 +93,30 @@ final class DTPForeignKeyWrapper
 
 	// ***** column pairs
 
-	public Iterator<ColumnPair> columnPairs() {
-		return new ArrayIterator<ColumnPair>(this.getColumnPairs());
+	public Iterable<ColumnPair> getColumnPairs() {
+		return new ArrayIterable<ColumnPair>(this.getColumnPairArray());
 	}
 
 	public LocalColumnPair getColumnPair() {
-		LocalColumnPair[] pairs = this.getColumnPairs();
+		LocalColumnPair[] pairs = this.getColumnPairArray();
 		if (pairs.length != 1) {
 			throw new IllegalStateException("multiple column pairs: " + pairs.length);  //$NON-NLS-1$
 		}
 		return pairs[0];
 	}
 
-	private Iterator<LocalColumnPair> localColumnPairs() {
-		return new ArrayIterator<LocalColumnPair>(this.getColumnPairs());
+	private Iterable<LocalColumnPair> getLocalColumnPairs() {
+		return new ArrayIterable<LocalColumnPair>(this.getColumnPairArray());
 	}
 
-	private synchronized LocalColumnPair[] getColumnPairs() {
+	private synchronized LocalColumnPair[] getColumnPairArray() {
 		if (this.columnPairs == null) {
-			this.columnPairs = this.buildColumnPairs();
+			this.columnPairs = this.buildColumnPairArray();
 		}
 		return this.columnPairs;
 	}
 
-	private LocalColumnPair[] buildColumnPairs() {
+	private LocalColumnPair[] buildColumnPairArray() {
 		List<org.eclipse.datatools.modelbase.sql.tables.Column> baseColumns = this.getDTPBaseColumns();
 		int size = baseColumns.size();
 		List<org.eclipse.datatools.modelbase.sql.tables.Column> refColumns = this.getDTPReferenceColumns();
@@ -135,15 +131,7 @@ final class DTPForeignKeyWrapper
 								this.getBaseTable().getColumn(refColumns.get(i))
 						);
 		}
-		return ArrayTools.sort(result, this.buildColumnPairComparator());
-	}
-
-	private Comparator<ColumnPair> buildColumnPairComparator() {
-		return new Comparator<ColumnPair>() {
-			public int compare(ColumnPair columnPair1, ColumnPair columnPair2) {
-				return Collator.getInstance().compare(columnPair1.getBaseColumn().getName(), columnPair2.getBaseColumn().getName());
-			}
-		};
+		return ArrayTools.sort(result, ColumnPair.BASE_COLUMN_COMPARATOR);
 	}
 
 	// minimize scope of suppressed warnings
@@ -158,12 +146,12 @@ final class DTPForeignKeyWrapper
 		return this.dtpForeignKey.getUniqueConstraint().getMembers();
 	}
 
-	public int columnPairsSize() {
-		return this.getColumnPairs().length;
+	public int getColumnPairsSize() {
+		return this.getColumnPairArray().length;
 	}
 
-	public Iterator<Column> baseColumns() {
-		return new TransformationIterator<LocalColumnPair, Column>(this.localColumnPairs()) {
+	public Iterable<Column> getBaseColumns() {
+		return new TransformationIterable<LocalColumnPair, Column>(this.getLocalColumnPairs()) {
 			@Override
 			protected Column transform(LocalColumnPair pair) {
 				return pair.getBaseColumn();
@@ -172,11 +160,11 @@ final class DTPForeignKeyWrapper
 	}
 
 	boolean baseColumnsContains(Column column) {
-		return CollectionTools.contains(this.baseColumns(), column);
+		return CollectionTools.contains(this.getBaseColumns(), column);
 	}
 
-	public Iterator<Column> nonPrimaryKeyBaseColumns() {
-		return new FilteringIterator<Column, Column>(this.baseColumns()) {
+	public Iterable<Column> getNonPrimaryKeyBaseColumns() {
+		return new FilteringIterable<Column, Column>(this.getBaseColumns()) {
 			@Override
 			protected boolean accept(Column column) {
 				return ! column.isPartOfPrimaryKey();
@@ -184,8 +172,8 @@ final class DTPForeignKeyWrapper
 		};
 	}
 
-	public Iterator<Column> referencedColumns() {
-		return new TransformationIterator<LocalColumnPair, Column>(this.localColumnPairs()) {
+	public Iterable<Column> getReferencedColumns() {
+		return new TransformationIterable<LocalColumnPair, Column>(this.getLocalColumnPairs()) {
 			@Override
 			protected Column transform(LocalColumnPair columnPair) {
 				return columnPair.getReferencedColumn();
@@ -235,18 +223,19 @@ final class DTPForeignKeyWrapper
 	 */
 	// TODO if there is only one FK to a given table, use the table's name instead of the column's name?
 	private String getNonDefaultAttributeName() {
-		return (this.columnPairsSize() == 1) ?
-						this.getNonDefaultAttributeNameFromBaseColumn()
-					:
+		return (this.getColumnPairsSize() == 1) ?
+						this.getNonDefaultAttributeNameFromBaseColumn() :
 						this.getReferencedTable().getName();
 	}
 
 	/**
-	 * The underscore check is helpful when the referenced column is NOT the
-	 * primary key of the referenced table (i.e. it has only a UNIQUE constraint).
+	 * The underscore check is helpful when the referenced column is <em>not</em> the
+	 * primary key of the referenced table (i.e. it has only a <em>unique</em> constraint).
+	 * <pre>
 	 *     ForeignKey(EMP.CUBICLE_ID => CUBICLE.ID) => "CUBICLE"
-	 *     ForeignKey(EMP.CUBICLEID => CUBICLE.ID) => "CUBICLE"
+	 *     ForeignKey(EMP.CUBICLEID  => CUBICLE.ID) => "CUBICLE"
 	 *     ForeignKey(EMP.CUBICLE_PK => CUBICLE.ID) => "CUBICLE_PK"
+	 * </pre>
 	 */
 	private String getNonDefaultAttributeNameFromBaseColumn() {
 		LocalColumnPair columnPair = this.getColumnPair();
@@ -264,24 +253,26 @@ final class DTPForeignKeyWrapper
 	}
 
 	/**
-	 * Examples:
-	 * Oracle etc.
-	 *     ForeignKey(FOO_ID => ID) vs. "foo" => null
-	 *     ForeignKey(FOO_ID => FOO_ID) vs. "foo" => "FOO_ID"
-	 *     ForeignKey(FOO => ID) vs. "foo" => "FOO"
-	 *     ForeignKey(Foo_ID => ID) vs. "foo" => "\"Foo_ID\""
-	 *     
-	 * PostgreSQL etc.
-	 *     ForeignKey(foo_id => id) vs. "foo" => null
-	 *     ForeignKey(foo_id => foo_id) vs. "foo" => "foo_id"
-	 *     ForeignKey(foo => id) vs. "foo" => "foo"
-	 *     ForeignKey(Foo_ID => ID) vs. "foo" => "\"Foo_ID\""
-	 *     
-	 * SQL Server etc.
-	 *     ForeignKey(foo_ID => ID) vs. "foo" => null
-	 *     ForeignKey(FOO_ID => FOO_ID) vs. "foo" => "FOO_ID"
-	 *     ForeignKey(FOO => ID) vs. "foo" => "FOO"
-	 *     ForeignKey(Foo_ID => ID) vs. "foo" => "Foo_ID"
+	 * Examples:<ul>
+	 * <li>Oracle etc.<ul><code>
+	 *     <li>ForeignKey(FOO_ID => ID) vs. "foo" => null
+	 *     <li>ForeignKey(FOO_ID => FOO_ID) vs. "foo" => "FOO_ID"
+	 *     <li>ForeignKey(FOO => ID) vs. "foo" => "FOO"
+	 *     <li>ForeignKey(Foo_ID => ID) vs. "foo" => "\"Foo_ID\""
+	 * </code></ul>
+	 * <li>PostgreSQL etc.<ul><code>
+	 *     <li>ForeignKey(foo_id => id) vs. "foo" => null
+	 *     <li>ForeignKey(foo_id => foo_id) vs. "foo" => "foo_id"
+	 *     <li>ForeignKey(foo => id) vs. "foo" => "foo"
+	 *     <li>ForeignKey(Foo_ID => ID) vs. "foo" => "\"Foo_ID\""
+	 * </code></ul>
+	 * <li>SQL Server etc.<ul><code>
+	 *     <li>ForeignKey(foo_ID => ID) vs. "foo" => null
+	 *     <li>ForeignKey(FOO_ID => FOO_ID) vs. "foo" => "FOO_ID"
+	 *     <li>ForeignKey(FOO => ID) vs. "foo" => "FOO"
+	 *     <li>ForeignKey(Foo_ID => ID) vs. "foo" => "Foo_ID"
+	 * </code></ul>
+	 * </ul>
 	 */
 	public String getJoinColumnAnnotationIdentifier(String attributeName) {
 		String baseColumnName = this.getColumnPair().getBaseColumn().getName();

@@ -9,17 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jpt.db.DatabaseObject;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-
-import com.ibm.icu.text.Collator;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  * Coalesce behavior for a schema container (i.e. database or catalog).
@@ -28,7 +26,7 @@ abstract class DTPSchemaContainerWrapper
 	extends DTPDatabaseObjectWrapper
 	implements SchemaContainer
 {
-	// lazy-initialized
+	/** lazy-initialized */
 	private DTPSchemaWrapper[] schemata;
 
 
@@ -64,7 +62,7 @@ abstract class DTPSchemaContainerWrapper
 	 * the specified schema
 	 */
 	DTPSchemaWrapper getSchema_(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
-		for (DTPSchemaWrapper schema : this.getSchemata()) {
+		for (DTPSchemaWrapper schema : this.getSchemaArray()) {
 			if (schema.wraps(dtpSchema)) {
 				return schema;
 			}
@@ -101,80 +99,62 @@ abstract class DTPSchemaContainerWrapper
 
 	// ********** schemata **********
 
-	public Iterator<Schema> schemata() {
-		return new ArrayIterator<Schema>(this.getSchemata());
+	public Iterable<Schema> getSchemata() {
+		return new ArrayIterable<Schema>(this.getSchemaArray());
 	}
 
-	Iterator<DTPSchemaWrapper> schemaWrappers() {
-		return new ArrayIterator<DTPSchemaWrapper>(this.getSchemata());
+	Iterable<DTPSchemaWrapper> getSchemaWrappers() {
+		return new ArrayIterable<DTPSchemaWrapper>(this.getSchemaArray());
 	}
 
-	synchronized DTPSchemaWrapper[] getSchemata() {
+	synchronized DTPSchemaWrapper[] getSchemaArray() {
 		if (this.schemata == null) {
-			this.schemata = this.buildSchemata();
+			this.schemata = this.buildSchemaArray();
 		}
 		return this.schemata;
 	}
 
-	private DTPSchemaWrapper[] buildSchemata() {
+	private DTPSchemaWrapper[] buildSchemaArray() {
 		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.getDTPSchemata();
 		DTPSchemaWrapper[] result = new DTPSchemaWrapper[dtpSchemata.size()];
 		for (int i = result.length; i-- > 0; ) {
 			result[i] = new DTPSchemaWrapper(this, dtpSchemata.get(i));
 		}
-		return ArrayTools.sort(result, this.buildSchemaComparator());
+		return ArrayTools.sort(result, DEFAULT_COMPARATOR);
 	}
 
-	private Comparator<Schema> buildSchemaComparator() {
-		return new Comparator<Schema>() {
-			public int compare(Schema schema1, Schema schema2) {
-				return Collator.getInstance().compare(schema1.getName(), schema2.getName());
-			}
-		};
+	public int getSchemataSize() {
+		return this.getSchemaArray().length;
 	}
 
-	public int schemataSize() {
-		return this.getSchemata().length;
-	}
-
-	public Iterator<String> sortedSchemaNames() {
+	public Iterable<String> getSortedSchemaNames() {
 		// the schemata are already sorted
-		return new TransformationIterator<DTPSchemaWrapper, String>(this.schemaWrappers()) {
-			@Override
-			protected String transform(DTPSchemaWrapper next) {
-				 return next.getName();
-			}
-		};
+		return new TransformationIterable<DatabaseObject, String>(this.getSchemaWrappers(), NAME_TRANSFORMER);
 	}
 
 	public DTPSchemaWrapper getSchemaNamed(String name) {
-		return this.selectDatabaseObjectNamed(this.getSchemata(), name);
+		return this.selectDatabaseObjectNamed(this.getSchemaWrappers(), name);
 	}
 
-	public Iterator<String> sortedSchemaIdentifiers() {
+	public Iterable<String> getSortedSchemaIdentifiers() {
 		// the schemata are already sorted
-		return new TransformationIterator<DTPSchemaWrapper, String>(this.schemaWrappers()) {
-			@Override
-			protected String transform(DTPSchemaWrapper next) {
-				 return next.getIdentifier();
-			}
-		};
+		return new TransformationIterable<DatabaseObject, String>(this.getSchemaWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
 	public DTPSchemaWrapper getSchemaForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getSchemata(), identifier);
+		return this.selectDatabaseObjectForIdentifier(this.getSchemaWrappers(), identifier);
 	}
 
 	public DTPSchemaWrapper getDefaultSchema() {
-		return this.getSchemaForIdentifiers(this.getDatabase().getDefaultSchemaIdentifiers());
+		return this.getSchemaForNames(this.getDatabase().getDefaultSchemaNames());
 	}
 
 	/**
 	 * Return the first schema found.
 	 */
-	DTPSchemaWrapper getSchemaForIdentifiers(List<String> identifiers) {
-		for (String identifier : identifiers) {
-			DTPSchemaWrapper schema = this.getSchemaForIdentifier(identifier);
+	DTPSchemaWrapper getSchemaForNames(Iterable<String> names) {
+		for (String name : names) {
+			DTPSchemaWrapper schema = this.getSchemaNamed(name);
 			if (schema != null) {
 				return schema;
 			}
@@ -184,18 +164,16 @@ abstract class DTPSchemaContainerWrapper
 
 	/**
 	 * If we find a default schema, return its identifier;
-	 * otherwise, return the last identifier on the list of default identifiers.
+	 * otherwise, return the last name on the list of default names.
 	 * (Some containers have multiple possible default names.)
 	 */
 	public synchronized String getDefaultSchemaIdentifier() {
-		DTPSchemaWrapper schema = this.getDefaultSchema();
-		return (schema != null) ? schema.getIdentifier() : this.getDefaultSchemaIdentifier_();
-	}
-
-	private String getDefaultSchemaIdentifier_() {
-		List<String> identifiers = this.getDatabase().getDefaultSchemaIdentifiers();
-		// assume 'identifiers' is non-empty (!)
-		return identifiers.get(identifiers.size() - 1);
+		Iterable<String> names = this.getDatabase().getDefaultSchemaNames();
+		DTPSchemaWrapper schema = this.getSchemaForNames(names);
+		// assume 'names' is non-empty (!)
+		return (schema != null) ?
+				schema.getIdentifier() :
+				this.convertNameToIdentifier(CollectionTools.last(names));
 	}
 
 

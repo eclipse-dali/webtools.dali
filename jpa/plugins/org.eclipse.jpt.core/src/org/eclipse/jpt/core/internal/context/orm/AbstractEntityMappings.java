@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -45,13 +46,19 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * <code>orm.xml</code> file
+ * <br>
+ * <code>entity-mappings</code> element
+ */
 public abstract class AbstractEntityMappings
 	extends AbstractOrmXmlContextNode
 	implements EntityMappings
@@ -71,7 +78,7 @@ public abstract class AbstractEntityMappings
 	protected String specifiedSchema;
 	protected String defaultSchema;
 
-	protected /*final*/ PersistenceUnitMetadata persistenceUnitMetadata;
+	protected final PersistenceUnitMetadata persistenceUnitMetadata;
 
 	protected final List<OrmPersistentType> persistentTypes;
 
@@ -88,9 +95,9 @@ public abstract class AbstractEntityMappings
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
-		this.queryContainer = getXmlContextNodeFactory().buildOrmQueryContainer(this, xmlEntityMappings);
+		this.queryContainer = this.getXmlContextNodeFactory().buildOrmQueryContainer(this, xmlEntityMappings);
 
-		this.persistenceUnitMetadata = buildPersistenceUnitMetadata();
+		this.persistenceUnitMetadata = this.buildPersistenceUnitMetadata();
 		this.description = this.xmlEntityMappings.getDescription();
 		this.package_ = this.xmlEntityMappings.getPackage();
 
@@ -109,11 +116,11 @@ public abstract class AbstractEntityMappings
 	}
 	
 	protected PersistenceUnitMetadata buildPersistenceUnitMetadata() {
-		return getXmlContextNodeFactory().buildPersistenceUnitMetadata(this, this.xmlEntityMappings);
+		return this.getXmlContextNodeFactory().buildPersistenceUnitMetadata(this);
 	}
 	
 	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
-		return getXmlContextNodeFactory().buildOrmPersistentType(this, resourceMapping);
+		return this.getXmlContextNodeFactory().buildOrmPersistentType(this, resourceMapping);
 	}	
 	
 	// **************** JpaNode impl *******************************************
@@ -158,7 +165,7 @@ public abstract class AbstractEntityMappings
 	}
 	
 	protected boolean isXmlMappingMetadataComplete() {
-		return this.getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
+		return this.persistenceUnitMetadata.isXmlMappingMetadataComplete();
 	}
 	
 	public boolean isDefaultPersistentTypeMetadataComplete() {
@@ -345,11 +352,11 @@ public abstract class AbstractEntityMappings
 		return new CloneListIterator<OrmPersistentType>(this.persistentTypes);
 	}
 	
-	public Iterable<OrmPersistentType> getPersistentTypes() {
-		return new LiveCloneIterable<OrmPersistentType>(this.persistentTypes);
+	public ListIterable<OrmPersistentType> getPersistentTypes() {
+		return new LiveCloneListIterable<OrmPersistentType>(this.persistentTypes);
 	}
 	
-	public int persistentTypesSize() {
+	public int getPersistentTypesSize() {
 		return this.persistentTypes.size();
 	}
 	
@@ -372,12 +379,11 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected int insertionIndex(OrmPersistentType ormPersistentType) {
-		return CollectionTools.insertionIndexOf(
-				this.persistentTypes, ormPersistentType, buildMappingComparator());
+		return CollectionTools.insertionIndexOf(this.persistentTypes, ormPersistentType, MAPPING_COMPARATOR);
 	}
 
-	private Comparator<OrmPersistentType> buildMappingComparator() {
-		return new Comparator<OrmPersistentType>() {
+	protected static final Comparator<OrmPersistentType> MAPPING_COMPARATOR =
+		new Comparator<OrmPersistentType>() {
 			public int compare(OrmPersistentType o1, OrmPersistentType o2) {
 				int o1Sequence = o1.getMapping().getXmlSequence();
 				int o2Sequence = o2.getMapping().getXmlSequence();
@@ -390,7 +396,6 @@ public abstract class AbstractEntityMappings
 				return 1;
 			}
 		};
-	}
 
 	public void removePersistentType(int index) {
 		OrmPersistentType persistentType = this.persistentTypes.get(index);
@@ -416,11 +421,11 @@ public abstract class AbstractEntityMappings
 
 	// ********** sequence generators **********
 
-	public ListIterator<OrmSequenceGenerator> sequenceGenerators() {
-		return new CloneListIterator<OrmSequenceGenerator>(this.sequenceGenerators);
+	public ListIterable<OrmSequenceGenerator> getSequenceGenerators() {
+		return new LiveCloneListIterable<OrmSequenceGenerator>(this.sequenceGenerators);
 	}
 	
-	public int sequenceGeneratorsSize() {
+	public int getSequenceGeneratorsSize() {
 		return this.sequenceGenerators.size();
 	}
 	
@@ -467,11 +472,11 @@ public abstract class AbstractEntityMappings
 
 	// ********** table generators **********
 
-	public ListIterator<OrmTableGenerator> tableGenerators() {
-		return new CloneListIterator<OrmTableGenerator>(this.tableGenerators);
+	public ListIterable<OrmTableGenerator> getTableGenerators() {
+		return new LiveCloneListIterable<OrmTableGenerator>(this.tableGenerators);
 	}
 
-	public int tableGeneratorsSize() {
+	public int getTableGeneratorsSize() {
 		return this.tableGenerators.size();
 	}
 	
@@ -538,7 +543,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
-		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+		return this.persistenceUnitMetadata.getPersistenceUnitDefaults();
 	}
 
 
@@ -608,7 +613,7 @@ public abstract class AbstractEntityMappings
 			}
 			if (!contextAttributeFound) {
 				OrmPersistentType ormPersistentType = addPersistentType(xmlTypeMapping);
-				fireItemAdded(PERSISTENT_TYPES_LIST, persistentTypesSize(), ormPersistentType);
+				fireItemAdded(PERSISTENT_TYPES_LIST, getPersistentTypesSize(), ormPersistentType);
 			}
 			resourceIndex++;
 		}
@@ -633,13 +638,11 @@ public abstract class AbstractEntityMappings
 		// make a copy of the XML generators (to prevent ConcurrentModificationException)
 		Iterator<XmlTableGenerator> xmlGenerators = new CloneIterator<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());
 
-		for (Iterator<OrmTableGenerator> contextGenerators = this.tableGenerators(); contextGenerators.hasNext(); ) {
-			OrmTableGenerator contextGenerator = contextGenerators.next();
+		for (OrmTableGenerator contextGenerator : this.getTableGenerators()) {
 			if (xmlGenerators.hasNext()) {
 				contextGenerator.update(xmlGenerators.next());
-			}
-			else {
-				removeTableGenerator_(contextGenerator);
+			} else {
+				this.removeTableGenerator_(contextGenerator);
 			}
 		}
 		
@@ -656,8 +659,7 @@ public abstract class AbstractEntityMappings
 		// make a copy of the XML sequence generators (to prevent ConcurrentModificationException)
 		Iterator<XmlSequenceGenerator> xmlSequenceGenerators = new CloneIterator<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
 
-		for (Iterator<OrmSequenceGenerator> contextSequenceGenerators = this.sequenceGenerators(); contextSequenceGenerators.hasNext(); ) {
-			OrmSequenceGenerator contextSequenceGenerator = contextSequenceGenerators.next();
+		for (OrmSequenceGenerator contextSequenceGenerator : this.getSequenceGenerators()) {
 			if (xmlSequenceGenerators.hasNext()) {
 				contextSequenceGenerator.update(xmlSequenceGenerators.next());
 			}
@@ -737,8 +739,7 @@ public abstract class AbstractEntityMappings
 	protected abstract String latestDocumentVersion();
 	
 	protected void validateGenerators(List<IMessage> messages) {
-		for (Iterator<OrmGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
-			OrmGenerator localGenerator = localGenerators.next();
+		for (OrmGenerator localGenerator : this.getGenerators()) {
 			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
 				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
@@ -759,10 +760,10 @@ public abstract class AbstractEntityMappings
 	 * Return all the generators, table and sequence.
 	 */
 	@SuppressWarnings("unchecked")
-	public Iterator<OrmGenerator> generators() {
-		return new CompositeIterator<OrmGenerator>(
-						this.tableGenerators(),
-						this.sequenceGenerators()
+	protected Iterable<OrmGenerator> getGenerators() {
+		return new CompositeIterable<OrmGenerator>(
+						this.getTableGenerators(),
+						this.getSequenceGenerators()
 				);
 	}
 	

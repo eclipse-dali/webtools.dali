@@ -45,7 +45,7 @@ class LowerCaseFoldingStrategy
 		return StringTools.stringIsLowercase(name);
 	}
 
-	public boolean normalIdentifiersAreCaseSensitive() {
+	public boolean regularIdentifiersAreCaseSensitive() {
 		return false;
 	}
 

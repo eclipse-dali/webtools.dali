@@ -84,7 +84,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 
 	protected void initializeTypePane(Composite container) {
 
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.TypeSection_type
 		);

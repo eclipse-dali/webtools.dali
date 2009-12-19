@@ -45,7 +45,7 @@ class UpperCaseFoldingStrategy
 		return StringTools.stringIsUppercase(name);
 	}
 
-	public boolean normalIdentifiersAreCaseSensitive() {
+	public boolean regularIdentifiersAreCaseSensitive() {
 		return false;
 	}
 

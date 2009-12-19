@@ -308,7 +308,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", ormEntity.getTable().getDefaultSchema());
 		
 		getEntityMappings().setSpecifiedSchema("BAR");
@@ -325,7 +325,7 @@ public class OrmTableTests extends ContextModelTestCase
 		getEntityMappings().setSpecifiedSchema(null);
 		assertEquals("FOO", ormEntity.getTable().getDefaultSchema());
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedName(null);
@@ -461,7 +461,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", ormEntity.getTable().getDefaultCatalog());
 		
 		getEntityMappings().setSpecifiedCatalog("BAR");
@@ -478,7 +478,7 @@ public class OrmTableTests extends ContextModelTestCase
 		getEntityMappings().setSpecifiedCatalog(null);
 		assertEquals("FOO", ormEntity.getTable().getDefaultCatalog());
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.getTable().setSpecifiedName(null);

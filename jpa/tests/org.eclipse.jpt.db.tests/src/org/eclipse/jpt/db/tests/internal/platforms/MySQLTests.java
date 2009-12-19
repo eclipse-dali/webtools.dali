@@ -146,9 +146,9 @@ public class MySQLTests extends DTPPlatformTests {
 
 		// foo
 		Table fooTable = schema.getTableNamed("foo");
-		assertEquals(3, fooTable.columnsSize());
-		assertEquals(1, fooTable.primaryKeyColumnsSize());
-		assertEquals(1, fooTable.foreignKeysSize());
+		assertEquals(3, fooTable.getColumnsSize());
+		assertEquals(1, fooTable.getPrimaryKeyColumnsSize());
+		assertEquals(1, fooTable.getForeignKeysSize());
 
 		Column pkColumn = fooTable.getPrimaryKeyColumn();
 		assertEquals("id", pkColumn.getName());
@@ -170,8 +170,8 @@ public class MySQLTests extends DTPPlatformTests {
 		assertTrue(barColumn.isPartOfForeignKey());
 		assertFalse(barColumn.isPartOfPrimaryKey());
 
-		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
-		assertEquals(1, barFK.columnPairsSize());
+		ForeignKey barFK = fooTable.getForeignKeys().iterator().next();  // there should only be 1 foreign key
+		assertEquals(1, barFK.getColumnPairsSize());
 		assertEquals("bar", barFK.getAttributeName());
 		assertNull(barFK.getJoinColumnAnnotationIdentifier("bar"));
 		assertEquals("bar_id", barFK.getJoinColumnAnnotationIdentifier("primaryBar"));
@@ -182,9 +182,9 @@ public class MySQLTests extends DTPPlatformTests {
 
 		// BAR
 		Table barTable = schema.getTableNamed("bar");
-		assertEquals(2, barTable.columnsSize());
-		assertEquals(1, barTable.primaryKeyColumnsSize());
-		assertEquals(0, barTable.foreignKeysSize());
+		assertEquals(2, barTable.getColumnsSize());
+		assertEquals(1, barTable.getPrimaryKeyColumnsSize());
+		assertEquals(0, barTable.getForeignKeysSize());
 		assertEquals("id", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
 		assertEquals("BLOB", barTable.getColumnNamed("chunk").getDataTypeName());
@@ -194,9 +194,9 @@ public class MySQLTests extends DTPPlatformTests {
 
 		// FOO_BAZ
 		Table foo_bazTable = schema.getTableNamed("foo_baz");
-		assertEquals(2, foo_bazTable.columnsSize());
-		assertEquals(0, foo_bazTable.primaryKeyColumnsSize());
-		assertEquals(2, foo_bazTable.foreignKeysSize());
+		assertEquals(2, foo_bazTable.getColumnsSize());
+		assertEquals(0, foo_bazTable.getPrimaryKeyColumnsSize());
+		assertEquals(2, foo_bazTable.getForeignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
 		assertTrue(foo_bazTable.getColumnNamed("foo_id").isPartOfForeignKey());
@@ -384,7 +384,7 @@ public class MySQLTests extends DTPPlatformTests {
 		Table empTable = schema2.getTableNamed("emp");
 		assertNotNull(empTable);
 		// no foreign keys
-		assertEquals(0, empTable.foreignKeysSize());
+		assertEquals(0, empTable.getForeignKeysSize());
 
 		this.dropDatabase("xref_test2");
 		this.dropDatabase("xref_test1");

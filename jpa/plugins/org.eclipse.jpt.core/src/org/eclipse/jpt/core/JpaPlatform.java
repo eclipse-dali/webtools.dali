@@ -15,12 +15,8 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
-import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingDefinition;
-import org.eclipse.jpt.core.context.java.NullJavaTypeMappingDefinition;
-import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
-import org.eclipse.jpt.db.DatabaseFinder;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
@@ -175,15 +171,9 @@ public interface JpaPlatform
 	 */
 	EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder();
 
-	/**
-	 * Return a finder that can be used to look up various objects (schemata,
-	 * tables, columns, etc.) on the database, respecting the platform's and
-	 * database's case-sensitivity.
-	 */
-	DatabaseFinder getDatabaseFinder();
-
 	
 	// ********** platform variation **********
+
 	/**
 	 * Return a platform variation that is used to determine differences platforms and/or JPA specification versions
 	 */

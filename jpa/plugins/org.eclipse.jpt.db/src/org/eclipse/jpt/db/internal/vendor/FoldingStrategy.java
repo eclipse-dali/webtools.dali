@@ -26,9 +26,9 @@ interface FoldingStrategy {
 	boolean nameIsFolded(String name);
 
 	/**
-	 * Return whether the database is case-sensitive when using "normal"
+	 * Return whether the database is case-sensitive when using "regular"
 	 * (i.e. non-delimited) identifiers.
 	 */
-	boolean normalIdentifiersAreCaseSensitive();
+	boolean regularIdentifiersAreCaseSensitive();
 
 }

@@ -502,7 +502,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, superPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, childPersistentType.getAccess());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.PROPERTY, superPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, childPersistentType.getAccess());
 		
@@ -543,7 +543,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((BasicMapping) getJavaPersistentType().getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName(null);
 		assertEquals(AccessType.FIELD, getJavaPersistentType().getAccess());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.PROPERTY, getJavaPersistentType().getAccess());
 		
 		getEntityMappings().setSpecifiedAccess(AccessType.FIELD);

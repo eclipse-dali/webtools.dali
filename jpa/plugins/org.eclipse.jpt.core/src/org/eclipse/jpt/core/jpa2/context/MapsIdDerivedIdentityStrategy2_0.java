@@ -8,11 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.jpt.core.jpa2.context;
-
-import java.util.Iterator;
-
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -61,5 +57,5 @@ public interface MapsIdDerivedIdentityStrategy2_0
 	/**
 	 * Return a sorted iterator of possible value choices
 	 */
-	Iterator<String> sortedValueChoices();
+	Iterable<String> getSortedValueChoices();
 }

@@ -13,12 +13,14 @@ import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.AbstractJpaNode;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.ConnectionProfileListener;
 import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.db.DatabaseObject;
 
 /**
@@ -117,7 +119,7 @@ public class GenericJpaDataSource
 		return (cp == null) ? null : cp.getDatabase();
 	}
 
-	public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier) {
+	public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(Iterable<T> databaseObjects, String identifier) {
 		Database db = this.getDatabase();
 		return (db == null) ? null : db.selectDatabaseObjectForIdentifier(databaseObjects, identifier);
 	}
@@ -133,7 +135,13 @@ public class GenericJpaDataSource
 	// ********** internal methods **********
 
 	protected ConnectionProfile buildConnectionProfile(String name) {
-		return this.getConnectionProfileFactory().buildConnectionProfile(name, this.getJpaPlatform().getDatabaseFinder());
+		return this.getConnectionProfileFactory().buildConnectionProfile(name, this.buildDatabaseIdentifierAdapter());
+	}
+
+	protected DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter() {
+		return this.isJpa2_0Compatible() ?
+			((JpaFactory2_0) this.getJpaFactory()).buildDatabaseIdentifierAdapter(this) :
+			DatabaseIdentifierAdapter.Default.instance();
 	}
 
 	protected void setConnectionProfile(ConnectionProfile connectionProfile) {

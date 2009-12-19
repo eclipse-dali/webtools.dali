@@ -73,6 +73,9 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmXml;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaFile;
@@ -123,6 +126,9 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstrai
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
+import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
+import org.eclipse.jpt.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
@@ -144,6 +150,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -171,6 +179,10 @@ public abstract class AbstractJpaFactory
 		return new GenericJpaDataSource(jpaProject, connectionProfileName);
 	}
 	
+	public DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource) {
+		return new GenericJpaDatabaseIdentifierAdapter(dataSource);
+	}
+	
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
 		return new GenericJpaFile(jpaProject, file, contentType, resourceModel);
 	}
@@ -182,7 +194,17 @@ public abstract class AbstractJpaFactory
 		return new GenericRootContextNode(parent);
 	}
 
+
+	// ********** XML Context Model **********
+
+	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
+		return new GenericPersistenceXml(parent, resource);
+	}
 	
+	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
+		return new GenericOrmXml(parent, resource);
+	}
+
 
 	// ********** Java Context Model **********
 	
@@ -389,4 +411,5 @@ public abstract class AbstractJpaFactory
 	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
 		return new GenericJavaOrderColumn2_0(parent, owner);
 	}
+
 }

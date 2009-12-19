@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
@@ -1048,6 +1049,48 @@ public class CollectionToolsTests extends TestCase {
 		for (Iterator<String> stream = CollectionTools.iterator(a); stream.hasNext(); i++) {
 			assertEquals(a[i], stream.next());
 		}
+	}
+
+
+	// ********** last **********
+
+	public void testLastIterable1() {
+		List<String> list = this.buildStringList1();
+		Iterable<String> iterable = list;
+		assertEquals("two", CollectionTools.last(iterable));
+		list.add(null);
+		assertEquals(null, CollectionTools.last(iterable));
+	}
+
+	public void testLastIterable2() {
+		Iterable<String> iterable = new ArrayList<String>();
+		boolean exCaught = false;
+		try {
+			CollectionTools.last(iterable);
+			fail();
+		} catch (NoSuchElementException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testLastIterator1() {
+		List<String> list = this.buildStringList1();
+		assertEquals("two", CollectionTools.last(list.iterator()));
+		list.add(null);
+		assertEquals(null, CollectionTools.last(list.iterator()));
+	}
+
+	public void testLastIterator2() {
+		List<String> list = new ArrayList<String>();
+		boolean exCaught = false;
+		try {
+			CollectionTools.last(list.iterator());
+			fail();
+		} catch (NoSuchElementException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 	}
 
 

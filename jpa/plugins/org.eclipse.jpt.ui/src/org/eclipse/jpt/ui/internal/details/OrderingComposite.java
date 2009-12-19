@@ -74,7 +74,7 @@ public class OrderingComposite extends AbstractOrderingComposite
 	protected void initializeLayout(Composite container) {
 		PropertyValueModel<Orderable> orderableHolder = buildOrderableHolder();
 		
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.OrderingComposite_orderingGroup
 		);

@@ -29,7 +29,7 @@ public class EclipseLinkEmbeddableAdvancedComposite extends FormPane<Embeddable>
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		container = addCollapsableSection(
+		container = addCollapsibleSection(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_advanced
 		);

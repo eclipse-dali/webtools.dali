@@ -175,7 +175,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		if (schema == null) {
 			return EmptyListIterator.instance();
 		}
-		return CollectionTools.list(schema.sortedTableIdentifiers()).listIterator();
+		return CollectionTools.list(schema.getSortedTableIdentifiers()).listIterator();
 	}
 
 	@Override

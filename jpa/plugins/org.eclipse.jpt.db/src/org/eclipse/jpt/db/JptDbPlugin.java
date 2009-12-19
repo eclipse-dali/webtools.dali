@@ -18,7 +18,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The JPT DB plug-in lifecycle implementation.
  * Globally available connection profile factory.
- * 
+ * <p>
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

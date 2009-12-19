@@ -43,10 +43,8 @@ public class DTPUtil {
 	public static List<ForeignKeyInfo> getForeignKeys(Table dbTable) {
 		List<ForeignKeyInfo> ret = new ArrayList<ForeignKeyInfo>();
 		if(dbTable!=null){
-			Iterator<ForeignKey> fks = dbTable.foreignKeys();
-			while( fks.hasNext() ){
-				ForeignKey fk  = fks.next();
-				Iterator<ColumnPair> columnPaires = fk.columnPairs();
+			for (ForeignKey fk : dbTable.getForeignKeys()) {
+				Iterator<ColumnPair> columnPaires = fk.getColumnPairs().iterator();
 				ForeignKeyInfo fkInfo = null;
 				while( columnPaires.hasNext() ){
 					ColumnPair columnPair = columnPaires.next();

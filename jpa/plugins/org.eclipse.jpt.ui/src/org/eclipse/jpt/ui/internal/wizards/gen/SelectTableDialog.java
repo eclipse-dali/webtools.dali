@@ -55,10 +55,7 @@ public class SelectTableDialog extends ElementListSelectionDialog {
 		this(shell);
 		
 		ArrayList<String> list = new ArrayList<String>();
-		Iterator<Table> tablesIt = schema.tables();
-		while (tablesIt.hasNext())
-		{
-			Table table = tablesIt.next();
+		for (Table table : schema.getTables()) {
 			list.add(table.getName());
 		}
 		this.setElements( list.toArray() );

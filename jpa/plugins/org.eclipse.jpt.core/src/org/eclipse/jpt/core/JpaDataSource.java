@@ -67,7 +67,7 @@ public interface JpaDataSource extends JpaNode {
 	/**
 	 * Select and return the database object with the specified identifier.
 	 */
-	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier);
+	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(Iterable<T> databaseObjects, String identifier);
 
 	/**
 	 * Dispose the data source.

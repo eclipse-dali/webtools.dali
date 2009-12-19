@@ -168,7 +168,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertNull(javaEntity.getTable().getDefaultSchema());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultSchema());
 		
 		getEntityMappings().setSpecifiedSchema("BAR");
@@ -285,7 +285,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertNull(javaEntity.getTable().getDefaultCatalog());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultCatalog());
 		
 		getEntityMappings().setSpecifiedCatalog("BAR");

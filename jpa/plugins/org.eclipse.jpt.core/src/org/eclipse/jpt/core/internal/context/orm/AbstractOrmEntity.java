@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -68,9 +67,11 @@ import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -270,19 +271,14 @@ public abstract class AbstractOrmEntity
 		return this.table.getDbTable();
 	}
 
-	private static final org.eclipse.jpt.db.Table[] EMPTY_DB_TABLE_ARRAY = new org.eclipse.jpt.db.Table[0];
-
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-		// the JPA platform searches database objects for us
-		return this.getDataSource().selectDatabaseObjectForIdentifier(
-						ArrayTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
-						tableName
-					);
+		// matching database objects and identifiers is database platform-specific
+		return this.getDataSource().selectDatabaseObjectForIdentifier(this.getAssociatedDbTablesIncludingInherited(), tableName);
 	}
 
-	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited() {
-		return new FilteringIterator<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.associatedDbTablesIncludingInherited_()) {
+	private Iterable<org.eclipse.jpt.db.Table> getAssociatedDbTablesIncludingInherited() {
+		return new FilteringIterable<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.getAssociatedDbTablesIncludingInherited_()) {
 			@Override
 			protected boolean accept(org.eclipse.jpt.db.Table t) {
 				return t != null;
@@ -290,8 +286,8 @@ public abstract class AbstractOrmEntity
 		};
 	}
 
-	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited_() {
-		return new TransformationIterator<Table, org.eclipse.jpt.db.Table>(this.associatedTablesIncludingInherited()) {
+	private Iterable<org.eclipse.jpt.db.Table> getAssociatedDbTablesIncludingInherited_() {
+		return new TransformationIterable<Table, org.eclipse.jpt.db.Table>(this.getAssociatedTablesIncludingInherited()) {
 			@Override
 			protected org.eclipse.jpt.db.Table transform(Table t) {
 				return t.getDbTable();
@@ -344,7 +340,7 @@ public abstract class AbstractOrmEntity
 	
 	@Override
 	public RelationshipReference resolveRelationshipReference(String name) {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = name.indexOf('.');
 			if (dotIndex != -1) {
 				AssociationOverride override = getAssociationOverrideContainer().getAssociationOverrideNamed(name.substring(dotIndex + 1));
@@ -591,10 +587,14 @@ public abstract class AbstractOrmEntity
 	}
 
 	public Iterator<Table> associatedTablesIncludingInherited() {
-		return new CompositeIterator<Table>(new TransformationIterator<TypeMapping, Iterator<Table>>(this.inheritanceHierarchy()) {
+		return this.getAssociatedTablesIncludingInherited().iterator();
+	}
+
+	public Iterable<Table> getAssociatedTablesIncludingInherited() {
+		return new CompositeIterable<Table>(new TransformationIterable<TypeMapping, Iterable<Table>>(CollectionTools.iterable(this.inheritanceHierarchy())) {
 			@Override
-			protected Iterator<Table> transform(TypeMapping mapping) {
-				return new FilteringIterator<Table, Table>(mapping.associatedTables()) {
+			protected Iterable<Table> transform(TypeMapping mapping) {
+				return new FilteringIterable<Table, Table>(CollectionTools.iterable(mapping.associatedTables())) {
 					@Override
 					protected boolean accept(Table o) {
 						return true;
@@ -1117,7 +1117,7 @@ public abstract class AbstractOrmEntity
 	
 	@Override
 	public Column resolveOverridenColumn(String attributeName) {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName.substring(dotIndex + 1));

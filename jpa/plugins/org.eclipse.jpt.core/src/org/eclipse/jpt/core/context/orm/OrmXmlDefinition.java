@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.emf.ecore.EFactory;
+
 /**
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,7 +21,14 @@ package org.eclipse.jpt.core.context.orm;
 public interface OrmXmlDefinition 
 	extends MappingFileDefinition
 {
-	//covariant override
+	/**
+	 * Return the factory for building xml resource nodes
+	 */
+	EFactory getResourceNodeFactory();
+	
+	/**
+	 * Return the factory for building xml context nodes
+	 */
 	OrmXmlContextNodeFactory getContextNodeFactory();
 	
 	

@@ -147,9 +147,8 @@ public class GenerateEntitiesWizard extends Wizard {
 
 	private Collection<Table> buildTables(Schema schema) {
 		return (schema == null) ?
-						Collections.<Table>emptySet()
-					:
-						CollectionTools.collection(schema.tables());
+						Collections.<Table>emptySet() :
+						CollectionTools.collection(schema.getTables());
 	}
 
 

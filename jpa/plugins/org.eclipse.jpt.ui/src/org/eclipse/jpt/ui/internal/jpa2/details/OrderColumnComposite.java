@@ -310,7 +310,7 @@ public class OrderColumnComposite extends FormPane<OrderColumn2_0> {
 		);
 
 		// Details sub-pane
-		container = addCollapsableSubSection(
+		container = addCollapsibleSubSection(
 			container,
 			JptUiDetailsMessages.ColumnComposite_details,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)

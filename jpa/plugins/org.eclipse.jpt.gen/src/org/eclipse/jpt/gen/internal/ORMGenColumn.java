@@ -14,7 +14,6 @@ import java.util.Collections;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.old.EntityGenTools;
-import org.eclipse.jpt.gen.internal.util.DTPUtil;
 import org.eclipse.jpt.gen.internal.util.StringUtil;
 
 
@@ -102,7 +101,7 @@ public class ORMGenColumn
 		String name = customized(PROPERTY_NAME);
 		if (name == null) {
 			//name = StringUtil.columnNameToVarName(getName());
-			name = EntityGenTools.convertToUniqueJavaStyleAttributeName(getName(), Collections.EMPTY_SET);
+			name = EntityGenTools.convertToUniqueJavaStyleAttributeName(getName(), Collections.<String>emptySet());
 		}
 		return name;
 	}
@@ -151,8 +150,8 @@ public class ORMGenColumn
 		if( type.startsWith(JAVA_LANG_PACKAGE) ) {
 			type = type.substring( JAVA_LANG_PACKAGE.length() );
 		}
-		if( type.equals("java.sql.Date")){
-			type = "java.util.Date";
+		if( type.equals("java.sql.Date")){ //$NON-NLS-1$
+			type = "java.util.Date"; //$NON-NLS-1$
 		}
 			
 		return type;
@@ -187,7 +186,7 @@ public class ORMGenColumn
 			kind = getCustomizer().getBasicMappingKind();
 			
 			if ( this.mDbColumn.isPartOfPrimaryKey() 
-				 && this.mDbColumn.getTable().primaryKeyColumnsSize() == 1) {
+				 && this.mDbColumn.getTable().getPrimaryKeyColumnsSize() == 1) {
 				kind = getCustomizer().getIdMappingKind();
 			}
 		}
@@ -224,7 +223,7 @@ public class ORMGenColumn
 	
 	public boolean isPartOfCompositePrimaryKey() {
 		return this.mDbColumn.isPartOfPrimaryKey() &&
-				this.mTable.primaryKeyColumnsSize() > 1;
+				this.mTable.getPrimaryKeyColumnsSize() > 1;
 	}
 	
 	public boolean isForeignKey() {

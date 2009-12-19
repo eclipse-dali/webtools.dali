@@ -76,13 +76,9 @@ public class GenericJavaEmbeddedMapping
 	//defined within an embedded id class are not supported by the 2.0 spec.
 	@Override
 	public Iterator<String> allMappingNames() {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
-			return new CompositeIterator<String>(
-				getName(),
-				embeddableAttributeMappingNames()
-			);
-		}
-		return super.allMappingNames();
+		return this.isJpa2_0Compatible() ?
+				new CompositeIterator<String>(this.getName(), this.embeddableAttributeMappingNames()) :
+				super.allMappingNames();
 	}
 	
 	protected Iterator<String> embeddableAttributeMappingNames() {
@@ -109,7 +105,7 @@ public class GenericJavaEmbeddedMapping
 		if (resolvedMapping != null) {
 			return resolvedMapping;
 		}
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = name.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(name.substring(0, dotIndex))) {
@@ -127,7 +123,7 @@ public class GenericJavaEmbeddedMapping
 	
 	@Override
 	public RelationshipReference resolveRelationshipReference(String attributeName) {
-		if (getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				if (getName().equals(attributeName.substring(0, dotIndex))) {
@@ -150,7 +146,7 @@ public class GenericJavaEmbeddedMapping
 	@Override
 	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
 		super.addSupportingAnnotationNamesTo(names);
-		if (this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0)) {
+		if (this.isJpa2_0Compatible()) {
 			names.add(JPA.ASSOCIATION_OVERRIDE);
 			names.add(JPA.ASSOCIATION_OVERRIDES);
 		}

@@ -113,7 +113,7 @@ class TablesSelectorWizardPage extends WizardPage{
 	private Collection<Table> possibleTables() {
 		Schema schema = this.getSchema();
 		if (schema != null && schema.getName() != null) {
-			return CollectionTools.collection(schema.tables());
+			return CollectionTools.collection(schema.getTables());
 		}
 		return Collections.<Table> emptyList();
 	}
@@ -476,7 +476,7 @@ class TablesSelectorWizardPage extends WizardPage{
 			return;
 		this.jpaProject.setUserOverrideDefaultSchema( schema.getIdentifier());
 		
-		updateTablesListViewer(CollectionTools.collection(schema.tables()));
+		updateTablesListViewer(CollectionTools.collection(schema.getTables()));
 
 		//Create the ORMGenCustomizer
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) getWizard();

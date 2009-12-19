@@ -7,22 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.ResourceDefinition;
+import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 
 /**
- * A JPA platform can support multiple mapping files. Each will
- * have a unique resource type and must be defined with a mapping file definition.
- * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappingFileDefinition
-	extends ResourceDefinition
+public interface MappingFilePersistenceUnitDefaults2_0
+	extends MappingFilePersistenceUnitDefaults
 {
-	// nothing yet
+	boolean isDelimitedIdentifiers();
 }

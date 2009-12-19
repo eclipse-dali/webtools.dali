@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
-import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
@@ -236,10 +235,6 @@ public class GenericJpaPlatform
 		return GenericEntityGeneratorDatabaseAnnotationNameBuilder.instance();
 	}
 
-	public DatabaseFinder getDatabaseFinder() {
-		return DatabaseFinder.Default.instance();
-	}
-	
 	
 	// ********** validation **********
 	

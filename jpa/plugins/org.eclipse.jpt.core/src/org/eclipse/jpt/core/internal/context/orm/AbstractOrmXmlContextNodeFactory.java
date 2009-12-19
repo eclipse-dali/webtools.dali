@@ -75,7 +75,6 @@ import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
@@ -120,7 +119,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmTemporalConverte
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmTransientMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVersionMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.UnsupportedOrmAttributeMapping;
@@ -180,24 +178,20 @@ import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
-public abstract class AbstractOrmXmlContextNodeFactory implements OrmXml2_0ContextNodeFactory
+public abstract class AbstractOrmXmlContextNodeFactory
+	implements OrmXml2_0ContextNodeFactory
 {
-	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return new GenericOrmXml(parent, resource);
-	}
-
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericEntityMappings(parent, xmlEntityMappings);
 	}
 	
-	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericPersistenceUnitMetadata(parent, xmlEntityMappings);
+	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent) {
+		return new GenericPersistenceUnitMetadata(parent);
 	}
 	
-	public OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericPersistenceUnitDefaults(parent, xmlEntityMappings);
+	public OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
+		return new GenericPersistenceUnitDefaults(parent);
 	}
 
 	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {

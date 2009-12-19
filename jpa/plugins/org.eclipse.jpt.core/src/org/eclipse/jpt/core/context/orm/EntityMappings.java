@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
@@ -19,9 +18,14 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * Context <code>orm.xml</code> entity mappings.
+ * Context model corresponding to the
+ * XML resource model {@link XmlEntityMappings},
+ * which corresponds to the <code>entity-mappings</code> element
+ * in the <code>orm.xml</code> file.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -55,6 +59,10 @@ public interface EntityMappings
 	AccessType getDefaultAccess();
 		String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
 
+	/**
+	 * Return the database schema container, which can be either a catalog or,
+	 * if the database does not support catalogs, the database itself.
+	 */
 	SchemaContainer getDbSchemaContainer();
 
 	/**
@@ -83,8 +91,8 @@ public interface EntityMappings
 
 	PersistenceUnitMetadata getPersistenceUnitMetadata();
 	
-	ListIterator<OrmPersistentType> persistentTypes();
-	int persistentTypesSize();
+	ListIterable<OrmPersistentType> getPersistentTypes();
+	int getPersistentTypesSize();
 	OrmPersistentType addPersistentType(String mappingKey, String className);
 	void removePersistentType(int index);
 	void removePersistentType(OrmPersistentType persistentType);
@@ -92,16 +100,16 @@ public interface EntityMappings
 	boolean containsPersistentType(String className);
 		String PERSISTENT_TYPES_LIST = "persistentTypes"; //$NON-NLS-1$
 	
-	ListIterator<OrmSequenceGenerator> sequenceGenerators();
-	int sequenceGeneratorsSize();
+	ListIterable<OrmSequenceGenerator> getSequenceGenerators();
+	int getSequenceGeneratorsSize();
 	OrmSequenceGenerator addSequenceGenerator(int index);
 	void removeSequenceGenerator(int index);
 	void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator);
 	void moveSequenceGenerator(int targetIndex, int sourceIndex);
 		String SEQUENCE_GENERATORS_LIST = "sequenceGenerators"; //$NON-NLS-1$
 
-	ListIterator<OrmTableGenerator> tableGenerators();
-	int tableGeneratorsSize();
+	ListIterable<OrmTableGenerator> getTableGenerators();
+	int getTableGeneratorsSize();
 	OrmTableGenerator addTableGenerator(int index);
 	void removeTableGenerator(int index);
 	void removeTableGenerator(OrmTableGenerator tableGenerator);
@@ -130,16 +138,11 @@ public interface EntityMappings
 	
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
 	
-	// **************** updating ***********************************************
+	boolean containsOffset(int textOffset);
 	
 	/**
 	 * Update the EntityMappings context model object to match the XmlEntityMappings 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update();
-	
-	
-	// *************************************************************************
-	
-	boolean containsOffset(int textOffset);
 }
