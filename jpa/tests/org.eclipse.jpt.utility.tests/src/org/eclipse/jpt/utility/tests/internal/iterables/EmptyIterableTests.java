@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.tests.internal.iterables;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class EmptyIterableTests extends TestCase {
@@ -24,6 +25,15 @@ public class EmptyIterableTests extends TestCase {
 		for (String s : EmptyIterable.<String>instance()) {
 			fail("bogus element: " + s);
 		}
+	}
+
+	public void testToString() {
+		assertNotNull(EmptyIterable.instance().toString());
+	}
+
+	public void testSerialization() throws Exception {
+		Iterable<String> iterable = EmptyIterable.instance();
+		assertSame(iterable, TestTools.serialize(iterable));
 	}
 
 }

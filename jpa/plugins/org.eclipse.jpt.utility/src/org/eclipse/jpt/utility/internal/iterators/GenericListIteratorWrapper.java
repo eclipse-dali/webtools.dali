@@ -21,6 +21,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * in the iterator's backing list (i.e. {@link #set(E)} and {@link #add(E)}).
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.GenericListIterableWrapper
  */
 public class GenericListIteratorWrapper<E>
 	implements ListIterator<E>

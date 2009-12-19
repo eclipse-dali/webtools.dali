@@ -20,6 +20,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * for an array of objects of type <code>E</code>.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.ArrayIterable
  */
 public class ArrayIterator<E>
 	implements Iterator<E>

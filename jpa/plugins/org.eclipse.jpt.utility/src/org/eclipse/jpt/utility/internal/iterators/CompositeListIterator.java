@@ -22,6 +22,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * {@link ListIterator}.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.CompositeListIterable
  */
 public class CompositeListIterator<E>
 	implements ListIterator<E>

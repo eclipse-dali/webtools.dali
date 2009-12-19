@@ -21,6 +21,8 @@ import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
  * {@link Iterator}.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.CompositeIterable
  */
 public class CompositeIterator<E>
 	implements Iterator<E>

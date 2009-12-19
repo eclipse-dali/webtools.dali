@@ -18,6 +18,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * is no way to add invalid elements to the iterator's backing collection.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.GenericIterableWrapper
  */
 public class GenericIteratorWrapper<E>
 	implements Iterator<E>

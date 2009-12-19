@@ -25,6 +25,8 @@ import org.eclipse.jpt.utility.internal.Transformer;
  * 
  * @param <E1> input: the type of elements to be transformed
  * @param <E2> output: the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.TransformationListIterable
  */
 public class TransformationListIterator<E1, E2>
 	implements ListIterator<E2>

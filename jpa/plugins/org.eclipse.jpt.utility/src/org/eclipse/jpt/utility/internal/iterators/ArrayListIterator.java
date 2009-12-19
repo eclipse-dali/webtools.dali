@@ -21,6 +21,8 @@ import java.util.NoSuchElementException;
  * <em>not</em> an {@link Iterator} for a {@link java.util.ArrayList}.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.ArrayListIterable
  */
 public class ArrayListIterator<E>
 	extends ArrayIterator<E>

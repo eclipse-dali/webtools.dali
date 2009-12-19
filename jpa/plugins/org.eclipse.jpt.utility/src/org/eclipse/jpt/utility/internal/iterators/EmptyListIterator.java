@@ -17,6 +17,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * An <code>EmptyListIterator</code> is just that.
  * 
  * @param <E> the type of elements (not) returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.EmptyListIterable
  */
 public final class EmptyListIterator<E>
 	implements ListIterator<E>
@@ -82,4 +84,10 @@ public final class EmptyListIterator<E>
 		return StringTools.buildToStringFor(this);
 	}
 	
+	private static final long serialVersionUID = 1L;
+	private Object readResolve() {
+		// replace this object with the singleton
+		return INSTANCE;
+	}
+
 }

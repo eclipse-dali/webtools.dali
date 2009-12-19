@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.tests.internal.iterables;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import junit.framework.TestCase;
 
@@ -39,6 +40,11 @@ public class GenericIterableWrapperTests extends TestCase {
 			concat += s;
 		}
 		assertEquals("foobarbaz", concat);
+	}
+
+	public void testToString() {
+		Iterable<Object> iterable = new GenericIterableWrapper<Object>(Collections.emptyList());
+		assertNotNull(iterable.toString());
 	}
 
 }

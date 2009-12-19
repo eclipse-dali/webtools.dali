@@ -150,6 +150,11 @@ public class ResultSetIterator<E>
 			public String toString() {
 				return "ResultSetIterator.Adapter.Default"; //$NON-NLS-1$
 			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
+			}
 		}
 
 	}

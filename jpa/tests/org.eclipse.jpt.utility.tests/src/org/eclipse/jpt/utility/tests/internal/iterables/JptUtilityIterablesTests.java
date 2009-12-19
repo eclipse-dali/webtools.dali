@@ -21,17 +21,29 @@ public class JptUtilityIterablesTests {
 		TestSuite suite = new TestSuite(JptUtilityIterablesTests.class.getPackage().getName());
 
 		suite.addTestSuite(ArrayIterableTests.class);
+		suite.addTestSuite(ArrayListIterableTests.class);
 		suite.addTestSuite(ChainIterableTests.class);
 		suite.addTestSuite(CompositeIterableTests.class);
+		suite.addTestSuite(CompositeListIterableTests.class);
 		suite.addTestSuite(EmptyIterableTests.class);
+		suite.addTestSuite(EmptyListIterableTests.class);
 		suite.addTestSuite(FilteringIterableTests.class);
 		suite.addTestSuite(GenericIterableWrapperTests.class);
 		suite.addTestSuite(GraphIterableTests.class);
 		suite.addTestSuite(LiveCloneIterableTests.class);
+		suite.addTestSuite(LiveCloneListIterableTests.class);
+		suite.addTestSuite(PeekableIterableTests.class);
+		suite.addTestSuite(QueueIterableTests.class);
+		suite.addTestSuite(ReadOnlyCompositeListIterableTests.class);
 		suite.addTestSuite(ReadOnlyIterableTests.class);
+		suite.addTestSuite(ReadOnlyListIterableTests.class);
 		suite.addTestSuite(SingleElementIterableTests.class);
+		suite.addTestSuite(SingleElementListIterableTests.class);
 		suite.addTestSuite(SnapshotCloneIterableTests.class);
+		suite.addTestSuite(SnapshotCloneListIterableTests.class);
+		suite.addTestSuite(StackIterableTests.class);
 		suite.addTestSuite(TransformationIterableTests.class);
+		suite.addTestSuite(TransformationListIterableTests.class);
 		suite.addTestSuite(TreeIterableTests.class);
 
 		return suite;

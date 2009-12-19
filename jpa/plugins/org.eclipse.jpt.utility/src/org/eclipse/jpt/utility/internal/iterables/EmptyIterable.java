@@ -24,6 +24,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
  * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see EmptyIterator
+ * @see EmptyListIterable
  */
 public final class EmptyIterable<E>
 	implements Iterable<E>, Serializable

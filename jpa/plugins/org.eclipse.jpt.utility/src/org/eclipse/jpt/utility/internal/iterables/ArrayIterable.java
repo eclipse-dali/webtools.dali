@@ -22,19 +22,29 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
  * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see ArrayIterator
+ * @see ArrayListIterable
  */
 public class ArrayIterable<E>
 	implements Iterable<E>
 {
-	private final E[] array;
-	private final int start;
-	private final int length;
+	final E[] array;
+	final int start;
+	final int length;
 
 	/**
 	 * Construct an iterable for the specified array.
 	 */
 	public ArrayIterable(E... array) {
 		this(array, 0, array.length);
+	}
+
+	/**
+	 * Construct an iterable for the specified array,
+	 * starting at the specified start index and continuing for
+	 * the rest of the array.
+	 */
+	public ArrayIterable(E[] array, int start) {
+		this(array, start, array.length - start);
 	}
 
 	/**

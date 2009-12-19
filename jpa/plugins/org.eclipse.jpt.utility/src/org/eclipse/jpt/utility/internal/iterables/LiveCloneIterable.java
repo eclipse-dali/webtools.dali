@@ -38,6 +38,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
  * 
  * @see CloneIterator
  * @see SnapshotCloneIterable
+ * @see LiveCloneListIterable
  */
 public class LiveCloneIterable<E>
 	extends CloneIterable<E>

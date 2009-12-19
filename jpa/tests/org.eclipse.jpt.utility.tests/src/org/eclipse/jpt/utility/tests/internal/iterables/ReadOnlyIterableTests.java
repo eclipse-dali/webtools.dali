@@ -44,6 +44,10 @@ public class ReadOnlyIterableTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
+	public void testToString() {
+		assertNotNull(this.buildReadOnlyIterable().toString());
+	}
+
 	private Iterable<String> buildReadOnlyIterable() {
 		return new ReadOnlyIterable<String>(this.buildVector());
 	}

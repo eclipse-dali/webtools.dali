@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * @param <E> the type of elements returned by the iterator
  * 
  * @see Stack
+ * @see org.eclipse.jpt.utility.internal.iterables.StackIterable
  */
 public class StackIterator<E>
 	implements Iterator<E>

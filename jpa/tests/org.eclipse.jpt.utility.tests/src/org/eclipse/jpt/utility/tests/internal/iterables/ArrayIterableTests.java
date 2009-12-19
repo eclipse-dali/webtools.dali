@@ -27,6 +27,13 @@ public class ArrayIterableTests extends TestCase {
 		}
 	}
 
+	public void testSubIterator() {
+		int i = 3;
+		for (String string : this.buildIterable(2)) {
+			assertEquals(i++, Integer.parseInt(string));
+		}
+	}
+
 	public void testIllegalArgumentException() {
 		this.triggerIllegalArgumentException(-1, 1);
 		this.triggerIllegalArgumentException(8, 1);
@@ -46,11 +53,15 @@ public class ArrayIterableTests extends TestCase {
 	}
 
 	private Iterable<String> buildIterable() {
-		return this.buildIterable(this.buildArray());
+		return this.buildIterable(0);
 	}
 
-	private Iterable<String> buildIterable(String[] array) {
-		return new ArrayIterable<String>(array);
+	private Iterable<String> buildIterable(int start) {
+		return this.buildIterable(this.buildArray(), start);
+	}
+
+	private Iterable<String> buildIterable(String[] array, int start) {
+		return new ArrayIterable<String>(array, start);
 	}
 
 	private Iterable<String> buildIterable(int start, int length) {

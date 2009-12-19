@@ -24,6 +24,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * 	{@link java.util.Collections#singleton(element)}<code>.iterator()</code>
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.SingleElementIterable
  */
 public class SingleElementIterator<E>
 	implements Iterator<E>

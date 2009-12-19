@@ -16,6 +16,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.iterables.TreeIterable;
+import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -33,15 +34,66 @@ public class TreeIterableTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testIterator() {
-		for (TreeNode tn : this.buildTreeIterable()) {
+	public void testIterator1() {
+		for (TreeNode tn : this.buildTreeIterable1()) {
 			assertTrue(this.nodes.contains(tn));
 		}
 	}
 
-	private Iterable<TreeNode> buildTreeIterable() {
+	public void testIterator2() {
+		for (TreeNode tn : this.buildTreeIterable2()) {
+			assertTrue(this.nodes.contains(tn));
+		}
+	}
+
+	public void testMidwife1() {
+		for (TreeNode tn : new TreeIterable<TreeNode>(this.buildTree(), this.buildMidwife())) {
+			assertTrue(this.nodes.contains(tn));
+		}
+	}
+
+	public void testMidwife2() {
+		for (TreeNode tn : new TreeIterable<TreeNode>(new TreeNode[] { this.buildTree() }, this.buildMidwife())) {
+			assertTrue(this.nodes.contains(tn));
+		}
+	}
+
+	public void testToString() {
+		assertNotNull(this.buildTreeIterable1().toString());
+	}
+
+	public void testMissingMidwife() {
+		boolean exCaught = false;
+		try {
+			for (TreeNode tn : new TreeIterable<TreeNode>(this.buildTree())) {
+				assertTrue(this.nodes.contains(tn));
+			}
+		} catch (RuntimeException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	private Iterable<TreeNode> buildTreeIterable1() {
 		return new TreeIterable<TreeNode>(this.buildTree()) {
 			@Override
+			public Iterator<TreeNode> children(TreeNode next) {
+				return next.children();
+			}
+		};
+	}
+
+	private Iterable<TreeNode> buildTreeIterable2() {
+		return new TreeIterable<TreeNode>(new TreeNode[] { this.buildTree() }) {
+			@Override
+			public Iterator<TreeNode> children(TreeNode next) {
+				return next.children();
+			}
+		};
+	}
+
+	private TreeIterator.Midwife<TreeNode> buildMidwife() {
+		return new TreeIterator.Midwife<TreeNode>() {
 			public Iterator<TreeNode> children(TreeNode next) {
 				return next.children();
 			}

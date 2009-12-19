@@ -11,12 +11,15 @@ package org.eclipse.jpt.utility.tests.internal.iterables;
 
 import java.util.AbstractCollection;
 import java.util.AbstractList;
+import java.util.Iterator;
 import java.util.Vector;
 
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.iterables.ChainIterable;
+import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 
+@SuppressWarnings("nls")
 public class ChainIterableTests extends TestCase {
 	private final static Class<?>[] VECTOR_HIERARCHY = { Vector.class, AbstractList.class, AbstractCollection.class, Object.class };
 
@@ -32,6 +35,30 @@ public class ChainIterableTests extends TestCase {
 		}
 	}
 
+	public void testLinker() {
+		int i = 0;
+		for (Class<?> clazz : new ChainIterable<Class<?>>(Vector.class, this.buildLinker())) {
+			assertEquals(VECTOR_HIERARCHY[i++], clazz);
+		}
+	}
+
+	public void testException() {
+		Iterable<Class<?>> iterable = new ChainIterable<Class<?>>(Vector.class);
+		Iterator<Class<?>> iterator = iterable.iterator();
+		boolean exCaught = false;
+		try {
+			Class<?> clazz = iterator.next();
+			fail("bogus class: " + clazz);
+		} catch (RuntimeException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testToString() {
+		assertNotNull(this.buildIterable().toString());
+	}
+
 	private Iterable<Class<?>> buildIterable() {
 		return this.buildChainIterable(Vector.class);
 	}
@@ -41,6 +68,14 @@ public class ChainIterableTests extends TestCase {
 		return new ChainIterable<Class<?>>(startLink) {
 			@Override
 			protected Class<?> nextLink(Class<?> currentLink) {
+				return currentLink.getSuperclass();
+			}
+		};
+	}
+
+	private ChainIterator.Linker<Class<?>> buildLinker() {
+		return new ChainIterator.Linker<Class<?>>() {
+			public Class<?> nextLink(Class<?> currentLink) {
 				return currentLink.getSuperclass();
 			}
 		};

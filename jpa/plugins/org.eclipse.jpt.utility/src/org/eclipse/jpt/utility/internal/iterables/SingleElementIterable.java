@@ -28,6 +28,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
  * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see SingleElementIterator
+ * @see SingleElementListIterable
  */
 public class SingleElementIterable<E>
 	implements Iterable<E>

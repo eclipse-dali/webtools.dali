@@ -30,6 +30,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * </ul>
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.TreeIterable
  */
 public class TreeIterator<E>
 	implements Iterator<E>
@@ -210,6 +212,11 @@ public class TreeIterator<E>
 			public String toString() {
 				return "TreeIterator.Midwife.Null"; //$NON-NLS-1$
 			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
+			}
 		}
 
 		/**
@@ -234,6 +241,11 @@ public class TreeIterator<E>
 			@Override
 			public String toString() {
 				return "TreeIterator.Midwife.Disabled"; //$NON-NLS-1$
+			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
 			}
 		}
 

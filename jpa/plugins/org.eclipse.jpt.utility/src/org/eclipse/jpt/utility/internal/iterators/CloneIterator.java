@@ -30,6 +30,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * method.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable
+ * @see org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable
  */
 public class CloneIterator<E>
 	implements Iterator<E>
@@ -175,6 +178,11 @@ public class CloneIterator<E>
 			@Override
 			public String toString() {
 				return "CloneIterator.Remover.ReadOnly"; //$NON-NLS-1$
+			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
 			}
 		}
 

@@ -27,6 +27,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * Note this iterator does not support <code>null</code> elements.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.ChainIterable
  */
 public class ChainIterator<E>
 	implements Iterator<E>
@@ -119,6 +121,11 @@ public class ChainIterator<E>
 			public String toString() {
 				return "ChainIterator.Linker.Null"; //$NON-NLS-1$
 			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
+			}
 		}
 
 		final class Disabled<S> implements Linker<S> {
@@ -139,6 +146,11 @@ public class ChainIterator<E>
 			@Override
 			public String toString() {
 				return "ChainIterator.Linker.Disabled"; //$NON-NLS-1$
+			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
 			}
 		}
 

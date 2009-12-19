@@ -11,9 +11,11 @@ package org.eclipse.jpt.utility.tests.internal.iterables;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 @SuppressWarnings("nls")
@@ -33,6 +35,32 @@ public class FilteringIterableTests extends TestCase {
 		assertEquals(6, i);
 	}
 
+	public void testFilter() {
+		Filter<String> filter = this.buildFilter();
+		int i = 0;
+		for (String s : new FilteringIterable<String, String>(this.buildNestedIterable(), filter)) {
+			assertTrue(s.contains(PREFIX));
+			i++;
+		}
+		assertEquals(6, i);
+	}
+
+	public void testToString() {
+		assertNotNull(this.buildIterable().toString());
+	}
+
+	public void testMissingFilter() {
+		boolean exCaught = false;
+		Iterable<String> iterable = new FilteringIterable<String, String>(this.buildNestedIterable());
+		try {
+			Iterator<String> iterator = iterable.iterator();
+			fail("bogus iterator: " + iterator);
+		} catch (RuntimeException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
 	private Iterable<String> buildIterable() {
 		return this.buildFilteringIterable(this.buildNestedIterable());
 	}
@@ -41,6 +69,14 @@ public class FilteringIterableTests extends TestCase {
 		return new FilteringIterable<String, String>(nestedIterable) {
 			@Override
 			protected boolean accept(String s) {
+				return s.startsWith(PREFIX);
+			}
+		};
+	}
+
+	private Filter<String> buildFilter() {
+		return new Filter<String>() {
+			public boolean accept(String s) {
 				return s.startsWith(PREFIX);
 			}
 		};

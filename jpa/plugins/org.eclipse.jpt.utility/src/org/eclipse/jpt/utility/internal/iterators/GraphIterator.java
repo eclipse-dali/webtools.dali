@@ -49,6 +49,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * desired, must be implemented by the user of this class.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.GraphIterable
  */
 public class GraphIterator<E>
 	implements Iterator<E>
@@ -242,6 +244,11 @@ public class GraphIterator<E>
 			public String toString() {
 				return "GraphIterator.MisterRogers.Null"; //$NON-NLS-1$
 			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
+			}
 		}
 
 		/** The Mr. Rogers used when the {@link GraphIterator#neighbors(Object)} method is overridden. */
@@ -263,6 +270,11 @@ public class GraphIterator<E>
 			@Override
 			public String toString() {
 				return "GraphIterator.MisterRogers.Disabled"; //$NON-NLS-1$
+			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
 			}
 		}
 

@@ -35,6 +35,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * 
  * @param <E1> input: the type of elements to be filtered
  * @param <E2> output: the type of elements returned by the iterable's iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.FilteringIterable
  */
 public class FilteringIterator<E1, E2>
 	implements Iterator<E2>

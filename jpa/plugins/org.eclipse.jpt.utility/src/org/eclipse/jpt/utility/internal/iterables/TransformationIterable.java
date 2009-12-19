@@ -27,6 +27,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  * @param <E2> output: the type of elements returned by the iterable's iterator
  * 
  * @see TransformationIterator
+ * @see TransformationListIterable
  */
 public class TransformationIterable<E1, E2>
 	implements Iterable<E2>

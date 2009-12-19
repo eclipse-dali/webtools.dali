@@ -15,7 +15,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * A <code>PeekableIterator</code> wraps another {@link Iterator}
- * and allows a {@link peek()} at the next element to be 
+ * and allows a {@link #peek()} at the next element to be 
  * returned by {@link #next()}.
  * <p>
  * One, possibly undesirable, side-effect of using this iterator is that
@@ -27,6 +27,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * {@link #remove()} method.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.PeekableIterable
  */
 public class PeekableIterator<E>
 	implements Iterator<E>

@@ -18,6 +18,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * and removes support for {@link #remove()}.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.ReadOnlyIterable
  */
 public class ReadOnlyIterator<E>
 	implements Iterator<E>

@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see CompositeIterator
+ * @see CompositeListIterable
  */
 public class CompositeIterable<E>
 	implements Iterable<E>

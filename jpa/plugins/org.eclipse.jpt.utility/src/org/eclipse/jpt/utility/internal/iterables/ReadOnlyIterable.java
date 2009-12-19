@@ -21,6 +21,7 @@ import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
  * @param <E> the type of elements returned by the iterable's iterator
  * 
  * @see ReadOnlyIterator
+ * @see ReadOnlyListIterable
  */
 public class ReadOnlyIterable<E>
 	implements Iterable<E>

@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.GraphIterable;
+import org.eclipse.jpt.utility.internal.iterators.GraphIterator;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -34,15 +35,75 @@ public class GraphIterableTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testNeighbors() {
-		for (GraphNode gn : this.buildGraphIterable()) {
+	public void testNeighbors1() {
+		for (GraphNode gn : this.buildGraphIterable1()) {
 			assertTrue(this.nodes.contains(gn));
 		}
 	}
 
-	private Iterable<GraphNode> buildGraphIterable() {
+	private Iterable<GraphNode> buildGraphIterable1() {
 		return new GraphIterable<GraphNode>(this.buildGraphRoot()) {
 			@Override
+			public Iterator<GraphNode> neighbors(GraphNode next) {
+				return next.neighbors();
+			}
+		};
+	}
+
+	public void testNeighbors2() {
+		for (GraphNode gn : this.buildGraphIterable2()) {
+			assertTrue(this.nodes.contains(gn));
+		}
+	}
+
+	private Iterable<GraphNode> buildGraphIterable2() {
+		return new GraphIterable<GraphNode>(this.buildGraphRoot(), this.buildMisterRogers());
+	}
+
+	public void testNeighbors3() {
+		for (GraphNode gn : this.buildGraphIterable3()) {
+			assertTrue(this.nodes.contains(gn));
+		}
+	}
+
+	private Iterable<GraphNode> buildGraphIterable3() {
+		return new GraphIterable<GraphNode>(new GraphNode[] { this.buildGraphRoot() }) {
+			@Override
+			public Iterator<GraphNode> neighbors(GraphNode next) {
+				return next.neighbors();
+			}
+		};
+	}
+
+	public void testNeighbors4() {
+		for (GraphNode gn : this.buildGraphIterable4()) {
+			assertTrue(this.nodes.contains(gn));
+		}
+	}
+
+	private Iterable<GraphNode> buildGraphIterable4() {
+		return new GraphIterable<GraphNode>(new GraphNode[] { this.buildGraphRoot() }, this.buildMisterRogers());
+	}
+
+	public void testToString() {
+		assertNotNull(this.buildGraphIterable1().toString());
+	}
+
+	public void testMissingMisterRogers() {
+		boolean exCaught = false;
+		try {
+			for (GraphNode gn : new GraphIterable<GraphNode>(this.buildGraphRoot())) {
+				assertTrue(this.nodes.contains(gn));
+			}
+			fail();
+		} catch (RuntimeException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	private GraphIterator.MisterRogers<GraphNode> buildMisterRogers() {
+		return new GraphIterator.MisterRogers<GraphNode>() {
 			public Iterator<GraphNode> neighbors(GraphNode next) {
 				return next.neighbors();
 			}

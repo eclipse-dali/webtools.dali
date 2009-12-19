@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * @param <E> the type of elements returned by the iterator
  * 
  * @see Queue
+ * @see org.eclipse.jpt.utility.internal.iterables.QueueIterable
  */
 public class QueueIterator<E>
 	implements Iterator<E>

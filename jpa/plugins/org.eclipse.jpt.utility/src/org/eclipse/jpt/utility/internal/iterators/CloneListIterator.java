@@ -30,6 +30,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * Alternatively, a subclass can override the modification methods.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable
+ * @see org.eclipse.jpt.utility.internal.iterables.SnapshotCloneListIterable
  */
 public class CloneListIterator<E>
 	implements ListIterator<E>
@@ -275,6 +278,11 @@ public class CloneListIterator<E>
 			@Override
 			public String toString() {
 				return "CloneListIterator.Mutator.ReadOnly"; //$NON-NLS-1$
+			}
+			private static final long serialVersionUID = 1L;
+			private Object readResolve() {
+				// replace this object with the singleton
+				return INSTANCE;
 			}
 		}
 

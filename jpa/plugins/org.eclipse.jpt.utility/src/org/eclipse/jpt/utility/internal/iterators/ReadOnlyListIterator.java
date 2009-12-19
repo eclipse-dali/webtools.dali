@@ -11,7 +11,9 @@ package org.eclipse.jpt.utility.internal.iterators;
 
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * A <code>ReadOnlyListIterator</code> wraps another
@@ -21,7 +23,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * 	<li>{@link #add(Object)}
  * </ul>
  * 
- * @param <E> the type of elements returned by the iterator
+ * @param <E> the type of elements returned by the list iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.ReadOnlyListIterable
  */
 public class ReadOnlyListIterator<E>
 	implements ListIterator<E>
@@ -30,7 +34,7 @@ public class ReadOnlyListIterator<E>
 
 
 	/**
-	 * Construct an iterator on the specified list that
+	 * Construct a list iterator on the specified list that
 	 * disallows removes, sets, and adds.
 	 */
 	public ReadOnlyListIterator(List<? extends E> list) {
@@ -38,7 +42,15 @@ public class ReadOnlyListIterator<E>
 	}
 
 	/**
-	 * Construct an iterator on the specified list iterator that
+	 * Construct a list iterator on the specified list that
+	 * disallows removes, sets, and adds.
+	 */
+	public ReadOnlyListIterator(ListIterable<? extends E> listIterable) {
+		this(listIterable.iterator());
+	}
+
+	/**
+	 * Construct a list iterator on the specified list iterator that
 	 * disallows removes, sets, and adds.
 	 */
 	public ReadOnlyListIterator(ListIterator<? extends E> listIterator) {

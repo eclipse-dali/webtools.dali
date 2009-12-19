@@ -24,6 +24,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * comes to the element types of the nested iterators.
  * 
  * @param <E> the type of elements returned by the iterator
+ * 
+ * @see org.eclipse.jpt.utility.internal.iterables.ReadOnlyCompositeListIterable
  */
 public class ReadOnlyCompositeListIterator<E>
 	implements ListIterator<E>
