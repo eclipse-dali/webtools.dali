@@ -23,14 +23,13 @@ import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -55,12 +54,8 @@ public class SourceCollectionTable2_0Annotation
 	private final JoinColumnsAnnotationContainer joinColumnsContainer = new JoinColumnsAnnotationContainer();
 
 
-	public SourceCollectionTable2_0Annotation(JavaResourceNode parent, Member member) {
-		this(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-	}
-
-	public SourceCollectionTable2_0Annotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
+	public SourceCollectionTable2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
+		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -179,31 +174,14 @@ public class SourceCollectionTable2_0Annotation
 	}
 
 
-	// ********** NestableAnnotation implementation **********
-
-	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		CollectionTable2_0Annotation oldCollectionTable = (CollectionTable2_0Annotation) oldAnnotation;
-		for (JoinColumnAnnotation oldJoinColumn : CollectionTools.iterable(oldCollectionTable.joinColumns())) {
-			NestableJoinColumnAnnotation newJoinColumn = this.addJoinColumn(oldCollectionTable.indexOfJoinColumn(oldJoinColumn));
-			newJoinColumn.initializeFrom((NestableAnnotation) oldJoinColumn);
-		}
-	}
-
-	public void moveAnnotation(int newIndex) {
-		// the only place where a join table annotation is nested is in an
-		// association override; and that only nests a single join table, not an array
-		// of join tables; so #moveAnnotation(int) is never called
-		// TODO maybe NestableAnnotation should be split up;
-		// moving this method to something like IndexableAnnotation
-		throw new UnsupportedOperationException();
-	}
-
 	// ********** annotation containers **********
 
-	abstract class AbstractJoinColumnAnnotationContainer
-		implements AnnotationContainer<NestableJoinColumnAnnotation>
+
+	/**
+	 * adapt the AnnotationContainer interface to the collection table's join columns
+	 */
+	class JoinColumnsAnnotationContainer
+	implements AnnotationContainer<NestableJoinColumnAnnotation>
 	{
 		public String getContainerAnnotationName() {
 			return SourceCollectionTable2_0Annotation.this.getAnnotationName();
@@ -213,25 +191,12 @@ public class SourceCollectionTable2_0Annotation
 			return SourceCollectionTable2_0Annotation.this.getJdtAnnotation(astRoot);
 		}
 
-		public String getNestableAnnotationName() {
-			return JoinColumnAnnotation.ANNOTATION_NAME;
-		}
-
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}
-	}
-
-
-	/**
-	 * adapt the AnnotationContainer interface to the join table's join columns
-	 */
-	class JoinColumnsAnnotationContainer
-		extends AbstractJoinColumnAnnotationContainer
-	{
 		public String getElementName() {
 			return JPA2_0.COLLECTION_TABLE__JOIN_COLUMNS;
+		}
+
+		public String getNestableAnnotationName() {
+			return JoinColumnAnnotation.ANNOTATION_NAME;
 		}
 
 		public ListIterator<NestableJoinColumnAnnotation> nestedAnnotations() {
@@ -264,6 +229,11 @@ public class SourceCollectionTable2_0Annotation
 
 		public void nestedAnnotationRemoved(int index, NestableJoinColumnAnnotation nestedAnnotation) {
 			SourceCollectionTable2_0Annotation.this.joinColumnRemoved(index, nestedAnnotation);
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
 		}
 	}
 }

@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * javax.persistence.DiscriminatorColumn
@@ -44,7 +45,7 @@ public final class DiscriminatorColumnAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceDiscriminatorColumnAnnotation((JavaResourcePersistentType) parent, member, SourceDiscriminatorColumnAnnotation.DECLARATION_ANNOTATION_ADAPTER);
+		return new SourceDiscriminatorColumnAnnotation((JavaResourcePersistentType) parent, (Type) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {

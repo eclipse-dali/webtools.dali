@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -28,7 +28,7 @@ public class BinaryMapsId2_0Annotation
 	private String value;
 	
 	
-	public BinaryMapsId2_0Annotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public BinaryMapsId2_0Annotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}

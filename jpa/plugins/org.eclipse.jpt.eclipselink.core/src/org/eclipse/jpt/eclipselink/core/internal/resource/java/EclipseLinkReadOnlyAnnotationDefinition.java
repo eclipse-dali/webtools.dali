@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkReadOnlyAnnotation;
@@ -43,7 +44,7 @@ public class EclipseLinkReadOnlyAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceEclipseLinkReadOnlyAnnotation(parent, (Type) member);
+		return new SourceEclipseLinkReadOnlyAnnotation((JavaResourcePersistentType) parent, (Type) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public class EclipseLinkReadOnlyAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkReadOnlyAnnotation(parent, jdtAnnotation);
+		return new BinaryEclipseLinkReadOnlyAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

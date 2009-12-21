@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -39,7 +39,7 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	private String value;
 
 
-	public SourceEclipseLinkCustomizerAnnotation(JavaResourcePersistentMember parent, Type type) {
+	public SourceEclipseLinkCustomizerAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}

@@ -44,7 +44,7 @@ public final class TemporalAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceTemporalAnnotation(parent, (Attribute) member);
+		return new SourceTemporalAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -52,7 +52,7 @@ public final class TemporalAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryTemporalAnnotation(parent, jdtAnnotation);
+		return new BinaryTemporalAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

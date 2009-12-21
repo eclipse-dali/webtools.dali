@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkCustomizerAnnotation;
@@ -43,7 +44,7 @@ public class EclipseLinkCustomizerAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceEclipseLinkCustomizerAnnotation(parent, (Type) member);
+		return new SourceEclipseLinkCustomizerAnnotation((JavaResourcePersistentType) parent, (Type) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public class EclipseLinkCustomizerAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkCustomizerAnnotation(parent, jdtAnnotation);
+		return new BinaryEclipseLinkCustomizerAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

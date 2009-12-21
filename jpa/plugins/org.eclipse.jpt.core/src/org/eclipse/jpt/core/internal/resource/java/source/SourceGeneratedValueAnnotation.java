@@ -17,9 +17,10 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.GenerationType;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -42,10 +43,10 @@ public final class SourceGeneratedValueAnnotation
 	private String generator;
 	
 		
-	public SourceGeneratedValueAnnotation(JavaResourceNode parent, Member member) {
-		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, STRATEGY_ADAPTER);
-		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, GENERATOR_ADAPTER);
+	public SourceGeneratedValueAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
+		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
+		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, STRATEGY_ADAPTER);
+		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, GENERATOR_ADAPTER);
 	}
 	
 	public String getAnnotationName() {

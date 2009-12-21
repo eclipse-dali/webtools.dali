@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.internal.resource.java.source.SourceGeneratedValueAn
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
@@ -42,7 +44,7 @@ public final class GeneratedValueAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceGeneratedValueAnnotation(parent, member);
+		return new SourceGeneratedValueAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -50,7 +52,7 @@ public final class GeneratedValueAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryGeneratedValueAnnotation(parent, jdtAnnotation);
+		return new BinaryGeneratedValueAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 	
 	public String getAnnotationName() {

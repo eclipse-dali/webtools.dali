@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryOrderByAnnotatio
 import org.eclipse.jpt.core.internal.resource.java.source.SourceOrderByAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
@@ -43,7 +44,7 @@ public final class OrderByAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceOrderByAnnotation(parent, (Attribute) member);
+		return new SourceOrderByAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public final class OrderByAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryOrderByAnnotation(parent, jdtAnnotation);
+		return new BinaryOrderByAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

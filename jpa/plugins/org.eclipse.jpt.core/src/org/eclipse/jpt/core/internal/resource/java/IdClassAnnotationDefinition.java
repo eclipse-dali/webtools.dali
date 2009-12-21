@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
@@ -43,7 +44,7 @@ public final class IdClassAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceIdClassAnnotation(parent, (Type) member);
+		return new SourceIdClassAnnotation((JavaResourcePersistentType) parent, (Type) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public final class IdClassAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryIdClassAnnotation(parent, jdtAnnotation);
+		return new BinaryIdClassAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

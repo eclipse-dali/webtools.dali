@@ -44,7 +44,7 @@ public final class DiscriminatorValueAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceDiscriminatorValueAnnotation(parent, (Type) member);
+		return new SourceDiscriminatorValueAnnotation((JavaResourcePersistentType) parent, (Type) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -52,7 +52,7 @@ public final class DiscriminatorValueAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryDiscriminatorValueAnnotation(parent, jdtAnnotation);
+		return new BinaryDiscriminatorValueAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * javax.persistence.Table
@@ -34,8 +34,8 @@ public final class SourceTableAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__CATALOG);
 
 
-	public SourceTableAnnotation(JavaResourceNode parent, Member member) {
-		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceTableAnnotation(JavaResourcePersistentType parent, Type type) {
+		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
 	public String getAnnotationName() {

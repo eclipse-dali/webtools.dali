@@ -15,11 +15,13 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceCollectionT
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.JoinTable
+ * javax.persistence.CollectionTable
  */
 public final class CollectionTable2_0AnnotationDefinition
 	implements AnnotationDefinition
@@ -42,7 +44,7 @@ public final class CollectionTable2_0AnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceCollectionTable2_0Annotation(parent, member);
+		return new SourceCollectionTable2_0Annotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -50,7 +52,7 @@ public final class CollectionTable2_0AnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryCollectionTable2_0Annotation(parent, jdtAnnotation);
+		return new BinaryCollectionTable2_0Annotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

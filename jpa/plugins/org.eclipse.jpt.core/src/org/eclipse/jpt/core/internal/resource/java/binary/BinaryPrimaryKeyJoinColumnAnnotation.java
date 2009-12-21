@@ -42,7 +42,7 @@ public final class BinaryPrimaryKeyJoinColumnAnnotation
 	}
 
 
-	// ********** AbstractNamedColumn implementation **********
+	// ********** BinaryNamedColumnAnnotation implementation **********
 
 	@Override
 	protected String getNameElementName() {
@@ -55,7 +55,7 @@ public final class BinaryPrimaryKeyJoinColumnAnnotation
 	}
 
 
-	// ********** PrimaryKeyJoinColumn implementation **********
+	// ********** PrimaryKeyJoinColumnAnnotation implementation **********
 
 	// ***** referenced column name
 	public String getReferencedColumnName() {

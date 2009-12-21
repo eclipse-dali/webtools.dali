@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceMapsId2_0An
 import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -46,7 +47,7 @@ public class MapsId2_0AnnotationDefinition implements AnnotationDefinition
 	
 	
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceMapsId2_0Annotation(parent, (Attribute) member);
+		return new SourceMapsId2_0Annotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -54,7 +55,7 @@ public class MapsId2_0AnnotationDefinition implements AnnotationDefinition
 	}
 	
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryMapsId2_0Annotation(parent, jdtAnnotation);
+		return new BinaryMapsId2_0Annotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 	
 	public String getAnnotationName() {

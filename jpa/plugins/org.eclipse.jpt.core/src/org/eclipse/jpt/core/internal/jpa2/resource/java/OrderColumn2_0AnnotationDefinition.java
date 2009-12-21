@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceOrderColumn
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
@@ -42,7 +44,7 @@ public final class OrderColumn2_0AnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceOrderColumn2_0Annotation(parent, member);
+		return new SourceOrderColumn2_0Annotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -50,7 +52,7 @@ public final class OrderColumn2_0AnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryOrderColumn2_0Annotation(parent, jdtAnnotation);
+		return new BinaryOrderColumn2_0Annotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

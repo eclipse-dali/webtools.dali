@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -26,7 +26,7 @@ public final class BinaryMapKeyAnnotation
 	private String name;
 
 
-	public BinaryMapKeyAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryMapKeyAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 	}

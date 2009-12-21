@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -26,7 +26,7 @@ public final class BinaryIdClassAnnotation
 	private String value;
 
 
-	public BinaryIdClassAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryIdClassAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}

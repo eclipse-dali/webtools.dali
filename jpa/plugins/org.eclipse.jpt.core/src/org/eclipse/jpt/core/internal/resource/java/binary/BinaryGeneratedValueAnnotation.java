@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.GenerationType;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -28,7 +28,7 @@ public final class BinaryGeneratedValueAnnotation
 	private String generator;
 
 
-	public BinaryGeneratedValueAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryGeneratedValueAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.strategy = this.buildStrategy();
 		this.generator = this.buildGenerator();

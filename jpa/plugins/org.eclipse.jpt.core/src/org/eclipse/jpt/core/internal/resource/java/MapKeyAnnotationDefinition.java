@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryMapKeyAnnotation
 import org.eclipse.jpt.core.internal.resource.java.source.SourceMapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
@@ -43,7 +44,7 @@ public final class MapKeyAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceMapKeyAnnotation(parent, (Attribute) member);
+		return new SourceMapKeyAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public final class MapKeyAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryMapKeyAnnotation(parent, jdtAnnotation);
+		return new BinaryMapKeyAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

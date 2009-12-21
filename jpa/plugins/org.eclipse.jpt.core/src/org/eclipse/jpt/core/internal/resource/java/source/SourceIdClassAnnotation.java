@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -40,7 +40,7 @@ public final class SourceIdClassAnnotation
 	private String fullyQualifiedClassName;
 
 
-	public SourceIdClassAnnotation(JavaResourceNode parent, Type type) {
+	public SourceIdClassAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}

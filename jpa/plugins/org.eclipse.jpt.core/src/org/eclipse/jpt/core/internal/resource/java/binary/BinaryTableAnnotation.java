@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 
 /**
@@ -21,7 +21,7 @@ public final class BinaryTableAnnotation
 	extends BinaryBaseTableAnnotation
 	implements TableAnnotation
 {
-	public BinaryTableAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryTableAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

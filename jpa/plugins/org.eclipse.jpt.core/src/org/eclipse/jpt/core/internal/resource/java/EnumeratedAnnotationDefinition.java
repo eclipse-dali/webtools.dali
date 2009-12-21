@@ -44,7 +44,7 @@ public final class EnumeratedAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceEnumeratedAnnotation(parent, (Attribute) member);
+		return new SourceEnumeratedAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -52,7 +52,7 @@ public final class EnumeratedAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryEnumeratedAnnotation(parent, jdtAnnotation);
+		return new BinaryEnumeratedAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 	
 	public String getAnnotationName() {

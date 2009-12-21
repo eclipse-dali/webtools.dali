@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryNamedColumnAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -29,7 +29,7 @@ public class BinaryOrderColumn2_0Annotation
 	private Boolean updatable;
 	
 
-	public BinaryOrderColumn2_0Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryOrderColumn2_0Annotation(JavaResourcePersistentAttribute  parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.nullable = this.buildNullable();
 		this.insertable = this.buildInsertable();
@@ -47,6 +47,9 @@ public class BinaryOrderColumn2_0Annotation
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
+	
+	
+	//************* BinaryNamedColumnAnnotation implementation *************
 	
 	@Override
 	protected String getColumnDefinitionElementName() {

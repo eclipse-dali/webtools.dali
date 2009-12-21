@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAd
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
@@ -43,7 +43,7 @@ public class SourceMapsId2_0Annotation
 	private String value;
 	
 	
-	public SourceMapsId2_0Annotation(JavaResourcePersistentMember parent, Attribute attribute) {
+	public SourceMapsId2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
 	}

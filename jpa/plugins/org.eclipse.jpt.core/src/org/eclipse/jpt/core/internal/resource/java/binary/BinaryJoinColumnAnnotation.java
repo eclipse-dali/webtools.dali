@@ -42,7 +42,7 @@ public final class BinaryJoinColumnAnnotation
 	}
 
 
-	// ********** JavaSourceNamedColumnAnnotation implementation **********
+	// ********** BinaryNamedColumnAnnotation implementation **********
 
 	@Override
 	protected String getNameElementName() {
@@ -55,30 +55,30 @@ public final class BinaryJoinColumnAnnotation
 	}
 
 
-	// ********** JavaSourceNamedColumnAnnotation implementation **********
+	// ********** BinaryBaseColumnAnnotation implementation **********
 
 	@Override
-	String getTableElementName() {
+	protected String getTableElementName() {
 		return JPA.JOIN_COLUMN__TABLE;
 	}
 
 	@Override
-	String getUniqueElementName() {
+	protected String getUniqueElementName() {
 		return JPA.JOIN_COLUMN__UNIQUE;
 	}
 
 	@Override
-	String getNullableElementName() {
+	protected String getNullableElementName() {
 		return JPA.JOIN_COLUMN__NULLABLE;
 	}
 
 	@Override
-	String getInsertableElementName() {
+	protected String getInsertableElementName() {
 		return JPA.JOIN_COLUMN__INSERTABLE;
 	}
 
 	@Override
-	String getUpdatableElementName() {
+	protected String getUpdatableElementName() {
 		return JPA.JOIN_COLUMN__UPDATABLE;
 	}
 

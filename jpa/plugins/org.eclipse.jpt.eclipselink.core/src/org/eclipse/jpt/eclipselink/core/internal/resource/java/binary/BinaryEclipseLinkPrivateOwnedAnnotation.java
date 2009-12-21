@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 
 /**
@@ -22,7 +22,7 @@ public final class BinaryEclipseLinkPrivateOwnedAnnotation
 	implements EclipseLinkPrivateOwnedAnnotation
 {
 
-	public BinaryEclipseLinkPrivateOwnedAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryEclipseLinkPrivateOwnedAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

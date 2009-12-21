@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -26,9 +26,15 @@ public final class BinaryOrderByAnnotation
 	private String value;
 
 
-	public BinaryOrderByAnnotation(JavaResourceNode parent, IAnnotation annotation) {
+	public BinaryOrderByAnnotation(JavaResourcePersistentAttribute parent, IAnnotation annotation) {
 		super(parent, annotation);
 		this.value = this.buildValue();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		this.setValue_(this.buildValue());
 	}
 
 	public String getAnnotationName() {

@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * javax.persistence.Table
@@ -43,7 +44,7 @@ public final class TableAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceTableAnnotation(parent, member);
+		return new SourceTableAnnotation((JavaResourcePersistentType) parent, (Type) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public final class TableAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryTableAnnotation(parent, jdtAnnotation);
+		return new BinaryTableAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

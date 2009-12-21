@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -43,7 +44,7 @@ public class EclipseLinkPrivateOwnedAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceEclipseLinkPrivateOwnedAnnotation(parent, (Attribute) member);
+		return new SourceEclipseLinkPrivateOwnedAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public class EclipseLinkPrivateOwnedAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryEclipseLinkPrivateOwnedAnnotation(parent, jdtAnnotation);
+		return new BinaryEclipseLinkPrivateOwnedAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

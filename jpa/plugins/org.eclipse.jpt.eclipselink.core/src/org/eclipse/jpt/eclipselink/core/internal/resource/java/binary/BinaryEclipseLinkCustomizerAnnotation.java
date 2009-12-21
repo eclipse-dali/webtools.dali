@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
@@ -27,7 +27,7 @@ public final class BinaryEclipseLinkCustomizerAnnotation
 	private String value;
 
 
-	public BinaryEclipseLinkCustomizerAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public BinaryEclipseLinkCustomizerAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}

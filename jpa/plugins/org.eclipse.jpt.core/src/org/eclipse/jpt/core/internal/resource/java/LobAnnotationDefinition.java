@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryLobAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceLobAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
@@ -43,7 +44,7 @@ public final class LobAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceLobAnnotation(parent, (Attribute) member);
+		return new SourceLobAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -51,7 +52,7 @@ public final class LobAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryLobAnnotation(parent, jdtAnnotation);
+		return new BinaryLobAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
