@@ -20,13 +20,13 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class CollectionTable2_0Tests extends JavaResourceModel2_0TestCase {
+public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 	
 	private static final String TABLE_NAME = "MY_TABLE";
 	private static final String SCHEMA_NAME = "MY_SCHEMA";
 	private static final String CATALOG_NAME = "MY_CATALOG";
 	
-	public CollectionTable2_0Tests(String name) {
+	public CollectionTable2_0AnnotationTests(String name) {
 		super(name);
 	}
 	

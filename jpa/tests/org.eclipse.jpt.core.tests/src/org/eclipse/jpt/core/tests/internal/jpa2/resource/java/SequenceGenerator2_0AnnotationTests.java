@@ -24,12 +24,12 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
  *  SequenceGenerator2_0Tests
  */
 @SuppressWarnings("nls")
-public class SequenceGenerator2_0Tests extends JavaResourceModel2_0TestCase {
+public class SequenceGenerator2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 
 	private static final String GENERATOR_CATALOG = "TEST_CATALOG";
 	private static final String GENERATOR_SCHEMA = "TEST_SCHEMA";
 
-	public SequenceGenerator2_0Tests(String name) {
+	public SequenceGenerator2_0AnnotationTests(String name) {
 		super(name);
 	}
 

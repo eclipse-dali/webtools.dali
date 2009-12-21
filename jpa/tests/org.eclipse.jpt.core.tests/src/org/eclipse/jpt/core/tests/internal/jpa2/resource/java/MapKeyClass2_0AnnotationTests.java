@@ -18,11 +18,11 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class MapKeyClass2_0Tests extends JavaResourceModel2_0TestCase {
+public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 
 	private static final String MAP_KEY_CLASS_VALUE = "MyClass";
 	
-	public MapKeyClass2_0Tests(String name) {
+	public MapKeyClass2_0AnnotationTests(String name) {
 		super(name);
 	}
 	
