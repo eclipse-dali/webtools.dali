@@ -13,19 +13,15 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNamedColumnAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
-import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * javax.persistence.OrderColumn
@@ -34,29 +30,22 @@ public class SourceOrderColumn2_0Annotation
 	extends SourceNamedColumnAnnotation
 	implements OrderColumn2_0Annotation
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	final DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
-	final AnnotationElementAdapter<Boolean> nullableAdapter;
-	Boolean nullable;
+	private final DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
+	private final AnnotationElementAdapter<Boolean> nullableAdapter;
+	private Boolean nullable;
 
-	final DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
-	final AnnotationElementAdapter<Boolean> insertableAdapter;
-	Boolean insertable;
+	private final DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
+	private final AnnotationElementAdapter<Boolean> insertableAdapter;
+	private Boolean insertable;
 
-	final DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
-	final AnnotationElementAdapter<Boolean> updatableAdapter;
-	Boolean updatable;
+	private final DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
+	private final AnnotationElementAdapter<Boolean> updatableAdapter;
+	private Boolean updatable;
 
-	public SourceOrderColumn2_0Annotation(JavaResourceNode parent, Member member) {
-		this(parent, member, new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME));
-	}
-	
-	SourceOrderColumn2_0Annotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
-	}
-
-	SourceOrderColumn2_0Annotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, member, daa, annotationAdapter);
+	public SourceOrderColumn2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
+		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.nullableDeclarationAdapter = this.buildBooleanElementAdapter(this.getNullableElementName());
 		this.nullableAdapter = this.buildShortCircuitBooleanElementAdapter(this.nullableDeclarationAdapter);
 		this.insertableDeclarationAdapter = this.buildBooleanElementAdapter(this.getInsertableElementName());
@@ -97,12 +86,12 @@ public class SourceOrderColumn2_0Annotation
 	
 	@Override
 	protected String getNameElementName() {
-		return JPA.COLUMN__NAME;
+		return JPA2_0.ORDER_COLUMN__NAME;
 	}
 	
 	@Override
 	protected String getColumnDefinitionElementName() {
-		return JPA.COLUMN__COLUMN_DEFINITION;
+		return JPA2_0.ORDER_COLUMN__COLUMN_DEFINITION;
 	}
 	//************* OrderColumn2_0Annotation implementation *************
 
@@ -130,7 +119,7 @@ public class SourceOrderColumn2_0Annotation
 	}
 	
 	String getNullableElementName() {
-		return JPA.COLUMN__NULLABLE;
+		return JPA2_0.ORDER_COLUMN__NULLABLE;
 	}
 
 	// ***** insertable
@@ -157,7 +146,7 @@ public class SourceOrderColumn2_0Annotation
 	}
 	
 	String getInsertableElementName() {
-		return JPA.COLUMN__INSERTABLE;
+		return JPA2_0.ORDER_COLUMN__INSERTABLE;
 	}
 
 	// ***** updatable
@@ -184,18 +173,6 @@ public class SourceOrderColumn2_0Annotation
 	}
 	
 	String getUpdatableElementName() {
-		return JPA.COLUMN__UPDATABLE;
-	}
-
-
-	//************* NestableAnnotation implementation *************
-
-	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		BaseColumnAnnotation oldColumn = (BaseColumnAnnotation) oldAnnotation;
-		this.setNullable(oldColumn.getNullable());
-		this.setInsertable(oldColumn.getInsertable());
-		this.setUpdatable(oldColumn.getUpdatable());
+		return JPA2_0.ORDER_COLUMN__UPDATABLE;
 	}
 }

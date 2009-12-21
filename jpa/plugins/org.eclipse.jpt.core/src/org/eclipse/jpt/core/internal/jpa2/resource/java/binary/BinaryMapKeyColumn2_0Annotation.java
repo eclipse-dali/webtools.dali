@@ -7,26 +7,29 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java.binary;
+package org.eclipse.jpt.core.internal.jpa2.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinaryCompleteColumnAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
- * javax.persistence.Column
+ * javax.persistence.MapKeyColumn
  */
-public final class BinaryColumnAnnotation
+public final class BinaryMapKeyColumn2_0Annotation
 	extends BinaryCompleteColumnAnnotation
+	implements MapKeyColumn2_0Annotation
 {
 
-	public BinaryColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryMapKeyColumn2_0Annotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
 	@Override
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return MapKeyColumn2_0Annotation.ANNOTATION_NAME;
 	}
 
 
@@ -34,12 +37,12 @@ public final class BinaryColumnAnnotation
 
 	@Override
 	protected String getNameElementName() {
-		return JPA.COLUMN__NAME;
+		return JPA2_0.MAP_KEY_COLUMN__NAME;
 	}
 
 	@Override
 	protected String getColumnDefinitionElementName() {
-		return JPA.COLUMN__COLUMN_DEFINITION;
+		return JPA2_0.MAP_KEY_COLUMN__COLUMN_DEFINITION;
 	}
 
 
@@ -47,44 +50,44 @@ public final class BinaryColumnAnnotation
 
 	@Override
 	protected String getTableElementName() {
-		return JPA.COLUMN__TABLE;
+		return JPA2_0.MAP_KEY_COLUMN__TABLE;
 	}
 
 	@Override
 	protected String getUniqueElementName() {
-		return JPA.COLUMN__UNIQUE;
+		return JPA2_0.MAP_KEY_COLUMN__UNIQUE;
 	}
 
 	@Override
 	protected String getNullableElementName() {
-		return JPA.COLUMN__NULLABLE;
+		return JPA2_0.MAP_KEY_COLUMN__NULLABLE;
 	}
 
 	@Override
 	protected String getInsertableElementName() {
-		return JPA.COLUMN__INSERTABLE;
+		return JPA2_0.MAP_KEY_COLUMN__INSERTABLE;
 	}
 
 	@Override
 	protected String getUpdatableElementName() {
-		return JPA.COLUMN__UPDATABLE;
+		return JPA2_0.MAP_KEY_COLUMN__UPDATABLE;
 	}
-	
+
 	
 	// ********** BinaryCompleteColumnAnnotation implementation **********
-	
+
 	@Override
 	protected String getLengthElementName() {
-		return JPA.COLUMN__LENGTH;
+		return JPA2_0.MAP_KEY_COLUMN__LENGTH;
 	}
 	
 	@Override
 	protected String getPrecisionElementName() {
-		return JPA.COLUMN__PRECISION;
+		return JPA2_0.MAP_KEY_COLUMN__PRECISION;
 	}
 	
 	@Override
 	protected String getScaleElementName() {
-		return JPA.COLUMN__SCALE;
+		return JPA2_0.MAP_KEY_COLUMN__SCALE;
 	}
 }

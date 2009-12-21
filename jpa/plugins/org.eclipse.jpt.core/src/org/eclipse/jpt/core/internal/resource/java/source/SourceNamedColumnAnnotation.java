@@ -44,7 +44,7 @@ public abstract class SourceNamedColumnAnnotation
 	private String columnDefinition;
 
 
-	SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
+	protected SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 	
@@ -64,7 +64,7 @@ public abstract class SourceNamedColumnAnnotation
 		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(this.daa, elementName, BooleanExpressionConverter.instance());
 	}
 
-	DeclarationAnnotationElementAdapter<Integer> buildIntegerElementAdapter(String elementName) {
+	protected DeclarationAnnotationElementAdapter<Integer> buildIntegerElementAdapter(String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<Integer>(this.daa, elementName, NumberIntegerExpressionConverter.instance());
 	}
 
@@ -76,7 +76,7 @@ public abstract class SourceNamedColumnAnnotation
 		return new ShortCircuitAnnotationElementAdapter<Boolean>(this.member, daea);
 	}
 
-	AnnotationElementAdapter<Integer> buildShortCircuitIntegerElementAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
+	protected AnnotationElementAdapter<Integer> buildShortCircuitIntegerElementAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
 		return new ShortCircuitAnnotationElementAdapter<Integer>(this.member, daea);
 	}
 

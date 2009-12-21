@@ -25,36 +25,36 @@ import org.eclipse.jpt.core.utility.jdt.Member;
  * javax.persistence.Column
  * javax.persistence.JoinColumn
  */
-abstract class SourceBaseColumnAnnotation
+public abstract class SourceBaseColumnAnnotation
 	extends SourceNamedColumnAnnotation
 	implements BaseColumnAnnotation
 {
-	final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
-	final AnnotationElementAdapter<String> tableAdapter;
-	String table;
+	protected final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
+	protected final AnnotationElementAdapter<String> tableAdapter;
+	protected String table;
 
-	final DeclarationAnnotationElementAdapter<Boolean> uniqueDeclarationAdapter;
-	final AnnotationElementAdapter<Boolean> uniqueAdapter;
-	Boolean unique;
+	protected final DeclarationAnnotationElementAdapter<Boolean> uniqueDeclarationAdapter;
+	protected final AnnotationElementAdapter<Boolean> uniqueAdapter;
+	protected Boolean unique;
 
-	final DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
-	final AnnotationElementAdapter<Boolean> nullableAdapter;
-	Boolean nullable;
+	protected final DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
+	protected final AnnotationElementAdapter<Boolean> nullableAdapter;
+	protected Boolean nullable;
 
-	final DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
-	final AnnotationElementAdapter<Boolean> insertableAdapter;
-	Boolean insertable;
+	protected final DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
+	protected final AnnotationElementAdapter<Boolean> insertableAdapter;
+	protected Boolean insertable;
 
-	final DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
-	final AnnotationElementAdapter<Boolean> updatableAdapter;
-	Boolean updatable;
+	protected final DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
+	protected final AnnotationElementAdapter<Boolean> updatableAdapter;
+	protected Boolean updatable;
 
 
-	SourceBaseColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
+	protected SourceBaseColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 	
-	SourceBaseColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceBaseColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.getTableElementName());
 		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
@@ -118,7 +118,7 @@ abstract class SourceBaseColumnAnnotation
 		return this.elementTouches(this.tableDeclarationAdapter, pos, astRoot);
 	}
 
-	abstract String getTableElementName();
+	protected abstract String getTableElementName();
 
 	// ***** unique
 	public Boolean getUnique() {
@@ -143,7 +143,7 @@ abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.uniqueDeclarationAdapter, astRoot);
 	}
 	
-	abstract String getUniqueElementName();
+	protected abstract String getUniqueElementName();
 
 	// ***** nullable
 	public Boolean getNullable() {
@@ -168,7 +168,7 @@ abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.nullableDeclarationAdapter, astRoot);
 	}
 	
-	abstract String getNullableElementName();
+	protected abstract String getNullableElementName();
 
 	// ***** insertable
 	public Boolean getInsertable() {
@@ -193,7 +193,7 @@ abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.insertableDeclarationAdapter, astRoot);
 	}
 	
-	abstract String getInsertableElementName();
+	protected abstract String getInsertableElementName();
 
 	// ***** updatable
 	public Boolean getUpdatable() {
@@ -218,7 +218,7 @@ abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.updatableDeclarationAdapter, astRoot);
 	}
 	
-	abstract String getUpdatableElementName();
+	protected abstract String getUpdatableElementName();
 
 
 	//************* NestableAnnotation implementation *************

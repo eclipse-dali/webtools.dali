@@ -20,6 +20,9 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.Cacheable2_0AnnotationDe
 import org.eclipse.jpt.core.internal.jpa2.resource.java.CollectionTable2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapKeyClass2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.MapKeyColumn2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.MapKeyEnumerated2_0AnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.MapKeyTemporal2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQueries2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQuery2_0AnnotationDefinition;
@@ -152,6 +155,9 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(MapsId2_0AnnotationDefinition.instance());
 		definitions.add(MapKeyAnnotationDefinition.instance());
 		definitions.add(MapKeyClass2_0AnnotationDefinition.instance());
+		definitions.add(MapKeyColumn2_0AnnotationDefinition.instance());
+		definitions.add(MapKeyTemporal2_0AnnotationDefinition.instance());
+		definitions.add(MapKeyEnumerated2_0AnnotationDefinition.instance());
 		definitions.add(OneToMany2_0AnnotationDefinition.instance());
 		definitions.add(OneToOne2_0AnnotationDefinition.instance());
 		definitions.add(OrderByAnnotationDefinition.instance());

@@ -65,7 +65,7 @@ public interface JPA2_0
 		String MAP_KEY_COLUMN__SCALE = "scale";
 
 	String MAP_KEY_ENUMERATED = PACKAGE_ + "MapKeyEnumerated";
-		String MAP_KEY_ENUMERATED__VALUE = "fetch";
+		String MAP_KEY_ENUMERATED__VALUE = "value";
 		
 	String MAP_KEY_JOIN_COLUMN = PACKAGE_ + "MapKeyJoinColumn";
 		String MAP_KEY_JOIN_COLUMN__NAME = "name";
@@ -81,7 +81,7 @@ public interface JPA2_0
 		String MAP_KEY_JOIN_COLUMNS__VALUE = "value";
 
 	String MAP_KEY_TEMPORAL = PACKAGE_ + "MapKeyTemporal";
-		String MAP_KEY_TEMPORAL__VALUE = "fetch";
+		String MAP_KEY_TEMPORAL__VALUE = "value";
 
 	String MAPS_ID = PACKAGE_ + "MapsId";
 		String MAPS_ID__VALUE = "value";
@@ -96,6 +96,11 @@ public interface JPA2_0
 		String ONE_TO_ONE__ORPHAN_REMOVAL = "orphanRemoval";
 
 	String ORDER_COLUMN = PACKAGE_ + "OrderColumn";
+		String ORDER_COLUMN__NAME = "name";
+		String ORDER_COLUMN__NULLABLE = "nullable";
+		String ORDER_COLUMN__INSERTABLE = "insertable";
+		String ORDER_COLUMN__UPDATABLE = "updatable";
+		String ORDER_COLUMN__COLUMN_DEFINITION = "columnDefinition";
 
 	// SEQUENCE_GENERATOR
 		String SEQUENCE_GENERATOR__CATALOG = "catalog";

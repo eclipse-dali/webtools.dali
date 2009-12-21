@@ -7,31 +7,32 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java.binary;
+package org.eclipse.jpt.core.internal.jpa2.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
-import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinaryBaseTemporalAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
- * javax.persistence.Enumerated
+ * javax.persistence.MapKeyTemporal
  */
-public final class BinaryEnumeratedAnnotation
-	extends BinaryBaseEnumeratedAnnotation
-	implements EnumeratedAnnotation
+public final class BinaryMapKeyTemporal2_0Annotation
+	extends BinaryBaseTemporalAnnotation
+	implements MapKeyTemporal2_0Annotation
 {
-
-	public BinaryEnumeratedAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+	
+	public BinaryMapKeyTemporal2_0Annotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return MapKeyTemporal2_0Annotation.ANNOTATION_NAME;
 	}
 	
 	@Override
 	protected String getValueElementName() {
-		return JPA.ENUMERATED__VALUE;
+		return JPA2_0.MAP_KEY_TEMPORAL__VALUE;
 	}
 }

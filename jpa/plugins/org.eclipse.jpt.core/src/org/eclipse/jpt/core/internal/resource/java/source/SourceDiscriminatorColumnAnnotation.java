@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * javax.persistence.DiscriminatorColumn
@@ -30,7 +30,7 @@ public final class SourceDiscriminatorColumnAnnotation
 	extends SourceNamedColumnAnnotation
 	implements DiscriminatorColumnAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
 	private final AnnotationElementAdapter<String> discriminatorTypeAdapter;
@@ -41,9 +41,9 @@ public final class SourceDiscriminatorColumnAnnotation
 	private Integer length;
 
 
-	public SourceDiscriminatorColumnAnnotation(JavaResourcePersistentType parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
-		this.discriminatorTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, DISCRIMINATOR_TYPE_ADAPTER);
+	public SourceDiscriminatorColumnAnnotation(JavaResourcePersistentType parent, Type type) {
+		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
+		this.discriminatorTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, DISCRIMINATOR_TYPE_ADAPTER);
 		this.lengthDeclarationAdapter = this.buildIntegerElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
 		this.lengthAdapter = this.buildShortCircuitIntegerElementAdapter(this.lengthDeclarationAdapter);
 	}

@@ -44,7 +44,7 @@ public final class BinaryDiscriminatorColumnAnnotation
 	}
 
 
-	// ********** AbstractNamedColumn implementation **********
+	// ********** BinaryNamedColumnAnnotation implementation **********
 
 	@Override
 	protected String getNameElementName() {
@@ -57,7 +57,7 @@ public final class BinaryDiscriminatorColumnAnnotation
 	}
 
 
-	// ********** DiscriminatorColumn implementation **********
+	// ********** DiscriminatorColumnAnnotation implementation **********
 
 	// ***** discriminator type
 	public DiscriminatorType getDiscriminatorType() {

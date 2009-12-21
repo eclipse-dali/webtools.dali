@@ -21,12 +21,15 @@ public class JavaResource2_0Tests {
 		suite.addTestSuite(AssociationOverride2_0Tests.class);
 		suite.addTestSuite(AssociationOverrides2_0Tests.class);
 		suite.addTestSuite(Cacheable2_0AnnotationTests.class);
-		suite.addTestSuite(CollectionTable2_0Tests.class);
+		suite.addTestSuite(CollectionTable2_0AnnotationTests.class);
 		suite.addTestSuite(ElementCollection2_0AnnotationTests.class);
-		suite.addTestSuite(MapKeyClass2_0Tests.class);
+		suite.addTestSuite(MapKeyClass2_0AnnotationTests.class);
+		suite.addTestSuite(MapKeyColumn2_0AnnotationTests.class);
+		suite.addTestSuite(MapKeyEnumerated2_0AnnotationTests.class);
+		suite.addTestSuite(MapKeyTemporal2_0AnnotationTests.class);
 		suite.addTestSuite(MapsId2_0AnnotationTests.class);
 		suite.addTestSuite(OrderColumn2_0AnnotationTests.class);
-		suite.addTestSuite(SequenceGenerator2_0Tests.class);
+		suite.addTestSuite(SequenceGenerator2_0AnnotationTests.class);
 			
 		return suite;
 	}

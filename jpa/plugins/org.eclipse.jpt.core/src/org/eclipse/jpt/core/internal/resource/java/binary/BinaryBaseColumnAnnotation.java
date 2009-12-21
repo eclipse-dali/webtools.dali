@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * javax.persistence.Column
  * javax.persistence.JoinColumn
  */
-abstract class BinaryBaseColumnAnnotation
+public abstract class BinaryBaseColumnAnnotation
 	extends BinaryNamedColumnAnnotation
 	implements BaseColumnAnnotation
 {
@@ -30,7 +30,7 @@ abstract class BinaryBaseColumnAnnotation
 	private Boolean updatable;
 	
 
-	BinaryBaseColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryBaseColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.table = this.buildTable();
 		this.unique = this.buildUnique();
@@ -71,7 +71,7 @@ abstract class BinaryBaseColumnAnnotation
 		return (String) this.getJdtMemberValue(this.getTableElementName());
 	}
 	
-	abstract String getTableElementName();
+	protected abstract String getTableElementName();
 
 	public TextRange getTableTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -100,7 +100,7 @@ abstract class BinaryBaseColumnAnnotation
 		return (Boolean) this.getJdtMemberValue(this.getUniqueElementName());
 	}
 	
-	abstract String getUniqueElementName();
+	protected abstract String getUniqueElementName();
 
 	public TextRange getUniqueTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -125,7 +125,7 @@ abstract class BinaryBaseColumnAnnotation
 		return (Boolean) this.getJdtMemberValue(this.getNullableElementName());
 	}
 	
-	abstract String getNullableElementName();
+	protected abstract String getNullableElementName();
 
 	public TextRange getNullableTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -150,7 +150,7 @@ abstract class BinaryBaseColumnAnnotation
 		return (Boolean) this.getJdtMemberValue(this.getInsertableElementName());
 	}
 	
-	abstract String getInsertableElementName();
+	protected abstract String getInsertableElementName();
 
 	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
@@ -175,7 +175,7 @@ abstract class BinaryBaseColumnAnnotation
 		return (Boolean) this.getJdtMemberValue(this.getUpdatableElementName());
 	}
 
-	abstract String getUpdatableElementName();
+	protected abstract String getUpdatableElementName();
 
 	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
