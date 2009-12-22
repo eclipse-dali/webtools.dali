@@ -26,6 +26,8 @@ public class JavaResource2_0Tests {
 		suite.addTestSuite(MapKeyClass2_0AnnotationTests.class);
 		suite.addTestSuite(MapKeyColumn2_0AnnotationTests.class);
 		suite.addTestSuite(MapKeyEnumerated2_0AnnotationTests.class);
+		suite.addTestSuite(MapKeyJoinColumn2_0AnnotationTests.class);
+		suite.addTestSuite(MapKeyJoinColumns2_0AnnotationTests.class);
 		suite.addTestSuite(MapKeyTemporal2_0AnnotationTests.class);
 		suite.addTestSuite(MapsId2_0AnnotationTests.class);
 		suite.addTestSuite(OrderColumn2_0AnnotationTests.class);

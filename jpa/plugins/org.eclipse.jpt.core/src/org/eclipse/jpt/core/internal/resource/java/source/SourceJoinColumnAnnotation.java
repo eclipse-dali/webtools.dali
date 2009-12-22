@@ -9,21 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -32,20 +26,14 @@ import org.eclipse.jpt.core.utility.jdt.Member;
  * javax.persistence.JoinColumn
  */
 public final class SourceJoinColumnAnnotation
-	extends SourceBaseColumnAnnotation
+	extends SourceBaseJoinColumnAnnotation
 	implements NestableJoinColumnAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
-	private final AnnotationElementAdapter<String> referencedColumnNameAdapter;
-	private String referencedColumnName;
-
 
 	public SourceJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.referencedColumnNameDeclarationAdapter = this.buildStringElementAdapter(JPA.JOIN_COLUMN__REFERENCED_COLUMN_NAME);
-		this.referencedColumnNameAdapter = this.buildShortCircuitElementAdapter(this.referencedColumnNameDeclarationAdapter);
 	}
 
 	public SourceJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
@@ -60,20 +48,7 @@ public final class SourceJoinColumnAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.referencedColumnName = this.buildReferencedColumnName(astRoot);
-	}
-
-	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setReferencedColumnName(this.buildReferencedColumnName(astRoot));
-	}
-
-
-	// ********** JavaSourceNamedColumnAnnotation implementation **********
+	// ********** SourceNamedColumnAnnotation implementation **********
 
 	@Override
 	protected String getNameElementName() {
@@ -86,7 +61,7 @@ public final class SourceJoinColumnAnnotation
 	}
 
 
-	// ********** JavaSourceNamedColumnAnnotation implementation **********
+	// ********** SourceBaseColumnAnnotation implementation **********
 
 	@Override
 	protected String getTableElementName() {
@@ -114,51 +89,11 @@ public final class SourceJoinColumnAnnotation
 	}
 
 
-	//************ JoinColumn implementation ***************
-
-	// referenced column name
-	public String getReferencedColumnName() {
-		return this.referencedColumnName;
-	}
-
-	public void setReferencedColumnName(String referencedColumnName) {
-		if (this.attributeValueHasNotChanged(this.referencedColumnName, referencedColumnName)) {
-			return;
-		}
-		String old = this.referencedColumnName;
-		this.referencedColumnName = referencedColumnName;
-		this.referencedColumnNameAdapter.setValue(referencedColumnName);
-		this.firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, old, referencedColumnName);
-	}
-
-	private String buildReferencedColumnName(CompilationUnit astRoot) {
-		return this.referencedColumnNameAdapter.getValue(astRoot);
-	}
-
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
-	}
-
-	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
-	}
-
-
-	 // ********** NestableAnnotation implementation **********
+	// ********** SourceBaseJoinColumnAnnotation implementation **********
 
 	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		JoinColumnAnnotation oldJoinColumn = (JoinColumnAnnotation) oldAnnotation;
-		this.setReferencedColumnName(oldJoinColumn.getReferencedColumnName());
-	}
-
-	public void moveAnnotation(int newIndex) {
-		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
-	}
-
-	protected IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
+	protected String getReferencedColumnNameElementName() {
+		return JPA.JOIN_COLUMN__REFERENCED_COLUMN_NAME;
 	}
 
 

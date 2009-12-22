@@ -19,12 +19,12 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 /**
  * JAR annotations do not support most of the container annotation protocol.
  */
-abstract class BinaryContainerAnnotation<T extends NestableAnnotation>
+public abstract class BinaryContainerAnnotation<T extends NestableAnnotation>
 	extends BinaryAnnotation
 	implements ContainerAnnotation<T>
 {
 
-	public BinaryContainerAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryContainerAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

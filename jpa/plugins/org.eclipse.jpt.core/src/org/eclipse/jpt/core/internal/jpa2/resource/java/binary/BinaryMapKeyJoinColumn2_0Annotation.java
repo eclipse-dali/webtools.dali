@@ -7,22 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java.binary;
+package org.eclipse.jpt.core.internal.jpa2.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinaryBaseJoinColumnAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.NestableMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
 
 /**
- * javax.persistence.JoinColumn
+ * javax.persistence.MapKeyJoinColumn
  */
-public final class BinaryJoinColumnAnnotation
+public final class BinaryMapKeyJoinColumn2_0Annotation
 	extends BinaryBaseJoinColumnAnnotation
-	implements NestableJoinColumnAnnotation
+	implements NestableMapKeyJoinColumnAnnotation
 {
 
-	public BinaryJoinColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryMapKeyJoinColumn2_0Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
@@ -35,12 +36,12 @@ public final class BinaryJoinColumnAnnotation
 
 	@Override
 	protected String getNameElementName() {
-		return JPA.JOIN_COLUMN__NAME;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__NAME;
 	}
 
 	@Override
 	protected String getColumnDefinitionElementName() {
-		return JPA.JOIN_COLUMN__COLUMN_DEFINITION;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__COLUMN_DEFINITION;
 	}
 
 
@@ -48,27 +49,27 @@ public final class BinaryJoinColumnAnnotation
 
 	@Override
 	protected String getTableElementName() {
-		return JPA.JOIN_COLUMN__TABLE;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__TABLE;
 	}
 
 	@Override
 	protected String getUniqueElementName() {
-		return JPA.JOIN_COLUMN__UNIQUE;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__UNIQUE;
 	}
 
 	@Override
 	protected String getNullableElementName() {
-		return JPA.JOIN_COLUMN__NULLABLE;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__NULLABLE;
 	}
 
 	@Override
 	protected String getInsertableElementName() {
-		return JPA.JOIN_COLUMN__INSERTABLE;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__INSERTABLE;
 	}
 
 	@Override
 	protected String getUpdatableElementName() {
-		return JPA.JOIN_COLUMN__UPDATABLE;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__UPDATABLE;
 	}
 	
 	
@@ -76,7 +77,7 @@ public final class BinaryJoinColumnAnnotation
 
 	@Override
 	protected String getReferencedColumnNameElementName() {
-		return JPA.JOIN_COLUMN__REFERENCED_COLUMN_NAME;
+		return JPA2_0.MAP_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME;
 	}
 
 }

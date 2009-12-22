@@ -69,7 +69,7 @@ public interface JPA2_0
 		
 	String MAP_KEY_JOIN_COLUMN = PACKAGE_ + "MapKeyJoinColumn";
 		String MAP_KEY_JOIN_COLUMN__NAME = "name";
-		String MAP_KEY_JOIN_COLUMN__REFERNECED_COLUMN_NAME = "referencedColumnName";
+		String MAP_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME = "referencedColumnName";
 		String MAP_KEY_JOIN_COLUMN__UNIQUE = "unique";
 		String MAP_KEY_JOIN_COLUMN__NULLABLE = "nullable";
 		String MAP_KEY_JOIN_COLUMN__INSERTABLE = "insertable";
