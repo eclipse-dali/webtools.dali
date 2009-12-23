@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import java.util.List;
 
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmBaseColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -189,14 +189,14 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 	
 	protected IMessage buildUnresolvedMessage() {
-		OrmRelationshipMapping mapping = (OrmRelationshipMapping) this.getOwner().getRelationshipMapping();
-		return mapping.getPersistentAttribute().isVirtual() ? this.buildVirtualUnresolvedNameMessage(mapping) : this.buildNonVirtualUnresolvedNameMessage();
+		PersistentAttribute persistentAttribute = this.getOwner().getPersistentAttribute();
+		return persistentAttribute.isVirtual() ? this.buildVirtualUnresolvedNameMessage(persistentAttribute) : this.buildNonVirtualUnresolvedNameMessage();
 	}
 
-	protected IMessage buildVirtualUnresolvedNameMessage(OrmRelationshipMapping mapping) {
+	protected IMessage buildVirtualUnresolvedNameMessage(PersistentAttribute persistentAttribute) {
 		return this.buildMessage(
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {mapping.getName(), this.getName()},
+						new String[] {persistentAttribute.getName(), this.getName()},
 						this.getNameTextRange()
 					);
 	}
@@ -210,14 +210,14 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 
 	protected IMessage buildUnresolvedReferenceColumnNameMessage() {
-		OrmRelationshipMapping mapping = (OrmRelationshipMapping) this.getOwner().getRelationshipMapping();
-		return mapping.getPersistentAttribute().isVirtual() ? this.buildVirtualUnresolvedReferenceColumnNameMessage(mapping) : this.buildNonVirtualUnresolvedReferenceColumnNameMessage();
+		PersistentAttribute persistentAttribute = this.getOwner().getPersistentAttribute();
+		return persistentAttribute.isVirtual() ? this.buildVirtualUnresolvedReferenceColumnNameMessage(persistentAttribute) : this.buildNonVirtualUnresolvedReferenceColumnNameMessage();
 	}
 
-	protected IMessage buildVirtualUnresolvedReferenceColumnNameMessage(OrmRelationshipMapping mapping) {
+	protected IMessage buildVirtualUnresolvedReferenceColumnNameMessage(PersistentAttribute persistentAttribute) {
 		return this.buildMessage(
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {mapping.getName(), this.getName()},
+						new String[] {persistentAttribute.getName(), this.getName()},
 						this.getReferencedColumnNameTextRange()
 					);
 	}

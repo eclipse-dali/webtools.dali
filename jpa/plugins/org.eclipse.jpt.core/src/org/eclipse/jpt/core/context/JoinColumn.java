@@ -52,9 +52,9 @@ public interface JoinColumn
 		String getAttributeName();
 
 		/**
-		 * return the relationship mapping for this join column
+		 * return the persistent attribute for this join column
 		 */
-		RelationshipMapping getRelationshipMapping();
+		PersistentAttribute getPersistentAttribute();
 		
 		/**
 		 * return the size of the joinColumns collection this join column is a part of

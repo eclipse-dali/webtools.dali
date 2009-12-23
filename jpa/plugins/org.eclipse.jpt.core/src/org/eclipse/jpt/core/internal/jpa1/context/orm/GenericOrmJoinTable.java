@@ -623,8 +623,8 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getParent().getRelationshipReference().getTypeMapping();
 		}
 
-		public RelationshipMapping getRelationshipMapping() {
-			return GenericOrmJoinTable.this.getRelationshipMapping();
+		public PersistentAttribute getPersistentAttribute() {
+			return GenericOrmJoinTable.this.getRelationshipMapping().getPersistentAttribute();
 		}
 
 		/**
@@ -682,7 +682,7 @@ public class GenericOrmJoinTable
 				return null;
 			}
 			for (PersistentAttribute each : CollectionTools.iterable(targetEntity.getPersistentType().allAttributes())) {
-				if (each.getMapping().isOwnedBy(this.getRelationshipMapping())) {
+				if (each.getMapping().isOwnedBy(getRelationshipMapping())) {
 					return each.getName();
 				}
 			}

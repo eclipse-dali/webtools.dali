@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -127,9 +128,14 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		public String getAttributeName() {
 			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName();
 		}
-
+		
+		public PersistentAttribute getPersistentAttribute() {
+			RelationshipMapping relationshipMapping = getRelationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getPersistentAttribute();
+		}
+		
 		public RelationshipMapping getRelationshipMapping() {
-			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getOwner().getRelationshipMapping(GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName());
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getAssociationOverride().getOwner().getRelationshipMapping(GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName());
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {

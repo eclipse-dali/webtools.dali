@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -99,6 +100,11 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 
 		public String getAttributeName() {
 			return getAssociationOverride().getName();
+		}
+		
+		public PersistentAttribute getPersistentAttribute() {
+			RelationshipMapping relationshipMapping = getRelationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getPersistentAttribute();
 		}
 
 		public RelationshipMapping getRelationshipMapping() {

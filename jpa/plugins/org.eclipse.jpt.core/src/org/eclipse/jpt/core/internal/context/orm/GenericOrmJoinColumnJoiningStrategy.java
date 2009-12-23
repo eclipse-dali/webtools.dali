@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
@@ -76,8 +76,8 @@ public class GenericOrmJoinColumnJoiningStrategy
 			return getRelationshipMapping().getName();
 		}
 		
-		public RelationshipMapping getRelationshipMapping() {
-			return GenericOrmJoinColumnJoiningStrategy.this.getRelationshipMapping();
+		public PersistentAttribute getPersistentAttribute() {
+			return getRelationshipMapping().getPersistentAttribute();
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {

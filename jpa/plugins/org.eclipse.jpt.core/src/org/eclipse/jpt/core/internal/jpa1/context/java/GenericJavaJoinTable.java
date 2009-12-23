@@ -579,8 +579,8 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.getParent().getRelationshipReference().getTypeMapping();
 		}
 
-		public RelationshipMapping getRelationshipMapping() {
-			return GenericJavaJoinTable.this.getRelationshipMapping();
+		public PersistentAttribute getPersistentAttribute() {
+			return GenericJavaJoinTable.this.getRelationshipMapping().getPersistentAttribute();
 		}
 
 		/**
@@ -642,7 +642,7 @@ public class GenericJavaJoinTable
 			for (PersistentAttribute each : 
 					CollectionTools.iterable(
 						targetEntity.getPersistentType().allAttributes())) {
-				if (each.getMapping().isOwnedBy(this.getRelationshipMapping())) {
+				if (each.getMapping().isOwnedBy(GenericJavaJoinTable.this.getRelationshipMapping())) {
 					return each.getName();
 				}
 			}

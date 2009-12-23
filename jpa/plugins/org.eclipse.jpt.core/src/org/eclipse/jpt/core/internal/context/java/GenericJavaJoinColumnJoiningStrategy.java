@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
@@ -134,11 +134,11 @@ public class GenericJavaJoinColumnJoiningStrategy
 	}
 	
 	public String getAttributeName() {
-		return getRelationshipMapping().getPersistentAttribute().getName();
+		return getRelationshipMapping().getName();
 	}
 	
-	public RelationshipMapping getRelationshipMapping() {
-		return GenericJavaJoinColumnJoiningStrategy.this.getRelationshipMapping();
+	public PersistentAttribute getPersistentAttribute() {
+		return getRelationshipMapping().getPersistentAttribute();
 	}
 	
 	public boolean tableNameIsInvalid(String tableName) {

@@ -112,10 +112,6 @@ public class MappingTools {
 	 */
 	public static String buildJoinColumnDefaultName(JoinColumn joinColumn) {
 		JoinColumn.Owner owner = joinColumn.getOwner();
-		RelationshipMapping relationshipMapping = owner.getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
 		if (owner.joinColumnsSize() != 1) {
 			return null;
 		}
@@ -149,10 +145,6 @@ public class MappingTools {
 	 * target entity.
 	 */
 	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.Owner joinColumnOwner) {
-		RelationshipMapping relationshipMapping = joinColumnOwner.getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
 		if (joinColumnOwner.joinColumnsSize() != 1) {
 			return null;
 		}
