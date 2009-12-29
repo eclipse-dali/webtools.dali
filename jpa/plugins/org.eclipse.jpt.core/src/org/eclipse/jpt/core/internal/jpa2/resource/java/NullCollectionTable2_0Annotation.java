@@ -17,11 +17,10 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
- * javax.persistence.JoinTable
+ * javax.persistence.CollectionTable
  */
 public class NullCollectionTable2_0Annotation
 	extends NullBaseTableAnnotation
@@ -74,7 +73,7 @@ public class NullCollectionTable2_0Annotation
 	protected static final AnnotationInitializer JOIN_COLUMN_INITIALIZER =
 			new AnnotationInitializer() {
 				public Annotation initializeAnnotation(Annotation supportingAnnotation) {
-					return ((JoinTableAnnotation) supportingAnnotation).initializeJoinColumns();
+					return ((CollectionTable2_0Annotation) supportingAnnotation).initializeJoinColumns();
 				}
 			};
 	

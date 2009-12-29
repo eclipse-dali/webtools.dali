@@ -18,10 +18,12 @@ import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReferenceTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.db.Table;
 
@@ -98,6 +100,24 @@ public class MappingTools {
 		}
 		String name = owningTable.getName() + '_' + targetTable.getName();
 		return owningTable.getDatabase().convertNameToIdentifier(name);
+	}
+	
+	/**
+	 * Default collection table name from the JPA spec:<br>
+	 * 	"The concatenation of the name of the containing entity and 
+	 *  the name of the collection attribute, separated by an underscore."
+	 * <pre>
+	 * [owning entity name]_[attribute name]
+	 * </pre>
+	 */
+	public static String buildCollectionTableDefaultName(ElementCollectionMapping2_0 mapping) {
+		Entity entity = mapping.getEntity();
+		if (entity == null) {
+			return null;
+		}
+		String owningEntityName = entity.getName();
+		String attributeName = mapping.getName();
+		return owningEntityName + '_' + attributeName;
 	}
 
 	/**
@@ -187,12 +207,12 @@ public class MappingTools {
 		return null;		
 	}
 
-	public static void convertJoinTableDefaultToSpecifiedJoinColumn(JoinTable joinTable) {
-		JoinColumn defaultJoinColumn = joinTable.getDefaultJoinColumn();
+	public static void convertReferenceTableDefaultToSpecifiedJoinColumn(ReferenceTable referenceTable) {
+		JoinColumn defaultJoinColumn = referenceTable.getDefaultJoinColumn();
 		if (defaultJoinColumn != null) {
 			String columnName = defaultJoinColumn.getDefaultName();
 			String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-			JoinColumn joinColumn = joinTable.addSpecifiedJoinColumn(0);
+			JoinColumn joinColumn = referenceTable.addSpecifiedJoinColumn(0);
 			joinColumn.setSpecifiedName(columnName);
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}

@@ -9,13 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.Collection;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
@@ -76,12 +72,10 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.1
  * @since 1.0
  */
-public class JoinTableComposite extends FormPane<JoinTable>
+public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 {
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
-	private Button overrideDefaultJoinColumnsCheckBox;
 
-	private JoinColumnsComposite<JoinTable> joinColumnsComposite;
 	private JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite;
 	/**
 	 * Creates a new <code>JoinTableComposite</code>.
@@ -95,7 +89,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			PropertyValueModel<? extends JoinTable> subjectHolder,
 			Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	/**
@@ -112,6 +106,10 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	@Override
+	protected boolean isParentVirtual(JoinTable joinTable) {
+		return joinTable.getParent().getRelationshipReference().isParentVirtual();
+	}
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -196,10 +194,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		pane.installJoinColumnsPaneEnabler(new InverseJoinColumnPaneEnablerHolder());
 	}
 
-	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		pane.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
-	}
-
 	private void addInverseJoinColumn(JoinTable joinTable) {
 
 		InverseJoinColumnInJoinTableDialog dialog =
@@ -222,43 +216,11 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		this.inverseJoinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 
-	private void addJoinColumn(JoinTable joinTable) {
-
-		JoinColumnInJoinTableDialog dialog =
-			new JoinColumnInJoinTableDialog(getShell(), joinTable, null);
-
-		dialog.openDialog(buildAddJoinColumnPostExecution());
-	}
-
-	private void addJoinColumnFromDialog(JoinColumnInJoinTableStateObject stateObject) {
-
-		JoinTable subject = getSubject();
-		int index = subject.specifiedJoinColumnsSize();
-
-		JoinColumn joinColumn = getSubject().addSpecifiedJoinColumn(index);
-		stateObject.updateJoinColumn(joinColumn);
-		this.setSelectedJoinColumn(joinColumn);
-	}
-
-	private void setSelectedJoinColumn(JoinColumn joinColumn) {
-		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
-	}
-
 	private PostExecution<InverseJoinColumnInJoinTableDialog> buildAddInverseJoinColumnPostExecution() {
 		return new PostExecution<InverseJoinColumnInJoinTableDialog>() {
 			public void execute(InverseJoinColumnInJoinTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
 					addInverseJoinColumnFromDialog(dialog.getSubject());
-				}
-			}
-		};
-	}
-
-	private PostExecution<JoinColumnInJoinTableDialog> buildAddJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInJoinTableDialog>() {
-			public void execute(JoinColumnInJoinTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					addJoinColumnFromDialog(dialog.getSubject());
 				}
 			}
 		};
@@ -274,44 +236,13 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		};
 	}
 
-	private PostExecution<JoinColumnInJoinTableDialog> buildEditJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInJoinTableDialog>() {
-			public void execute(JoinColumnInJoinTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					editJoinColumn(dialog.getSubject());
-				}
-			}
-		};
-	}
 
 	private InverseJoinColumnsProvider buildInverseJoinColumnsEditor() {
 		return new InverseJoinColumnsProvider();
 	}
 
-	private JoinColumnsProvider buildJoinColumnsEditor() {
-		return new JoinColumnsProvider();
-	}
-
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
-		return new OverrideDefaultJoinColumnHolder();
-	}
-
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultInverseJoinColumnHolder() {
 		return new OverrideDefaultInverseJoinColumnHolder();
-	}
-		
-	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_JOIN_COLUMNS_LIST) {
-			@Override
-			protected ListIterator<JoinColumn> listIterator_() {
-				return this.subject.specifiedJoinColumns();
-			}
-
-			@Override
-			protected int size_() {
-				return this.subject.specifiedJoinColumnsSize();
-			}
-		};
 	}
 	
 	private ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
@@ -328,130 +259,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		};
 	}
 
-	private Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 10, groupBoxMargin);
-	}
-
-	private TableCombo<JoinTable> addTableCombo(Composite container) {
-
-		return new TableCombo<JoinTable>(this, container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
-			}
-
-			@Override
-			protected void propertyChanged(String propertyName) {
-				super.propertyChanged(propertyName);
-				if (propertyName == Table.DEFAULT_SCHEMA_PROPERTY 
-					|| propertyName == Table.SPECIFIED_SCHEMA_PROPERTY
-					|| propertyName == Table.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulate();
-				}
-			}
-
-			@Override
-			protected String getDefaultValue() {
-				return this.getSubject().getDefaultName();
-			}
-
-			@Override
-			protected void setValue(String value) {
-				this.getSubject().setSpecifiedName(value);
-			}
-
-			@Override
-			protected String getValue() {
-				return this.getSubject().getSpecifiedName();
-			}
-
-			@Override
-			protected Schema getDbSchema_() {
-				return this.getSubject().getDbSchema();
-			}
-
-		};
-	}
-	
-	private SchemaCombo<JoinTable> addSchemaCombo(Composite container) {
-
-		return new SchemaCombo<JoinTable>(this, container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
-			}
-
-			@Override
-			protected void propertyChanged(String propertyName) {
-				super.propertyChanged(propertyName);
-				if (propertyName == Table.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulate();
-				}
-			}
-
-			@Override
-			protected String getDefaultValue() {
-				return this.getSubject().getDefaultSchema();
-			}
-
-			@Override
-			protected void setValue(String value) {
-				this.getSubject().setSpecifiedSchema(value);
-			}
-
-			@Override
-			protected String getValue() {
-				return this.getSubject().getSpecifiedSchema();
-			}
-			
-			@Override
-			protected SchemaContainer getDbSchemaContainer_() {
-				return this.getSubject().getDbSchemaContainer();
-			}
-		};
-	}
-	
-	private CatalogCombo<JoinTable> addCatalogCombo(Composite container) {
-
-		return new CatalogCombo<JoinTable>(this, container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
-			}
-
-			@Override
-			protected String getDefaultValue() {
-				return this.getSubject().getDefaultCatalog();
-			}
-
-			@Override
-			protected void setValue(String value) {
-				this.getSubject().setSpecifiedCatalog(value);
-			}
-
-			@Override
-			protected String getValue() {
-				return this.getSubject().getSpecifiedCatalog();
-			}
-		};
-	}
 
 	private void editInverseJoinColumn(InverseJoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
@@ -463,18 +270,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			new InverseJoinColumnInJoinTableDialog(getShell(), getSubject(), joinColumn);
 
 		dialog.openDialog(buildEditInverseJoinColumnPostExecution());
-	}
-
-	private void editJoinColumn(JoinColumn joinColumn) {
-
-		JoinColumnInJoinTableDialog dialog =
-			new JoinColumnInJoinTableDialog(getShell(), getSubject(), joinColumn);
-
-		dialog.openDialog(buildEditJoinColumnPostExecution());
-	}
-
-	private void editJoinColumn(JoinColumnInJoinTableStateObject stateObject) {
-		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
 	private void updateInverseJoinColumns() {
@@ -502,32 +297,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 	}
 
-	private void updateJoinColumns() {
-		if (this.isPopulating()) {
-			return;
-		}
-		
-		JoinTable joinTable = this.getSubject();
-		if (joinTable == null) {
-			return;
-		}
-		
-		boolean selected = this.overrideDefaultJoinColumnsCheckBox.getSelection();
-		this.setPopulating(true);
 
-		try {
-			if (selected) {
-				joinTable.convertDefaultToSpecifiedJoinColumn();
-				setSelectedJoinColumn(joinTable.specifiedJoinColumns().next());
-			} else {
-				for (int index = joinTable.specifiedJoinColumnsSize(); --index >= 0; ) {
-					joinTable.removeSpecifiedJoinColumn(index);
-				}
-			}
-		} finally {
-			this.setPopulating(false);
-		}
-	}
 
 	private class InverseJoinColumnsProvider implements JoinColumnsEditor<JoinTable> {
 
@@ -569,66 +339,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			return JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
 		}
 	}
-
-	private class JoinColumnsProvider implements JoinColumnsEditor<JoinTable> {
-
-		public void addJoinColumn(JoinTable subject) {
-			JoinTableComposite.this.addJoinColumn(subject);
-		}
-
-		public JoinColumn getDefaultJoinColumn(JoinTable subject) {
-			return subject.getDefaultJoinColumn();
-		}
-
-		public String getDefaultPropertyName() {
-			return JoinTable.DEFAULT_JOIN_COLUMN;
-		}
-
-		public void editJoinColumn(JoinTable subject, JoinColumn joinColumn) {
-			JoinTableComposite.this.editJoinColumn(joinColumn);
-		}
-
-		public boolean hasSpecifiedJoinColumns(JoinTable subject) {
-			return subject.hasSpecifiedJoinColumns();
-		}
-
-		public void removeJoinColumns(JoinTable subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; --index >= 0; ) {
-				subject.removeSpecifiedJoinColumn(selectedIndices[index]);
-			}
-		}
-
-		public ListIterator<JoinColumn> specifiedJoinColumns(JoinTable subject) {
-			return subject.specifiedJoinColumns();
-		}
-
-		public int specifiedJoinColumnsSize(JoinTable subject) {
-			return subject.specifiedJoinColumnsSize();
-		}
-
-		public String getSpecifiedJoinColumnsListPropertyName() {
-			return JoinTable.SPECIFIED_JOIN_COLUMNS_LIST;
-		}
-	}
-	
-	
-	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	    implements WritablePropertyValueModel<Boolean> {
-	
-		public OverrideDefaultJoinColumnHolder() {
-			super(buildSpecifiedJoinColumnsListHolder());
-		}
-	
-		@Override
-		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listHolder.size() > 0);
-		}
-	
-		public void setValue(Boolean value) {
-			updateJoinColumns();
-		}
-	}
-
 	
 	private class OverrideDefaultInverseJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
 	    implements WritablePropertyValueModel<Boolean> {
@@ -647,63 +357,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 	}
 
-	
-	private class JoinColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<JoinTable, Boolean> 
-	{
-		private StateChangeListener stateChangeListener;
-		
-		
-		public JoinColumnPaneEnablerHolder() {
-			super(
-				new ValueListAdapter<JoinTable>(
-					new ReadOnlyWritablePropertyValueModelWrapper(getSubjectHolder()), 
-					JoinTable.SPECIFIED_JOIN_COLUMNS_LIST));
-			this.stateChangeListener = buildStateChangeListener();
-		}
-		
-		
-		private StateChangeListener buildStateChangeListener() {
-			return new StateChangeListener() {
-				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged(event);
-				}
-			};
-		}
-		
-		private void valueStateChanged(StateChangeEvent event) {
-			Object oldValue = this.cachedValue;
-			Object newValue = transformNew(this.valueHolder.getValue());
-			firePropertyChanged(VALUE, oldValue, newValue);
-		}
-		
-		@Override
-		protected Boolean transform(JoinTable value) {
-			if (value == null) {
-				return false;
-			}
-			return super.transform(value);
-		}
-		
-		@Override
-		protected Boolean transform_(JoinTable value) {
-			boolean virtual = value.getParent().getRelationshipReference().isParentVirtual();
-			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
-		}
-		
-		@Override
-		protected void engageModel() {
-			super.engageModel();
-			this.valueHolder.addStateChangeListener(this.stateChangeListener);
-		}
-		
-		@Override
-		protected void disengageModel() {
-			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
-			super.disengageModel();
-		}
-
-	}
 	
 	private class InverseJoinColumnPaneEnablerHolder 
 		extends CachingTransformationPropertyValueModel<JoinTable, Boolean>
@@ -744,7 +397,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		
 		@Override
 		protected Boolean transform_(JoinTable value) {
-			boolean virtual = value.getParent().getRelationshipReference().isParentVirtual();
+			boolean virtual = JoinTableComposite.this.isParentVirtual(value);
 			return Boolean.valueOf(! virtual && value.specifiedInverseJoinColumnsSize() > 0);
 		}
 		

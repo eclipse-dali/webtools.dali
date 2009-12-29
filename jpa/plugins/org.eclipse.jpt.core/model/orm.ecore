@@ -35,6 +35,8 @@
       abstract="true" eSuperTypes="#//AbstractXmlRelationshipMapping #//XmlJoinTableMapping #//XmlJoinColumnsMapping #//v2_0/XmlSingleRelationshipMapping_2_0">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlReferenceTable" abstract="true"
+      eSuperTypes="#//AbstractXmlTable #//XmlReferenceTable"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTable" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -103,7 +105,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeRemove" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeRefresh" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlCollectionTable" eSuperTypes="#//AbstractXmlTable #//v2_0/XmlCollectionTable_2_0"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlCollectionTable" eSuperTypes="#//AbstractXmlReferenceTable #//v2_0/XmlCollectionTable_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlColumn" eSuperTypes="#//AbstractXmlColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
@@ -254,9 +256,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
         eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTable" eSuperTypes="#//AbstractXmlTable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
-        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTable" eSuperTypes="#//AbstractXmlReferenceTable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="inverseJoinColumns" upperBound="-1"
         eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
@@ -311,6 +311,10 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitDefaults"
         eType="#//XmlPersistenceUnitDefaults" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlReferenceTable" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
+        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PostLoad" eSuperTypes="#//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="PostPersist" eSuperTypes="#//EventMethod"/>
@@ -436,10 +440,7 @@
           eType="#//XmlElementCollection" containment="true" resolveProxies="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlCollectionTable_2_0" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
-          eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
-    </eClassifiers>
+        interface="true" eSuperTypes="#//XmlReferenceTable"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlDerivedId_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>

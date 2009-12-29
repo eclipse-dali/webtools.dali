@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,16 +13,14 @@ import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Join Table</b></em>'.
+ * A representation of the model object '<em><b>Abstract Xml Reference Table</b></em>'.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -31,35 +29,29 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlJoinTable#getInverseJoinColumns <em>Inverse Join Columns</em>}</li>
- * </ul>
- * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable()
- * @model kind="class"
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlReferenceTable()
+ * @model kind="class" abstract="true"
  * @generated
  */
-public class XmlJoinTable extends AbstractXmlReferenceTable
+public abstract class AbstractXmlReferenceTable extends AbstractXmlTable implements XmlReferenceTable
 {
 	/**
-	 * The cached value of the '{@link #getInverseJoinColumns() <em>Inverse Join Columns</em>}' containment reference list.
+	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getInverseJoinColumns()
+	 * @see #getJoinColumns()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlJoinColumn> inverseJoinColumns;
+	protected EList<XmlJoinColumn> joinColumns;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlJoinTable()
+	protected AbstractXmlReferenceTable()
 	{
 		super();
 	}
@@ -72,30 +64,30 @@ public class XmlJoinTable extends AbstractXmlReferenceTable
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.XML_JOIN_TABLE;
+		return OrmPackage.Literals.ABSTRACT_XML_REFERENCE_TABLE;
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Inverse Join Columns</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Inverse Join Columns</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Inverse Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable_InverseJoinColumns()
+	 * @return the value of the '<em>Join Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlReferenceTable_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlJoinColumn> getInverseJoinColumns()
+	public EList<XmlJoinColumn> getJoinColumns()
 	{
-		if (inverseJoinColumns == null)
+		if (joinColumns == null)
 		{
-			inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS);
+			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS);
 		}
-		return inverseJoinColumns;
+		return joinColumns;
 	}
 
 	/**
@@ -108,8 +100,8 @@ public class XmlJoinTable extends AbstractXmlReferenceTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS:
-				return ((InternalEList<?>)getInverseJoinColumns()).basicRemove(otherEnd, msgs);
+			case OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS:
+				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -124,8 +116,8 @@ public class XmlJoinTable extends AbstractXmlReferenceTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS:
-				return getInverseJoinColumns();
+			case OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS:
+				return getJoinColumns();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -141,9 +133,9 @@ public class XmlJoinTable extends AbstractXmlReferenceTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS:
-				getInverseJoinColumns().clear();
-				getInverseJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
+			case OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS:
+				getJoinColumns().clear();
+				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -159,8 +151,8 @@ public class XmlJoinTable extends AbstractXmlReferenceTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS:
-				getInverseJoinColumns().clear();
+			case OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS:
+				getJoinColumns().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -176,35 +168,55 @@ public class XmlJoinTable extends AbstractXmlReferenceTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS:
-				return inverseJoinColumns != null && !inverseJoinColumns.isEmpty();
+			case OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS:
+				return joinColumns != null && !joinColumns.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-	public boolean isSpecified() {
-		return true;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlReferenceTable.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS: return OrmPackage.XML_REFERENCE_TABLE__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
-	
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlReferenceTable.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_REFERENCE_TABLE__JOIN_COLUMNS: return OrmPackage.ABSTRACT_XML_REFERENCE_TABLE__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+
 	// ********** translators **********
-
-	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
-	}
-
-	private static Translator[] buildTranslatorChildren() {
-		return new Translator[] {
-			buildNameTranslator(),
-			buildCatalogTranslator(),
-			buildSchemaTranslator(),
-			buildJoinColumnTranslator(),
-			buildInverseJoinColumnTranslator(),
-			buildUniqueConstraintTranslator()
-		};
-	}
 	
-	protected static Translator buildInverseJoinColumnTranslator() {
-		return XmlJoinColumn.buildTranslator(JPA.INVERSE_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinTable_InverseJoinColumns());
+	protected static Translator buildJoinColumnTranslator() {
+		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlReferenceTable_JoinColumns());
 	}
 
-} // JoinTable
+} // AbstractXmlReferenceTable

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,14 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.java;
+package org.eclipse.jpt.core.jpa2.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaReferenceTable;
+import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 
 /**
- * Java join table
+ * Java collection table
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,13 +25,12 @@ import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaJoinTable
-	extends JoinTable, JavaReferenceTable
+public interface JavaCollectionTable2_0
+	extends CollectionTable2_0, JavaReferenceTable
 {
-	void initialize(JoinTableAnnotation joinTableAnnotation);
+	void initialize(CollectionTable2_0Annotation collectionTableAnnotation);
 
-	void update(JoinTableAnnotation joinTableAnnotation);
-
+	void update(CollectionTable2_0Annotation collectionTableAnnotation);
 
 	// ********** covariant overrides **********
 
@@ -39,16 +41,6 @@ public interface JavaJoinTable
 	ListIterator<JavaJoinColumn> specifiedJoinColumns();
 
 	JavaJoinColumn addSpecifiedJoinColumn(int index);
-
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaJoinColumn> inverseJoinColumns();
-
-	JavaJoinColumn getDefaultInverseJoinColumn();
-
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaJoinColumn> specifiedInverseJoinColumns();
-
-	JavaJoinColumn addSpecifiedInverseJoinColumn(int index);
 
 	ListIterator<JavaUniqueConstraint> uniqueConstraints();
 

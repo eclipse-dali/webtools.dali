@@ -1,0 +1,423 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.ui.internal.details;
+
+import java.util.Collection;
+import java.util.ListIterator;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.ReferenceTable;
+import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
+import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
+import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
+import org.eclipse.jpt.ui.internal.details.db.TableCombo;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.utility.internal.model.value.ValueListAdapter;
+import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+
+
+public abstract class ReferenceTableComposite<T extends ReferenceTable> extends FormPane<T>
+{
+	protected Button overrideDefaultJoinColumnsCheckBox;
+
+	protected JoinColumnsComposite<T> joinColumnsComposite;
+
+	/**
+	 * Creates a new <code>ReferenceTableComposite</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	protected ReferenceTableComposite(
+			FormPane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent) {
+
+		super(parentPane, subjectHolder, parent, false);
+	}
+
+	/**
+	 * Creates a new <code>ReferenceTableComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>CollectionTable2_0</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
+	protected ReferenceTableComposite(PropertyValueModel<? extends T> subjectHolder,
+	                          Composite parent,
+	                          WidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
+	}
+
+
+	protected void installJoinColumnsPaneEnabler(JoinColumnsComposite<T> pane) {
+		pane.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
+	}
+
+	private void addJoinColumn(T referenceTable) {
+
+		JoinColumnInReferenceTableDialog dialog =
+			new JoinColumnInReferenceTableDialog(getShell(), referenceTable, null);
+
+		dialog.openDialog(buildAddJoinColumnPostExecution());
+	}
+
+	private void addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
+		int index = getSubject().specifiedJoinColumnsSize();
+
+		JoinColumn joinColumn = getSubject().addSpecifiedJoinColumn(index);
+		stateObject.updateJoinColumn(joinColumn);
+		this.setSelectedJoinColumn(joinColumn);
+	}
+
+	private void setSelectedJoinColumn(JoinColumn joinColumn) {
+		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
+	}
+
+	private PostExecution<JoinColumnInReferenceTableDialog> buildAddJoinColumnPostExecution() {
+		return new PostExecution<JoinColumnInReferenceTableDialog>() {
+			public void execute(JoinColumnInReferenceTableDialog dialog) {
+				if (dialog.wasConfirmed()) {
+					addJoinColumnFromDialog(dialog.getSubject());
+				}
+			}
+		};
+	}
+
+	private PostExecution<JoinColumnInReferenceTableDialog> buildEditJoinColumnPostExecution() {
+		return new PostExecution<JoinColumnInReferenceTableDialog>() {
+			public void execute(JoinColumnInReferenceTableDialog dialog) {
+				if (dialog.wasConfirmed()) {
+					editJoinColumn(dialog.getSubject());
+				}
+			}
+		};
+	}
+
+	protected JoinColumnsProvider buildJoinColumnsEditor() {
+		return new JoinColumnsProvider();
+	}
+
+	protected WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
+		return new OverrideDefaultJoinColumnHolder();
+	}
+		
+	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
+			@Override
+			protected ListIterator<JoinColumn> listIterator_() {
+				return this.subject.specifiedJoinColumns();
+			}
+
+			@Override
+			protected int size_() {
+				return this.subject.specifiedJoinColumnsSize();
+			}
+		};
+	}
+
+	protected Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 10, groupBoxMargin);
+	}
+
+	protected TableCombo<T> addTableCombo(Composite container) {
+
+		return new TableCombo<T>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(Table.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				super.propertyChanged(propertyName);
+				if (propertyName == Table.DEFAULT_SCHEMA_PROPERTY 
+					|| propertyName == Table.SPECIFIED_SCHEMA_PROPERTY
+					|| propertyName == Table.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
+					repopulate();
+				}
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return this.getSubject().getDefaultName();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				this.getSubject().setSpecifiedName(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return this.getSubject().getSpecifiedName();
+			}
+
+			@Override
+			protected Schema getDbSchema_() {
+				return this.getSubject().getDbSchema();
+			}
+
+		};
+	}
+	
+	protected SchemaCombo<T> addSchemaCombo(Composite container) {
+
+		return new SchemaCombo<T>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				super.propertyChanged(propertyName);
+				if (propertyName == Table.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
+					repopulate();
+				}
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return this.getSubject().getDefaultSchema();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				this.getSubject().setSpecifiedSchema(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return this.getSubject().getSpecifiedSchema();
+			}
+			
+			@Override
+			protected SchemaContainer getDbSchemaContainer_() {
+				return this.getSubject().getDbSchemaContainer();
+			}
+		};
+	}
+	
+	protected CatalogCombo<T> addCatalogCombo(Composite container) {
+
+		return new CatalogCombo<T>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return this.getSubject().getDefaultCatalog();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				this.getSubject().setSpecifiedCatalog(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return this.getSubject().getSpecifiedCatalog();
+			}
+		};
+	}
+
+	private void editJoinColumn(JoinColumn joinColumn) {
+
+		JoinColumnInReferenceTableDialog dialog =
+			new JoinColumnInReferenceTableDialog(getShell(), getSubject(), joinColumn);
+
+		dialog.openDialog(buildEditJoinColumnPostExecution());
+	}
+
+	private void editJoinColumn(JoinColumnInReferenceTableStateObject stateObject) {
+		stateObject.updateJoinColumn(stateObject.getJoinColumn());
+	}
+
+	private void updateJoinColumns() {
+		if (this.isPopulating()) {
+			return;
+		}
+		
+		T referenceTable = this.getSubject();
+		if (referenceTable == null) {
+			return;
+		}
+		
+		boolean selected = this.overrideDefaultJoinColumnsCheckBox.getSelection();
+		this.setPopulating(true);
+
+		try {
+			if (selected) {
+				referenceTable.convertDefaultToSpecifiedJoinColumn();
+				setSelectedJoinColumn(referenceTable.specifiedJoinColumns().next());
+			} else {
+				for (int index = referenceTable.specifiedJoinColumnsSize(); --index >= 0; ) {
+					referenceTable.removeSpecifiedJoinColumn(index);
+				}
+			}
+		} finally {
+			this.setPopulating(false);
+		}
+	}
+
+	private class JoinColumnsProvider implements JoinColumnsEditor<T> {
+
+		public void addJoinColumn(T subject) {
+			ReferenceTableComposite.this.addJoinColumn(subject);
+		}
+
+		public JoinColumn getDefaultJoinColumn(T subject) {
+			return subject.getDefaultJoinColumn();
+		}
+
+		public String getDefaultPropertyName() {
+			return ReferenceTable.DEFAULT_JOIN_COLUMN;
+		}
+
+		public void editJoinColumn(T subject, JoinColumn joinColumn) {
+			ReferenceTableComposite.this.editJoinColumn(joinColumn);
+		}
+
+		public boolean hasSpecifiedJoinColumns(T subject) {
+			return subject.hasSpecifiedJoinColumns();
+		}
+
+		public void removeJoinColumns(T subject, int[] selectedIndices) {
+			for (int index = selectedIndices.length; --index >= 0; ) {
+				subject.removeSpecifiedJoinColumn(selectedIndices[index]);
+			}
+		}
+
+		public ListIterator<JoinColumn> specifiedJoinColumns(T subject) {
+			return subject.specifiedJoinColumns();
+		}
+
+		public int specifiedJoinColumnsSize(T subject) {
+			return subject.specifiedJoinColumnsSize();
+		}
+
+		public String getSpecifiedJoinColumnsListPropertyName() {
+			return ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST;
+		}
+	}
+	
+	
+	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
+	    implements WritablePropertyValueModel<Boolean> {
+	
+		public OverrideDefaultJoinColumnHolder() {
+			super(buildSpecifiedJoinColumnsListHolder());
+		}
+	
+		@Override
+		protected Boolean buildValue() {
+			return Boolean.valueOf(this.listHolder.size() > 0);
+		}
+	
+		public void setValue(Boolean value) {
+			updateJoinColumns();
+		}
+	}
+
+	
+	private class JoinColumnPaneEnablerHolder 
+		extends CachingTransformationPropertyValueModel<T, Boolean> 
+	{
+		private StateChangeListener stateChangeListener;
+		
+		
+		public JoinColumnPaneEnablerHolder() {
+			super(
+				new ValueListAdapter<T>(
+					new ReadOnlyWritablePropertyValueModelWrapper(getSubjectHolder()), 
+					ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST));
+			this.stateChangeListener = buildStateChangeListener();
+		}
+		
+		
+		private StateChangeListener buildStateChangeListener() {
+			return new StateChangeListener() {
+				public void stateChanged(StateChangeEvent event) {
+					valueStateChanged(event);
+				}
+			};
+		}
+		
+		private void valueStateChanged(StateChangeEvent event) {
+			Object oldValue = this.cachedValue;
+			Object newValue = transformNew(this.valueHolder.getValue());
+			firePropertyChanged(VALUE, oldValue, newValue);
+		}
+		
+		@Override
+		protected Boolean transform(T value) {
+			if (value == null) {
+				return Boolean.FALSE;
+			}
+			return super.transform(value);
+		}
+		
+		@Override
+		protected Boolean transform_(T value) {
+			boolean virtual = ReferenceTableComposite.this.isParentVirtual(value);
+			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
+		}
+		
+		@Override
+		protected void engageModel() {
+			super.engageModel();
+			this.valueHolder.addStateChangeListener(this.stateChangeListener);
+		}
+		
+		@Override
+		protected void disengageModel() {
+			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
+			super.disengageModel();
+		}
+	}
+	
+	protected abstract boolean isParentVirtual(T referenceTable);
+}

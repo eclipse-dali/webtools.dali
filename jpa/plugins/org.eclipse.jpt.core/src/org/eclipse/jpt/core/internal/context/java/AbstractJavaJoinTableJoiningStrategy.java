@@ -141,7 +141,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.joinTable != null && getRelationshipMapping().shouldValidateAgainstDatabase()) {
+		if (this.joinTable != null) {
 			this.joinTable.validate(messages, reporter, astRoot);
 		}
 	}

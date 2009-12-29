@@ -22,53 +22,9 @@ import java.util.ListIterator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JoinTableAnnotation
-	extends BaseTableAnnotation
+	extends ReferenceTableAnnotation
 {
 	String ANNOTATION_NAME = JPA.JOIN_TABLE;
-
-	/**
-	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
-	 * Return an empty iterator if the element does not exist in Java.
-	 */
-	ListIterator<JoinColumnAnnotation> joinColumns();
-		String JOIN_COLUMNS_LIST = "joinColumns"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
-	 */
-	int joinColumnsSize();
-
-	/**
-	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
-	 */
-	JoinColumnAnnotation joinColumnAt(int index);
-
-	/**
-	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
-	 */
-	int indexOfJoinColumn(JoinColumnAnnotation joinColumn);
-
-	/**
-	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
-	 */
-	JoinColumnAnnotation addJoinColumn(int index);
-
-	/**
-	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
-	 */
-	void moveJoinColumn(int targetIndex, int sourceIndex);
-
-	/**
-	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
-	 */
-	void removeJoinColumn(int index);
-
-	/**
-	 * Silently add an initial join column to the join table (i.e. without
-	 * change notification).
-	 */
-	JoinColumnAnnotation initializeJoinColumns();
-
 
 	/**
 	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.

@@ -19,6 +19,7 @@ public class Generic2_0JavaContextModelTests extends TestCase
 	public static Test suite() {
 		TestSuite suite = new TestSuite(Generic2_0JavaContextModelTests.class.getName());
 		suite.addTestSuite(GenericJavaAssociationOverride2_0Tests.class);
+		suite.addTestSuite(GenericJavaCollectionTable2_0Tests.class);
 		suite.addTestSuite(GenericJavaElementCollectionMapping2_0Tests.class);
 		suite.addTestSuite(GenericJavaEntity2_0Tests.class);
 		suite.addTestSuite(GenericJavaEmbeddedMapping2_0Tests.class);

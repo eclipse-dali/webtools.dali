@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,8 +59,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see OptionalComposite
  * @see TemporalTypeComposite
  *
- * @version 2.0
- * @since 1.0
+ * @version 3.0
+ * @since 3.0
  */
 public class ElementCollectionMapping2_0Composite extends AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
 {

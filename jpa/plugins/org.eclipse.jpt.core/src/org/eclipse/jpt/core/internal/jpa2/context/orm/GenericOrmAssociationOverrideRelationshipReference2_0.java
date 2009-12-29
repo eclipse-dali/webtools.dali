@@ -51,13 +51,13 @@ public class GenericOrmAssociationOverrideRelationshipReference2_0 extends Abstr
 	@Override
 	protected void initializeJoiningStrategies(org.eclipse.jpt.core.resource.orm.XmlAssociationOverride xao) {
 		super.initializeJoiningStrategies(xao);
-		this.joinTableJoiningStrategy = buildJoinTableJoiningStrategy((XmlAssociationOverride) xao);
+		this.joinTableJoiningStrategy = buildJoinTableJoiningStrategy(xao);
 	}
 	
 	@Override
 	protected void updateJoiningStrategies(org.eclipse.jpt.core.resource.orm.XmlAssociationOverride xao) {
 		super.updateJoiningStrategies(xao);
-		this.joinTableJoiningStrategy.update((XmlAssociationOverride) xao);
+		this.joinTableJoiningStrategy.update(xao);
 	}
 		
 	@Override

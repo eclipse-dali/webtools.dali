@@ -220,7 +220,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLLECTION_TABLE_20__JOIN_COLUMNS = 0;
+	public static final int XML_COLLECTION_TABLE_20__JOIN_COLUMNS = OrmPackage.XML_REFERENCE_TABLE__JOIN_COLUMNS;
 
 	/**
 	 * The number of structural features of the '<em>Xml Collection Table 20</em>' class.
@@ -229,7 +229,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLLECTION_TABLE_20_FEATURE_COUNT = 1;
+	public static final int XML_COLLECTION_TABLE_20_FEATURE_COUNT = OrmPackage.XML_REFERENCE_TABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0 <em>Xml Derived Id 20</em>}' class.
@@ -1719,21 +1719,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCollectionTable_2_0#getJoinColumns <em>Join Columns</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Join Columns</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCollectionTable_2_0#getJoinColumns()
-	 * @see #getXmlCollectionTable_2_0()
-	 * @generated
-	 */
-	public EReference getXmlCollectionTable_2_0_JoinColumns()
-	{
-		return (EReference)xmlCollectionTable_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0 <em>Xml Derived Id 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2846,7 +2831,6 @@ public class OrmV2_0Package extends EPackageImpl
 		createEReference(xmlAttributes_2_0EClass, XML_ATTRIBUTES_20__ELEMENT_COLLECTIONS);
 
 		xmlCollectionTable_2_0EClass = createEClass(XML_COLLECTION_TABLE_20);
-		createEReference(xmlCollectionTable_2_0EClass, XML_COLLECTION_TABLE_20__JOIN_COLUMNS);
 
 		xmlDerivedId_2_0EClass = createEClass(XML_DERIVED_ID_20);
 		createEAttribute(xmlDerivedId_2_0EClass, XML_DERIVED_ID_20__ID);
@@ -2983,6 +2967,7 @@ public class OrmV2_0Package extends EPackageImpl
 
 		// Add supertypes to classes
 		xmlAttributeMapping_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
+		xmlCollectionTable_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlReferenceTable());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlOrderable());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
@@ -3010,7 +2995,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEReference(getXmlAttributes_2_0_ElementCollections(), theOrmPackage.getXmlElementCollection(), null, "elementCollections", null, 0, -1, XmlAttributes_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlCollectionTable_2_0EClass, XmlCollectionTable_2_0.class, "XmlCollectionTable_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlCollectionTable_2_0_JoinColumns(), theOrmPackage.getXmlJoinColumn(), null, "joinColumns", null, 0, -1, XmlCollectionTable_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlDerivedId_2_0EClass, XmlDerivedId_2_0.class, "XmlDerivedId_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlDerivedId_2_0_Id(), theXMLTypePackage.getBooleanObject(), "id", null, 0, 1, XmlDerivedId_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3224,14 +3208,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_COLLECTION_TABLE_20 = eINSTANCE.getXmlCollectionTable_2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Join Columns</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_COLLECTION_TABLE_20__JOIN_COLUMNS = eINSTANCE.getXmlCollectionTable_2_0_JoinColumns();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0 <em>Xml Derived Id 20</em>}' class.

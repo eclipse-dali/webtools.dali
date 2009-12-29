@@ -19,6 +19,13 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptUiDetailsMessages2_0 
 {
+	public static String CollectionTable2_0Composite_title;
+	public static String CollectionTable2_0Composite_joinColumn;
+	public static String CollectionTable2_0Composite_name;
+	public static String CollectionTable2_0Composite_schema;
+	public static String CollectionTable2_0Composite_catalog;
+	public static String CollectionTable2_0Composite_overrideDefaultJoinColumns;
+	
 	public static String DerivedIdentity_title;
 	public static String DerivedIdentity_nullDerivedIdentity;
 	public static String DerivedIdentity_idDerivedIdentity;

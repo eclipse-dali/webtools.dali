@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -24,8 +26,11 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
+import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -46,6 +51,8 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	protected final OrmOrderable orderable;
 
+	protected final OrmCollectionTable2_0 collectionTable;
+	
 	public GenericOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
 		this.specifiedFetch = this.getResourceFetch();
@@ -54,6 +61,7 @@ public class GenericOrmElementCollectionMapping2_0
 		this.defaultTargetClass = buildDefaultTargetClass();
 		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.resolvedTargetEmbeddable = buildResolvedTargetEmbeddable();
+		this.collectionTable = getXmlContextNodeFactory().buildOrmCollectionTable(this, getResourceCollectionTable());
 	}
 	
 	@Override
@@ -65,8 +73,19 @@ public class GenericOrmElementCollectionMapping2_0
 		this.setResolvedTargetEmbeddable(this.buildResolvedTargetEmbeddable());
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.orderable.update();
+		this.collectionTable.update();
 	}
 	
+	@Override
+	protected OrmXml2_0ContextNodeFactory getXmlContextNodeFactory() {
+		return (OrmXml2_0ContextNodeFactory) super.getXmlContextNodeFactory();
+	}
+	
+	public Entity getEntity() {
+		return getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY ? (Entity) getTypeMapping() : null;
+	}
+
+
 	//************* AttributeMapping implementation ***************
 
 	public String getKey() {
@@ -238,7 +257,16 @@ public class GenericOrmElementCollectionMapping2_0
 		return FetchType.fromOrmResourceModel(this.resourceAttributeMapping.getFetch());
 	}
 	
+	// **************** collection table ***********************************************
+
+	public OrmCollectionTable2_0 getCollectionTable() {
+		return this.collectionTable;
+	}
 	
+	public XmlCollectionTable getResourceCollectionTable() {
+		return this.resourceAttributeMapping.getCollectionTable();
+	}
+
 	// **************** ordering ***********************************************
 
 	public OrmOrderable getOrderable() {
@@ -257,6 +285,7 @@ public class GenericOrmElementCollectionMapping2_0
 		super.validate(messages, reporter);
 		this.validateTargetClass(messages);
 		this.orderable.validate(messages, reporter);
+		this.collectionTable.validate(messages, reporter);
 	}
 
 	protected void validateTargetClass(List<IMessage> messages) {

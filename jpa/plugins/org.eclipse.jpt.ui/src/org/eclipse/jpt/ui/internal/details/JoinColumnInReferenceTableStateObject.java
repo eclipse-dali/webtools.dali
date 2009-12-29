@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,8 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.ReferenceTable;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
@@ -25,12 +26,12 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
  * @see JoinTable
  * @see InverseJoinColumnDialog
  * @see InverseJoinColumnDialogPane
- * @see JoinColumnInJoinTableDialog
+ * @see JoinColumnInReferenceTableDialog
  *
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnInJoinTableStateObject 
+public class JoinColumnInReferenceTableStateObject 
 	extends JoinColumnStateObject
 {
 	/**
@@ -39,20 +40,20 @@ public class JoinColumnInJoinTableStateObject
 	 * @param joinTable The owner of the join column to create or to edit
 	 * @param joinColumn The join column to edit
 	 */
-	public JoinColumnInJoinTableStateObject(
-			JoinTable joinTable,
+	public JoinColumnInReferenceTableStateObject(
+			ReferenceTable referenceTable,
 	        JoinColumn joinColumn) {
-		super(joinTable, joinColumn);
+		super(referenceTable, joinColumn);
 	}
 	
 	
 	@Override
-	public JoinTable getOwner() {
-		return (JoinTable) super.getOwner();
+	public ReferenceTable getOwner() {
+		return (ReferenceTable) super.getOwner();
 	}
 	
-	private RelationshipMapping getRelationshipMapping() {
-		return getOwner().getRelationshipMapping();
+	private TypeMapping getTypeMapping() {
+		return getOwner().getPersistentAttribute().getTypeMapping();
 	}
 	
 	@Override
@@ -67,9 +68,7 @@ public class JoinColumnInJoinTableStateObject
 	
 	@Override
 	public Table getReferencedNameTable() {
-		RelationshipMapping relationshipMapping = getRelationshipMapping();
-		return relationshipMapping == null ? null :
-			relationshipMapping.getTypeMapping().getPrimaryDbTable();
+		return getTypeMapping().getPrimaryDbTable();
 	}
 	
 	@Override

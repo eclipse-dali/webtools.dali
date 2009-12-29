@@ -141,7 +141,7 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (this.joinTable != null && getRelationshipMapping().shouldValidateAgainstDatabase()) {
+		if (this.joinTable != null) {
 			this.joinTable.validate(messages, reporter);
 		}
 	}

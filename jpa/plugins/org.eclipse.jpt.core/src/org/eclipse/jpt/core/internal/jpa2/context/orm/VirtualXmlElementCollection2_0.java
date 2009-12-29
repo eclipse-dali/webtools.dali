@@ -14,12 +14,13 @@ import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
+import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * VirtualOneToOne is an implementation of OneToOne used when there is 
- * no tag in the orm.xml and an underlying javaOneToOneMapping exists.
+ * VirtualXmlElementCollection2_0 is an implementation of XmlElementCollection used when there is 
+ * no tag in the orm.xml and an underlying java element collection exists.
  */
 public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 {
@@ -104,4 +105,21 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	public TextRange getTargetClassTextRange() {
 		return null;
 	}
+	
+	
+	@Override
+	public XmlCollectionTable getCollectionTable() {
+		if (this.javaAttributeMapping.getCollectionTable() != null) {
+			return 	new VirtualXmlCollectionTable(
+				this.ormTypeMapping, 
+				this.javaAttributeMapping.getCollectionTable());
+		}
+		return null;
+	}
+
+	@Override
+	public void setCollectionTable(XmlCollectionTable value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
 }

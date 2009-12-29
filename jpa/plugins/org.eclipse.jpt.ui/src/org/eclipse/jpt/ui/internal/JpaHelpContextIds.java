@@ -141,4 +141,8 @@ public interface JpaHelpContextIds {
 	public static final String GENERATE_ENTITIES_WIZARD_SELECT_TABLES = PREFIX + "dialog_selectTablesPage";
 	public static final String GENERATE_ENTITIES_WIZARD_TABLE_ASSOCIATIONS = PREFIX + "dialog_tableAssociationsPage";
 
+	public static final String MAPPING_COLLECTION_TABLE_NAME = PREFIX + "mapping_collectionTableName";
+	public static final String MAPPING_COLLECTION_TABLE_SCHEMA = PREFIX + "mapping_collectionTableSchema";
+	public static final String MAPPING_COLLECTION_TABLE_CATALOG = PREFIX + "mapping_collectionTableCatalog";
+
 }

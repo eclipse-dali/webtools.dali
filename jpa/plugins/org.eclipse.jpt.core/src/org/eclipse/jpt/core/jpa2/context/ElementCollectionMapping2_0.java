@@ -12,10 +12,17 @@ package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.Entity;
 
 public interface ElementCollectionMapping2_0
 	extends AttributeMapping2_0, CollectionMapping
 {
+	/**
+	 * Return the entity that owns the mapping. This is
+	 * just a convenience method that calls getTypeMapping() and returns
+	 * null if it is not an Entity
+	 */
+	Entity getEntity();
 	
 	// **************** target class **************************************
 	
@@ -38,5 +45,12 @@ public interface ElementCollectionMapping2_0
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getTargetClassEnclosingTypeSeparator();
+	
+	// **************** table **************************************
 
+	/**
+	 * Return the collection table for this element collection mapping.
+	 * This will not be null.
+	 */
+	CollectionTable2_0 getCollectionTable();
 }

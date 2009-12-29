@@ -10,10 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.ReferenceTable;
+import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
- * orm.xml join table
+ * orm.xml join table and collection table
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,34 +22,22 @@ import org.eclipse.jpt.core.context.JoinTable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmJoinTable
-	extends JoinTable, OrmReferenceTable
+public interface OrmReferenceTable
+	extends ReferenceTable, XmlContextNode
 {
-	void update();
-		
-	void initializeFrom(JoinTable oldJoinTable);
-
-	
 	// ********** covariant overrides **********
-
+	
+	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();
 
 	OrmJoinColumn getDefaultJoinColumn();
 	
+	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> specifiedJoinColumns();
 
 	OrmJoinColumn addSpecifiedJoinColumn(int index);
 	
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmJoinColumn> inverseJoinColumns();
-
-	OrmJoinColumn getDefaultInverseJoinColumn();
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmJoinColumn> specifiedInverseJoinColumns();
-
-	OrmJoinColumn addSpecifiedInverseJoinColumn(int index);
-	
 	ListIterator<OrmUniqueConstraint> uniqueConstraints();
 	
 	OrmUniqueConstraint addUniqueConstraint(int index);

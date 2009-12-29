@@ -78,6 +78,7 @@
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlSingleRelationshipMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlSingleRelationshipMapping/optional"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlReferenceTable"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlTable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlTable/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlTable/catalog"/>
@@ -235,7 +236,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinColumnsMapping/joinColumns"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlJoinTable">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinTable/joinColumns"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinTable/inverseJoinColumns"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlJoinTableMapping">
@@ -277,6 +277,9 @@
     <genClasses ecoreClass="orm.ecore#//XmlPersistenceUnitMetadata">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPersistenceUnitMetadata/xmlMappingMetadataComplete"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlPersistenceUnitMetadata/persistenceUnitDefaults"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlReferenceTable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlReferenceTable/joinColumns"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//PostLoad"/>
     <genClasses ecoreClass="orm.ecore#//PostPersist"/>
@@ -360,9 +363,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlAttributes_2_0/description"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlAttributes_2_0/elementCollections"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCollectionTable_2_0">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlCollectionTable_2_0/joinColumns"/>
-      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCollectionTable_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlDerivedId_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlDerivedId_2_0/id"/>
       </genClasses>

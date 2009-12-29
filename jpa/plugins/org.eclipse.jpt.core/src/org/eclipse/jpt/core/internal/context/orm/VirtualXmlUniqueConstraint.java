@@ -22,7 +22,7 @@ public class VirtualXmlUniqueConstraint extends XmlUniqueConstraint
 
 	protected boolean metadataComplete;
 
-	protected VirtualXmlUniqueConstraint(UniqueConstraint uniqueConstraint, boolean metadataComplete) {
+	public VirtualXmlUniqueConstraint(UniqueConstraint uniqueConstraint, boolean metadataComplete) {
 		super();
 		this.uniqueConstraint = uniqueConstraint;
 		this.metadataComplete = metadataComplete;

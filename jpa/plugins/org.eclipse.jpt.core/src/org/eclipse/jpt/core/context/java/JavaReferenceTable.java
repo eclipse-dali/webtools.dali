@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,13 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.ReferenceTable;
 
 /**
- * orm.xml join table
+ * Java reference table
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,36 +21,25 @@ import org.eclipse.jpt.core.context.JoinTable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmJoinTable
-	extends JoinTable, OrmReferenceTable
+public interface JavaReferenceTable
+	extends ReferenceTable, JavaJpaContextNode
 {
-	void update();
-		
-	void initializeFrom(JoinTable oldJoinTable);
 
-	
 	// ********** covariant overrides **********
 
-	ListIterator<OrmJoinColumn> joinColumns();
-
-	OrmJoinColumn getDefaultJoinColumn();
-	
-	ListIterator<OrmJoinColumn> specifiedJoinColumns();
-
-	OrmJoinColumn addSpecifiedJoinColumn(int index);
-	
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmJoinColumn> inverseJoinColumns();
+	ListIterator<JavaJoinColumn> joinColumns();
 
-	OrmJoinColumn getDefaultInverseJoinColumn();
-	
+	JavaJoinColumn getDefaultJoinColumn();
+
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmJoinColumn> specifiedInverseJoinColumns();
+	ListIterator<JavaJoinColumn> specifiedJoinColumns();
 
-	OrmJoinColumn addSpecifiedInverseJoinColumn(int index);
-	
-	ListIterator<OrmUniqueConstraint> uniqueConstraints();
-	
-	OrmUniqueConstraint addUniqueConstraint(int index);
+	JavaJoinColumn addSpecifiedJoinColumn(int index);
+
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaUniqueConstraint> uniqueConstraints();
+
+	JavaUniqueConstraint addUniqueConstraint(int index);
 
 }

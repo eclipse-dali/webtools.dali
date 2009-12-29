@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -24,8 +26,11 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -47,10 +52,18 @@ public class GenericJavaElementCollectionMapping2_0
 	protected FetchType specifiedFetch;
 	
 	protected final JavaOrderable orderable;
+	
+	protected final JavaCollectionTable2_0 collectionTable;
 
 	public GenericJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		super(parent);
 		this.orderable = getJpaFactory().buildJavaOrderable(this);
+		this.collectionTable = getJpaFactory().buildJavaCollectionTable(this);
+	}
+	
+	@Override
+	protected JpaFactory2_0 getJpaFactory() {
+		return (JpaFactory2_0) super.getJpaFactory();
 	}
 	
 	@Override
@@ -62,6 +75,7 @@ public class GenericJavaElementCollectionMapping2_0
 		this.specifiedTargetClass = this.getResourceTargetClass();
 		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.resolvedTargetEmbeddable = this.buildResolvedTargetEmbeddable();
+		this.initializeCollectionTable();
 	}
 	
 	@Override
@@ -73,6 +87,11 @@ public class GenericJavaElementCollectionMapping2_0
 		this.setSpecifiedTargetClass_(this.getResourceTargetClass());
 		this.resolvedTargetType = this.buildResolvedTargetType();//no need for change notification, use resolved target embeddable change notification instead?
 		this.setResolvedTargetEmbeddable(this.buildResolvedTargetEmbeddable());
+		this.updateCollectionTable();
+	}
+	
+	public Entity getEntity() {
+		return getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY ? (Entity) getTypeMapping() : null;
 	}
 
 	//************** JavaAttributeMapping implementation ***************
@@ -240,6 +259,24 @@ public class GenericJavaElementCollectionMapping2_0
 		return FetchType.fromJavaResourceModel(this.mappingAnnotation.getFetch());
 	}
 	
+	// ********** collection table **********
+	
+	public JavaCollectionTable2_0 getCollectionTable() {
+		return this.collectionTable;
+	}
+	
+	protected void initializeCollectionTable() {
+		this.collectionTable.initialize(getCollectionTableAnnotation());
+	}
+	
+	protected void updateCollectionTable() {
+		this.collectionTable.update(getCollectionTableAnnotation());
+	}
+	
+	public CollectionTable2_0Annotation getCollectionTableAnnotation() {
+		return 	(CollectionTable2_0Annotation) this.getResourcePersistentAttribute().
+				getNonNullAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+	}
 	
 	// ********** ordering **********  
 	
@@ -256,10 +293,15 @@ public class GenericJavaElementCollectionMapping2_0
 		if (result != null) {
 			return result;
 		}
+		result = this.getCollectionTable().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		result = this.getOrderable().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
+		
 //		if (this.mapKeyNameTouches(pos, astRoot)) {
 //			return this.javaCandidateMapKeyNames(filter);
 //		}
@@ -277,6 +319,7 @@ public class GenericJavaElementCollectionMapping2_0
 		super.validate(messages, reporter, astRoot);
 		this.validateTargetClass(messages, astRoot);
 		this.orderable.validate(messages, reporter, astRoot);
+		this.collectionTable.validate(messages, reporter, astRoot);
 	}
 
 	protected void validateTargetClass(List<IMessage> messages, CompilationUnit astRoot) {

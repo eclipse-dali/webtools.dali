@@ -21,78 +21,11 @@ import java.util.ListIterator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JoinTable
-	extends Table
+	extends ReferenceTable
 {
 	RelationshipMapping getRelationshipMapping();
 
 	JoinTableJoiningStrategy getParent();
-
-	// ********** join columns **********
-
-	/**
-	 * Return the join table's join columns, whether specified or default.
-	 */
-	<T extends JoinColumn> ListIterator<T> joinColumns();
-
-	/**
-	 * Return the number of join columns, whether specified or default.
-	 */
-	int joinColumnsSize();
-
-	/**
-	 * Convert the join table's default join column to a specified join column.
-	 */
-	void convertDefaultToSpecifiedJoinColumn();
-
-	/**
-	 * Return the specified join columns.
-	 */
-	<T extends JoinColumn> ListIterator<T> specifiedJoinColumns();
-		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumns"; //$NON-NLS-1$
-
-	/**
-	 * Return the number of specified join columns.
-	 */
-	int specifiedJoinColumnsSize();
-
-	/**
-	 * Return the default join column or null. A default join column
-	 * only exists if there are no specified join columns.
-	 */
-	JoinColumn getDefaultJoinColumn();
-		String DEFAULT_JOIN_COLUMN = "defaultJoinColumn"; //$NON-NLS-1$
-
-	/**
-	 * Add a specified join column to the join table.
-	 * Return the newly-created join column.
-	 */
-	JoinColumn addSpecifiedJoinColumn(int index);
-
-	/**
-	 * Remove the join column at the specified index from the join table.
-	 */
-	void removeSpecifiedJoinColumn(int index);
-
-	/**
-	 * Remove the specified join column from the join table.
-	 */
-	void removeSpecifiedJoinColumn(JoinColumn joinColumn);
-
-	/**
-	 * Move a join column from the specified source index to the
-	 * specified target index.
-	 */
-	void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex);
-
-	/**
-	 * Return whether the join table has specified join columns.
-	 */
-	boolean hasSpecifiedJoinColumns();
-
-	/**
-	 * Remove all the join table's join columns.
-	 */
-	void clearSpecifiedJoinColumns();
 
 
 	// ********** inverse join columns **********

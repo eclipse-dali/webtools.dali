@@ -10,11 +10,13 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -90,7 +92,18 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	
 	protected void initializeGeneralPane(Composite container) {
 		new FetchTypeComposite(this, container);
+		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
 		new Ordering2_0Composite(this, container);
+	}
+	
+	
+	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableHolder() {
+		return new PropertyAspectAdapter<ElementCollectionMapping2_0, CollectionTable2_0>(getSubjectHolder()) {
+			@Override
+			protected CollectionTable2_0 buildValue_() {
+				return this.subject.getCollectionTable();
+			}
+		};
 	}
 	
 }

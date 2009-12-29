@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -25,4 +26,9 @@ import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
  */
 public interface OrmElementCollectionMapping2_0
 	extends OrmAttributeMapping, ElementCollectionMapping2_0
-{}
+{
+	OrmCollectionTable2_0 getCollectionTable();
+	
+	XmlElementCollection getResourceAttributeMapping();
+
+}

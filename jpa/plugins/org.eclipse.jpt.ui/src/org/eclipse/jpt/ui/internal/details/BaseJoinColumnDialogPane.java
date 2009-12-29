@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see BaseJoinColumnStateObject
  * @see InverseJoinColumnInJoinTableDialog - A container of this pane
- * @see JoinColumnInJoinTableDialog - A container of this pane
+ * @see JoinColumnInReferenceTableDialog - A container of this pane
  * @see PrimaryKeyJoinColumnDialog - A container of this pane
  * @see PrimaryKeyJoinColumnInSecondaryTableDialog - A container of this pane
  *

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -25,4 +26,8 @@ import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
  */
 public interface JavaElementCollectionMapping2_0
 	extends JavaAttributeMapping, ElementCollectionMapping2_0
-{}
+{
+	JavaCollectionTable2_0 getCollectionTable();
+	
+	CollectionTable2_0Annotation getCollectionTableAnnotation();
+}

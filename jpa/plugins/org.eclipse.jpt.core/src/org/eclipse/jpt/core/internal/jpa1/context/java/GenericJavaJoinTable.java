@@ -25,9 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
@@ -44,14 +42,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java join table
  */
 public class GenericJavaJoinTable
-	extends AbstractJavaTable
+	extends GenericJavaReferenceTable
 	implements JavaJoinTable
 {
-
-	protected JavaJoinColumn defaultJoinColumn;
-
-	protected final Vector<JavaJoinColumn> specifiedJoinColumns = new Vector<JavaJoinColumn>();
-	protected final JavaJoinColumn.Owner joinColumnOwner;
 
 	protected JavaJoinColumn defaultInverseJoinColumn;
 
@@ -61,10 +54,10 @@ public class GenericJavaJoinTable
 
 	public GenericJavaJoinTable(JavaJoinTableJoiningStrategy parent) {
 		super(parent);
-		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 	}
 
+	@Override
 	protected JavaJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
@@ -77,18 +70,18 @@ public class GenericJavaJoinTable
 		return this.getParent().getRelationshipReference().getRelationshipMapping();
 	}
 
+	public PersistentAttribute getPersistentAttribute() {
+		return getRelationshipMapping().getPersistentAttribute();
+	}
+	
 	public void initialize(JoinTableAnnotation joinTable) {
 		super.initialize(joinTable);
-		this.initializeSpecifiedJoinColumns(joinTable);
-		this.initializeDefaultJoinColumn(joinTable);
 		this.initializeSpecifiedInverseJoinColumns(joinTable);
 		this.initializeDefaultInverseJoinColumn(joinTable);
 	}
 
 	public void update(JoinTableAnnotation joinTable) {
 		super.update(joinTable);
-		this.updateSpecifiedJoinColumns(joinTable);
-		this.updateDefaultJoinColumn(joinTable);
 		this.updateSpecifiedInverseJoinColumns(joinTable);
 		this.updateDefaultInverseJoinColumn(joinTable);
 	}
@@ -112,192 +105,8 @@ public class GenericJavaJoinTable
 	}
 
 	@Override
-	protected String buildDefaultSchema() {
-		return this.getContextDefaultSchema();
-	}
-
-	@Override
-	protected String buildDefaultCatalog() {
-		return this.getContextDefaultCatalog();
-	}
-
-	@Override
 	protected JoinTableAnnotation getAnnotation() {
 		return this.getParent().getAnnotation();
-	}
-
-
-	// ********** Table implementation **********
-
-	public boolean isResourceSpecified() {
-		return this.getAnnotation().isSpecified();
-	}
-
-
-	// ********** join columns **********
-
-	public ListIterator<JavaJoinColumn> joinColumns() {
-		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
-	}
-
-	public int joinColumnsSize() {
-		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
-	}
-
-	public void convertDefaultToSpecifiedJoinColumn() {
-		MappingTools.convertJoinTableDefaultToSpecifiedJoinColumn(this);
-	}
-
-	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation) {
-		return this.buildJoinColumn(joinColumnAnnotation, this.joinColumnOwner);
-	}
-
-
-	// ********** default join column **********
-
-	public JavaJoinColumn getDefaultJoinColumn() {
-		return this.defaultJoinColumn;
-	}
-
-	protected void setDefaultJoinColumn(JavaJoinColumn defaultJoinColumn) {
-		JavaJoinColumn old = this.defaultJoinColumn;
-		this.defaultJoinColumn = defaultJoinColumn;
-		this.firePropertyChanged(DEFAULT_JOIN_COLUMN, old, defaultJoinColumn);
-	}
-
-	protected ListIterator<JavaJoinColumn> defaultJoinColumns() {
-		if (this.defaultJoinColumn != null) {
-			return new SingleElementListIterator<JavaJoinColumn>(this.defaultJoinColumn);
-		}
-		return EmptyListIterator.instance();
-	}
-
-	protected int defaultJoinColumnsSize() {
-		return (this.defaultJoinColumn == null) ? 0 : 1;
-	}
-
-	protected void initializeDefaultJoinColumn(JoinTableAnnotation joinTableAnnotation) {
-		if (this.shouldBuildDefaultJoinColumn()) {
-			this.defaultJoinColumn = this.buildJoinColumn(new NullJoinColumnAnnotation(joinTableAnnotation));
-		}
-	}
-
-	protected void updateDefaultJoinColumn(JoinTableAnnotation joinTableAnnotation) {
-		if (this.shouldBuildDefaultJoinColumn()) {
-			if (this.defaultJoinColumn == null) {
-				this.setDefaultJoinColumn(this.buildJoinColumn(new NullJoinColumnAnnotation(joinTableAnnotation)));
-			} else {
-				this.defaultJoinColumn.update(new NullJoinColumnAnnotation(joinTableAnnotation));
-			}
-		} else {
-			this.setDefaultJoinColumn(null);
-		}
-	}
-
-	protected boolean shouldBuildDefaultJoinColumn() {
-		return ! this.hasSpecifiedJoinColumns();
-	}
-
-
-	// ********** specified join columns **********
-
-	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
-		return new CloneListIterator<JavaJoinColumn>(this.specifiedJoinColumns);
-	}
-
-	public int specifiedJoinColumnsSize() {
-		return this.specifiedJoinColumns.size();
-	}
-
-	public boolean hasSpecifiedJoinColumns() {
-		return this.specifiedJoinColumns.size() != 0;
-	}
-
-	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
-		// Clear out the default now so it doesn't get removed during an update and
-		// cause change notifications to be sent to the UI in the wrong order.
-		// If the default is already null, nothing will happen.
-		JoinColumn oldDefault = this.defaultJoinColumn;
-		this.defaultJoinColumn = null;
-
-		JavaJoinColumn joinColumn = this.getJpaFactory().buildJavaJoinColumn(this, this.joinColumnOwner);
-		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinTableAnnotation joinTableAnnotation = this.getAnnotation();
-		JoinColumnAnnotation joinColumnAnnotation = joinTableAnnotation.addJoinColumn(index);
-		joinColumn.initialize(joinColumnAnnotation);
-		this.fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
-
-		this.firePropertyChanged(DEFAULT_JOIN_COLUMN, oldDefault, null);
-		return joinColumn;
-	}
-
-	protected void addSpecifiedJoinColumn(int index, JavaJoinColumn joinColumn) {
-		this.addItemToList(index, joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
-	}
-
-	protected void addSpecifiedJoinColumn(JavaJoinColumn joinColumn) {
-		this.addSpecifiedJoinColumn(this.specifiedJoinColumns.size(), joinColumn);
-	}
-
-	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumns.indexOf(joinColumn));
-	}
-
-	public void removeSpecifiedJoinColumn(int index) {
-		JavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		if ( ! this.hasSpecifiedJoinColumns()) {
-			//create the defaultJoinColumn now or this will happen during project update 
-			//after removing the join column from the resource model. That causes problems 
-			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = this.buildJoinColumn(new NullJoinColumnAnnotation(this.getAnnotation()));
-		}
-		this.getAnnotation().removeJoinColumn(index);
-		this.fireItemRemoved(SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
-		if (this.defaultJoinColumn != null) {
-			//fire change notification if a defaultJoinColumn was created above
-			this.firePropertyChanged(DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);
-		}
-	}
-
-	protected void removeSpecifiedJoinColumn_(JavaJoinColumn joinColumn) {
-		this.removeItemFromList(joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
-	}
-
-	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		this.getAnnotation().moveJoinColumn(targetIndex, sourceIndex);
-		this.fireItemMoved(SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
-	}
-
-	public void clearSpecifiedJoinColumns() {
-		// for now, we have to remove annotations one at a time...
-		for (int i = this.specifiedJoinColumns.size(); i-- > 0; ) {
-			this.removeSpecifiedJoinColumn(i);
-		}
-	}
-
-	protected void initializeSpecifiedJoinColumns(JoinTableAnnotation joinTableAnnotation) {
-		for (ListIterator<JoinColumnAnnotation> stream = joinTableAnnotation.joinColumns(); stream.hasNext(); ) {
-			this.specifiedJoinColumns.add(this.buildJoinColumn(stream.next()));
-		}
-	}
-
-	protected void updateSpecifiedJoinColumns(JoinTableAnnotation joinTableAnnotation) {
-		ListIterator<JavaJoinColumn> joinColumns = this.specifiedJoinColumns();
-		ListIterator<JoinColumnAnnotation> joinColumnAnnotations = joinTableAnnotation.joinColumns();
-
-		while (joinColumns.hasNext()) {
-			JavaJoinColumn joinColumn = joinColumns.next();
-			if (joinColumnAnnotations.hasNext()) {
-				joinColumn.update(joinColumnAnnotations.next());
-			} else {
-				this.removeSpecifiedJoinColumn_(joinColumn);
-			}
-		}
-
-		while (joinColumnAnnotations.hasNext()) {
-			this.addSpecifiedJoinColumn(this.buildJoinColumn(joinColumnAnnotations.next()));
-		}
 	}
 
 
@@ -476,12 +285,6 @@ public class GenericJavaJoinTable
 		if (result != null) {
 			return result;
 		}
-		for (JavaJoinColumn column : CollectionTools.iterable(this.joinColumns())) {
-			result = column.javaCompletionProposals(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
-		}
 		for (JavaJoinColumn column : CollectionTools.iterable(this.inverseJoinColumns())) {
 			result = column.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
@@ -492,74 +295,33 @@ public class GenericJavaJoinTable
 	}
 
 
-	// ********** misc **********
-
-	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnAnnotation, JavaJoinColumn.Owner owner) {
-		JavaJoinColumn joinColumn = this.getJpaFactory().buildJavaJoinColumn(this, owner);
-		joinColumn.initialize(joinColumnAnnotation);
-		return joinColumn;
-	}
-
 
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		if (this.getRelationshipMapping().shouldValidateAgainstDatabase()) {
-			this.validateAgainstDatabase(messages, reporter, astRoot);
-		}
-	}
-
 	protected void validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if ( ! this.hasResolvedCatalog()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getName()}, 
-					this, 
-					this.getCatalogTextRange(astRoot)
-				)
-			);
-			return;
-		}
-
-		if ( ! this.hasResolvedSchema()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getName()}, 
-					this, 
-					this.getSchemaTextRange(astRoot)
-				)
-			);
-			return;
-		}
-
-		if ( ! this.isResolved()) {
-			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-							new String[] {this.getName()}, 
-							this, 
-							this.getNameTextRange(astRoot))
-					);
-			}
-			return;
-		}
-
-		this.validateJoinColumns(this.joinColumns(), messages, reporter, astRoot);
+		super.validateAgainstDatabase(messages, reporter, astRoot);
 		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter, astRoot);
 	}
 
-	protected void validateJoinColumns(Iterator<JavaJoinColumn> joinColumns, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		while (joinColumns.hasNext()) {
-			joinColumns.next().validate(messages, reporter, astRoot);
-		}
+	@Override
+	protected boolean shouldValidateAgainstDatabase() {
+		return getRelationshipMapping().shouldValidateAgainstDatabase();
+	}
+
+	@Override
+	protected String getUnresolvedCatalogMessageId() {
+		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG;
+	}
+	
+	@Override
+	protected String getUnresolvedSchemaMessageId() {
+		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA;
+	}
+	
+	@Override
+	protected String getUnresolvedNameMessageId() {
+		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME;
 	}
 
 
@@ -580,7 +342,7 @@ public class GenericJavaJoinTable
 		}
 
 		public PersistentAttribute getPersistentAttribute() {
-			return GenericJavaJoinTable.this.getRelationshipMapping().getPersistentAttribute();
+			return GenericJavaJoinTable.this.getPersistentAttribute();
 		}
 
 		/**
