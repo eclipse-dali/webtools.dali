@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.CollectionTable2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.TargetClassComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -39,8 +40,10 @@ public class OrmElementCollectionMapping2_0Composite extends AbstractElementColl
 
 	@Override
 	protected void initializeGeneralPane(Composite container) {
-		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
-		new FetchTypeComposite(this, container);
+		int groupBoxMargin = this.getGroupBoxMargin();
+		new TargetClassComposite(this, this.addPane(container, groupBoxMargin));
+		new AccessTypeComposite(this, buildAccessHolderHolder(), this.addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
 		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
 		new Ordering2_0Composite(this, container);
 	}

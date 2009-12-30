@@ -54,6 +54,7 @@ public class JptUiDetailsMessages2_0
 	public static String LockModeComposite_pessimistic_force_increment;
 	public static String LockModeComposite_none;
 
+	public static String TargetClassComposite_label;
 	
 	private static final String BUNDLE_NAME = "jpt_ui_details2_0"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiDetailsMessages2_0.class;

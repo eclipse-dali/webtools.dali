@@ -144,5 +144,6 @@ public interface JpaHelpContextIds {
 	public static final String MAPPING_COLLECTION_TABLE_NAME = PREFIX + "mapping_collectionTableName";
 	public static final String MAPPING_COLLECTION_TABLE_SCHEMA = PREFIX + "mapping_collectionTableSchema";
 	public static final String MAPPING_COLLECTION_TABLE_CATALOG = PREFIX + "mapping_collectionTableCatalog";
-
+	
+	public static final String MAPPING_ELEMENT_COLLECTION_TARGET_CLASS = PREFIX + "mapping_elementCollectionTargetClass";
 }

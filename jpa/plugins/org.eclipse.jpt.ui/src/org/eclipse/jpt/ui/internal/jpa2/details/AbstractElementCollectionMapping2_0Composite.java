@@ -91,11 +91,12 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	}
 	
 	protected void initializeGeneralPane(Composite container) {
-		new FetchTypeComposite(this, container);
+		int groupBoxMargin = this.getGroupBoxMargin();
+		new TargetClassComposite(this, this.addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
 		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
 		new Ordering2_0Composite(this, container);
 	}
-	
 	
 	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableHolder() {
 		return new PropertyAspectAdapter<ElementCollectionMapping2_0, CollectionTable2_0>(getSubjectHolder()) {
@@ -105,5 +106,9 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			}
 		};
 	}
-	
+
+	protected Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
 }
