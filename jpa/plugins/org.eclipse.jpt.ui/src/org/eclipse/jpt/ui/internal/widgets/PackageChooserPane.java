@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -18,6 +19,7 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -79,6 +81,16 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	                          Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+		// TODO bug 156185 - when this is fixed there should be api for this
+		this.javaPackageCompletionProcessor = new JavaPackageCompletionProcessor(
+			new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_ROOT)
+		);
 	}
 
 	@Override
@@ -177,19 +189,6 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-		// TODO bug 156185 - when this is fixed there should be api for this
-		this.javaPackageCompletionProcessor = new JavaPackageCompletionProcessor(
-			new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_ROOT)
-		);
-	}
-
 	private IPackageFragment getPackageFragment() {
 		String packageName = getPackageName();
 
@@ -206,7 +205,19 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	 * @return Either the root of the package fragment or <code>null</code> if it
 	 * can't be retrieved
 	 */
-	protected abstract IPackageFragmentRoot getPackageFragmentRoot();
+	protected IPackageFragmentRoot getPackageFragmentRoot() {
+		IJavaProject root = getJpaProject().getJavaProject();
+
+		try {
+			return root.getAllPackageFragmentRoots()[0];
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+		}
+		return null;
+	}
+
+	protected abstract JpaProject getJpaProject();
 
 	/**
 	 * Returns the package name from its subject.
@@ -219,5 +230,14 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	 * The browse button was clicked, its action invokes this action which should
 	 * prompt the user to select a package and set it.
 	 */
-	protected abstract void promptPackage();
+	protected void promptPackage() {
+		IPackageFragment packageFragment = choosePackage();
+
+		if (packageFragment != null) {
+			String packageName = packageFragment.getElementName();
+			this.setPackageName(packageName);
+		}
+	}
+	
+	protected abstract void setPackageName(String packageName);
 }

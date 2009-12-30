@@ -73,11 +73,8 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected Runnable buildBrowseAction() {
+	protected final Runnable buildBrowseAction() {
 		return new Runnable() {
 			public void run() {
 				promptFile();
@@ -103,19 +100,16 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Control addMainControl(Composite container) {
-		return addText(container, textHolder);
+		return addText(container, this.textHolder);
 	}
 
 	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution() {
 		return new PostExecution<ElementTreeSelectionDialog>() {
 			public void execute(ElementTreeSelectionDialog dialog) {
 				if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
-					textHolder.setValue(dialog.getResult()[0].toString());
+					FileChooserPane.this.textHolder.setValue(dialog.getResult()[0].toString());
 				}
 			}
 		};
@@ -169,13 +163,10 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	 */
 	protected abstract IResource getDialogInput();
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
-		textHolder = buildTextHolder();
+		this.textHolder = buildTextHolder();
 	}
 
 	/**

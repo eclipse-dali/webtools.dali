@@ -96,7 +96,7 @@ public abstract class ClassChooserComboPane<T extends Model> extends ClassChoose
 	
 	protected abstract ListValueModel<String> buildClassListHolder();
 	
-	protected abstract StringConverter<String> buildClassConverter();
-
-
+	protected StringConverter<String> buildClassConverter() {
+		return StringConverter.Default.instance();
+	}
 }

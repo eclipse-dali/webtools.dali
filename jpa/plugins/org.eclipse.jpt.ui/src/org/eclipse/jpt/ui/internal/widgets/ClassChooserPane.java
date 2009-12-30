@@ -12,12 +12,10 @@ package org.eclipse.jpt.ui.internal.widgets;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -47,7 +45,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.eclipse.ui.progress.IProgressService;
 
 /**
  * This chooser allows the user to choose a type when browsing and it adds code
@@ -99,9 +96,17 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	@Override
+	protected void initialize() {
+		super.initialize();
+
+		// TODO bug 156185 - when this is fixed there should be api for this
+		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
+	}
+
+	@Override
 	protected Control addLeftControl(Composite container) {
 		if( ! this.allowTypeCreation()) {
-			return this.addLabel(container, this.getLabelText());
+			return super.addLeftControl(container);
 		}
 		Hyperlink labelLink = this.addHyperlink(container,
 			this.getLabelText(),
@@ -121,7 +126,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	protected void hyperLinkSelected() {
 		IType type = getType();
 		if (type != null) {
-			openEditor(type);	
+			openInEditor(type);	
 		}
 		else if (allowTypeCreation()){
 			createType();
@@ -167,6 +172,9 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	
 	protected abstract void setClassName(String className);
 	
+	/**
+	 * Override this to change the enclosing type separator
+	 */
 	protected char getEnclosingTypeSeparator() {
 		return '$';
 	}
@@ -205,7 +213,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		return true;
 	}
 	
-	protected void openEditor(IType type) {
+	protected void openInEditor(IType type) {
 		IJavaElement javaElement = type.getParent();
 		try {
 			JavaUI.openInEditor(javaElement, true, true);
@@ -220,9 +228,6 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 
 	protected abstract JpaProject getJpaProject();
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected final Runnable buildBrowseAction() {
 		return new Runnable() {
@@ -232,9 +237,6 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		};
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected Control addMainControl(Composite container) {
 		Composite subPane = addSubPane(container);
@@ -276,13 +278,12 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 
 		IJavaElement[] elements = new IJavaElement[] { root.getJavaProject() };
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
 		SelectionDialog typeSelectionDialog;
 
 		try {
 			typeSelectionDialog = JavaUI.createTypeDialog(
 				getShell(),
-				service,
+				PlatformUI.getWorkbench().getProgressService(),
 				scope,
 				getTypeDialogStyle(),
 				false,
@@ -315,24 +316,10 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 */
 	protected abstract String getClassName();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		updatePackageFragment();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-		// TODO bug 156185 - when this is fixed there should be api for this
-		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
 	}
 
 	/**
@@ -342,8 +329,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * can't be retrieved
 	 */
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = getJpaProject().getProject();
-		IJavaProject root = JavaCore.create(project);
+		IJavaProject root = getJpaProject().getJavaProject();
 
 		try {
 			return root.getAllPackageFragmentRoots()[0];
@@ -373,11 +359,11 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 			IPackageFragmentRoot root = getPackageFragmentRoot();
 
 			if (root != null) {
-				javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
+				this.javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
 				return;
 			}
 		}
 
-		javaTypeCompletionProcessor.setPackageFragment(null);
+		this.javaTypeCompletionProcessor.setPackageFragment(null);
 	}
 }

@@ -9,14 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PackageChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -86,18 +80,8 @@ public class OrmPackageChooser extends FormPane<EntityMappings>
 			}
 
 			@Override
-			protected IPackageFragmentRoot getPackageFragmentRoot() {
-				IProject project = getSubject().getJpaProject().getProject();
-				IJavaProject root = JavaCore.create(project);
-
-				try {
-					return root.getAllPackageFragmentRoots()[0];
-				}
-				catch (JavaModelException e) {
-					JptUiPlugin.log(e);
-				}
-
-				return null;
+			protected JpaProject getJpaProject() {
+				return getSubject().getJpaProject();
 			}
 
 			@Override
@@ -106,13 +90,8 @@ public class OrmPackageChooser extends FormPane<EntityMappings>
 			}
 
 			@Override
-			protected void promptPackage() {
-				IPackageFragment packageFragment = choosePackage();
-
-				if (packageFragment != null) {
-					String packageName = packageFragment.getElementName();
-					getSubject().setPackage(packageName);
-				}
+			protected void setPackageName(String packageName) {
+				getSubject().setPackage(packageName);
 			}
 		};
 	}

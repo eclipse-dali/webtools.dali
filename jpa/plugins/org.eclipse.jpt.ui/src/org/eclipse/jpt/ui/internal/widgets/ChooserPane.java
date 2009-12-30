@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Control;
  * @see ClassChooserPane
  * @see PackageChooserPane
  *
- * @version 2.0
+ * @version 3.0
  * @since 2.0
  */
 public abstract class ChooserPane<T extends Model> extends Pane<T>
@@ -64,24 +64,20 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/**
-	 * Returns the text of the browse button. This method is called by
-	 * {@link #buildRightControl(Composite)}.
-	 *
-	 * @return "Browse..."
-	 */
-	protected String getBrowseButtonText() {
-		return JptUiMessages.ChooserPane_browseButton;
-	}
+	@Override
+	protected void initializeLayout(Composite container) {
 
-	/**
-	 * Creates the action responsible to perform the action when the Browse is
-	 * clicked.
-	 *
-	 * @return A new <code>Runnable</code> performing the actual action of the
-	 * button
-	 */
-	protected abstract Runnable buildBrowseAction();
+		this.mainControl  = addMainControl(container);
+		this.rightControl = addRightControl(container);
+
+		addLabeledComposite(
+			container,
+			addLeftControl(container),
+			this.mainControl,
+			this.rightControl,
+			getHelpId()
+		);
+	}
 
 	/**
 	 * Creates the left control. By default a label is created and its text is
@@ -93,6 +89,15 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 	protected Control addLeftControl(Composite container) {
 		return addLabel(container, getLabelText());
 	}
+
+	/**
+	 * The text of the label. This method is called by
+	 * {@link #buildLeftControl(Composite)}.
+	 *
+	 * @return The localized text of the left control (which is a label by
+	 * default)
+	 */
+	protected abstract String getLabelText();
 
 	/**
 	 * Creates the main control of this pane.
@@ -118,22 +123,24 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 		);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns the text of the browse button. This method is called by
+	 * {@link #buildRightControl(Composite)}.
+	 *
+	 * @return "Browse..."
 	 */
-	@Override
-	public void enableWidgets(boolean enabled) {
-
-		super.enableWidgets(enabled);
-
-		if (!mainControl.isDisposed()) {
-			mainControl.setEnabled(enabled);
-		}
-
-		if (!rightControl.isDisposed()) {
-			rightControl.setEnabled(enabled);
-		}
+	protected String getBrowseButtonText() {
+		return JptUiMessages.ChooserPane_browseButton;
 	}
+
+	/**
+	 * Creates the action responsible to perform the action when the Browse is
+	 * clicked.
+	 *
+	 * @return A new <code>Runnable</code> performing the actual action of the
+	 * button
+	 */
+	protected abstract Runnable buildBrowseAction();
 
 	/**
 	 * Returns the help topic ID for the controls of this pane.
@@ -144,30 +151,17 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected void initializeLayout(Composite container) {
+	public void enableWidgets(boolean enabled) {
 
-		mainControl  = addMainControl(container);
-		rightControl = addRightControl(container);
+		super.enableWidgets(enabled);
 
-		addLabeledComposite(
-			container,
-			addLeftControl(container),
-			mainControl,
-			rightControl,
-			getHelpId()
-		);
+		if (!this.mainControl.isDisposed()) {
+			this.mainControl.setEnabled(enabled);
+		}
+
+		if (!this.rightControl.isDisposed()) {
+			this.rightControl.setEnabled(enabled);
+		}
 	}
-
-	/**
-	 * The text of the label. This method is called by
-	 * {@link #buildLeftControl(Composite)}.
-	 *
-	 * @return The localized text of the left control (which is a label by
-	 * default)
-	 */
-	protected abstract String getLabelText();
 }
