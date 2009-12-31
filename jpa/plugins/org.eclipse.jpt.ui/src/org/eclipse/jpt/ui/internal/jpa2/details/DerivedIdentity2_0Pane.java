@@ -11,7 +11,6 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
@@ -210,7 +209,10 @@ public class DerivedIdentity2_0Pane<T extends DerivedIdentity2_0>
 		
 		@Override
 		protected String buildNullDefaultValueEntry() {
-			return buildNonNullDefaultValueEntry(JptUiDetailsMessages2_0.DerivedIdentity_mapsIdUnspecifiedValue);
+			boolean useNullString = (getSubject() == null) ? false : getSubject().usesDefaultValue();
+			return (useNullString) ? 
+					buildNonNullDefaultValueEntry(JptUiDetailsMessages2_0.DerivedIdentity_mapsIdUnspecifiedValue)
+					: "";
 		}
 	}
 }
