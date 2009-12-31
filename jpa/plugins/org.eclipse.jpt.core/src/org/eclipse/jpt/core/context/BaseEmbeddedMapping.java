@@ -21,5 +21,10 @@ package org.eclipse.jpt.core.context;
 public interface BaseEmbeddedMapping extends AttributeMapping
 {
 	AttributeOverrideContainer getAttributeOverrideContainer();
-
+	
+	/**
+	 * Return the Embeddable that matches the type of this mapping.
+	 * If none, return null.
+	 */
+	Embeddable getTargetEmbeddable();
 }

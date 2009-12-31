@@ -49,5 +49,4 @@ public interface JavaAttributeMapping
 	 * This includes all possible annotations, not just the ones that currently exist on the attribute.
 	 */
 	Iterable<String> getSupportingAnnotationNames();
-
 }

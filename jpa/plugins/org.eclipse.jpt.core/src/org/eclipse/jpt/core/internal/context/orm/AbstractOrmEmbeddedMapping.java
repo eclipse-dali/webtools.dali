@@ -150,10 +150,10 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 					if (override != null && !override.isVirtual()) {
 						return override.getRelationshipReference();
 					}
-					if (this.getEmbeddable() == null) {
+					if (this.getTargetEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveRelationshipReference(attributeName);
+					return this.getTargetEmbeddable().resolveRelationshipReference(attributeName);
 				}
 			}
 		}
@@ -184,10 +184,10 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	}
 
 	public Iterator<RelationshipMapping> allOverridableAssociations() {
-		if (this.getEmbeddable() == null) {
+		if (this.getTargetEmbeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<AttributeMapping, RelationshipMapping>(this.getEmbeddable().attributeMappings()) {
+		return new FilteringIterator<AttributeMapping, RelationshipMapping>(this.getTargetEmbeddable().attributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
 				return o.isOverridableAssociationMapping();
@@ -200,7 +200,7 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	
 	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
-			return AbstractOrmEmbeddedMapping.this.getEmbeddable();
+			return AbstractOrmEmbeddedMapping.this.getTargetEmbeddable();
 		}
 		
 		public OrmTypeMapping getTypeMapping() {

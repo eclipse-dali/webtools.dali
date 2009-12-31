@@ -132,10 +132,10 @@ public class GenericJavaEmbeddedMapping
 					if (override != null && !override.isVirtual()) {
 						return override.getRelationshipReference();
 					}
-					if (this.getEmbeddable() == null) {
+					if (this.getTargetEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveRelationshipReference(attributeName);
+					return this.getTargetEmbeddable().resolveRelationshipReference(attributeName);
 				}
 			}
 		}

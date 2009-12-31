@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.Column;
@@ -35,11 +34,11 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 {
 	protected OrmAttributeOverrideContainer attributeOverrideContainer;
 
-	private Embeddable embeddable;//TODO hmm, why no property change notification for setting this??
+	private Embeddable targetEmbeddable;//TODO hmm, why no property change notification for setting this??
 	
 	protected AbstractOrmBaseEmbeddedMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.embeddable = embeddableFor(this.getJavaPersistentAttribute());
+		this.targetEmbeddable = embeddableFor(this.getJavaPersistentAttribute());
 		this.attributeOverrideContainer = getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner(), this.resourceAttributeMapping);
 	}
 
@@ -60,15 +59,15 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		return null;
 	}	
 	
-	public Embeddable getEmbeddable() {
-		return this.embeddable;
+	public Embeddable getTargetEmbeddable() {
+		return this.targetEmbeddable;
 	}
 	
 	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
-		if (this.getEmbeddable() == null) {
+		if (this.getTargetEmbeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return this.getEmbeddable().attributeMappings();
+		return this.getTargetEmbeddable().attributeMappings();
 	}
 	
 	@Override
@@ -135,10 +134,10 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 					if (override != null && !override.isVirtual()) {
 						return override.getColumn();
 					}
-					if (this.getEmbeddable() == null) {
+					if (this.getTargetEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverridenColumn(attributeName);
+					return this.getTargetEmbeddable().resolveOverridenColumn(attributeName);
 				}
 			}
 		}
@@ -157,7 +156,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	@Override
 	public void update() {
 		super.update();
-		this.embeddable = embeddableFor(this.getJavaPersistentAttribute());
+		this.targetEmbeddable = embeddableFor(this.getJavaPersistentAttribute());
 		getAttributeOverrideContainer().update();
 	}
 	
@@ -172,7 +171,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	
 	class AttributeOverrideContainerOwner implements OrmAttributeOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
-			return AbstractOrmBaseEmbeddedMapping.this.getEmbeddable();
+			return AbstractOrmBaseEmbeddedMapping.this.getTargetEmbeddable();
 		}
 		
 		public OrmTypeMapping getTypeMapping() {

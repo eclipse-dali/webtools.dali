@@ -40,7 +40,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 {
 	protected final JavaAttributeOverrideContainer attributeOverrideContainer;
 
-	private Embeddable embeddable;
+	private Embeddable targetEmbeddable;
 
 	protected AbstractJavaBaseEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
@@ -52,7 +52,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 
 	public TypeMapping getOverridableTypeMapping() {
-		return this.embeddable;
+		return this.targetEmbeddable;
 	}
 	
 	//****************** JavaAttributeMapping implementation *******************
@@ -64,8 +64,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		names.add(JPA.ATTRIBUTE_OVERRIDES);
 	}
 
-	public Embeddable getEmbeddable() {
-		return this.embeddable;
+	public Embeddable getTargetEmbeddable() {
+		return this.targetEmbeddable;
 	}
 	
 	
@@ -73,21 +73,21 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	protected void initialize() {
 		super.initialize();
 		this.attributeOverrideContainer.initialize(this.getResourcePersistentAttribute());
-		this.embeddable = this.getPersistentAttribute().getEmbeddable();
+		this.targetEmbeddable = this.getPersistentAttribute().getEmbeddable();
 	}
 	
 	@Override
 	protected void update() {
 		super.update();
-		this.embeddable = this.getPersistentAttribute().getEmbeddable();
+		this.targetEmbeddable = this.getPersistentAttribute().getEmbeddable();
 		this.attributeOverrideContainer.update(this.getResourcePersistentAttribute());
 	}
 	
 	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
-		if (this.getEmbeddable() == null) {
+		if (this.getTargetEmbeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return this.getEmbeddable().attributeMappings();
+		return this.getTargetEmbeddable().attributeMappings();
 	}
 	
 	@Override
@@ -151,10 +151,10 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 					if (override != null && !override.isVirtual()) {
 						return override.getColumn();
 					}
-					if (this.getEmbeddable() == null) {
+					if (this.getTargetEmbeddable() == null) {
 						return null;
 					}
-					return this.getEmbeddable().resolveOverridenColumn(attributeName);
+					return this.getTargetEmbeddable().resolveOverridenColumn(attributeName);
 				}
 			}
 		}
