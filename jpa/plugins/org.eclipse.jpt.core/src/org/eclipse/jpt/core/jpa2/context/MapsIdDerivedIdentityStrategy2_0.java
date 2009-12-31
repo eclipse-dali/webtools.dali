@@ -40,6 +40,11 @@ public interface MapsIdDerivedIdentityStrategy2_0
 	void setSpecifiedValue(String newValue);
 	
 	/**
+	 * Return whether a default value is ever used (in some cases, there can be no default)
+	 */
+	boolean usesDefaultValue();
+	
+	/**
 	 * String associated with changes to the default value property of this object
 	 */
 	public static final String DEFAULT_VALUE_PROPERTY = "default-value"; //$NON-NLS-1$

@@ -12,14 +12,21 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
-
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -65,6 +72,10 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		firePropertyChanged(SPECIFIED_VALUE_PROPERTY, oldValue, newValue);
 	}
 	
+	public boolean usesDefaultValue() {
+		return false;
+	}
+	
 	public String getDefaultValue() {
 		// there is no way to have default values in xml
 		return null;
@@ -76,8 +87,41 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 	
 	public Iterable<String> getSortedValueChoices() {
-		// TODO
-		return EmptyIterable.<String>instance();
+		return CollectionTools.sort(
+			new TransformationIterable<AttributeMapping, String>(
+					new CompositeIterable<AttributeMapping>(getAllAttributeMappingChoiceIterables())) {
+				@Override
+				protected String transform(AttributeMapping o) {
+					return o.getName();
+				}
+			});
+	}
+	
+	protected Iterable<Iterable<AttributeMapping>> getAllAttributeMappingChoiceIterables() {
+		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(
+				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
+			@Override
+			protected Iterable<AttributeMapping> transform(AttributeMapping o) {
+				if (StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
+					return getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) o);
+				}
+				else {
+					return new SingleElementIterable(o);
+				}
+			}
+		};
+	}
+	
+	protected Iterable<AttributeMapping> getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping mapping) {
+		Embeddable embeddable = mapping.getTargetEmbeddable();
+		if (embeddable == null) {
+			return new SingleElementIterable(mapping);
+		}
+		else {
+			return new CompositeIterable<AttributeMapping>(
+					mapping,
+					CollectionTools.collection(embeddable.allAttributeMappings()));
+		}		
 	}
 	
 	public void update() {
