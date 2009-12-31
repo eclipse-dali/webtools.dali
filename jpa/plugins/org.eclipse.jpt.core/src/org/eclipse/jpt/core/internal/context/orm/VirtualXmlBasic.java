@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -108,7 +108,7 @@ public class VirtualXmlBasic extends XmlBasic
 		if (this.isOrmMetadataComplete()) {
 			return false;
 		}
-		return this.javaAttributeMapping.getConverter().getType() == Converter.LOB_CONVERTER;
+		return this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.LOB_CONVERTER;
 	}
 
 	@Override
@@ -121,8 +121,8 @@ public class VirtualXmlBasic extends XmlBasic
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaAttributeMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
-			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getConverter()).getTemporalType();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getSpecifiedConverter()).getTemporalType();
 			return org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;
@@ -135,20 +135,14 @@ public class VirtualXmlBasic extends XmlBasic
 
 	@Override
 	public EnumType getEnumerated() {
-		if (this.javaAttributeMapping.getConverter().getType() != Converter.ENUMERATED_CONVERTER) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		org.eclipse.jpt.core.context.EnumType javaEnumeratedType;
-		if (this.isOrmMetadataComplete()) {
-			if (this.javaAttributeMapping.getDefaultConverter().getType() != Converter.ENUMERATED_CONVERTER) {
-				return null;
-			}
-			javaEnumeratedType = ((EnumeratedConverter) this.javaAttributeMapping.getDefaultConverter()).getSpecifiedEnumType();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.ENUMERATED_CONVERTER) {
+			org.eclipse.jpt.core.context.EnumType javaEnumeratedType = ((EnumeratedConverter) this.javaAttributeMapping.getSpecifiedConverter()).getEnumType();
+			return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(javaEnumeratedType);
 		}
-		else {
-			javaEnumeratedType = ((EnumeratedConverter) this.javaAttributeMapping.getConverter()).getEnumType();
-		}
-		return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(javaEnumeratedType);
+		return null;
 	}
 
 	@Override

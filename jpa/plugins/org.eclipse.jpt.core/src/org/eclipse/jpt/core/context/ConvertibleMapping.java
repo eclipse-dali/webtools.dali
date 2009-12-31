@@ -24,20 +24,10 @@ package org.eclipse.jpt.core.context;
 
 public interface ConvertibleMapping
 {
-	/**
-	 * Return the specified converter if it is not null and the default converter otherwise.
-	 */
-	Converter getConverter();
 	
 	/**
-	 * Return the default converter, NO_CONVERTER except in instances where an underlying
-	 * model has a converter set (an xml mapping could return a default converter if one is set in java)
-	 */
-	Converter getDefaultConverter();
-		String DEFAULT_CONVERTER_PROPERTY = "defaultConverter"; //$NON-NLS-1$
-	
-	/**
-	 * Return the specified converter or null, if none is specified in the underlying resource model
+	 * Return the specified converter, return a converter of type Converter.NO_CONVERTER
+	 * instead of null if no converter is specified.
 	 */
 	Converter getSpecifiedConverter();
 	

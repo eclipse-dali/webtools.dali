@@ -40,7 +40,6 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 
 	protected OrmGeneratedValue generatedValue;
 	
-	protected OrmConverter defaultConverter;
 	protected OrmConverter specifiedConverter;
 	
 	protected final OrmGeneratorContainer generatorContainer;
@@ -52,7 +51,6 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
 		this.generatorContainer = buildGeneratorContainer();
 		this.initializeGeneratedValue();
-		this.defaultConverter = getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
@@ -83,22 +81,11 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		return this.column;
 	}
 	
-	public OrmConverter getConverter() {
-		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
-	}
-	
-	public OrmConverter getDefaultConverter() {
-		return this.defaultConverter;
-	}
-	
 	public OrmConverter getSpecifiedConverter() {
 		return this.specifiedConverter;
 	}
 	
 	protected String getSpecifedConverterType() {
-		if (this.specifiedConverter == null) {
-			return Converter.NO_CONVERTER;
-		}
 		return this.specifiedConverter.getType();
 	}
 	
@@ -238,6 +225,9 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
+		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
+			return getXmlContextNodeFactory().buildOrmNullConverter(this);
+		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getXmlContextNodeFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
@@ -248,8 +238,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		if (this.resourceAttributeMapping.getTemporal() != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
-		
-		return null;
+		return Converter.NO_CONVERTER;
 	}
 
 	//***************** XmlColumn.Owner implementation ****************

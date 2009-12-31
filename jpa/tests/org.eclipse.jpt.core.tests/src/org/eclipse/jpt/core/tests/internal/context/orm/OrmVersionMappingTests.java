@@ -121,25 +121,25 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertNull(ormVersionMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, versionResource.getTemporal());
 	
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, versionResource.getTemporal());
 
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
 
 		//set temporal to null in the resource model
 		versionResource.setTemporal(null);
-		assertNull(ormVersionMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
 		assertNull(versionResource.getTemporal());
 	}
 	
@@ -149,7 +149,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertNull(ormVersionMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
@@ -167,9 +167,9 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
 
 		//set temporal to null in the context model
-		ormVersionMapping.setSpecifiedConverter(null);
+		ormVersionMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
 		assertNull(versionResource.getTemporal());
-		assertNull(ormVersionMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
 	}
 	
 	//TODO test defaults
@@ -186,7 +186,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", ormVersionMapping.getName());
-		assertNull(ormVersionMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
 
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
@@ -228,8 +228,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormVersionMapping.getName());
-		assertEquals(Converter.TEMPORAL_CONVERTER, ormVersionMapping.getConverter().getType());
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
+		assertEquals(Converter.TEMPORAL_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("MY_COLUMN", ormColumn.getSpecifiedName());
@@ -258,7 +258,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormVersionMapping.getName());
-		assertNull(ormVersionMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
@@ -284,7 +284,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", ormVersionMapping.getName());
-		assertNull(ormVersionMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());

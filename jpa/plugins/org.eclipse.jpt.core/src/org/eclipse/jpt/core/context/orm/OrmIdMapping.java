@@ -25,7 +25,6 @@ public interface OrmIdMapping
 	//********* covariant overrides **********
 	OrmGeneratorContainer getGeneratorContainer();
 	
-	OrmConverter getDefaultConverter();
 	OrmConverter getSpecifiedConverter();
 	
 	OrmGeneratedValue getGeneratedValue();

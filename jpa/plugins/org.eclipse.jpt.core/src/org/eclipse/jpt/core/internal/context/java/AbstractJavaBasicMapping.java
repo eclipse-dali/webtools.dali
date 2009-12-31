@@ -45,8 +45,6 @@ public abstract class AbstractJavaBasicMapping
 	protected Boolean specifiedOptional;
 	
 	protected final JavaColumn column;
-
-	protected final JavaConverter defaultConverter;
 	
 	protected JavaConverter specifiedConverter;
 	
@@ -54,7 +52,6 @@ public abstract class AbstractJavaBasicMapping
 	protected AbstractJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = getJpaFactory().buildJavaColumn(this, this);
-		this.defaultConverter = getJpaFactory().buildJavaNullConverter(this);
 	}
 
 	@Override
@@ -158,28 +155,23 @@ public abstract class AbstractJavaBasicMapping
 		this.specifiedOptional = newSpecifiedOptional;
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
-
-	public JavaConverter getConverter() {
-		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
-	}
-	
-	public JavaConverter getDefaultConverter() {
-		return this.defaultConverter;
-	}
 	
 	public JavaConverter getSpecifiedConverter() {
 		return this.specifiedConverter;
 	}
 	
-	protected String getSpecifedConverterType() {
+	protected String getSpecifiedConverterType() {
 		if (this.specifiedConverter == null) {
-			return Converter.NO_CONVERTER;
+			//TODO this is only ever null in the case that the mapping type is changed
+			//via PersistentAttribute.setSpecifiedMappingKey.  In this case, the 
+			//initialize method is never called.
+			return null;
 		}
 		return this.specifiedConverter.getType();
 	}
 	
 	public void setSpecifiedConverter(String converterType) {
-		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
+		if (this.valuesAreEqual(getSpecifiedConverterType(), converterType)) {
 			return;
 		}
 		JavaConverter oldConverter = this.specifiedConverter;
@@ -205,7 +197,7 @@ public abstract class AbstractJavaBasicMapping
 	protected void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
-		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
+		if (this.valuesAreEqual(getResourceConverterType(), getSpecifiedConverterType())) {
 			getSpecifiedConverter().update(this.getResourcePersistentAttribute());
 		}
 		else {
@@ -225,6 +217,9 @@ public abstract class AbstractJavaBasicMapping
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
+		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
+			return getJpaFactory().buildJavaNullConverter(this);			
+		}
 		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
 			return getJpaFactory().buildJavaEnumeratedConverter(this, this.getResourcePersistentAttribute());
 		}
@@ -247,7 +242,7 @@ public abstract class AbstractJavaBasicMapping
 		if (this.getResourcePersistentAttribute().getAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.LOB_CONVERTER;
 		}
-		return null;
+		return Converter.NO_CONVERTER;
 	}
 
 	@Override
@@ -265,6 +260,10 @@ public abstract class AbstractJavaBasicMapping
 		if (result != null) {
 			return result;
 		}
+		result = getSpecifiedConverter().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		return null;
 	}
 
@@ -277,9 +276,7 @@ public abstract class AbstractJavaBasicMapping
 		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages, astRoot);
 		}
-		if (this.specifiedConverter != null) {
-			this.specifiedConverter.validate(messages, reporter, astRoot);
-		}
+		this.getSpecifiedConverter().validate(messages, reporter, astRoot);
 	}
 	
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {

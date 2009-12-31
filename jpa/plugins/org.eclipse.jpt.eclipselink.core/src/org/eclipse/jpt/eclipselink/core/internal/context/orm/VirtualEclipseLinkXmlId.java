@@ -174,8 +174,8 @@ public class VirtualEclipseLinkXmlId extends XmlId
 	@Override
 	public String getConvert() {
 		//don't need isOrmMetadataComplete() check because there is no default Id mapping
-		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			return ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverterName();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
+			return ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverterName();
 		}
 		return null;
 	}
@@ -188,10 +188,10 @@ public class VirtualEclipseLinkXmlId extends XmlId
 	@Override
 	public XmlConverter getConverter() {
 		//don't need isOrmMetadataComplete() check because there is no default Id mapping
-		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) {
-				return new VirtualEclipseLinkXmlConverter(this.ormTypeMapping, (EclipseLinkCustomConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlConverter(this.ormTypeMapping, (EclipseLinkCustomConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter());
 			}
 		}
 		return null;
@@ -205,10 +205,10 @@ public class VirtualEclipseLinkXmlId extends XmlId
 	@Override
 	public XmlObjectTypeConverter getObjectTypeConverter() {
 		//don't need isOrmMetadataComplete() check because there is no default Id mapping
-		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-				return new VirtualEclipseLinkXmlObjectTypeConverter(this.ormTypeMapping, (EclipseLinkObjectTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlObjectTypeConverter(this.ormTypeMapping, (EclipseLinkObjectTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter());
 			}
 		}
 		return null;
@@ -222,10 +222,10 @@ public class VirtualEclipseLinkXmlId extends XmlId
 	@Override
 	public XmlStructConverter getStructConverter() {
 		//don't need isOrmMetadataComplete() check because there is no default Id mapping
-		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) {
-				return new VirtualEclipseLinkXmlStructConverter(this.ormTypeMapping, (EclipseLinkStructConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlStructConverter(this.ormTypeMapping, (EclipseLinkStructConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter());
 			}
 		}
 		return null;
@@ -239,10 +239,10 @@ public class VirtualEclipseLinkXmlId extends XmlId
 	@Override
 	public XmlTypeConverter getTypeConverter() {
 		//don't need isOrmMetadataComplete() check because there is no default Id mapping
-		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) {
-				return new VirtualEclipseLinkXmlTypeConverter(this.ormTypeMapping, (EclipseLinkTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlTypeConverter(this.ormTypeMapping, (EclipseLinkTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getSpecifiedConverter()).getConverter());
 			}
 		}
 		return null;

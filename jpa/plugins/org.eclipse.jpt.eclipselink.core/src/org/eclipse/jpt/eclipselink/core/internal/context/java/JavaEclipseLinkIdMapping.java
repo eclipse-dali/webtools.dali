@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -22,7 +21,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
-import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -55,10 +53,10 @@ public class JavaEclipseLinkIdMapping
 		if (javaConverter != null) {
 			return javaConverter;
 		}
-		if (converterType == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
+		if (this.valuesAreEqual(converterType, EclipseLinkConvert.ECLIPSE_LINK_CONVERTER)) {
 			return new JavaEclipseLinkConvert(this, this.getResourcePersistentAttribute());
 		}
-		return null;
+		throw new IllegalArgumentException();
 	}
 	
 	@Override
@@ -92,22 +90,6 @@ public class JavaEclipseLinkIdMapping
 		this.mutable.update(this.getResourcePersistentAttribute());
 	}
 	
-	// ********** code assist **********
-
-	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		if (getConverter() != null) {
-			result = getConverter().javaCompletionProposals(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
-	}
 	
 	//************ validation ****************
 	

@@ -93,8 +93,8 @@ public class VirtualXmlId extends XmlId
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaAttributeMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
-			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getConverter()).getTemporalType();
+		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getSpecifiedConverter()).getTemporalType();
 			return  org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;

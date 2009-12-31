@@ -44,8 +44,6 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 
 	protected Boolean specifiedOptional;
 	
-	protected OrmConverter defaultConverter;
-	
 	protected OrmConverter specifiedConverter;
 	
 	protected AbstractOrmBasicMapping(OrmPersistentAttribute parent, T resourceMapping) {
@@ -54,7 +52,6 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		this.column.initialize(this.getResourceColumn());//TODO pass in to factory
 		this.specifiedFetch = this.getResourceFetch();
 		this.specifiedOptional = this.getResourceOptional();
-		this.defaultConverter = getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
@@ -108,27 +105,16 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 	
-	public OrmConverter getConverter() {
-		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
-	}
-	
-	public OrmConverter getDefaultConverter() {
-		return this.defaultConverter;
-	}
-	
 	public OrmConverter getSpecifiedConverter() {
 		return this.specifiedConverter;
 	}
 	
-	protected String getSpecifedConverterType() {
-		if (this.specifiedConverter == null) {
-			return Converter.NO_CONVERTER;
-		}
+	protected String getSpecifiedConverterType() {
 		return this.specifiedConverter.getType();
 	}
 	
 	public void setSpecifiedConverter(String converterType) {
-		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
+		if (this.valuesAreEqual(getSpecifiedConverterType(), converterType)) {
 			return;
 		}
 		OrmConverter oldConverter = this.specifiedConverter;
@@ -196,7 +182,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.setSpecifiedOptional_(this.getResourceOptional());
 		this.column.update(this.getResourceColumn());
-		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
+		if (this.valuesAreEqual(getResourceConverterType(), getSpecifiedConverterType())) {
 			getSpecifiedConverter().update();
 		}
 		else {
@@ -213,6 +199,9 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	}
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
+		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
+			return getXmlContextNodeFactory().buildOrmNullConverter(this);
+		}
 		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
 			return getXmlContextNodeFactory().buildOrmEnumeratedConverter(this, this.resourceAttributeMapping);
 		}
@@ -236,7 +225,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 			return Converter.LOB_CONVERTER;
 		}
 		
-		return null;
+		return Converter.NO_CONVERTER;
 	}
 	
 	public void addToResourceModel(Attributes resourceAttributes) {

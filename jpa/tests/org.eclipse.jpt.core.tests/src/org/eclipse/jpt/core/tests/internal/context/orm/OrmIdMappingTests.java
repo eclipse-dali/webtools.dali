@@ -133,25 +133,25 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
 	
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
 
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 
 		//set temporal to null in the resource model
 		idResource.setTemporal(null);
-		assertNull(ormIdMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
 		assertNull(idResource.getTemporal());
 	}
 	
@@ -161,7 +161,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
@@ -179,9 +179,9 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
 
 		//set temporal to null in the context model
-		ormIdMapping.setSpecifiedConverter(null);
+		ormIdMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
 		assertNull(idResource.getTemporal());
-		assertNull(ormIdMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
 	}
 	
 	//TODO test defaults
@@ -417,7 +417,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", ormIdMapping.getName());
-		assertNull(ormIdMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
 		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
@@ -462,8 +462,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormIdMapping.getName());
-		assertEquals(Converter.TEMPORAL_CONVERTER, ormIdMapping.getConverter().getType());
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
+		assertEquals(Converter.TEMPORAL_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
 		
 		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertEquals("MY_COLUMN", ormColumn.getSpecifiedName());
@@ -510,7 +510,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormIdMapping.getName());
-		assertNull(ormIdMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
 		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
@@ -539,7 +539,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", ormIdMapping.getName());
-		assertNull(ormIdMapping.getSpecifiedConverter());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
 		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());

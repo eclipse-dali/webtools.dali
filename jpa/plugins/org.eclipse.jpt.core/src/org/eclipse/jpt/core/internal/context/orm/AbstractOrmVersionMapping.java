@@ -36,14 +36,12 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 {
 	protected final OrmColumn column;
 
-	protected OrmConverter defaultConverter;
 	protected OrmConverter specifiedConverter;
 	
 	protected AbstractOrmVersionMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to constructor
-		this.defaultConverter = getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
@@ -68,23 +66,12 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 	public OrmColumn getColumn() {
 		return this.column;
 	}
-
-	public OrmConverter getConverter() {
-		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
-	}
-	
-	public OrmConverter getDefaultConverter() {
-		return this.defaultConverter;
-	}
 	
 	public OrmConverter getSpecifiedConverter() {
 		return this.specifiedConverter;
 	}
 	
 	protected String getSpecifedConverterType() {
-		if (this.specifiedConverter == null) {
-			return Converter.NO_CONVERTER;
-		}
 		return this.specifiedConverter.getType();
 	}
 	
@@ -144,6 +131,9 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 	}
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
+		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
+			return getXmlContextNodeFactory().buildOrmNullConverter(this);
+		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getXmlContextNodeFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
@@ -154,8 +144,7 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 		if (this.resourceAttributeMapping.getTemporal() != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
-		
-		return null;
+		return Converter.NO_CONVERTER;
 	}
 
 	//***************** XmlColumn.Owner implementation ****************

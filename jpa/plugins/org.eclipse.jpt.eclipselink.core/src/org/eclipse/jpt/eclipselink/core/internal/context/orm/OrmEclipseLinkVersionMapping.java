@@ -43,10 +43,10 @@ public class OrmEclipseLinkVersionMapping extends AbstractOrmVersionMapping<XmlV
 		if (ormConverter != null) {
 			return ormConverter;
 		}
-		if (converterType == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
+		if (this.valuesAreEqual(converterType, EclipseLinkConvert.ECLIPSE_LINK_CONVERTER)) {
 			return new OrmEclipseLinkConvert(this, this.resourceAttributeMapping);
 		}
-		return null;
+		throw new IllegalArgumentException();
 	}
 	
 	@Override

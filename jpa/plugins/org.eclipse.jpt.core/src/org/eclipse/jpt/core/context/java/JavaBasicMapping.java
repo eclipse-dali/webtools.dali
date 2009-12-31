@@ -24,7 +24,6 @@ public interface JavaBasicMapping
 	extends JavaAttributeMapping, BasicMapping, JavaColumnMapping
 {
 	//********* covariant overrides **********
-	JavaConverter getDefaultConverter();
 	JavaConverter getSpecifiedConverter();
 	
 }

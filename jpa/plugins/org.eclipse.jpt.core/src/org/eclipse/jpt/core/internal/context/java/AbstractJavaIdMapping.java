@@ -49,8 +49,6 @@ public abstract class AbstractJavaIdMapping
 	protected JavaGeneratedValue generatedValue;
 
 	protected final JavaGeneratorContainer generatorContainer;
-
-	protected final JavaConverter defaultConverter;
 	
 	protected JavaConverter specifiedConverter;
 	
@@ -58,7 +56,6 @@ public abstract class AbstractJavaIdMapping
 	protected AbstractJavaIdMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = this.getJpaFactory().buildJavaColumn(this, this);
-		this.defaultConverter = this.getJpaFactory().buildJavaNullConverter(this);
 		this.generatorContainer = this.buildGeneratorContainer();
 	}
 
@@ -158,22 +155,16 @@ public abstract class AbstractJavaIdMapping
 		return this.generatorContainer;
 	}
 	
-	
-	public JavaConverter getConverter() {
-		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
-	}
-	
-	public JavaConverter getDefaultConverter() {
-		return this.defaultConverter;
-	}
-	
 	public JavaConverter getSpecifiedConverter() {
 		return this.specifiedConverter;
 	}
 	
 	protected String getSpecifedConverterType() {
 		if (this.specifiedConverter == null) {
-			return Converter.NO_CONVERTER;
+			//TODO this is only ever null in the case that the mapping type is changed
+			//via PersistentAttribute.setSpecifiedMappingKey.  In this case, the 
+			//initialize method is never called.
+			return null;
 		}
 		return this.specifiedConverter.getType();
 	}
@@ -255,6 +246,9 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
+		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
+			return getJpaFactory().buildJavaNullConverter(this);			
+		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());
 		}
@@ -265,8 +259,7 @@ public abstract class AbstractJavaIdMapping
 		if (this.getResourcePersistentAttribute().getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
-		
-		return null;
+		return Converter.NO_CONVERTER;
 	}
 
 	// ********** code assist **********
@@ -288,6 +281,10 @@ public abstract class AbstractJavaIdMapping
 			}
 		}
 		result = this.getGeneratorContainer().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = getSpecifiedConverter().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -344,13 +341,11 @@ public abstract class AbstractJavaIdMapping
 		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages, astRoot);
 		}
-		if (this.generatedValue != null) {
-			this.generatedValue.validate(messages, reporter, astRoot);
+		if (this.getGeneratedValue() != null) {
+			this.getGeneratedValue().validate(messages, reporter, astRoot);
 		}
-		getGeneratorContainer().validate(messages, reporter, astRoot);
-		if (this.specifiedConverter != null) {
-			this.specifiedConverter.validate(messages, reporter, astRoot);
-		}
+		this.getGeneratorContainer().validate(messages, reporter, astRoot);
+		this.getSpecifiedConverter().validate(messages, reporter, astRoot);
 	}
 		
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {

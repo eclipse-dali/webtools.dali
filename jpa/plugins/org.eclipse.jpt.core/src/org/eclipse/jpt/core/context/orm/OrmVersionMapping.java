@@ -24,7 +24,6 @@ public interface OrmVersionMapping extends VersionMapping, OrmColumnMapping, Orm
 {
 	
 	//********* covariant overrides **********
-	OrmConverter getDefaultConverter();
 	OrmConverter getSpecifiedConverter();
 
 }
