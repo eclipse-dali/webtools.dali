@@ -135,14 +135,14 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
 		
-		PropertyValueModel<Converter> specifiedConverterHolder = buildSpecifiedConverterHolder();
+		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 		// Temporal
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 		
 		
 		// Enumerated
@@ -151,7 +151,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 			JptUiDetailsMessages.TypeSection_enumerated, 
 			buildEnumeratedBooleanHolder(), 
 			null);
-		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
 
 	protected PropertyValueModel<Column> buildColumnHolder() {
@@ -164,46 +164,43 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
+				return Boolean.valueOf(this.subject.getConverter().getType() == Converter.NO_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.NO_CONVERTER);
+					this.subject.setConverter(Converter.NO_CONVERTER);
 				}
 			}
 		};
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildLobConverterHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
+				Converter converter = this.subject.getConverter();
 				return Boolean.valueOf(converter.getType() == Converter.LOB_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.LOB_CONVERTER);
+					this.subject.setConverter(Converter.LOB_CONVERTER);
 				}
 			}
 		};
 	}
 	
-	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
-		return new PropertyAspectAdapter<T, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+	private PropertyValueModel<Converter> buildConverterHolder() {
+		return new PropertyAspectAdapter<T, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
-				return this.subject.getSpecifiedConverter();
+				return this.subject.getConverter();
 			}
 		};
 	}
@@ -212,7 +209,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
-				return (converter != null && converter.getType() == Converter.TEMPORAL_CONVERTER) ? (TemporalConverter) converter : null;
+				return converter.getType() == Converter.TEMPORAL_CONVERTER ? (TemporalConverter) converter : null;
 			}
 		};
 	}
@@ -221,46 +218,40 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
 			@Override
 			protected EnumeratedConverter transform_(Converter converter) {
-				return (converter != null && converter.getType() == Converter.ENUMERATED_CONVERTER) ? (EnumeratedConverter) converter : null;
+				return converter.getType() == Converter.ENUMERATED_CONVERTER ? (EnumeratedConverter) converter : null;
 			}
 		};
 	}
 
 	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
+				Converter converter = this.subject.getConverter();
 				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
+					this.subject.setConverter(Converter.TEMPORAL_CONVERTER);
 				}
 			}
 		};
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
+				Converter converter = this.subject.getConverter();
 				return Boolean.valueOf(converter.getType() == Converter.ENUMERATED_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.ENUMERATED_CONVERTER);
+					this.subject.setConverter(Converter.ENUMERATED_CONVERTER);
 				}
 			}
 		};

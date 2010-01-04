@@ -24,6 +24,6 @@ public interface OrmBasicMapping extends BasicMapping, OrmAttributeMapping, OrmC
 {
 	
 	//********* covariant overrides **********
-	OrmConverter getSpecifiedConverter();
+	OrmConverter getConverter();
 
 }

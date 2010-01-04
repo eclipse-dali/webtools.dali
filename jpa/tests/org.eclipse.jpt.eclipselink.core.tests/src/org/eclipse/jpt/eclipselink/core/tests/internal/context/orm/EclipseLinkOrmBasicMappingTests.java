@@ -314,47 +314,47 @@ public class EclipseLinkOrmBasicMappingTests
 		XmlBasic basicResource = (XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 				
 		//set lob in the resource model, verify context model updated
 		basicResource.setConvert("myConvert");
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals("myConvert", basicResource.getConvert());
 
 		//set lob to null in the resource model
 		basicResource.setConvert(null);
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 		
 		
-		javaBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-		((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).setSpecifiedConverterName("foo");
+		javaBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		((EclipseLinkConvert) javaBasicMapping.getConverter()).setSpecifiedConverterName("foo");
 		
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
-		assertEquals("foo", ((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).getSpecifiedConverterName());
+		assertEquals("foo", ((EclipseLinkConvert) javaBasicMapping.getConverter()).getSpecifiedConverterName());
 		
 		
 		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
-		assertEquals("foo", ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getSpecifiedConverterName());
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertEquals("foo", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, basicResource.getConvert());
-		assertEquals("foo", ((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).getSpecifiedConverterName());
+		assertEquals("foo", ((EclipseLinkConvert) javaBasicMapping.getConverter()).getSpecifiedConverterName());
 		
-		((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).setSpecifiedConverterName("bar");
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
-		assertEquals("bar", ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getSpecifiedConverterName());
+		((EclipseLinkConvert) javaBasicMapping.getConverter()).setSpecifiedConverterName("bar");
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertEquals("bar", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, basicResource.getConvert());
-		assertEquals("bar", ((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).getSpecifiedConverterName());
+		assertEquals("bar", ((EclipseLinkConvert) javaBasicMapping.getConverter()).getSpecifiedConverterName());
 
-		javaBasicMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		javaBasicMapping.setConverter(Converter.NO_CONVERTER);
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
-		assertEquals(Converter.NO_CONVERTER, javaBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, javaBasicMapping.getConverter().getType());
 	}
 	
 	public void testModifyConvert() throws Exception {
@@ -363,27 +363,27 @@ public class EclipseLinkOrmBasicMappingTests
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = (XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 	
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 				
 		//set lob in the context model, verify resource model updated
-		ormBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		ormBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
 		assertEquals("", basicResource.getConvert());
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
 	
-		((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).setSpecifiedConverterName("bar");
+		((EclipseLinkConvert) ormBasicMapping.getConverter()).setSpecifiedConverterName("bar");
 		assertEquals("bar", basicResource.getConvert());
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
-		assertEquals("bar", ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getSpecifiedConverterName());
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertEquals("bar", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getSpecifiedConverterName());
 
-		((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).setSpecifiedConverterName(null);
+		((EclipseLinkConvert) ormBasicMapping.getConverter()).setSpecifiedConverterName(null);
 
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 
 		//set lob to false in the context model
-		ormBasicMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		ormBasicMapping.setConverter(Converter.NO_CONVERTER);
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 	}
 }

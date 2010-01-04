@@ -64,9 +64,9 @@ public class EclipseLinkOrmStructConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "id");
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping(); 
-		ormBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-		((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
-		EclipseLinkStructConverter ormConverter = (EclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
+		ormBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		((EclipseLinkConvert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
+		EclipseLinkStructConverter ormConverter = (EclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		XmlStructConverter converterResource = ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getStructConverter();
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
@@ -89,9 +89,9 @@ public class EclipseLinkOrmStructConverterTests
 		
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		ormConverter = (EclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
+		ormConverter = (EclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		
-		EclipseLinkStructConverter javaConverter = ((EclipseLinkStructConverter) ((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).getConverter());
+		EclipseLinkStructConverter javaConverter = ((EclipseLinkStructConverter) ((EclipseLinkConvert) javaBasicMapping.getConverter()).getConverter());
 		javaConverter.setConverterClass("bar");
 		assertEquals("bar", ormConverter.getConverterClass());
 		assertEquals("bar", javaConverter.getConverterClass());
@@ -100,7 +100,7 @@ public class EclipseLinkOrmStructConverterTests
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals("bar", javaConverter.getConverterClass());
 	}
 	
@@ -108,9 +108,9 @@ public class EclipseLinkOrmStructConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmBasicMapping ormBasicMapping = ((OrmBasicMapping) ormPersistentAttribute.getMapping()); 
-		ormBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-		((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
-		EclipseLinkStructConverter ormConverter = (EclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
+		ormBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		((EclipseLinkConvert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
+		EclipseLinkStructConverter ormConverter = (EclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		XmlStructConverter converterResource = ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getStructConverter();
 	
 		assertEquals(null, ormConverter.getConverterClass());
@@ -132,9 +132,9 @@ public class EclipseLinkOrmStructConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "id");
 		OrmBasicMapping ormBasicMapping = ((OrmBasicMapping) ormPersistentAttribute.getMapping()); 
-		ormBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-		((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
-		OrmEclipseLinkStructConverter ormConverter = (OrmEclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
+		ormBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		((EclipseLinkConvert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
+		OrmEclipseLinkStructConverter ormConverter = (OrmEclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		XmlStructConverter converterResource = ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getStructConverter();
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
@@ -158,9 +158,9 @@ public class EclipseLinkOrmStructConverterTests
 		
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		ormConverter = (OrmEclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
+		ormConverter = (OrmEclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		
-		EclipseLinkStructConverter javaConverter = ((EclipseLinkStructConverter) ((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).getConverter());
+		EclipseLinkStructConverter javaConverter = ((EclipseLinkStructConverter) ((EclipseLinkConvert) javaBasicMapping.getConverter()).getConverter());
 		javaConverter.setName("bar");
 		assertEquals("bar", ormConverter.getName());
 		assertEquals("bar", javaConverter.getName());
@@ -171,7 +171,7 @@ public class EclipseLinkOrmStructConverterTests
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
 		assertEquals("bar", javaConverter.getName());
 	}
 	
@@ -179,9 +179,9 @@ public class EclipseLinkOrmStructConverterTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmBasicMapping ormBasicMapping = ((OrmBasicMapping) ormPersistentAttribute.getMapping()); 
-		ormBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-		((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
-		OrmEclipseLinkStructConverter ormConverter = (OrmEclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
+		ormBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		((EclipseLinkConvert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
+		OrmEclipseLinkStructConverter ormConverter = (OrmEclipseLinkStructConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		XmlStructConverter converterResource = ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getStructConverter();
 	
 		assertEquals(null, ormConverter.getName());

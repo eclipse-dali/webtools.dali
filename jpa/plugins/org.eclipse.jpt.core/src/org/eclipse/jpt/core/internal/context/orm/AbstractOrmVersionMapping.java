@@ -36,13 +36,13 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 {
 	protected final OrmColumn column;
 
-	protected OrmConverter specifiedConverter;
+	protected OrmConverter converter;
 	
 	protected AbstractOrmVersionMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to constructor
-		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
+		this.converter = this.buildConverter(this.getResourceConverterType());
 	}
 
 	public int getXmlSequence() {
@@ -67,35 +67,35 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 		return this.column;
 	}
 	
-	public OrmConverter getSpecifiedConverter() {
-		return this.specifiedConverter;
+	public OrmConverter getConverter() {
+		return this.converter;
 	}
 	
-	protected String getSpecifedConverterType() {
-		return this.specifiedConverter.getType();
+	protected String getConverterType() {
+		return this.converter.getType();
 	}
 	
-	public void setSpecifiedConverter(String converterType) {
-		if (this.valuesAreEqual(getSpecifedConverterType(), converterType)) {
+	public void setConverter(String converterType) {
+		if (this.valuesAreEqual(getConverterType(), converterType)) {
 			return;
 		}
-		OrmConverter oldConverter = this.specifiedConverter;
-		OrmConverter newConverter = buildSpecifiedConverter(converterType);
-		this.specifiedConverter = null;
+		OrmConverter oldConverter = this.converter;
+		OrmConverter newConverter = buildConverter(converterType);
+		this.converter = null;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
-		this.specifiedConverter = newConverter;
+		this.converter = newConverter;
 		if (newConverter != null) {
 			newConverter.addToResourceModel();
 		}
-		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 	
-	protected void setSpecifiedConverter(OrmConverter newConverter) {
-		OrmConverter oldConverter = this.specifiedConverter;
-		this.specifiedConverter = newConverter;
-		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+	protected void setConverter(OrmConverter newConverter) {
+		OrmConverter oldConverter = this.converter;
+		this.converter = newConverter;
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}	
 
 	public void addToResourceModel(Attributes resourceAttributes) {
@@ -122,15 +122,15 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 	public void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
-		if (this.valuesAreEqual(getResourceConverterType(), getSpecifedConverterType())) {
-			getSpecifiedConverter().update();
+		if (this.valuesAreEqual(getResourceConverterType(), getConverterType())) {
+			getConverter().update();
 		}
 		else {
-			setSpecifiedConverter(buildSpecifiedConverter(getResourceConverterType()));
+			setConverter(buildConverter(getResourceConverterType()));
 		}
 	}
 	
-	protected OrmConverter buildSpecifiedConverter(String converterType) {
+	protected OrmConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
 			return getXmlContextNodeFactory().buildOrmNullConverter(this);
 		}

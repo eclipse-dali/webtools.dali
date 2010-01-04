@@ -564,8 +564,8 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		employeePersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		employeePersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "name");
 		OrmPersistentAttribute startDateAttribute = employeePersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "startDate");
-		((OrmBasicMapping) startDateAttribute.getSpecifiedMapping()).setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) ((OrmBasicMapping) startDateAttribute.getSpecifiedMapping()).getSpecifiedConverter()).setTemporalType(TemporalType.DATE);
+		((OrmBasicMapping) startDateAttribute.getSpecifiedMapping()).setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) ((OrmBasicMapping) startDateAttribute.getSpecifiedMapping()).getConverter()).setTemporalType(TemporalType.DATE);
 		
 		OrmPersistentAttribute idAttribute = employeePersistentType.getAttributeNamed("id");
 		JavaPersistentAttribute javaPersistentAttribute = idAttribute.getJavaPersistentAttribute();

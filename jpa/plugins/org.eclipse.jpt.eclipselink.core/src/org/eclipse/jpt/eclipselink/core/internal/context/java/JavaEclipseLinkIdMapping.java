@@ -48,8 +48,8 @@ public class JavaEclipseLinkIdMapping
 	//************** AbstractJavaIdMapping overrides ***************
 
 	@Override
-	protected JavaConverter buildSpecifiedConverter(String converterType) {
-		JavaConverter javaConverter = super.buildSpecifiedConverter(converterType);
+	protected JavaConverter buildConverter(String converterType) {
+		JavaConverter javaConverter = super.buildConverter(converterType);
 		if (javaConverter != null) {
 			return javaConverter;
 		}

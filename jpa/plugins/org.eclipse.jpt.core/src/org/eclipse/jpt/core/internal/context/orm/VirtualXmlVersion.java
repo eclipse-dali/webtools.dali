@@ -80,8 +80,8 @@ public class VirtualXmlVersion extends XmlVersion
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.TEMPORAL_CONVERTER) {
-			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getSpecifiedConverter()).getTemporalType();
+		if (this.javaAttributeMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getConverter()).getTemporalType();
 			return  org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;

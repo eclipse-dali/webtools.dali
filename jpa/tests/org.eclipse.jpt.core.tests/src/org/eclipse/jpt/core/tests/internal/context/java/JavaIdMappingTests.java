@@ -119,8 +119,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -128,7 +128,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -149,8 +149,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -158,7 +158,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -178,8 +178,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -187,7 +187,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((VersionMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -208,8 +208,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -237,8 +237,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -266,8 +266,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -295,8 +295,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -324,8 +324,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -353,8 +353,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -382,8 +382,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -410,7 +410,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) idMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) idMapping.getConverter()).getTemporalType());
 	}
 
 	public void testSetTemporal() throws Exception {
@@ -419,10 +419,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(Converter.NO_CONVERTER, idMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -430,7 +430,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
-		idMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
+		idMapping.setConverter(Converter.NO_CONVERTER);
 		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -441,7 +441,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertEquals(Converter.NO_CONVERTER, idMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -449,11 +449,11 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.resource.java.TemporalType.DATE);
 		
-		assertEquals(TemporalType.DATE, ((TemporalConverter) idMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) idMapping.getConverter()).getTemporalType());
 		
 		attributeResource.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
-		assertEquals(Converter.NO_CONVERTER, idMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		assertFalse(idMapping.isDefault());
 		assertSame(idMapping, persistentAttribute.getSpecifiedMapping());
 	}

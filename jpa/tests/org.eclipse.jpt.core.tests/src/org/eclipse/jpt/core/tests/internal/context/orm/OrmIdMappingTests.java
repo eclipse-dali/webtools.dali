@@ -133,25 +133,25 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getConverter().getType());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
 	
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
 
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 
 		//set temporal to null in the resource model
 		idResource.setTemporal(null);
-		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getConverter().getType());
 		assertNull(idResource.getTemporal());
 	}
 	
@@ -161,27 +161,27 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getConverter().getType());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
-		ormIdMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) ormIdMapping.getSpecifiedConverter()).setTemporalType(TemporalType.DATE);
+		ormIdMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) ormIdMapping.getConverter()).setTemporalType(TemporalType.DATE);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
 	
-		((TemporalConverter) ormIdMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		((TemporalConverter) ormIdMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
 
-		((TemporalConverter) ormIdMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIMESTAMP);
+		((TemporalConverter) ormIdMapping.getConverter()).setTemporalType(TemporalType.TIMESTAMP);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
 
 		//set temporal to null in the context model
-		ormIdMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
+		ormIdMapping.setConverter(Converter.NO_CONVERTER);
 		assertNull(idResource.getTemporal());
-		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getConverter().getType());
 	}
 	
 	//TODO test defaults
@@ -417,7 +417,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", ormIdMapping.getName());
-		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getConverter().getType());
 		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
@@ -462,8 +462,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormIdMapping.getName());
-		assertEquals(Converter.TEMPORAL_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(Converter.TEMPORAL_CONVERTER, ormIdMapping.getConverter().getType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormIdMapping.getConverter()).getTemporalType());
 		
 		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertEquals("MY_COLUMN", ormColumn.getSpecifiedName());
@@ -510,7 +510,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormIdMapping.getName());
-		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getConverter().getType());
 		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
@@ -539,7 +539,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", ormIdMapping.getName());
-		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormIdMapping.getConverter().getType());
 		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
@@ -581,8 +581,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -601,8 +601,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -621,8 +621,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -638,8 +638,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -657,8 +657,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -674,8 +674,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -693,8 +693,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -712,8 +712,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -731,8 +731,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);

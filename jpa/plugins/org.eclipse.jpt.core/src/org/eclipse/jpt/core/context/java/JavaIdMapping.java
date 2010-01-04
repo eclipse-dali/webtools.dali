@@ -26,7 +26,7 @@ public interface JavaIdMapping
 	//********* covariant overrides **********
 	JavaGeneratorContainer getGeneratorContainer();
 	
-	JavaConverter getSpecifiedConverter();
+	JavaConverter getConverter();
 
 	JavaGeneratedValue getGeneratedValue();
 	JavaGeneratedValue addGeneratedValue();

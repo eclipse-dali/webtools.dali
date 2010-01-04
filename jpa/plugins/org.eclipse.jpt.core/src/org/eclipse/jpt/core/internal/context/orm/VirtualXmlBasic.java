@@ -108,7 +108,7 @@ public class VirtualXmlBasic extends XmlBasic
 		if (this.isOrmMetadataComplete()) {
 			return false;
 		}
-		return this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.LOB_CONVERTER;
+		return this.javaAttributeMapping.getConverter().getType() == Converter.LOB_CONVERTER;
 	}
 
 	@Override
@@ -121,8 +121,8 @@ public class VirtualXmlBasic extends XmlBasic
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.TEMPORAL_CONVERTER) {
-			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getSpecifiedConverter()).getTemporalType();
+		if (this.javaAttributeMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getConverter()).getTemporalType();
 			return org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;
@@ -138,8 +138,8 @@ public class VirtualXmlBasic extends XmlBasic
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaAttributeMapping.getSpecifiedConverter().getType() == Converter.ENUMERATED_CONVERTER) {
-			org.eclipse.jpt.core.context.EnumType javaEnumeratedType = ((EnumeratedConverter) this.javaAttributeMapping.getSpecifiedConverter()).getEnumType();
+		if (this.javaAttributeMapping.getConverter().getType() == Converter.ENUMERATED_CONVERTER) {
+			org.eclipse.jpt.core.context.EnumType javaEnumeratedType = ((EnumeratedConverter) this.javaAttributeMapping.getConverter()).getEnumType();
 			return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(javaEnumeratedType);
 		}
 		return null;

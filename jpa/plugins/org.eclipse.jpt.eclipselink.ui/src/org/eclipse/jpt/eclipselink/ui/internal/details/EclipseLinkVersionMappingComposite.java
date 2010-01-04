@@ -122,14 +122,14 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
-		PropertyValueModel<Converter> specifiedConverterHolder = buildSpecifiedConverterHolder();
+		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 		// Temporal
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
@@ -139,7 +139,7 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
-		Pane<EclipseLinkConvert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(specifiedConverterHolder), container);
+		Pane<EclipseLinkConvert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(converterHolder), container);
 		GridData gridData = (GridData) convertComposite.getControl().getLayoutData();
 		gridData.horizontalSpan = 2;
 		gridData.horizontalIndent = 20;
@@ -151,16 +151,16 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 	}
 
 	protected WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
+				return Boolean.valueOf(this.subject.getConverter().getType() == Converter.NO_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.NO_CONVERTER);
+					this.subject.setConverter(Converter.NO_CONVERTER);
 				}
 			}
 		};
@@ -176,10 +176,10 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 	}
 
 	protected WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
+				Converter converter = this.subject.getConverter();
 				if (converter == null) {
 					return Boolean.FALSE;
 				}
@@ -189,37 +189,34 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
+					this.subject.setConverter(Converter.TEMPORAL_CONVERTER);
 				}
 			}
 		};
 	}
 	
 	protected WritablePropertyValueModel<Boolean> buildEclipseLinkConverterBooleanHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
+				Converter converter = this.subject.getConverter();
 				return Boolean.valueOf(converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+					this.subject.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
 				}
 			}
 		};
 	}
 
-	protected PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+	protected PropertyValueModel<Converter> buildConverterHolder() {
+		return new PropertyAspectAdapter<VersionMapping, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
-				return this.subject.getSpecifiedConverter();
+				return this.subject.getConverter();
 			}
 		};
 	}
@@ -228,7 +225,7 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
-				return (converter != null && converter.getType() == Converter.TEMPORAL_CONVERTER) ? (TemporalConverter) converter : null;
+				return converter.getType() == Converter.TEMPORAL_CONVERTER ? (TemporalConverter) converter : null;
 			}
 		};
 	}

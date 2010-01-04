@@ -24,6 +24,6 @@ public interface JavaVersionMapping
 	extends JavaAttributeMapping, VersionMapping, JavaColumnMapping
 {
 	//********* covariant overrides **********
-	JavaConverter getSpecifiedConverter();
+	JavaConverter getConverter();
 
 }

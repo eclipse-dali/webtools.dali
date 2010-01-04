@@ -128,7 +128,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, idMapping.getSpecifiedConverter().getType());
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, idMapping.getConverter().getType());
 	}
 	
 	public void testGetConvert2() throws Exception {
@@ -138,8 +138,8 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, idMapping.getSpecifiedConverter().getType());
-		assertEquals(EclipseLinkConvert.CLASS_INSTANCE_CONVERTER, ((EclipseLinkConvert) idMapping.getSpecifiedConverter()).getConverterName());
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, idMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.CLASS_INSTANCE_CONVERTER, ((EclipseLinkConvert) idMapping.getConverter()).getConverterName());
 	}
 
 	public void testSetConvert() throws Exception {
@@ -148,10 +148,10 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(Converter.NO_CONVERTER, idMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		
-		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -159,7 +159,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
-		idMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
+		idMapping.setConverter(Converter.NO_CONVERTER);
 		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -170,7 +170,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertEquals(Converter.NO_CONVERTER, idMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -178,12 +178,12 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.addAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		convert.setValue("foo");
 		
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, idMapping.getSpecifiedConverter().getType());
-		assertEquals("foo", ((EclipseLinkConvert) idMapping.getSpecifiedConverter()).getConverterName());
+		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, idMapping.getConverter().getType());
+		assertEquals("foo", ((EclipseLinkConvert) idMapping.getConverter()).getConverterName());
 		
 		attributeResource.removeAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		
-		assertEquals(Converter.NO_CONVERTER, idMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		assertFalse(idMapping.isDefault());
 		assertSame(idMapping, persistentAttribute.getSpecifiedMapping());
 	}

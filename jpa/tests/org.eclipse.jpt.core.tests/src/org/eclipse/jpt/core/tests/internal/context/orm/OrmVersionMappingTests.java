@@ -121,25 +121,25 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, versionResource.getTemporal());
 	
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, versionResource.getTemporal());
 
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
 
 		//set temporal to null in the resource model
 		versionResource.setTemporal(null);
-		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 		assertNull(versionResource.getTemporal());
 	}
 	
@@ -149,27 +149,27 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
-		ormVersionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.DATE);
+		ormVersionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) ormVersionMapping.getConverter()).setTemporalType(TemporalType.DATE);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, versionResource.getTemporal());
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
 	
-		((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		((TemporalConverter) ormVersionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, versionResource.getTemporal());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
 
-		((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIMESTAMP);
+		((TemporalConverter) ormVersionMapping.getConverter()).setTemporalType(TemporalType.TIMESTAMP);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
 
 		//set temporal to null in the context model
-		ormVersionMapping.setSpecifiedConverter(Converter.NO_CONVERTER);
+		ormVersionMapping.setConverter(Converter.NO_CONVERTER);
 		assertNull(versionResource.getTemporal());
-		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 	}
 	
 	//TODO test defaults
@@ -186,7 +186,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", ormVersionMapping.getName());
-		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
@@ -228,8 +228,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormVersionMapping.getName());
-		assertEquals(Converter.TEMPORAL_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getSpecifiedConverter()).getTemporalType());
+		assertEquals(Converter.TEMPORAL_CONVERTER, ormVersionMapping.getConverter().getType());
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormVersionMapping.getConverter()).getTemporalType());
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("MY_COLUMN", ormColumn.getSpecifiedName());
@@ -258,7 +258,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormVersionMapping.getName());
-		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
@@ -284,7 +284,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", ormVersionMapping.getName());
-		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getSpecifiedConverter().getType());
+		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
@@ -318,8 +318,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -338,8 +338,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -358,8 +358,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -377,8 +377,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -396,8 +396,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -415,8 +415,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -434,8 +434,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -453,8 +453,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -472,8 +472,8 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) ormPersistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
-		((TemporalConverter) versionMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);

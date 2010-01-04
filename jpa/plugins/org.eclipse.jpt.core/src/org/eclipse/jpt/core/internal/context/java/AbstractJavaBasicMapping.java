@@ -46,7 +46,7 @@ public abstract class AbstractJavaBasicMapping
 	
 	protected final JavaColumn column;
 	
-	protected JavaConverter specifiedConverter;
+	protected JavaConverter converter;
 	
 	
 	protected AbstractJavaBasicMapping(JavaPersistentAttribute parent) {
@@ -58,7 +58,7 @@ public abstract class AbstractJavaBasicMapping
 	protected void initialize() {
 		super.initialize();
 		this.column.initialize(this.getResourceColumn());
-		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
+		this.converter = this.buildConverter(this.getResourceConverterType());
 		this.specifiedFetch = this.getResourceFetch();
 		this.specifiedOptional = this.getResourceOptional();
 	}
@@ -156,53 +156,53 @@ public abstract class AbstractJavaBasicMapping
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 	
-	public JavaConverter getSpecifiedConverter() {
-		return this.specifiedConverter;
+	public JavaConverter getConverter() {
+		return this.converter;
 	}
 	
-	protected String getSpecifiedConverterType() {
-		if (this.specifiedConverter == null) {
+	protected String getConverterType() {
+		if (this.converter == null) {
 			//TODO this is only ever null in the case that the mapping type is changed
 			//via PersistentAttribute.setSpecifiedMappingKey.  In this case, the 
 			//initialize method is never called.
 			return null;
 		}
-		return this.specifiedConverter.getType();
+		return this.converter.getType();
 	}
 	
-	public void setSpecifiedConverter(String converterType) {
-		if (this.valuesAreEqual(getSpecifiedConverterType(), converterType)) {
+	public void setConverter(String converterType) {
+		if (this.valuesAreEqual(getConverterType(), converterType)) {
 			return;
 		}
-		JavaConverter oldConverter = this.specifiedConverter;
-		JavaConverter newConverter = buildSpecifiedConverter(converterType);
-		this.specifiedConverter = null;
+		JavaConverter oldConverter = this.converter;
+		JavaConverter newConverter = buildConverter(converterType);
+		this.converter = null;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
-		this.specifiedConverter = newConverter;
+		this.converter = newConverter;
 		if (newConverter != null) {
 			newConverter.addToResourceModel();
 		}
-		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 	
-	protected void setSpecifiedConverter(JavaConverter newConverter) {
-		JavaConverter oldConverter = this.specifiedConverter;
-		this.specifiedConverter = newConverter;
-		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+	protected void setConverter(JavaConverter newConverter) {
+		JavaConverter oldConverter = this.converter;
+		this.converter = newConverter;
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 
 	@Override
 	protected void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
-		if (this.valuesAreEqual(getResourceConverterType(), getSpecifiedConverterType())) {
-			getSpecifiedConverter().update(this.getResourcePersistentAttribute());
+		if (this.valuesAreEqual(getResourceConverterType(), getConverterType())) {
+			getConverter().update(this.getResourcePersistentAttribute());
 		}
 		else {
-			JavaConverter javaConverter = buildSpecifiedConverter(getResourceConverterType());
-			setSpecifiedConverter(javaConverter);
+			JavaConverter javaConverter = buildConverter(getResourceConverterType());
+			setConverter(javaConverter);
 		}
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.setSpecifiedOptional_(this.getResourceOptional());
@@ -216,7 +216,7 @@ public abstract class AbstractJavaBasicMapping
 		return this.mappingAnnotation.getOptional();
 	}
 	
-	protected JavaConverter buildSpecifiedConverter(String converterType) {
+	protected JavaConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
 			return getJpaFactory().buildJavaNullConverter(this);			
 		}
@@ -260,7 +260,7 @@ public abstract class AbstractJavaBasicMapping
 		if (result != null) {
 			return result;
 		}
-		result = getSpecifiedConverter().javaCompletionProposals(pos, filter, astRoot);
+		result = getConverter().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -276,7 +276,7 @@ public abstract class AbstractJavaBasicMapping
 		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages, astRoot);
 		}
-		this.getSpecifiedConverter().validate(messages, reporter, astRoot);
+		this.getConverter().validate(messages, reporter, astRoot);
 	}
 	
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {

@@ -38,8 +38,8 @@ public class OrmEclipseLinkBasicMapping extends AbstractOrmBasicMapping<XmlBasic
 	}
 
 	@Override
-	protected OrmConverter buildSpecifiedConverter(String converterType) {
-		OrmConverter ormConverter = super.buildSpecifiedConverter(converterType);
+	protected OrmConverter buildConverter(String converterType) {
+		OrmConverter ormConverter = super.buildConverter(converterType);
 		if (ormConverter != null) {
 			return ormConverter;
 		}
