@@ -38,10 +38,13 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 
 	protected OrmConverter converter;
 	
+	protected final OrmConverter nullConverter;
+	
 	protected AbstractOrmVersionMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to constructor
+		this.nullConverter = this.getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.converter = this.buildConverter(this.getResourceConverterType());
 	}
 
@@ -81,7 +84,7 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 		}
 		OrmConverter oldConverter = this.converter;
 		OrmConverter newConverter = buildConverter(converterType);
-		this.converter = null;
+		this.converter = this.nullConverter;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
@@ -132,7 +135,7 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 	
 	protected OrmConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return getXmlContextNodeFactory().buildOrmNullConverter(this);
+			return this.nullConverter;
 		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getXmlContextNodeFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);

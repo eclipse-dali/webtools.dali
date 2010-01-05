@@ -52,11 +52,15 @@ public abstract class AbstractJavaIdMapping
 	
 	protected JavaConverter converter;
 	
+	protected final JavaConverter nullConverter;
+	
 	
 	protected AbstractJavaIdMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = this.getJpaFactory().buildJavaColumn(this, this);
 		this.generatorContainer = this.buildGeneratorContainer();
+		this.nullConverter = getJpaFactory().buildJavaNullConverter(this);
+		this.converter = this.nullConverter;
 	}
 
 	@Override
@@ -160,12 +164,6 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	protected String getConverterType() {
-		if (this.converter == null) {
-			//TODO this is only ever null in the case that the mapping type is changed
-			//via PersistentAttribute.setSpecifiedMappingKey.  In this case, the 
-			//initialize method is never called.
-			return null;
-		}
 		return this.converter.getType();
 	}
 	
@@ -175,7 +173,7 @@ public abstract class AbstractJavaIdMapping
 		}
 		JavaConverter oldConverter = this.converter;
 		JavaConverter newConverter = buildConverter(converterType);
-		this.converter = null;
+		this.converter = this.nullConverter;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
@@ -247,7 +245,7 @@ public abstract class AbstractJavaIdMapping
 	
 	protected JavaConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return getJpaFactory().buildJavaNullConverter(this);			
+			return this.nullConverter;		
 		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());

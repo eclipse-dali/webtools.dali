@@ -46,12 +46,15 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	
 	protected OrmConverter converter;
 	
+	protected final OrmConverter nullConverter;
+	
 	protected AbstractOrmBasicMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to factory
 		this.specifiedFetch = this.getResourceFetch();
 		this.specifiedOptional = this.getResourceOptional();
+		this.nullConverter = this.getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.converter = this.buildConverter(this.getResourceConverterType());
 	}
 
@@ -119,7 +122,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		}
 		OrmConverter oldConverter = this.converter;
 		OrmConverter newConverter = buildConverter(converterType);
-		this.converter = null;
+		this.converter = this.nullConverter;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
@@ -200,7 +203,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	
 	protected OrmConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return getXmlContextNodeFactory().buildOrmNullConverter(this);
+			return this.nullConverter;
 		}
 		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
 			return getXmlContextNodeFactory().buildOrmEnumeratedConverter(this, this.resourceAttributeMapping);

@@ -48,10 +48,13 @@ public abstract class AbstractJavaBasicMapping
 	
 	protected JavaConverter converter;
 	
+	protected final JavaConverter nullConverter;
 	
 	protected AbstractJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = getJpaFactory().buildJavaColumn(this, this);
+		this.nullConverter = getJpaFactory().buildJavaNullConverter(this);
+		this.converter = this.nullConverter;
 	}
 
 	@Override
@@ -161,12 +164,6 @@ public abstract class AbstractJavaBasicMapping
 	}
 	
 	protected String getConverterType() {
-		if (this.converter == null) {
-			//TODO this is only ever null in the case that the mapping type is changed
-			//via PersistentAttribute.setSpecifiedMappingKey.  In this case, the 
-			//initialize method is never called.
-			return null;
-		}
 		return this.converter.getType();
 	}
 	
@@ -176,7 +173,7 @@ public abstract class AbstractJavaBasicMapping
 		}
 		JavaConverter oldConverter = this.converter;
 		JavaConverter newConverter = buildConverter(converterType);
-		this.converter = null;
+		this.converter = this.nullConverter;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
@@ -218,7 +215,7 @@ public abstract class AbstractJavaBasicMapping
 	
 	protected JavaConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return getJpaFactory().buildJavaNullConverter(this);			
+			return this.nullConverter;		
 		}
 		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
 			return getJpaFactory().buildJavaEnumeratedConverter(this, this.getResourcePersistentAttribute());

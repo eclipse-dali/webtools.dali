@@ -40,7 +40,9 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 
 	protected OrmGeneratedValue generatedValue;
 	
-	protected OrmConverter specifiedConverter;
+	protected OrmConverter converter;
+	
+	protected final OrmConverter nullConverter;
 	
 	protected final OrmGeneratorContainer generatorContainer;
 
@@ -51,7 +53,8 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
 		this.generatorContainer = buildGeneratorContainer();
 		this.initializeGeneratedValue();
-		this.specifiedConverter = this.buildConverter(this.getResourceConverterType());
+		this.nullConverter = this.getXmlContextNodeFactory().buildOrmNullConverter(this);
+		this.converter = this.buildConverter(this.getResourceConverterType());
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
@@ -82,24 +85,24 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 	
 	public OrmConverter getConverter() {
-		return this.specifiedConverter;
+		return this.converter;
 	}
 	
 	protected String getConverterType() {
-		return this.specifiedConverter.getType();
+		return this.converter.getType();
 	}
 	
 	public void setConverter(String converterType) {
 		if (this.valuesAreEqual(getConverterType(), converterType)) {
 			return;
 		}
-		OrmConverter oldConverter = this.specifiedConverter;
+		OrmConverter oldConverter = this.converter;
 		OrmConverter newConverter = buildConverter(converterType);
-		this.specifiedConverter = null;
+		this.converter = this.nullConverter;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
-		this.specifiedConverter = newConverter;
+		this.converter = newConverter;
 		if (newConverter != null) {
 			newConverter.addToResourceModel();
 		}
@@ -107,8 +110,8 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 	
 	protected void setConverter(OrmConverter newConverter) {
-		OrmConverter oldConverter = this.specifiedConverter;
-		this.specifiedConverter = newConverter;
+		OrmConverter oldConverter = this.converter;
+		this.converter = newConverter;
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 
@@ -226,7 +229,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	
 	protected OrmConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return getXmlContextNodeFactory().buildOrmNullConverter(this);
+			return this.nullConverter;
 		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getXmlContextNodeFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);

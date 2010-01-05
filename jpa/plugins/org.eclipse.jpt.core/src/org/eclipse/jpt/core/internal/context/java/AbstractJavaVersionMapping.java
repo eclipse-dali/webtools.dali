@@ -38,10 +38,14 @@ public abstract class AbstractJavaVersionMapping
 	protected final JavaColumn column;
 	
 	protected JavaConverter converter;
+	
+	protected final JavaConverter nullConverter;
 
 	protected AbstractJavaVersionMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = getJpaFactory().buildJavaColumn(this, this);
+		this.nullConverter = getJpaFactory().buildJavaNullConverter(this);
+		this.converter = this.nullConverter;
 	}
 	
 	@Override
@@ -95,12 +99,6 @@ public abstract class AbstractJavaVersionMapping
 	}
 	
 	protected String getConverterType() {
-		if (this.converter == null) {
-			//TODO this is only ever null in the case that the mapping type is changed
-			//via PersistentAttribute.setSpecifiedMappingKey.  In this case, the 
-			//initialize method is never called.
-			return null;
-		}
 		return this.converter.getType();
 	}
 	
@@ -110,7 +108,7 @@ public abstract class AbstractJavaVersionMapping
 		}
 		JavaConverter oldConverter = this.converter;
 		JavaConverter newConverter = buildConverter(converterType);
-		this.converter = null;
+		this.converter = this.nullConverter;
 		if (oldConverter != null) {
 			oldConverter.removeFromResourceModel();
 		}
@@ -143,7 +141,7 @@ public abstract class AbstractJavaVersionMapping
 	
 	protected JavaConverter buildConverter(String converterType) {
 		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return getJpaFactory().buildJavaNullConverter(this);			
+			return this.nullConverter;			
 		}
 		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
 			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());
