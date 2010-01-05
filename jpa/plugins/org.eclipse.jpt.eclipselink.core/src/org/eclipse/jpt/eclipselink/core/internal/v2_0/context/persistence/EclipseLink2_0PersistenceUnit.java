@@ -26,6 +26,7 @@ public class EclipseLink2_0PersistenceUnit extends EclipseLinkPersistenceUnit
 	}
 
 	// ********** factory methods **********
+	@Override
 	protected Logging buildEclipseLinkLogging() {
 		return new EclipseLinkLogging2_0(this);
 	}
