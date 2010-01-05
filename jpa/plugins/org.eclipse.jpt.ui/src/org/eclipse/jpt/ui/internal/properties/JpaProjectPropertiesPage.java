@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,6 +57,7 @@ import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -65,7 +66,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.AspectCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.AspectPropertyValueModelAdapter;
@@ -317,7 +317,7 @@ public class JpaProjectPropertiesPage
 
 	// ***** JPA 2.0 project flag
 	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
-		return new Jpa2_0ProjectFlagModel(this.jpaProjectModel);
+		return new Jpa2_0ProjectFlagModel<JpaProject>(this.jpaProjectModel);
 	}
 
 	// ***** metamodel models
@@ -589,7 +589,7 @@ public class JpaProjectPropertiesPage
 				SIMPLE_STRING_CONVERTER
 		);
 
-		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, metamodelSourceFolderLabel, metamodelSourceFolderDropDown);
+		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLabel, metamodelSourceFolderDropDown);
 	}
 
 
@@ -1277,23 +1277,6 @@ public class JpaProjectPropertiesPage
 
 
 	/**
-	 * Flag indicating whether the JPA project supports JPA 2.0.
-	 */
-	static class Jpa2_0ProjectFlagModel
-		extends TransformationPropertyValueModel<JpaProject, Boolean>
-	{
-		Jpa2_0ProjectFlagModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
-			super(jpaProjectModel);
-		}
-
-		@Override
-		protected Boolean transform_(JpaProject value) {
-			return Boolean.valueOf(value.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0));
-		}
-	}
-
-
-	/**
 	 * The folder where the source for the generated Canonical Metamodel
 	 * is written.
 	 */
@@ -1317,7 +1300,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		private boolean jpaProjectIsJpa2_0() {
-			return this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
+			return JptCorePlugin.nodeIsJpa2_0Compatible(this.subject);
 		}
 	}
 
@@ -1391,7 +1374,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		private boolean jpaProjectIsJpa2_0() {
-			return this.subject.getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
+			return JptCorePlugin.nodeIsJpa2_0Compatible(this.subject);
 		}
 
 		@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,19 +10,25 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import java.util.Collection;
+
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
+import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -118,12 +124,12 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(buildPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.isCascadePersist();
+				return Boolean.valueOf(this.subject.isCascadePersist());
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setCascadePersist(value);
+				this.subject.setCascadePersist(value.booleanValue());
 			}
 		};
 	}
@@ -203,19 +209,37 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 		return new PropertyAspectAdapter<PersistenceUnitMetadata, Boolean>(getSubjectHolder(), PersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.isXmlMappingMetadataComplete();
+				return Boolean.valueOf(this.subject.isXmlMappingMetadataComplete());
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setXmlMappingMetadataComplete(value);
+				this.subject.setXmlMappingMetadataComplete(value.booleanValue());
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	private WritablePropertyValueModel<Boolean> buildDelimitedIdentifiersHolder() {
+		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(buildPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.buildBooleanValue_());
+			}
+
+			protected boolean buildBooleanValue_() {
+				return JptCorePlugin.nodeIsJpa2_0Compatible(this.subject) &&
+						((OrmPersistenceUnitDefaults2_0) this.subject).isDelimitedIdentifiers();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				if (JptCorePlugin.nodeIsJpa2_0Compatible(this.subject)) {
+					((OrmPersistenceUnitDefaults2_0) this.subject).setDelimitedIdentifiers(value.booleanValue());
+				}
+			}
+		};
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -233,7 +257,7 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
 
-		// Cascade Persist widgets
+		// Cascade Persist check-box
 		addCheckBox(
 			container,
 			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_cascadePersistCheckBox,
@@ -264,5 +288,16 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 			addAccessTypeCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_ACCESS
 		);
+
+		// Delimited Identifiers check-box
+		Button diCheckBox = this.addCheckBox(
+			container,
+			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_delimitedIdentifiersCheckBox,
+			this.buildDelimitedIdentifiersHolder(),
+			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
+		);
+		
+		SWTTools.controlVisibleState(new Jpa2_0ProjectFlagModel<PersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
+
 	}
 }

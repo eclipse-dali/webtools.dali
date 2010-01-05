@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -38,6 +38,7 @@ public interface JpaHelpContextIds {
 	public static final String ENTITY_ORM_SCHEMA = PREFIX + "orm_schema";
 	public static final String ENTITY_ORM_CATALOG = PREFIX + "orm_catalog";
 	public static final String ENTITY_ORM_ACCESS = PREFIX + "orm_access";
+	public static final String ENTITY_ORM_DELIMITED_IDENTIFIERS = PREFIX + "orm_delimited_identifiers";
 	public static final String ENTITY_ORM_CASCADE = PREFIX + "orm_cascade";
 	public static final String ENTITY_ORM_XML = PREFIX + "orm_xml";
 	public static final String ENTITY_SCHEMA = PREFIX + "entity_schema";
