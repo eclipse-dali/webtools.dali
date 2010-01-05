@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
@@ -25,6 +27,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -88,8 +91,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	
 	public Iterable<String> getSortedValueChoices() {
 		return CollectionTools.sort(
-			new TransformationIterable<AttributeMapping, String>(
-					new CompositeIterable<AttributeMapping>(getAllAttributeMappingChoiceIterables())) {
+			new TransformationIterable<AttributeMapping, String>(getAllAttributeMappingChoices()) {
 				@Override
 				protected String transform(AttributeMapping o) {
 					return o.getName();
@@ -97,9 +99,14 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 			});
 	}
 	
-	protected Iterable<Iterable<AttributeMapping>> getAllAttributeMappingChoiceIterables() {
-		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(
-				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
+	public Iterable<AttributeMapping> getAllAttributeMappingChoices() {
+		return 	new CompositeIterable<AttributeMapping>(
+			getAttributeMappingChoiceIterables(
+				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())));
+	}
+	
+	protected Iterable<Iterable<AttributeMapping>> getAttributeMappingChoiceIterables(Iterable<AttributeMapping> availableMappings) {
+		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(availableMappings) {
 			@Override
 			protected Iterable<AttributeMapping> transform(AttributeMapping o) {
 				if (StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
@@ -124,8 +131,15 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		}		
 	}
 	
-	public void update() {
-		setSpecifiedValue_(this.resource.getMapsId());
+	protected AttributeMapping getAttributeMappingValue() {
+		if (getValue() != null) {
+			for (AttributeMapping each : getAllAttributeMappingChoices()) {
+				if (each.getName().equals(getValue())) {
+					return each;
+				}
+			}
+		}
+		return null;
 	}
 	
 	public boolean isSpecified() {
@@ -140,6 +154,10 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		this.resource.setMapsId(null);
 	}
 	
+	public void update() {
+		setSpecifiedValue_(this.resource.getMapsId());
+	}
+	
 	public void initializeFrom(OrmMapsIdDerivedIdentityStrategy2_0 oldStrategy) {
 		setSpecifiedValue(oldStrategy.getSpecifiedValue());
 	}
@@ -151,6 +169,45 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		// no validation rules
+		validateMapsId(messages, reporter);
+	}
+	
+	protected void validateMapsId(List<IMessage> messages, IReporter reporter) {
+		// shortcut out if maps id is not even used
+		if (! getDerivedIdentity().usesMapsIdDerivedIdentityStrategy()) {
+			return;
+		}
+		
+		// test whether value can be resolved
+		AttributeMapping attributeMappingValue = getAttributeMappingValue();
+		if (attributeMappingValue == null) {
+			// there is no defaulting, so only use the 'resolved' error, even if the value is empty string
+			messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {getValue()}));
+		}
+		
+		// test whether attribute mapping is allowable
+		if (attributeMappingValue != null) {
+			if (! CollectionTools.contains(getValidAttributeMappingChoices(), attributeMappingValue)) {
+				messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {getValue()}));
+			}
+		}
+	}
+	
+	protected Iterable<AttributeMapping> getValidAttributeMappingChoices() {
+		return 	new CompositeIterable<AttributeMapping>(
+			getAttributeMappingChoiceIterables(
+				new FilteringIterable<AttributeMapping>(
+						CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
+					@Override
+					protected boolean accept(AttributeMapping o) {
+						return StringTools.stringsAreEqual(o.getKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)
+							|| StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+					}
+				}));
+	}
+	
+	protected IMessage buildMessage(String msgID, String[] params) {
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY, msgID, params, this, getValidationTextRange());
 	}
 }

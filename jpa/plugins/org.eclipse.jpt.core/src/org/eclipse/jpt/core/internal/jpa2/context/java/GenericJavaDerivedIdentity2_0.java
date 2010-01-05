@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.jpa2.context.DerivedIdentityStrategy2_0;
@@ -20,6 +21,8 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaMapsIdDerivedIdentityStrategy2
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaDerivedIdentity2_0 extends AbstractJavaJpaContextNode
 	implements JavaDerivedIdentity2_0
@@ -168,5 +171,12 @@ public class GenericJavaDerivedIdentity2_0 extends AbstractJavaJpaContextNode
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return getMapping().getValidationTextRange(astRoot);
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.idDerivedIdentityStrategy.validate(messages, reporter, astRoot);
+		this.mapsIdDerivedIdentityStrategy.validate(messages, reporter, astRoot);
 	}
 }

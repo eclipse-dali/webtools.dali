@@ -16,6 +16,8 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -137,8 +139,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	
 	public Iterable<String> getSortedValueChoices() {
 		return CollectionTools.sort(
-			new TransformationIterable<AttributeMapping, String>(
-					new CompositeIterable<AttributeMapping>(getAllAttributeMappingChoiceIterables())) {
+			new TransformationIterable<AttributeMapping, String>(getAllAttributeMappingChoices()) {
 				@Override
 				protected String transform(AttributeMapping o) {
 					return o.getName();
@@ -146,9 +147,14 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 			});
 	}
 	
-	protected Iterable<Iterable<AttributeMapping>> getAllAttributeMappingChoiceIterables() {
-		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(
-				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
+	public Iterable<AttributeMapping> getAllAttributeMappingChoices() {
+		return 	new CompositeIterable<AttributeMapping>(
+			getAttributeMappingChoiceIterables(
+				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())));
+	}
+	
+	protected Iterable<Iterable<AttributeMapping>> getAttributeMappingChoiceIterables(Iterable<AttributeMapping> availableMappings) {
+		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(availableMappings) {
 			@Override
 			protected Iterable<AttributeMapping> transform(AttributeMapping o) {
 				if (StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
@@ -167,6 +173,17 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return new CompositeIterable<AttributeMapping>(
 				mapping,
 				CollectionTools.collection(embeddable.allAttributeMappings()));
+	}
+	
+	protected AttributeMapping getAttributeMappingValue() {
+		if (getValue() != null) {
+			for (AttributeMapping each : getAllAttributeMappingChoices()) {
+				if (each.getName().equals(getValue())) {
+					return each;
+				}
+			}
+		}
+		return null;
 	}
 	
 	public boolean isSpecified() {
@@ -202,6 +219,54 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		// no validation rules
+		validateMapsId(messages, reporter, astRoot);
+	}
+	
+	protected void validateMapsId(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		// shortcut out if maps id is not even used
+		if (! getDerivedIdentity().usesMapsIdDerivedIdentityStrategy()) {
+			return;
+		}
+		
+		// test whether value can be resolved
+		AttributeMapping attributeMappingValue = getAttributeMappingValue();
+		if (attributeMappingValue == null) {
+			// if value is not specified, use that message
+			if (getSpecifiedValue() == null) {
+				messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED, null, astRoot));
+			}
+			else {
+				messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {getValue()}, astRoot));
+			}
+		}
+		
+		// test whether attribute mapping is allowable
+		if (attributeMappingValue != null) {
+			if (! CollectionTools.contains(getValidAttributeMappingChoices(), attributeMappingValue)) {
+				messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {getValue()}, astRoot));
+			}
+		}
+	}
+	
+	protected Iterable<AttributeMapping> getValidAttributeMappingChoices() {
+		return 	new CompositeIterable<AttributeMapping>(
+			getAttributeMappingChoiceIterables(
+				new FilteringIterable<AttributeMapping>(
+						CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
+					@Override
+					protected boolean accept(AttributeMapping o) {
+						return StringTools.stringsAreEqual(o.getKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)
+							|| StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+					}
+				}));
+	}
+	
+	protected IMessage buildMessage(String msgID, String[] params, CompilationUnit astRoot) {
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				params,
+				this,
+				this.getValidationTextRange(astRoot));
 	}
 }

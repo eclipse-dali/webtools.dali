@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -149,16 +148,39 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	private void addAttributeLevelCategory(Composite parent) {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.ATTRIBUTE_LEVEL_CATEGORY);
-
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_UNRESOLVED_MAPPED_BY,      		JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_INVALID_MAPPED_BY,         		JpaValidationMessages.MAPPING_INVALID_MAPPED_BY);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE, 		JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,   		JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_NOT_DEFINED,         		JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,    		JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED, JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED);
+		
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+				JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.MAPPING_INVALID_MAPPED_BY,
+				JpaValidationMessages.MAPPING_INVALID_MAPPED_BY);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
+				JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+				JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_NOT_DEFINED,
+				JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+				JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.MAPS_ID_VALUE_NOT_SPECIFIED,
+				JpaValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.MAPS_ID_VALUE_NOT_RESOLVED,
+				JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.MAPS_ID_VALUE_INVALID,
+				JpaValidationMessages.MAPS_ID_VALUE_INVALID);
+		addLabeledCombo(
+				parent, JptUiValidationPreferenceMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
+				JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED);
 	}
-
+	
 	/**
 	 * Creates and adds to the given <code>Composite</code> an expandable pane
 	 * where its content can be shown or hidden depending on the expansion state.
