@@ -50,10 +50,4 @@ class MaxDB
 	}
 	private static final char[] EXTENDED_REGULAR_NAME_START_CHARACTERS = new char[] { '#', '@', '$' };
 
-	@Override
-	char[] getExtendedRegularNamePartCharacters() {
-		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
-	}
-	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '_' };
-
 }

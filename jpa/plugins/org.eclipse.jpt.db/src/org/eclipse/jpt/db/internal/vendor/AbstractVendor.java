@@ -21,11 +21,12 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Consolidate the behavior common to the typical vendors.
+ * 
+ * @see UnrecognizedVendor
  */
 abstract class AbstractVendor
 	implements Vendor
 {
-
 	AbstractVendor() {
 		super();
 	}
@@ -85,9 +86,10 @@ abstract class AbstractVendor
 	/**
 	 * The user name passed in here was retrieved from DTP.
 	 * DTP stores the user name that was passed to it during the connection
-	 * to the database. As a result, this user name is an "identifier" not a "name".
+	 * to the database. As a result, this user name is an <em>identifier</em>
+	 * not a <em>name</em>.
 	 * If the user name were retrieved from the JDBC connection it would probably
-	 * be a "name". For example, you can connect to an Oracle database with the
+	 * be a <em>name</em>. For example, you can connect to an Oracle database with the
 	 * user name "scott", but that identifer is folded to the actual user name
 	 * "SCOTT". DTP stores the original string "scott", while the Oracle JDBC
 	 * driver stores the folded string "SCOTT".
@@ -100,7 +102,7 @@ abstract class AbstractVendor
 	// ********** folding strategy used to convert names and identifiers **********
 
 	/**
-	 * The SQL spec says a "regular" (non-delimited) identifier should be
+	 * The SQL spec says a <em>regular</em> (non-delimited) identifier should be
 	 * folded to uppercase; but some databases do otherwise (e.g. Sybase).
 	 */
 	abstract FoldingStrategy getFoldingStrategy();
@@ -155,7 +157,7 @@ abstract class AbstractVendor
 	 * Return whether the specified character is "non-regular" for the first
 	 * character of a name.
 	 * Typically, databases are more restrictive about what characters can
-	 * be used to *start* an identifier (as opposed to the characters
+	 * be used to <em>start</em> an identifier (as opposed to the characters
 	 * allowed for the remainder of the identifier).
 	 */
 	boolean characterIsNonRegularNameStart(char c) {
@@ -163,11 +165,12 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return whether the specified character is "regular" for the first
+	 * Return whether the specified character is <em>regular</em> for the first
 	 * character of a name.
-	 * The first character of an identifier can be:
-	 *   - a letter
-	 *   - any of the extended, vendor-specific, "regular" start characters
+	 * The first character of an identifier can be:<ul>
+	 * <li>a letter
+	 * <li>any of the extended, vendor-specific, <em>regular</em> start characters
+	 * </ul>
 	 */
 	boolean characterIsRegularNameStart(char c) {
 		// all vendors allow a letter
@@ -180,7 +183,7 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return the "regular" characters, beyond letters, for the
+	 * Return the <em>regular</em> characters, beyond letters, for the
 	 * first character of a name.
 	 * Return null if there are no "extended" characters.
 	 */
@@ -197,19 +200,22 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return whether the specified character is "regular" for the second and
+	 * Return whether the specified character is <em>regular</em> for the second and
 	 * subsequent characters of a name.
-	 * The second and subsequent characters of a "regular" name can be:
-	 *   - a letter
-	 *   - a digit
-	 *   - any of the extended, vendor-specific, "regular" start characters
-	 *   - any of the extended, vendor-specific, "regular" part characters
+	 * The second and subsequent characters of a <em>regular</em> name can be:<ul>
+	 * <li>a letter
+	 * <li>a digit
+	 * <li>an underscore
+	 * <li>any of the extended, vendor-specific, <em>regular</em> start characters
+	 * <li>any of the extended, vendor-specific, <em>regular</em> part characters
+	 * </ul>
 	 */
 	boolean characterIsRegularNamePart(char c) {
 		// all vendors allow a letter or digit
-		return Character.isLetterOrDigit(c)
-				|| this.characterIsExtendedRegularNameStart(c)
-				|| this.characterIsExtendedRegularNamePart(c);
+		return Character.isLetterOrDigit(c) ||
+				(c == '_') ||
+				this.characterIsExtendedRegularNameStart(c) ||
+				this.characterIsExtendedRegularNamePart(c);
 	}
 
 	boolean characterIsExtendedRegularNamePart(char c) {
@@ -217,9 +223,9 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return the "regular" characters, beyond letters and digits and the
-	 * "regular" first characters, for the second and subsequent characters
-	 * of an identifier. Return null if there are no additional characters.
+	 * Return the <em>regular</em> characters, beyond letters and digits and the
+	 * <em>regular</em> first characters, for the second and subsequent characters
+	 * of an identifier. Return <code>null</code> if there are no additional characters.
 	 */
 	char[] getExtendedRegularNamePartCharacters() {
 		return null;
@@ -234,7 +240,7 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return whether the specified "regular" names match.
+	 * Return whether the specified <em>regular</em> names match.
 	 */
 	boolean regularNamesMatch(String name1, String name2) {
 		return this.regularIdentifiersAreCaseSensitive() ?
@@ -243,7 +249,7 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Typically, "regular" identifiers are case-insensitive.
+	 * Typically, <em>regular</em> identifiers are case-insensitive.
 	 */
 	boolean regularIdentifiersAreCaseSensitive() {
 		return this.getFoldingStrategy().regularIdentifiersAreCaseSensitive();
@@ -272,7 +278,7 @@ abstract class AbstractVendor
 	}
 
 	/**
-	 * Return whether the specified identifier is "delimited".
+	 * Return whether the specified identifier is <em>delimited</em>.
 	 * The SQL-92 spec says identifiers should be delimited by
 	 * double-quotes; but some databases allow otherwise (e.g. Sybase).
 	 */

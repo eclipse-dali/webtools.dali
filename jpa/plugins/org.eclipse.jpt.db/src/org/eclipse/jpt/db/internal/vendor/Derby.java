@@ -64,10 +64,4 @@ class Derby
 	}
 	private static final String DEFAULT_USER_NAME = "APP";  //$NON-NLS-1$
 
-	@Override
-	char[] getExtendedRegularNamePartCharacters() {
-		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
-	}
-	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '_' };
-
 }

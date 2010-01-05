@@ -22,11 +22,11 @@ import org.eclipse.datatools.modelbase.sql.schema.Schema;
  *   <li>converting names to identifiers and vice-versa
  * </ul>
  * <strong>NB:</strong><br>
- * We use "name" when dealing with the unmodified name of a database object
+ * We use <em>name</em> when dealing with the unmodified name of a database object
  * as supplied by the database itself (i.e. it is not delimited and it is always
  * case-sensitive).
  * <br>
- * We use "identifier" when dealing with a string representation of a database
+ * We use <em>identifier</em> when dealing with a string representation of a database
  * object name (i.e. it may be delimited and, depending on the vendor, it may
  * be case-insensitive).
  */

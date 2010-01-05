@@ -53,10 +53,4 @@ class DB2
 		return UpperCaseFoldingStrategy.instance();
 	}
 
-	@Override
-	char[] getExtendedRegularNamePartCharacters() {
-		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
-	}
-	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '_' };
-
 }
