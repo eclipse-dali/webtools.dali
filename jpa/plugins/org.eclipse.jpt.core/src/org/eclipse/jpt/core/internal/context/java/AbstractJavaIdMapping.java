@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -308,7 +308,7 @@ public abstract class AbstractJavaIdMapping
 	}
 	
 	private Iterator<String> generatorNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.persistenceGeneratorNames(), filter);
+		return new FilteringIterator<String>(this.persistenceGeneratorNames(), filter);
 	}
 	
 	protected Iterator<String> persistenceGeneratorNames(Filter<String> filter) {

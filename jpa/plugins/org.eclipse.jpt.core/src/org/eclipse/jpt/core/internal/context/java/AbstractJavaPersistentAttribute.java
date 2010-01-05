@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ClassName;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -219,21 +220,21 @@ public abstract class AbstractJavaPersistentAttribute
 			return false;
 		}
 
-		int arrayDepth = ClassTools.arrayDepthForTypeDeclaration(typeName);
+		int arrayDepth = ReflectionTools.getArrayDepthForTypeDeclaration(typeName);
 		if (arrayDepth > 1) {
 			return false;  // multi-dimensional arrays are not supported
 		}
 
 		if (arrayDepth == 1) {
-			String elementTypeName = ClassTools.elementTypeNameForTypeDeclaration(typeName, 1);
+			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(typeName, 1);
 			return this.elementTypeIsValidForBasicArray(elementTypeName);
 		}
 
 		// arrayDepth == 0
-		if (ClassTools.classNamedIsVariablePrimitive(typeName)) {
+		if (ClassName.isVariablePrimitive(typeName)) {
 			return true;  // any primitive but 'void'
 		}
-		if (ClassTools.classNamedIsVariablePrimitiveWrapperClass(typeName)) {
+		if (ClassName.isVariablePrimitiveWrapper(typeName)) {
 			return true;  // any primitive wrapper but 'java.lang.Void'
 		}
 		if (this.typeIsOtherValidBasicType(typeName)) {
@@ -296,7 +297,7 @@ public abstract class AbstractJavaPersistentAttribute
 		if (typeName == null) {
 			return null;
 		}
-		if (ClassTools.arrayDepthForTypeDeclaration(typeName) != 0) {
+		if (ReflectionTools.getArrayDepthForTypeDeclaration(typeName) != 0) {
 			return null;  // arrays cannot be entities
 		}
 		if (this.typeIsContainer(typeName)) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 
 /**
  * This component provides a way to handle selecting an item from a
@@ -116,7 +116,7 @@ public class ListChooser
 	
     
     private JList listBox() {
-        return (JList) ClassTools.fieldValue(this.ui, "listBox"); //$NON-NLS-1$
+        return (JList) ReflectionTools.getFieldValue(this.ui, "listBox"); //$NON-NLS-1$
     }
     
 	/** 
@@ -213,7 +213,7 @@ public class ListChooser
 	private void updateArrowButton() {
 		try {
 			BasicComboBoxUI comboBoxUi = (BasicComboBoxUI) ListChooser.this.getUI();
-			JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton"); //$NON-NLS-1$
+			JButton arrowButton = (JButton) ReflectionTools.getFieldValue(comboBoxUi, "arrowButton"); //$NON-NLS-1$
 			arrowButton.setEnabled(this.isEnabled() && this.choosable);
 		}
 		catch (Exception e) {
@@ -387,7 +387,7 @@ public class ListChooser
 		private void checkComboBoxButton() {
 			try {
 				BasicComboBoxUI comboBoxUi = (BasicComboBoxUI) ListChooser.this.getUI();
-				JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton"); //$NON-NLS-1$
+				JButton arrowButton = (JButton) ReflectionTools.getFieldValue(comboBoxUi, "arrowButton"); //$NON-NLS-1$
 				arrowButton.getModel().setPressed(false);
 			}
 			catch (Exception ex) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -304,7 +304,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 	protected Iterator<String> candidateMapKeyNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateMapKeyNames(), filter);
+		return new FilteringIterator<String>(this.candidateMapKeyNames(), filter);
 	}
 
 	public Iterator<String> candidateMapKeyNames() {

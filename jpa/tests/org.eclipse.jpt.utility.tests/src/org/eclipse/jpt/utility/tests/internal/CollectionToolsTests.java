@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +30,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.Bag;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.Range;
@@ -2211,6 +2213,21 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(original.get(0), result.get(1));
 		assertEquals(original.get(1), result.get(0));
 		assertEquals(original.get(2), result.get(2));
+	}
+
+	public void testConstructor() {
+		boolean exCaught = false;
+		try {
+			Object at = ReflectionTools.newInstance(CollectionTools.class);
+			fail("bogus: " + at); //$NON-NLS-1$
+		} catch (RuntimeException ex) {
+			if (ex.getCause() instanceof InvocationTargetException) {
+				if (ex.getCause().getCause() instanceof UnsupportedOperationException) {
+					exCaught = true;
+				}
+			}
+		}
+		assertTrue(exCaught);
 	}
 
 

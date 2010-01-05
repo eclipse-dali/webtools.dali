@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,7 +47,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.text.Document;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -214,7 +213,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private void openWindow() {
-		JFrame window = new JFrame(ClassTools.shortClassNameForObject(this));
+		JFrame window = new JFrame(this.getClass().getSimpleName());
 		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		window.addWindowListener(this.buildWindowListener());
 		window.getContentPane().add(this.buildMainPanel(), "Center");
@@ -505,7 +504,7 @@ public class TableModelAdapterUITest {
 		return this.promptUserForName(null);
 	}
 
-	private String promptUserForName(String originalName) {
+	private String promptUserForName(@SuppressWarnings("unused") String originalName) {
 		while (true) {
 			String name = JOptionPane.showInputDialog("Person Name");
 			if (name == null) {

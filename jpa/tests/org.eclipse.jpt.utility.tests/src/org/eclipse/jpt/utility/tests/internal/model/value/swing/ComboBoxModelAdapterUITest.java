@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ComboBoxModel;
@@ -28,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import org.eclipse.jpt.utility.internal.ClassTools;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -49,6 +50,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
  * DefaultLongListBrowserDialogUITest subclasses this class; so be
  * careful when making changes.
  */
+@SuppressWarnings("nls")
 public class ComboBoxModelAdapterUITest {
 
 	protected JFrame window;
@@ -60,14 +62,14 @@ public class ComboBoxModelAdapterUITest {
 	private int nextColorNumber = 0;
 
 	public static void main(String[] args) throws Exception {
-		new ComboBoxModelAdapterUITest().exec(args);
+		new ComboBoxModelAdapterUITest().exec();
 	}
 
 	protected ComboBoxModelAdapterUITest() {
 		super();
 	}
 
-	protected void exec(String[] args) throws Exception {
+	protected void exec() throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 //		UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());	// Metal LAF
 //		UIManager.setLookAndFeel(com.sun.java.swing.plaf.windows.WindowsLookAndFeel.class.getName());
@@ -119,7 +121,7 @@ public class ComboBoxModelAdapterUITest {
 	}
 
 	private void openWindow() {
-		this.window = new JFrame(ClassTools.shortNameFor(this.getClass()));
+		this.window = new JFrame(this.getClass().getSimpleName());
 		this.window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.window.addWindowListener(this.buildWindowListener());
 		this.window.getContentPane().add(this.buildMainPanel(), "Center");

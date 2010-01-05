@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.widgets.DefaultWidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -105,7 +104,7 @@ public class TriStateCheckBoxModelAdapterUITest
 
 	@Override
 	protected Control createContents(Composite parent) {
-		((Shell) parent).setText(ClassTools.shortClassNameForObject(this));
+		((Shell) parent).setText(this.getClass().getSimpleName());
 		parent.setSize(400, 100);
 		Composite mainPanel = new Composite(parent, SWT.NONE);
 		mainPanel.setLayout(new FormLayout());

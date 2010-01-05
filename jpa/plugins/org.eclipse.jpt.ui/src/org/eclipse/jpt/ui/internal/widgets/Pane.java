@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -29,7 +30,6 @@ import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
@@ -3589,11 +3589,11 @@ public abstract class Pane<T extends Model>
 
 	protected void log(String message) {
 		Class<?> thisClass = this.getClass();
-		String className = ClassTools.shortNameFor(thisClass);
+		String className = thisClass.getSimpleName();
 
 		if (thisClass.isAnonymousClass()) {
 			className = className.substring(0, className.indexOf('$'));
-			className += "->" + ClassTools.shortNameFor(thisClass.getSuperclass());
+			className += "->" + thisClass.getSuperclass().getSimpleName();
 		}
 
 		Tracing.log(className + ": " + message);

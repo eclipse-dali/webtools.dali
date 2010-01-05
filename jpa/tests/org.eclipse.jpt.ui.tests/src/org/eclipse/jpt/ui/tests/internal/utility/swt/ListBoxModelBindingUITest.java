@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
@@ -82,7 +81,7 @@ public class ListBoxModelBindingUITest
 
 	@Override
 	protected Control createContents(Composite parent) {
-		((Shell) parent).setText(ClassTools.shortClassNameForObject(this));
+		((Shell) parent).setText(this.getClass().getSimpleName());
 		parent.setSize(800, 400);
 		Composite mainPanel = new Composite(parent, SWT.NONE);
 		mainPanel.setLayout(new FormLayout());

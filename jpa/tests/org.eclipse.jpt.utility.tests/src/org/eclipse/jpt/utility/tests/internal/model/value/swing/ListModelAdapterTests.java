@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import javax.swing.ListModel;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.Bag;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
@@ -263,12 +263,12 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(ListModel listModel) throws Exception {
-		boolean hasNoListeners = ((Boolean) ClassTools.executeMethod(listModel, "hasNoListDataListeners")).booleanValue();
+		boolean hasNoListeners = ((Boolean) ReflectionTools.executeMethod(listModel, "hasNoListDataListeners")).booleanValue();
 		assertTrue(hasNoListeners);
 	}
 
 	private void verifyHasListeners(ListModel listModel) throws Exception {
-		boolean hasListeners = ((Boolean) ClassTools.executeMethod(listModel, "hasListDataListeners")).booleanValue();
+		boolean hasListeners = ((Boolean) ReflectionTools.executeMethod(listModel, "hasListDataListeners")).booleanValue();
 		assertTrue(hasListeners);
 	}
 

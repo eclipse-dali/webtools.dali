@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -431,7 +431,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public Iterator<MappingFileRef> mappingFileRefsContaining(final String typeName) {
-		return new FilteringIterator<MappingFileRef, MappingFileRef> (this.mappingFileRefs()) {
+		return new FilteringIterator<MappingFileRef> (this.mappingFileRefs()) {
 			@Override
 			protected boolean accept(MappingFileRef mappingFileRef) {
 				return mappingFileRef.getPersistentType(typeName) != null;
@@ -695,7 +695,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<PersistentType> getNonNullClassRefPersistentTypes() {
-		return new FilteringIterable<PersistentType, PersistentType>(this.getClassRefPersistentTypes(), NotNullFilter.<PersistentType>instance());
+		return new FilteringIterable<PersistentType>(this.getClassRefPersistentTypes(), NotNullFilter.<PersistentType>instance());
 	}
 
 	protected Iterable<PersistentType> getClassRefPersistentTypes() {
@@ -935,7 +935,7 @@ public abstract class AbstractPersistenceUnit
 		if (propertyNamePrefix == null) {
 			throw new NullPointerException();
 		}
-		return new FilteringIterator<Property, Property>(this.properties()) {
+		return new FilteringIterator<Property>(this.properties()) {
 			@Override
 			protected boolean accept(Property property) {
 				String pName = property.getName();

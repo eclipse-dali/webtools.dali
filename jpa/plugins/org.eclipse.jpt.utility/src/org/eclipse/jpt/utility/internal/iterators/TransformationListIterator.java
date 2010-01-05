@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,10 @@ package org.eclipse.jpt.utility.internal.iterators;
 
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * A <code>TransformationListIterator</code> wraps another {@link ListIterator}
@@ -58,10 +60,28 @@ public class TransformationListIterator<E1, E2>
 	}
 
 	/**
+	 * Construct an iterator with the specified list
+	 * and a disabled transformer.
+	 * Use this constructor if you want to override the
+	 * {@link #transform(Object)} method instead of building
+	 * a {@link Transformer}.
+	 */
+	public TransformationListIterator(ListIterable<? extends E1> listIterable) {
+		this(listIterable.iterator());
+	}
+
+	/**
 	 * Construct an iterator with the specified list and transformer.
 	 */
 	public TransformationListIterator(List<? extends E1> list, Transformer<E1, ? extends E2> transformer) {
 		this(list.listIterator(), transformer);
+	}
+
+	/**
+	 * Construct an iterator with the specified list and transformer.
+	 */
+	public TransformationListIterator(ListIterable<? extends E1> listIterable, Transformer<E1, ? extends E2> transformer) {
+		this(listIterable.iterator(), transformer);
 	}
 
 	/**

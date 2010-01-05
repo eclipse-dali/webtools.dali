@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,6 +49,7 @@ import org.eclipse.jpt.utility.tests.internal.model.value.swing.TreeModelAdapter
 /**
  * an example UI for testing the TreeModelAdapter
  */
+@SuppressWarnings("nls")
 public class TreeModelAdapterUITest {
 
 	// hold the tree so we can restore its expansion state
@@ -60,14 +61,14 @@ public class TreeModelAdapterUITest {
 	private TextField nameTextField;
 
 	public static void main(String[] args) throws Exception {
-		new TreeModelAdapterUITest().exec(args);
+		new TreeModelAdapterUITest().exec();
 	}
 
 	private TreeModelAdapterUITest() {
 		super();
 	}
 
-	private void exec(String[] args) throws Exception {
+	private void exec() throws Exception {
 		this.rootNodeHolder = this.buildRootNodeHolder();
 		this.sorted = this.rootNodeHolder.getValue() instanceof SortedTestNode;
 		this.treeModel = this.buildTreeModel();
@@ -132,7 +133,7 @@ public class TreeModelAdapterUITest {
 		};
 	}
 
-	void treeSelectionChanged(TreeSelectionEvent e) {
+	void treeSelectionChanged(@SuppressWarnings("unused") TreeSelectionEvent e) {
 		TestModel selectedTestModel = this.selectedTestModel();
 		if (selectedTestModel != null) {
 			this.nameTextField.setText(selectedTestModel.getName());

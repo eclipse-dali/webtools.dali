@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +21,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.Range;
 import org.eclipse.jpt.utility.internal.ReverseComparator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -2855,8 +2857,8 @@ public class ArrayToolsTests extends TestCase {
 	public void testFillBooleanArrayBoolean() {
 		boolean[] a1 = new boolean[9];
 		boolean[] a2 = ArrayTools.fill(a1, true);
-		for (boolean b : a1) {
-			assertTrue(b);
+		for (boolean x : a1) {
+			assertTrue(x);
 		}
 		assertSame(a1, a2);
 	}
@@ -2868,18 +2870,583 @@ public class ArrayToolsTests extends TestCase {
 		int to = 6;
 		boolean[] a3 = ArrayTools.fill(a2, from, to, true);
 		for (int i = 0; i < a1.length; i++) {
-			boolean b = a1[i];
+			boolean x = a1[i];
 			if (i < from || i >= to) {
-				assertFalse(b);
+				assertFalse(x);
 			} else {
-				assertTrue(b);
+				assertTrue(x);
 			}
 		}
 		assertSame(a1, a2);
 		assertSame(a1, a3);
 	}
 
-	// TODO
+	public void testFillByteArrayByte() {
+		byte[] a1 = new byte[9];
+		byte[] a2 = ArrayTools.fill(a1, (byte) 77);
+		for (byte x : a1) {
+			assertEquals(77, x);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillByteArrayIntIntByte() {
+		byte[] a1 = new byte[9];
+		byte[] a2 = ArrayTools.fill(a1, (byte) 3);
+		int from = 3;
+		int to = 6;
+		byte[] a3 = ArrayTools.fill(a2, from, to, (byte) 77);
+		for (int i = 0; i < a1.length; i++) {
+			byte x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertEquals(77, x);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testFillCharArrayChar() {
+		char[] a1 = new char[9];
+		char[] a2 = ArrayTools.fill(a1, 'c');
+		for (char x : a1) {
+			assertEquals('c', x);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillCharArrayIntIntChar() {
+		char[] a1 = new char[9];
+		char[] a2 = ArrayTools.fill(a1, 'a');
+		int from = 3;
+		int to = 6;
+		char[] a3 = ArrayTools.fill(a2, from, to, 'c');
+		for (int i = 0; i < a1.length; i++) {
+			char x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals('a', x);
+			} else {
+				assertEquals('c', x);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testFillDoubleArrayDouble() {
+		double[] a1 = new double[9];
+		double[] a2 = ArrayTools.fill(a1, 77.77);
+		for (double x : a1) {
+			assertEquals(77.77, x, 0.0);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillDoubleArrayIntIntDouble() {
+		double[] a1 = new double[9];
+		double[] a2 = ArrayTools.fill(a1, 3.3);
+		int from = 3;
+		int to = 6;
+		double[] a3 = ArrayTools.fill(a2, from, to, 77.77);
+		for (int i = 0; i < a1.length; i++) {
+			double x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3.3, x, 0.0);
+			} else {
+				assertEquals(77.77, x, 0.0);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testFillFloatArrayFloat() {
+		float[] a1 = new float[9];
+		float[] a2 = ArrayTools.fill(a1, 77.77f);
+		for (float x : a1) {
+			assertEquals(77.77f, x, 0.0);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillFloatArrayIntIntFloat() {
+		float[] a1 = new float[9];
+		float[] a2 = ArrayTools.fill(a1, 3.3f);
+		int from = 3;
+		int to = 6;
+		float[] a3 = ArrayTools.fill(a2, from, to, 77.77f);
+		for (int i = 0; i < a1.length; i++) {
+			float x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3.3f, x, 0.0);
+			} else {
+				assertEquals(77.77f, x, 0.0);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testFillIntArrayInt() {
+		int[] a1 = new int[9];
+		int[] a2 = ArrayTools.fill(a1, 77);
+		for (int x : a1) {
+			assertEquals(77, x);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillIntArrayIntIntInt() {
+		int[] a1 = new int[9];
+		int[] a2 = ArrayTools.fill(a1, 3);
+		int from = 3;
+		int to = 6;
+		int[] a3 = ArrayTools.fill(a2, from, to, 77);
+		for (int i = 0; i < a1.length; i++) {
+			int x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertEquals(77, x);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testFillObjectArrayObject() {
+		String[] a1 = new String[9];
+		String[] a2 = ArrayTools.fill(a1, "77");
+		for (String x : a1) {
+			assertEquals("77", x);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillObjectArrayIntIntObject() {
+		String[] a1 = new String[9];
+		String[] a2 = ArrayTools.fill(a1, "3");
+		int from = 3;
+		int to = 6;
+		String[] a3 = ArrayTools.fill(a2, from, to, "77");
+		for (int i = 0; i < a1.length; i++) {
+			String x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals("3", x);
+			} else {
+				assertEquals("77", x);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testFillLongArrayLong() {
+		long[] a1 = new long[9];
+		long[] a2 = ArrayTools.fill(a1, 77);
+		for (long x : a1) {
+			assertEquals(77, x);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillLongArrayIntIntLong() {
+		long[] a1 = new long[9];
+		long[] a2 = ArrayTools.fill(a1, 3);
+		int from = 3;
+		int to = 6;
+		long[] a3 = ArrayTools.fill(a2, from, to, 77);
+		for (int i = 0; i < a1.length; i++) {
+			long x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertEquals(77, x);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testFillShortArrayShort() {
+		short[] a1 = new short[9];
+		short[] a2 = ArrayTools.fill(a1, (short) 77);
+		for (short x : a1) {
+			assertEquals(77, x);
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testFillShortArrayIntIntShort() {
+		short[] a1 = new short[9];
+		short[] a2 = ArrayTools.fill(a1, (short) 3);
+		int from = 3;
+		int to = 6;
+		short[] a3 = ArrayTools.fill(a2, from, to, (short) 77);
+		for (int i = 0; i < a1.length; i++) {
+			short x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertEquals(77, x);
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortByteArray() {
+		byte[] a1 = new byte[3];
+		a1[0] = (byte) 33;
+		a1[1] = (byte) 11;
+		a1[2] = (byte) 22;
+		byte[] a2 = ArrayTools.sort(a1);
+		byte last = (byte) 0;
+		for (byte x : a1) {
+			assertTrue(last < x);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortByteArrayIntInt() {
+		byte[] a1 = new byte[9];
+		byte[] a2 = ArrayTools.fill(a1, (byte) 3);
+		a2[3] = (byte) 33;
+		a2[4] = (byte) 11;
+		a2[5] = (byte) 22;
+		int from = 3;
+		int to = 6;
+		byte[] a3 = ArrayTools.sort(a2, from, to);
+		byte last = (byte) 0;
+		for (int i = 0; i < a1.length; i++) {
+			byte x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertTrue(last < x);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortCharArray() {
+		char[] a1 = new char[3];
+		a1[0] = 'z';
+		a1[1] = 'b';
+		a1[2] = 'm';
+		char[] a2 = ArrayTools.sort(a1);
+		char last = 'a';
+		for (char x : a1) {
+			assertTrue(last < x);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortCharArrayIntInt() {
+		char[] a1 = new char[9];
+		char[] a2 = ArrayTools.fill(a1, 'c');
+		a2[3] = 'z';
+		a2[4] = 'b';
+		a2[5] = 'm';
+		int from = 3;
+		int to = 6;
+		char[] a3 = ArrayTools.sort(a2, from, to);
+		char last = 'a';
+		for (int i = 0; i < a1.length; i++) {
+			char x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals('c', x);
+			} else {
+				assertTrue(last < x);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortDoubleArray() {
+		double[] a1 = new double[3];
+		a1[0] = 33.33;
+		a1[1] = 11.11;
+		a1[2] = 22.22;
+		double[] a2 = ArrayTools.sort(a1);
+		double last = 0;
+		for (double x : a1) {
+			assertTrue(last < x);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortDoubleArrayIntInt() {
+		double[] a1 = new double[9];
+		double[] a2 = ArrayTools.fill(a1, 3.3);
+		a2[3] = 33.33;
+		a2[4] = 11.11;
+		a2[5] = 22.22;
+		int from = 3;
+		int to = 6;
+		double[] a3 = ArrayTools.sort(a2, from, to);
+		double last = 0;
+		for (int i = 0; i < a1.length; i++) {
+			double x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3.3, x, 0.0);
+			} else {
+				assertTrue(last < x);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortFloatArray() {
+		float[] a1 = new float[3];
+		a1[0] = 33.33f;
+		a1[1] = 11.11f;
+		a1[2] = 22.22f;
+		float[] a2 = ArrayTools.sort(a1);
+		float last = 0;
+		for (float x : a1) {
+			assertTrue(last < x);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortFloatArrayIntInt() {
+		float[] a1 = new float[9];
+		float[] a2 = ArrayTools.fill(a1, 3.3f);
+		a2[3] = 33.33f;
+		a2[4] = 11.11f;
+		a2[5] = 22.22f;
+		int from = 3;
+		int to = 6;
+		float[] a3 = ArrayTools.sort(a2, from, to);
+		float last = 0;
+		for (int i = 0; i < a1.length; i++) {
+			float x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3.3f, x, 0.0);
+			} else {
+				assertTrue(last < x);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortIntArray() {
+		int[] a1 = new int[3];
+		a1[0] = 33;
+		a1[1] = 11;
+		a1[2] = 22;
+		int[] a2 = ArrayTools.sort(a1);
+		int last = 0;
+		for (int x : a1) {
+			assertTrue(last < x);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortIntArrayIntInt() {
+		int[] a1 = new int[9];
+		int[] a2 = ArrayTools.fill(a1, 3);
+		a2[3] = 33;
+		a2[4] = 11;
+		a2[5] = 22;
+		int from = 3;
+		int to = 6;
+		int[] a3 = ArrayTools.sort(a2, from, to);
+		int last = 0;
+		for (int i = 0; i < a1.length; i++) {
+			int x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertTrue(last < x);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortObjectArray() {
+		String[] a1 = new String[3];
+		a1[0] = "y";
+		a1[1] = "b";
+		a1[2] = "m";
+		String[] a2 = ArrayTools.sort(a1);
+		String last = "a";
+		for (String x : a1) {
+			assertTrue(last.compareTo(x) < 0);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortObjectArrayComparator() {
+		String[] a1 = new String[3];
+		a1[0] = "y";
+		a1[1] = "b";
+		a1[2] = "m";
+		String[] a2 = ArrayTools.sort(a1, new ReverseComparator<String>());
+		String last = "z";
+		for (String x : a1) {
+			assertTrue(last.compareTo(x) > 0);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortObjectArrayIntInt() {
+		String[] a1 = new String[9];
+		String[] a2 = ArrayTools.fill(a1, "c");
+		a2[3] = "y";
+		a2[4] = "b";
+		a2[5] = "m";
+		int from = 3;
+		int to = 6;
+		String[] a3 = ArrayTools.sort(a2, from, to);
+		String last = "a";
+		for (int i = 0; i < a1.length; i++) {
+			String x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals("c", x);
+			} else {
+				assertTrue(last.compareTo(x) < 0);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortObjectArrayIntIntComparator() {
+		String[] a1 = new String[9];
+		String[] a2 = ArrayTools.fill(a1, "c");
+		a2[3] = "y";
+		a2[4] = "b";
+		a2[5] = "m";
+		int from = 3;
+		int to = 6;
+		String[] a3 = ArrayTools.sort(a2, from, to, new ReverseComparator<String>());
+		String last = "z";
+		for (int i = 0; i < a1.length; i++) {
+			String x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals("c", x);
+			} else {
+				assertTrue(last.compareTo(x) > 0);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortLongArray() {
+		long[] a1 = new long[3];
+		a1[0] = 33;
+		a1[1] = 11;
+		a1[2] = 22;
+		long[] a2 = ArrayTools.sort(a1);
+		long last = 0;
+		for (long x : a1) {
+			assertTrue(last < x);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortLongArrayIntInt() {
+		long[] a1 = new long[9];
+		long[] a2 = ArrayTools.fill(a1, 3);
+		a2[3] = 33;
+		a2[4] = 11;
+		a2[5] = 22;
+		int from = 3;
+		int to = 6;
+		long[] a3 = ArrayTools.sort(a2, from, to);
+		long last = 0;
+		for (int i = 0; i < a1.length; i++) {
+			long x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertTrue(last < x);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+	public void testSortShortArray() {
+		short[] a1 = new short[3];
+		a1[0] = (short) 33;
+		a1[1] = (short) 11;
+		a1[2] = (short) 22;
+		short[] a2 = ArrayTools.sort(a1);
+		short last = (short) 0;
+		for (short x : a1) {
+			assertTrue(last < x);
+			last = x;
+		}
+		assertSame(a1, a2);
+	}
+
+	public void testSortShortArrayIntInt() {
+		short[] a1 = new short[9];
+		short[] a2 = ArrayTools.fill(a1, (short) 3);
+		a2[3] = (short) 33;
+		a2[4] = (short) 11;
+		a2[5] = (short) 22;
+		int from = 3;
+		int to = 6;
+		short[] a3 = ArrayTools.sort(a2, from, to);
+		short last = (short) 0;
+		for (int i = 0; i < a1.length; i++) {
+			short x = a1[i];
+			if (i < from || i >= to) {
+				assertEquals(3, x);
+			} else {
+				assertTrue(last < x);
+				last = x;
+			}
+		}
+		assertSame(a1, a2);
+		assertSame(a1, a3);
+	}
+
+
+	// ********** constructor **********
+
+	public void testConstructor() {
+		boolean exCaught = false;
+		try {
+			Object at = ReflectionTools.newInstance(ArrayTools.class);
+			fail("bogus: " + at);
+		} catch (RuntimeException ex) {
+			if (ex.getCause() instanceof InvocationTargetException) {
+				if (ex.getCause().getCause() instanceof UnsupportedOperationException) {
+					exCaught = true;
+				}
+			}
+		}
+		assertTrue(exCaught);
+	}
 
 
 	// ********** utility **********

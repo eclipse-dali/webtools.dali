@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,7 +36,7 @@ import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -157,11 +157,11 @@ public class GenericPersistentTypeMetamodelSynchronizer
 	// TODO
 	protected String getPackageName() {
 		// the default is to store the metamodel in the same package as the model
-		return ClassTools.packageNameForClassNamed(this.getMetamodelClassName());
+		return ClassName.getPackageName(this.getMetamodelClassName());
 	}
 
 	protected String getFileName() {
-		return ClassTools.shortNameForClassNamed(this.getMetamodelClassName()) + ".java";
+		return ClassName.getSimpleName(this.getMetamodelClassName()) + ".java";
 	}
 
 	protected String getMetamodelClassName() {
@@ -537,7 +537,7 @@ public class GenericPersistentTypeMetamodelSynchronizer
 		 * strip off any non-required imports (e.g. "java.lang.Object')
 		 */
 		protected Iterable<Map.Entry<String, ImportPackage>> getRequiredImportEntries() {
-			return new FilteringIterable<Map.Entry<String, ImportPackage>, Map.Entry<String, ImportPackage>>(this.imports.entrySet(), this.buildRequiredImportEntriesFilter());
+			return new FilteringIterable<Map.Entry<String, ImportPackage>>(this.imports.entrySet(), this.buildRequiredImportEntriesFilter());
 		}
 
 		protected Filter<Map.Entry<String, ImportPackage>> buildRequiredImportEntriesFilter() {

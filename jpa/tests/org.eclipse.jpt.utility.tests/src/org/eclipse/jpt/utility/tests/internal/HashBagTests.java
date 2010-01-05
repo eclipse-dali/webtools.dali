@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jpt.utility.internal.Tools;
 
 @SuppressWarnings("nls")
 public class HashBagTests extends TestCase {
@@ -378,27 +379,34 @@ public class HashBagTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-//TODO - poor load factor is seen in the Eclipse build environment for some reason
-//	public void testHashingDistribution() throws Exception {
-//		Bag<String> bigBag = new HashBag<String>();
-//		for (int i = 0; i < 10000; i++) {
-//			bigBag.add("object" + i);
-//		}
-//
-//		java.lang.reflect.Field field = bigBag.getClass().getDeclaredField("table");
-//		field.setAccessible(true);
-//		Object[] table = (Object[]) field.get(bigBag);
-//		int bucketCount = table.length;
-//		int filledBucketCount = 0;
-//		for (Object o : table) {
-//			if (o != null) {
-//				filledBucketCount++;
-//			}
-//		}
-//		float loadFactor = ((float) filledBucketCount) / ((float) bucketCount);
-//		assertTrue("WARNING - poor load factor: " + loadFactor, loadFactor > 0.20);
-//		assertTrue("WARNING - poor load factor: " + loadFactor, loadFactor < 0.75);
-//	}
+	public void testHashingDistribution() throws Exception {
+		Bag<String> bigBag = new HashBag<String>();
+		for (int i = 0; i < 10000; i++) {
+			bigBag.add("object" + i);
+		}
+
+		java.lang.reflect.Field field = bigBag.getClass().getDeclaredField("table");
+		field.setAccessible(true);
+		Object[] table = (Object[]) field.get(bigBag);
+		int bucketCount = table.length;
+		int filledBucketCount = 0;
+		for (Object o : table) {
+			if (o != null) {
+				filledBucketCount++;
+			}
+		}
+		float loadFactor = ((float) filledBucketCount) / ((float) bucketCount);
+		if ((loadFactor < 0.20) || (loadFactor > 0.80)) {
+			String msg = "poor load factor: " + loadFactor;
+			if (Tools.jvmIsSun()) {
+				fail(msg);
+			} else {
+				// poor load factor is seen in the Eclipse build environment for some reason...
+				System.out.println(this.getClass().getName() + '.' + this.getName() + " - " + msg);
+				TestTools.printSystemProperties();
+			}
+		}
+	}
 
 	public void testRemove() {
 		assertTrue(this.bag.remove("one"));

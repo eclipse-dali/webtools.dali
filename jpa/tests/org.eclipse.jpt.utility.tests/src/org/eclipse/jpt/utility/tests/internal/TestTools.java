@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import junit.framework.TestCase;
 import junit.framework.TestFailure;
 import junit.framework.TestResult;
@@ -67,6 +70,33 @@ public final class TestTools {
 	public static void redirectSystemStreamsTo(PrintStream printStream) {
 		System.setOut(printStream);
 		System.setErr(printStream);
+	}
+
+	/**
+	 * Sort and print out all the current Java System properties on the
+	 * console.
+	 */
+	public static void printSystemProperties() {
+		synchronized (System.out) {
+			printSystemPropertiesOn(System.out);
+		}
+	}
+
+	/**
+	 * Sort and print out all the current Java System properties on the
+	 * specified print stream.
+	 */
+	public static void printSystemPropertiesOn(PrintStream stream) {
+		SortedSet<String> sortedKeys = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		for (Object key : System.getProperties().keySet()) {
+			sortedKeys.add((String) key);
+		}
+		for (String key : sortedKeys) {
+			stream.print(key);
+			stream.print(" => "); //$NON-NLS-1$
+			stream.print(System.getProperty(key));
+			stream.println();
+		}
 	}
 
 	/**

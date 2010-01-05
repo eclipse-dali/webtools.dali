@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.utility.model.listener;
 
 import java.lang.reflect.Method;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
 
@@ -40,9 +40,9 @@ class SingleMethodReflectiveChangeListener
 
 	public void stateChanged(StateChangeEvent event) {
 		if (this.methodIsZeroArgument) {
-			ClassTools.executeMethod(this.method, this.target, EMPTY_OBJECT_ARRAY);
+			ReflectionTools.executeMethod(this.method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(this.method, this.target, new StateChangeEvent[] {event});
+			ReflectionTools.executeMethod(this.method, this.target, new StateChangeEvent[] {event});
 		}
 	}
 
@@ -51,9 +51,9 @@ class SingleMethodReflectiveChangeListener
 
 	public void propertyChanged(PropertyChangeEvent event) {
 		if (this.methodIsZeroArgument) {
-			ClassTools.executeMethod(this.method, this.target, EMPTY_OBJECT_ARRAY);
+			ReflectionTools.executeMethod(this.method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(this.method, this.target, new PropertyChangeEvent[] {event});
+			ReflectionTools.executeMethod(this.method, this.target, new PropertyChangeEvent[] {event});
 		}
 	}
 

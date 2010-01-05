@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,17 +33,16 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * This also prevents a filtered iterator from supporting the optional
  * <code>remove()</code> method.
  * 
- * @param <E1> input: the type of elements to be filtered
- * @param <E2> output: the type of elements returned by the iterable's iterator
+ * @param <E> the type of elements to be filtered
  * 
  * @see org.eclipse.jpt.utility.internal.iterables.FilteringIterable
  */
-public class FilteringIterator<E1, E2>
-	implements Iterator<E2>
+public class FilteringIterator<E>
+	implements Iterator<E>
 {
-	private final Iterator<? extends E1> iterator;
-	private final Filter<E1> filter;
-	private E2 next;
+	private final Iterator<? extends E> iterator;
+	private final Filter<E> filter;
+	private E next;
 	private boolean done;
 
 
@@ -54,7 +53,7 @@ public class FilteringIterator<E1, E2>
 	 * {@link #accept(Object)} method instead of building
 	 * a {@link Filter}.
 	 */
-	public FilteringIterator(Iterable<? extends E1> iterable) {
+	public FilteringIterator(Iterable<? extends E> iterable) {
 		this(iterable.iterator());
 	}
 
@@ -65,15 +64,15 @@ public class FilteringIterator<E1, E2>
 	 * {@link #accept(Object)} method instead of building
 	 * a {@link Filter}.
 	 */
-	public FilteringIterator(Iterator<? extends E1> iterator) {
-		this(iterator, Filter.Disabled.<E1>instance());
+	public FilteringIterator(Iterator<? extends E> iterator) {
+		this(iterator, Filter.Disabled.<E>instance());
 	}
 
 	/**
 	 * Construct an iterator with the specified
 	 * iterable and filter.
 	 */
-	public FilteringIterator(Iterable<? extends E1> iterable, Filter<E1> filter) {
+	public FilteringIterator(Iterable<? extends E> iterable, Filter<E> filter) {
 		this(iterable.iterator(), filter);
 	}
 
@@ -81,7 +80,7 @@ public class FilteringIterator<E1, E2>
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	public FilteringIterator(Iterator<? extends E1> iterator, Filter<E1> filter) {
+	public FilteringIterator(Iterator<? extends E> iterator, Filter<E> filter) {
 		super();
 		this.iterator = iterator;
 		this.filter = filter;
@@ -92,11 +91,11 @@ public class FilteringIterator<E1, E2>
 		return ! this.done;
 	}
 
-	public E2 next() {
+	public E next() {
 		if (this.done) {
 			throw new NoSuchElementException();
 		}
-		E2 result = this.next;
+		E result = this.next;
 		this.loadNext();
 		return result;
 	}
@@ -117,25 +116,16 @@ public class FilteringIterator<E1, E2>
 	private void loadNext() {
 		this.done = true;
 		while (this.iterator.hasNext() && (this.done)) {
-			E1 temp = this.iterator.next();
+			E temp = this.iterator.next();
 			if (this.accept(temp)) {
 				// assume that if the object was accepted it is of type E
-				this.next = this.cast(temp);
+				this.next = temp;
 				this.done = false;
 			} else {
 				this.next = null;
 				this.done = true;
 			}
 		}
-	}
-
-	/**
-	 * We have to assume the filter will only "accept" objects that can
-	 * be cast to E2.
-	 */
-	@SuppressWarnings("unchecked")
-	private E2 cast(E1 o) {
-		return (E2) o;
 	}
 
 	/**
@@ -146,7 +136,7 @@ public class FilteringIterator<E1, E2>
 	 * This method can be overridden by a subclass as an
 	 * alternative to building a {@link Filter}.
 	 */
-	protected boolean accept(E1 o) {
+	protected boolean accept(E o) {
 		return this.filter.accept(o);
 	}
 

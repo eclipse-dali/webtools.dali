@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.model.listener;
 
 import java.lang.reflect.Method;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
@@ -144,17 +144,11 @@ public abstract class ReflectiveChangeListener {
 	 * reflectively when a change event occurs.
 	 */
 	private static Method findChangeListenerMethod(Object target, String methodName, Class<? extends ChangeEvent>[] eventClassArray) {
-		Method method;
 		try {
-			method = ClassTools.method(target, methodName, eventClassArray);
-		} catch (NoSuchMethodException ex1) {
-			try {
-				method = ClassTools.method(target, methodName);
-			} catch (NoSuchMethodException ex2) {
-				throw new RuntimeException(ex2);  // "checked" exceptions bite
-			}
+			return ReflectionTools.getMethod(target, methodName, eventClassArray);
+		} catch (RuntimeException ex1) {
+			return ReflectionTools.getMethod(target, methodName);
 		}
-		return method;
 	}
 
 	/**

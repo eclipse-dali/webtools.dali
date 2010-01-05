@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,8 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.ArrayListIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * A <code>CompositeListIterator</code> wraps a list
@@ -54,6 +56,20 @@ public class CompositeListIterator<E>
 	}
 
 	/**
+	 * Construct a list iterator on the elements in the specified list of lists.
+	 */
+	public CompositeListIterator(ListIterable<? extends ListIterable<E>> listIterables) {
+		this(
+			new TransformationListIterator<ListIterable<E>, ListIterator<E>>(listIterables.iterator()) {
+				@Override
+				protected ListIterator<E> transform(ListIterable<E> list) {
+					return list.iterator();
+				}
+			}
+		);
+	}
+
+	/**
 	 * Construct a list iterator with the specified list of list iterators.
 	 */
 	public CompositeListIterator(ListIterator<? extends ListIterator<E>> iterators) {
@@ -69,6 +85,14 @@ public class CompositeListIterator<E>
 	 */
 	public CompositeListIterator(E object, List<E> list) {
 		this(object, list.listIterator());
+	}
+
+	/**
+	 * Construct a list iterator with the specified object prepended
+	 * to the specified list.
+	 */
+	public CompositeListIterator(E object, ListIterable<E> listIterable) {
+		this(object, listIterable.iterator());
 	}
 
 	/**
@@ -90,6 +114,14 @@ public class CompositeListIterator<E>
 
 	/**
 	 * Construct a list iterator with the specified object appended
+	 * to the specified list.
+	 */
+	public CompositeListIterator(ListIterable<E> listIterable, E object) {
+		this(listIterable.iterator(), object);
+	}
+
+	/**
+	 * Construct a list iterator with the specified object appended
 	 * to the specified iterator.
 	 */
 	@SuppressWarnings("unchecked")
@@ -102,6 +134,13 @@ public class CompositeListIterator<E>
 	 */
 	public CompositeListIterator(List<E>... lists) {
 		this(Arrays.asList(lists));
+	}
+
+	/**
+	 * Construct a list iterator with the specified lists.
+	 */
+	public CompositeListIterator(ListIterable<E>... listIterables) {
+		this(new ArrayListIterable<ListIterable<E>>(listIterables));
 	}
 
 	/**

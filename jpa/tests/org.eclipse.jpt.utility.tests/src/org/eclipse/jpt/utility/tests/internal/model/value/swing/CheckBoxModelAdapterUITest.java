@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * Play around with a set of check boxes.
  */
+@SuppressWarnings("nls")
 public class CheckBoxModelAdapterUITest {
 
 	private TestModel testModel;
@@ -48,14 +49,14 @@ public class CheckBoxModelAdapterUITest {
 	private ButtonModel notFlag2ButtonModel;
 
 	public static void main(String[] args) throws Exception {
-		new CheckBoxModelAdapterUITest().exec(args);
+		new CheckBoxModelAdapterUITest().exec();
 	}
 
 	private CheckBoxModelAdapterUITest() {
 		super();
 	}
 
-	private void exec(String[] args) throws Exception {
+	private void exec() throws Exception {
 		this.testModel = new TestModel(true, true);
 		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.flag1Holder = this.buildFlag1Holder(this.testModelHolder);

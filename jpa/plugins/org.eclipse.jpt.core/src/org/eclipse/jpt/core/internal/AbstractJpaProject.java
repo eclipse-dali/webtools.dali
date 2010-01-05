@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -76,6 +76,7 @@ import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -477,7 +478,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<JpaFile> getJpaFiles(final IContentType contentType) {
-		return new FilteringIterable<JpaFile, JpaFile>(this.getJpaFiles()) {
+		return new FilteringIterable<JpaFile>(this.getJpaFiles()) {
 			@Override
 			protected boolean accept(JpaFile jpaFile) {
 				return jpaFile.getContentType().isKindOf(contentType);
@@ -740,7 +741,7 @@ public abstract class AbstractJpaProject
 	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
 	protected Iterable<JavaResourcePersistentType> getInternalAnnotatedSourceJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
+		return new FilteringIterable<JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
 				return jrpType.isPersistable() && jrpType.isAnnotated();  // i.e. the type is valid and has a valid type annotation
@@ -767,12 +768,20 @@ public abstract class AbstractJpaProject
 	 * referenced in persistence.xml
 	 */
 	protected Iterable<JavaResourcePersistentType> getInternalMappedSourceJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
+		return new FilteringIterable<JavaResourcePersistentType>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
 				return jrpType.isMapped();  // i.e. the type is already persistable and annotated
 			}
 		};
+	}
+
+	/**
+	 * return only those Java resource persistent types that are
+	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	 */
+	protected Iterable<JavaResourcePersistentType2_0> getInternalSourceJavaResourcePersistentTypes2_0() {
+		return new SubIterableWrapper<JavaResourcePersistentType, JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes());
 	}
 
 	/**
@@ -835,7 +844,7 @@ public abstract class AbstractJpaProject
 	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
 	protected Iterable<JavaResourcePersistentType> getPersistableJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getJavaResourcePersistentTypes()) {
+		return new FilteringIterable<JavaResourcePersistentType>(this.getJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
 				return jrpType.isPersistable();
@@ -920,10 +929,10 @@ public abstract class AbstractJpaProject
 			return EmptyIterable.instance();
 		}
 		final IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
-		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes()) {
+		return new FilteringIterable<JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes2_0()) {
 			@Override
-			protected boolean accept(JavaResourcePersistentType jrpt) {
-				return ((JavaResourcePersistentType2_0) jrpt).isGeneratedMetamodel(genSourceFolder);
+			protected boolean accept(JavaResourcePersistentType2_0 jrpt) {
+				return jrpt.isGeneratedMetamodel(genSourceFolder);
 			}
 		};
 	}
@@ -1044,7 +1053,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<IPackageFragmentRoot> getJavaSourceFolders() throws JavaModelException {
-		return new FilteringIterable<IPackageFragmentRoot, IPackageFragmentRoot>(
+		return new FilteringIterable<IPackageFragmentRoot>(
 				this.getPackageFragmentRoots(),
 				SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER
 			);

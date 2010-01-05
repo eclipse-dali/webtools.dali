@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.tests.internal.model.listener;
 
 import java.lang.reflect.Method;
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -40,7 +40,7 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 	public void testSingleArgument2() throws Exception {
 		TestModel testModel = new TestModel(7);
 		Target target = new Target(testModel, TestModel.VALUE_PROPERTY, 7, 99);
-		Method method = ClassTools.method(target, "propertyChangedSingleArgument2", new Class[] {Object.class});
+		Method method = ReflectionTools.getMethod(target, "propertyChangedSingleArgument2", new Class[] {Object.class});
 		testModel.addPropertyChangeListener(TestModel.VALUE_PROPERTY, ReflectiveChangeListener.buildPropertyChangeListener(target, method));
 		testModel.setValue(99);
 		assertFalse(target.zeroArgumentFlag);
@@ -62,7 +62,7 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 	public void testSingleArgumentNamedProperty2() throws Exception {
 		TestModel testModel = new TestModel(7);
 		Target target = new Target(testModel, TestModel.VALUE_PROPERTY, 7, 99);
-		Method method = ClassTools.method(target, "propertyChangedSingleArgument2", new Class[] {Object.class});
+		Method method = ReflectionTools.getMethod(target, "propertyChangedSingleArgument2", new Class[] {Object.class});
 		testModel.addPropertyChangeListener(TestModel.VALUE_PROPERTY, ReflectiveChangeListener.buildPropertyChangeListener(target, method));
 		testModel.setValue(99);
 		assertFalse(target.zeroArgumentFlag);
@@ -105,7 +105,7 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 	public void testBogusDoubleArgument2() throws Exception {
 		TestModel testModel = new TestModel(7);
 		Target target = new Target(testModel, TestModel.VALUE_PROPERTY, 7, 99);
-		Method method = ClassTools.method(target, "propertyChangedDoubleArgument", new Class[] {PropertyChangeEvent.class, Object.class});
+		Method method = ReflectionTools.getMethod(target, "propertyChangedDoubleArgument", new Class[] {PropertyChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
 			PropertyChangeListener listener = ReflectiveChangeListener.buildPropertyChangeListener(target, method);

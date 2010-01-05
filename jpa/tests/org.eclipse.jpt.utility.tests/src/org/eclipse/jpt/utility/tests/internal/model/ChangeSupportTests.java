@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EventListener;
 import java.util.HashSet;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ListenerList;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
@@ -44,8 +53,10 @@ import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeAdapter;
 import org.eclipse.jpt.utility.model.listener.ListChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.utility.model.listener.StateChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
@@ -4179,82 +4190,105 @@ public class ChangeSupportTests
 
 
 	// ********** serialization test **********
-	//TODO - This test doesn't pass in the Eclipse build environment (Linux) for some reason
-//	public void testSerialization() throws java.io.IOException, ClassNotFoundException {
-//		LocalModel model1 = new LocalModel();
-//		Foo foo1 = new Foo();
-//		Bar bar1 = new Bar();
-//		Joo joo1 = new Joo();
-//		Jar jar1 = new Jar();
-//		model1.addStateChangeListener(foo1);
-//		model1.addStateChangeListener(bar1);
-//		model1.addListChangeListener(joo1);
-//		model1.addListChangeListener(jar1);
-//
-//		ChangeListener[] listeners1 = this.getListeners(model1, StateChangeListener.class);
-//		assertEquals(2, listeners1.length);
-//		// the order of these could change...
-//		assertEquals(Foo.class, listeners1[0].getClass());
-//		assertEquals(Bar.class, listeners1[1].getClass());
-//
-//		listeners1 = this.getListeners(model1, ListChangeListener.class);
-//		assertEquals(2, listeners1.length);
-//		// the order of these could change...
-//		assertEquals(Joo.class, listeners1[0].getClass());
-//		assertEquals(Jar.class, listeners1[1].getClass());
-//
-//		LocalModel model2 = TestTools.serialize(model1);
-//
-//		ChangeListener[] listeners2 = this.getListeners(model2, StateChangeListener.class);
-//		assertEquals(1, listeners2.length);
-//		assertEquals(Foo.class, listeners2[0].getClass());
-//
-//		listeners2 = this.getListeners(model2, ListChangeListener.class);
-//		assertEquals(1, listeners2.length);
-//		assertEquals(Joo.class, listeners2[0].getClass());
-//	}
-//
-//	private ChangeListener[] getListeners(LocalModel model, Class<? extends ChangeListener> listenerClass) {
-//		ChangeSupport changeSupport = (ChangeSupport) ClassTools.fieldValue(model, "changeSupport");
-//		return (ChangeListener[]) ClassTools.executeMethod(changeSupport, "getListeners", Class.class, listenerClass);
-//	}
-//
-//	private static class LocalModel extends AbstractModel {
-//		LocalModel() {
-//			super();
-//		}
-//	}
-//
-//	private static class Foo implements Serializable, StateChangeListener {
-//		Foo() {
-//			super();
-//		}
-//		public void stateChanged(StateChangeEvent event) {
-//			// do nothing
-//		}
-//	}
-//
-//	private static class Bar implements StateChangeListener {
-//		Bar() {
-//			super();
-//		}
-//		public void stateChanged(StateChangeEvent event) {
-//			// do nothing
-//		}
-//	}
-//
-//	private static class Joo extends ListChangeAdapter implements Serializable {
-////		private static final ObjectStreamField[] serialPersistentFields = {new ObjectStreamField("changeSupport", ChangeSupport.class)};
-//		Joo() {
-//			super();
-//		}
-//	}
-//
-//	private static class Jar extends ListChangeAdapter {
-//		Jar() {
-//			super();
-//		}
-//	}
+	public void testSerialization() throws java.io.IOException, ClassNotFoundException {
+		if (Tools.jvmIsSun()) {
+			// This test doesn't pass in the Eclipse build environment (Linux/IBM JVM) for some reason
+			this.verifySerialization();
+		}
+	}
+
+	private void verifySerialization() throws java.io.IOException, ClassNotFoundException {
+		LocalModel model1 = new LocalModel();
+		Foo foo1 = new Foo();
+		Bar bar1 = new Bar();
+		Joo joo1 = new Joo();
+		Jar jar1 = new Jar();
+		model1.addStateChangeListener(foo1);
+		model1.addStateChangeListener(bar1);
+		model1.addListChangeListener("foo", joo1);
+		model1.addListChangeListener("foo", jar1);
+
+		Iterable<EventListener> listeners1 = this.getListeners(model1, StateChangeListener.class, null);
+		Object[] listenersArray1 = ArrayTools.array(listeners1);
+		assertEquals(2, listenersArray1.length);
+		// the order of these could change...
+		assertEquals(Foo.class, listenersArray1[0].getClass());
+		assertEquals(Bar.class, listenersArray1[1].getClass());
+
+		listeners1 = this.getListeners(model1, ListChangeListener.class, "foo");
+		listenersArray1 = ArrayTools.array(listeners1);
+		assertEquals(2, listenersArray1.length);
+		// the order of these could change...
+		assertEquals(Joo.class, listenersArray1[0].getClass());
+		assertEquals(Jar.class, listenersArray1[1].getClass());
+
+		LocalModel model2 = TestTools.serialize(model1);
+
+		Iterable<EventListener> listeners2 = this.getListeners(model2, StateChangeListener.class, null);
+		Object[] listenersArray2 = ArrayTools.array(listeners2);
+		assertEquals(1, listenersArray2.length);
+		assertEquals(Foo.class, listenersArray2[0].getClass());
+
+		listeners2 = this.getListeners(model2, ListChangeListener.class, "foo");
+		listenersArray2 = ArrayTools.array(listeners2);
+		assertEquals(1, listenersArray2.length);
+		assertEquals(Joo.class, listenersArray2[0].getClass());
+	}
+
+	private Iterable<EventListener> getListeners(LocalModel model, Class<? extends EventListener> listenerClass, String aspectName) {
+		return this.getListenerList(model, listenerClass, aspectName).getListeners();
+	}
+
+	@SuppressWarnings("unchecked")
+	private ListenerList<EventListener> getListenerList(LocalModel model, Class<? extends EventListener> listenerClass, String aspectName) {
+		ChangeSupport changeSupport = (ChangeSupport) ReflectionTools.getFieldValue(model, "changeSupport");
+		return (ListenerList<EventListener>) ReflectionTools.executeMethod(changeSupport, "getListenerList_", new Class<?>[] {Class.class, String.class}, new Object[] {listenerClass, aspectName});
+	}
+
+	// we have to manually handle 'changeSupport' since AbstractModel is not Serializable
+	private static class LocalModel extends AbstractModel implements Serializable {
+		LocalModel() {
+			super();
+		}
+		private synchronized void writeObject(ObjectOutputStream s) throws IOException {
+			s.defaultWriteObject();
+			s.writeObject(this.changeSupport);
+	    }
+		private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
+			s.defaultReadObject();
+			this.changeSupport = (ChangeSupport) s.readObject();
+		}
+	}
+
+	private static class Foo implements Serializable, StateChangeListener {
+		Foo() {
+			super();
+		}
+		public void stateChanged(StateChangeEvent event) {
+			// do nothing
+		}
+	}
+
+	private static class Bar implements StateChangeListener {
+		Bar() {
+			super();
+		}
+		public void stateChanged(StateChangeEvent event) {
+			// do nothing
+		}
+	}
+
+	private static class Joo extends ListChangeAdapter implements Serializable {
+		Joo() {
+			super();
+		}
+	}
+
+	private static class Jar extends ListChangeAdapter {
+		Jar() {
+			super();
+		}
+	}
 
 
 	// ********** bug(?) test **********

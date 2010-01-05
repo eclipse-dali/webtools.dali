@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -159,7 +159,7 @@ public class FilteringCollectionValueModel<E>
 	 * Return an iterable that filters the specified iterable.
 	 */
 	protected Iterable<E> filter(Iterable<? extends E> items) {
-		return new FilteringIterable<E, E>(items, this.filter);
+		return new FilteringIterable<E>(items, this.filter);
 	}
 
 	/**

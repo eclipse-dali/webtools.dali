@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -191,7 +191,7 @@ public final class FileTools {
 	}
 	
 	private static Iterator<File> filesIn(File[] files) {
-		return new FilteringIterator<File, File>(new ArrayIterator<File>(files)) {
+		return new FilteringIterator<File>(new ArrayIterator<File>(files)) {
 			@Override
 			protected boolean accept(File next) {
 				return next.isFile();
@@ -218,7 +218,7 @@ public final class FileTools {
 	}
 	
 	private static Iterator<File> directoriesIn(File[] files) {
-		return new FilteringIterator<File, File>(new ArrayIterator<File>(files)) {
+		return new FilteringIterator<File>(new ArrayIterator<File>(files)) {
 			@Override
 			protected boolean accept(File next) {
 				return next.isDirectory();
@@ -607,10 +607,8 @@ public final class FileTools {
 	 * a number of file names (e.g. CON, AUX, PRN).
 	 */
 	public static boolean fileNameIsReserved(String fileName) {
-		if (executingOnWindows()) {
-			return ArrayTools.contains(WINDOWS_RESERVED_FILE_NAMES, fileName.toLowerCase());
-		}
-		return false;	// Unix does not have any "reserved" file names (I think...)
+		// Unix/Linux does not have any "reserved" file names (I think...)
+		return Tools.osIsWindows() && ArrayTools.contains(WINDOWS_RESERVED_FILE_NAMES, fileName.toLowerCase());
 	}
 
 	/**
@@ -809,24 +807,12 @@ public final class FileTools {
 
 	// ********** miscellaneous **********
 
-	private static boolean executingOnWindows() {
-		return executingOn("Windows"); //$NON-NLS-1$
-	}
-
-//	private static boolean executingOnLinux() {
-//		return executingOn("Linux");
-//	}
-//
-	private static boolean executingOn(String osName) {
-		return System.getProperty("os.name").indexOf(osName) != -1; //$NON-NLS-1$
-	}
-
 	/**
 	 * Return only the files that fit the filter.
 	 * File#files(FileFilter fileFilter)
 	 */
 	public static Iterator<File> filter(Iterator<File> files, final FileFilter fileFilter) {
-		return new FilteringIterator<File, File>(files) {
+		return new FilteringIterator<File>(files) {
 			@Override
 			protected boolean accept(File next) {
 				return fileFilter.accept(next);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import java.util.Vector;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
-import org.eclipse.jpt.utility.internal.iterators.GenericIteratorWrapper;
+import org.eclipse.jpt.utility.internal.iterators.SuperIteratorWrapper;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
@@ -1798,7 +1798,7 @@ public final class CollectionTools {
 			if (iterator == null) {
 				throw new NullPointerException();
 			}
-			this.iterator = new GenericIteratorWrapper<E>(iterator);
+			this.iterator = new SuperIteratorWrapper<E>(iterator);
 		}
 
 		public Iterator<E> iterator() {

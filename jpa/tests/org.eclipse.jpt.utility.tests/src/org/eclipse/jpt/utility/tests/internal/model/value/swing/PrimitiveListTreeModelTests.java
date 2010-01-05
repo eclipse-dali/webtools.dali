@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class PrimitiveListTreeModelTests extends TestCase {
 	TestModel testModel;
 	private TreeModel treeModel;
@@ -137,7 +138,7 @@ public class PrimitiveListTreeModelTests extends TestCase {
 
 // ********** inner classes **********
 
-	private class TestModel extends AbstractModel {
+	class TestModel extends AbstractModel {
 		private final List<String> names;
 			static final String NAMES_LIST = "names";
 	

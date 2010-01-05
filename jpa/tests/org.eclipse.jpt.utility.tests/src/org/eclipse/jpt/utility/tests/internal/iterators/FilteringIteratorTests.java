@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,11 +12,11 @@ package org.eclipse.jpt.utility.tests.internal.iterators;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.SimpleFilter;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
@@ -123,39 +123,6 @@ public class FilteringIteratorTests extends TestCase {
 		}
 	}
 
-	// test a filtered iterator with a nested iterator of a sub-type (Number vs. Integer)
-	public void testGenerics1() {
-		List<Integer> integers = new ArrayList<Integer>();
-		integers.add(new Integer(0));
-		integers.add(new Integer(1));
-		integers.add(new Integer(2));
-		integers.add(new Integer(3));
-		Iterator<Number> stream = new FilteringIterator<Integer, Number>(integers.iterator()) {
-			@Override
-			protected boolean accept(Integer o) {
-				return o.intValue() > 1;
-			}
-		};
-		assertEquals(2, CollectionTools.size(stream));
-	}
-
-	// test a filtered iterator with a nested iterator of a super-type (Integer vs. Number)
-	// i.e. trust that Filter will only return the appropriate sub-type objects
-	public void testGenerics2() {
-		List<Number> numbers = new ArrayList<Number>();
-		numbers.add(new Integer(0));
-		numbers.add(new Long(1));
-		numbers.add(new Integer(2));
-		numbers.add(new Float(3));
-		Iterator<Integer> stream = new FilteringIterator<Number, Integer>(numbers.iterator()) {
-			@Override
-			protected boolean accept(Number o) {
-				return o instanceof Integer;
-			}
-		};
-		assertEquals(2, CollectionTools.size(stream));
-	}
-
 	public void testFilterHasNext() {
 		int i = 0;
 		for (Iterator<String> stream = this.buildFilterIterator(); stream.hasNext();) {
@@ -172,11 +139,11 @@ public class FilteringIteratorTests extends TestCase {
 	}
 
 	private Iterator<String> buildFilteredIterator(Iterator<String> nestedIterator, Filter<String> filter) {
-		return new FilteringIterator<String, String>(nestedIterator, filter);
+		return new FilteringIterator<String>(nestedIterator, filter);
 	}
 
 	private Iterator<String> buildInnerFilteredIterator(Iterator<String> nestedIterator) {
-		return new FilteringIterator<String, String>(nestedIterator) {
+		return new FilteringIterator<String>(nestedIterator) {
 			@Override
 			protected boolean accept(String s) {
 				return s.startsWith(PREFIX);
@@ -190,7 +157,7 @@ public class FilteringIteratorTests extends TestCase {
 
 	// this inner iterator will call the "outer" object
 	private Iterator<String> buildInnerFilteredIterator2(Iterator<String> nestedIterator) {
-		return new FilteringIterator<String, String>(nestedIterator) {
+		return new FilteringIterator<String>(nestedIterator) {
 			@Override
 			protected boolean accept(String s) {
 				return s.startsWith(FilteringIteratorTests.this.getPrefix());
@@ -287,7 +254,7 @@ public class FilteringIteratorTests extends TestCase {
 		boolean exCaught = false;
 		try {
 			// missing method override
-			Iterator<String> iterator = new FilteringIterator<String, String>(this.buildNestedIterator());
+			Iterator<String> iterator = new FilteringIterator<String>(this.buildNestedIterator());
 			String s = iterator.next();
 			fail("invalid string: " + s);
 		} catch (UnsupportedOperationException ex) {

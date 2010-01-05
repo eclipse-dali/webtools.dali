@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -167,8 +167,7 @@ public class JpaPlatformRegistry {
 		return configElementSupportsJpaFacetVersion(configElement, jpaFacetVersion);
 	}
 	
-	private boolean configElementSupportsJpaFacetVersion(
-			IConfigurationElement configElement, String jpaFacetVersion) {
+	boolean configElementSupportsJpaFacetVersion(IConfigurationElement configElement, String jpaFacetVersion) {
 		
 		// config element supports version if it explicitly sets it to that version
 		// or if it specifies no version at all
@@ -191,7 +190,7 @@ public class JpaPlatformRegistry {
 	}
 	
 	private Iterable<IConfigurationElement> getConfigurationElementsForJpaFacetVersion(final String jpaFacetVersion) {
-		return new FilteringIterable<IConfigurationElement, IConfigurationElement>(this.jpaPlatformConfigurationElements.values()) {
+		return new FilteringIterable<IConfigurationElement>(this.jpaPlatformConfigurationElements.values()) {
 				@Override
 				protected boolean accept(IConfigurationElement configElement) {
 					return configElementSupportsJpaFacetVersion(configElement, jpaFacetVersion);

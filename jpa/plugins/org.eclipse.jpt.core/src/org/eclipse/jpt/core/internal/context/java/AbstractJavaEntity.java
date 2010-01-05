@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -328,7 +328,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected Iterable<org.eclipse.jpt.db.Table> getAssociatedDbTablesIncludingInherited() {
-		return new FilteringIterable<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.getAssociatedDbTablesIncludingInherited_()) {
+		return new FilteringIterable<org.eclipse.jpt.db.Table>(this.getAssociatedDbTablesIncludingInherited_()) {
 			@Override
 			protected boolean accept(org.eclipse.jpt.db.Table t) {
 				return t != null;
@@ -962,7 +962,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected Iterator<PersistentAttribute> allIdAttributes() {
-		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.getPersistentType().allAttributes()) {
+		return new FilteringIterator<PersistentAttribute>(this.getPersistentType().allAttributes()) {
 			@Override
 			protected boolean accept(PersistentAttribute pa) {
 				return pa.isIdAttribute();
@@ -993,7 +993,7 @@ public abstract class AbstractJavaEntity
 		return new CompositeIterable<Table>(new TransformationIterable<TypeMapping, Iterable<Table>>(this.getInheritanceHierarchy()) {
 			@Override
 			protected Iterable<Table> transform(TypeMapping mapping) {
-				return new FilteringIterable<Table, Table>(CollectionTools.iterable(mapping.associatedTables())) {
+				return new FilteringIterable<Table>(CollectionTools.iterable(mapping.associatedTables())) {
 					@Override
 					protected boolean accept(Table o) {
 						return true;
@@ -1012,7 +1012,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected Iterator<String> nonNullTableNames(Iterator<Table> tables) {
-		return new FilteringIterator<String, String>(this.tableNames(tables)) {
+		return new FilteringIterator<String>(this.tableNames(tables)) {
 			@Override
 			protected boolean accept(String o) {
 				return o != null;

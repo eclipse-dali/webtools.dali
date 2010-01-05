@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
 import java.io.Serializable;
@@ -7,6 +16,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
+import org.eclipse.jpt.utility.internal.Tools;
 
 @SuppressWarnings("nls")
 public class ListenerListTests extends TestCase {
@@ -138,26 +148,32 @@ public class ListenerListTests extends TestCase {
 		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener2));
 	}
 
-//TODO - This test doesn't pass in the Eclipse build environment (Linux) for some reason
-//	public void testSerialization() throws Exception {
-//		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
-//		Listener listener1 = new LocalListener();
-//		Listener listener2 = new LocalListener();
-//		listenerList.add(listener1);
-//		listenerList.add(listener2);
-//
-//		ListenerList<Listener> listenerList2 = TestTools.serialize(listenerList);
-//		assertNotSame(listenerList, listenerList2);
-//		assertEquals(2, listenerList2.size());
-//
-//		Listener listener3 = new NonSerializableListener();
-//		listenerList.add(listener3);
-//
-//		listenerList2 = TestTools.serialize(listenerList);
-//		assertNotSame(listenerList, listenerList2);
-//		assertEquals(2, listenerList2.size());
-//
-//	}
+	public void testSerialization() throws Exception {
+		// This test doesn't pass in the Eclipse build environment (Linux/IBM VM) for some reason
+		if (Tools.jvmIsSun()) {
+			this.verifySerialization();
+		}
+	}
+
+	private void verifySerialization() throws Exception {
+		ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
+		Listener listener1 = new LocalListener();
+		Listener listener2 = new LocalListener();
+		listenerList.add(listener1);
+		listenerList.add(listener2);
+
+		ListenerList<Listener> listenerList2 = TestTools.serialize(listenerList);
+		assertNotSame(listenerList, listenerList2);
+		assertEquals(2, listenerList2.size());
+
+		Listener listener3 = new NonSerializableListener();
+		listenerList.add(listener3);
+
+		listenerList2 = TestTools.serialize(listenerList);
+		assertNotSame(listenerList, listenerList2);
+		assertEquals(2, listenerList2.size());
+
+	}
 
 	interface Listener extends EventListener {
 		void somethingHappened();

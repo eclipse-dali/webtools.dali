@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -22,6 +22,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class CheckBoxModelAdapterTests extends TestCase {
 	private WritablePropertyValueModel<Boolean> booleanHolder;
 	private ButtonModel buttonModelAdapter;
@@ -111,12 +112,12 @@ public class CheckBoxModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ClassTools.fieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ReflectionTools.getFieldValue(model, "listenerList");
 		assertEquals(0, listenerList.getListenerList().length);
 	}
 
 	private void verifyHasListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ClassTools.fieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ReflectionTools.getFieldValue(model, "listenerList");
 		assertFalse(listenerList.getListenerList().length == 0);
 	}
 

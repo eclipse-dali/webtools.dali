@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import java.util.ListIterator;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -323,7 +323,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		TestModel testModel = new TestModel();
 		String string = "foo";
 		Target target = new Target(testModel, TestModel.STRINGS_LIST, string, 0);
-		Method method = ClassTools.method(target, "listChangedDoubleArgument", new Class[] {ListChangeEvent.class, Object.class});
+		Method method = ReflectionTools.getMethod(target, "listChangedDoubleArgument", new Class[] {ListChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
 			ListChangeListener listener = ReflectiveChangeListener.buildListChangeListener(target, method);

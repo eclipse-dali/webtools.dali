@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Member.Editor;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -764,7 +764,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		ICompilationUnit cu = createTestEntityWithNonResolvingField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		@SuppressWarnings("unchecked")
-		List<JavaResourcePersistentAttribute> attributes = (List<JavaResourcePersistentAttribute>) ClassTools.fieldValue(typeResource, "fields");
+		List<JavaResourcePersistentAttribute> attributes = (List<JavaResourcePersistentAttribute>) ReflectionTools.getFieldValue(typeResource, "fields");
 		JavaResourcePersistentAttribute attributeResource = attributes.get(0);
 		
 		assertEquals("foo", attributeResource.getName());
@@ -780,7 +780,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		ICompilationUnit cu = createTestEntityWithNonResolvingField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		@SuppressWarnings("unchecked")
-		List<JavaResourcePersistentAttribute> attributes = (List<JavaResourcePersistentAttribute>) ClassTools.fieldValue(typeResource, "fields");
+		List<JavaResourcePersistentAttribute> attributes = (List<JavaResourcePersistentAttribute>) ReflectionTools.getFieldValue(typeResource, "fields");
 		JavaResourcePersistentAttribute attributeResource = attributes.get(0);
 		
 		assertEquals("foo", attributeResource.getName());
@@ -805,7 +805,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		ICompilationUnit cu = createTestEntityWithNonResolvingMethod();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		@SuppressWarnings("unchecked")
-		List<JavaResourcePersistentAttribute> attributes = (List<JavaResourcePersistentAttribute>) ClassTools.fieldValue(typeResource, "methods");
+		List<JavaResourcePersistentAttribute> attributes = (List<JavaResourcePersistentAttribute>) ReflectionTools.getFieldValue(typeResource, "methods");
 		JavaResourcePersistentAttribute attributeResource = attributes.get(0);
 		
 		assertEquals("foo", attributeResource.getName());

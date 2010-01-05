@@ -7,19 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.tests.internal.iterables;
+package org.eclipse.jpt.utility.tests.internal.iterators;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.internal.iterables.GenericIterableWrapper;
+import org.eclipse.jpt.utility.internal.iterators.SuperIteratorWrapper;
 
 @SuppressWarnings("nls")
-public class GenericIterableWrapperTests extends TestCase {
+public class SuperIteratorWrapperTests extends TestCase {
 
-	public GenericIterableWrapperTests(String name) {
+	public SuperIteratorWrapperTests(String name) {
 		super(name);
 	}
 
@@ -29,22 +29,24 @@ public class GenericIterableWrapperTests extends TestCase {
 		list.add("bar");
 		list.add("baz");
 		String concat = "";
-		for (String s : list) {
-			concat += s;
+		for (Iterator<String> stream = list.iterator(); stream.hasNext(); ) {
+			concat += stream.next();
 		}
 		assertEquals("foobarbaz", concat);
 
-		Iterable<Object> iterable = new GenericIterableWrapper<Object>(list);
+		Iterator<Object> iterator = new SuperIteratorWrapper<Object>(list);
 		concat = "";
-		for (Object s : iterable) {
-			concat += s;
+		while (iterator.hasNext()) {
+			Object next = iterator.next();
+			if (next.equals("bar")) {
+				iterator.remove();
+			} else {
+				concat += next;
+			}
 		}
-		assertEquals("foobarbaz", concat);
-	}
-
-	public void testToString() {
-		Iterable<Object> iterable = new GenericIterableWrapper<Object>(Collections.emptyList());
-		assertNotNull(iterable.toString());
+		assertEquals("foobaz", concat);
+		assertEquals(2, list.size());
+		assertFalse(list.contains("bar"));
 	}
 
 }

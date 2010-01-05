@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.tests.internal.synchronizers;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.utility.internal.synchronizers.AsynchronousSynchronizer;
@@ -58,8 +58,8 @@ public class AsynchronousSynchronizerTests extends TestCase {
 	}
 
 	protected static void stop(Synchronizer synchronizer) {
-		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ClassTools.fieldValue(synchronizer, "consumerThreadCoordinator");
-		if (ClassTools.fieldValue(ctc, "thread") != null) {
+		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ReflectionTools.getFieldValue(synchronizer, "consumerThreadCoordinator");
+		if (ReflectionTools.getFieldValue(ctc, "thread") != null) {
 			synchronizer.stop();
 		}
 	}
@@ -168,8 +168,8 @@ public class AsynchronousSynchronizerTests extends TestCase {
 	public void testThreadName() {
 		Synchronizer s = new AsynchronousSynchronizer(this.command1, "sync");
 		s.start();
-		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ClassTools.fieldValue(s, "consumerThreadCoordinator");
-		Thread t = (Thread) ClassTools.fieldValue(ctc, "thread");
+		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ReflectionTools.getFieldValue(s, "consumerThreadCoordinator");
+		Thread t = (Thread) ReflectionTools.getFieldValue(ctc, "thread");
 		assertEquals("sync", t.getName());
 		s.stop();
 	}
@@ -309,7 +309,7 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append(ClassTools.toStringClassNameForObject(this));
+			sb.append(this.getClass().getSimpleName());
 			sb.append('(');
 			this.toString(sb);
 			sb.append(')');
@@ -385,7 +385,7 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append(ClassTools.toStringClassNameForObject(this));
+			sb.append(this.getClass().getSimpleName());
 			sb.append('(');
 			this.toString(sb);
 			sb.append(')');

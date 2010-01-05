@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ public class FilteringIterableTests extends TestCase {
 	public void testFilter() {
 		Filter<String> filter = this.buildFilter();
 		int i = 0;
-		for (String s : new FilteringIterable<String, String>(this.buildNestedIterable(), filter)) {
+		for (String s : new FilteringIterable<String>(this.buildNestedIterable(), filter)) {
 			assertTrue(s.contains(PREFIX));
 			i++;
 		}
@@ -51,7 +51,7 @@ public class FilteringIterableTests extends TestCase {
 
 	public void testMissingFilter() {
 		boolean exCaught = false;
-		Iterable<String> iterable = new FilteringIterable<String, String>(this.buildNestedIterable());
+		Iterable<String> iterable = new FilteringIterable<String>(this.buildNestedIterable());
 		try {
 			Iterator<String> iterator = iterable.iterator();
 			fail("bogus iterator: " + iterator);
@@ -66,7 +66,7 @@ public class FilteringIterableTests extends TestCase {
 	}
 
 	private Iterable<String> buildFilteringIterable(Iterable<String> nestedIterable) {
-		return new FilteringIterable<String, String>(nestedIterable) {
+		return new FilteringIterable<String>(nestedIterable) {
 			@Override
 			protected boolean accept(String s) {
 				return s.startsWith(PREFIX);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.Document;
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.DocumentAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -22,6 +22,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class DocumentAdapterTests extends TestCase {
 	private WritablePropertyValueModel<String> stringHolder;
 	Document documentAdapter;
@@ -128,14 +129,14 @@ public class DocumentAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object document) throws Exception {
-		Object delegate = ClassTools.fieldValue(document, "delegate");
-		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getDocumentListeners");
+		Object delegate = ReflectionTools.getFieldValue(document, "delegate");
+		Object[] listeners = (Object[]) ReflectionTools.executeMethod(delegate, "getDocumentListeners");
 		assertEquals(0, listeners.length);
 	}
 
 	private void verifyHasListeners(Object document) throws Exception {
-		Object delegate = ClassTools.fieldValue(document, "delegate");
-		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getDocumentListeners");
+		Object delegate = ReflectionTools.getFieldValue(document, "delegate");
+		Object[] listeners = (Object[]) ReflectionTools.executeMethod(delegate, "getDocumentListeners");
 		assertFalse(listeners.length == 0);
 	}
 

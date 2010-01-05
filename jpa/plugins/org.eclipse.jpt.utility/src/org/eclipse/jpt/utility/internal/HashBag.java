@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,6 +66,7 @@ import java.util.NoSuchElementException;
  * @see Bag
  * @see SynchronizedBag
  * @see	Collections#synchronizedCollection(Collection)
+ * @see IdentityHashBag
  */
 public class HashBag<E>
 	extends AbstractCollection<E>
@@ -77,12 +78,12 @@ public class HashBag<E>
 	/** The total number of entries in the bag. */
 	transient int size = 0;
 
-	/** The number of unique entries in the bag. */
+	/** The number of UNIQUE entries in the bag. */
 	transient int uniqueCount = 0;
 
 	/**
 	 * The hash table is rehashed when its size exceeds this threshold. (The
-	 * value of this field is (int)(capacity * loadFactor).)
+	 * value of this field is <code>(int) (capacity * loadFactor)</code>.)
 	 *
 	 * @serial
 	 */
@@ -113,7 +114,7 @@ public class HashBag<E>
 	/**
 	 * The maximum capacity, used if a higher value is implicitly specified
 	 * by either of the constructors with arguments.
-	 * MUST be a power of two <= 1<<30.
+	 * MUST be a power of two <= (1 << 30).
 	 */
 	private static final int MAXIMUM_CAPACITY = 1 << 30;
 
@@ -198,15 +199,15 @@ public class HashBag<E>
 	 * Return a hash for the specified object.
 	 */
 	private int hash(Object o) {
-		return (o == null) ? 0 : this.rehash(o.hashCode());
+		return (o == null) ? 0 : this.tweakHash(o.hashCode());
 	}
 
 	/**
 	 * Tweak the specified hash, to defend against poor implementations
-	 * of <code>#hashCode()</code>.
+	 * of {@link Object#hashCode()}.
 	 */
-	private int rehash(int h) {
-		h ^= (h >>>20) ^ (h >>> 12);
+	private int tweakHash(int h) {
+		h ^= (h >>> 20) ^ (h >>> 12);
 		return h ^ (h >>> 7) ^ (h >>> 4);
 	}
 
@@ -309,7 +310,7 @@ public class HashBag<E>
 	}
 
 	/**
-	 * Rehashes the contents of the bag into a new hash table
+	 * Rehash the contents of the bag into a new hash table
 	 * with a larger capacity. This method is called when the
 	 * number of different elements in the bag exceeds its
 	 * capacity and load factor.
@@ -318,11 +319,13 @@ public class HashBag<E>
 		Entry<E>[] oldTable = this.table;
 		int oldCapacity = oldTable.length;
 
-		int newCapacity = oldCapacity * 2 + 1;
-		Entry<E>[] newTable = this.buildTable(newCapacity);
+		if (oldCapacity == MAXIMUM_CAPACITY) {
+			this.threshold = Integer.MAX_VALUE;
+			return;
+		}
 
-		this.threshold = (int) (newCapacity * this.loadFactor);
-		this.table = newTable;
+		int newCapacity = 2 * oldCapacity;
+		Entry<E>[] newTable = this.buildTable(newCapacity);
 
 		for (int i = oldCapacity; i-- > 0; ) {
 			for (Entry<E> old = oldTable[i]; old != null; ) {
@@ -334,6 +337,9 @@ public class HashBag<E>
 				newTable[index] = e;
 			}
 		}
+
+		this.table = newTable;
+		this.threshold = (int) (newCapacity * this.loadFactor);
 	}
 
 	// minimize scope of suppressed warnings

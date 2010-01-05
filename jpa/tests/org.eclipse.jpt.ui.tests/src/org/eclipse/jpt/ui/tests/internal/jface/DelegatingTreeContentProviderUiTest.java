@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -31,7 +32,6 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
@@ -45,7 +45,6 @@ import org.eclipse.jpt.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -59,6 +58,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+@SuppressWarnings("nls")
 public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 {
 	private final Root root;
@@ -89,7 +89,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 
 	@Override
 	protected Control createContents(Composite parent) {
-		((Shell) parent).setText(ClassTools.shortClassNameForObject(this));
+		((Shell) parent).setText(this.getClass().getSimpleName());
 		parent.setSize(800, 400);
 		parent.setLayout(new GridLayout());
 		Composite mainPanel = new Composite(parent, SWT.NONE);
@@ -286,7 +286,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static abstract class AbstractTreeItemContentProviderFactory
+	static abstract class AbstractTreeItemContentProviderFactory
 		implements TreeItemContentProviderFactory
 	{
 		public TreeItemContentProvider buildItemContentProvider(
@@ -297,13 +297,13 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class ControlTreeItemContentProviderFactory extends AbstractTreeItemContentProviderFactory
+	static class ControlTreeItemContentProviderFactory extends AbstractTreeItemContentProviderFactory
 	{
 
 	}
 
 
-	private static class ViewTreeItemContentProviderFactory
+	static class ViewTreeItemContentProviderFactory
 		extends AbstractTreeItemContentProviderFactory
 	{
 		@Override
@@ -318,7 +318,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class GenericTreeItemContentProvider extends AbstractTreeItemContentProvider<TreeNode>
+	static class GenericTreeItemContentProvider extends AbstractTreeItemContentProvider<TreeNode>
 	{
 		public GenericTreeItemContentProvider(
 				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
@@ -346,7 +346,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 	}
 
-	private static class ViewTreeParentItemContentProvider extends GenericTreeItemContentProvider
+	static class ViewTreeParentItemContentProvider extends GenericTreeItemContentProvider
 	{
 		public ViewTreeParentItemContentProvider(
 				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
@@ -385,7 +385,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class LabelProvider extends BaseLabelProvider
+	static class LabelProvider extends BaseLabelProvider
 		implements ILabelProvider
 	{
 		public Image getImage(Object element) {
@@ -398,7 +398,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static abstract class TreeNode extends AbstractModel
+	static abstract class TreeNode extends AbstractModel
 	{
 		private TreeNode parent;
 
@@ -468,7 +468,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class Root extends TreeNode
+	static class Root extends TreeNode
 	{
 		public Root() {
 			super(null, null);
@@ -486,7 +486,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class Parent extends TreeNode
+	static class Parent extends TreeNode
 	{
 		public Parent(TreeNode parent, String name) {
 			super(parent, name);
@@ -515,7 +515,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 
 		public Iterator<Child> nestlessChildren() {
-			return new FilteringIterator<Child, Child>(
+			return new FilteringIterator<Child>(
 					new TransformationIterator<TreeNode, Child>(children()) {
 						@Override
 						protected Child transform(TreeNode next) {
@@ -534,7 +534,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class Nest extends TreeNode
+	static class Nest extends TreeNode
 	{
 		public Nest(TreeNode parent) {
 			super(parent, "nest");
@@ -557,7 +557,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class Child extends TreeNode
+	static class Child extends TreeNode
 	{
 		public Child(TreeNode parent, String name) {
 			super(parent, name);

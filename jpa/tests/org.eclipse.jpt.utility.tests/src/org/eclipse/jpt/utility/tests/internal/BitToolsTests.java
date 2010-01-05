@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
+import java.lang.reflect.InvocationTargetException;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.BitTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 
 public class BitToolsTests extends TestCase {
 
@@ -238,6 +242,21 @@ public class BitToolsTests extends TestCase {
 		assertEquals(0xF010, BitTools.xorFlags(new int[] { 0x0001, 0x0011, 0xF000 }));
 		assertEquals(0xFF11, BitTools.xorFlags(new int[] { 0x0001, 0x0011, 0xF000, 0x0F01 }));
 		assertEquals(0xF010, BitTools.xorFlags(new int[] { 0x0001, 0x0011, 0xF000, 0x0F01, 0x0F01 }));
+	}
+
+	public void testConstructor() {
+		boolean exCaught = false;
+		try {
+			Object at = ReflectionTools.newInstance(BitTools.class);
+			fail("bogus: " + at); //$NON-NLS-1$
+		} catch (RuntimeException ex) {
+			if (ex.getCause() instanceof InvocationTargetException) {
+				if (ex.getCause().getCause() instanceof UnsupportedOperationException) {
+					exCaught = true;
+				}
+			}
+		}
+		assertTrue(exCaught);
 	}
 
 }

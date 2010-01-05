@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,7 +57,7 @@ import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.db.ForeignKey.ColumnPair;
 import org.eclipse.jpt.db.tests.internal.JptDbTestsPlugin;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ResultSetIterator;
@@ -592,7 +592,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static boolean connectionProfileHasAnyListeners(ConnectionProfile cp) {
-		return ((Boolean) ClassTools.executeMethod(cp, "hasAnyListeners")).booleanValue();
+		return ((Boolean) ReflectionTools.executeMethod(cp, "hasAnyListeners")).booleanValue();
 	}
 
 	protected boolean connectionProfileHasNoListeners() {
@@ -600,7 +600,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static boolean connectionProfileHasNoListeners(ConnectionProfile cp) {
-		return ((Boolean) ClassTools.executeMethod(cp, "hasNoListeners")).booleanValue();
+		return ((Boolean) ReflectionTools.executeMethod(cp, "hasNoListeners")).booleanValue();
 	}
 
 
@@ -615,11 +615,11 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static IConnectionProfile getDTPConnectionProfile(ConnectionProfile cp) {
-		return (IConnectionProfile) ClassTools.fieldValue(cp, "dtpConnectionProfile");
+		return (IConnectionProfile) ReflectionTools.getFieldValue(cp, "dtpConnectionProfile");
 	}
 
 	protected IManagedConnection getDTPManagedConnection() {
-		return (IManagedConnection) ClassTools.fieldValue(this.connectionProfile, "dtpManagedConnection");
+		return (IManagedConnection) ReflectionTools.getFieldValue(this.connectionProfile, "dtpManagedConnection");
 	}
 
 	protected org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase() {
@@ -627,7 +627,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase(Database database) {
-		return (org.eclipse.datatools.modelbase.sql.schema.Database) ClassTools.fieldValue(database, "dtpDatabase");
+		return (org.eclipse.datatools.modelbase.sql.schema.Database) ReflectionTools.getFieldValue(database, "dtpDatabase");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -644,7 +644,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static org.eclipse.datatools.modelbase.sql.schema.Catalog getDTPCatalog(Catalog catalog) {
-		return (org.eclipse.datatools.modelbase.sql.schema.Catalog) ClassTools.fieldValue(catalog, "dtpCatalog");
+		return (org.eclipse.datatools.modelbase.sql.schema.Catalog) ReflectionTools.getFieldValue(catalog, "dtpCatalog");
 	}
 
 	protected org.eclipse.datatools.modelbase.sql.schema.Schema getDTPSchemaNamed(String name) {
@@ -652,7 +652,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static org.eclipse.datatools.modelbase.sql.schema.Schema getDTPSchema(Schema schema) {
-		return (org.eclipse.datatools.modelbase.sql.schema.Schema) ClassTools.fieldValue(schema, "dtpSchema");
+		return (org.eclipse.datatools.modelbase.sql.schema.Schema) ReflectionTools.getFieldValue(schema, "dtpSchema");
 	}
 
 

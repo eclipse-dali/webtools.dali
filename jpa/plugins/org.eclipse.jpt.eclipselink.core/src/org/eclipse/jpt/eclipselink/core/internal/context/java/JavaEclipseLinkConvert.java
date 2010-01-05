@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -253,7 +253,7 @@ public class JavaEclipseLinkConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	private Iterator<String> convertersNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.persistenceConvertersNames(), filter);
+		return new FilteringIterator<String>(this.persistenceConvertersNames(), filter);
 	}
 
 	protected Iterator<String> persistenceConvertersNames(Filter<String> filter) {

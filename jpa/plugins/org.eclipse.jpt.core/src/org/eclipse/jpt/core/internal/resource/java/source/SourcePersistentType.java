@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -466,7 +466,7 @@ final class SourcePersistentType
 	}
 	
 	public Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(this.persistableFields()) {
+		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableFields()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
 				return resourceAttribute.getSpecifiedAccess() == AccessType.FIELD;
@@ -550,7 +550,7 @@ final class SourcePersistentType
 	}
 	
 	public Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(this.persistableProperties()) {
+		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableProperties()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
 				return resourceAttribute.getSpecifiedAccess() == AccessType.PROPERTY;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.SubIteratorWrapper;
 
 /**
  * Wrap any of the AST nodes that have modifiers (specifically, annotations);
@@ -125,7 +126,11 @@ public class JDTModifiedDeclaration
 	 * Return the declaration's annotations.
 	 */
 	protected Iterator<Annotation> annotations() {
-		return new FilteringIterator<IExtendedModifier, Annotation>(this.getModifiers().iterator()) {
+		return new SubIteratorWrapper<IExtendedModifier, Annotation>(this.annotations_());
+	}
+
+	protected Iterator<IExtendedModifier> annotations_() {
+		return new FilteringIterator<IExtendedModifier>(this.getModifiers().iterator()) {
 			@Override
 			protected boolean accept(IExtendedModifier next) {
 				return next.isAnnotation();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,11 +23,15 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.ClassTools;
+
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.FileTools;
+import org.eclipse.jpt.utility.internal.Tools;
 
+@SuppressWarnings("nls")
 public class FileToolsTests extends TestCase {
 	private File tempDir;
 
@@ -210,23 +214,11 @@ public class FileToolsTests extends TestCase {
 		assertEquals(file2, file3);
 	}
 
-	private boolean isExecutingOnWindows() {
-		return this.isExecutingOn("Windows");
-	}
-
-	//	private boolean isExecutingOnLinux() {
-	//		return this.isExecutingOn("Linux");
-	//	}
-	//
-	private boolean isExecutingOn(String osName) {
-		return System.getProperty("os.name").indexOf(osName) != -1;
-	}
-
 	public void testPathFiles() {
 		File[] expected;
 		File[] actual;
 
-		if (this.isExecutingOnWindows()) {
+		if (Tools.osIsWindows()) {
 			expected = new File[] { new File("C:/"), new File("C:/foo"), new File("C:/foo/bar"), new File("C:/foo/bar/baz.txt") };
 			actual = this.pathFiles(new File("C:/foo/bar/baz.txt"));
 			assertTrue(Arrays.equals(expected, actual));
@@ -250,7 +242,7 @@ public class FileToolsTests extends TestCase {
 	}
 
 	private File[] pathFiles(File file) {
-		return (File[]) ClassTools.executeStaticMethod(FileTools.class, "pathFiles", File.class, file);
+		return (File[]) ReflectionTools.executeStaticMethod(FileTools.class, "pathFiles", File.class, file);
 	}
 
 	public void testRelativeParentFile() {
@@ -274,16 +266,16 @@ public class FileToolsTests extends TestCase {
 	}
 
 	private File relativeParentFile(int len) {
-		return (File) ClassTools.executeStaticMethod(FileTools.class, "relativeParentFile", int.class, new Integer(len));
+		return (File) ReflectionTools.executeStaticMethod(FileTools.class, "relativeParentFile", int.class, new Integer(len));
 	}
 
 	public void testConvertToRelativeFile() {
-		String prefix = this.isExecutingOnWindows() ? "C:" : "";
+		String prefix = Tools.osIsWindows() ? "C:" : "";
 		File file;
 		File dir;
 		File relativeFile;
 
-		if (this.isExecutingOnWindows()) {
+		if (Tools.osIsWindows()) {
 			// on Windows, a drive must be specified for a file to be absolute (i.e. not relative)
 			this.verifyUnchangedRelativeFile("/dir1/dir2/file.txt", "C:/dir1/dir2");
 			// different drives
@@ -347,12 +339,12 @@ public class FileToolsTests extends TestCase {
 	}
 
 	public void testConvertToAbsoluteFile() {
-		String prefix = this.isExecutingOnWindows() ? "C:" : "";
+		String prefix = Tools.osIsWindows() ? "C:" : "";
 		File file;
 		File dir;
 		File absoluteFile;
 
-		if (this.isExecutingOnWindows()) {
+		if (Tools.osIsWindows()) {
 			// on Windows, a drive must be specified for a file to be absolute (i.e. not relative)
 			this.verifyUnchangedAbsoluteFile("C:/dir1/dir2/file.txt", "C:/dir1/dir2");
 			// different drives
@@ -421,7 +413,7 @@ public class FileToolsTests extends TestCase {
 	}
 
 	public void testFileNameIsReserved() {
-		boolean expected = this.isExecutingOnWindows();
+		boolean expected = Tools.osIsWindows();
 		assertEquals(expected, FileTools.fileNameIsReserved("CON"));
 		assertEquals(expected, FileTools.fileNameIsReserved("con"));
 		assertEquals(expected, FileTools.fileNameIsReserved("cON"));
@@ -433,7 +425,7 @@ public class FileToolsTests extends TestCase {
 	}
 
 	public void testFileHasAnyReservedComponents() {
-		boolean expected = this.isExecutingOnWindows();
+		boolean expected = Tools.osIsWindows();
 		assertEquals(expected, FileTools.fileHasAnyReservedComponents(new File("C:/CON")));
 		assertEquals(expected, FileTools.fileHasAnyReservedComponents(new File("/con/foo")));
 		assertEquals(expected, FileTools.fileHasAnyReservedComponents(new File("c:/temp/cON")));
@@ -445,7 +437,7 @@ public class FileToolsTests extends TestCase {
 	}
 
 	public void testShortenFileNameFile() {
-		if (this.isExecutingOnWindows()) {
+		if (Tools.osIsWindows()) {
 			this.verifyShortenFileNameFileWin();
 		} else {
 			this.verifyShortenFileNameFileNonWin();
@@ -477,7 +469,7 @@ public class FileToolsTests extends TestCase {
 	}
 
 	public void testShortenFileNameFileInt() {
-		if (this.isExecutingOnWindows()) {
+		if (Tools.osIsWindows()) {
 			this.verifyShortenFileNameFileIntWin();
 		} else {
 			this.verifyShortenFileNameFileIntNonWin();
@@ -509,7 +501,7 @@ public class FileToolsTests extends TestCase {
 	}
 
 	public void testShortenFileNameURL() throws Exception {
-		if (this.isExecutingOnWindows()) {
+		if (Tools.osIsWindows()) {
 			this.verifyShortenFileNameURLWin();
 		} else {
 			this.verifyShortenFileNameURLNonWin();
@@ -531,7 +523,7 @@ public class FileToolsTests extends TestCase {
 	}
 
 	public void testShortenFileNameURLInt() throws Exception {
-		if (this.isExecutingOnWindows()) {
+		if (Tools.osIsWindows()) {
 			this.verifyShortenFileNameURLIntWin();
 		} else {
 			this.verifyShortenFileNameURLIntNonWin();
@@ -561,7 +553,7 @@ public class FileToolsTests extends TestCase {
 
 	private File buildTempDir() throws IOException {
 		// build a new directory for each test, to prevent any cross-test effects
-		File dir = FileTools.newTemporaryDirectory(ClassTools.shortClassNameForObject(this) + "." + this.getName());
+		File dir = FileTools.newTemporaryDirectory(this.getClass().getSimpleName() + "." + this.getName());
 
 		File file0a = new File(dir, "file0a");
 		file0a.createNewFile();

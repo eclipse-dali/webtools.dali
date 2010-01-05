@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,13 +14,14 @@ import java.util.List;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.Preferences;
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 /**
  * set up and tear down a test node for any subclass that
  * needs to test preferences-related stuff
  */
+@SuppressWarnings("nls")
 public abstract class PreferencesTestCase extends TestCase {
 	protected Preferences classNode;
 	public Preferences testNode;
@@ -34,12 +35,12 @@ public abstract class PreferencesTestCase extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		Preferences packageNode = Preferences.userNodeForPackage(this.getClass());
-		this.classNode = packageNode.node(ClassTools.shortClassNameForObject(this));
+		this.classNode = packageNode.node(this.getClass().getSimpleName());
 		// clean out any leftover crap...
 		if ((this.classNode.keys().length > 0) || (this.classNode.childrenNames().length > 0)) {
 			this.classNode.removeNode();
 			// ...and re-create the node
-			this.classNode = packageNode.node(ClassTools.shortClassNameForObject(this));
+			this.classNode = packageNode.node(this.getClass().getSimpleName());
 		}
 		this.testNode = this.classNode.node(TEST_NODE_NAME);
 	}
@@ -79,7 +80,7 @@ public abstract class PreferencesTestCase extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	private List<EventObject> preferencesEventQueue() {
-		return (List<EventObject>) ClassTools.staticFieldValue(AbstractPreferences.class, "eventQueue");
+		return (List<EventObject>) ReflectionTools.getStaticFieldValue(AbstractPreferences.class, "eventQueue");
 	}
 
 }

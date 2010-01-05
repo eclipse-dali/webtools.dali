@@ -1,14 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
-
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.List;
@@ -74,7 +72,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	
 	protected String calculateDefaultValue() {
 		Iterable<AttributeMapping> validAttributeMappings = 
-			new FilteringIterable<AttributeMapping, AttributeMapping>(
+			new FilteringIterable<AttributeMapping>(
 				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
@@ -85,9 +83,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		if (CollectionTools.size(validAttributeMappings) == 1) {
 			return validAttributeMappings.iterator().next().getName();
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 	
 	protected void addAnnotation() {
@@ -158,9 +154,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 				if (StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
 					return getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) o);
 				}
-				else {
-					return new SingleElementIterable(o);
-				}
+				return new SingleElementIterable<AttributeMapping>(o);
 			}
 		};
 	}
@@ -168,13 +162,11 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	protected Iterable<AttributeMapping> getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping mapping) {
 		Embeddable embeddable = mapping.getTargetEmbeddable();
 		if (embeddable == null) {
-			return new SingleElementIterable(mapping);
+			return new SingleElementIterable<AttributeMapping>(mapping);
 		}
-		else {
-			return new CompositeIterable<AttributeMapping>(
-					mapping,
-					CollectionTools.collection(embeddable.allAttributeMappings()));
-		}		
+		return new CompositeIterable<AttributeMapping>(
+				mapping,
+				CollectionTools.collection(embeddable.allAttributeMappings()));
 	}
 	
 	public boolean isSpecified() {

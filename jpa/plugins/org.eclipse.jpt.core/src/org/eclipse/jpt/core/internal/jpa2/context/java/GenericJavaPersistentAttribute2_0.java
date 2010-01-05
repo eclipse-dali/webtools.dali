@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ClassName;
 
 /**
  * JPA 2.0 Java persistent attribute
@@ -85,8 +85,8 @@ public class GenericJavaPersistentAttribute2_0
 		if (typeName == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
-		if (ClassTools.classNamedIsPrimitive(typeName)) {
-			return ClassTools.wrapperClassName(typeName);  // ???
+		if (ClassName.isPrimitive(typeName)) {
+			return ClassName.getWrapperClassName(typeName);  // ???
 		}
 		return typeName;
 	}

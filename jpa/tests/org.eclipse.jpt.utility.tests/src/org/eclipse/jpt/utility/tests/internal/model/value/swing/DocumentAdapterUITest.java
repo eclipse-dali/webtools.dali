@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,6 +38,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * Play around with a set of entry fields.
  */
+@SuppressWarnings("nls")
 public class DocumentAdapterUITest {
 
 	private TestModel testModel;
@@ -48,14 +49,14 @@ public class DocumentAdapterUITest {
 	private Document upperCaseNameDocument;
 
 	public static void main(String[] args) throws Exception {
-		new DocumentAdapterUITest().exec(args);
+		new DocumentAdapterUITest().exec();
 	}
 
 	private DocumentAdapterUITest() {
 		super();
 	}
 
-	private void exec(String[] args) throws Exception {
+	private void exec() throws Exception {
 		this.testModel = new TestModel(DEFAULT_NAME);
 		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.nameHolder = this.buildNameHolder(this.testModelHolder);

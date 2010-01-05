@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,19 +19,19 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * 
  * @param <E> the type of elements returned by the iterator
  * 
- * @see org.eclipse.jpt.utility.internal.iterables.GenericIterableWrapper
+ * @see org.eclipse.jpt.utility.internal.iterables.SuperIterableWrapper
  */
-public class GenericIteratorWrapper<E>
+public class SuperIteratorWrapper<E>
 	implements Iterator<E>
 {
 	private final Iterator<? extends E> iterator;
 
 
-	public GenericIteratorWrapper(Iterable<? extends E> iterable) {
+	public SuperIteratorWrapper(Iterable<? extends E> iterable) {
 		this(iterable.iterator());
 	}
 
-	public GenericIteratorWrapper(Iterator<? extends E> iterator) {
+	public SuperIteratorWrapper(Iterator<? extends E> iterator) {
 		super();
 		this.iterator = iterator;
 	}

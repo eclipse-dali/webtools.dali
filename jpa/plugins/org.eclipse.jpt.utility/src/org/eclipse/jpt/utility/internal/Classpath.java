@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -32,7 +33,11 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
- * TODO
+ * <code>Classpath</code> models a Java classpath, which consists of a list of
+ * {@link Entry}s, each of which contain Java classes. The classpath can return
+ * the names of classes found in it etc. There are a number of static
+ * convenience methods that can be use to construct <code>Classpath</code>s
+ * corresponding to the Java classpath etc.
  */
 public class Classpath
 	implements Serializable
@@ -48,7 +53,7 @@ public class Classpath
 	// ***** factory methods for "standard" classpaths *****
 
 	/**
-	 * Return the Java "boot" classpath. This includes rt.jar.
+	 * Return the Java "boot" classpath. This includes <code>rt.jar</code>.
 	 */
 	public static Classpath bootClasspath() {
 		return new Classpath(System.getProperty("sun.boot.class.path")); //$NON-NLS-1$
@@ -102,9 +107,10 @@ public class Classpath
 	/**
 	 * Convert a relative file name to a class name; this will work for
 	 * any file that has a single extension beyond the base
-	 * class name.
-	 * e.g. "java/lang/String.class" is converted to "java.lang.String"
-	 * e.g. "java/lang/String.java" is converted to "java.lang.String"
+	 * class name:<ul>
+	 * <li><code>"java/lang/String.class"</code> is converted to <code>"java.lang.String"</code>
+	 * <li><code>"java/lang/String.java"</code> is converted to <code>"java.lang.String"</code>
+	 * </ul>
 	 */
 	public static String convertToClassName(String classFileName) {
 		String className = FileTools.stripExtension(classFileName);
@@ -119,7 +125,8 @@ public class Classpath
 
 	/**
 	 * Convert a file to a class name;
-	 * e.g. File(java/lang/String.class) is converted to "java.lang.String"
+	 * e.g. <code>File(java/lang/String.class)</code> is converted to
+	 * <code>"java.lang.String"</code>.
 	 */
 	public static String convertToClassName(File classFile) {
 		return convertToClassName(classFile.getPath());
@@ -127,7 +134,8 @@ public class Classpath
 
 	/**
 	 * Convert a relative file name to a class;
-	 * e.g. "java/lang/String.class" is converted to java.lang.String.class
+	 * e.g. <code>"java/lang/String.class"</code> is converted to
+	 * <code>java.lang.String.class</code>.
 	 */
 	public static Class<?> convertToClass(String classFileName) throws ClassNotFoundException {
 		return Class.forName(convertToClassName(classFileName));
@@ -135,7 +143,8 @@ public class Classpath
 
 	/**
 	 * Convert a relative file to a class;
-	 * e.g. File(java/lang/String.class) is converted to java.lang.String.class
+	 * e.g. <code>File(java/lang/String.class)</code> is converted to
+	 * <code>java.lang.String.class</code>.
 	 */
 	public static Class<?> convertToClass(File classFile) throws ClassNotFoundException {
 		return convertToClass(classFile.getPath());
@@ -146,7 +155,8 @@ public class Classpath
 
 	/**
 	 * Convert a class name to an archive entry name base;
-	 * e.g. "java.lang.String" is converted to "java/lang/String"
+	 * e.g. <code>"java.lang.String"</code> is converted to
+	 * <code>"java/lang/String"</code>.
 	 */
 	public static String convertToArchiveEntryNameBase(String className) {
 		return className.replace('.', '/');
@@ -154,7 +164,8 @@ public class Classpath
 	
 	/**
 	 * Convert a class to an archive entry name base;
-	 * e.g. java.lang.String.class is converted to "java/lang/String"
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>"java/lang/String"</code>.
 	 */
 	public static String convertToArchiveEntryNameBase(Class<?> javaClass) {
 		return convertToArchiveEntryNameBase(javaClass.getName());
@@ -162,7 +173,8 @@ public class Classpath
 	
 	/**
 	 * Convert a class name to an archive class file entry name;
-	 * e.g. "java.lang.String" is converted to "java/lang/String.class"
+	 * e.g. <code>"java.lang.String"</code> is converted to
+	 * <code>"java/lang/String.class"</code>.
 	 */
 	public static String convertToArchiveClassFileEntryName(String className) {
 		return convertToArchiveEntryNameBase(className) + ".class"; //$NON-NLS-1$
@@ -170,7 +182,8 @@ public class Classpath
 	
 	/**
 	 * Convert a class to an archive class file entry name;
-	 * e.g. java.lang.String.class is converted to "java/lang/String.class"
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>"java/lang/String.class"</code>.
 	 */
 	public static String convertToArchiveClassFileEntryName(Class<?> javaClass) {
 		return convertToArchiveClassFileEntryName(javaClass.getName());
@@ -181,8 +194,9 @@ public class Classpath
 
 	/**
 	 * Convert a class name to a file name base for the current O/S;
-	 * e.g. "java.lang.String" is converted to "java/lang/String" on Unix
-	 * and "java\\lang\\String" on Windows
+	 * e.g. <code>"java.lang.String"</code> is converted to
+	 * <code>"java/lang/String"</code> on Unix and
+	 * <code>"java\\lang\\String"</code> on Windows.
 	 */
 	public static String convertToFileNameBase(String className) {
 		return className.replace('.', File.separatorChar);
@@ -190,8 +204,9 @@ public class Classpath
 	
 	/**
 	 * Convert a class to a file name base for the current O/S;
-	 * e.g. java.lang.String.class is converted to "java/lang/String" on Unix
-	 * and "java\\lang\\String" on Windows
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>"java/lang/String"</code> on Unix and
+	 * <code>"java\\lang\\String"</code> on Windows.
 	 */
 	public static String convertToFileNameBase(Class<?> javaClass) {
 		return convertToFileNameBase(javaClass.getName());
@@ -199,8 +214,9 @@ public class Classpath
 	
 	/**
 	 * Convert a class name to a class file name for the current O/S;
-	 * e.g. "java.lang.String" is converted to "java/lang/String.class" on Unix
-	 * and "java\\lang\\String.class" on Windows
+	 * e.g. <code>"java.lang.String"</code> is converted to
+	 * <code>"java/lang/String.class"</code> on Unix and
+	 * <code>"java\\lang\\String.class"</code> on Windows.
 	 */
 	public static String convertToClassFileName(String className) {
 		return convertToFileNameBase(className) + ".class"; //$NON-NLS-1$
@@ -208,8 +224,9 @@ public class Classpath
 	
 	/**
 	 * Convert a class to a class file name for the current O/S;
-	 * e.g. java.lang.String.class is converted to "java/lang/String.class" on Unix
-	 * and "java\\lang\\String.class" on Windows
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>"java/lang/String.class"</code> on Unix and
+	 * <code>"java\\lang\\String.class"</code> on Windows.
 	 */
 	public static String convertToClassFileName(Class<?> javaClass) {
 		return convertToClassFileName(javaClass.getName());
@@ -217,7 +234,8 @@ public class Classpath
 	
 	/**
 	 * Convert a class name to a class file for the current O/S;
-	 * e.g. "java.lang.String" is converted to File(java/lang/String.class)
+	 * e.g. <code>"java.lang.String"</code> is converted to
+	 * <code>File(java/lang/String.class)</code>.
 	 */
 	public static File convertToClassFile(String className) {
 		return new File(convertToClassFileName(className));
@@ -225,7 +243,8 @@ public class Classpath
 	
 	/**
 	 * Convert a class to a class file for the current O/S;
-	 * e.g. java.lang.String.class is converted to File(java/lang/String.class)
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>File(java/lang/String.class)</code>.
 	 */
 	public static File convertToClassFile(Class<?> javaClass) {
 		return convertToClassFile(javaClass.getName());
@@ -233,8 +252,9 @@ public class Classpath
 	
 	/**
 	 * Convert a class name to a java file name for the current O/S;
-	 * e.g. "java.lang.String" is converted to "java/lang/String.java" on Unix
-	 * and "java\\lang\\String.java" on Windows
+	 * e.g. <code>"java.lang.String"</code> is converted to
+	 * <code>"java/lang/String.java"</code> on Unixl and
+	 * <code>"java\\lang\\String.java"</code> on Windows.
 	 */
 	public static String convertToJavaFileName(String className) {
 		return convertToFileNameBase(className) + ".java"; //$NON-NLS-1$
@@ -242,8 +262,9 @@ public class Classpath
 
 	/**
 	 * Convert a class to a java file name for the current O/S;
-	 * e.g. java.lang.String.class is converted to "java/lang/String.java" on Unix
-	 * and "java\\lang\\String.java" on Windows
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>"java/lang/String.java"</code> on Unix and
+	 * <code>"java\\lang\\String.java"</code> on Windows.
 	 */
 	public static String convertToJavaFileName(Class<?> javaClass) {
 		return convertToJavaFileName(javaClass.getName());
@@ -251,7 +272,8 @@ public class Classpath
 
 	/**
 	 * Convert a class name to a java file for the current O/S;
-	 * e.g. "java.lang.String" is converted to File(java/lang/String.java)
+	 * e.g. <code>"java.lang.String"</code> is converted to
+	 * <code>File(java/lang/String.java)</code>.
 	 */
 	public static File convertToJavaFile(String className) {
 		return new File(convertToJavaFileName(className));
@@ -259,7 +281,8 @@ public class Classpath
 
 	/**
 	 * Convert a class to a java file for the current O/S;
-	 * e.g. java.lang.String.class is converted to File(java/lang/String.java)
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>File(java/lang/String.java)</code>.
 	 */
 	public static File convertToJavaFile(Class<?> javaClass) {
 		return convertToJavaFile(javaClass.getName());
@@ -270,7 +293,8 @@ public class Classpath
 
 	/**
 	 * Convert a class to a resource name;
-	 * e.g. java.lang.String.class is converted to "/java/lang/String.class".
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>"/java/lang/String.class"</code>.
 	 */
 	public static String convertToResourceName(Class<?> javaClass) {
 		return '/' + convertToArchiveClassFileEntryName(javaClass);
@@ -278,8 +302,8 @@ public class Classpath
 
 	/**
 	 * Convert a class to a resource;
-	 * e.g. java.lang.String.class is converted to
-	 * URL(jar:file:/C:/jdk/1.4.2_04/jre/lib/rt.jar!/java/lang/String.class).
+	 * e.g. <code>java.lang.String.class</code> is converted to
+	 * <code>URL(jar:file:/C:/jdk/1.4.2_04/jre/lib/rt.jar!/java/lang/String.class)</code>.
 	 */
 	public static URL convertToResource(Class<?> javaClass) {
 		return javaClass.getResource(convertToResourceName(javaClass));
@@ -290,7 +314,7 @@ public class Classpath
 
 	/**
 	 * Return whether the specified file is an archive file;
-	 * i.e. its name ends with ".zip" or ".jar"
+	 * i.e. its name ends with <code>".zip"</code> or <code>".jar"</code>.
 	 */
 	public static boolean fileNameIsArchive(String fileName) {
 		String ext = FileTools.extension(fileName).toLowerCase();
@@ -299,7 +323,7 @@ public class Classpath
 	
 	/**
 	 * Return whether the specified file is an archive file;
-	 * i.e. its name ends with ".zip" or ".jar"
+	 * i.e. its name ends with <code>".zip"</code> or <code>".jar"</code>.
 	 */
 	public static boolean fileIsArchive(File file) {
 		return fileNameIsArchive(file.getName());
@@ -308,7 +332,7 @@ public class Classpath
 	/**
 	 * Return what should be the fully-qualified file name
 	 * for the JRE runtime JAR;
-	 * e.g. "C:\jdk1.4.2_04\jre\lib\rt.jar".
+	 * e.g. <code>"C:\jdk1.4.2_04\jre\lib\rt.jar"</code>.
 	 */
 	public static String rtJarName() {
 		return locationFor(java.lang.Object.class);
@@ -401,7 +425,7 @@ public class Classpath
 	/**
 	 * Construct a classpath with the specified entries.
 	 */
-	public Classpath(String[] fileNames) {
+	public Classpath(String... fileNames) {
 		this(buildEntries(fileNames));
 	}
 
@@ -409,10 +433,11 @@ public class Classpath
 	 * Skip empty file names because they will end up expanding to the current
 	 * working directory, which is not what we want. Empty file names actually
 	 * occur with some frequency; such as when the classpath has been built up
-	 * dynamically with too many separators. For example:
+	 * dynamically with too many separators. For example:<pre>
 	 *     "C:\dev\foo.jar;;C:\dev\bar.jar"
-	 * will be parsed into three file names:
+	 * </pre>will be parsed into three file names:<pre>
 	 *     { "C:\dev\foo.jar", "", "C:\dev\bar.jar" }
+	 * </pre>
 	 */
 	private static Entry[] buildEntries(String[] fileNames) {
 		List<Entry> entries = new ArrayList<Entry>();
@@ -434,21 +459,22 @@ public class Classpath
 	/**
 	 * Construct a classpath with the specified entries.
 	 */
-	public Classpath(List<String> fileNames) {
-		this(fileNames.toArray(new String[fileNames.size()]));
+	public Classpath(Iterable<String> fileNames) {
+		this(ArrayTools.array(fileNames, EMPTY_STRING_ARRAY));
 	}
+	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	/**
 	 * Consolidate the specified classpaths into a single classpath.
 	 */
-	public Classpath(Classpath[] classpaths) {
+	public Classpath(Classpath... classpaths) {
 		this(consolidateEntries(classpaths));
 	}
 
 	private static Entry[] consolidateEntries(Classpath[] classpaths) {
 		List<Entry> entries = new ArrayList<Entry>();
 		for (Classpath classpath : classpaths) {
-			CollectionTools.addAll(entries, classpath.entries());
+			CollectionTools.addAll(entries, classpath.getEntries());
 		}
 		return entries.toArray(new Entry[entries.size()]);
 	}
@@ -459,26 +485,25 @@ public class Classpath
 	/**
 	 * Return the classpath's entries.
 	 */
-	public Entry[] entries() {
-		return this.entries;
+	public Iterable<Entry> getEntries() {
+		return new ArrayIterable<Entry>(this.entries);
 	}
 
 	/**
 	 * Return the classpath's path.
 	 */
-	public String path() {
-		Entry[] localEntries = this.entries;
-		int max = localEntries.length - 1;
+	public String getPath() {
+		int max = this.entries.length - 1;
 		if (max == -1) {
 			return ""; //$NON-NLS-1$
 		}
 		StringBuilder sb = new StringBuilder(2000);
 		// stop one short of the end of the array
 		for (int i = 0; i < max; i++) {
-			sb.append(localEntries[i].fileName());
+			sb.append(this.entries[i].getFileName());
 			sb.append(File.pathSeparatorChar);
 		}
-		sb.append(localEntries[max].fileName());
+		sb.append(this.entries[max].getFileName());
 		return sb.toString();
 	}
 
@@ -486,12 +511,11 @@ public class Classpath
 	 * Search the classpath for the specified (unqualified) file
 	 * and return its entry. Return null if an entry is not found.
 	 * For example, you could use this method to find the entry
-	 * for "rt.jar" or "toplink.jar".
+	 * for <code>"rt.jar"</code> or <code>"toplink.jar"</code>.
 	 */
-	public Entry entryForFileNamed(String shortFileName) {
-		Entry[] localEntries = this.entries;
-		for (Entry entry : localEntries) {
-			if (entry.file().getName().equals(shortFileName)) {
+	public Entry getEntryForFileNamed(String shortFileName) {
+		for (Entry entry : this.entries) {
+			if (entry.getFile().getName().equals(shortFileName)) {
 				return entry;
 			}
 		}
@@ -503,11 +527,10 @@ public class Classpath
 	 * that contains the specified class.
 	 * Return null if an entry is not found.
 	 */
-	public Entry entryForClassNamed(String className) {
+	public Entry getEntryForClassNamed(String className) {
 		String relativeClassFileName = convertToClassFileName(className);
 		String archiveEntryName = convertToArchiveClassFileEntryName(className);
-		Entry[] localEntries = this.entries;
-		for (Entry entry : localEntries) {
+		for (Entry entry : this.entries) {
 			if (entry.contains(relativeClassFileName, archiveEntryName)) {
 				return entry;
 			}
@@ -518,19 +541,21 @@ public class Classpath
 	/**
 	 * Return the names of all the classes discovered on the classpath,
 	 * with duplicates removed.
+	 * @see #classNames()
 	 */
-	public String[] classNames() {
-		return this.classNames(Filter.Null.<String>instance());
+	public Iterable<String> getClassNames() {
+		return this.getClassNames(Filter.Null.<String>instance());
 	}
 
 	/**
 	 * Return the names of all the classes discovered on the classpath
 	 * and accepted by the specified filter, with duplicates removed.
+	 * @see #classNames(Filter)
 	 */
-	public String[] classNames(Filter<String> filter) {
+	public Iterable<String> getClassNames(Filter<String> filter) {
 		Collection<String> classNames = new HashSet<String>(10000);
 		this.addClassNamesTo(classNames, filter);
-		return classNames.toArray(new String[classNames.size()]);
+		return classNames;
 	}
 
 	/**
@@ -546,34 +571,33 @@ public class Classpath
 	 * and accepted by the specified filter to the specified collection.
 	 */
 	public void addClassNamesTo(Collection<String> classNames, Filter<String> filter) {
-		Entry[] localEntries = this.entries;
-		for (Entry entry : localEntries) {
+		for (Entry entry : this.entries) {
 			entry.addClassNamesTo(classNames, filter);
 		}
 	}
 
 	/**
 	 * Return the names of all the classes discovered on the classpath.
-	 * Just a bit more performant than #classNames().
+	 * Just a bit more performant than {@link #getClassNames()}.
 	 */
-	public Iterator<String> classNamesStream() {
-		return this.classNamesStream(Filter.Null.<String>instance());
+	public Iterator<String> classNames() {
+		return this.classNames(Filter.Null.<String>instance());
 	}
 
 	/**
 	 * Return the names of all the classes discovered on the classpath
 	 * that are accepted by the specified filter.
-	 * Just a bit more performant than #classNames(Filter).
+	 * Just a bit more performant than {@link #getClassNames(Filter)}.
 	 */
-	public Iterator<String> classNamesStream(Filter<String> filter) {
-		return new CompositeIterator<String>(this.entryClassNamesStreams(filter));
+	public Iterator<String> classNames(Filter<String> filter) {
+		return new CompositeIterator<String>(this.entryClassNamesIterators(filter));
 	}
 
-	private Iterator<Iterator<String>> entryClassNamesStreams(final Filter<String> filter) {
+	private Iterator<Iterator<String>> entryClassNamesIterators(final Filter<String> filter) {
 		return new TransformationIterator<Entry, Iterator<String>>(new ArrayIterator<Entry>(this.entries)) {
 			@Override
 			protected Iterator<String> transform(Entry entry) {
-				return entry.classNamesStream(filter);
+				return entry.classNames(filter);
 			}
 		};
 	}
@@ -588,28 +612,30 @@ public class Classpath
 
 	/**
 	 * Convert the classpath to an array of URLs
-	 * (that can be used to instantiate a URLClassLoader).
+	 * (that can be used to instantiate a {@link java.net.URLClassLoader}).
 	 */
-	public URL[] urls() {
-		Entry[] localEntries = this.entries;
-		int len = localEntries.length;
+	public Iterable<URL> getURLs() {
+		int len = this.entries.length;
 		URL[] urls = new URL[len];
 		for (int i = 0; i < len; i++) {
-			urls[i] = localEntries[i].url();
+			urls[i] = this.entries[i].getURL();
 		}
-		return urls;
+		return new ArrayIterable<URL>(urls);
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.path());
+		return StringTools.buildToStringFor(this, this.getPath());
 	}
 
 
 	// ********** inner class **********
 
 	/**
-	 * TODO
+	 * <code>Entry</code> models a Java classpath entry, which can be either a
+	 * directory containing <code>.class</code> files or a JAR file (or,
+	 * similarly, a <code>.zip</code> file). The entry can return the names of
+	 * classes found in it etc.
 	 */
 	public static class Entry implements Serializable {
 		private final String fileName;
@@ -628,19 +654,19 @@ public class Classpath
 			this.canonicalFile = FileTools.canonicalFile(this.file);
 		}
 
-		public String fileName() {
+		public String getFileName() {
 			return this.fileName;
 		}
 
-		public File file() {
+		public File getFile() {
 			return this.file;
 		}
 
-		public File canonicalFile() {
+		public File getCanonicalFile() {
 			return this.canonicalFile;
 		}
 
-		public String canonicalFileName() {
+		public String getCanonicalFileName() {
 			return this.canonicalFile.getAbsolutePath();
 		}
 
@@ -660,7 +686,7 @@ public class Classpath
 		/**
 		 * Return the entry's "canonical" URL.
 		 */
-		public URL url() {
+		public URL getURL() {
 			try {
 				return this.canonicalFile.toURI().toURL();
 			} catch (IOException ex) {
@@ -722,19 +748,21 @@ public class Classpath
 
 		/**
 		 * Return the names of all the classes discovered in the entry.
+		 * @see #classNames()
 		 */
-		public String[] classNames() {
-			return this.classNames(Filter.Null.<String>instance());
+		public Iterable<String> getClassNames() {
+			return this.getClassNames(Filter.Null.<String>instance());
 		}
 
 		/**
 		 * Return the names of all the classes discovered in the entry
 		 * and accepted by the specified filter.
+		 * @see #classNames(Filter)
 		 */
-		public String[] classNames(Filter<String> filter) {
+		public Iterable<String> getClassNames(Filter<String> filter) {
 			Collection<String> classNames = new ArrayList<String>(2000);
 			this.addClassNamesTo(classNames, filter);
-			return classNames.toArray(new String[classNames.size()]);
+			return classNames;
 		}
 
 		/**
@@ -779,7 +807,7 @@ public class Classpath
 		 * under the entry's directory.
 		 */
 		private Iterator<File> classFilesForDirectory() {
-			return new FilteringIterator<File, File>(FileTools.filesInTree(this.canonicalFile)) {
+			return new FilteringIterator<File>(FileTools.filesInTree(this.canonicalFile)) {
 				@Override
 				protected boolean accept(File next) {
 					return Entry.this.fileNameMightBeForClassFile(next.getName());
@@ -818,7 +846,7 @@ public class Classpath
 
 		/**
 		 * Return whether the specified file might be a Java class file.
-		 * The file name must at least end with ".class" and contain no spaces.
+		 * The file name must at least end with <code>".class"</code> and contain no spaces.
 		 * (Neither class names nor package names may contain spaces.)
 		 * Whether it actually is a class file will need to be determined by
 		 * a class loader.
@@ -830,18 +858,18 @@ public class Classpath
 
 		/**
 		 * Return the names of all the classes discovered on the classpath.
-		 * Just a bit more performant than #classNames().
+		 * Just a bit more performant than {@link #getClassNames()}.
 		 */
-		public Iterator<String> classNamesStream() {
-			return this.classNamesStream(Filter.Null.<String>instance());
+		public Iterator<String> classNames() {
+			return this.classNames(Filter.Null.<String>instance());
 		}
 
 		/**
 		 * Return the names of all the classes discovered on the classpath
 		 * that are accepted by the specified filter.
-		 * Just a bit more performant than #classNames(Filter).
+		 * Just a bit more performant than {@link #getClassNames(Filter)}.
 		 */
-		public Iterator<String> classNamesStream(Filter<String> filter) {
+		public Iterator<String> classNames(Filter<String> filter) {
 			if (this.canonicalFile.exists()) {
 				if (this.canonicalFile.isDirectory()) {
 					return this.classNamesForDirectory(filter);
@@ -859,7 +887,7 @@ public class Classpath
 		 * the specified filter.
 		 */
 		private Iterator<String> classNamesForDirectory(Filter<String> filter) {
-			return new FilteringIterator<String, String>(this.classNamesForDirectory(), filter);
+			return new FilteringIterator<String>(this.classNamesForDirectory(), filter);
 		}
 
 		/**

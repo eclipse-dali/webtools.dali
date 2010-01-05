@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,9 @@
 package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 
+@SuppressWarnings("nls")
 public class DefaultAnnotationEditFormatterTests extends AnnotationTestCase {
 
 
@@ -51,7 +52,7 @@ public class DefaultAnnotationEditFormatterTests extends AnnotationTestCase {
 	}
 
 	private int commaLength(String s) {
-		Integer len = (Integer) ClassTools.executeMethod(DefaultAnnotationEditFormatter.instance(), "commaLength", String.class, s);
+		Integer len = (Integer) ReflectionTools.executeMethod(DefaultAnnotationEditFormatter.instance(), "commaLength", String.class, s);
 		return len.intValue();
 	}
 
@@ -67,7 +68,7 @@ public class DefaultAnnotationEditFormatterTests extends AnnotationTestCase {
 	}
 
 	private boolean stringIsAnnotation(String s) {
-		Boolean b = (Boolean) ClassTools.executeMethod(DefaultAnnotationEditFormatter.instance(), "stringIsAnnotation", String.class, s);
+		Boolean b = (Boolean) ReflectionTools.executeMethod(DefaultAnnotationEditFormatter.instance(), "stringIsAnnotation", String.class, s);
 		return b.booleanValue();
 	}
 

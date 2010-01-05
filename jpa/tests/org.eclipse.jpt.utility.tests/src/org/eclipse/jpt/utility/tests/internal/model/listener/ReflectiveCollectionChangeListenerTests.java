@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -199,7 +199,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		TestModel testModel = new TestModel();
 		String string = "foo";
 		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
-		Method method = ClassTools.method(target, "collectionChangedDoubleArgument", new Class[] {CollectionChangeEvent.class, Object.class});
+		Method method = ReflectionTools.getMethod(target, "collectionChangedDoubleArgument", new Class[] {CollectionChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
 			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, method);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PrimitiveType;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.utility.JavaType;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.SimpleJavaType;
 
 /**
@@ -134,7 +134,7 @@ final class DTPColumnWrapper
 	private JavaType getJavaType(PredefinedDataType dataType) {
 		// this is just a bit hacky: moving from a type declaration to a class name to a type declaration...
 		String dtpJavaClassName = this.getDefinition(dataType).getJavaClassName();
-		return new SimpleJavaType(ClassTools.classNameForTypeDeclaration(dtpJavaClassName));
+		return new SimpleJavaType(ReflectionTools.getClassNameForTypeDeclaration(dtpJavaClassName));
 	}
 
 	private PredefinedDataTypeDefinition getDefinition(PredefinedDataType dataType) {

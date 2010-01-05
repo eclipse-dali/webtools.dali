@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -910,6 +910,13 @@ public class StringToolsTests extends TestCase {
 		Writer writer = new StringWriter();
 		StringTools.uncapitalizeOn(string, writer);
 		assertEquals(expected, writer.toString());
+	}
+
+	// ********** #toString() **********
+
+	public void testBuildToStringClassName_anonymous() {
+		Object o = new Object(){/*anonymous subclass of Object*/};
+		assertEquals("Object", StringTools.buildToStringClassName(o.getClass()));
 	}
 
 	// ********** queries **********

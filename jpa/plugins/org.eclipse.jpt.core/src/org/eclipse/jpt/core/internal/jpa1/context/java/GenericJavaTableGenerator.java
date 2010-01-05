@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -447,7 +447,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getCandidateTables(Filter<String> filter) {
-		return new FilteringIterable<String, String>(this.getCandidateTables(), filter);
+		return new FilteringIterable<String>(this.getCandidateTables(), filter);
 	}
 
 	protected Iterable<String> getCandidateTables() {
@@ -466,7 +466,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getCandidateSchemata(Filter<String> filter) {
-		return new FilteringIterable<String, String>(this.getCandidateSchemata(), filter);
+		return new FilteringIterable<String>(this.getCandidateSchemata(), filter);
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
@@ -485,7 +485,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
-		return new FilteringIterable<String, String>(this.getCandidateCatalogs(), filter);
+		return new FilteringIterable<String>(this.getCandidateCatalogs(), filter);
 	}
 
 	protected Iterable<String> getCandidateCatalogs() {
@@ -504,7 +504,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getCandidateColumnNames(Filter<String> filter) {
-		return new FilteringIterable<String, String>(this.getCandidateColumnNames(), filter);
+		return new FilteringIterable<String>(this.getCandidateColumnNames(), filter);
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {

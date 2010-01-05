@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -445,7 +445,7 @@ public abstract class AbstractJavaTable
 	}
 
 	protected Iterable<String> getCandidateNames(Filter<String> filter) {
-		return new FilteringIterable<String, String>(this.getCandidateNames(), filter);
+		return new FilteringIterable<String>(this.getCandidateNames(), filter);
 	}
 
 	protected Iterable<String> getCandidateNames() {
@@ -458,7 +458,7 @@ public abstract class AbstractJavaTable
 	}
 
 	protected Iterable<String> getCandidateSchemata(Filter<String> filter) {
-		return new FilteringIterable<String, String>(this.getCandidateSchemata(), filter);
+		return new FilteringIterable<String>(this.getCandidateSchemata(), filter);
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
@@ -470,7 +470,7 @@ public abstract class AbstractJavaTable
 	}
 
 	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
-		return new FilteringIterable<String, String>(this.getCandidateCatalogs(), filter);
+		return new FilteringIterable<String>(this.getCandidateCatalogs(), filter);
 	}
 
 	protected Iterable<String> getCandidateCatalogs() {

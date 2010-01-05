@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,6 +54,8 @@ public class SimpleAssociationTests extends TestCase {
 	}
 
 	public void testEquals() {
+		assertFalse(this.assoc.equals("foo"));
+
 		assertEquals(this.assoc, this.copy(this.assoc));
 
 		SimpleAssociation<String, String> assoc2 = new SimpleAssociation<String, String>("foo", "baz");
@@ -61,10 +63,21 @@ public class SimpleAssociationTests extends TestCase {
 
 		assoc2 = new SimpleAssociation<String, String>("fop", "bar");
 		assertFalse(this.assoc.equals(assoc2));
+
+		SimpleAssociation<String, String> assoc3 = new SimpleAssociation<String, String>(null, null);
+		SimpleAssociation<String, String> assoc4 = new SimpleAssociation<String, String>(null, null);
+		assertEquals(assoc3, assoc4);
 	}
 
 	public void testHashCode() {
 		assertEquals(this.assoc.hashCode(), this.copy(this.assoc).hashCode());
+
+		SimpleAssociation<String, String> assoc2 = new SimpleAssociation<String, String>(null, null);
+		assertEquals(assoc2.hashCode(), this.copy(assoc2).hashCode());
+	}
+
+	public void testToString() {
+		assertNotNull(this.assoc.toString());
 	}
 
 	public void testClone() {

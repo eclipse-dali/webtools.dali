@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import org.eclipse.jpt.utility.internal.BooleanTools;
+import java.lang.reflect.InvocationTargetException;
 
 import junit.framework.TestCase;
+
+import org.eclipse.jpt.utility.internal.BooleanTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 
 public class BooleanToolsTests extends TestCase {
 	private static final Boolean TRUE = Boolean.TRUE;
@@ -66,6 +69,21 @@ public class BooleanToolsTests extends TestCase {
 		assertEquals(FALSE, BooleanTools.xnor(TRUE, FALSE));
 		assertEquals(FALSE, BooleanTools.xnor(FALSE, TRUE));
 		assertEquals(TRUE, BooleanTools.xnor(FALSE, FALSE));
+	}
+
+	public void testConstructor() {
+		boolean exCaught = false;
+		try {
+			Object at = ReflectionTools.newInstance(BooleanTools.class);
+			fail("bogus: " + at); //$NON-NLS-1$
+		} catch (RuntimeException ex) {
+			if (ex.getCause() instanceof InvocationTargetException) {
+				if (ex.getCause().getCause() instanceof UnsupportedOperationException) {
+					exCaught = true;
+				}
+			}
+		}
+		assertTrue(exCaught);
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,10 @@ package org.eclipse.jpt.utility.internal;
 /**
  * Various utility methods.
  */
+@SuppressWarnings("nls")
 public class Tools {
+
+	// ********** object comparison **********
 
 	/**
 	 * Return whether the specified values are equal, with the appropriate null checks.
@@ -26,6 +29,45 @@ public class Tools {
 	 */
 	public static boolean valuesAreDifferent(Object value1, Object value2) {
 		return ! valuesAreEqual(value1, value2);
+	}
+
+
+	// ********** System properties **********
+
+	/**
+	 * Return whether the current JVM is Sun's.
+	 */
+	public static boolean jvmIsSun() {
+		return jvmIs("Sun");
+	}
+
+	/**
+	 * Return whether the current JVM is IBM's.
+	 */
+	public static boolean jvmIsIBM() {
+		return jvmIs("IBM");
+	}
+
+	private static boolean jvmIs(String jvmVendorName) {
+		return System.getProperty("java.vendor").startsWith(jvmVendorName);
+	}
+
+	/**
+	 * Return whether the current operating system is Microsoft Windows.
+	 */
+	public static boolean osIsWindows() {
+		return osIs("Windows");
+	}
+
+	/**
+	 * Return whether the current operating system is Linux.
+	 */
+	public static boolean osIsLinux() {
+		return osIs("Linux");
+	}
+
+	private static boolean osIs(String osName) {
+		return System.getProperty("os.name").indexOf(osName) != -1;
 	}
 
 

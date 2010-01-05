@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -127,7 +127,7 @@ public class GenericNavigatorItemContentProviderFactory
 						})) {
 					@Override
 					protected Iterable<JpaContextNode> filter(Iterable<? extends JpaContextNode> items) {
-						return new FilteringIterable<JpaContextNode, JpaContextNode>(items) {
+						return new FilteringIterable<JpaContextNode>(items) {
 							@Override
 							protected boolean accept(JpaContextNode o) {
 								return o != null;
@@ -169,7 +169,7 @@ public class GenericNavigatorItemContentProviderFactory
 						})) {
 					@Override
 					protected Iterable<JpaContextNode> filter(Iterable<? extends JpaContextNode> items) {
-						return new FilteringIterable<JpaContextNode, JpaContextNode>(items) {
+						return new FilteringIterable<JpaContextNode>(items) {
 							@Override
 							protected boolean accept(JpaContextNode o) {
 								return o != null;
@@ -227,7 +227,7 @@ public class GenericNavigatorItemContentProviderFactory
 						})) {
 					@Override
 					protected Iterable<JpaContextNode> filter(Iterable<? extends JpaContextNode> items) {
-						return new FilteringIterable<JpaContextNode, JpaContextNode>(items) {
+						return new FilteringIterable<JpaContextNode>(items) {
 							@Override
 							protected boolean accept(JpaContextNode o) {
 								return o != null;

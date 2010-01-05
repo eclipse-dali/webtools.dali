@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -218,7 +218,7 @@ public final class SimpleMethodSignature
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(200);
-		sb.append(ClassTools.shortClassNameForObject(this));
+		sb.append(this.getClass().getSimpleName());
 		sb.append('(');
 		this.appendSignatureTo(sb);
 		sb.append(')');

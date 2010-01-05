@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ public class JptUtilityIterablesTests {
 		suite.addTestSuite(EmptyIterableTests.class);
 		suite.addTestSuite(EmptyListIterableTests.class);
 		suite.addTestSuite(FilteringIterableTests.class);
-		suite.addTestSuite(GenericIterableWrapperTests.class);
+		suite.addTestSuite(SuperIterableWrapperTests.class);
 		suite.addTestSuite(GraphIterableTests.class);
 		suite.addTestSuite(LiveCloneIterableTests.class);
 		suite.addTestSuite(LiveCloneListIterableTests.class);

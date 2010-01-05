@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ public final class ArrayTools {
 	 * Return a new array with the specified length
 	 * and the same component type as the specified array.
 	 * <p>
-	 * Arrays.newArray(Object[] array, int length)
+	 * <code>Arrays.newArray(Object[] array, int length)</code>
 	 */
 	public static <E> E[] newArray(E[] array, int length) {
 		return newArray(componentType(array), length);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -49,7 +49,7 @@ public class JpaModelTests extends TestCase {
 	}
 
 	private boolean debug() {
-		Boolean debug = (Boolean) ClassTools.staticFieldValue(this.getGenericJpaModelClass(), "DEBUG");
+		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(this.getGenericJpaModelClass(), "DEBUG");
 		return debug.booleanValue();
 	}
 
@@ -86,7 +86,7 @@ public class JpaModelTests extends TestCase {
 	 * pre-existing entities added.
 	 */
 	private TestFacetedProject buildTestProject() throws Exception {
-		TestJavaProject tjp = TestJavaProject.buildJavaProject(ClassTools.shortClassNameForObject(this), true);
+		TestJavaProject tjp = TestJavaProject.buildJavaProject(this.getClass().getSimpleName(), true);
 		tjp.installFacet("jst.utility", "1.0");
 		tjp.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
 		tjp.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
@@ -106,7 +106,7 @@ public class JpaModelTests extends TestCase {
 
 	private void verifyDEBUG(Class<?> clazz) {
 		assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(),
-				((Boolean) ClassTools.staticFieldValue(clazz, "DEBUG")).booleanValue());
+				((Boolean) ReflectionTools.getStaticFieldValue(clazz, "DEBUG")).booleanValue());
 	}
 	
 	public void testJpaModel() {

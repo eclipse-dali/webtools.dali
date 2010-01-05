@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -3389,7 +3389,7 @@ public final class StringTools {
 	 * 	ClassName[00F3EE42]
 	 */
 	public static void buildSimpleToStringOn(Object o, StringBuffer sb) {
-		sb.append(ClassTools.toStringClassNameForObject(o));
+		sb.append(buildToStringClassName(o.getClass()));
 		sb.append('[');
 		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
 		sb.append(zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8));
@@ -3402,11 +3402,24 @@ public final class StringTools {
 	 * 	ClassName[00F3EE42]
 	 */
 	public static void buildSimpleToStringOn(Object o, StringBuilder sb) {
-		sb.append(ClassTools.toStringClassNameForObject(o));
+		sb.append(buildToStringClassName(o.getClass()));
 		sb.append('[');
 		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
 		sb.append(zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8));
 		sb.append(']');
+	}
+
+	/**
+	 * Return a name suitable for a <code>#toString()</code> implementation.
+	 * {@link Class#getSimpleName()} isn't quite good enough for anonymous
+	 * classes; since it returns an empty string. This method will return the
+	 * name of the anonymous class's super class, which is a bit more helpful.
+	 */
+	public static String buildToStringClassName(Class<?> javaClass) {
+		String simpleName = javaClass.getSimpleName();
+		return simpleName.equals("") ? //$NON-NLS-1$
+				buildToStringClassName(javaClass.getSuperclass()) :  // recurse
+				simpleName;
 	}
 
 	public static <T> String append(StringBuilder sb, T[] array) {

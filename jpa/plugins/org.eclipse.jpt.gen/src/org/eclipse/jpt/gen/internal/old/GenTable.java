@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * associate a table with the various relations that will be used when
@@ -166,7 +165,7 @@ class GenTable {
 	 * but are also part of an "in-scope" foreign key
 	 */
 	Iterable<Column> getReadOnlyPrimaryKeyColumns() {
-		return new FilteringIterable<Column, Column>(this.table.getPrimaryKeyColumns()) {
+		return new FilteringIterable<Column>(this.table.getPrimaryKeyColumns()) {
 			@Override
 			protected boolean accept(Column pkColumn) {
 				return pkColumn.isPartOfForeignKey();
@@ -179,7 +178,7 @@ class GenTable {
 	 * but are NOT part of any "in-scope" foreign key
 	 */
 	Iterable<Column> getWritablePrimaryKeyColumns() {
-		return new FilteringIterable<Column, Column>(this.table.getPrimaryKeyColumns()) {
+		return new FilteringIterable<Column>(this.table.getPrimaryKeyColumns()) {
 			@Override
 			protected boolean accept(Column pkColumn) {
 				return ! pkColumn.isPartOfForeignKey();
@@ -192,7 +191,7 @@ class GenTable {
 	 * NOR part of any foreign key
 	 */
 	Iterable<Column> getNonPrimaryKeyBasicColumns() {
-		return new FilteringIterable<Column, Column>(this.table.getColumns()) {
+		return new FilteringIterable<Column>(this.table.getColumns()) {
 			@Override
 			protected boolean accept(Column column) {
 				return ! (column.isPartOfPrimaryKey() || column.isPartOfForeignKey());

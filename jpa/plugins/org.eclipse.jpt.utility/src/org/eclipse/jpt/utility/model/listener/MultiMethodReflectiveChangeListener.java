@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.model.listener;
 
 import java.lang.reflect.Method;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
@@ -73,9 +73,9 @@ class MultiMethodReflectiveChangeListener
 
 	private void invoke(Method method, CollectionEvent event) {
 		if (method.getParameterTypes().length == 0) {
-			ClassTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
+			ReflectionTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(method, this.target, new CollectionEvent[] {event});
+			ReflectionTools.executeMethod(method, this.target, new CollectionEvent[] {event});
 		}
 	}
 
@@ -100,9 +100,9 @@ class MultiMethodReflectiveChangeListener
 
 	private void invoke(Method method, ListEvent event) {
 		if (method.getParameterTypes().length == 0) {
-			ClassTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
+			ReflectionTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(method, this.target, new ListEvent[] {event});
+			ReflectionTools.executeMethod(method, this.target, new ListEvent[] {event});
 		}
 	}
 
@@ -135,9 +135,9 @@ class MultiMethodReflectiveChangeListener
 
 	private void invoke(Method method, TreeEvent event) {
 		if (method.getParameterTypes().length == 0) {
-			ClassTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
+			ReflectionTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(method, this.target, new TreeEvent[] {event});
+			ReflectionTools.executeMethod(method, this.target, new TreeEvent[] {event});
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,6 +31,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.SubIteratorWrapper;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
@@ -112,20 +113,20 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	}
 
 	@Override
-	public AttributeMapping resolveAttributeMapping(String name) {
+	public AttributeMapping resolveAttributeMapping(String attributeName) {
 		if (getName() == null) {
 			return null;
 		}
-		AttributeMapping resolvedMapping = super.resolveAttributeMapping(name);
+		AttributeMapping resolvedMapping = super.resolveAttributeMapping(attributeName);
 		if (resolvedMapping != null) {
 			return resolvedMapping;
 		}
 		if (this.isJpa2_0Compatible()) {
-			int dotIndex = name.indexOf('.');
+			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
-				if (getName().equals(name.substring(0, dotIndex))) {
+				if (getName().equals(attributeName.substring(0, dotIndex))) {
 					for (AttributeMapping attributeMapping : CollectionTools.iterable(embeddableAttributeMappings())) {
-						resolvedMapping = attributeMapping.resolveAttributeMapping(name.substring(dotIndex + 1));
+						resolvedMapping = attributeMapping.resolveAttributeMapping(attributeName.substring(dotIndex + 1));
 						if (resolvedMapping != null) {
 							return resolvedMapping;
 						}
@@ -184,10 +185,13 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 	}
 
 	public Iterator<RelationshipMapping> allOverridableAssociations() {
-		if (this.getTargetEmbeddable() == null) {
-			return EmptyIterator.instance();
-		}
-		return new FilteringIterator<AttributeMapping, RelationshipMapping>(this.getTargetEmbeddable().attributeMappings()) {
+		return (this.getTargetEmbeddable() == null) ?
+				EmptyIterator.<RelationshipMapping>instance() :
+				new SubIteratorWrapper<AttributeMapping, RelationshipMapping>(this.allOverridableAssociations_());
+	}
+
+	protected Iterator<AttributeMapping> allOverridableAssociations_() {
+		return new FilteringIterator<AttributeMapping>(this.getTargetEmbeddable().attributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
 				return o.isOverridableAssociationMapping();

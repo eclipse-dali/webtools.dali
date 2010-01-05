@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.EmfTools;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
@@ -142,7 +142,7 @@ public class GenericOrmPersistentType
 
 	public String getShortName(){
 		String className = this.getName();
-		return (className == null) ? null : ClassTools.shortNameForClassNamed(className);
+		return (className == null) ? null : ClassName.getSimpleName(className);
 	}
 
 
@@ -262,7 +262,7 @@ public class GenericOrmPersistentType
 	}
 
 	protected Iterator<OrmPersistentAttribute> attributesNamed(final String attributeName) {
-		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.attributes()) {
+		return new FilteringIterator<OrmPersistentAttribute>(this.attributes()) {
 			@Override
 			protected boolean accept(OrmPersistentAttribute o) {
 				return Tools.valuesAreEqual(attributeName, o.getName());

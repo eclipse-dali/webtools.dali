@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 
 /**
  * Make the cell look like a combo-box.
@@ -176,7 +176,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	
     
     private JList getListBox(JComboBox result) {
-        return (JList) ClassTools.fieldValue(result.getUI(), "listBox");
+        return (JList) ReflectionTools.getFieldValue(result.getUI(), "listBox");
     }
 
 	

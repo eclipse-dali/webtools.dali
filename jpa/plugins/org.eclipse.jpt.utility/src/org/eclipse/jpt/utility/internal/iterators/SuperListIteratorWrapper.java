@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * Wrap a list iterator on elements of any sub-type of <code>E</code>, converting it into a
@@ -22,19 +23,23 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * 
  * @param <E> the type of elements returned by the iterator
  * 
- * @see org.eclipse.jpt.utility.internal.iterables.GenericListIterableWrapper
+ * @see org.eclipse.jpt.utility.internal.iterables.SuperListIterableWrapper
  */
-public class GenericListIteratorWrapper<E>
+public class SuperListIteratorWrapper<E>
 	implements ListIterator<E>
 {
 	private final ListIterator<? extends E> listIterator;
 
 
-	public GenericListIteratorWrapper(List<? extends E> list) {
+	public SuperListIteratorWrapper(List<? extends E> list) {
 		this(list.listIterator());
 	}
 
-	public GenericListIteratorWrapper(ListIterator<? extends E> listIterator) {
+	public SuperListIteratorWrapper(ListIterable<? extends E> listIterable) {
+		this(listIterable.iterator());
+	}
+
+	public SuperListIteratorWrapper(ListIterator<? extends E> listIterator) {
 		super();
 		this.listIterator = listIterator;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.ui.internal.widgets.NullPostExecution;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -104,12 +104,12 @@ public class SWTUtil {
 	                                        Object value) {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(ClassTools.shortNameFor(compositeClass));
+		sb.append(compositeClass.getSimpleName());
 		sb.append("_");
 		sb.append(value.toString().toLowerCase(Locale.ENGLISH));//bug 234953
 		//TODO in a future release we should not be converting the key using toLowerCase()
 
-		return (String) ClassTools.staticFieldValue(nlsClass, sb.toString());
+		return (String) ReflectionTools.getStaticFieldValue(nlsClass, sb.toString());
 	}
 
 	/**
