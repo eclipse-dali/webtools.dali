@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ public class JptEclipseLink2_0CorePersistenceContextModelTests
 		TestSuite suite = new TestSuite(JptEclipseLink2_0CorePersistenceContextModelTests.class.getPackage().getName());
 
 		suite.addTestSuite(EclipseLink2_0ConnectionTests.class);
+		suite.addTestSuite(EclipseLink2_0LoggingTests.class);
 		suite.addTestSuite(EclipseLink2_0OptionsTests.class);
 		
 		return suite;
