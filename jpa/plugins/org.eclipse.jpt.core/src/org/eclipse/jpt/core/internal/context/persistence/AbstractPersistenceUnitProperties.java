@@ -35,19 +35,29 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	// ********** constructors / initialization **********
 	protected AbstractPersistenceUnitProperties(PersistenceUnit parent) {
 		super();
+		this.initialize();
 		this.initialize(parent);
+		this.postInitialize();
 	}
 
+	/**
+	 * Base initialization.
+	 */
+	protected void initialize() {
+		this.propertyNames = new HashMap<String, String>();
+	}
+
+	/**
+	 * Initialization based on the persistence unit.
+	 */
 	protected void initialize(PersistenceUnit parent) {
 		this.persistenceUnit = parent;
 		
 		this.initializePropertyNames();
 		this.initializeProperties();
-		this.postInitializeProperties();
 	}
 
 	protected void initializePropertyNames() {
-		this.propertyNames = new HashMap<String, String>();
 		this.addPropertyNames(this.propertyNames);
 	}
 
@@ -59,7 +69,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	/**
      * Does all post treatment in this method after the properties are initialized
 	 */
-	protected void postInitializeProperties() {
+	protected void postInitialize() {
 		// do nothing by default
 	}
 
@@ -101,6 +111,14 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		String propertyId = this.propertyNames().get(property.getName());
 		if (propertyId == null) {
 			throw new IllegalArgumentException("Illegal property: " + property); //$NON-NLS-1$
+		}
+		return propertyId;
+	}
+	
+	public String propertyIdOf(String eclipseLinkkey) {
+		String propertyId = this.propertyNames().get(eclipseLinkkey);
+		if (propertyId == null) {
+			throw new IllegalArgumentException("Illegal property: " + eclipseLinkkey); //$NON-NLS-1$
 		}
 		return propertyId;
 	}
