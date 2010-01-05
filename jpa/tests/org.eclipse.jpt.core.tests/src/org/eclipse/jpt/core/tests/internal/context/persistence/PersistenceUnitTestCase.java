@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -192,8 +192,8 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		this.verifyHasListeners(this.getModel(), propertyName);
 		
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(puKey);
-		assertTrue("model.itemIsProperty() is false: ", getModel().itemIsProperty(property));
-		assertEquals("propertyIdFor() not updated: ", propertyName, getModel().propertyIdOf(property));
+		assertTrue("model.itemIsProperty() is false: ", this.getModel().itemIsProperty(property));
+		assertEquals("propertyIdFor() not updated: ", propertyName, this.getModel().propertyIdOf(property));
 	}
 
 	/**
@@ -204,7 +204,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 */
 	protected void verifyModelInitialized(String puKey, Object expectedValue) throws Exception {
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(puKey);
-		assertTrue("model.itemIsProperty() is false: ", getModel().itemIsProperty(property));
+		assertTrue("model.itemIsProperty() is false: ", this.getModel().itemIsProperty(property));
 
 		assertTrue("PersistenceUnit not populated - populatedPu()", this.propertyValueEquals(puKey, this.getPropertyStringValueOf(expectedValue)));
 		String propertyName = this.getModel().propertyIdOf(property);

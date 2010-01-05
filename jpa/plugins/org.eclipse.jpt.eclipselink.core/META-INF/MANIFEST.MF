@@ -71,4 +71,5 @@ Export-Package: org.eclipse.jpt.eclipselink.core,
  org.eclipse.jpt.eclipselink.core.resource.orm.v2_0,
  org.eclipse.jpt.eclipselink.core.v2_0.context,
  org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection,
+ org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.logging,
  org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options

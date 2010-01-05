@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,11 +13,15 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLink2_0PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.logging.Logging2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.PersistenceXmlCachingTab;
+import org.eclipse.jpt.eclipselink.ui.internal.persistence.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.caching.PersistenceXmlCaching2_0Tab;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.logging.PersistenceXmlLogging2_0Tab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options.PersistenceXmlOptions2_0Tab;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -43,6 +47,16 @@ public class EclipseLink2_0PersistenceXmlUiFactory extends EclipseLinkPersistenc
 
 		return new PersistenceXmlCaching2_0Tab(cachingHolder, parent, widgetFactory);
 	}
+
+	@Override
+	protected PersistenceXmlLoggingTab<? extends Logging2_0> buildLoggingTab(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Logging2_0> logging2_0Holder = this.buildLogging2_0Holder(subjectHolder);
+
+		return new PersistenceXmlLogging2_0Tab(logging2_0Holder, parent, widgetFactory);
+	}
 	
 	@Override
 	protected PersistenceXmlOptionsTab<Options2_0> buildOptionsTab(
@@ -55,6 +69,17 @@ public class EclipseLink2_0PersistenceXmlUiFactory extends EclipseLinkPersistenc
 	}
 
 	// ********** private methods **********
+
+	private PropertyValueModel<Logging2_0> buildLogging2_0Holder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Logging2_0>(subjectHolder) {
+			@Override
+			protected Logging2_0 transform_(EclipseLinkPersistenceUnit value) {
+
+				return (Logging2_0) ((EclipseLink2_0PersistenceUnit)value).getLogging();
+			}
+		};
+	}
 
 	private PropertyValueModel<Options2_0> buildOptions2_0Holder(
 				PropertyValueModel<PersistenceUnit> subjectHolder) {

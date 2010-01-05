@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -104,13 +104,13 @@ public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFacto
 		return new PersistenceXmlCachingTab<Caching>(cachingHolder, parent, widgetFactory);
 	}
 	
-	protected PersistenceXmlLoggingTab buildLoggingTab(
+	protected PersistenceXmlLoggingTab<? extends Logging> buildLoggingTab(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
 		PropertyValueModel<Logging> loggingHolder = this.buildLoggingHolder(subjectHolder);
 
-		return new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory);
+		return new PersistenceXmlLoggingTab<Logging>(loggingHolder, parent, widgetFactory);
 	}
 	
 	protected PersistenceXmlOptionsTab<? extends Options> buildOptionsTab(

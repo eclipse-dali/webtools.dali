@@ -60,6 +60,7 @@ public class EclipseLinkPersistenceUnit
 	protected final List<EclipseLinkConverter> converters = new ArrayList<EclipseLinkConverter>();
 
 
+	// ********** constructors/initialization **********
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 	}
@@ -158,7 +159,7 @@ public class EclipseLinkPersistenceUnit
 		}
 		MappingFileRef mappingFileRef = buildEclipseLinkImpliedMappingFileRef();
 		this.impliedEclipseLinkMappingFileRef = mappingFileRef;
-		firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
+		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
 		return mappingFileRef;
 	}
 
@@ -169,7 +170,7 @@ public class EclipseLinkPersistenceUnit
 		MappingFileRef mappingFileRef = this.impliedEclipseLinkMappingFileRef;
 		this.impliedEclipseLinkMappingFileRef.dispose();
 		this.impliedEclipseLinkMappingFileRef = null;
-		firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
+		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
 	}
 
 
@@ -180,7 +181,7 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	protected Connection buildEclipseLinkConnection() {
-		return (Connection) getContextNodeFactory().buildConnection(this);
+		return (Connection) this.getContextNodeFactory().buildConnection(this);
 	}
 	
 	protected Customization buildEclipseLinkCustomization() {
@@ -196,7 +197,7 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	protected Options buildEclipseLinkOptions() {
-		return (Options) getContextNodeFactory().buildOptions(this);
+		return (Options) this.getContextNodeFactory().buildOptions(this);
 	}
 	
 	protected SchemaGeneration buildEclipseLinkSchemaGeneration() {

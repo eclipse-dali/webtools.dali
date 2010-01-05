@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2009 Oracle. All rights reserved.
+* Copyright (c) 2007, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -246,8 +246,24 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlLoggingTab_defaultWithOneParam;
 	public static String PersistenceXmlLoggingTab_defaultEmpty;
 
+	public static String PersistenceXmlLoggingTab_categoryLoggingLevelSectionTitle;
 	public static String PersistenceXmlLoggingTab_loggingLevelLabel;
-
+	public static String PersistenceXmlLoggingTab_sqlLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_transactionLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_eventLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_connectionLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_queryLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_cacheLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_propagationLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_sequencingLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_ejbLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_dmsLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_ejb_or_metadataLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_jpa_metamodelLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_weaverLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_propertiesLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_serverLoggingLevelLabel;
+		
 	public static String LoggingLevelComposite_off;
 	public static String LoggingLevelComposite_severe;
 	public static String LoggingLevelComposite_warning;
@@ -257,6 +273,16 @@ public class EclipseLinkUiMessages {
 	public static String LoggingLevelComposite_finer;
 	public static String LoggingLevelComposite_finest;
 	public static String LoggingLevelComposite_all;
+
+	public static String EclipseLinkCategoryLoggingLevelComposite_off;
+	public static String EclipseLinkCategoryLoggingLevelComposite_severe;
+	public static String EclipseLinkCategoryLoggingLevelComposite_warning;
+	public static String EclipseLinkCategoryLoggingLevelComposite_info;
+	public static String EclipseLinkCategoryLoggingLevelComposite_config;
+	public static String EclipseLinkCategoryLoggingLevelComposite_fine;
+	public static String EclipseLinkCategoryLoggingLevelComposite_finer;
+	public static String EclipseLinkCategoryLoggingLevelComposite_finest;
+	public static String EclipseLinkCategoryLoggingLevelComposite_all;
 
 	public static String PersistenceXmlLoggingTab_loggerLabel;
 	public static String PersistenceXmlLoggingTab_browse;
