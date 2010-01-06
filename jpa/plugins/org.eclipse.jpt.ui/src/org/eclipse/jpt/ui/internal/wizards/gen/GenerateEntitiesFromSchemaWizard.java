@@ -13,7 +13,6 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceRuleFactory;
@@ -37,8 +36,6 @@ import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ForeignKey;
@@ -51,7 +48,6 @@ import org.eclipse.jpt.gen.internal.PackageGenerator2;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -80,8 +76,6 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	private IStructuredSelection selection;
 
 	private ORMGenCustomizer customizer = null;	
-
-	private boolean synchronizePersistenceXml;
 
 	private PromptJPAProjectWizardPage projectPage;	
 
@@ -201,36 +195,17 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	public boolean performFinish() {
 		if( this.jpaProject == null )
 			return true;
-		
 		try {
 			this.customizer.setDatabaseAnnotationNameBuilder( buildDatabaseAnnotationNameBuilder() );
 			this.customizer.save();
 		} catch (IOException e) {
 			JptUiPlugin.log(e);
 		}
-		
-		this.synchronizePersistenceXml = this.tablesSelectorPage.synchronizePersistenceXml();
-
 		if(shouldShowOverwriteWarning())
 			PackageGenerator2.setOverwriteConfirmer( new OverwriteConfirmer());
-
-		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob( this.jpaProject,  getCustomizer() );
 		
-		WorkspaceJob synchClassesJob = null;
-		if (synchronizePersistenceXml()) {
-			// we currently only support *one* persistence.xml file per project
-			PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
-			if (persistenceXml != null) {
-				// TODO casting to IFile - just trying to get rid of all compiler errors for now
-				synchClassesJob = new SynchronizeClassesJob((IFile) persistenceXml.getResource());
-			}
-		}
-		
+		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob( this.jpaProject, getCustomizer());
 		genEntitiesJob.schedule();
-		if (synchClassesJob != null) {
-			synchClassesJob.schedule();
-		}		
-		
 		return true;
 	}
 	
@@ -250,7 +225,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 			try{
-				PackageGenerator2.generate(jpaProject.getJavaProject(),this.customizer, monitor);
+				PackageGenerator2.generate(jpaProject,this.customizer, monitor);
 			}catch(OperationCanceledException e){
 				//user canceled generation
 			}
@@ -518,10 +493,6 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 
 	public Schema getDefaultSchema() {
 		return getJpaProject().getDefaultDbSchema() ;
-	}
-
-	public boolean synchronizePersistenceXml() {
-		return this.synchronizePersistenceXml;
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {

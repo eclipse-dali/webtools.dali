@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.util.DTPUtil;
@@ -95,6 +94,8 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	private Map<String, String> mProps = new java.util.HashMap<String, String>();
 
 	private transient DatabaseAnnotationNameBuilder databaseAnnotationNameBuilder = DatabaseAnnotationNameBuilder.Default.INSTANCE;
+
+	private boolean mUpdatePersistenceXml = true;
 	
 	//-----------------------------------------
 	//---- abstract methods
@@ -572,6 +573,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		mTableNames = customizer.mTableNames;
 		mAssociations = customizer.mAssociations;
 		mProps = customizer.mProps;
+		mUpdatePersistenceXml = customizer.mUpdatePersistenceXml;
 		if( mSchema == null )
 			return;
 		
@@ -808,5 +810,11 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
             return 0;
 	      }
 	   } );
+	}
+	public boolean shouldUpdatePersistenceXml() {
+		return mUpdatePersistenceXml;
+	}
+	public void setShouldUpdatePersistenceXml(boolean updatePersistenceXml) {
+		this.mUpdatePersistenceXml = updatePersistenceXml;
 	}
 }

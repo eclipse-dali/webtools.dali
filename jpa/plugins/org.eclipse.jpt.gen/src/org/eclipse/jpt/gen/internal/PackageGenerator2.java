@@ -39,6 +39,11 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.gen.internal.util.CompilationUnitModifier;
 import org.eclipse.jpt.gen.internal.util.FileUtil;
 import org.eclipse.jpt.gen.internal.util.UrlUtil;
@@ -51,8 +56,8 @@ import org.osgi.framework.Bundle;
 public class PackageGenerator2 { 
 
 	private static final String LOGGER_NAME = "org.eclipse.jpt.entities.gen.log"; //$NON-NLS-1$
-	private IJavaProject javaProject;
-	private ORMGenCustomizer customizer ; 
+	private JpaProject jpaProject;
+	private ORMGenCustomizer customizer;
 	private static OverwriteConfirmer overwriteConfirmer = null;
 
 	static public void setOverwriteConfirmer(OverwriteConfirmer confirmer){
@@ -64,13 +69,13 @@ public class PackageGenerator2 {
 	 * @param copyJdbcDrive
 	 * @throws Exception 
 	 */
-	static public void generate(IJavaProject jpaProject, ORMGenCustomizer customizer, IProgressMonitor monitor ) throws CoreException {
+	static public void generate(JpaProject jpaProject, ORMGenCustomizer customizer, IProgressMonitor monitor ) throws CoreException {
 		PackageGenerator2 generator = new PackageGenerator2();
 		generator.setProject(jpaProject);
 		generator.setCustomizer(customizer);
 		
 		try {
-			generator.doGenerate(  monitor);
+			generator.doGenerate(monitor);
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, JptGenPlugin.PLUGIN_ID, JptGenMessages.Error_Generating_Entities, e));
 		}
@@ -84,19 +89,19 @@ public class PackageGenerator2 {
 		this.customizer = customizer2;
 	}
 	
-	private void setProject(IJavaProject proj ){
-		this.javaProject = proj;
+	private void setProject(JpaProject proj ){
+		this.jpaProject = proj;
 	}
 	
-	protected void doGenerate(  IProgressMonitor monitor ) throws Exception {
+	protected void doGenerate(IProgressMonitor monitor ) throws Exception {
 		generateInternal( monitor );
 	}
 
-	protected void generateInternal( IProgressMonitor progress) throws Exception {
+	protected void generateInternal(IProgressMonitor progress) throws Exception {
 		File templDir = prepareTemplatesFolder();
 
 		List<String> genClasses = new java.util.ArrayList<String>();
-		List<String> tableNames = customizer.getGenTableNames();
+		List<String> tableNames = this.customizer.getGenTableNames();
 
 		/* .java per table, persistence.xml, refresh package folder */
 		String taskName = NLS.bind(JptGenMessages.EntityGenerator_taskName, "Total "+ tableNames.size() + 2);//$NON-NLS-1$
@@ -121,7 +126,46 @@ public class PackageGenerator2 {
 				genClasses.add(table.getQualifiedCompositeKeyClassName());
 			}
 		}
+		
+		//update persistence.xml
+		if (this.customizer.shouldUpdatePersistenceXml()) {
+			updatePersistenceXml(genClasses);
+		}
 		progress.done();
+	}
+	private void updatePersistenceXml(List<String> genClasses) {
+		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+		if (resource == null) {
+			//the resource would only be null if the persistence.xml file had an invalid content type,
+			//do not attempt to update
+			return;
+		}
+
+		Persistence persistence = jpaProject.getRootContextNode().getPersistenceXml().getPersistence();	
+		if (persistence == null) {
+			//invalid content, do not attempt to update
+			return;
+		}
+		
+		PersistenceUnit persistenceUnit;
+		//create a persistence unit if one doesn't already exist
+		if (persistence.persistenceUnitsSize()== 0){
+			persistenceUnit = persistence.addPersistenceUnit();
+			persistenceUnit.setName(jpaProject.getName());
+		}
+		else {
+			//we only support one persistence unit - take the first one
+			persistenceUnit = persistence.persistenceUnits().next();
+		}
+		
+		for (Iterator<String> stream = genClasses.iterator(); stream.hasNext();){
+			String className = stream.next();
+			if (!persistenceUnit.mappingFileRefsContaining(className).hasNext()
+					&& !persistenceUnit.specifiesPersistentType(className)){
+				ClassRef classRef = persistenceUnit.addSpecifiedClassRef();
+				classRef.setClassName(className);
+			}
+		}
 	}
 
 	private File prepareTemplatesFolder() throws IOException, Exception,
@@ -240,7 +284,7 @@ public class PackageGenerator2 {
 		/*use CompilationUnitModifier instead of calling WideEnv.getEnv().setFileContent 
 		 * so that if the unit is up to date if it is used before file change 
 		 * notifications are delivered (see EJB3ImportSchemaWizard.updateExistingDomainClass for example)*/
-		IJavaProject project = javaProject.getJavaProject();
+		IJavaProject project = jpaProject.getJavaProject();
 		CompilationUnitModifier modifier = new CompilationUnitModifier(project, className);
 		modifier.setJavaSource(fileContent);
 		modifier.save();
@@ -251,7 +295,7 @@ public class PackageGenerator2 {
 	}
 	
 	public IFolder getJavaPackageFolder(ORMGenTable table, IProgressMonitor monitor) throws CoreException {
-		IPackageFragmentRoot root = getDefaultJavaSrouceLocation ( javaProject , table.getSourceFolder()) ;
+		IPackageFragmentRoot root = getDefaultJavaSrouceLocation ( getJavaProject() , table.getSourceFolder()) ;
 		String packageName = table.getPackage();
 		if( packageName==null ) packageName ="";
 		IPackageFragment packageFragment = root.getPackageFragment(packageName);
@@ -259,6 +303,10 @@ public class PackageGenerator2 {
 			root.createPackageFragment(packageName, true, monitor);
 		}		
 		return (IFolder)packageFragment.getResource();
+	}
+	
+	private IJavaProject getJavaProject(){
+		return this.jpaProject.getJavaProject();
 	}
 	
 	private IPackageFragmentRoot getDefaultJavaSrouceLocation(IJavaProject jproject, String sourceFolder){

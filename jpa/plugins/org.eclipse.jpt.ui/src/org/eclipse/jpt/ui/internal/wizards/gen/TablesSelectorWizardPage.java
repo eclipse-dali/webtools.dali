@@ -73,10 +73,11 @@ class TablesSelectorWizardPage extends WizardPage{
 	private JpaProject jpaProject;
 	private Schema schema = null;
 	private ORMGenCustomizer customizer = null;
-	private boolean synchronizePersistenceXml = true;
+	private boolean updatePersistenceXml = true;
 
 	private DatabaseGroup databaseGroup;
 	private CheckboxTableViewer tableTable;
+	private Button updatePersistenceXmlCheckBox;
 	
 	TablesSelectorWizardPage(JpaProject jpaProject ) {
 		super("TablesSelectorWizardPage"); //$NON-NLS-1$
@@ -135,18 +136,18 @@ class TablesSelectorWizardPage extends WizardPage{
 		//Filler column
 		new Label( composite, SWT.NONE);
 		
-		final Button synchronizeClassesCheckBox = new Button(composite, SWT.CHECK);
-		synchronizeClassesCheckBox.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_synchronizeClasses );
-		synchronizeClassesCheckBox.setSelection(true);
-		synchronizeClassesCheckBox.addSelectionListener(new SelectionListener() {
+		this.updatePersistenceXmlCheckBox = new Button(composite, SWT.CHECK);
+		this.updatePersistenceXmlCheckBox.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml );
+		this.updatePersistenceXmlCheckBox.setSelection(shouldUpdatePersistenceXml());
+		this.updatePersistenceXmlCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 
 			public void widgetSelected(SelectionEvent e) {
-				setSynchronizePersistenceXml(synchronizeClassesCheckBox.getSelection());
+				setShouldUpdatePersistenceXml(updatePersistenceXmlCheckBox.getSelection());
 			}
 
 		});
-		fillColumns( synchronizeClassesCheckBox, 2);
+		fillColumns( this.updatePersistenceXmlCheckBox, 2);
 
 
 		//Filler column
@@ -161,8 +162,8 @@ class TablesSelectorWizardPage extends WizardPage{
 					if( customizer.getFile().exists() ){
 						customizer.getFile().delete();
 					}
-					updateTablesSelector( databaseGroup.getSelectedSchema() );
 					deselectAllTables();
+					restoreUpdatePersistenceXmlDefault();
 				}
 			}
 
@@ -171,12 +172,16 @@ class TablesSelectorWizardPage extends WizardPage{
 		gridData.horizontalAlignment = SWT.END;
 		restoreBtn.setLayoutData(gridData);
 		
-		
+		this.updateSelectionState(databaseGroup.getSelectedSchema());
 		this.getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
-
 		this.setControl(composite);
 
 		this.setPageComplete(true);
+	}
+	
+	private void restoreUpdatePersistenceXmlDefault(){
+		updatePersistenceXmlCheckBox.setSelection(true);
+		setShouldUpdatePersistenceXml(true);
 	}
 
 	@Override
@@ -215,7 +220,7 @@ class TablesSelectorWizardPage extends WizardPage{
 					// store the *identifier* in the JPA project, since it gets put in Java annotations
 					jpaProject.setUserOverrideDefaultSchema(schema.getIdentifier());
 					setSchema( schema );
-					updateTablesSelector(schema);
+					updateSelectionState(schema);
 				}
 				doStatusUpdate();
 			}
@@ -225,12 +230,13 @@ class TablesSelectorWizardPage extends WizardPage{
 		return dbGroup;
 	}
 
-	boolean synchronizePersistenceXml() {
-		return this.synchronizePersistenceXml;
+	private boolean shouldUpdatePersistenceXml() {
+		return this.updatePersistenceXml;
 	}
 
-	private void setSynchronizePersistenceXml(boolean synchronizePersistenceXml){
-		this.synchronizePersistenceXml = synchronizePersistenceXml;
+	private void setShouldUpdatePersistenceXml(boolean updatePersistenceXml){
+		this.updatePersistenceXml = updatePersistenceXml;
+		doStatusUpdate();
 	}
 
 	private void selectAllTables(){
@@ -299,7 +305,6 @@ class TablesSelectorWizardPage extends WizardPage{
 			}
 		});
 
-		updateTablesSelector( databaseGroup.getSelectedSchema() );
 		createButtonComposite(parent);
 		initTablesSelectionControl(possibleTables());		
 	}
@@ -414,6 +419,7 @@ class TablesSelectorWizardPage extends WizardPage{
 						}
 						customizer.setSchema(schema);
 						customizer.setTableNames(tableNames);
+						customizer.setShouldUpdatePersistenceXml(updatePersistenceXml);
 						monitor.done();
 				    }
 				});
@@ -471,7 +477,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 	}
 
-	private void updateTablesSelector(final Schema schema) {
+	private void updateSelectionState(final Schema schema) {
 		if(schema ==null)
 			return;
 		this.jpaProject.setUserOverrideDefaultSchema( schema.getIdentifier());
@@ -482,7 +488,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) getWizard();
 		customizer = wizard.createORMGenCustomizer( schema );
 
-		if( tableTable!=null && customizer != null  ){
+		if( this.tableTable!=null && this.updatePersistenceXmlCheckBox!=null && customizer != null  ){
 			restoreWizardState();
 		}
         doStatusUpdate();
@@ -491,6 +497,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 	private boolean restoreWizardState(){
 		boolean pageComplete = false;
+		this.updatePersistenceXmlCheckBox.setSelection(this.customizer.shouldUpdatePersistenceXml());
 		List<String> preSelectedTableNames = this.customizer.getTableNames();
 		if(preSelectedTableNames!=null && preSelectedTableNames.size()>0) {
 			Set<String> set = new HashSet<String>();

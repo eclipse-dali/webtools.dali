@@ -28,7 +28,7 @@ public class JptUiEntityGenMessages {
 	public static String GenerateEntitiesWizard_selectJPAProject_msg;
 	public static String GenerateEntitiesWizard_tableSelectPage_selectTable;
 	public static String GenerateEntitiesWizard_tableSelectPage_chooseEntityTable;
-	public static String GenerateEntitiesWizard_tableSelectPage_synchronizeClasses;
+	public static String GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml;
 	public static String GenerateEntitiesWizard_tableSelectPage_tables;
 	public static String GenerateEntitiesWizard_tableSelectPage_tableColumn;
 	//Database connection group
