@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.details.db.DatabaseObjectCombo;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -81,7 +80,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class ColumnComposite extends FormPane<Column> {
+public class ColumnComposite extends Pane<Column> {
 
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
@@ -90,7 +89,7 @@ public class ColumnComposite extends FormPane<Column> {
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 */
-	public ColumnComposite(FormPane<?> parentPane,
+	public ColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent) {
 
@@ -107,7 +106,7 @@ public class ColumnComposite extends FormPane<Column> {
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
 	 */
-	public ColumnComposite(FormPane<?> parentPane,
+	public ColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets) {
@@ -125,7 +124,7 @@ public class ColumnComposite extends FormPane<Column> {
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
 	 */
-	public ColumnComposite(FormPane<?> parentPane,
+	public ColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets,
@@ -462,9 +461,9 @@ public class ColumnComposite extends FormPane<Column> {
 		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
 	}
 	
-	protected class DetailsComposite extends FormPane<Column> {
+	protected class DetailsComposite extends Pane<Column> {
 				
-		public DetailsComposite(FormPane<?> parentPane,
+		public DetailsComposite(Pane<?> parentPane,
             PropertyValueModel<? extends Column> subjectHolder,
             Composite parent) {
 

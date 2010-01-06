@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.logging;
 
 import java.util.Collection;
@@ -15,14 +15,14 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.logging.Logging2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  EclipseLinkCategoryLoggingLevelComposite
  */
-public class EclipseLinkCategoryLoggingLevelComposite extends FormPane<Logging2_0>
+public class EclipseLinkCategoryLoggingLevelComposite extends Pane<Logging2_0>
 {
 	private String property;
 	
@@ -35,7 +35,7 @@ public class EclipseLinkCategoryLoggingLevelComposite extends FormPane<Logging2_
 	 *            The parent container
 	 */
 	public EclipseLinkCategoryLoggingLevelComposite(
-					FormPane<Logging2_0> parentComposite, 
+					Pane<Logging2_0> parentComposite, 
 					Composite parent) {
 
 		super(parentComposite, parent);
@@ -92,7 +92,7 @@ public class EclipseLinkCategoryLoggingLevelComposite extends FormPane<Logging2_
 	
 
 
-	private class CategoryLoggingLevelComboViewer extends FormPane<Logging2_0>
+	private class CategoryLoggingLevelComboViewer extends Pane<Logging2_0>
 	{
 		private static final String DEFAULT_PROPERTY = Logging2_0.CATEGORIES_DEFAULT_LOGGING_PROPERTY;
 		final private String category;
@@ -106,7 +106,7 @@ public class EclipseLinkCategoryLoggingLevelComposite extends FormPane<Logging2_
 		 *            The parent container
 		 */
 		public CategoryLoggingLevelComboViewer(
-					FormPane<? extends Logging2_0> parentComposite, 
+					Pane<? extends Logging2_0> parentComposite, 
 					Composite parent
 					) {
 			super(parentComposite, parent);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.eclipse.jpt.core.context.Entity;
+
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
@@ -23,12 +23,10 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkDisableHitsCom
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkExpiryComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkRefreshOnlyIfNewerComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -68,10 +66,10 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 3.0
  */
-public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCaching> extends FormPane<T>
+public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCaching> extends Pane<T>
 {
 	
-	protected EclipseLinkCaching2_0Composite(FormPane<?> parentPane,
+	protected EclipseLinkCaching2_0Composite(Pane<?> parentPane,
         PropertyValueModel<T> subjectHolder,
         Composite parent) {
 

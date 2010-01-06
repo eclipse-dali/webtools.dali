@@ -14,7 +14,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * PersistenceXmlLoggingTab
  */
 public class PersistenceXmlLoggingTab<T extends Logging>
-	extends FormPane<T>
+	extends Pane<T>
 	implements JpaPageComposite
 {
 	// ********** constructors/initialization **********

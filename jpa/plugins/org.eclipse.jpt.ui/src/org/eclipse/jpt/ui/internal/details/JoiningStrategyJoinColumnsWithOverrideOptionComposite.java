@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -42,13 +42,13 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 public class JoiningStrategyJoinColumnsWithOverrideOptionComposite 
-	extends FormPane<JoinColumnJoiningStrategy>
+	extends Pane<JoinColumnJoiningStrategy>
 {
 	
 	private JoiningStrategyJoinColumnsComposite joiningStrategyComposite;
 	
 	public JoiningStrategyJoinColumnsWithOverrideOptionComposite(
-			FormPane<?> parentPane,
+			Pane<?> parentPane,
 			PropertyValueModel<JoinColumnJoiningStrategy> subjectHolder,
 			Composite parent) {
 		super(parentPane, subjectHolder, parent);

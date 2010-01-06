@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options;
 
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  QueryConfigurationComposite
  */
-public class QueryConfigurationComposite extends FormPane<Options2_0>
+public class QueryConfigurationComposite extends Pane<Options2_0>
 {
 	/**
 	 * Creates a new <code>QueryConfigurationComposite</code>.
@@ -32,7 +32,7 @@ public class QueryConfigurationComposite extends FormPane<Options2_0>
 	 *            The parent container
 	 */
 	public QueryConfigurationComposite(
-					FormPane<Options2_0> parentComposite,
+					Pane<Options2_0> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);

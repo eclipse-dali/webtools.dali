@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.details.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.ui.internal.details.PrimaryKeyJoinColumnsInSecondaryTable
 import org.eclipse.jpt.ui.internal.details.SecondaryTableDialog;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -67,7 +68,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmSecondaryTablesComposite(FormPane<? extends OrmEntity> parentPane,
+	public OrmSecondaryTablesComposite(Pane<? extends OrmEntity> parentPane,
 	                                   Composite parent) {
 
 		super(parentPane, parent);

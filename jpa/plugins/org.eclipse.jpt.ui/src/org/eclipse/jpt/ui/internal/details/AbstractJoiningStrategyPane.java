@@ -1,21 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
-import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -47,7 +44,7 @@ import org.eclipse.ui.part.PageBook;
  */
 public abstract class AbstractJoiningStrategyPane
 		<R extends RelationshipReference, S extends JoiningStrategy> 
-	extends FormPane<R>
+	extends Pane<R>
 {
 	protected WritablePropertyValueModel<Boolean> usesStrategyHolder;
 	
@@ -63,12 +60,12 @@ public abstract class AbstractJoiningStrategyPane
 	 * @param parent The parent container
 	 */
 	protected AbstractJoiningStrategyPane(
-			FormPane<? extends R> parentPane, 
+			Pane<? extends R> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
 	
-	protected AbstractJoiningStrategyPane(FormPane<?> parentPane, 
+	protected AbstractJoiningStrategyPane(Pane<?> parentPane, 
 		PropertyValueModel<? extends R> subjectHolder,
         Composite parent) {
 

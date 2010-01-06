@@ -1,26 +1,26 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.persistence.connection;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  GenericPersistenceUnit2_0ConnectionComposite
  */
-public class GenericPersistenceUnit2_0ConnectionComposite extends FormPane<JpaConnection2_0>
+public class GenericPersistenceUnit2_0ConnectionComposite extends Pane<JpaConnection2_0>
 {
 	public GenericPersistenceUnit2_0ConnectionComposite(
-															FormPane<JpaConnection2_0> subjectHolder,
+															Pane<JpaConnection2_0> subjectHolder,
 															Composite container) {
 		super(subjectHolder, container, false);
 	}

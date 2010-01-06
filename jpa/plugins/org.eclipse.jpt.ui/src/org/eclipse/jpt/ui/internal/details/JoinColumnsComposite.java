@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.JpaNode;
@@ -21,7 +22,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -55,7 +56,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 2.0
  */
-public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
+public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 {
 	/**
 	 * The editor used to perform the common behaviors defined in the list pane.
@@ -73,7 +74,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	 * @param joinColumnsEditor The editor used to perform the common behaviors
 	 * defined in the list pane
 	 */
-	public JoinColumnsComposite(FormPane<? extends T> parentPane,
+	public JoinColumnsComposite(Pane<? extends T> parentPane,
 	                            Composite parent,
 	                            JoinColumnsEditor<T> joinColumnsEditor) {
 
@@ -92,7 +93,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	 * @param joinColumnsEditor The editor used to perform the common behaviors
 	 * defined in the list pane
 	 */
-	public JoinColumnsComposite(FormPane<?> parentPane,
+	public JoinColumnsComposite(Pane<?> parentPane,
 	                            PropertyValueModel<? extends T> subjectHolder,
 	                            Composite parent,
 	                            JoinColumnsEditor<T> joinColumnsEditor,

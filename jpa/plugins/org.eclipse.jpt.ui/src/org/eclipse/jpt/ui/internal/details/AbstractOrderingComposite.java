@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Text;
  * @version 3.0
  * @since 1.0
  */
-public abstract class AbstractOrderingComposite extends FormPane<CollectionMapping>
+public abstract class AbstractOrderingComposite extends Pane<CollectionMapping>
 {
 	/**
 	 * Creates a new <code>OrderingComposite</code>.
@@ -52,7 +52,7 @@ public abstract class AbstractOrderingComposite extends FormPane<CollectionMappi
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected AbstractOrderingComposite(FormPane<? extends CollectionMapping> parentPane,
+	protected AbstractOrderingComposite(Pane<? extends CollectionMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);

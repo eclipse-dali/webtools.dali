@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,8 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.AbstractOrderingComposite;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.details.ManyToManyMappingComposite;
-import org.eclipse.jpt.ui.internal.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -59,7 +57,7 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public Ordering2_0Composite(FormPane<? extends CollectionMapping> parentPane,
+	public Ordering2_0Composite(Pane<? extends CollectionMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);

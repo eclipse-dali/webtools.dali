@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
@@ -18,7 +19,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -53,7 +54,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 3.0
  */
-public class OrderColumnComposite extends FormPane<OrderColumn2_0> {
+public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
@@ -62,7 +63,7 @@ public class OrderColumnComposite extends FormPane<OrderColumn2_0> {
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 */
-	public OrderColumnComposite(FormPane<?> parentPane,
+	public OrderColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
 	                       Composite parent) {
 
@@ -79,7 +80,7 @@ public class OrderColumnComposite extends FormPane<OrderColumn2_0> {
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
 	 */
-	public OrderColumnComposite(FormPane<?> parentPane,
+	public OrderColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets) {
@@ -97,7 +98,7 @@ public class OrderColumnComposite extends FormPane<OrderColumn2_0> {
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
 	 */
-	public OrderColumnComposite(FormPane<?> parentPane,
+	public OrderColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets,
@@ -323,9 +324,9 @@ public class OrderColumnComposite extends FormPane<OrderColumn2_0> {
 		new PaneEnabler(booleanHolder, this);
 	}
 
-	protected class DetailsComposite extends FormPane<OrderColumn2_0> {
+	protected class DetailsComposite extends Pane<OrderColumn2_0> {
 				
-		public DetailsComposite(FormPane<?> parentPane,
+		public DetailsComposite(Pane<?> parentPane,
             PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
             Composite parent) {
 

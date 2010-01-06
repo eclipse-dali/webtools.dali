@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.details.orm;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class OrmJavaClassChooser extends FormPane<OrmTypeMapping> {
+public class OrmJavaClassChooser extends Pane<OrmTypeMapping> {
 
 	/**
 	 * Creates a new <code>XmlJavaClassChooser</code>.
@@ -48,14 +48,14 @@ public class OrmJavaClassChooser extends FormPane<OrmTypeMapping> {
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public OrmJavaClassChooser(FormPane<?> parentPane,
+	public OrmJavaClassChooser(Pane<?> parentPane,
 	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                           Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
-	public OrmJavaClassChooser(FormPane<?> parentPane,
+	public OrmJavaClassChooser(Pane<?> parentPane,
         PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
         Composite parent,
         boolean automaticallyAlignWidgets) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -24,7 +25,7 @@ import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -66,7 +67,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends FormPane<SecondaryTable>
+public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<SecondaryTable>
 {
 	private WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
@@ -77,7 +78,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends FormPane<Sec
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public PrimaryKeyJoinColumnsInSecondaryTableComposite(FormPane<?> parentPane,
+	public PrimaryKeyJoinColumnsInSecondaryTableComposite(Pane<?> parentPane,
 	                                                      PropertyValueModel<? extends SecondaryTable> subjectHolder,
 	                                                      Composite parent) {
 

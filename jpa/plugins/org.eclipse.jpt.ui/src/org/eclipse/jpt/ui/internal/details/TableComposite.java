@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.db.Schema;
@@ -19,7 +20,7 @@ import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.details.db.TableCombo;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -55,7 +56,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class TableComposite extends FormPane<Entity>
+public class TableComposite extends Pane<Entity>
 {
 	/**
 	 * Creates a new <code>TableComposite</code>.
@@ -64,7 +65,7 @@ public class TableComposite extends FormPane<Entity>
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 */
-	public TableComposite(FormPane<? extends Entity> parentPane,
+	public TableComposite(Pane<? extends Entity> parentPane,
 	                      Composite parent) {
 
 		super(parentPane, parent, false);

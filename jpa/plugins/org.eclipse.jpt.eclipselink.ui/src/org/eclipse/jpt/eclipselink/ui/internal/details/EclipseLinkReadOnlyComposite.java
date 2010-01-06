@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkReadOnlyComposite extends FormPane<EclipseLinkReadOnly>
+public class EclipseLinkReadOnlyComposite extends Pane<EclipseLinkReadOnly>
 {
 	/**
 	 * Creates a new <code>ReadOnlyComposite</code>.
@@ -35,7 +35,7 @@ public class EclipseLinkReadOnlyComposite extends FormPane<EclipseLinkReadOnly>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EclipseLinkReadOnlyComposite(FormPane<?> parentPane, 
+	public EclipseLinkReadOnlyComposite(Pane<?> parentPane, 
 		PropertyValueModel<? extends EclipseLinkReadOnly> subjectHolder,
 		Composite parent) {
 

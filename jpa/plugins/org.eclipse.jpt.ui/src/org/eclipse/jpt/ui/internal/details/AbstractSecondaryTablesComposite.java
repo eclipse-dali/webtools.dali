@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.SecondaryTable;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.details.orm.OrmEntityComposite;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -49,7 +47,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends FormPane<T>
+public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends Pane<T>
 {
 	/**
 	 * Creates a new <code>SecondaryTablesComposite</code>.
@@ -57,7 +55,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public AbstractSecondaryTablesComposite(FormPane<? extends T> parentPane,
+	public AbstractSecondaryTablesComposite(Pane<? extends T> parentPane,
 	                                Composite parent) {
 
 		super(parentPane, parent, false);

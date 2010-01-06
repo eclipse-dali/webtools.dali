@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
@@ -19,8 +20,8 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -59,7 +60,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> {
+public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 
 	/**
 	 * Creates a new <code>InheritanceComposite</code>.
@@ -67,7 +68,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> 
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public DiscriminatorColumnComposite(FormPane<? extends T> parentPane,
+	public DiscriminatorColumnComposite(Pane<? extends T> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent, false);
@@ -225,8 +226,8 @@ public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> 
 		};
 	}
 	
-	protected class DetailsComposite extends FormPane<DiscriminatorColumn> {
-		public DetailsComposite(FormPane<?> parentPane,
+	protected class DetailsComposite extends Pane<DiscriminatorColumn> {
+		public DetailsComposite(Pane<?> parentPane,
             PropertyValueModel<? extends DiscriminatorColumn> subjectHolder,
             Composite parent) {
 

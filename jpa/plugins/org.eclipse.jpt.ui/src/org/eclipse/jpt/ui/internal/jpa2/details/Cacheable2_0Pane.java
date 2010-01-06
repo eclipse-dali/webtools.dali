@@ -1,21 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaEntity2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmEntity2_0Composite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -35,10 +32,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see OrmEntity2_0Composite - A container of this widget
  */
 public class Cacheable2_0Pane 
-	extends FormPane<Cacheable2_0>
+	extends Pane<Cacheable2_0>
 {
 	public Cacheable2_0Pane(
-			FormPane<?> parentPane,
+			Pane<?> parentPane,
 			PropertyValueModel<? extends Cacheable2_0> subjectHolder,
 	        Composite parent) {
 		

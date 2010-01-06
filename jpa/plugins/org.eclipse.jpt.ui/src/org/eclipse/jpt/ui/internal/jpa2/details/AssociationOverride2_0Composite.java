@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,11 +12,9 @@ package org.eclipse.jpt.ui.internal.jpa2.details;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.ui.internal.details.AssociationOverrideComposite;
-import org.eclipse.jpt.ui.internal.details.EntityOverridesComposite;
-import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.ui.internal.details.JoinTableJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -47,7 +45,7 @@ public class AssociationOverride2_0Composite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public AssociationOverride2_0Composite(FormPane<?> parentPane, 
+	public AssociationOverride2_0Composite(Pane<?> parentPane, 
 			PropertyValueModel<? extends AssociationOverride> subjectHolder,
 			Composite parent) {
 		

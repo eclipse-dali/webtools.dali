@@ -23,7 +23,7 @@ import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -63,7 +63,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMetadata>
+public class PersistenceUnitMetadataComposite extends Pane<PersistenceUnitMetadata>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitMetadataComposite</code>.
@@ -72,7 +72,7 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitMetadataComposite(FormPane<?> parentPane,
+	public PersistenceUnitMetadataComposite(Pane<?> parentPane,
 	                                        PropertyValueModel<? extends PersistenceUnitMetadata> subjectHolder,
 	                                        Composite parent) {
 

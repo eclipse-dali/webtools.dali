@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -31,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public class OptionalComposite extends FormPane<Nullable>
+public class OptionalComposite extends Pane<Nullable>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -39,7 +38,7 @@ public class OptionalComposite extends FormPane<Nullable>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OptionalComposite(FormPane<? extends Nullable> parentPane,
+	public OptionalComposite(Pane<? extends Nullable> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);

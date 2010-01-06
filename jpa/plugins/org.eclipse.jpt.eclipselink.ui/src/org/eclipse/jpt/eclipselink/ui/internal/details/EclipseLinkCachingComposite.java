@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,13 +12,10 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -58,10 +55,10 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> extends FormPane<T>
+public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> extends Pane<T>
 {
 
-	protected EclipseLinkCachingComposite(FormPane<?> parentPane,
+	protected EclipseLinkCachingComposite(Pane<?> parentPane,
         PropertyValueModel<T> subjectHolder,
         Composite parent) {
 

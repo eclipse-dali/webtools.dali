@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class CascadeComposite extends FormPane<Cascade>
+public class CascadeComposite extends Pane<Cascade>
 {
 	/**
 	 * Creates a new <code>CascadeComposite</code>.
@@ -49,7 +49,7 @@ public class CascadeComposite extends FormPane<Cascade>
 	 * @param subjectHolder The holder of the subject <code>ICascade</code>
 	 * @param parent The parent container
 	 */
-	public CascadeComposite(FormPane<? extends RelationshipMapping> parentPane,
+	public CascadeComposite(Pane<? extends RelationshipMapping> parentPane,
 	                        PropertyValueModel<? extends Cascade> subjectHolder,
 		                     Composite parent) {
 

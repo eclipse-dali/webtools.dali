@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -69,7 +69,7 @@ import org.eclipse.swt.widgets.Label;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractInheritanceComposite<T extends Entity> extends FormPane<T> {
+public abstract class AbstractInheritanceComposite<T extends Entity> extends Pane<T> {
 
 	/**
 	 * A key used to represent the default value, this is required to convert
@@ -88,7 +88,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public AbstractInheritanceComposite(FormPane<? extends T> parentPane,
+	public AbstractInheritanceComposite(Pane<? extends T> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent, false);

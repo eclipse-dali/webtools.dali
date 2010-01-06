@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.options;
 
 import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  TemporalMutableComposite
  */
-public class TemporalMutableComposite extends FormPane<Options>
+public class TemporalMutableComposite extends Pane<Options>
 {
 	/**
 	 * Creates a new <code>TemporalMutableComposite</code>.
@@ -34,7 +34,7 @@ public class TemporalMutableComposite extends FormPane<Options>
 	 *            The parent container
 	 */
 	public TemporalMutableComposite(
-					FormPane<? extends Options> parentComposite,
+					Pane<? extends Options> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);

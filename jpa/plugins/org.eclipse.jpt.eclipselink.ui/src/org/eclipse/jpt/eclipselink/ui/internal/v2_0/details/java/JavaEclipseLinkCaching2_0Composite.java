@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkAlwaysRefreshComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCacheSizeComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCacheTypeComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkDisableHitsComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkRefreshOnlyIfNewerComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkExistenceCheckingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.EclipseLinkCaching2_0Composite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -57,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
 public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCaching2_0Composite<JavaEclipseLinkCaching>
 {
 
-	public JavaEclipseLinkCaching2_0Composite(FormPane<?> parentPane,
+	public JavaEclipseLinkCaching2_0Composite(Pane<?> parentPane,
         PropertyValueModel<JavaEclipseLinkCaching> subjectHolder,
         Composite parent) {
 

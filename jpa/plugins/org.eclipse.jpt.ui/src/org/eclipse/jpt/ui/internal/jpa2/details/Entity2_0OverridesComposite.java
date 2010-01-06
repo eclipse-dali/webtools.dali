@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,6 @@ package org.eclipse.jpt.ui.internal.jpa2.details;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityOverridesComposite;
-import org.eclipse.jpt.ui.internal.details.AttributeOverrideComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -58,7 +56,7 @@ public class Entity2_0OverridesComposite extends AbstractEntityOverridesComposit
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public Entity2_0OverridesComposite(FormPane<? extends Entity> parentPane,
+	public Entity2_0OverridesComposite(Pane<? extends Entity> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);

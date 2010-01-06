@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -73,7 +73,7 @@ import org.eclipse.ui.part.PageBook;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractOverridesComposite<T extends JpaContextNode> extends FormPane<T>
+public abstract class AbstractOverridesComposite<T extends JpaContextNode> extends Pane<T>
 {
 	private Pane<AttributeOverride> attributeOverridePane;
 	private Pane<AssociationOverride> associationOverridePane;
@@ -87,7 +87,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode> exten
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	protected AbstractOverridesComposite(FormPane<? extends T> parentPane,
+	protected AbstractOverridesComposite(Pane<? extends T> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent, false);
