@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.Classpath;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Tools;
 
 @SuppressWarnings("nls")
 public class ClasspathTests extends TestCase {
@@ -274,7 +275,11 @@ public class ClasspathTests extends TestCase {
 				jarNames.add(entry.getFileName());
 			}
 			String stdExtJarName = JAVA_HOME + sep + "lib" + sep + "ext" + sep + "dnsns.jar";
-			assertTrue("jdk 1.4.x standard extension jar missing: " + stdExtJarName, jarNames.contains(stdExtJarName));
+			String msg = "jdk 1.4.x standard extension jar missing: " + stdExtJarName;
+			boolean jarPresent = jarNames.contains(stdExtJarName);
+			if (Tools.jvmIsSun() || (Tools.jvmIsIBM() && jdk.startsWith("1.6"))) {
+				assertTrue(msg, jarPresent);
+			}
 		} else {
 			fail("we need to update this test for the current jdk");
 		}
@@ -284,8 +289,11 @@ public class ClasspathTests extends TestCase {
 		String jdk = System.getProperty("java.version");
 		if (jdk.startsWith("1.4") || jdk.startsWith("1.5") || jdk.startsWith("1.6")) {
 			String className = "sun.net.spi.nameservice.dns.DNSNameService";
-			assertTrue("jdk 1.4.x standard extension class missing: " + className,
-					CollectionTools.contains(Classpath.javaExtensionClasspath().classNames(), className));
+			String msg = "jdk 1.4.x standard extension class missing: " + className;
+			boolean classPresent = CollectionTools.contains(Classpath.javaExtensionClasspath().classNames(), className);
+			if (Tools.jvmIsSun() || (Tools.jvmIsIBM() && jdk.startsWith("1.6"))) {
+				assertTrue(msg, classPresent);
+			}
 		} else {
 			fail("we need to update this test for the current jdk");
 		}
@@ -334,7 +342,11 @@ public class ClasspathTests extends TestCase {
 
 	public void testEntry_getCanonicalFileName() {
 		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(entry.getCanonicalFileName().endsWith("rt.jar"));
+		if (Tools.jvmIsSun()) {
+			assertTrue(entry.getCanonicalFileName().endsWith("rt.jar"));
+		} else if (Tools.jvmIsIBM()) {
+			assertTrue(entry.getCanonicalFileName().endsWith("vm.jar"));
+		}
 	}
 
 	public void testEntry_equals() {
