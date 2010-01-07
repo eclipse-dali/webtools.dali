@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,6 +63,15 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	public ColumnAnnotation getResourceColumnOrNull() {
 		return this.getOverrideAnnotation().getColumn();
 	}
+
+	//************* NamedColumn.Owner implementation **************
+	public TypeMapping getTypeMapping() {
+		return this.getOwner().getTypeMapping();
+	}
+	
+	public Table getDbTable(String tableName) {
+		return this.getOwner().getDbTable(tableName);
+	}
 	
 	public String getDefaultColumnName() {
 		Column column = resolveOverridenColumn();
@@ -72,6 +81,8 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		return column.getName();
 	}
 	
+	//************* BaseColumn.Owner implementation **************
+
 	public String getDefaultTableName() {
 		Column column = resolveOverridenColumn();
 		if (column == null) {
@@ -81,23 +92,22 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		if (tableName != null) {
 			return tableName;
 		}
-		return getOwner().getTypeMapping().getPrimaryTableName();
+		return getOwner().getDefaultTableName();
 	}
-	
+
 	protected Column resolveOverridenColumn() {
 		return getOwner().resolveOverridenColumn(getName());
 	}
 
-	//************* IColumn.Owner implementation **************
-	public TypeMapping getTypeMapping() {
-		return this.getOwner().getTypeMapping();
+	public boolean tableIsAllowed() {
+		return getOwner().tableIsAllowed();
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getOwner().tableNameIsInvalid(tableName);
 	}
 	
-	public Table getDbTable(String tableName) {
-		return this.getTypeMapping().getDbTable(tableName);
-	}
-	
-	//************* IAttributeOverride implementation **************
+	//************* AttributeOverride implementation **************
 	
 	public JavaColumn getColumn() {
 		return this.column;
@@ -147,7 +157,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
 		String tableName = this.column.getTable();
-		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
+		if (this.tableNameIsInvalid(tableName)) {
 			if (this.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -86,14 +86,15 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		return this.column;
 	}
 
+	//************* NamedColumn.Owner implementation **************
 	public TypeMapping getTypeMapping() {
 		return getOwner().getTypeMapping();
 	}
 
-	public Table getDbTable(String tablename) {
-		return this.getTypeMapping().getDbTable(getColumn().getTable());
+	public Table getDbTable(String tableName) {
+		return this.getOwner().getDbTable(tableName);
 	}
-	
+
 	public String getDefaultColumnName() {
 		Column column = resolveOverridenColumn();
 		if (column == null) {
@@ -101,6 +102,8 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		}
 		return column.getName();
 	}
+	
+	//************* BaseColumn.Owner implementation **************
 	
 	public String getDefaultTableName() {
 		Column column = resolveOverridenColumn();
@@ -111,12 +114,21 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		if (tableName != null) {
 			return tableName;
 		}
-		return getOwner().getTypeMapping().getPrimaryTableName();
+		return getOwner().getDefaultTableName();
 	}
 	
 	protected Column resolveOverridenColumn() {
 		return getOwner().resolveOverridenColumn(getName());
 	}
+
+	public boolean tableIsAllowed() {
+		return getOwner().tableIsAllowed();
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getOwner().tableNameIsInvalid(tableName);
+	}
+
 
 	public boolean isVirtual() {
 		return getOwner().isVirtual(this);
@@ -128,7 +140,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 	}
 
 
-	//***************** IXmlColumn.Owner implementation ****************
+	//***************** OrmColumn.Owner implementation ****************
 	
 	public XmlColumn getResourceColumn() {
 		return this.resourceAttributeOverride.getColumn();
@@ -163,7 +175,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 	
 	protected void validateColumn(List<IMessage> messages) {
 		String tableName = this.column.getTable();
-		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
+		if (this.tableNameIsInvalid(tableName)) {
 			if (this.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

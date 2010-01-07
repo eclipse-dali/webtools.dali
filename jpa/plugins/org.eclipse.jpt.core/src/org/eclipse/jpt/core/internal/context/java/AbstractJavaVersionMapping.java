@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -83,9 +83,19 @@ public abstract class AbstractJavaVersionMapping
 	public String getDefaultColumnName() {
 		return getName();
 	}
+
+	//************** BaseColumn.Owner implementation ***************
 	
 	public String getDefaultTableName() {
 		return getTypeMapping().getPrimaryTableName();
+	}
+	
+	public boolean tableIsAllowed() {
+		return true;
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getTypeMapping().tableNameIsInvalid(tableName);
 	}
 
 	//************** VersionMapping implementation ***************
@@ -186,7 +196,7 @@ public abstract class AbstractJavaVersionMapping
 	
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
 		String tableName = this.column.getTable();
-		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
+		if (this.tableNameIsInvalid(tableName)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

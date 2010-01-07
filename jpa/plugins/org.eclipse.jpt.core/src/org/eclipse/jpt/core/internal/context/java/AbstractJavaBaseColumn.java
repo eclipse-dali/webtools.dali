@@ -44,7 +44,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	@Override
 	protected void initialize(T column) {
 		super.initialize(column);
-		this.defaultTable = this.buildDefaultTable();
+		this.defaultTable = this.buildDefaultTableName();
 		this.specifiedTable = this.getResourceTable();
 		this.specifiedUnique = this.getResourceUnique();
 		this.specifiedNullable = this.getResourceNullable();
@@ -55,7 +55,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	@Override
 	protected void update(T column) {
 		super.update(column);
-		this.setDefaultTable(this.buildDefaultTable());
+		this.setDefaultTable(this.buildDefaultTableName());
 		this.setSpecifiedTable_(this.getResourceTable());
 		this.setSpecifiedUnique_(this.getResourceUnique());
 		this.setSpecifiedNullable_(this.getResourceNullable());
@@ -262,7 +262,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	}
 	
 	@Override
-	protected String getTableName() {
+	protected String getOwningTableName() {
 		return this.getTable();
 	}
 
@@ -291,7 +291,9 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	 * Return whether the 'table' element is allowed. It is not allowed for
 	 * join columns inside of join tables.
 	 */
-	public abstract boolean tableIsAllowed();
+	public boolean tableIsAllowed() {
+		return getOwner().tableIsAllowed();
+	}
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -305,7 +307,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		return null;
 	}
 
-	protected String buildDefaultTable() {
+	protected String buildDefaultTableName() {
 		return this.getOwner().getDefaultTableName();
 	}
 

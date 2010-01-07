@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -78,20 +78,40 @@ public interface AttributeOverrideContainer
 	
 	interface Owner
 	{
-		
 		/**
 		 * Return the type mapping of the owning persistent type.
 		 */
 		TypeMapping getTypeMapping();
-		
+
 		/**
 		 * Return the overridable persistent type, not the owning persistent type.
 		 * This will be the persistent type of the mapped superclass or embeddable.
 		 */
 		TypeMapping getOverridableTypeMapping();
-		
-		
+
 		Column resolveOverridenColumn(String attributeOverrideName);
+
+		/**
+		 * Return the name of the table which the column belongs to by default
+		 */
+		String getDefaultTableName();
+
+		/**
+		 * Return whether the 'table' element is allowed to be specified explicitly.
+		 * It is not allowed for join columns inside of join tables.
+		 */
+		boolean tableIsAllowed();
+
+		/**
+		 * return whether the given table cannot be explicitly specified
+		 * in the column's 'table' element
+		 */
+		boolean tableNameIsInvalid(String tableName);
+
+		/**
+		 * Return the database table for the specified table name
+		 */
+		org.eclipse.jpt.db.Table getDbTable(String tableName);
 	}
 
 }

@@ -108,11 +108,6 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedColumnName());
 	}
 
-	@Override
-	public boolean tableIsAllowed() {
-		return this.getOwner().tableIsAllowed();
-	}
-
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
 		return getResourceColumn().referencedColumnNameTouches(pos, astRoot);
 	}

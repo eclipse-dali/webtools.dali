@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -200,6 +200,22 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		
 		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
 			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
+		}
+		
+		public boolean tableNameIsInvalid(String tableName) {
+			return getTypeMapping().tableNameIsInvalid(tableName);
+		}
+		
+		public boolean tableIsAllowed() {
+			return true;
+		}
+
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return getTypeMapping().getDbTable(tableName);
+		}
+		
+		public String getDefaultTableName() {
+			return getTypeMapping().getPrimaryTableName();
 		}
 	}
 }

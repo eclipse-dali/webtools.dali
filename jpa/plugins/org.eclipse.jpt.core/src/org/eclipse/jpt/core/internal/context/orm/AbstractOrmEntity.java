@@ -1846,6 +1846,22 @@ public abstract class AbstractOrmEntity
 			}
 			return new VirtualXmlColumn(AbstractOrmEntity.this, javaAttributeOverride.getColumn());
 		}
+		
+		public boolean tableNameIsInvalid(String tableName) {
+			return AbstractOrmEntity.this.tableNameIsInvalid(tableName);
+		}
+		
+		public boolean tableIsAllowed() {
+			return true;
+		}
+
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return AbstractOrmEntity.this.getDbTable(tableName);
+		}
+		
+		public String getDefaultTableName() {
+			return AbstractOrmEntity.this.getPrimaryTableName();
+		}
 	}
 	
 	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -173,6 +173,8 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		resourceAttributes.getIds().remove(this.resourceAttributeMapping);
 	}
 
+	//************** NamedColumn.Owner implementation ***************
+	
 	public Table getDbTable(String tableName) {
 		return getTypeMapping().getDbTable(tableName);
 	}
@@ -181,8 +183,18 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		return getName();
 	}
 
+	//************** BaseColumn.Owner implementation ***************
+	
 	public String getDefaultTableName() {
 		return getTypeMapping().getPrimaryTableName();
+	}
+
+	public boolean tableIsAllowed() {
+		return true;
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getTypeMapping().tableNameIsInvalid(tableName);
 	}
 	
 
@@ -276,7 +288,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	protected void validateColumn(List<IMessage> messages) {
 		OrmPersistentAttribute pa = this.getPersistentAttribute();
 		String tableName = this.column.getTable();
-		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
+		if (this.tableNameIsInvalid(tableName)) {
 			if (pa.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

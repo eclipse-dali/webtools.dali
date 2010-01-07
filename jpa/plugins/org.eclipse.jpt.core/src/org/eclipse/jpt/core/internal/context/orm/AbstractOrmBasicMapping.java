@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -179,6 +179,14 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		return getTypeMapping().getDbTable(tableName);
 	}
 	
+	public boolean tableIsAllowed() {
+		return true;
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getTypeMapping().tableNameIsInvalid(tableName);
+	}
+
 	@Override
 	public void update() {
 		super.update();
@@ -265,7 +273,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	
 	protected void validateColumn(List<IMessage> messages) {
 		String tableName = this.column.getTable();
-		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
+		if (this.tableNameIsInvalid(tableName)) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

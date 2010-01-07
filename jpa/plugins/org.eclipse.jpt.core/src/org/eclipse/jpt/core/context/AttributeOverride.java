@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.db.Table;
+
 /**
  * 
  * 
@@ -34,5 +36,27 @@ public interface AttributeOverride extends BaseOverride, Column.Owner
 		 * will be found in the mapped superclass (or embeddable), not in the owning entity
 		 */
 		Column resolveOverridenColumn(String attributeName);
+
+		/**
+		 * Return the name of the table which the column belongs to by default
+		 */
+		String getDefaultTableName();
+
+		/**
+		 * Return whether the 'table' element is allowed to be specified explicitly.
+		 * It is not allowed for join columns inside of join tables.
+		 */
+		boolean tableIsAllowed();
+
+		/**
+		 * return whether the given table cannot be explicitly specified
+		 * in the column's 'table' element
+		 */
+		boolean tableNameIsInvalid(String tableName);
+
+		/**
+		 * Return the database table for the specified table name
+		 */
+		Table getDbTable(String tableName);
 	}
 }

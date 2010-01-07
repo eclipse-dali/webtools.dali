@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -99,26 +99,58 @@ public class GenericJavaCollectionTable2_0
 	}
 
 
-	// ********** join column owner adapters **********
+	// ********** join column owner adapter **********
 
 	/**
-	 * just a little common behavior
+	 * owner for "back-pointer" JoinColumns;
+	 * these point at the source/owning entity
 	 */
-	protected abstract class AbstractJoinColumnOwner
+	protected class JoinColumnOwner
 		implements JavaJoinColumn.Owner
 	{
-		protected AbstractJoinColumnOwner() {
+		protected JoinColumnOwner() {
 			super();
 		}
 
+		//***** NamedColumn.Owner implementation *******
 		public TypeMapping getTypeMapping() {
 			return GenericJavaCollectionTable2_0.this.getParent().getTypeMapping();
 		}
 
-		public PersistentAttribute getPersistentAttribute() {
-			return GenericJavaCollectionTable2_0.this.getParent().getPersistentAttribute();
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			String collectionTableName = GenericJavaCollectionTable2_0.this.getName();
+			return (collectionTableName == null) ? null : (collectionTableName.equals(tableName)) ? GenericJavaCollectionTable2_0.this.getDbTable() : null;
 		}
 
+		public String getDefaultColumnName() {
+			//built in MappingTools.buildJoinColumnDefaultName()
+			return null;
+		}
+		
+		//***** JavaNamedColumn.Owner implementation *******
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaCollectionTable2_0.this.getValidationTextRange(astRoot);
+		}
+
+		//***** BaseColumn.Owner implementation *******
+		/**
+		 * by default, the join column is, obviously, in the collection table
+		 */
+		public String getDefaultTableName() {
+			return GenericJavaCollectionTable2_0.this.getName();
+		}
+		
+
+		//***** BaseJoinColumn.Owner implementation *******
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+			return getTypeMapping().getPrimaryDbTable();
+		}
+
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
+			return GenericJavaCollectionTable2_0.this.defaultJoinColumn == joinColumn;
+		}
+
+		//***** JoinColumn.Owner implementation *******
 		/**
 		 * the default table name is always valid and a specified table name
 		 * is prohibited (which will be handled elsewhere)
@@ -134,35 +166,6 @@ public class GenericJavaCollectionTable2_0
 			return false;
 		}
 
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			String collectionTableName = GenericJavaCollectionTable2_0.this.getName();
-			return (collectionTableName == null) ? null : (collectionTableName.equals(tableName)) ? GenericJavaCollectionTable2_0.this.getDbTable() : null;
-		}
-
-		/**
-		 * by default, the join column is, obviously, in the collection table
-		 */
-		public String getDefaultTableName() {
-			return GenericJavaCollectionTable2_0.this.getName();
-		}
-
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaCollectionTable2_0.this.getValidationTextRange(astRoot);
-		}
-	}
-
-
-	/**
-	 * owner for "back-pointer" JoinColumns;
-	 * these point at the source/owning entity
-	 */
-	protected class JoinColumnOwner
-		extends AbstractJoinColumnOwner
-	{
-		protected JoinColumnOwner() {
-			super();
-		}
-
 		public Entity getTargetEntity() {
 			return GenericJavaCollectionTable2_0.this.getParent().getEntity();
 		}
@@ -171,29 +174,14 @@ public class GenericJavaCollectionTable2_0
 			return null; //I *think* this is correct
 			//return GenericJavaCollectionTable2_0.this.getParent().getName();
 		}
-
-		@Override
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
-			return (dbTable != null) ? dbTable : this.getTypeMapping().getDbTable(tableName);
-		}
-
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
-			return getTypeMapping().getPrimaryDbTable();
-		}
-
-		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return GenericJavaCollectionTable2_0.this.defaultJoinColumn == joinColumn;
-		}
-
-		public String getDefaultColumnName() {
-			//built in MappingTools.buildJoinColumnDefaultName()
-			return null;
+		public PersistentAttribute getPersistentAttribute() {
+			return GenericJavaCollectionTable2_0.this.getParent().getPersistentAttribute();
 		}
 
 		public int joinColumnsSize() {
 			return GenericJavaCollectionTable2_0.this.joinColumnsSize();
 		}
+
 	}
 
 }

@@ -108,12 +108,24 @@ public abstract class AbstractJavaIdMapping
 		names.add(JPA.SEQUENCE_GENERATOR);
 	}
 	
+	//************** NamedColumn.Owner implementation ***************
+	
 	public String getDefaultColumnName() {
 		return getName();
 	}
 	
+	//************** BaseColumn.Owner implementation ***************
+	
 	public String getDefaultTableName() {
 		return getTypeMapping().getPrimaryTableName();
+	}
+	
+	public boolean tableIsAllowed() {
+		return true;
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getTypeMapping().tableNameIsInvalid(tableName);
 	}
 
 	//************** IdMapping implementation ***************
@@ -347,7 +359,7 @@ public abstract class AbstractJavaIdMapping
 	}
 		
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
+		if (this.tableNameIsInvalid(this.column.getTable())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
