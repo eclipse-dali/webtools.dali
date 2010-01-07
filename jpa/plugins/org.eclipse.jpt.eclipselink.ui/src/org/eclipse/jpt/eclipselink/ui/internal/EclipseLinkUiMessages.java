@@ -117,6 +117,7 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlSchemaGenerationTab_sectionDescription;
 	public static String PersistenceXmlSchemaGenerationTab_defaultWithOneParam;
 	public static String PersistenceXmlSchemaGenerationTab_defaultEmpty;
+	public static String PersistenceXmlSchemaGenerationTab_defaultDot;
 
 	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel;
 	public static String PersistenceXmlSchemaGenerationTab_outputModeLabel;
@@ -245,6 +246,7 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlLoggingTab_sectionDescription;
 	public static String PersistenceXmlLoggingTab_defaultWithOneParam;
 	public static String PersistenceXmlLoggingTab_defaultEmpty;
+	public static String PersistenceXmlLoggingTab_defaultStdout;
 
 	public static String PersistenceXmlLoggingTab_categoryLoggingLevelSectionTitle;
 	public static String PersistenceXmlLoggingTab_loggingLevelLabel;

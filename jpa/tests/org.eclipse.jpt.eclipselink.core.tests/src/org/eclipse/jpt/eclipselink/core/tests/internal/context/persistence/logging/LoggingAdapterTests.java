@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -203,6 +203,20 @@ public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			LOG_FILE_LOCATION_KEY,
 			LOG_FILE_LOCATION_TEST_VALUE,
 			LOG_FILE_LOCATION_TEST_VALUE_2);
+	}
+
+	public void testSetEmptyFileLocation() throws Exception {
+		String puKey = LOG_FILE_LOCATION_KEY;
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(puKey);
+		String propertyName = this.getModel().propertyIdOf(property);
+
+		// Set FileLocation to "" & verify that the property is deleted
+		this.verifyPuHasProperty(puKey,  "persistenceUnit.properties doesn't contains: ");
+		this.setProperty(propertyName, "");
+
+		this.verifyPuHasNotProperty(puKey,  "Property was not deleted");
+		this.verifyPutProperty(propertyName, null);
+		assertNull(this.getPersistenceUnit().getProperty(puKey));
 	}
 	
 	// ********** Logger tests **********
