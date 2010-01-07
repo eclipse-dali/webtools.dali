@@ -121,7 +121,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverriddenColumn(String attributeName) {
 		if (getName() == null) {
 			return null;
 		}
@@ -137,7 +137,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 					if (this.getTargetEmbeddable() == null) {
 						return null;
 					}
-					return this.getTargetEmbeddable().resolveOverridenColumn(attributeName);
+					return this.getTargetEmbeddable().resolveOverriddenColumn(attributeName);
 				}
 			}
 		}
@@ -178,7 +178,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 			return AbstractOrmBaseEmbeddedMapping.this.getTypeMapping();
 		}
 		
-		public Column resolveOverridenColumn(String attributeOverrideName) {
+		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
 				JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(attributeOverrideName);
 				if (javaAttributeOverride != null && !javaAttributeOverride.isVirtual()) {
@@ -189,7 +189,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 			Column column = null;
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
 					if (column != null) {
 						return column;
 					}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,7 +35,7 @@ public interface AttributeOverride extends BaseOverride, Column.Owner
 		 * Return null if it does not exist.  This column mapping
 		 * will be found in the mapped superclass (or embeddable), not in the owning entity
 		 */
-		Column resolveOverridenColumn(String attributeName);
+		Column resolveOverriddenColumn(String attributeName);
 
 		/**
 		 * Return the name of the table which the column belongs to by default

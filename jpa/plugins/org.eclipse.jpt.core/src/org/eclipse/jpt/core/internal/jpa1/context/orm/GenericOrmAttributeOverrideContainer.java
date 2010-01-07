@@ -256,7 +256,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	}
 	
 	private Column resolveAttributeOverrideMappingColumn(String attributeOverrideName) {
-		return getOwner().resolveOverridenColumn(attributeOverrideName);
+		return getOwner().resolveOverriddenColumn(attributeOverrideName);
 	}
 
 	protected void updateSpecifiedAttributeOverrides() {
@@ -334,7 +334,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
-		public Column resolveOverridenColumn(String attributeName) {
+		public Column resolveOverriddenColumn(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}

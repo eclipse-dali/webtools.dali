@@ -1051,12 +1051,12 @@ public abstract class AbstractJavaEntity
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverriddenColumn(String attributeName) {
 		AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
 		if (override != null && !override.isVirtual()) {
 			return override.getColumn();
 		}
-		return super.resolveOverridenColumn(attributeName);
+		return super.resolveOverriddenColumn(attributeName);
 	}
 	
 	@Override
@@ -1579,11 +1579,11 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.getTypeMapping();
 		}
 
-		public Column resolveOverridenColumn(String attributeOverrideName) {
+		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					Column column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					Column column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
 					if (column != null) {
 						return column;
 					}

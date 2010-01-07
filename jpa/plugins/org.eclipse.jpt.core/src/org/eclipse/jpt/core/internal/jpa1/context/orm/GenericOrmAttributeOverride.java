@@ -96,7 +96,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 	}
 
 	public String getDefaultColumnName() {
-		Column column = resolveOverridenColumn();
+		Column column = resolveOverriddenColumn();
 		if (column == null) {
 			return null;
 		}
@@ -106,7 +106,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 	//************* BaseColumn.Owner implementation **************
 	
 	public String getDefaultTableName() {
-		Column column = resolveOverridenColumn();
+		Column column = resolveOverriddenColumn();
 		if (column == null) {
 			return null;
 		}
@@ -117,8 +117,8 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		return getOwner().getDefaultTableName();
 	}
 	
-	protected Column resolveOverridenColumn() {
-		return getOwner().resolveOverridenColumn(getName());
+	protected Column resolveOverriddenColumn() {
+		return getOwner().resolveOverriddenColumn(getName());
 	}
 
 	public boolean tableIsAllowed() {

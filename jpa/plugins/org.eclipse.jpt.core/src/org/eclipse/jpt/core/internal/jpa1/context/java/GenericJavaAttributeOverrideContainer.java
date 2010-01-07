@@ -296,12 +296,12 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 	
 	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(String attributeOverrideName) {
-		Column column = resolveOverridenColumn(attributeOverrideName);
+		Column column = resolveOverriddenColumn(attributeOverrideName);
 		return new VirtualAttributeOverrideAnnotation(this.javaResourcePersistentMember, attributeOverrideName, column);
 	}
 
-	private Column resolveOverridenColumn(String attributeOverrideName) {
-		return getOwner().resolveOverridenColumn(attributeOverrideName);
+	private Column resolveOverriddenColumn(String attributeOverrideName) {
+		return getOwner().resolveOverriddenColumn(attributeOverrideName);
 	}
 	
 	protected void updateVirtualAttributeOverrides() {
@@ -364,11 +364,11 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
-		public Column resolveOverridenColumn(String attributeName) {
+		public Column resolveOverriddenColumn(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}
-			return GenericJavaAttributeOverrideContainer.this.resolveOverridenColumn(attributeName);			
+			return GenericJavaAttributeOverrideContainer.this.resolveOverriddenColumn(attributeName);			
 		}
 
 		public boolean isVirtual(BaseOverride override) {

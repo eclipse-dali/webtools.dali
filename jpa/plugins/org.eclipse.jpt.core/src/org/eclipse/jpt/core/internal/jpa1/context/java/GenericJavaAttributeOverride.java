@@ -74,7 +74,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	public String getDefaultColumnName() {
-		Column column = resolveOverridenColumn();
+		Column column = resolveOverriddenColumn();
 		if (column == null) {
 			return null;
 		}
@@ -84,7 +84,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	//************* BaseColumn.Owner implementation **************
 
 	public String getDefaultTableName() {
-		Column column = resolveOverridenColumn();
+		Column column = resolveOverriddenColumn();
 		if (column == null) {
 			return null;
 		}
@@ -95,8 +95,8 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		return getOwner().getDefaultTableName();
 	}
 
-	protected Column resolveOverridenColumn() {
-		return getOwner().resolveOverridenColumn(getName());
+	protected Column resolveOverriddenColumn() {
+		return getOwner().resolveOverriddenColumn(getName());
 	}
 
 	public boolean tableIsAllowed() {

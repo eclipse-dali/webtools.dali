@@ -1116,7 +1116,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverriddenColumn(String attributeName) {
 		if (this.isJpa2_0Compatible()) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
@@ -1126,7 +1126,7 @@ public abstract class AbstractOrmEntity
 				}
 			}
 		}
-		return super.resolveOverridenColumn(attributeName);
+		return super.resolveOverriddenColumn(attributeName);
 	}
 	
 	@Override
@@ -1810,11 +1810,11 @@ public abstract class AbstractOrmEntity
 			return AbstractOrmEntity.this.getTypeMapping();
 		}
 
-		public Column resolveOverridenColumn(String attributeOverrideName) {
+		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			if (!isMetadataComplete()) {
 				JavaPersistentType javaPersistentType = getPersistentType().getJavaPersistentType();
 				if (javaPersistentType != null) {
-					Column column = javaPersistentType.getMapping().resolveOverridenColumn(attributeOverrideName);
+					Column column = javaPersistentType.getMapping().resolveOverriddenColumn(attributeOverrideName);
 					if (column != null) {
 						return column;
 					}
@@ -1823,7 +1823,7 @@ public abstract class AbstractOrmEntity
 			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					Column column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					Column column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
 					if (column != null) {
 						return column;
 					}

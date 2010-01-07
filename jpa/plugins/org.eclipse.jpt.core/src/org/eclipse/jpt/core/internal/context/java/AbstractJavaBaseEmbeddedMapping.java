@@ -142,7 +142,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	}
 
 	@Override
-	public Column resolveOverridenColumn(String attributeName) {
+	public Column resolveOverriddenColumn(String attributeName) {
 		if (this.isJpa2_0Compatible()) {
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
@@ -155,7 +155,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 					if (this.getTargetEmbeddable() == null) {
 						return null;
 					}
-					return this.getTargetEmbeddable().resolveOverridenColumn(attributeName);
+					return this.getTargetEmbeddable().resolveOverriddenColumn(attributeName);
 				}
 			}
 		}
@@ -196,12 +196,12 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 			return AbstractJavaBaseEmbeddedMapping.this.getTypeMapping();
 		}
 		
-		public Column resolveOverridenColumn(String attributeOverrideName) {
+		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
 			Column column = null;
 			if (overridableTypeMapping != null) {
 				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					column = typeMapping.resolveOverridenColumn(attributeOverrideName);
+					column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
 					if (column != null) {
 						return column;
 					}

@@ -89,7 +89,7 @@ public interface AttributeOverrideContainer
 		 */
 		TypeMapping getOverridableTypeMapping();
 
-		Column resolveOverridenColumn(String attributeOverrideName);
+		Column resolveOverriddenColumn(String attributeOverrideName);
 
 		/**
 		 * Return the name of the table which the column belongs to by default
