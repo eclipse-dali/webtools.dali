@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.Dd
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * EclipseLinkSchemaGeneration encapsulates EclipseLink SchemaGeneration
@@ -212,9 +213,11 @@ public class EclipseLinkSchemaGeneration
 
 	public void setApplicationLocation(String newApplicationLocation) {
 		String old = this.applicationLocation;
-		this.applicationLocation = newApplicationLocation;
-		this.putProperty(APPLICATION_LOCATION_PROPERTY, newApplicationLocation);
-		this.firePropertyChanged(APPLICATION_LOCATION_PROPERTY, old, newApplicationLocation);
+		this.applicationLocation = (StringTools.stringIsNotEmpty(newApplicationLocation)) ? 
+												newApplicationLocation : 
+												this.getDefaultApplicationLocation();
+		this.putProperty(APPLICATION_LOCATION_PROPERTY, this.applicationLocation);
+		this.firePropertyChanged(APPLICATION_LOCATION_PROPERTY, old, this.applicationLocation);
 	}
 
 	private void applicationLocationChanged(String newValue) {

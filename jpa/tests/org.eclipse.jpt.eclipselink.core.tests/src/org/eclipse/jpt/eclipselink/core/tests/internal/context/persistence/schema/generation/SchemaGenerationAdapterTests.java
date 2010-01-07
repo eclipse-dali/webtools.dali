@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
@@ -149,6 +150,20 @@ public class SchemaGenerationAdapterTests extends EclipseLinkPersistenceUnitTest
 			APPLICATION_LOCATION_KEY,
 			APPLICATION_LOCATION_TEST_VALUE,
 			APPLICATION_LOCATION_TEST_VALUE_2);
+	}
+
+	public void testSetEmptyApplicationLocation() throws Exception {
+		String puKey = APPLICATION_LOCATION_KEY;
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(puKey);
+		String propertyName = this.getModel().propertyIdOf(property);
+
+		// Set ApplicationLocation to "" & verify that the property is deleted
+		this.verifyPuHasProperty(puKey,  "persistenceUnit.properties doesn't contains: ");
+		this.setProperty(propertyName, "");
+
+		this.verifyPuHasNotProperty(puKey,  "Property was not deleted");
+		this.verifyPutProperty(propertyName, null);
+		assertNull(this.getPersistenceUnit().getProperty(puKey));
 	}
 
 	// ********** OutputMode **********
