@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -411,12 +411,6 @@ public class GenericJavaJoinTable
 			return null;
 		}
 
-		@Override
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
-			return (dbTable != null) ? dbTable : this.getTypeMapping().getDbTable(tableName);
-		}
-
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
@@ -453,16 +447,6 @@ public class GenericJavaJoinTable
 
 		public String getAttributeName() {
 			return GenericJavaJoinTable.this.getRelationshipMapping().getName();
-		}
-
-		@Override
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
-			if (dbTable != null) {
-				return dbTable;
-			}
-			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {

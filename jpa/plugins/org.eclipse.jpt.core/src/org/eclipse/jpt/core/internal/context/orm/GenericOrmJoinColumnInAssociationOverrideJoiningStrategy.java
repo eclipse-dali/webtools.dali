@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -81,11 +81,8 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 			return GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride();
 		}
 		
-		/**
-		 * by default, the join column is in the type mapping's primary table
-		 */
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return getAssociationOverride().getOwner().getDefaultTableName();
 		}
 		
 		public String getDefaultColumnName() {
@@ -112,14 +109,11 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return getTypeMapping().tableNameIsInvalid(tableName);
+			return getAssociationOverride().getOwner().tableNameIsInvalid(tableName);
 		}
 
-		/**
-		 * the join column can be on a secondary table
-		 */
 		public boolean tableIsAllowed() {
-			return true;
+			return getAssociationOverride().getOwner().tableIsAllowed();
 		}
 
 		public TypeMapping getTypeMapping() {
@@ -127,7 +121,7 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		}
 
 		public Table getDbTable(String tableName) {
-			return getTypeMapping().getDbTable(tableName);
+			return getAssociationOverride().getOwner().getDbTable(tableName);
 		}
 
 		public Table getReferencedColumnDbTable() {

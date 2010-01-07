@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -108,11 +108,8 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 			super();
 		}
 
-		/**
-		 * by default, the join column is in the type mapping's primary table
-		 */
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return getAssociationOverride().getOwner().getDefaultTableName();
 		}
 		
 		public String getDefaultColumnName() {
@@ -135,18 +132,15 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		}
 		
 		public RelationshipMapping getRelationshipMapping() {
-			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getAssociationOverride().getOwner().getRelationshipMapping(GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName());
+			return getAssociationOverride().getOwner().getRelationshipMapping(GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName());
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return getTypeMapping().tableNameIsInvalid(tableName);
+			return getAssociationOverride().getOwner().tableNameIsInvalid(tableName);
 		}
 
-		/**
-		 * the join column can be on a secondary table
-		 */
 		public boolean tableIsAllowed() {
-			return true;
+			return getAssociationOverride().getOwner().tableIsAllowed();
 		}
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -158,7 +152,7 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		}
 
 		public Table getDbTable(String tableName) {
-			return getTypeMapping().getDbTable(tableName);
+			return getAssociationOverride().getOwner().getDbTable(tableName);
 		}
 
 		public Table getReferencedColumnDbTable() {

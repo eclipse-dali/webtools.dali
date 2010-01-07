@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,14 +37,15 @@ public interface BaseJoinColumn
 	Column getReferencedDbColumn();
 
 	/**
+	 * Return whether the reference column is found on the datasource
+	 * @see #getReferencedDbColumn()
+	 */
+	boolean isReferencedColumnResolved();
+
+	/**
 	 * Return the wrapper for the referenced column datasource table
 	 */
 	Table getReferencedColumnDbTable();
-	
-	/**
-	 * Return whether the reference column is found on the datasource
-	 */
-	boolean isReferencedColumnResolved();
 
 	boolean isVirtual();
 

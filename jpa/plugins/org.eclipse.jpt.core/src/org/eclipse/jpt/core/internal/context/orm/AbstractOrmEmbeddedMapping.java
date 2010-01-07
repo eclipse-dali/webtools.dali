@@ -230,5 +230,21 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 			}
 			return relationshipReference;
 		}
+		
+		public boolean tableNameIsInvalid(String tableName) {
+			return getTypeMapping().tableNameIsInvalid(tableName);
+		}
+		
+		public boolean tableIsAllowed() {
+			return true;
+		}
+
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return getTypeMapping().getDbTable(tableName);
+		}
+		
+		public String getDefaultTableName() {
+			return getTypeMapping().getPrimaryTableName();
+		}
 	}
 }

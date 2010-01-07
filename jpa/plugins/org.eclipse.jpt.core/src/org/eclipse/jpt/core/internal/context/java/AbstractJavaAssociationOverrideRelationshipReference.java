@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -138,7 +138,7 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 
 	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
 		String tableName = joinColumn.getTable();
-		if (this.getAssociationOverride().getOwner().getTypeMapping().tableNameIsInvalid(tableName)) {
+		if (this.getAssociationOverride().getOwner().tableNameIsInvalid(tableName)) {
 			if (this.getAssociationOverride().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -162,7 +162,11 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 			}
 			return;
 		}
-		
+		validateJoinColumnName(joinColumn, messages, astRoot);	
+		validateJoinColumnReferencedColumnName(joinColumn, messages, astRoot);
+	}
+
+	private void validateJoinColumnName(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! joinColumn.isResolved()) {
 			if (this.getAssociationOverride().isVirtual()) {
 				messages.add(
@@ -186,7 +190,9 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 				);
 			}
 		}
-		
+	}
+
+	private void validateJoinColumnReferencedColumnName(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! joinColumn.isReferencedColumnResolved()) {
 			if (this.getAssociationOverride().isVirtual()) {
 				messages.add(

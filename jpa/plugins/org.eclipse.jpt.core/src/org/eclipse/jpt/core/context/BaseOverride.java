@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
+
+import org.eclipse.jpt.db.Table;
 
 /**
  * 
@@ -61,5 +63,27 @@ public interface BaseOverride extends JpaContextNode
 		 * as applicable.  Return the new override (whether virtual or specified)
 		 */
 		BaseOverride setVirtual(boolean virtual, BaseOverride override);	
+
+		/**
+		 * return whether the given table cannot be explicitly specified
+		 * in the join column's 'table' element
+		 */
+		boolean tableNameIsInvalid(String tableName);
+
+		/**
+		 * Return whether the 'table' element is allowed to be specified explicitly.
+		 * It is not allowed for join columns inside of join tables.
+		 */
+		boolean tableIsAllowed();
+
+		/**
+		 * Return the database table for the specified table name
+		 */
+		Table getDbTable(String tableName);
+
+		/**
+		 * Return the name of the table which the column belongs to by default
+		 */
+		String getDefaultTableName();
 	}
 }

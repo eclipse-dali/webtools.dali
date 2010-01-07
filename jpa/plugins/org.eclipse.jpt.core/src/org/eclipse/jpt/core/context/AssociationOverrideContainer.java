@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -89,6 +89,27 @@ public interface AssociationOverrideContainer
 		TypeMapping getOverridableTypeMapping();
 		
 		RelationshipReference resolveRelationshipReference(String associationOverrideName);
+
+		/**
+		 * Return the name of the table which the join column column belongs to by default
+		 */
+		String getDefaultTableName();
+
+		/**
+		 * Return whether the 'table' element is allowed to be specified explicitly.
+		 */
+		boolean tableIsAllowed();
+
+		/**
+		 * return whether the given table cannot be explicitly specified
+		 * in the join column's 'table' element
+		 */
+		boolean tableNameIsInvalid(String tableName);
+
+		/**
+		 * Return the database table for the specified table name
+		 */
+		org.eclipse.jpt.db.Table getDbTable(String tableName);
 	}
 
 
