@@ -110,14 +110,13 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 
 	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		String tableName = joinColumn.getTable();
-		if (this.getOwner().getTypeMapping().tableNameIsInvalid(tableName)) {
+		if (joinColumn.tableNameIsInvalid()) {
 			if (this.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getName(), tableName, joinColumn.getName()},
+						new String[] {this.getName(), joinColumn.getTable(), joinColumn.getName()},
 						joinColumn, 
 						joinColumn.getTableTextRange(astRoot)
 					)
@@ -127,7 +126,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {tableName, joinColumn.getName()}, 
+						new String[] {joinColumn.getTable(), joinColumn.getName()}, 
 						joinColumn,
 						joinColumn.getTableTextRange(astRoot)
 					)

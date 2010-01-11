@@ -130,8 +130,7 @@ public class MappingTools {
 	 * 
 	 * @see #buildJoinTableDefaultName(RelationshipMapping)
 	 */
-	public static String buildJoinColumnDefaultName(JoinColumn joinColumn) {
-		JoinColumn.Owner owner = joinColumn.getOwner();
+	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.Owner owner) {
 		if (owner.joinColumnsSize() != 1) {
 			return null;
 		}

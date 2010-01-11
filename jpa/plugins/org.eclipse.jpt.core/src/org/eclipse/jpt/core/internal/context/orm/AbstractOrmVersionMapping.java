@@ -189,14 +189,13 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 	
 	protected void validateColumn(List<IMessage> messages) {
 		OrmPersistentAttribute pa = this.getPersistentAttribute();
-		String tableName = this.column.getTable();
-		if (this.tableNameIsInvalid(tableName)) {
+		if (this.column.tableNameIsInvalid()) {
 			if (pa.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {pa.getName(), tableName, this.column.getName()},
+						new String[] {pa.getName(), this.column.getTable(), this.column.getName()},
 						this.column,
 						this.column.getTableTextRange()
 					)
@@ -206,7 +205,7 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {tableName, this.column.getName()}, 
+						new String[] {this.column.getTable(), this.column.getName()}, 
 						this.column,
 						this.column.getTableTextRange()
 					)

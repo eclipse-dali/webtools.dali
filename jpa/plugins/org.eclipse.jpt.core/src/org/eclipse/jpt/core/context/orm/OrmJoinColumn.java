@@ -34,8 +34,6 @@ public interface OrmJoinColumn
 	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(XmlJoinColumn xmlJoinColumn);
-	
-	Owner getOwner();
 
 	interface Owner
 		extends JoinColumn.Owner, OrmBaseJoinColumn.Owner, OrmBaseColumn.Owner

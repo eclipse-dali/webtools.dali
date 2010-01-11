@@ -34,8 +34,6 @@ public interface JavaJoinColumn
 	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(JoinColumnAnnotation joinColumnAnnotation);
-
-	Owner getOwner();
 	
 	interface Owner
 		extends JoinColumn.Owner, JavaBaseJoinColumn.Owner, JavaBaseColumn.Owner

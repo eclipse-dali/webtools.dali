@@ -54,8 +54,6 @@ public interface NamedColumn
 	 * Return whether the column is found on the datasource.
 	 */
 	boolean isResolved();
-
-	Owner getOwner();
 	
 	/**
 	 * interface allowing columns to be used in multiple places

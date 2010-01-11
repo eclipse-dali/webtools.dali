@@ -21,7 +21,6 @@ package org.eclipse.jpt.core.context;
 public interface JoinColumn
 	extends BaseColumn, BaseJoinColumn
 {
-	Owner getOwner();
 
 	/**
 	 * interface allowing join columns to be used in multiple places

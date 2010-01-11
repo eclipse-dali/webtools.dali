@@ -29,8 +29,6 @@ public interface JavaBaseColumn extends BaseColumn, JavaNamedColumn
 	 * Return the (best guess) text location of the column's table.
 	 */
 	TextRange getTableTextRange(CompilationUnit astRoot);
-
-	Owner getOwner();
 	
 	/**
 	 * interface allowing columns to be used in multiple places

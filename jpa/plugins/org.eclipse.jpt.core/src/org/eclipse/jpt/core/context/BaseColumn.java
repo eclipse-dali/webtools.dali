@@ -70,6 +70,11 @@ public interface BaseColumn extends NamedColumn
 	void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable);
 		String SPECIFIED_UPDATABLE_PROPERTY = "specifiedUpdatable"; //$NON-NLS-1$
 
+	/**
+	 * return whether the column's table is invalid in the given context
+	 */
+	boolean tableNameIsInvalid();
+
 	//TODO not sure we really need/want this to be public.  This
 	//is used by ColumnComposite to get a list of possible associated tables, but
 	//right now that list isn't going to update in the UI except when we repopulate

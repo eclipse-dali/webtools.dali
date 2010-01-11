@@ -195,13 +195,12 @@ public abstract class AbstractJavaVersionMapping
 	}
 	
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
-		String tableName = this.column.getTable();
-		if (this.tableNameIsInvalid(tableName)) {
+		if (this.column.tableNameIsInvalid()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-					new String[] {tableName, this.column.getName()}, 
+					new String[] {this.column.getTable(), this.column.getName()}, 
 					this.column,
 					this.column.getTableTextRange(astRoot)
 				)

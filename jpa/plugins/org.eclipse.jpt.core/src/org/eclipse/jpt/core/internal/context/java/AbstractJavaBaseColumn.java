@@ -113,6 +113,10 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		return getResourceColumn().getTable();
 	}
 	
+	public boolean tableNameIsInvalid() {
+		return getOwner().tableNameIsInvalid(getTable());
+	}
+
 	//************** unique *******************
 
 	public boolean isUnique() {

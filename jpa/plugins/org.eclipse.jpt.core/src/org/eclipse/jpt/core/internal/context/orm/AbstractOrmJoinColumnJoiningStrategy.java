@@ -275,7 +275,7 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 	}
 	
 	protected void validateJoinColumn(OrmJoinColumn joinColumn, List<IMessage> messages) {
-		if (getRelationshipMapping().getTypeMapping().tableNameIsInvalid(joinColumn.getTable())) {
+		if (joinColumn.tableNameIsInvalid()) {
 			if (this.getRelationshipMapping().getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -329,7 +329,7 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 					);
 				}
 			}
-			else if (joinColumn.getOwner().joinColumnsSize() > 1) {
+			else if (this.joinColumnsSize() > 1) {
 				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
@@ -380,7 +380,7 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 					);
 				}
 			}
-			else if (joinColumn.getOwner().joinColumnsSize() > 1) {
+			else if (this.joinColumnsSize() > 1) {
 				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(

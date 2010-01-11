@@ -95,6 +95,10 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 		this.defaultTable = newDefaultTable;
 		firePropertyChanged(BaseColumn.DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
 	}
+	
+	public boolean tableNameIsInvalid() {
+		return getOwner().tableNameIsInvalid(getTable());
+	}
 
 	public boolean isUnique() {
 		return (this.getSpecifiedUnique() == null) ? this.isDefaultUnique() : this.getSpecifiedUnique().booleanValue();

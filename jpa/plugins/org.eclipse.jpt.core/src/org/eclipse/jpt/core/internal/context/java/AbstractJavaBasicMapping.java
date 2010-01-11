@@ -285,7 +285,7 @@ public abstract class AbstractJavaBasicMapping
 	}
 	
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.tableNameIsInvalid(this.column.getTable())) {
+		if (this.column.tableNameIsInvalid()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

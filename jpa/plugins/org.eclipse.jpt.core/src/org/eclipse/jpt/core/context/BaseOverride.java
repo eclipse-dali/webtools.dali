@@ -66,7 +66,7 @@ public interface BaseOverride extends JpaContextNode
 
 		/**
 		 * return whether the given table cannot be explicitly specified
-		 * in the join column's 'table' element
+		 * in the column or join column's 'table' element
 		 */
 		boolean tableNameIsInvalid(String tableName);
 

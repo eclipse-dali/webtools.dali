@@ -301,7 +301,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	}
 
 	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		if (getRelationshipMapping().getTypeMapping().tableNameIsInvalid(joinColumn.getTable())) {
+		if (joinColumn.tableNameIsInvalid()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -330,7 +330,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 					)
 				);
 			}
-			else if (joinColumn.getOwner().joinColumnsSize() > 1) {
+			else if (this.joinColumnsSize() > 1) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -360,7 +360,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 					)
 				);
 			}
-			else if (joinColumn.getOwner().joinColumnsSize() > 1) {
+			else if (this.joinColumnsSize() > 1) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

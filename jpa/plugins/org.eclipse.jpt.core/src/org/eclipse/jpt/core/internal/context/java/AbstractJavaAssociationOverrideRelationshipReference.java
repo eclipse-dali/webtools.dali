@@ -137,14 +137,13 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 	}
 
 	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		String tableName = joinColumn.getTable();
-		if (this.getAssociationOverride().getOwner().tableNameIsInvalid(tableName)) {
+		if (joinColumn.tableNameIsInvalid()) {
 			if (this.getAssociationOverride().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getAssociationOverride().getName(), tableName, joinColumn.getName()},
+						new String[] {this.getAssociationOverride().getName(), joinColumn.getTable(), joinColumn.getName()},
 						joinColumn, 
 						joinColumn.getTableTextRange(astRoot)
 					)
@@ -154,7 +153,7 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {tableName, joinColumn.getName()}, 
+						new String[] {joinColumn.getTable(), joinColumn.getName()}, 
 						joinColumn,
 						joinColumn.getTableTextRange(astRoot)
 					)
@@ -162,7 +161,7 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 			}
 			return;
 		}
-		validateJoinColumnName(joinColumn, messages, astRoot);	
+		validateJoinColumnName(joinColumn, messages, astRoot);
 		validateJoinColumnReferencedColumnName(joinColumn, messages, astRoot);
 	}
 

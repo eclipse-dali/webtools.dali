@@ -29,8 +29,6 @@ public interface OrmBaseJoinColumn extends BaseJoinColumn, OrmNamedColumn
 	 */
 	TextRange getReferencedColumnNameTextRange();
 
-	
-	Owner getOwner();
 	/**
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)

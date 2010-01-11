@@ -24,8 +24,6 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 public interface OrmColumn extends Column, OrmBaseColumn
 {
 	
-	Owner getOwner();
-	
 	void initializeFrom(Column oldColumn);
 	void initialize(XmlColumn column);
 	

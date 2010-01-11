@@ -153,7 +153,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	
 	@Override
 	protected String buildDefaultName() {
-		return MappingTools.buildJoinColumnDefaultName(this);
+		return MappingTools.buildJoinColumnDefaultName(this, this.getOwner());
 	}
 	
 	protected String buildDefaultReferencedColumnName() {
