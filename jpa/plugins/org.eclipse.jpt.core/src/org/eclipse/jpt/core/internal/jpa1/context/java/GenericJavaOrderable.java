@@ -134,8 +134,8 @@ public class GenericJavaOrderable
 			}
 		} else {
 			this.orderColumnOrdering = true;
-			this.orderColumn.initialize(orderColumnAnnotation);
 		}
+		this.orderColumn.initialize(getNonNullOrderColumnAnnotation());
 	}
 
 	protected void updateOrdering() {
@@ -160,8 +160,8 @@ public class GenericJavaOrderable
 			this.setPkOrdering_(false);
 			this.setCustomOrdering_(false);
 			this.setOrderColumnOrdering_(true);
-			this.orderColumn.update(orderColumnAnnotation);
 		}
+		this.orderColumn.update(getNonNullOrderColumnAnnotation());
 	}
 
 	protected OrderByAnnotation getOrderByAnnotation() {
@@ -293,6 +293,10 @@ public class GenericJavaOrderable
 	
 	public JavaOrderColumn2_0 getOrderColumn() {
 		return this.orderColumn;
+	}
+	
+	protected OrderColumn2_0Annotation getNonNullOrderColumnAnnotation() {
+		return (OrderColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
 	}
 	
 	protected OrderColumn2_0Annotation getOrderColumnAnnotation() {

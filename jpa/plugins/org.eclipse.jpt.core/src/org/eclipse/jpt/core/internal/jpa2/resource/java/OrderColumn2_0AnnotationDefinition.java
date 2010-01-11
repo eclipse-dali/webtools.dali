@@ -48,7 +48,7 @@ public final class OrderColumn2_0AnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
-		return null;// new NullOrderColumn2_0Annotation(parent);
+		return new NullOrderColumn2_0Annotation((JavaResourcePersistentAttribute) parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
