@@ -71,6 +71,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	
 	//************** table *******************
 
+	@Override
 	public String getTable() {
 		return (this.getSpecifiedTable() == null) ? getDefaultTable() : this.getSpecifiedTable();
 	}
@@ -262,11 +263,6 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	
 	protected Boolean getResourceUpdatable() {
 		return getResourceColumn().getUpdatable();
-	}
-	
-	@Override
-	protected String getOwningTableName() {
-		return this.getTable();
 	}
 
 	public TextRange getTableTextRange(CompilationUnit astRoot) {

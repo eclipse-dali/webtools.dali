@@ -57,6 +57,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 //		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.IABSTRACT_COLUMN__TABLE);
 //	}
 	
+	@Override
 	public String getTable() {
 		return (this.getSpecifiedTable() == null) ? getDefaultTable() : this.getSpecifiedTable();
 	}
@@ -244,12 +245,6 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 		this.specifiedUpdatable = newSpecifiedUpdatable;
 		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
-
-	@Override
-	protected String getOwningTableName() {
-		return this.getTable();
-	}
-
 
 	public TextRange getTableTextRange() {
 		if (getResourceColumn() != null) {

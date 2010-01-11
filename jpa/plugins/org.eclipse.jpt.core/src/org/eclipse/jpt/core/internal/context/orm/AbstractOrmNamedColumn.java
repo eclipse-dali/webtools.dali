@@ -132,10 +132,14 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> e
 	}
 
 	public Table getDbTable() {
-		return getOwner().getDbTable(this.getOwningTableName());
+		return getOwner().getDbTable(this.getTable());
 	}
 
-	protected String getOwningTableName() {
+	/**
+	 * Return the name of the column's table. This is overridden
+	 * in AbstractJavaBaseColumn where a table can be defined.
+	 */
+	protected String getTable() {
 		return this.getOwner().getTypeMapping().getPrimaryTableName();
 	}
 
