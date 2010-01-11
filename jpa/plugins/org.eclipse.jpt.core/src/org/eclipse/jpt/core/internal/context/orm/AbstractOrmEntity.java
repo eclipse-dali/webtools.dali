@@ -1801,9 +1801,9 @@ public abstract class AbstractOrmEntity
 		public boolean tableNameIsInvalid(String tableName) {
 			return AbstractOrmEntity.this.tableNameIsInvalid(tableName);
 		}
-		
-		public boolean tableIsAllowed() {
-			return true;
+
+		public Iterator<String> candidateTableNames() {
+			return AbstractOrmEntity.this.associatedTableNamesIncludingInherited();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
@@ -1867,8 +1867,8 @@ public abstract class AbstractOrmEntity
 			return AbstractOrmEntity.this.tableNameIsInvalid(tableName);
 		}
 		
-		public boolean tableIsAllowed() {
-			return true;
+		public Iterator<String> candidateTableNames() {
+			return AbstractOrmEntity.this.associatedTableNamesIncludingInherited();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {

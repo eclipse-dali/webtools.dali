@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
@@ -121,12 +122,12 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		return getOwner().resolveOverriddenColumn(getName());
 	}
 
-	public boolean tableIsAllowed() {
-		return getOwner().tableIsAllowed();
-	}
-
 	public boolean tableNameIsInvalid(String tableName) {
 		return getOwner().tableNameIsInvalid(tableName);
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return getOwner().candidateTableNames();
 	}
 
 

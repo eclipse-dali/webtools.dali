@@ -21,8 +21,6 @@ package org.eclipse.jpt.core.context;
 public interface AttributeOverride extends BaseOverride, Column.Owner
 {
 	Column getColumn();
-
-	AttributeOverride.Owner getOwner();
 	
 	AttributeOverride setVirtual(boolean virtual);
 	

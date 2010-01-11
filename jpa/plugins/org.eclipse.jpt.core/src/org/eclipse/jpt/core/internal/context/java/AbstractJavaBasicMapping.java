@@ -96,15 +96,15 @@ public abstract class AbstractJavaBasicMapping
 	public String getDefaultTableName() {
 		return getTypeMapping().getPrimaryTableName();
 	}
-	
-	public boolean tableIsAllowed() {
-		return true;
-	}
 
 	public boolean tableNameIsInvalid(String tableName) {
 		return getTypeMapping().tableNameIsInvalid(tableName);
 	}
 
+	public Iterator<String> candidateTableNames() {
+		return getTypeMapping().associatedTableNamesIncludingInherited();
+	}
+	
 	//************** BasicMapping implementation ***************
 
 	public JavaColumn getColumn() {

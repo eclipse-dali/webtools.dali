@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.core.MappingKeys;
@@ -189,14 +190,13 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		return getTypeMapping().getPrimaryTableName();
 	}
 
-	public boolean tableIsAllowed() {
-		return true;
-	}
-
 	public boolean tableNameIsInvalid(String tableName) {
 		return getTypeMapping().tableNameIsInvalid(tableName);
 	}
-	
+
+	public Iterator<String> candidateTableNames() {
+		return getTypeMapping().associatedTableNamesIncludingInherited();
+	}
 
 	protected void initializeGeneratedValue() {
 		if (this.resourceAttributeMapping.getGeneratedValue() != null) {

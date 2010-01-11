@@ -225,6 +225,10 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 			return true;
 		}
 
+		public Iterator<String> candidateTableNames() {
+			return getTypeMapping().associatedTableNamesIncludingInherited();
+		}
+
 		public TypeMapping getTypeMapping() {
 			return getRelationshipMapping().getTypeMapping();
 		}

@@ -353,12 +353,12 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 			return getOwner().getTypeMapping();
 		}
 
-		public boolean tableIsAllowed() {
-			return getOwner().tableIsAllowed();
-		}
-
 		public boolean tableNameIsInvalid(String tableName) {
 			return getOwner().tableNameIsInvalid(tableName);
+		}
+
+		public Iterator<String> candidateTableNames() {
+			return getOwner().candidateTableNames();
 		}
 
 		public String getDefaultTableName() {

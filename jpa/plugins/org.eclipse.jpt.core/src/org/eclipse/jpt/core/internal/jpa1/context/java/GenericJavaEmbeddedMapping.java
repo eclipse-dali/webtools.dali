@@ -202,9 +202,9 @@ public class GenericJavaEmbeddedMapping
 		public boolean tableNameIsInvalid(String tableName) {
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
-		
-		public boolean tableIsAllowed() {
-			return true;
+
+		public Iterator<String> candidateTableNames() {
+			return getTypeMapping().associatedTableNamesIncludingInherited();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {

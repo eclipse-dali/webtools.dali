@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.Iterator;
+
 /**
  * 
  * 
@@ -78,8 +80,11 @@ public interface BaseColumn extends NamedColumn
 	//TODO not sure we really need/want this to be public.  This
 	//is used by ColumnComposite to get a list of possible associated tables, but
 	//right now that list isn't going to update in the UI except when we repopulate
-	Owner getOwner();
-	
+	/**
+	 * Return a list of table names that are valid for this column
+	 */
+	Iterator<String> candidateTableNames();
+
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
@@ -96,11 +101,10 @@ public interface BaseColumn extends NamedColumn
 		 * in the column's 'table' element
 		 */
 		boolean tableNameIsInvalid(String tableName);
-
+		
 		/**
-		 * Return whether the 'table' element is allowed to be specified explicitly.
-		 * It is not allowed for join columns inside of join tables.
+		 * Return a list of table names that are valid for this column
 		 */
-		boolean tableIsAllowed();
+		Iterator<String> candidateTableNames();
 	}
 }

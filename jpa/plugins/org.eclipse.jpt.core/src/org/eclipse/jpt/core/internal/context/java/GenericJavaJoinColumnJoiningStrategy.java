@@ -110,71 +110,71 @@ public class GenericJavaJoinColumnJoiningStrategy
 		return this.getRelationshipReference().getValidationTextRange(astRoot);
 	}
 	protected class JoinColumnOwner 
-	implements JavaJoinColumn.Owner 
-{
-	protected JoinColumnOwner() {
-		super();
+		implements JavaJoinColumn.Owner 
+	{
+		protected JoinColumnOwner() {
+			super();
+		}
+		
+		
+		/**
+		 * by default, the join column is in the type mapping's primary table
+		 */
+		public String getDefaultTableName() {
+			return getTypeMapping().getPrimaryTableName();
+		}
+		
+		public String getDefaultColumnName() {
+			//built in MappingTools.buildJoinColumnDefaultName()
+			return null;
+		}
+		
+		public Entity getTargetEntity() {
+			return getRelationshipMapping().getResolvedTargetEntity();
+		}
+		
+		public String getAttributeName() {
+			return getRelationshipMapping().getName();
+		}
+		
+		public PersistentAttribute getPersistentAttribute() {
+			return getRelationshipMapping().getPersistentAttribute();
+		}
+		
+		public boolean tableNameIsInvalid(String tableName) {
+			return getTypeMapping().tableNameIsInvalid(tableName);
+		}
+
+		/**
+		 * the join column can be on a secondary table
+		 */
+		public Iterator<String> candidateTableNames() {
+			return getTypeMapping().associatedTableNamesIncludingInherited();
+		}
+		
+		public TypeMapping getTypeMapping() {
+			return getRelationshipMapping().getTypeMapping();
+		}
+		
+		public Table getDbTable(String tableName) {
+			return getTypeMapping().getDbTable(tableName);
+		}
+		
+		public Table getReferencedColumnDbTable() {
+			Entity targetEntity = getTargetEntity();
+			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
+		}
+		
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
+			return GenericJavaJoinColumnJoiningStrategy.this.defaultJoinColumn == joinColumn;
+		}
+		
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaJoinColumnJoiningStrategy.this.getValidationTextRange(astRoot);
+		}
+		
+		public int joinColumnsSize() {
+			return GenericJavaJoinColumnJoiningStrategy.this.joinColumnsSize();
+		}
 	}
-	
-	
-	/**
-	 * by default, the join column is in the type mapping's primary table
-	 */
-	public String getDefaultTableName() {		
-		return getTypeMapping().getPrimaryTableName();
-	}
-	
-	public String getDefaultColumnName() {
-		//built in MappingTools.buildJoinColumnDefaultName()
-		return null;
-	}
-	
-	public Entity getTargetEntity() {
-		return getRelationshipMapping().getResolvedTargetEntity();
-	}
-	
-	public String getAttributeName() {
-		return getRelationshipMapping().getName();
-	}
-	
-	public PersistentAttribute getPersistentAttribute() {
-		return getRelationshipMapping().getPersistentAttribute();
-	}
-	
-	public boolean tableNameIsInvalid(String tableName) {
-		return getTypeMapping().tableNameIsInvalid(tableName);
-	}
-	
-	/**
-	 * the join column can be on a secondary table
-	 */
-	public boolean tableIsAllowed() {
-		return true;
-	}
-	
-	public TypeMapping getTypeMapping() {
-		return getRelationshipMapping().getTypeMapping();
-	}
-	
-	public Table getDbTable(String tableName) {
-		return getTypeMapping().getDbTable(tableName);
-	}
-	
-	public Table getReferencedColumnDbTable() {
-		Entity targetEntity = getTargetEntity();
-		return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
-	}
-	
-	public boolean isVirtual(BaseJoinColumn joinColumn) {
-		return GenericJavaJoinColumnJoiningStrategy.this.defaultJoinColumn == joinColumn;
-	}
-	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return GenericJavaJoinColumnJoiningStrategy.this.getValidationTextRange(astRoot);
-	}
-	
-	public int joinColumnsSize() {
-		return GenericJavaJoinColumnJoiningStrategy.this.joinColumnsSize();
-	}
-}
 }

@@ -1571,16 +1571,16 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.tableNameIsInvalid(tableName);
 		}
 		
-		public boolean tableIsAllowed() {
-			return true;
+		public Iterator<String> candidateTableNames() {
+			return AbstractJavaEntity.this.associatedTableNamesIncludingInherited();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			return getTypeMapping().getDbTable(tableName);
+			return AbstractJavaEntity.this.getDbTable(tableName);
 		}
 		
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
 	}
 	
@@ -1611,17 +1611,17 @@ public abstract class AbstractJavaEntity
 		public boolean tableNameIsInvalid(String tableName) {
 			return AbstractJavaEntity.this.tableNameIsInvalid(tableName);
 		}
-		
-		public boolean tableIsAllowed() {
-			return true;
+
+		public Iterator<String> candidateTableNames() {
+			return AbstractJavaEntity.this.associatedTableNamesIncludingInherited();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			return getTypeMapping().getDbTable(tableName);
+			return AbstractJavaEntity.this.getDbTable(tableName);
 		}
 		
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
 	}
 	

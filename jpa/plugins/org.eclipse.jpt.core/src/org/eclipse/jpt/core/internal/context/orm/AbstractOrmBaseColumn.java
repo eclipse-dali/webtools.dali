@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmBaseColumn;
@@ -98,6 +99,10 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	
 	public boolean tableNameIsInvalid() {
 		return getOwner().tableNameIsInvalid(getTable());
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return getOwner().candidateTableNames();
 	}
 
 	public boolean isUnique() {

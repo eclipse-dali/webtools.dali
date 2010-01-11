@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> extends AbstractJavaNamedColumn<T>
@@ -279,8 +278,8 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		return getResourceColumn().tableTouches(pos, astRoot);
 	}
 
-	private Iterator<String> candidateTableNames() {
-		return this.tableIsAllowed() ? this.getOwner().getTypeMapping().associatedTableNamesIncludingInherited() : EmptyIterator.<String> instance();
+	public Iterator<String> candidateTableNames() {
+		return getOwner().candidateTableNames();
 	}
 
 	private Iterator<String> candidateTableNames(Filter<String> filter) {
@@ -289,14 +288,6 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 
 	private Iterator<String> javaCandidateTableNames(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(this.candidateTableNames(filter));
-	}
-
-	/**
-	 * Return whether the 'table' element is allowed. It is not allowed for
-	 * join columns inside of join tables.
-	 */
-	public boolean tableIsAllowed() {
-		return getOwner().tableIsAllowed();
 	}
 
 	@Override

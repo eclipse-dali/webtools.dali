@@ -347,6 +347,10 @@ public class GenericOrmJoinTable
 			return false;
 		}
 
+		public Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
+		}
+
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			String joinTableName = GenericOrmJoinTable.this.getName();
 			return (joinTableName == null) ? null : (joinTableName.equals(tableName)) ? GenericOrmJoinTable.this.getDbTable() : null;

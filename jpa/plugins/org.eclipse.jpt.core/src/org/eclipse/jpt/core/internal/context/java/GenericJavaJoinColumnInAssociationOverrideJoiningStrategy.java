@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -139,8 +140,8 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 			return getAssociationOverride().getOwner().tableNameIsInvalid(tableName);
 		}
 
-		public boolean tableIsAllowed() {
-			return getAssociationOverride().getOwner().tableIsAllowed();
+		public Iterator<String> candidateTableNames() {
+			return getAssociationOverride().getOwner().candidateTableNames();
 		}
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -167,7 +168,6 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		public int joinColumnsSize() {
 			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumnsSize();
 		}
-
 	}
 
 }

@@ -320,7 +320,7 @@ public class ColumnComposite extends Pane<Column> {
 			}
 
 			protected Iterator<String> values() {
-				return this.getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
+				return this.getSubject().candidateTableNames();
 			}
 			@Override
 			public String toString() {

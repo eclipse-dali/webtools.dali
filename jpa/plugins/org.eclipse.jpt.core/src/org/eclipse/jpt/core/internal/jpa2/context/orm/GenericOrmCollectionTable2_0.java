@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * orm.xml collection table
@@ -89,15 +91,15 @@ public class GenericOrmCollectionTable2_0
 	// ********** join column owner adapters **********
 
 	/**
-	 * just a little common behavior
+	 * owner for "back-pointer" JoinColumns;
+	 * these point at the source/owning entity
 	 */
-	protected abstract class AbstractJoinColumnOwner
+	protected class JoinColumnOwner
 		implements OrmJoinColumn.Owner
 	{
-		protected AbstractJoinColumnOwner() {
+		protected JoinColumnOwner() {
 			super();
 		}
-
 		public TypeMapping getTypeMapping() {
 			return GenericOrmCollectionTable2_0.this.getParent().getTypeMapping();
 		}
@@ -112,6 +114,10 @@ public class GenericOrmCollectionTable2_0
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
 			return false;
+		}
+
+		public Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
 		}
 
 		/**
@@ -137,19 +143,6 @@ public class GenericOrmCollectionTable2_0
 		public TextRange getValidationTextRange() {
 			return GenericOrmCollectionTable2_0.this.getValidationTextRange();
 		}
-	}
-
-
-	/**
-	 * owner for "back-pointer" JoinColumns;
-	 * these point at the source/owning entity
-	 */
-	protected class JoinColumnOwner
-		extends AbstractJoinColumnOwner
-	{
-		protected JoinColumnOwner() {
-			super();
-		}
 
 		public Entity getTargetEntity() {
 			return GenericOrmCollectionTable2_0.this.getParent().getEntity();
@@ -169,12 +162,6 @@ public class GenericOrmCollectionTable2_0
 //				}
 //			}
 //			return null;
-		}
-
-		@Override
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
-			return (dbTable != null) ? dbTable : this.getTypeMapping().getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {

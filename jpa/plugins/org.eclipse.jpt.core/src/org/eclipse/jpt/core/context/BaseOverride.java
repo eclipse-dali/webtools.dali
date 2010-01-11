@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.Iterator;
 import org.eclipse.jpt.db.Table;
 
 /**
@@ -71,10 +72,9 @@ public interface BaseOverride extends JpaContextNode
 		boolean tableNameIsInvalid(String tableName);
 
 		/**
-		 * Return whether the 'table' element is allowed to be specified explicitly.
-		 * It is not allowed for join columns inside of join tables.
+		 * Return a list of table names that are valid for the overrides column or join columns
 		 */
-		boolean tableIsAllowed();
+		Iterator<String> candidateTableNames();
 
 		/**
 		 * Return the database table for the specified table name

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -72,9 +73,6 @@ public interface AssociationOverrideContainer
 	 */
 	AssociationOverride getAssociationOverrideNamed(String name);
 	
-	
-	Owner getOwner();
-	
 	interface Owner
 	{
 		/**
@@ -96,11 +94,6 @@ public interface AssociationOverrideContainer
 		String getDefaultTableName();
 
 		/**
-		 * Return whether the 'table' element is allowed to be specified explicitly.
-		 */
-		boolean tableIsAllowed();
-
-		/**
 		 * return whether the given table cannot be explicitly specified
 		 * in the join column's 'table' element
 		 */
@@ -110,6 +103,11 @@ public interface AssociationOverrideContainer
 		 * Return the database table for the specified table name
 		 */
 		org.eclipse.jpt.db.Table getDbTable(String tableName);
+
+		/**
+		 * Return a list of table names that are valid for the overrides column, or join columns
+		 */
+		Iterator<String> candidateTableNames();
 	}
 
 

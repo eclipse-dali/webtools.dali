@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -356,8 +357,8 @@ public class GenericJavaJoinTable
 		/**
 		 * the join column can only be on the join table itself
 		 */
-		public boolean tableIsAllowed() {
-			return false;
+		public Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {

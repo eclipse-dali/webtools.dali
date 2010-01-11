@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -112,8 +113,8 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 			return getAssociationOverride().getOwner().tableNameIsInvalid(tableName);
 		}
 
-		public boolean tableIsAllowed() {
-			return getAssociationOverride().getOwner().tableIsAllowed();
+		public Iterator<String> candidateTableNames() {
+			return getAssociationOverride().getOwner().candidateTableNames();
 		}
 
 		public TypeMapping getTypeMapping() {

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -83,7 +84,11 @@ public class GenericOrmJoinColumnJoiningStrategy
 		public boolean tableNameIsInvalid(String tableName) {
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
-		
+
+		public Iterator<String> candidateTableNames() {
+			return getTypeMapping().associatedTableNamesIncludingInherited();
+		}
+
 		/**
 		 * the join column can be on a secondary table
 		 */

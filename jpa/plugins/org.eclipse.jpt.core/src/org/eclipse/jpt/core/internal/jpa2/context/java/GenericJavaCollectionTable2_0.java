@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * Java collection table
@@ -162,8 +164,8 @@ public class GenericJavaCollectionTable2_0
 		/**
 		 * the join column can only be on the collection table itself
 		 */
-		public boolean tableIsAllowed() {
-			return false;
+		public Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
 		}
 
 		public Entity getTargetEntity() {

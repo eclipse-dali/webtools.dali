@@ -214,8 +214,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
 		
-		public boolean tableIsAllowed() {
-			return true;
+		public Iterator<String> candidateTableNames() {
+			return getTypeMapping().associatedTableNamesIncludingInherited();
 		}
 		
 		public Table getDbTable(String tableName) {

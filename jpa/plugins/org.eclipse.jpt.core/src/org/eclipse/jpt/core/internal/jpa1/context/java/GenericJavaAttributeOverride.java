@@ -99,12 +99,12 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		return getOwner().resolveOverriddenColumn(getName());
 	}
 
-	public boolean tableIsAllowed() {
-		return getOwner().tableIsAllowed();
-	}
-
 	public boolean tableNameIsInvalid(String tableName) {
 		return getOwner().tableNameIsInvalid(tableName);
+	}
+	
+	public Iterator<String> candidateTableNames() {
+		return getOwner().candidateTableNames();
 	}
 	
 	//************* AttributeOverride implementation **************

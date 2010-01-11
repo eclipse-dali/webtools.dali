@@ -279,12 +279,12 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		public boolean tableNameIsInvalid(String tableName) {
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
-		
+
 		/**
 		 * the join column can be on a secondary table
 		 */
-		public boolean tableIsAllowed() {
-			return true;
+		public Iterator<String> candidateTableNames() {
+			return getTypeMapping().associatedTableNamesIncludingInherited();
 		}
 		
 		public TypeMapping getTypeMapping() {
