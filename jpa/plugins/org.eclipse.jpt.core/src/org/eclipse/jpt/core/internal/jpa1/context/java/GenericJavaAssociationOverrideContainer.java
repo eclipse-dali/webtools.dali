@@ -393,6 +393,10 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 			return getOwner().getTypeMapping();
 		}
 
+		public Iterator<String> allOverridableAttributeNames() {
+			return GenericJavaAssociationOverrideContainer.this.allOverridableAssociationNames();
+		}
+
 		public boolean tableNameIsInvalid(String tableName) {
 			return getOwner().tableNameIsInvalid(tableName);
 		}

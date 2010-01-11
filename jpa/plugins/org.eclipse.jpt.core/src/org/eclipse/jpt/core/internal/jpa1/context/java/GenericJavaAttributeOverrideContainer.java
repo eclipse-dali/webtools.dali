@@ -383,6 +383,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 			return getOwner().getTypeMapping();
 		}
 
+		public Iterator<String> allOverridableAttributeNames() {
+			return GenericJavaAttributeOverrideContainer.this.allOverridableAttributeNames();
+		}
+
 		public boolean tableNameIsInvalid(String tableName) {
 			return getOwner().tableNameIsInvalid(tableName);
 		}

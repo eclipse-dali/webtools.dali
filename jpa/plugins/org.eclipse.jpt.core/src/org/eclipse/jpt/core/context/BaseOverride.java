@@ -49,6 +49,11 @@ public interface BaseOverride extends JpaContextNode
 		 * @return
 		 */
 		TypeMapping getTypeMapping();
+		
+		/**
+		 * Return an Iterator of all attribute names that can be overridden
+		 */
+		Iterator<String> allOverridableAttributeNames();
 
 		/**
 		 * Return whether the given override is virtual. Virtual means that

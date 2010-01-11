@@ -66,7 +66,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 
 	@Override
 	protected Iterator<String> candidateNames() {
-		return this.getOwner().getTypeMapping().allOverridableAssociationNames();
+		return this.getOwner().allOverridableAttributeNames();
 	}
 
 	@Override

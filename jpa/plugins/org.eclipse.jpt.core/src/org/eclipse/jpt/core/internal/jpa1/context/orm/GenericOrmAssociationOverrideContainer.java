@@ -339,6 +339,10 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 			return getOwner().getTypeMapping();
 		}
 
+		public Iterator<String> allOverridableAttributeNames() {
+			return GenericOrmAssociationOverrideContainer.this.allOverridableAssociationNames();
+		}
+
 		public boolean tableNameIsInvalid(String tableName) {
 			return getOwner().tableNameIsInvalid(tableName);
 		}

@@ -117,7 +117,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	
 	@Override
 	protected Iterator<String> candidateNames() {
-		return this.getOwner().getTypeMapping().allOverridableAttributeNames();
+		return this.getOwner().allOverridableAttributeNames();
 	}
 	
 	//************* java resource model -> java context model **************	
