@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -135,7 +135,7 @@ public class GenericJavaOrderable
 		} else {
 			this.orderColumnOrdering = true;
 		}
-		this.orderColumn.initialize(getNonNullOrderColumnAnnotation());
+		this.orderColumn.initialize(getResourcePersistentAttribute());
 	}
 
 	protected void updateOrdering() {
@@ -161,7 +161,7 @@ public class GenericJavaOrderable
 			this.setCustomOrdering_(false);
 			this.setOrderColumnOrdering_(true);
 		}
-		this.orderColumn.update(getNonNullOrderColumnAnnotation());
+		this.orderColumn.update(getResourcePersistentAttribute());
 	}
 
 	protected OrderByAnnotation getOrderByAnnotation() {
@@ -293,10 +293,6 @@ public class GenericJavaOrderable
 	
 	public JavaOrderColumn2_0 getOrderColumn() {
 		return this.orderColumn;
-	}
-	
-	protected OrderColumn2_0Annotation getNonNullOrderColumnAnnotation() {
-		return (OrderColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
 	}
 	
 	protected OrderColumn2_0Annotation getOrderColumnAnnotation() {

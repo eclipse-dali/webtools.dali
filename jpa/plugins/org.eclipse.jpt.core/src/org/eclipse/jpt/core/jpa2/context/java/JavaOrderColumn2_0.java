@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
-import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * 
@@ -27,12 +27,12 @@ public interface JavaOrderColumn2_0
 		OrderColumn2_0, 
 		JavaNamedColumn
 {
-	void initialize(OrderColumn2_0Annotation resourceColumn);
+	void initialize(JavaResourcePersistentAttribute resource);
 	
 	/**
 	 * Update the JavaColumn context model object to match the ColumnAnnotation 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(OrderColumn2_0Annotation resourceColumn);
+	void update(JavaResourcePersistentAttribute resource);
 
 }

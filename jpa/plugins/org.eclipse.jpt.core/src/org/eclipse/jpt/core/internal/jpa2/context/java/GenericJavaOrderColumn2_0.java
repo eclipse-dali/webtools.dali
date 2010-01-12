@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
@@ -30,19 +30,37 @@ public class GenericJavaOrderColumn2_0
 		
 	protected Boolean specifiedUpdatable;
 
-	protected JavaResourcePersistentMember persistenceResource;
-
 	
 	public GenericJavaOrderColumn2_0(JavaJpaContextNode parent, JavaNamedColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
+	protected OrderColumn2_0Annotation getNonNullOrderColumnAnnotation(JavaResourcePersistentAttribute resource) {
+		return (OrderColumn2_0Annotation) resource.getNonNullAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+	}
+	
+	public void initialize(JavaResourcePersistentAttribute resource) {
+		this.initialize(getNonNullOrderColumnAnnotation(resource));
+	}
+
 	@Override
 	public void initialize(OrderColumn2_0Annotation column) {
 		super.initialize(column);
 		this.specifiedNullable = this.getResourceNullable(column);
 		this.specifiedInsertable = this.getResourceInsertable(column);
 		this.specifiedUpdatable = this.getResourceUpdatable(column);
+	}
+
+	public void update(JavaResourcePersistentAttribute resource) {
+		this.update(getNonNullOrderColumnAnnotation(resource));
+	}
+	
+	@Override
+	public void update(OrderColumn2_0Annotation column) {
+		super.update(column);
+		this.setSpecifiedNullable_(this.getResourceNullable(column));
+		this.setSpecifiedInsertable_(this.getResourceInsertable(column));
+		this.setSpecifiedUpdatable_(this.getResourceUpdatable(column));
 	}
 
 	public boolean isNullable() {
@@ -76,6 +94,10 @@ public class GenericJavaOrderColumn2_0
 		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 	
+	protected Boolean getResourceNullable(OrderColumn2_0Annotation column) {
+		return column.getNullable();
+	}
+	
 	public boolean isInsertable() {
 		return (this.getSpecifiedInsertable() == null) ? this.isDefaultInsertable() : this.getSpecifiedInsertable().booleanValue();
 	}
@@ -105,6 +127,10 @@ public class GenericJavaOrderColumn2_0
 		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
 		this.specifiedInsertable = newSpecifiedInsertable;
 		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
+	}
+	
+	protected Boolean getResourceInsertable(OrderColumn2_0Annotation column) {
+		return column.getInsertable();
 	}
 	
 	public boolean isUpdatable() {
@@ -137,29 +163,13 @@ public class GenericJavaOrderColumn2_0
 		this.specifiedUpdatable = newSpecifiedUpdatable;
 		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
+	
+	protected Boolean getResourceUpdatable(OrderColumn2_0Annotation column) {
+		return column.getUpdatable();
+	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = getResourceColumn().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
-	}
-	
-	@Override
-	public void update(OrderColumn2_0Annotation column) {
-		super.update(column);
-		this.setSpecifiedNullable_(this.getResourceNullable(column));
-		this.setSpecifiedInsertable_(this.getResourceInsertable(column));
-		this.setSpecifiedUpdatable_(this.getResourceUpdatable(column));
-	}
-	
-	protected Boolean getResourceNullable(OrderColumn2_0Annotation column) {
-		return column.getNullable();
-	}
-	
-	protected Boolean getResourceInsertable(OrderColumn2_0Annotation column) {
-		return column.getInsertable();
-	}
-	
-	protected Boolean getResourceUpdatable(OrderColumn2_0Annotation column) {
-		return column.getUpdatable();
 	}
 }

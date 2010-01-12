@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -129,9 +129,9 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverrid
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
@@ -410,7 +410,7 @@ public abstract class AbstractJpaFactory
 	}
 	
 	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
-		return new GenericJavaOrderColumn2_0(parent, owner);
+		return new NullJavaOrderColumn2_0(parent, owner);
 	}
 	
 	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent) {
