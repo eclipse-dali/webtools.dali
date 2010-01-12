@@ -24,7 +24,8 @@ import org.eclipse.swt.widgets.Composite;
  * <pre>
  * -----------------------------------------------------------------------------
  * |                                                                           |
- * | JoinColumnsComposite                                                      |
+ * | JoinColumnJoiningStrategyPane                                             |
+ * | JoinTableJoiningStrategyPane                                              |
  * |                                                                           |
  * -----------------------------------------------------------------------------</pre>
  *
@@ -32,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see EntityOverridesComposite - The parent container
  * @see JoinColumnsComposite
  *
- * @version 2.2
+ * @version 2.3
  * @since 1.0
  */
 public class AssociationOverride2_0Composite

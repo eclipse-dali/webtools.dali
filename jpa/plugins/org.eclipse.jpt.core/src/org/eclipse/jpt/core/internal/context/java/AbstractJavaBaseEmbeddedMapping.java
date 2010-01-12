@@ -23,11 +23,11 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -197,17 +197,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		}
 		
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			Column column = null;
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
-					if (column != null) {
-						return column;
-					}
-				}
-			}
-			return column;
+			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {

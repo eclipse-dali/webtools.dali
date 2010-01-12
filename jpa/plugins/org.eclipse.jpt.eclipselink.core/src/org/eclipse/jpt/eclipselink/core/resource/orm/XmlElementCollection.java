@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -1191,8 +1191,8 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
 			buildConvertTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),
-			XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AssociationOverrides()),
+			buildAttributeOverrideTranslator(),
+			buildAssociationOverrideTranslator(),
 			XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter()),
 			XmlConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter()),
 			XmlConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter()),

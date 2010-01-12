@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
@@ -212,23 +213,13 @@ public abstract class AbstractOrmEmbeddedMapping<T extends XmlEmbedded>
 		}
 
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
-			RelationshipReference relationshipReference = null;
 			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
 				JavaAssociationOverride javaAssociationOverride = getJavaAssociationOverrideNamed(associationOverrideName);
 				if (javaAssociationOverride != null && !javaAssociationOverride.isVirtual()) {
 					return javaAssociationOverride.getRelationshipReference();
 				}
 			}
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
-					if (relationshipReference != null) {
-						return relationshipReference;
-					}
-				}
-			}
-			return relationshipReference;
+			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {

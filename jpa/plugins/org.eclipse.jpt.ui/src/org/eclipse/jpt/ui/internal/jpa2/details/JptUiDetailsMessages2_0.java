@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,8 @@ public class JptUiDetailsMessages2_0
 	
 	public static String ElementCollectionMapping2_0_label;
 	public static String ElementCollectionMapping2_0_linkLabel;
+	
+	public static String AbstractElementCollectionMapping2_0_Composite_valueSectionTitle;
 	
 	public static String Entity_cacheableLabel;
 	public static String Entity_cacheableWithDefaultLabel;

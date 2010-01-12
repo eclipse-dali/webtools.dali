@@ -46,6 +46,7 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -1555,16 +1556,7 @@ public abstract class AbstractJavaEntity
 		}
 
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					RelationshipReference relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
-					if (relationshipReference != null) {
-						return relationshipReference;
-					}
-				}
-			}
-			return null;
+			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {
@@ -1596,16 +1588,7 @@ public abstract class AbstractJavaEntity
 		}
 
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					Column column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
-					if (column != null) {
-						return column;
-					}
-				}
-			}
-			return null;
+			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {

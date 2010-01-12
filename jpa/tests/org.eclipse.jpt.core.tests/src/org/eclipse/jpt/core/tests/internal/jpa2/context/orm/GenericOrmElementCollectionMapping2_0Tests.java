@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,7 +54,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		getPersistenceXmlResource().save(null);
 	}
 	
-	private ICompilationUnit createTestEntityElementCollectionMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithElementCollectionMapping() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -90,7 +90,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 					sb.append(";");
 					sb.append(CR);
 				sb.append(CR);
-				sb.append("@Entity");
+				sb.append("@Embeddable");
 				sb.append(CR);
 				sb.append("public class ").append("Address").append(" ");
 				sb.append("{").append(CR);
@@ -109,7 +109,73 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
-
+	
+	private ICompilationUnit createTestEntityWithEmbeddableElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.FETCH_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection");
+				sb.append(CR);
+				sb.append("    private java.util.Collection<Address> addresses;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");				
+			}
+		});
+	}	
+	
+	private ICompilationUnit createTestEntityWithNonGenericElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Collection addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithGenericBasicElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Collection<String> addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
 	
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
@@ -152,7 +218,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 
 	public void testMappingNoUnderylingJavaAttribute() throws Exception {
-		createTestEntityElementCollectionMapping();
+		createTestEntityWithElementCollectionMapping();
 		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -171,7 +237,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	
 	
 	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
-		createTestEntityElementCollectionMapping();
+		createTestEntityWithElementCollectionMapping();
 		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -195,7 +261,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
-		createTestEntityElementCollectionMapping();
+		createTestEntityWithElementCollectionMapping();
 		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -215,7 +281,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testSpecifiedMapping() throws Exception {
-		createTestEntityElementCollectionMapping();
+		createTestEntityWithElementCollectionMapping();
 		createTestTargetEmbeddableAddress();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -469,5 +535,56 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertNull(elementCollection.getTargetClass());
 	}
 
+	
+	public void testGetValueTypeEmbeddable() throws Exception {
+		createTestEntityWithEmbeddableElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "test.Address");
+
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");	
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+
+		assertEquals(ElementCollectionMapping2_0.Type.EMBEDDABLE_TYPE, elementCollectionMapping.getValueType());
+	}
+	
+	public void testGetValueTypeEntity() throws Exception {
+		createTestEntityWithEmbeddableElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "test.Address");
+
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");	
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+
+		assertEquals(ElementCollectionMapping2_0.Type.BASIC_TYPE, elementCollectionMapping.getValueType());
+	}
+	
+	public void testGetValueTypeNone() throws Exception {
+		createTestEntityWithNonGenericElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "test.Address");
+		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+
+		assertEquals(ElementCollectionMapping2_0.Type.NO_TYPE, elementCollectionMapping.getValueType());
+
+		elementCollectionMapping.setSpecifiedTargetClass("test.Address");
+		assertEquals(ElementCollectionMapping2_0.Type.EMBEDDABLE_TYPE, elementCollectionMapping.getValueType());
+	}
+	
+	public void testGetValueTypeBasic() throws Exception {
+		createTestEntityWithGenericBasicElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "test.Address");
+
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");	
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+
+		assertEquals(ElementCollectionMapping2_0.Type.BASIC_TYPE, elementCollectionMapping.getValueType());
+	}
 	
 }

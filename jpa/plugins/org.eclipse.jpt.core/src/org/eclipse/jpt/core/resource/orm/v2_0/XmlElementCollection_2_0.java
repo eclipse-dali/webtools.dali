@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -16,8 +16,9 @@ import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
-import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
@@ -44,8 +45,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyColumn <em>Map Key Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyJoinColumns <em>Map Key Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getColumn <em>Column</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getAttributeOverrides <em>Attribute Overrides</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getAssociationOverrides <em>Association Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getCollectionTable <em>Collection Table</em>}</li>
  * </ul>
  * </p>
@@ -54,7 +53,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable
+public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer
 {
 	/**
 	 * Returns the value of the '<em><b>Target Class</b></em>' attribute.
@@ -304,38 +303,6 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrde
 	 * @generated
 	 */
 	void setColumn(XmlColumn value);
-
-	/**
-	 * Returns the value of the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Attribute Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlElementCollection_2_0_AttributeOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<XmlAttributeOverride> getAttributeOverrides();
-
-	/**
-	 * Returns the value of the '<em><b>Association Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Association Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlElementCollection_2_0_AssociationOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<XmlAssociationOverride> getAssociationOverrides();
 
 	/**
 	 * Returns the value of the '<em><b>Collection Table</b></em>' containment reference.

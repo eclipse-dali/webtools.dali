@@ -58,6 +58,7 @@ public interface JpaFactory2_0
 	
 	// ********** Java Context Model **********
 	
+	//overloaded because the 2.0 JPA spec supports association overrides on an embedded mapping while the 1.0 spec did not
 	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, AssociationOverrideContainer.Owner owner);
 	
 	JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent);

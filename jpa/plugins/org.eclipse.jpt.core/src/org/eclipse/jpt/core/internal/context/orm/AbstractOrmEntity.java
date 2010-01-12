@@ -52,6 +52,7 @@ import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -1786,16 +1787,7 @@ public abstract class AbstractOrmEntity
 					}
 				}
 			}
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					RelationshipReference relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
-					if (relationshipReference != null) {
-						return relationshipReference;
-					}
-				}
-			}
-			return null;
+			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {
@@ -1836,16 +1828,7 @@ public abstract class AbstractOrmEntity
 					}
 				}
 			}
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					Column column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
-					if (column != null) {
-						return column;
-					}
-				}
-			}
-			return null;
+			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
 		
 		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {

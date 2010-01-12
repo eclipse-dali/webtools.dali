@@ -446,7 +446,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_0" abstract="true"
-        interface="true" eSuperTypes="#//XmlConvertibleMapping #//XmlOrderable">
+        interface="true" eSuperTypes="#//XmlConvertibleMapping #//XmlOrderable #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKey" eType="#//MapKey"
@@ -463,10 +463,6 @@
           eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="column" eType="#//XmlColumn"
           containment="true" resolveProxies="false"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
-          eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="associationOverrides"
-          upperBound="-1" eType="#//XmlAssociationOverride" containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="collectionTable" eType="#//XmlCollectionTable"
           containment="true" resolveProxies="false"/>
     </eClassifiers>

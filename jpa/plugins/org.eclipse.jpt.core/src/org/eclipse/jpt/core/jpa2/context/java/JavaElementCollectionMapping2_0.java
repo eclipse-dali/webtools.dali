@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.java;
 
+import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 
@@ -30,4 +33,11 @@ public interface JavaElementCollectionMapping2_0
 	JavaCollectionTable2_0 getCollectionTable();
 	
 	CollectionTable2_0Annotation getCollectionTableAnnotation();
+	
+	JavaColumn getValueColumn();
+
+	JavaAttributeOverrideContainer getValueAttributeOverrideContainer();
+	
+	JavaAssociationOverrideContainer getValueAssociationOverrideContainer();
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -240,7 +240,7 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmAttributeOverrideContainer(parent, owner, resourceAttributeOverrideContainer);
 	}
 	
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEntity parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
 		return new GenericOrmAssociationOverrideContainer(parent, owner, resourceAssociationOverrideContainer);
 	}
 	

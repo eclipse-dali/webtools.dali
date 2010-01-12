@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
@@ -186,17 +187,7 @@ public class GenericJavaEmbeddedMapping
 		}
 
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			RelationshipReference relationshipReference = null;
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
-					if (relationshipReference != null) {
-						return relationshipReference;
-					}
-				}
-			}
-			return relationshipReference;
+			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {

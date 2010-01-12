@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -125,6 +125,26 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @ordered
 	 */
 	protected String orderBy = ORDER_BY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAttributeOverride> attributeOverrides;
+
+	/**
+	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAssociationOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAssociationOverride> associationOverrides;
 
 	/**
 	 * The default value of the '{@link #getTargetClass() <em>Target Class</em>}' attribute.
@@ -253,26 +273,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @ordered
 	 */
 	protected XmlColumn column;
-
-	/**
-	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAttributeOverride> attributeOverrides;
-
-	/**
-	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAssociationOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAssociationOverride> associationOverrides;
 
 	/**
 	 * The cached value of the '{@link #getCollectionTable() <em>Collection Table</em>}' containment reference.
@@ -522,6 +522,52 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		orderBy = newOrderBy;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY, oldOrderBy, orderBy));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Overrides</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverrideContainer_AttributeOverrides()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlAttributeOverride> getAttributeOverrides()
+	{
+		if (attributeOverrides == null)
+		{
+			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES);
+		}
+		return attributeOverrides;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Association Overrides</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverrideContainer_AssociationOverrides()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlAssociationOverride> getAssociationOverrides()
+	{
+		if (associationOverrides == null)
+		{
+			associationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES);
+		}
+		return associationOverrides;
 	}
 
 	/**
@@ -947,52 +993,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Attribute Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlElementCollection_2_0_AttributeOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlAttributeOverride> getAttributeOverrides()
-	{
-		if (attributeOverrides == null)
-		{
-			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES);
-		}
-		return attributeOverrides;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Association Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Association Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlElementCollection_2_0_AssociationOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlAssociationOverride> getAssociationOverrides()
-	{
-		if (associationOverrides == null)
-		{
-			associationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES);
-		}
-		return associationOverrides;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Collection Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1064,6 +1064,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		{
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_COLUMN:
 				return basicSetOrderColumn(null, msgs);
+			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
+				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
+				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY:
 				return basicSetMapKey(null, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
@@ -1076,10 +1080,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return ((InternalEList<?>)getMapKeyJoinColumns()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN:
 				return basicSetColumn(null, msgs);
-			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
-				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
-				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				return basicSetCollectionTable(null, msgs);
 		}
@@ -1106,6 +1106,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getOrderColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				return getOrderBy();
+			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
+				return getAttributeOverrides();
+			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
+				return getAssociationOverrides();
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return getTargetClass();
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
@@ -1126,10 +1130,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getMapKeyJoinColumns();
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN:
 				return getColumn();
-			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
-				return getAttributeOverrides();
-			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
-				return getAssociationOverrides();
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				return getCollectionTable();
 		}
@@ -1161,6 +1161,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				setOrderBy((String)newValue);
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
+				getAttributeOverrides().clear();
+				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
+				getAssociationOverrides().clear();
+				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass((String)newValue);
@@ -1194,14 +1202,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
-				getAttributeOverrides().clear();
-				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
-				getAssociationOverrides().clear();
-				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
-				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				setCollectionTable((XmlCollectionTable)newValue);
 				return;
@@ -1234,6 +1234,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
+				getAttributeOverrides().clear();
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
+				getAssociationOverrides().clear();
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
 				return;
@@ -1264,12 +1270,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
-				getAttributeOverrides().clear();
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
-				getAssociationOverrides().clear();
-				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				setCollectionTable((XmlCollectionTable)null);
 				return;
@@ -1297,6 +1297,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return orderColumn != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
+			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
+				return attributeOverrides != null && !attributeOverrides.isEmpty();
+			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
+				return associationOverrides != null && !associationOverrides.isEmpty();
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
@@ -1317,10 +1321,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return mapKeyJoinColumns != null && !mapKeyJoinColumns.isEmpty();
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN:
 				return column != null;
-			case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES:
-				return attributeOverrides != null && !attributeOverrides.isEmpty();
-			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
-				return associationOverrides != null && !associationOverrides.isEmpty();
 			case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE:
 				return collectionTable != null;
 		}
@@ -1361,6 +1361,22 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -1375,8 +1391,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_COLUMN;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_JOIN_COLUMNS;
 				case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLUMN;
-				case OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ATTRIBUTE_OVERRIDES;
-				case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ASSOCIATION_OVERRIDES;
 				case OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLLECTION_TABLE;
 				default: return -1;
 			}
@@ -1418,6 +1432,22 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -1432,8 +1462,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_JOIN_COLUMNS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__COLUMN;
-				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES;
-				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLLECTION_TABLE: return OrmPackage.XML_ELEMENT_COLLECTION__COLLECTION_TABLE;
 				default: return -1;
 			}
@@ -1523,8 +1551,8 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
 			buildLobTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AttributeOverrides()),
-			XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_AssociationOverrides()),
+			buildAttributeOverrideTranslator(),
+			buildAssociationOverrideTranslator(),
 			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable())
 		};
 	}
@@ -1575,5 +1603,13 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
 		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyEnumerated());
+	}	
+	
+	protected static Translator buildAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getXmlAttributeOverrideContainer_AttributeOverrides());
+	}
+	
+	protected static Translator buildAssociationOverrideTranslator() {
+		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
 }

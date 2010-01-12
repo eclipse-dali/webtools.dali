@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1228,6 +1228,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ELEMENT_COLLECTION__ORDER_BY = OrmPackage.XML_ELEMENT_COLLECTION__ORDER_BY;
 	/**
+	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES;
+	/**
+	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES;
+	/**
 	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1307,22 +1323,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ELEMENT_COLLECTION__COLUMN = OrmPackage.XML_ELEMENT_COLLECTION__COLUMN;
-	/**
-	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES;
-	/**
-	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES;
 	/**
 	 * The feature id for the '<em><b>Collection Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

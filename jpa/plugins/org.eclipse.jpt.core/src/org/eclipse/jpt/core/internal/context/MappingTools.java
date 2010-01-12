@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * Gather some of the behavior common to the Java and XML models. :-(
@@ -248,6 +250,29 @@ public class MappingTools {
 		return mapKeyMapping.getMetamodelTypeName();
 	}
 
+	public static Column resolveOverridenColumn(TypeMapping overridableTypeMapping, String attributeOverrideName) {
+		if (overridableTypeMapping != null) {
+			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+				Column column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
+				if (column != null) {
+					return column;
+				}
+			}
+		}
+		return null;		
+	}
+
+	public static RelationshipReference resolveRelationshipReference(TypeMapping overridableTypeMapping, String associationOverrideName) {
+		if (overridableTypeMapping != null) {
+			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+				RelationshipReference relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
+				if (relationshipReference != null) {
+					return relationshipReference;
+				}
+			}
+		}
+		return null;
+	}
 
 	// ********** constructor **********
 

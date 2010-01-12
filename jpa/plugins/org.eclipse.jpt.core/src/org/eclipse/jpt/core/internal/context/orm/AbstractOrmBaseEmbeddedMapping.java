@@ -22,9 +22,9 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -185,17 +185,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 					return javaAttributeOverride.getColumn();
 				}
 			}
-			TypeMapping overridableTypeMapping = getOverridableTypeMapping();
-			Column column = null;
-			if (overridableTypeMapping != null) {
-				for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-					column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
-					if (column != null) {
-						return column;
-					}
-				}
-			}
-			return column;
+			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
 		
 		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {

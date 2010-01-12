@@ -378,8 +378,6 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyJoinColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/column"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/attributeOverrides"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/associationOverrides"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/collectionTable"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlEmbedded_2_0"/>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.orm;
 
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 
@@ -28,7 +31,13 @@ public interface OrmElementCollectionMapping2_0
 	extends OrmAttributeMapping, ElementCollectionMapping2_0
 {
 	OrmCollectionTable2_0 getCollectionTable();
-	
+
 	XmlElementCollection getResourceAttributeMapping();
+
+	OrmColumn getValueColumn();
+
+	OrmAttributeOverrideContainer getValueAttributeOverrideContainer();
+
+	OrmAssociationOverrideContainer getValueAssociationOverrideContainer();
 
 }
