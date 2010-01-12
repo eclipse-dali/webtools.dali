@@ -9,9 +9,10 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.logging;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.FolderChooserPane;
+import org.eclipse.jpt.ui.internal.widgets.FileChooserComboPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -32,7 +33,7 @@ public class LoggingFileLocationComposite extends Pane<Logging>
 	@Override
 	protected void initializeLayout(Composite container) {
 		
-		new FolderChooserPane<Logging>(this, container) {
+		new FileChooserComboPane<Logging>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
@@ -69,8 +70,12 @@ public class LoggingFileLocationComposite extends Pane<Logging>
 					);
 				}
 				else {
-					return EclipseLinkUiMessages.PersistenceXmlLoggingTab_defaultStdout;
+					return this.getDefaultString();
 				}
+			}
+
+			protected String getDefaultString() {
+				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_defaultStdout;
 			}
 
 			@Override
@@ -86,6 +91,11 @@ public class LoggingFileLocationComposite extends Pane<Logging>
 			@Override
 			protected String getLabelText() {
 				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggingFileLabel;
+			}
+
+			@Override
+			protected IResource getDialogInput() {
+				return getSubject().getJpaProject().getProject();
 			}
 		};
 	}
