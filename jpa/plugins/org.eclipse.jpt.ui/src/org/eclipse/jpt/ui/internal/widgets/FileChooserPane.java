@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -102,7 +102,7 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 
 	@Override
 	protected Control addMainControl(Composite container) {
-		return addText(container, this.textHolder);
+		return this.addText(container, this.textHolder);
 	}
 
 	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution() {
@@ -163,10 +163,14 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	 */
 	protected abstract IResource getDialogInput();
 
+	protected  WritablePropertyValueModel<String> getTextHolder() {
+		return this.textHolder;
+	}
+
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.textHolder = buildTextHolder();
+		this.textHolder = this.buildTextHolder();
 	}
 
 	/**
@@ -176,19 +180,19 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	protected void promptFile() {
 
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-			getShell(),
+			this.getShell(),
 			new WorkbenchLabelProvider(),
 			new WorkbenchContentProvider()
 		);
 
 		dialog.setHelpAvailable(false);
-		dialog.setValidator(buildValidator());
-		dialog.setTitle(getDialogTitle());
-		dialog.setMessage(getDialogMessage());
-		dialog.addFilter(buildFilter());
-		dialog.setInput(getDialogInput());
+		dialog.setValidator(this.buildValidator());
+		dialog.setTitle(this.getDialogTitle());
+		dialog.setMessage(this.getDialogMessage());
+		dialog.addFilter(this.buildFilter());
+		dialog.setInput(this.getDialogInput());
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
-		SWTUtil.show(dialog, buildSelectionDialogPostExecution());
+		SWTUtil.show(dialog, this.buildSelectionDialogPostExecution());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 20010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -71,7 +71,7 @@ public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 
 	@Override
 	protected Control addMainControl(Composite container) {
-		return addText(container, this.textHolder);
+		return this.addText(container, this.textHolder);
 	}
 
 	/**
@@ -111,10 +111,14 @@ public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 		return null;
 	}
 
+	protected  WritablePropertyValueModel<String> getTextHolder() {
+		return this.textHolder;
+	}
+
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.textHolder = buildTextHolder();
+		this.textHolder = this.buildTextHolder();
 	}
 
 	/**
@@ -124,9 +128,9 @@ public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 	protected void promptFolder() {
 
 		DirectoryDialog dialog = new DirectoryDialog(getShell());
-		dialog.setMessage(getDialogMessage());
-		dialog.setText(getDialogTitle());
-		dialog.setFilterPath(filterPath());
+		dialog.setMessage(this.getDialogMessage());
+		dialog.setText(this.getDialogTitle());
+		dialog.setFilterPath(this.filterPath());
 		String directory = dialog.open();
 
 		if (directory != null) {
