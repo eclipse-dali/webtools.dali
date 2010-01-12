@@ -306,7 +306,6 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlLoggingTab_loggingFileLabel;
 
 	public static String LoggingFileLocationComposite_dialogTitle;
-	public static String LoggingFileLocationComposite_dialogMessage;
 
 	// Session Options
 	public static String PersistenceXmlOptionsTab_title;
