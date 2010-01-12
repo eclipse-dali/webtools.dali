@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.logging;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FileChooserComboPane;
@@ -74,13 +73,9 @@ public class LoggingFileLocationComposite extends Pane<Logging>
 				}
 			}
 
+			@Override
 			protected String getDefaultString() {
 				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_defaultStdout;
-			}
-
-			@Override
-			protected String getDialogMessage() {
-				return EclipseLinkUiMessages.LoggingFileLocationComposite_dialogMessage;
 			}
 
 			@Override
@@ -94,8 +89,8 @@ public class LoggingFileLocationComposite extends Pane<Logging>
 			}
 
 			@Override
-			protected IResource getDialogInput() {
-				return getSubject().getJpaProject().getProject();
+			protected String getProjectPath() {
+				return this.getSubject().getJpaProject().getProject().getLocation().toString();
 			}
 		};
 	}

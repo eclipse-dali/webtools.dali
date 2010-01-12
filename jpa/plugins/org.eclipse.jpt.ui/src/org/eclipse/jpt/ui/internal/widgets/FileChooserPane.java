@@ -9,24 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
-import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.views.navigator.ResourceComparator;
 
 /**
  * This chooser allows the user to choose a file when browsing.
@@ -105,16 +99,6 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 		return this.addText(container, this.textHolder);
 	}
 
-	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution() {
-		return new PostExecution<ElementTreeSelectionDialog>() {
-			public void execute(ElementTreeSelectionDialog dialog) {
-				if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
-					FileChooserPane.this.textHolder.setValue(dialog.getResult()[0].toString());
-				}
-			}
-		};
-	}
-
 	/**
 	 * Creates the value holder of the subject's property.
 	 *
@@ -142,14 +126,6 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	/**
-	 * Returns the message to be shown in the selection dialog.
-	 *
-	 * @return A non-<code>null</code> string shown above the text field of the
-	 * selection dialog
-	 */
-	protected abstract String getDialogMessage();
-
-	/**
 	 * Returns the selection dialog's title.
 	 *
 	 * @return A non-<code>null</code> string
@@ -157,11 +133,11 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	protected abstract String getDialogTitle();
 
 	/**
-	 * Retrieves the root input that will be used by the selection dialog.
+	 * Retrieves the project path that will be used by the selection dialog.
 	 *
-	 * @return The input used to display its content in a selection dialog
+	 * @return The project path used to display its content in a selection dialog
 	 */
-	protected abstract IResource getDialogInput();
+	protected abstract String getProjectPath();
 
 	protected  WritablePropertyValueModel<String> getTextHolder() {
 		return this.textHolder;
@@ -178,21 +154,14 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	 * prompt the user to select a file and set it.
 	 */
 	protected void promptFile() {
+		String projectPath= this.getProjectPath();
 
-		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-			this.getShell(),
-			new WorkbenchLabelProvider(),
-			new WorkbenchContentProvider()
-		);
-
-		dialog.setHelpAvailable(false);
-		dialog.setValidator(this.buildValidator());
-		dialog.setTitle(this.getDialogTitle());
-		dialog.setMessage(this.getDialogMessage());
-		dialog.addFilter(this.buildFilter());
-		dialog.setInput(this.getDialogInput());
-		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-
-		SWTUtil.show(dialog, this.buildSelectionDialogPostExecution());
+		FileDialog dialog = new FileDialog(getShell());
+		dialog.setText(this.getDialogTitle());
+		dialog.setFilterPath(projectPath);
+		String filePath = dialog.open();
+		if (filePath != null) {
+			FileChooserPane.this.textHolder.setValue(filePath);
+		}
 	}
 }
