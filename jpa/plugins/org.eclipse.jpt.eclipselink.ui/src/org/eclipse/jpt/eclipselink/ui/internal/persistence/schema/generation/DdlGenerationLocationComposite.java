@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation;
 
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.FolderChooserPane;
+import org.eclipse.jpt.ui.internal.widgets.FolderChooserComboPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -32,7 +32,7 @@ public class DdlGenerationLocationComposite extends Pane<SchemaGeneration>
 	@Override
 	protected void initializeLayout(Composite container) {
 		
-		new FolderChooserPane<SchemaGeneration>(this, container) {
+		new FolderChooserComboPane<SchemaGeneration>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
@@ -69,8 +69,13 @@ public class DdlGenerationLocationComposite extends Pane<SchemaGeneration>
 					);
 				}
 				else {
-					return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultDot;
+					return this.getDefaultString();
 				}
+			}
+
+			@Override
+			protected String getDefaultString() {
+				return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultDot;
 			}
 
 			@Override
