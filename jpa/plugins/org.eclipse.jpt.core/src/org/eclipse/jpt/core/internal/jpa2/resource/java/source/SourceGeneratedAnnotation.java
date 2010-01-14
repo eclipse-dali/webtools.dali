@@ -79,6 +79,8 @@ public final class SourceGeneratedAnnotation
 
 	public void update(CompilationUnit astRoot) {
 		this.updateValues(astRoot);
+		this.setDate_(this.buildDate(astRoot));
+		this.setComments_(this.buildComments(astRoot));
 	}
 
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
@@ -160,6 +162,12 @@ public final class SourceGeneratedAnnotation
 		this.dateAdapter.setValue(date);
 		this.firePropertyChanged(DATE_PROPERTY, old, date);
 	}
+	
+	protected void setDate_(String date) {
+		String old = this.date;
+		this.date = date;
+		this.firePropertyChanged(DATE_PROPERTY, old, date);
+	}
 
 	private String buildDate(CompilationUnit astRoot) {
 		return this.dateAdapter.getValue(astRoot);
@@ -177,6 +185,12 @@ public final class SourceGeneratedAnnotation
 		String old = this.date;
 		this.comments = comments;
 		this.commentsAdapter.setValue(comments);
+		this.firePropertyChanged(COMMENTS_PROPERTY, old, comments);
+	}
+
+	protected void setComments_(String comments) {
+		String old = this.date;
+		this.comments = comments;
 		this.firePropertyChanged(COMMENTS_PROPERTY, old, comments);
 	}
 
