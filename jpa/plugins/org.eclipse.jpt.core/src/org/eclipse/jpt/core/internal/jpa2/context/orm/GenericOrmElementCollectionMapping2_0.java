@@ -213,25 +213,8 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 	
 	protected String buildDefaultTargetClass() {
-		JavaElementCollectionMapping2_0 javaMapping = getJavaElementCollectionMapping();
-		if (javaMapping != null) {
-			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
-				return javaMapping.getTargetClass();
-			}
-		}
 		if (this.getJavaPersistentAttribute() != null) {
 			return getResourceDefaultTargetClass();
-		}
-		return null;
-	}
-	
-	protected JavaElementCollectionMapping2_0 getJavaElementCollectionMapping() {
-		if (this.getJavaPersistentAttribute() == null) {
-			return null;
-		}
-		AttributeMapping javaAttributeMapping = this.getJavaPersistentAttribute().getMapping();
-		if (javaAttributeMapping.getKey() == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY) {
-			return ((JavaElementCollectionMapping2_0) javaAttributeMapping);
 		}
 		return null;
 	}
@@ -472,6 +455,17 @@ public class GenericOrmElementCollectionMapping2_0
 	protected JavaAssociationOverride getJavaValueAssociationOverrideNamed(String attributeName) {
 		if (getJavaElementCollectionMapping() != null) {
 			return getJavaElementCollectionMapping().getValueAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
+		}
+		return null;
+	}
+	
+	protected JavaElementCollectionMapping2_0 getJavaElementCollectionMapping() {
+		if (this.getJavaPersistentAttribute() == null) {
+			return null;
+		}
+		AttributeMapping javaAttributeMapping = this.getJavaPersistentAttribute().getMapping();
+		if (javaAttributeMapping.getKey() == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY) {
+			return ((JavaElementCollectionMapping2_0) javaAttributeMapping);
 		}
 		return null;
 	}

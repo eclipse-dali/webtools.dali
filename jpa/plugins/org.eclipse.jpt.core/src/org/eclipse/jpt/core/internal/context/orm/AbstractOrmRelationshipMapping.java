@@ -188,25 +188,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	}
 	
 	protected String buildDefaultTargetEntity() {
-		RelationshipMapping javaMapping = getJavaRelationshipMapping();
-		if (javaMapping != null) {
-			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
-				return javaMapping.getTargetEntity();
-			}
-		}
 		if (this.getJavaPersistentAttribute() != null) {
 			return getResourceDefaultTargetEntity();
-		}
-		return null;
-	}
-	
-	protected RelationshipMapping getJavaRelationshipMapping() {
-		if (this.getJavaPersistentAttribute() == null) {
-			return null;
-		}
-		AttributeMapping javaAttributeMapping = this.getJavaPersistentAttribute().getMapping();
-		if (javaAttributeMapping instanceof RelationshipMapping) {
-			return ((RelationshipMapping) javaAttributeMapping);
 		}
 		return null;
 	}
