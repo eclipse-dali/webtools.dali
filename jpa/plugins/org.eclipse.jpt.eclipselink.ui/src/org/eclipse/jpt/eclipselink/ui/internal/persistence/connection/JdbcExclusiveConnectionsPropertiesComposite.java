@@ -1,9 +1,9 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2010 Oracle. All rights reserved.
+* Copyright (c) 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-*
+* 
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -18,38 +18,33 @@ import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *  JdbcPropertiesComposite
+ *  JdbcExclusiveConnectionsPropertiesComposite
  */
-public class JdbcPropertiesComposite<T extends Connection> 
+public class JdbcExclusiveConnectionsPropertiesComposite<T extends Connection> 
 	extends Pane<T>
 {
-	public JdbcPropertiesComposite(Pane<T> parentComposite, Composite parent) {
+	public JdbcExclusiveConnectionsPropertiesComposite(Pane<T> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
-
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 
 		container = this.addTitledGroup(
 			this.addSubPane(container, 10),
-			EclipseLinkUiMessages.JdbcPropertiesComposite_EclipseLinkConnectionPool_GroupBox
+			EclipseLinkUiMessages.JdbcExclusiveConnectionsPropertiesComposite_GroupBox
 		);
 
-		// Connection Properties
-		new JdbcConnectionPropertiesComposite<T>(this, container);
+		// Exclusive connection mode
+		new JdbcExclusiveConnectionModeComposite<T>(this, container);
 
-		container = this.addPane(container, new GridLayout(2, true));
+		// Lazy Connection
+		new JdbcLazyConnectionComposite<T>(this, container);
 
-		// Read Connection
-		new JdbcReadConnectionPropertiesComposite<T>(this, container);
-		// Write Connection
-		new JdbcWriteConnectionPropertiesComposite<T>(this, container);
-		
 		this.installPaneEnabler();
 	}
 
@@ -85,6 +80,5 @@ public class JdbcPropertiesComposite<T extends Connection>
 				return this.subject.getPersistenceUnit();
 			}
 		};
-		
 	}
 }

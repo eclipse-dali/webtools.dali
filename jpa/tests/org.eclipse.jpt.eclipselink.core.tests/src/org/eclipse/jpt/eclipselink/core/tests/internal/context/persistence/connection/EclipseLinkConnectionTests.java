@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.ExclusiveConnectionMode;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
@@ -20,7 +21,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
  *  ConnectionAdapterTests
  */
 @SuppressWarnings("nls")
-public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
+public class EclipseLinkConnectionTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Connection connection;
 
@@ -89,10 +90,20 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	public static final Integer WRITE_CONNECTIONS_MAX_TEST_VALUE = 100;
 	public static final Integer WRITE_CONNECTIONS_MAX_TEST_VALUE_2 = 200;
 
-	public ConnectionAdapterTests(String name) {
+	public static final String EXCLUSIVE_CONNECTION_MODE_KEY = Connection.ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE;
+	public static final ExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE = ExclusiveConnectionMode.always;
+	public static final ExclusiveConnectionMode EXCLUSIVE_CONNECTION_MODE_TEST_VALUE_2 = ExclusiveConnectionMode.isolated;
+	
+	public static final String LAZY_CONNECTION_KEY = Connection.ECLIPSELINK_LAZY_CONNECTION;
+	public static final Boolean LAZY_CONNECTION_TEST_VALUE = false;
+	public static final Boolean LAZY_CONNECTION_TEST_VALUE_2 = ! LAZY_CONNECTION_TEST_VALUE;
+	
+	// ********** constructors **********
+	public EclipseLinkConnectionTests(String name) {
 		super(name);
 	}
 
+	// ********** behavior **********
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -113,6 +124,8 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.connection.addPropertyChangeListener(Connection.READ_CONNECTIONS_MAX_PROPERTY, propertyChangeListener);
 		this.connection.addPropertyChangeListener(Connection.WRITE_CONNECTIONS_MIN_PROPERTY, propertyChangeListener);
 		this.connection.addPropertyChangeListener(Connection.WRITE_CONNECTIONS_MAX_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(Connection.EXCLUSIVE_CONNECTION_MODE_PROPERTY, propertyChangeListener);
+		this.connection.addPropertyChangeListener(Connection.LAZY_CONNECTION_PROPERTY, propertyChangeListener);
 		
 		this.clearEvent();
 	}
@@ -122,7 +135,7 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 14; // EclipseLink properties
+		this.modelPropertiesSizeOriginal = 16; // EclipseLink properties
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -145,12 +158,98 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.persistenceUnitSetProperty(WRITE_CONNECTIONS_MIN_KEY, WRITE_CONNECTIONS_MIN_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(WRITE_CONNECTIONS_MAX_KEY, WRITE_CONNECTIONS_MAX_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty("misc.property.4", "value.4");
+		this.persistenceUnitSetProperty(EXCLUSIVE_CONNECTION_MODE_KEY, EXCLUSIVE_CONNECTION_MODE_TEST_VALUE);
+		this.persistenceUnitSetProperty(LAZY_CONNECTION_KEY, LAZY_CONNECTION_TEST_VALUE.toString());
 		
 		// Initializes PU elements
 		this.getPersistenceUnit().setSpecifiedTransactionType(TRANSACTION_TYPE_TEST_VALUE);
 		this.getPersistenceUnit().setJtaDataSource(JTA_DATA_SOURCE_TEST_VALUE);
 		this.getPersistenceUnit().setNonJtaDataSource(NON_JTA_DATA_SOURCE_TEST_VALUE);
 		return;
+	}
+
+	@Override
+	protected PersistenceUnitProperties getModel() {
+		return this.connection;
+	}
+
+	// ********** get/set property **********
+	@Override
+	protected void setProperty(String propertyName, Object newValue) throws Exception {
+		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
+			this.connection.setNativeSql((Boolean) newValue);
+		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
+			this.connection.setBatchWriting((BatchWriting) newValue);
+		else if (propertyName.equals(Connection.CACHE_STATEMENTS_PROPERTY))
+			this.connection.setCacheStatements((Boolean) newValue);
+		else if (propertyName.equals(Connection.CACHE_STATEMENTS_SIZE_PROPERTY))
+			this.connection.setCacheStatementsSize((Integer) newValue);
+		else if (propertyName.equals(Connection.DRIVER_PROPERTY))
+			this.connection.setDriver((String) newValue);
+		else if (propertyName.equals(Connection.URL_PROPERTY))
+			this.connection.setUrl((String) newValue);
+		else if (propertyName.equals(Connection.USER_PROPERTY))
+			this.connection.setUser((String) newValue);
+		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
+			this.connection.setPassword((String) newValue);
+		else if (propertyName.equals(Connection.BIND_PARAMETERS_PROPERTY))
+			this.connection.setBindParameters((Boolean) newValue);
+		else if (propertyName.equals(Connection.READ_CONNECTIONS_SHARED_PROPERTY))
+			this.connection.setReadConnectionsShared((Boolean) newValue);
+		else if (propertyName.equals(Connection.READ_CONNECTIONS_MIN_PROPERTY))
+			this.connection.setReadConnectionsMin((Integer) newValue);
+		else if (propertyName.equals(Connection.READ_CONNECTIONS_MAX_PROPERTY))
+			this.connection.setReadConnectionsMax((Integer) newValue);
+		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MIN_PROPERTY))
+			this.connection.setWriteConnectionsMin((Integer) newValue);
+		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MAX_PROPERTY))
+			this.connection.setWriteConnectionsMax((Integer) newValue);
+		else if (propertyName.equals(Connection.EXCLUSIVE_CONNECTION_MODE_PROPERTY))
+			this.connection.setExclusiveConnectionMode((ExclusiveConnectionMode) newValue);
+		else if (propertyName.equals(Connection.LAZY_CONNECTION_PROPERTY))
+			this.connection.setLazyConnection((Boolean) newValue);
+		else
+			this.throwMissingDefinition("setProperty", propertyName);
+	}
+	
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
+		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
+			modelValue = this.connection.getNativeSql();
+		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
+			modelValue = this.connection.getBatchWriting();
+		else if (propertyName.equals(Connection.CACHE_STATEMENTS_PROPERTY))
+			modelValue = this.connection.getCacheStatements();
+		else if (propertyName.equals(Connection.CACHE_STATEMENTS_SIZE_PROPERTY))
+			modelValue = this.connection.getCacheStatementsSize();
+		else if (propertyName.equals(Connection.DRIVER_PROPERTY))
+			modelValue = this.connection.getDriver();
+		else if (propertyName.equals(Connection.URL_PROPERTY))
+			modelValue = this.connection.getUrl();
+		else if (propertyName.equals(Connection.USER_PROPERTY))
+			modelValue = this.connection.getUser();
+		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
+			modelValue = this.connection.getPassword();
+		else if (propertyName.equals(Connection.BIND_PARAMETERS_PROPERTY))
+			modelValue = this.connection.getBindParameters();
+		else if (propertyName.equals(Connection.READ_CONNECTIONS_SHARED_PROPERTY))
+			modelValue = this.connection.getReadConnectionsShared();
+		else if (propertyName.equals(Connection.READ_CONNECTIONS_MIN_PROPERTY))
+			modelValue = this.connection.getReadConnectionsMin();
+		else if (propertyName.equals(Connection.READ_CONNECTIONS_MAX_PROPERTY))
+			modelValue = this.connection.getReadConnectionsMax();
+		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MIN_PROPERTY))
+			modelValue = this.connection.getWriteConnectionsMin();
+		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MAX_PROPERTY))
+			modelValue = this.connection.getWriteConnectionsMax();
+		else if (propertyName.equals(Connection.EXCLUSIVE_CONNECTION_MODE_PROPERTY))
+			modelValue = this.connection.getExclusiveConnectionMode();
+		else if (propertyName.equals(Connection.LAZY_CONNECTION_PROPERTY))
+			modelValue = this.connection.getLazyConnection();
+		else
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
 	}
 
 	// ********** NativeSql tests **********
@@ -405,79 +504,39 @@ public class ConnectionAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			WRITE_CONNECTIONS_MAX_TEST_VALUE_2);
 	}
 
-	// ********** get/set property **********
-	@Override
-	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
-			this.connection.setNativeSql((Boolean) newValue);
-		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
-			this.connection.setBatchWriting((BatchWriting) newValue);
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_PROPERTY))
-			this.connection.setCacheStatements((Boolean) newValue);
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_SIZE_PROPERTY))
-			this.connection.setCacheStatementsSize((Integer) newValue);
-		else if (propertyName.equals(Connection.DRIVER_PROPERTY))
-			this.connection.setDriver((String) newValue);
-		else if (propertyName.equals(Connection.URL_PROPERTY))
-			this.connection.setUrl((String) newValue);
-		else if (propertyName.equals(Connection.USER_PROPERTY))
-			this.connection.setUser((String) newValue);
-		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
-			this.connection.setPassword((String) newValue);
-		else if (propertyName.equals(Connection.BIND_PARAMETERS_PROPERTY))
-			this.connection.setBindParameters((Boolean) newValue);
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_SHARED_PROPERTY))
-			this.connection.setReadConnectionsShared((Boolean) newValue);
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MIN_PROPERTY))
-			this.connection.setReadConnectionsMin((Integer) newValue);
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MAX_PROPERTY))
-			this.connection.setReadConnectionsMax((Integer) newValue);
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MIN_PROPERTY))
-			this.connection.setWriteConnectionsMin((Integer) newValue);
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MAX_PROPERTY))
-			this.connection.setWriteConnectionsMax((Integer) newValue);
-		else
-			this.throwMissingDefinition("setProperty", propertyName);
-	}
-	
-	@Override
-	protected Object getProperty(String propertyName) throws NoSuchFieldException {
-		Object modelValue = null;
-		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
-			modelValue = this.connection.getNativeSql();
-		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
-			modelValue = this.connection.getBatchWriting();
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_PROPERTY))
-			modelValue = this.connection.getCacheStatements();
-		else if (propertyName.equals(Connection.CACHE_STATEMENTS_SIZE_PROPERTY))
-			modelValue = this.connection.getCacheStatementsSize();
-		else if (propertyName.equals(Connection.DRIVER_PROPERTY))
-			modelValue = this.connection.getDriver();
-		else if (propertyName.equals(Connection.URL_PROPERTY))
-			modelValue = this.connection.getUrl();
-		else if (propertyName.equals(Connection.USER_PROPERTY))
-			modelValue = this.connection.getUser();
-		else if (propertyName.equals(Connection.PASSWORD_PROPERTY))
-			modelValue = this.connection.getPassword();
-		else if (propertyName.equals(Connection.BIND_PARAMETERS_PROPERTY))
-			modelValue = this.connection.getBindParameters();
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_SHARED_PROPERTY))
-			modelValue = this.connection.getReadConnectionsShared();
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MIN_PROPERTY))
-			modelValue = this.connection.getReadConnectionsMin();
-		else if (propertyName.equals(Connection.READ_CONNECTIONS_MAX_PROPERTY))
-			modelValue = this.connection.getReadConnectionsMax();
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MIN_PROPERTY))
-			modelValue = this.connection.getWriteConnectionsMin();
-		else if (propertyName.equals(Connection.WRITE_CONNECTIONS_MAX_PROPERTY))
-			modelValue = this.connection.getWriteConnectionsMax();
-		else
-			this.throwMissingDefinition("getProperty", propertyName);
-		return modelValue;
+	// ********** ExclusiveConnectionMode tests **********
+	public void testSetExclusiveConnectionMode() throws Exception {
+		this.verifyModelInitialized(
+			EXCLUSIVE_CONNECTION_MODE_KEY,
+			EXCLUSIVE_CONNECTION_MODE_TEST_VALUE);
+		this.verifySetProperty(
+			EXCLUSIVE_CONNECTION_MODE_KEY,
+			EXCLUSIVE_CONNECTION_MODE_TEST_VALUE,
+			EXCLUSIVE_CONNECTION_MODE_TEST_VALUE_2);
 	}
 
-	@Override
-	protected PersistenceUnitProperties getModel() {
-		return this.connection;
+	public void testAddRemoveExclusiveConnectionMode() throws Exception {
+		this.verifyAddRemoveProperty(
+			EXCLUSIVE_CONNECTION_MODE_KEY,
+			EXCLUSIVE_CONNECTION_MODE_TEST_VALUE,
+			EXCLUSIVE_CONNECTION_MODE_TEST_VALUE_2);
+	}
+
+	// ********** LazyConnection tests **********
+	public void testSetLazyConnection() throws Exception {
+		this.verifyModelInitialized(
+			LAZY_CONNECTION_KEY,
+			LAZY_CONNECTION_TEST_VALUE);
+		this.verifySetProperty(
+			LAZY_CONNECTION_KEY,
+			LAZY_CONNECTION_TEST_VALUE,
+			LAZY_CONNECTION_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveLazyConnection() throws Exception {
+		this.verifyAddRemoveProperty(
+			LAZY_CONNECTION_KEY,
+			LAZY_CONNECTION_TEST_VALUE,
+			LAZY_CONNECTION_TEST_VALUE_2);
 	}
 }

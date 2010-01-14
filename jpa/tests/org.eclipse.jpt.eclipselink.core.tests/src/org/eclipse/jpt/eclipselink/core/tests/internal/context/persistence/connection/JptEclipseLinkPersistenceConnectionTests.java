@@ -21,7 +21,7 @@ public class JptEclipseLinkPersistenceConnectionTests
 		TestSuite suite = new TestSuite(JptEclipseLinkPersistenceConnectionTests.class.getPackage().getName());
 		
 //		suite.addTestSuite(ConnectionValueModelTests.class);
-		suite.addTestSuite(ConnectionAdapterTests.class);
+		suite.addTestSuite(EclipseLinkConnectionTests.class);
 		
 		return suite;
 	}

@@ -111,6 +111,16 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlConnectionTab_writeConnectionsMinLabel;
 	public static String PersistenceXmlConnectionTab_writeConnectionsMaxLabel;
 
+	public static String JdbcExclusiveConnectionsPropertiesComposite_GroupBox;
+	
+	public static String PersistenceXmlConnectionTab_exclusiveConnectionModeLabel;
+	public static String PersistenceXmlConnectionTab_lazyConnectionLabel;
+	public static String PersistenceXmlConnectionTab_lazyConnectionLabelDefault;
+
+	public static String JdbcExclusiveConnectionModeComposite_always;
+	public static String JdbcExclusiveConnectionModeComposite_isolated;
+	public static String JdbcExclusiveConnectionModeComposite_transactional;
+	
 	// SchemaGeneration
 	public static String PersistenceXmlSchemaGenerationTab_title;
 	public static String PersistenceXmlSchemaGenerationTab_sectionTitle;

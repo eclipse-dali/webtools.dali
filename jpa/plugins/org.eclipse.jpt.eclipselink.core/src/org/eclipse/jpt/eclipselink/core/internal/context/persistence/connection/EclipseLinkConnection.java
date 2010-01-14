@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.context.persistence.connection.ExclusiveConnectionMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 
 /**
@@ -38,6 +39,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	private Integer readConnectionsMax;
 	private Integer writeConnectionsMin;
 	private Integer writeConnectionsMax;
+	private ExclusiveConnectionMode exclusiveConnectionMode;
+	private Boolean lazyConnection;
 	
 
 	// ********** constructors **********
@@ -73,6 +76,10 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 			this.getIntegerValue(ECLIPSELINK_WRITE_CONNECTIONS_MIN);
 		this.writeConnectionsMax = 
 			this.getIntegerValue(ECLIPSELINK_WRITE_CONNECTIONS_MAX);
+		this.exclusiveConnectionMode = 
+			this.getEnumValue(ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE, ExclusiveConnectionMode.values());
+		this.lazyConnection = 
+			this.getBooleanValue(ECLIPSELINK_LAZY_CONNECTION);
 	}
 	
 	protected void initializeDatabaseConnectionProperties() {
@@ -131,6 +138,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		else if (propertyName.equals(ECLIPSELINK_WRITE_CONNECTIONS_MAX)) {
 			writeConnectionsMaxChanged(newValue);
 		}
+		else if (propertyName.equals(ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE)) {
+			this.exclusiveConnectionModeChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_LAZY_CONNECTION)) {
+			this.lazyConnectionChanged(newValue);
+		}
 	}
 	
 	public void propertyRemoved(String propertyName) {
@@ -176,6 +189,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		else if (propertyName.equals(ECLIPSELINK_WRITE_CONNECTIONS_MAX)) {
 			writeConnectionsMaxChanged(null);
 		}
+		else if (propertyName.equals(ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE)) {
+			this.exclusiveConnectionModeChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_LAZY_CONNECTION)) {
+			this.lazyConnectionChanged(null);
+		}
 	}
 
 	/**
@@ -217,8 +236,14 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		propertyNames.put(
 			ECLIPSELINK_WRITE_CONNECTIONS_MAX,
 			WRITE_CONNECTIONS_MAX_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE,
+			EXCLUSIVE_CONNECTION_MODE_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_LAZY_CONNECTION,
+			LAZY_CONNECTION_PROPERTY);
 	}
-	
+
 	protected void addDatabaseConnectionPropertyNames(Map<String, String> propertyNames) {
 		propertyNames.put(
 			ECLIPSELINK_DRIVER,
@@ -595,6 +620,58 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 
 	public Integer getDefaultWriteConnectionsMax() {
 		return DEFAULT_WRITE_CONNECTIONS_MAX;
+	}
+
+	// ********** ExclusiveConnectionMode **********
+	
+	public ExclusiveConnectionMode getExclusiveConnectionMode() {
+		return this.exclusiveConnectionMode;
+	}
+	
+	public void setExclusiveConnectionMode(ExclusiveConnectionMode newExclusiveConnectionMode) {
+		this.preSetProperty();
+		
+		ExclusiveConnectionMode old = this.exclusiveConnectionMode;
+		this.exclusiveConnectionMode = newExclusiveConnectionMode;
+		this.putProperty(EXCLUSIVE_CONNECTION_MODE_PROPERTY, newExclusiveConnectionMode);
+		this.firePropertyChanged(EXCLUSIVE_CONNECTION_MODE_PROPERTY, old, newExclusiveConnectionMode);
+	}
+
+	private void exclusiveConnectionModeChanged(String stringValue) {
+		ExclusiveConnectionMode newValue = getEnumValueOf(stringValue, ExclusiveConnectionMode.values());
+		ExclusiveConnectionMode old = this.exclusiveConnectionMode;
+		this.exclusiveConnectionMode = newValue;
+		this.firePropertyChanged(EXCLUSIVE_CONNECTION_MODE_PROPERTY, old, newValue);
+	}
+	
+	public ExclusiveConnectionMode getDefaultExclusiveConnectionMode() {
+		return DEFAULT_EXCLUSIVE_CONNECTION_MODE;
+	}
+
+	// ********** LazyConnection **********
+	public Boolean getLazyConnection() {
+		return this.lazyConnection;
+	}
+
+	public void setLazyConnection(Boolean newLazyConnection) {
+		this.preSetProperty();
+		
+		Boolean old = this.lazyConnection;
+		this.lazyConnection = newLazyConnection;
+		this.putProperty(LAZY_CONNECTION_PROPERTY, newLazyConnection);
+		this.firePropertyChanged(LAZY_CONNECTION_PROPERTY, old, newLazyConnection);
+	}
+
+	private void lazyConnectionChanged(String stringValue) {
+		Boolean newValue = getBooleanValueOf(stringValue);
+		
+		Boolean old = this.lazyConnection;
+		this.lazyConnection = newValue;
+		this.firePropertyChanged(LAZY_CONNECTION_PROPERTY, old, newValue);
+	}
+
+	public Boolean getDefaultLazyConnection() {
+		return DEFAULT_LAZY_CONNECTION;
 	}
 
 }

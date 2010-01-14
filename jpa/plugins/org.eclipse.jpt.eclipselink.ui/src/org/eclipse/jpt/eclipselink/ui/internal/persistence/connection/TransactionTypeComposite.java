@@ -43,8 +43,19 @@ public class TransactionTypeComposite<T extends Connection>
 		super( parentComposite, parent);
 	}
 
+	@Override
+	protected void initializeLayout( Composite container) {
+
+		this.addLabeledComposite(
+			container,
+			EclipseLinkUiMessages.PersistenceXmlConnectionTab_transactionTypeLabel,
+			this.addTransactionTypeCombo( container),
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
+		);
+	}
+
 	private EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType> addTransactionTypeCombo(Composite container) {
-		return new EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType>(this, buildPersistenceUnitHolder(), container) {
+		return new EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType>(this, this.buildPersistenceUnitHolder(), container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -59,22 +70,22 @@ public class TransactionTypeComposite<T extends Connection>
 
 			@Override
 			protected PersistenceUnitTransactionType getDefaultValue() {
-				return getSubject().getDefaultTransactionType();
+				return this.getSubject().getDefaultTransactionType();
 			}
 
 			@Override
 			protected String displayString(PersistenceUnitTransactionType value) {
-				return buildDisplayString(EclipseLinkUiMessages.class, TransactionTypeComposite.this, value);
+				return this.buildDisplayString(EclipseLinkUiMessages.class, TransactionTypeComposite.this, value);
 			}
 
 			@Override
 			protected PersistenceUnitTransactionType getValue() {
-				return getSubject().getSpecifiedTransactionType();
+				return this.getSubject().getSpecifiedTransactionType();
 			}
 
 			@Override
 			protected void setValue(PersistenceUnitTransactionType value) {
-				getSubject().setSpecifiedTransactionType(value);
+				this.getSubject().setSpecifiedTransactionType(value);
 
 				if (value == PersistenceUnitTransactionType.RESOURCE_LOCAL) {
 					clearJTAProperties();
@@ -101,7 +112,7 @@ public class TransactionTypeComposite<T extends Connection>
 	}
 
 	private void clearResourceLocalProperties() {
-		Connection connection = getSubject();
+		Connection connection = this.getSubject();
 		connection.getPersistenceUnit().setNonJtaDataSource(null);
 		connection.setDriver(null);
 		connection.setUrl(null);
@@ -113,16 +124,7 @@ public class TransactionTypeComposite<T extends Connection>
 		connection.setReadConnectionsMax(null);
 		connection.setReadConnectionsMin(null);
 		connection.setReadConnectionsShared(null);
-	}
-
-	@Override
-	protected void initializeLayout( Composite container) {
-
-		this.addLabeledComposite(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_transactionTypeLabel,
-			this.addTransactionTypeCombo( container),
-			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
-		);
+		connection.setExclusiveConnectionMode(null);
+		connection.setLazyConnection(null);
 	}
 }

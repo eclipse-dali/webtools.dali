@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -127,4 +127,21 @@ public interface Connection extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_WRITE_CONNECTIONS_MAX = "eclipselink.jdbc.write-connections.max"; //$NON-NLS-1$
 		static final Integer DEFAULT_WRITE_CONNECTIONS_MAX = Integer.valueOf(10);
+
+	ExclusiveConnectionMode getDefaultExclusiveConnectionMode();
+	ExclusiveConnectionMode getExclusiveConnectionMode();
+	void setExclusiveConnectionMode(ExclusiveConnectionMode newExclusiveConnectionMode);
+		static final String EXCLUSIVE_CONNECTION_MODE_PROPERTY = "exclusiveConnectionMode"; //$NON-NLS-1$
+		// EclipseLink key string
+		static final String ECLIPSELINK_EXCLUSIVE_CONNECTION_MODE = "eclipselink.jdbc.exclusive-connection.mode"; //$NON-NLS-1$
+		static final ExclusiveConnectionMode DEFAULT_EXCLUSIVE_CONNECTION_MODE = ExclusiveConnectionMode.transactional;
+
+	Boolean getDefaultLazyConnection();
+	Boolean getLazyConnection();
+	void setLazyConnection(Boolean newLazyConnection);
+		static final String LAZY_CONNECTION_PROPERTY = "lazyConnection"; //$NON-NLS-1$
+		// EclipseLink key string
+		static final String ECLIPSELINK_LAZY_CONNECTION = "eclipselink.jdbc.exclusive-connection.is-lazy"; //$NON-NLS-1$
+		static final Boolean DEFAULT_LAZY_CONNECTION = Boolean.TRUE;
+
 }
