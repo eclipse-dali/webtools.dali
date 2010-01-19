@@ -69,7 +69,6 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -415,7 +414,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ListIterator<MappingFileRef> combinedMappingFileRefs() {
-		return new CompositeListIterator<MappingFileRef>(this.specifiedMappingFileRefs(), this.impliedMappingFileRef);
+		return getCombinedMappingFileRefs().iterator();
 	}
 
 	protected ListIterable<MappingFileRef> getCombinedMappingFileRefs() {

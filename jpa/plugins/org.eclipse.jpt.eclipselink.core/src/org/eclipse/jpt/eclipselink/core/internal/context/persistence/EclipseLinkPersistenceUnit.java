@@ -37,9 +37,10 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.Ecl
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeListIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
@@ -124,20 +125,21 @@ public class EclipseLinkPersistenceUnit
 	// **************** mapping file refs **************************************
 
 	@Override
-	public ListIterator<MappingFileRef> mappingFileRefs() {
-		if (this.impliedEclipseLinkMappingFileRef == null) {
-			return super.mappingFileRefs();
-		}
-		return new ReadOnlyCompositeListIterator<MappingFileRef>(
-			super.mappingFileRefs(), this.impliedEclipseLinkMappingFileRef);
+	protected ListIterable<MappingFileRef> getMappingFileRefs() {
+		return (this.impliedEclipseLinkMappingFileRef == null) ? super.getMappingFileRefs() : this.getCombinedEclipseLinkMappingFileRefs();
+	}
+
+	protected ListIterable<MappingFileRef> getCombinedEclipseLinkMappingFileRefs() {
+		return new CompositeListIterable<MappingFileRef>(super.getMappingFileRefs(), this.impliedEclipseLinkMappingFileRef);
 	}
 
 	@Override
 	public int mappingFileRefsSize() {
-		if (this.impliedEclipseLinkMappingFileRef == null) {
-			return super.mappingFileRefsSize();
-		}
-		return 1 + super.mappingFileRefsSize();
+		return this.impliedEclipseLinkMappingFileRef == null ? super.mappingFileRefsSize() : combinedEclipseLinkMappingFileRefsSize(); 
+	}
+
+	protected int combinedEclipseLinkMappingFileRefsSize() {
+		return super.mappingFileRefsSize() + 1;
 	}
 
 
