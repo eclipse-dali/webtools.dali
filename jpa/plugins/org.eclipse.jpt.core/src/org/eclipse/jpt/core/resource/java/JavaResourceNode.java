@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.model.Model;
 
 /**
  * Common interface for Java resource nodes (source code or binary).
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -46,6 +46,7 @@ public interface JavaResourceNode
 	/**
 	 * Return the [source] node's root (the compilation unit).
 	 */
+	// TODO get rid of this method...?
 	JavaResourceCompilationUnit getJavaResourceCompilationUnit();
 
 	/**
@@ -54,18 +55,18 @@ public interface JavaResourceNode
 	TextRange getTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Initialize the [source] with the specified AST.
+	 * Initialize the [source] node from the specified AST.
 	 */
 	void initialize(CompilationUnit astRoot);
 
 	/**
-	 * Update the [source] with the specified AST.
+	 * Synchronize the [source] node with the specified AST.
 	 */
-	void update(CompilationUnit astRoot);
+	void synchronizeWith(CompilationUnit astRoot);
 
 
 	/**
-	 * root of Java resource containment hierarchy
+	 * Root of Java resource model containment hierarchy.
 	 */
 	interface Root extends JavaResourceNode, JpaResourceModel {
 

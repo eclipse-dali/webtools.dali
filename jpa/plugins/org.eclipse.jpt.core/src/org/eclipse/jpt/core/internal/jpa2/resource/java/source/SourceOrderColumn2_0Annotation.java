@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 /**
  * javax.persistence.OrderColumn
  */
-public class SourceOrderColumn2_0Annotation
+public final class SourceOrderColumn2_0Annotation
 	extends SourceNamedColumnAnnotation
 	implements OrderColumn2_0Annotation
 {
@@ -63,11 +63,11 @@ public class SourceOrderColumn2_0Annotation
 	}
 	
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setNullable(this.buildNullable(astRoot));
-		this.setInsertable(this.buildInsertable(astRoot));
-		this.setUpdatable(this.buildUpdatable(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncNullable(this.buildNullable(astRoot));
+		this.syncInsertable(this.buildInsertable(astRoot));
+		this.syncUpdatable(this.buildUpdatable(astRoot));
 	}
 	
 	@Override
@@ -101,13 +101,16 @@ public class SourceOrderColumn2_0Annotation
 	}
 
 	public void setNullable(Boolean nullable) {
-		if (this.attributeValueHasNotChanged(this.nullable, nullable)) {
-			return;
+		if (this.attributeValueHasChanged(this.nullable, nullable)) {
+			this.nullable = nullable;
+			this.nullableAdapter.setValue(nullable);
 		}
+	}
+
+	private void syncNullable(Boolean astNullable) {
 		Boolean old = this.nullable;
-		this.nullable = nullable;
-		this.nullableAdapter.setValue(nullable);
-		this.firePropertyChanged(NULLABLE_PROPERTY, old, nullable);
+		this.nullable = astNullable;
+		this.firePropertyChanged(NULLABLE_PROPERTY, old, astNullable);
 	}
 
 	private Boolean buildNullable(CompilationUnit astRoot) {
@@ -128,13 +131,16 @@ public class SourceOrderColumn2_0Annotation
 	}
 
 	public void setInsertable(Boolean insertable) {
-		if (this.attributeValueHasNotChanged(this.insertable, insertable)) {
-			return;
+		if (this.attributeValueHasChanged(this.insertable, insertable)) {
+			this.insertable = insertable;
+			this.insertableAdapter.setValue(insertable);
 		}
+	}
+
+	private void syncInsertable(Boolean astInsertable) {
 		Boolean old = this.insertable;
-		this.insertable = insertable;
-		this.insertableAdapter.setValue(insertable);
-		this.firePropertyChanged(INSERTABLE_PROPERTY, old, insertable);
+		this.insertable = astInsertable;
+		this.firePropertyChanged(INSERTABLE_PROPERTY, old, astInsertable);
 	}
 
 	private Boolean buildInsertable(CompilationUnit astRoot) {
@@ -155,13 +161,16 @@ public class SourceOrderColumn2_0Annotation
 	}
 
 	public void setUpdatable(Boolean updatable) {
-		if (this.attributeValueHasNotChanged(this.updatable, updatable)) {
-			return;
+		if (this.attributeValueHasChanged(this.updatable, updatable)) {
+			this.updatable = updatable;
+			this.updatableAdapter.setValue(updatable);
 		}
+	}
+
+	private void syncUpdatable(Boolean astUpdatable) {
 		Boolean old = this.updatable;
-		this.updatable = updatable;
-		this.updatableAdapter.setValue(updatable);
-		this.firePropertyChanged(UPDATABLE_PROPERTY, old, updatable);
+		this.updatable = astUpdatable;
+		this.firePropertyChanged(UPDATABLE_PROPERTY, old, astUpdatable);
 	}
 
 	private Boolean buildUpdatable(CompilationUnit astRoot) {

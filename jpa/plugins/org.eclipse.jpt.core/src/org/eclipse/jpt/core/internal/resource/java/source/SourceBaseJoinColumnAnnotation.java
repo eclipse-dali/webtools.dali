@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,9 +58,9 @@ public abstract class SourceBaseJoinColumnAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setReferencedColumnName(this.buildReferencedColumnName(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncReferencedColumnName(this.buildReferencedColumnName(astRoot));
 	}
 
 	protected abstract String getReferencedColumnNameElementName();
@@ -74,13 +74,16 @@ public abstract class SourceBaseJoinColumnAnnotation
 	}
 
 	public void setReferencedColumnName(String referencedColumnName) {
-		if (this.attributeValueHasNotChanged(this.referencedColumnName, referencedColumnName)) {
-			return;
+		if (this.attributeValueHasChanged(this.referencedColumnName, referencedColumnName)) {
+			this.referencedColumnName = referencedColumnName;
+			this.referencedColumnNameAdapter.setValue(referencedColumnName);
 		}
+	}
+
+	private void syncReferencedColumnName(String astReferencedColumnName) {
 		String old = this.referencedColumnName;
-		this.referencedColumnName = referencedColumnName;
-		this.referencedColumnNameAdapter.setValue(referencedColumnName);
-		this.firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, old, referencedColumnName);
+		this.referencedColumnName = astReferencedColumnName;
+		this.firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, old, astReferencedColumnName);
 	}
 
 	private String buildReferencedColumnName(CompilationUnit astRoot) {

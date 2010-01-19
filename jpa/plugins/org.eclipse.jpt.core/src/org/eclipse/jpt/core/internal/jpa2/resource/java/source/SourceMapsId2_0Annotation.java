@@ -1,19 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
@@ -27,15 +26,13 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 /**
  * javax.persistence.MapsId
  */
-public class SourceMapsId2_0Annotation
+public final class SourceMapsId2_0Annotation
 	extends SourceAnnotation<Attribute>
 	implements MapsId2_0Annotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
-			= new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
-	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER 
-			= buildValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	
 	
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -45,7 +42,7 @@ public class SourceMapsId2_0Annotation
 	
 	public SourceMapsId2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
+		this.valueAdapter = new MemberAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
 	}
 	
 	
@@ -57,8 +54,8 @@ public class SourceMapsId2_0Annotation
 		this.value = this.buildValue(astRoot);
 	}
 	
-	public void update(CompilationUnit astRoot) {
-		this.setValue(this.buildValue(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncValue(this.buildValue(astRoot));
 	}
 	
 	@Override
@@ -73,16 +70,19 @@ public class SourceMapsId2_0Annotation
 		return this.value;
 	}
 	
-	public void setValue(String newValue) {
-		if (this.attributeValueHasNotChanged(this.value, newValue)) {
-			return;
+	public void setValue(String value) {
+		if (this.attributeValueHasChanged(this.value, value)) {
+			this.value = value;
+			this.valueAdapter.setValue(value);
 		}
-		String oldValue = this.value;
-		this.value = newValue;
-		this.valueAdapter.setValue(newValue);
-		this.firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
-	
+
+	private void syncValue(String astValue) {
+		String old = this.value;
+		this.value = astValue;
+		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
+	}
+
 	private String buildValue(CompilationUnit astRoot) {
 		return this.valueAdapter.getValue(astRoot);
 	}

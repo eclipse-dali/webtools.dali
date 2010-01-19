@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,11 +62,13 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 				
 		//set name to null in the resource model
 		javaNamedNativeQuery.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaNamedNativeQuery.getName());
 		assertNull(namedNativeQuery.getName());
 
 		//set name in the resource model, verify context model updated
 		javaNamedNativeQuery.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", javaNamedNativeQuery.getName());
 		assertEquals("foo", namedNativeQuery.getName());
 	}
@@ -109,11 +111,13 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 				
 		//set name to null in the resource model
 		javaNamedNativeQuery.setQuery(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaNamedNativeQuery.getQuery());
 		assertNull(namedNativeQuery.getQuery());
 
 		//set name in the resource model, verify context model updated
 		javaNamedNativeQuery.setQuery("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", javaNamedNativeQuery.getQuery());
 		assertEquals("foo", namedNativeQuery.getQuery());
 	}
@@ -263,6 +267,7 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		javaNamedNativeQuery.hintAt(0).setName("FOO");
 		javaNamedNativeQuery.hintAt(1).setName("BAR");
 		javaNamedNativeQuery.hintAt(2).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 	
 		ListIterator<QueryHint> hints = namedNativeQuery.hints();
 		assertEquals("FOO", hints.next().getName());
@@ -271,6 +276,7 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		assertFalse(hints.hasNext());
 		
 		javaNamedNativeQuery.moveHint(2, 0);
+		getJpaProject().synchronizeContextModel();
 		hints = namedNativeQuery.hints();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
@@ -278,6 +284,7 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		assertFalse(hints.hasNext());
 	
 		javaNamedNativeQuery.moveHint(0, 1);
+		getJpaProject().synchronizeContextModel();
 		hints = namedNativeQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
@@ -285,17 +292,20 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		assertFalse(hints.hasNext());
 	
 		javaNamedNativeQuery.removeHint(1);
+		getJpaProject().synchronizeContextModel();
 		hints = namedNativeQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 	
 		javaNamedNativeQuery.removeHint(1);
+		getJpaProject().synchronizeContextModel();
 		hints = namedNativeQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
 		javaNamedNativeQuery.removeHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(namedNativeQuery.hints().hasNext());
 	}
 
@@ -312,13 +322,16 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		
 		
 		javaNamedNativeQuery.addHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(1, namedNativeQuery.hintsSize());
 		
 		javaNamedNativeQuery.addHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(2, namedNativeQuery.hintsSize());
 		
 		javaNamedNativeQuery.removeHint(0);
 		javaNamedNativeQuery.removeHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(0, namedNativeQuery.hintsSize());
 	}
 	
@@ -384,11 +397,13 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 
 		//set name in the resource model, verify context model updated
 		javaNamedNativeQuery.setResultSetMapping("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", javaNamedNativeQuery.getResultSetMapping());
 		assertEquals("foo", namedNativeQuery.getResultSetMapping());
 		
 		//set name to null in the resource model
 		javaNamedNativeQuery.setResultSetMapping(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaNamedNativeQuery.getResultSetMapping());
 		assertNull(namedNativeQuery.getResultSetMapping());
 	}

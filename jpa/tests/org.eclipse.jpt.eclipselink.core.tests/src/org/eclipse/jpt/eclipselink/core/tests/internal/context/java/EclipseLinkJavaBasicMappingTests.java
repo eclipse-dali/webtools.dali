@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -123,6 +123,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
@@ -176,11 +177,13 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.addAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		convert.setValue("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
 		assertEquals("foo", ((EclipseLinkConvert) basicMapping.getConverter()).getConverterName());
 		
 		attributeResource.removeAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Converter.NO_CONVERTER, basicMapping.getConverter().getType());
 		assertFalse(basicMapping.isDefault());
@@ -200,19 +203,24 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTes
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		mutableAnnotation.setValue(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 
 		mutableAnnotation.setValue(null);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 
 		mutableAnnotation.setValue(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.FALSE, mutable.getSpecifiedMutable());
 		
 		attributeResource.removeAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(null, mutable.getSpecifiedMutable());
 		
 		attributeResource.addAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 	}
 	

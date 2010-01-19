@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNamedQueryAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.LockModeType_2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.NamedQuery2_0Annotation;
@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- *  SourceNamedQuery2_0Annotation
+ * javax.persistence.NamedQuery
  */
 public final class SourceNamedQuery2_0Annotation
 	extends SourceNamedQueryAnnotation
@@ -46,15 +46,15 @@ public final class SourceNamedQuery2_0Annotation
 	public SourceNamedQuery2_0Annotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
 		this.lockModeDeclarationAdapter = this.buildLockModeTypeAdapter(daa);
-		this.lockModeAdapter = 	new ShortCircuitAnnotationElementAdapter<String>(type, this.lockModeDeclarationAdapter);
+		this.lockModeAdapter = new MemberAnnotationElementAdapter<String>(type, this.lockModeDeclarationAdapter);
 	}
 	
 	public SourceNamedQuery2_0Annotation(JavaResourceNode parent, Type type) {
 		this(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
 	}
 	
-	private DeclarationAnnotationElementAdapter<String> buildLockModeTypeAdapter(DeclarationAnnotationAdapter daa) {
-		return new EnumDeclarationAnnotationElementAdapter(daa, this.getLockModeElementName());
+	private DeclarationAnnotationElementAdapter<String> buildLockModeTypeAdapter(DeclarationAnnotationAdapter daAdapter) {
+		return new EnumDeclarationAnnotationElementAdapter(daAdapter, this.getLockModeElementName());
 	}
 
 	private String getLockModeElementName() {
@@ -77,9 +77,9 @@ public final class SourceNamedQuery2_0Annotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setLockMode(this.buildLockMode(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncLockMode(this.buildLockMode(astRoot));
 	}
 
 	@Override
@@ -94,13 +94,16 @@ public final class SourceNamedQuery2_0Annotation
 	}
 
 	public void setLockMode(LockModeType_2_0 lockMode) {
-		if (this.attributeValueHasNotChanged(this.lockMode, lockMode)) {
-			return;
+		if (this.attributeValueHasChanged(this.lockMode, lockMode)) {
+			this.lockMode = lockMode;
+			this.lockModeAdapter.setValue(LockModeType_2_0.toJavaAnnotationValue(lockMode));
 		}
+	}
+
+	private void syncLockMode(LockModeType_2_0 astLockMode) {
 		LockModeType_2_0 old = this.lockMode;
-		this.lockMode = lockMode;
-		this.lockModeAdapter.setValue(LockModeType_2_0.toJavaAnnotationValue(lockMode));
-		this.firePropertyChanged(LOCK_MODE_PROPERTY, old, lockMode);
+		this.lockMode = astLockMode;
+		this.firePropertyChanged(LOCK_MODE_PROPERTY, old, astLockMode);
 	}
 
 	private LockModeType_2_0 buildLockMode(CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,8 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -76,7 +76,7 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	private AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String>(this.member, daea);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -86,11 +86,11 @@ public abstract class SourceBaseTableAnnotation
 		AnnotationContainerTools.initialize(this.uniqueConstraintsContainer, astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setName(this.buildName(astRoot));
-		this.setSchema(this.buildSchema(astRoot));
-		this.setCatalog(this.buildCatalog(astRoot));
-		AnnotationContainerTools.update(this.uniqueConstraintsContainer, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncName(this.buildName(astRoot));
+		this.syncSchema(this.buildSchema(astRoot));
+		this.syncCatalog(this.buildCatalog(astRoot));
+		AnnotationContainerTools.synchronize(this.uniqueConstraintsContainer, astRoot);
 	}
 
 	/**
@@ -116,13 +116,16 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasNotChanged(this.name, name)) {
-			return;
+		if (this.attributeValueHasChanged(this.name, name)) {
+			this.name = name;
+			this.nameAdapter.setValue(name);
 		}
+	}
+
+	private void syncName(String astName) {
 		String old = this.name;
-		this.name = name;
-		this.nameAdapter.setValue(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.name = astName;
+		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -148,13 +151,16 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	public void setSchema(String schema) {
-		if (this.attributeValueHasNotChanged(this.schema, schema)) {
-			return;
+		if (this.attributeValueHasChanged(this.schema, schema)) {
+			this.schema = schema;
+			this.schemaAdapter.setValue(schema);
 		}
+	}
+
+	private void syncSchema(String astSchema) {
 		String old = this.schema;
-		this.schema = schema;
-		this.schemaAdapter.setValue(schema);
-		this.firePropertyChanged(SCHEMA_PROPERTY, old, schema);
+		this.schema = astSchema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, astSchema);
 	}
 
 	private String buildSchema(CompilationUnit astRoot) {
@@ -180,13 +186,16 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	public void setCatalog(String catalog) {
-		if (this.attributeValueHasNotChanged(this.catalog, catalog)) {
-			return;
+		if (this.attributeValueHasChanged(this.catalog, catalog)) {
+			this.catalog = catalog;
+			this.catalogAdapter.setValue(catalog);
 		}
+	}
+
+	private void syncCatalog(String astCatalog) {
 		String old = this.catalog;
-		this.catalog = catalog;
-		this.catalogAdapter.setValue(catalog);
-		this.firePropertyChanged(CATALOG_PROPERTY, old, catalog);
+		this.catalog = astCatalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, astCatalog);
 	}
 
 	private String buildCatalog(CompilationUnit astRoot) {
@@ -299,8 +308,8 @@ public abstract class SourceBaseTableAnnotation
 			return SourceBaseTableAnnotation.this.getAnnotationName();
 		}
 
-		public Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceBaseTableAnnotation.this.getJdtAnnotation(astRoot);
+		public Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+			return SourceBaseTableAnnotation.this.getAstAnnotation(astRoot);
 		}
 
 		public String getElementName() {

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -125,22 +125,22 @@ final class SourcePersistentAttribute
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-		this.setTypeName(this.buildTypeName(astRoot));
-		this.setTypeSuperclassNames(this.buildTypeSuperclassNames(astRoot));
-		this.setTypeInterfaceNames(this.buildTypeInterfaceNames(astRoot));
-		this.setTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(astRoot));
+		this.syncTypeName(this.buildTypeName(astRoot));
+		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(astRoot));
+		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(astRoot));
+		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(astRoot));
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setModifiers(this.buildModifiers(astRoot));
-		this.setTypeName(this.buildTypeName(astRoot));
-		this.setTypeIsInterface(this.buildTypeIsInterface(astRoot));
-		this.setTypeIsEnum(this.buildTypeIsEnum(astRoot));
-		this.setTypeSuperclassNames(this.buildTypeSuperclassNames(astRoot));
-		this.setTypeInterfaceNames(this.buildTypeInterfaceNames(astRoot));
-		this.setTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncModifiers(this.buildModifiers(astRoot));
+		this.syncTypeName(this.buildTypeName(astRoot));
+		this.syncTypeIsInterface(this.buildTypeIsInterface(astRoot));
+		this.syncTypeIsEnum(this.buildTypeIsEnum(astRoot));
+		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(astRoot));
+		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(astRoot));
+		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(astRoot));
 	}
 
 	@Override
@@ -150,54 +150,54 @@ final class SourcePersistentAttribute
 
 
 	// ******** AbstractJavaResourcePersistentMember implementation ********
-	
+
 	@Override
 	Iterator<String> validAnnotationNames() {
 		return this.getAnnotationProvider().attributeAnnotationNames();
 	}
-	
+
 	@Override
 	Annotation buildAnnotation(String annotationName) {
 		return this.getAnnotationProvider().buildAttributeAnnotation(this, this.member, annotationName);
 	}
-	
+
 	Annotation buildNullAnnotation_(String annotationName) {
 		return this.getAnnotationProvider().buildNullAttributeAnnotation(this, annotationName);
 	}
-	
+
 	public boolean isFor(MethodSignature signature, int occurrence) {
 		return ((MethodAttribute) this.member).matches(signature, occurrence);
 	}
-	
-	
+
+
 	// ******** JavaResourcePersistentAttribute implementation ********
-	
+
 	public String getName() {
 		return this.member.getAttributeName();
 	}
-	
+
 	@Override
 	public Annotation buildNullAnnotation(String annotationName) {
 		return (annotationName == null) ? null : this.buildNullAnnotation_(annotationName);
 	}
-	
+
 	public boolean isField() {
 		return this.member.isField();
 	}
-	
+
 	public boolean isProperty() {
 		return ! this.isField();
 	}
-	
+
 	public AccessType getSpecifiedAccess() {
 		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
 		return (accessAnnotation == null) ? null : accessAnnotation.getValue();
 	}
-	
+
 	private Access2_0Annotation getAccessAnnotation() {
 		return (Access2_0Annotation) this.getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 	}
-	
+
 	public boolean typeIsSubTypeOf(String tn) {
 		if (this.typeName == null) {
 			return false;
@@ -206,25 +206,25 @@ final class SourcePersistentAttribute
 				|| this.typeInterfaceNames.contains(tn)
 				|| this.typeSuperclassNames.contains(tn);
 	}
-	
+
 	public boolean typeIsVariablePrimitive() {
 		return (this.typeName != null) && ClassName.isVariablePrimitive(this.typeName);
 	}
-	
+
 	private ITypeBinding getTypeBinding(CompilationUnit astRoot) {
 		return this.member.getTypeBinding(astRoot);
 	}
-	
-	
+
+
 	// ***** modifiers
 	public int getModifiers() {
 		return this.modifiers;
 	}
 
-	private void setModifiers(int modifiers) {
+	private void syncModifiers(int astModifiers) {
 		int old = this.modifiers;
-		this.modifiers = modifiers;
-		this.firePropertyChanged(MODIFIERS_PROPERTY, old, modifiers);
+		this.modifiers = astModifiers;
+		this.firePropertyChanged(MODIFIERS_PROPERTY, old, astModifiers);
 	}
 
 	/**
@@ -240,10 +240,10 @@ final class SourcePersistentAttribute
 		return this.typeName;
 	}
 
-	private void setTypeName(String typeName) {
+	private void syncTypeName(String astTypeName) {
 		String old = this.typeName;
-		this.typeName = typeName;
-		this.firePropertyChanged(TYPE_NAME_PROPERTY, old, typeName);
+		this.typeName = astTypeName;
+		this.firePropertyChanged(TYPE_NAME_PROPERTY, old, astTypeName);
 	}
 
 	/**
@@ -260,10 +260,10 @@ final class SourcePersistentAttribute
 		return this.typeIsInterface;
 	}
 
-	private void setTypeIsInterface(boolean typeIsInterface) {
+	private void syncTypeIsInterface(boolean astTypeIsInterface) {
 		boolean old = this.typeIsInterface;
-		this.typeIsInterface = typeIsInterface;
-		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, typeIsInterface);
+		this.typeIsInterface = astTypeIsInterface;
+		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, astTypeIsInterface);
 	}
 
 	private boolean buildTypeIsInterface(CompilationUnit astRoot) {
@@ -276,10 +276,10 @@ final class SourcePersistentAttribute
 		return this.typeIsEnum;
 	}
 
-	private void setTypeIsEnum(boolean typeIsEnum) {
+	private void syncTypeIsEnum(boolean astTypeIsEnum) {
 		boolean old = this.typeIsEnum;
-		this.typeIsEnum = typeIsEnum;
-		this.firePropertyChanged(TYPE_IS_ENUM_PROPERTY, old, typeIsEnum);
+		this.typeIsEnum = astTypeIsEnum;
+		this.firePropertyChanged(TYPE_IS_ENUM_PROPERTY, old, astTypeIsEnum);
 	}
 
 	private boolean buildTypeIsEnum(CompilationUnit astRoot) {
@@ -292,8 +292,8 @@ final class SourcePersistentAttribute
 		return new CloneListIterator<String>(this.typeSuperclassNames);
 	}
 
-	private void setTypeSuperclassNames(List<String> typeSuperclassNames) {
-		this.synchronizeList(typeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_LIST);
+	private void syncTypeSuperclassNames(List<String> astTypeSuperclassNames) {
+		this.synchronizeList(astTypeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_LIST);
 	}
 
 	private List<String> buildTypeSuperclassNames(CompilationUnit astRoot) {
@@ -319,8 +319,8 @@ final class SourcePersistentAttribute
 //		return this.typeInterfaceNames.contains(interfaceName);
 //	}
 //
-	private void setTypeInterfaceNames(Collection<String> typeInterfaceNames) {
-		this.synchronizeCollection(typeInterfaceNames, this.typeInterfaceNames, TYPE_INTERFACE_NAMES_COLLECTION);
+	private void syncTypeInterfaceNames(Collection<String> astTypeInterfaceNames) {
+		this.synchronizeCollection(astTypeInterfaceNames, this.typeInterfaceNames, TYPE_INTERFACE_NAMES_COLLECTION);
 	}
 
 	private Collection<String> buildTypeInterfaceNames(CompilationUnit astRoot) {
@@ -356,8 +356,8 @@ final class SourcePersistentAttribute
 		return this.typeTypeArgumentNames.get(index);
 	}
 
-	private void setTypeTypeArgumentNames(List<String> typeTypeArgumentNames) {
-		this.synchronizeList(typeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_LIST);
+	private void syncTypeTypeArgumentNames(List<String> astTypeTypeArgumentNames) {
+		this.synchronizeList(astTypeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_LIST);
 	}
 
 	/**

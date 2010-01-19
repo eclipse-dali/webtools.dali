@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
@@ -50,8 +50,8 @@ public final class SourceElementCollection2_0Annotation
 
 	public SourceElementCollection2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.targetClassAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, TARGET_CLASS_ADAPTER);
-		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
+		this.targetClassAdapter = new MemberAnnotationElementAdapter<String>(attribute, TARGET_CLASS_ADAPTER);
+		this.fetchAdapter = new MemberAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 
 
@@ -65,10 +65,10 @@ public final class SourceElementCollection2_0Annotation
 		this.fetch = this.buildFetch(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setTargetClass(this.buildTargetClass(astRoot));
-		this.setFullyQualifiedTargetClassName(this.buildFullyQualifiedTargetClassName(astRoot));
-		this.setFetch(this.buildFetch(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncTargetClass(this.buildTargetClass(astRoot));
+		this.syncFullyQualifiedTargetClassName(this.buildFullyQualifiedTargetClassName(astRoot));
+		this.syncFetch(this.buildFetch(astRoot));
 	}
 
 	@Override
@@ -85,13 +85,16 @@ public final class SourceElementCollection2_0Annotation
 	}
 
 	public void setTargetClass(String targetClass) {
-		if (this.attributeValueHasNotChanged(this.targetClass, targetClass)) {
-			return;
+		if (this.attributeValueHasChanged(this.targetClass, targetClass)) {
+			this.targetClass = targetClass;
+			this.targetClassAdapter.setValue(targetClass);
 		}
+	}
+
+	private void syncTargetClass(String astTargetClass) {
 		String old = this.targetClass;
-		this.targetClass = targetClass;
-		this.targetClassAdapter.setValue(targetClass);
-		this.firePropertyChanged(TARGET_CLASS_PROPERTY, old, targetClass);
+		this.targetClass = astTargetClass;
+		this.firePropertyChanged(TARGET_CLASS_PROPERTY, old, astTargetClass);
 	}
 
 	private String buildTargetClass(CompilationUnit astRoot) {
@@ -107,7 +110,7 @@ public final class SourceElementCollection2_0Annotation
 		return this.fullyQualifiedTargetClassName;
 	}
 
-	private void setFullyQualifiedTargetClassName(String name) {
+	private void syncFullyQualifiedTargetClassName(String name) {
 		String old = this.fullyQualifiedTargetClassName;
 		this.fullyQualifiedTargetClassName = name;
 		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_CLASS_NAME_PROPERTY, old, name);
@@ -123,13 +126,16 @@ public final class SourceElementCollection2_0Annotation
 	}
 
 	public void setFetch(FetchType fetch) {
-		if (this.attributeValueHasNotChanged(this.fetch, fetch)) {
-			return;
+		if (this.attributeValueHasChanged(this.fetch, fetch)) {
+			this.fetch = fetch;
+			this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 		}
+	}
+
+	private void syncFetch(FetchType astFetch) {
 		FetchType old = this.fetch;
-		this.fetch = fetch;
-		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
-		this.firePropertyChanged(FETCH_PROPERTY, old, fetch);
+		this.fetch = astFetch;
+		this.firePropertyChanged(FETCH_PROPERTY, old, astFetch);
 	}
 
 	private FetchType buildFetch(CompilationUnit astRoot) {

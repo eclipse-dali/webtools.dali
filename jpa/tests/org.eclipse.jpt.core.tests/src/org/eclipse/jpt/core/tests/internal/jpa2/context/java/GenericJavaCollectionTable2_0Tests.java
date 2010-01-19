@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -89,19 +89,23 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedName());
 		assertEquals("FOO", resourceCollectionTable.getName());
 	
 		//set name to null in the resource model
 		resourceCollectionTable.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedName());
 		assertNull(resourceCollectionTable.getName());
 		
 		resourceCollectionTable.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedName());
 		assertEquals("FOO", resourceCollectionTable.getName());
 
 		attributeResource.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedName());
 		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
@@ -177,19 +181,23 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable.setSchema("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedSchema());
 		assertEquals("FOO", resourceCollectionTable.getSchema());
 	
 		//set schema to null in the resource model
 		resourceCollectionTable.setSchema(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedSchema());
 		assertNull(resourceCollectionTable.getSchema());
 		
 		resourceCollectionTable.setSchema("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedSchema());
 		assertEquals("FOO", resourceCollectionTable.getSchema());
 
 		attributeResource.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedSchema());
 		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
@@ -241,19 +249,23 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable.setCatalog("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedCatalog());
 		assertEquals("FOO", resourceCollectionTable.getCatalog());
 	
 		//set catalog to null in the resource model
 		resourceCollectionTable.setCatalog(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedCatalog());
 		assertNull(resourceCollectionTable.getCatalog());
 		
 		resourceCollectionTable.setCatalog("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedCatalog());
 		assertEquals("FOO", resourceCollectionTable.getCatalog());
 
 		attributeResource.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedCatalog());
 		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
@@ -416,6 +428,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		joinTableResource.joinColumnAt(0).setName("FOO");
 		joinTableResource.joinColumnAt(1).setName("BAR");
 		joinTableResource.joinColumnAt(2).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 	
 		ListIterator<JoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
@@ -424,6 +437,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.moveJoinColumn(2, 0);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -431,6 +445,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(joinColumns.hasNext());
 	
 		joinTableResource.moveJoinColumn(0, 1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
@@ -438,17 +453,20 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(joinColumns.hasNext());
 	
 		joinTableResource.removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 	
 		joinTableResource.removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.removeJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(collectionTable.specifiedJoinColumns().hasNext());
 	}
 	
@@ -487,6 +505,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
+		getJpaProject().synchronizeContextModel();
 		
 		uniqueConstraints = collectionTable.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
@@ -655,6 +674,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName("FOO");
 		joinTableAnnotation.addUniqueConstraint(1).addColumnName("BAR");
 		joinTableAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
+		getJpaProject().synchronizeContextModel();
 
 		
 		ListIterator<UniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
@@ -664,6 +684,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.moveUniqueConstraint(2, 0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
@@ -671,6 +692,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.moveUniqueConstraint(0, 1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
@@ -678,17 +700,20 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.removeUniqueConstraint(0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 	}

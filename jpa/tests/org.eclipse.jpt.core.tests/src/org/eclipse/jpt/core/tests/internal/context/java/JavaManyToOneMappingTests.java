@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -449,15 +449,18 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 				
 		//set optional in the resource model, verify context model updated
 		manyToOne.setOptional(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.TRUE, manyToOneMapping.getSpecifiedOptional());
 		assertEquals(Boolean.TRUE, manyToOne.getOptional());
 		
 		manyToOne.setOptional(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.FALSE, manyToOneMapping.getSpecifiedOptional());
 		assertEquals(Boolean.FALSE, manyToOne.getOptional());
 		
 		//set optional to null in the resource model
 		manyToOne.setOptional(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(manyToOneMapping.getSpecifiedOptional());
 		assertNull(manyToOne.getOptional());
 	}
@@ -511,12 +514,14 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		//add an annotation to the resource model and verify the context model is updated
 		JoinColumnAnnotation joinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(0, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
 		joinColumn.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		specifiedJoinColumns = joinColumns.specifiedJoinColumns();	
 		assertEquals("FOO", specifiedJoinColumns.next().getName());
 		assertFalse(specifiedJoinColumns.hasNext());
 
 		joinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(0, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
 		joinColumn.setName("BAR");
+		getJpaProject().synchronizeContextModel();
 		specifiedJoinColumns = joinColumns.specifiedJoinColumns();		
 		assertEquals("BAR", specifiedJoinColumns.next().getName());
 		assertEquals("FOO", specifiedJoinColumns.next().getName());
@@ -525,6 +530,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 
 		joinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(0, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
 		joinColumn.setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 		specifiedJoinColumns = joinColumns.specifiedJoinColumns();		
 		assertEquals("BAZ", specifiedJoinColumns.next().getName());
 		assertEquals("BAR", specifiedJoinColumns.next().getName());
@@ -533,6 +539,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 	
 		//move an annotation to the resource model and verify the context model is updated
 		attributeResource.moveAnnotation(1, 0, JPA.JOIN_COLUMNS);
+		getJpaProject().synchronizeContextModel();
 		specifiedJoinColumns = joinColumns.specifiedJoinColumns();		
 		assertEquals("BAR", specifiedJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedJoinColumns.next().getName());
@@ -540,18 +547,21 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(specifiedJoinColumns.hasNext());
 
 		attributeResource.removeAnnotation(0, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
+		getJpaProject().synchronizeContextModel();
 		specifiedJoinColumns = joinColumns.specifiedJoinColumns();		
 		assertEquals("BAZ", specifiedJoinColumns.next().getName());
 		assertEquals("FOO", specifiedJoinColumns.next().getName());
 		assertFalse(specifiedJoinColumns.hasNext());
 	
 		attributeResource.removeAnnotation(0, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
+		getJpaProject().synchronizeContextModel();
 		specifiedJoinColumns = joinColumns.specifiedJoinColumns();		
 		assertEquals("FOO", specifiedJoinColumns.next().getName());
 		assertFalse(specifiedJoinColumns.hasNext());
 
 		
 		attributeResource.removeAnnotation(0, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
+		getJpaProject().synchronizeContextModel();
 		specifiedJoinColumns = joinColumns.specifiedJoinColumns();		
 		assertFalse(specifiedJoinColumns.hasNext());
 	}
@@ -743,6 +753,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		((JoinColumnAnnotation) attributeResource.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((JoinColumnAnnotation) attributeResource.addAnnotation(1, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((JoinColumnAnnotation) attributeResource.addAnnotation(2, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 			
 		ListIterator<? extends JoinColumn> joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertEquals("FOO", joinColumnsIterator.next().getName());
@@ -751,6 +762,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(joinColumnsIterator.hasNext());
 		
 		attributeResource.moveAnnotation(2, 0, JoinColumnsAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertEquals("BAR", joinColumnsIterator.next().getName());
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
@@ -758,6 +770,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(joinColumnsIterator.hasNext());
 	
 		attributeResource.moveAnnotation(0, 1, JoinColumnsAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertEquals("BAR", joinColumnsIterator.next().getName());
@@ -765,17 +778,20 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(joinColumnsIterator.hasNext());
 	
 		attributeResource.removeAnnotation(1,  JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertEquals("FOO", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
 	
 		attributeResource.removeAnnotation(1,  JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
 		
 		attributeResource.removeAnnotation(0,  JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertFalse(joinColumnsIterator.hasNext());
 	}

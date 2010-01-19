@@ -620,15 +620,18 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				
 		//set fetch in the resource model, verify context model updated
 		elementCollection.setFetch(org.eclipse.jpt.core.resource.java.FetchType.EAGER);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(FetchType.EAGER, elementCollectionMapping.getSpecifiedFetch());
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.EAGER, elementCollection.getFetch());
 		
 		elementCollection.setFetch(org.eclipse.jpt.core.resource.java.FetchType.LAZY);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(FetchType.LAZY, elementCollectionMapping.getSpecifiedFetch());
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.LAZY, elementCollection.getFetch());
 		
 		//set fetch to null in the resource model
 		elementCollection.setFetch(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(elementCollectionMapping.getSpecifiedFetch());
 		assertNull(elementCollection.getFetch());
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -79,13 +79,13 @@ public abstract class SourceBaseColumnAnnotation
 	}
 	
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setTable(this.buildTable(astRoot));
-		this.setUnique(this.buildUnique(astRoot));
-		this.setNullable(this.buildNullable(astRoot));
-		this.setInsertable(this.buildInsertable(astRoot));
-		this.setUpdatable(this.buildUpdatable(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncTable(this.buildTable(astRoot));
+		this.syncUnique(this.buildUnique(astRoot));
+		this.syncNullable(this.buildNullable(astRoot));
+		this.syncInsertable(this.buildInsertable(astRoot));
+		this.syncUpdatable(this.buildUpdatable(astRoot));
 	}
 	
 
@@ -97,13 +97,16 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setTable(String table) {
-		if (this.attributeValueHasNotChanged(this.table, table)) {
-			return;
+		if (this.attributeValueHasChanged(this.table, table)) {
+			this.table = table;
+			this.tableAdapter.setValue(table);
 		}
+	}
+	
+	private void syncTable(String astTable) {
 		String old = this.table;
-		this.table = table;
-		this.tableAdapter.setValue(table);
-		this.firePropertyChanged(TABLE_PROPERTY, old, table);
+		this.table = astTable;
+		this.firePropertyChanged(TABLE_PROPERTY, old, astTable);
 	}
 	
 	private String buildTable(CompilationUnit astRoot) {
@@ -126,13 +129,16 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setUnique(Boolean unique) {
-		if (this.attributeValueHasNotChanged(this.unique, unique)) {
-			return;
+		if (this.attributeValueHasChanged(this.unique, unique)) {
+			this.unique = unique;
+			this.uniqueAdapter.setValue(unique);
 		}
+	}
+
+	private void syncUnique(Boolean astUnique) {
 		Boolean old = this.unique;
-		this.unique = unique;
-		this.uniqueAdapter.setValue(unique);
-		this.firePropertyChanged(UNIQUE_PROPERTY, old, unique);
+		this.unique = astUnique;
+		this.firePropertyChanged(UNIQUE_PROPERTY, old, astUnique);
 	}
 
 	private Boolean buildUnique(CompilationUnit astRoot) {
@@ -151,13 +157,16 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setNullable(Boolean nullable) {
-		if (this.attributeValueHasNotChanged(this.nullable, nullable)) {
-			return;
+		if (this.attributeValueHasChanged(this.nullable, nullable)) {
+			this.nullable = nullable;
+			this.nullableAdapter.setValue(nullable);
 		}
+	}
+
+	private void syncNullable(Boolean astNullable) {
 		Boolean old = this.nullable;
-		this.nullable = nullable;
-		this.nullableAdapter.setValue(nullable);
-		this.firePropertyChanged(NULLABLE_PROPERTY, old, nullable);
+		this.nullable = astNullable;
+		this.firePropertyChanged(NULLABLE_PROPERTY, old, astNullable);
 	}
 
 	private Boolean buildNullable(CompilationUnit astRoot) {
@@ -176,13 +185,16 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setInsertable(Boolean insertable) {
-		if (this.attributeValueHasNotChanged(this.insertable, insertable)) {
-			return;
+		if (this.attributeValueHasChanged(this.insertable, insertable)) {
+			this.insertable = insertable;
+			this.insertableAdapter.setValue(insertable);
 		}
+	}
+
+	private void syncInsertable(Boolean astInsertable) {
 		Boolean old = this.insertable;
-		this.insertable = insertable;
-		this.insertableAdapter.setValue(insertable);
-		this.firePropertyChanged(INSERTABLE_PROPERTY, old, insertable);
+		this.insertable = astInsertable;
+		this.firePropertyChanged(INSERTABLE_PROPERTY, old, astInsertable);
 	}
 
 	private Boolean buildInsertable(CompilationUnit astRoot) {
@@ -201,13 +213,16 @@ public abstract class SourceBaseColumnAnnotation
 	}
 
 	public void setUpdatable(Boolean updatable) {
-		if (this.attributeValueHasNotChanged(this.updatable, updatable)) {
-			return;
+		if (this.attributeValueHasChanged(this.updatable, updatable)) {
+			this.updatable = updatable;
+			this.updatableAdapter.setValue(updatable);
 		}
+	}
+
+	private void syncUpdatable(Boolean astUpdatable) {
 		Boolean old = this.updatable;
-		this.updatable = updatable;
-		this.updatableAdapter.setValue(updatable);
-		this.firePropertyChanged(UPDATABLE_PROPERTY, old, updatable);
+		this.updatable = astUpdatable;
+		this.firePropertyChanged(UPDATABLE_PROPERTY, old, astUpdatable);
 	}
 
 	private Boolean buildUpdatable(CompilationUnit astRoot) {

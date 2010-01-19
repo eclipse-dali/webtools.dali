@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,8 +14,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotation
 import org.eclipse.jpt.core.internal.utility.jdt.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitArrayAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.CascadeType;
 import org.eclipse.jpt.core.resource.java.FetchType;
@@ -51,11 +50,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	final DeclarationAnnotationElementAdapter<String[]> cascadeDeclarationAdapter;
 	final AnnotationElementAdapter<String[]> cascadeAdapter;
-	boolean cascadeAll;
-	boolean cascadePersist;
-	boolean cascadeMerge;
-	boolean cascadeRemove;
-	boolean cascadeRefresh;
+	CascadeType[] cascadeTypes;
 
 
 	SourceRelationshipMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
@@ -65,47 +60,29 @@ abstract class SourceRelationshipMappingAnnotation
 		this.fetchDeclarationAdapter = this.getFetchAdapter();
 		this.fetchAdapter = this.buildAnnotationElementAdapter(this.fetchDeclarationAdapter);
 		this.cascadeDeclarationAdapter = this.getCascadeAdapter();
-		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(attribute, this.cascadeDeclarationAdapter);
+		this.cascadeAdapter = new MemberAnnotationElementAdapter<String[]>(attribute, this.cascadeDeclarationAdapter);
 	}
 
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String>(this.member, daea);
 	}
 
 	protected AnnotationElementAdapter<Boolean> buildBooleanAnnotationElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
-		return new ShortCircuitAnnotationElementAdapter<Boolean>(this.member, daea);
+		return new MemberAnnotationElementAdapter<Boolean>(this.member, daea);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
 		this.targetEntity = this.buildTargetEntity(astRoot);
 		this.fullyQualifiedTargetEntityClassName = this.buildFullyQualifiedTargetEntityClassName(astRoot);
 		this.fetch = this.buildFetch(astRoot);
-		this.initializeCascadeTypes(astRoot);
+		this.cascadeTypes = this.buildCascadeTypes(astRoot);
 	}
 
-	private void initializeCascadeTypes(CompilationUnit astRoot) {
-		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astRoot));
-		this.cascadeAll = ArrayTools.contains(cascadeTypes, CascadeType.ALL);
-		this.cascadeMerge = ArrayTools.contains(cascadeTypes, CascadeType.MERGE);
-		this.cascadePersist = ArrayTools.contains(cascadeTypes, CascadeType.PERSIST);
-		this.cascadeRefresh = ArrayTools.contains(cascadeTypes, CascadeType.REFRESH);
-		this.cascadeRemove = ArrayTools.contains(cascadeTypes, CascadeType.REMOVE);
-	}
-
-	public void update(CompilationUnit astRoot) {
-		this.setFetch(this.buildFetch(astRoot));
-		this.setTargetEntity(this.buildTargetEntity(astRoot));
-		this.setFullyQualifiedTargetEntityClassName(this.buildFullyQualifiedTargetEntityClassName(astRoot));
-		this.updateCascade(astRoot);
-	}
-
-	private void updateCascade(CompilationUnit astRoot) {
-		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astRoot));
-		this.setCascadeAll(ArrayTools.contains(cascadeTypes, CascadeType.ALL));
-		this.setCascadeMerge(ArrayTools.contains(cascadeTypes, CascadeType.MERGE));
-		this.setCascadePersist(ArrayTools.contains(cascadeTypes, CascadeType.PERSIST));
-		this.setCascadeRefresh(ArrayTools.contains(cascadeTypes, CascadeType.REFRESH));
-		this.setCascadeRemove(ArrayTools.contains(cascadeTypes, CascadeType.REMOVE));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncFetch(this.buildFetch(astRoot));
+		this.syncTargetEntity(this.buildTargetEntity(astRoot));
+		this.syncFullyQualifiedTargetEntityClassName(this.buildFullyQualifiedTargetEntityClassName(astRoot));
+		this.syncCascadeTypes(this.buildCascadeTypes(astRoot));
 	}
 
 	@Override
@@ -122,13 +99,16 @@ abstract class SourceRelationshipMappingAnnotation
 	}
 
 	public void setTargetEntity(String targetEntity) {
-		if (this.attributeValueHasNotChanged(this.targetEntity, targetEntity)) {
-			return;
+		if (this.attributeValueHasChanged(this.targetEntity, targetEntity)) {
+			this.targetEntity = targetEntity;
+			this.targetEntityAdapter.setValue(targetEntity);
 		}
+	}
+
+	private void syncTargetEntity(String astTargetEntity) {
 		String old = this.targetEntity;
-		this.targetEntity = targetEntity;
-		this.targetEntityAdapter.setValue(targetEntity);
-		this.firePropertyChanged(TARGET_ENTITY_PROPERTY, old, targetEntity);
+		this.targetEntity = astTargetEntity;
+		this.firePropertyChanged(TARGET_ENTITY_PROPERTY, old, astTargetEntity);
 	}
 
 	private String buildTargetEntity(CompilationUnit astRoot) {
@@ -149,7 +129,7 @@ abstract class SourceRelationshipMappingAnnotation
 		return this.fullyQualifiedTargetEntityClassName;
 	}
 
-	private void setFullyQualifiedTargetEntityClassName(String name) {
+	private void syncFullyQualifiedTargetEntityClassName(String name) {
 		String old = this.fullyQualifiedTargetEntityClassName;
 		this.fullyQualifiedTargetEntityClassName = name;
 		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_ENTITY_CLASS_NAME_PROPERTY, old, name);
@@ -165,13 +145,16 @@ abstract class SourceRelationshipMappingAnnotation
 	}
 
 	public void setFetch(FetchType fetch) {
-		if (this.attributeValueHasNotChanged(this.fetch, fetch)) {
-			return;
+		if (this.attributeValueHasChanged(this.fetch, fetch)) {
+			this.fetch = fetch;
+			this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 		}
+	}
+
+	private void syncFetch(FetchType astFetch) {
 		FetchType old = this.fetch;
-		this.fetch = fetch;
-		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
-		this.firePropertyChanged(FETCH_PROPERTY, old, fetch);
+		this.fetch = astFetch;
+		this.firePropertyChanged(FETCH_PROPERTY, old, astFetch);
 	}
 
 	private FetchType buildFetch(CompilationUnit astRoot) {
@@ -187,25 +170,37 @@ abstract class SourceRelationshipMappingAnnotation
 	 */
 	abstract DeclarationAnnotationElementAdapter<String> getFetchAdapter();
 
-	// ***** cascade
+	// ***** cascade types
+	/**
+	 * pre-condition: state of 'cascadeTypes' is to change
+	 */
+	private void setCascadeType(CascadeType cascadeType, boolean set) {
+		this.setCascadeTypes(set ?
+			ArrayTools.add(this.cascadeTypes, cascadeType) :
+			ArrayTools.remove(this.cascadeTypes, cascadeType)
+		);
+	}
+
+	/**
+	 * pre-condition: state of 'cascadeTypes' is to change
+	 */
 	private void setCascadeTypes(CascadeType[] cascadeTypes) {
+		this.cascadeTypes = cascadeTypes;
 		this.cascadeAdapter.setValue(CascadeType.toJavaAnnotationValues(cascadeTypes));
 	}
 
-	private void setCascade(CascadeType cascadeType, boolean set) {
-		String[] javaValues = this.cascadeAdapter.getValue();
-		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValues(javaValues);
+	private void syncCascadeTypes(CascadeType[] astCascadeTypes) {
+		CascadeType[] old = this.cascadeTypes;
+		this.cascadeTypes = astCascadeTypes;
+		this.syncCascadeAll(old);
+		this.syncCascadeMerge(old);
+		this.syncCascadePersist(old);
+		this.syncCascadeRefresh(old);
+		this.syncCascadeRemove(old);
+	}
 
-		boolean present = ArrayTools.contains(cascadeTypes, cascadeType);
-		if (set) {
-			if ( ! present) {
-				this.setCascadeTypes(ArrayTools.add(cascadeTypes, cascadeType));
-			}
-		} else {
-			if (present) {
-				this.setCascadeTypes(ArrayTools.remove(cascadeTypes, cascadeType));
-			}
-		}
+	private CascadeType[] buildCascadeTypes(CompilationUnit astRoot) {
+		return CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astRoot));
 	}
 
 	public TextRange getCascadeTextRange(CompilationUnit astRoot) {
@@ -219,77 +214,82 @@ abstract class SourceRelationshipMappingAnnotation
 
 	// ***** cascade all
 	public boolean isCascadeAll() {
-		return this.cascadeAll;
+		return ArrayTools.contains(this.cascadeTypes, CascadeType.ALL);
 	}
 
 	public void setCascadeAll(boolean cascadeAll) {
-		if (this.cascadeAll == cascadeAll) {
-			return;
+		if (this.isCascadeAll() != cascadeAll) {
+			this.setCascadeType(CascadeType.ALL, cascadeAll);
 		}
-		boolean old = this.cascadeAll;
-		this.cascadeAll = cascadeAll;
-		this.setCascade(CascadeType.ALL, cascadeAll);
-		this.firePropertyChanged(CASCADE_ALL_PROPERTY, old, cascadeAll);
+	}
+
+	private void syncCascadeAll(CascadeType[] oldCascadeTypes) {
+		boolean old = ArrayTools.contains(oldCascadeTypes, CascadeType.ALL);
+		this.firePropertyChanged(CASCADE_ALL_PROPERTY, old, this.isCascadeAll());
 	}
 
 	// ***** cascade persist
 	public boolean isCascadePersist() {
-		return this.cascadePersist;
+		return ArrayTools.contains(this.cascadeTypes, CascadeType.PERSIST);
 	}
 
 	public void setCascadePersist(boolean cascadePersist) {
-		if (this.cascadePersist == cascadePersist) {
-			return;
+		if (this.isCascadePersist() != cascadePersist) {
+			this.setCascadeType(CascadeType.PERSIST, cascadePersist);
 		}
-		boolean old = this.cascadePersist;
-		this.cascadePersist = cascadePersist;
-		this.setCascade(CascadeType.PERSIST, cascadePersist);
-		this.firePropertyChanged(CASCADE_PERSIST_PROPERTY, old, cascadePersist);
+	}
+
+	private void syncCascadePersist(CascadeType[] oldCascadeTypes) {
+		boolean old = ArrayTools.contains(oldCascadeTypes, CascadeType.PERSIST);
+		this.firePropertyChanged(CASCADE_PERSIST_PROPERTY, old, this.isCascadePersist());
 	}
 
 	// ***** cascade merge
 	public boolean isCascadeMerge() {
-		return this.cascadeMerge;
+		return ArrayTools.contains(this.cascadeTypes, CascadeType.MERGE);
 	}
 
 	public void setCascadeMerge(boolean cascadeMerge) {
-		if (this.cascadeMerge == cascadeMerge) {
-			return;
+		if (this.isCascadeMerge() != cascadeMerge) {
+			this.setCascadeType(CascadeType.MERGE, cascadeMerge);
 		}
-		boolean old = this.cascadeMerge;
-		this.cascadeMerge = cascadeMerge;
-		this.setCascade(CascadeType.MERGE, cascadeMerge);
-		this.firePropertyChanged(CASCADE_MERGE_PROPERTY, old, cascadeMerge);
+	}
+
+	private void syncCascadeMerge(CascadeType[] oldCascadeTypes) {
+		boolean old = ArrayTools.contains(oldCascadeTypes, CascadeType.MERGE);
+		this.firePropertyChanged(CASCADE_MERGE_PROPERTY, old, this.isCascadeMerge());
 	}
 
 	// ***** cascade remove
 	public boolean isCascadeRemove() {
-		return this.cascadeRemove;
+		return ArrayTools.contains(this.cascadeTypes, CascadeType.REMOVE);
 	}
 
 	public void setCascadeRemove(boolean cascadeRemove) {
-		if (this.cascadeRemove == cascadeRemove) {
-			return;
+		if (this.isCascadeRemove() != cascadeRemove) {
+			this.setCascadeType(CascadeType.REMOVE, cascadeRemove);
 		}
-		boolean old = this.cascadeRemove;
-		this.cascadeRemove = cascadeRemove;
-		this.setCascade(CascadeType.REMOVE, cascadeRemove);
-		this.firePropertyChanged(CASCADE_REMOVE_PROPERTY, old, cascadeRemove);
+	}
+
+	private void syncCascadeRemove(CascadeType[] oldCascadeTypes) {
+		boolean old = ArrayTools.contains(oldCascadeTypes, CascadeType.REMOVE);
+		this.firePropertyChanged(CASCADE_REMOVE_PROPERTY, old, this.isCascadeRemove());
 	}
 
 	// ***** cascade refresh
 	public boolean isCascadeRefresh() {
-		return this.cascadeRefresh;
+		return ArrayTools.contains(this.cascadeTypes, CascadeType.REFRESH);
 	}
 
 	public void setCascadeRefresh(boolean cascadeRefresh) {
-		if (this.cascadeRefresh == cascadeRefresh) {
-			return;
+		if (this.isCascadeRefresh() != cascadeRefresh) {
+			this.setCascadeType(CascadeType.REFRESH, cascadeRefresh);
 		}
-		boolean old = this.cascadeRefresh;
-		this.cascadeRefresh = cascadeRefresh;
-		this.setCascade(CascadeType.REFRESH, cascadeRefresh);
-		this.firePropertyChanged(CASCADE_REFRESH_PROPERTY, old, cascadeRefresh);
+	}
+
+	private void syncCascadeRefresh(CascadeType[] oldCascadeTypes) {
+		boolean old = ArrayTools.contains(oldCascadeTypes, CascadeType.REFRESH);
+		this.firePropertyChanged(CASCADE_REFRESH_PROPERTY, old, this.isCascadeRefresh());
 	}
 
 

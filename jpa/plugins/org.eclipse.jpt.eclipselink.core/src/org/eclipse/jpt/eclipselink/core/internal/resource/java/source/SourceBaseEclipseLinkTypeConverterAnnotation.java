@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -41,10 +41,10 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	SourceBaseEclipseLinkTypeConverterAnnotation(JavaResourcePersistentMember parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 		this.dataTypeDeclarationAdapter = this.buildTypeAdapter(this.getDataTypeElementName());
-		this.dataTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, this.dataTypeDeclarationAdapter);
+		this.dataTypeAdapter = new MemberAnnotationElementAdapter<String>(this.member, this.dataTypeDeclarationAdapter);
 
 		this.objectTypeDeclarationAdapter = this.buildTypeAdapter(this.getObjectTypeElementName());
-		this.objectTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, this.objectTypeDeclarationAdapter);
+		this.objectTypeAdapter = new MemberAnnotationElementAdapter<String>(this.member, this.objectTypeDeclarationAdapter);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildTypeAdapter(String elementName) {
@@ -60,10 +60,10 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setDataType(this.buildDataType(astRoot));
-		this.setObjectType(this.buildObjectType(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncDataType(this.buildDataType(astRoot));
+		this.syncObjectType(this.buildObjectType(astRoot));
 	}
 
 
@@ -75,13 +75,16 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	}
 
 	public void setDataType(String dataType) {
-		if (this.attributeValueHasNotChanged(this.dataType, dataType)) {
-			return;
+		if (this.attributeValueHasChanged(this.dataType, dataType)) {
+			this.dataType = dataType;
+			this.dataTypeAdapter.setValue(dataType);
 		}
+	}
+
+	private void syncDataType(String astDataType) {
 		String old = this.dataType;
-		this.dataType = dataType;
-		this.dataTypeAdapter.setValue(dataType);
-		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, dataType);
+		this.dataType = astDataType;
+		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, astDataType);
 	}
 
 	private String buildDataType(CompilationUnit astRoot) {
@@ -100,21 +103,24 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	}
 
 	public void setObjectType(String objectType) {
-		if (this.attributeValueHasNotChanged(this.objectType, objectType)) {
-			return;
+		if (this.attributeValueHasChanged(this.objectType, objectType)) {
+			this.objectType = objectType;
+			this.objectTypeAdapter.setValue(objectType);
 		}
-		String old = this.objectType;
-		this.objectType = objectType;
-		this.objectTypeAdapter.setValue(objectType);
-		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, objectType);
 	}
 
-	public TextRange getObjectTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.objectTypeDeclarationAdapter, astRoot);
+	private void syncObjectType(String astObjectType) {
+		String old = this.objectType;
+		this.objectType = astObjectType;
+		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, astObjectType);
 	}
 
 	private String buildObjectType(CompilationUnit astRoot) {
 		return this.objectTypeAdapter.getValue(astRoot);
+	}
+
+	public TextRange getObjectTypeTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(this.objectTypeDeclarationAdapter, astRoot);
 	}
 
 	abstract String getObjectTypeElementName();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,11 +62,13 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 				
 		//set name to null in the resource model
 		javaNamedQuery.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaNamedQuery.getName());
 		assertNull(namedQuery.getName());
 
 		//set name in the resource model, verify context model updated
 		javaNamedQuery.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", javaNamedQuery.getName());
 		assertEquals("foo", namedQuery.getName());
 	}
@@ -109,11 +111,13 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 				
 		//set name to null in the resource model
 		javaNamedQuery.setQuery(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaNamedQuery.getQuery());
 		assertNull(namedQuery.getQuery());
 
 		//set name in the resource model, verify context model updated
 		javaNamedQuery.setQuery("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", javaNamedQuery.getQuery());
 		assertEquals("foo", namedQuery.getQuery());
 	}
@@ -263,7 +267,8 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		javaNamedQuery.hintAt(0).setName("FOO");
 		javaNamedQuery.hintAt(1).setName("BAR");
 		javaNamedQuery.hintAt(2).setName("BAZ");
-	
+		getJpaProject().synchronizeContextModel();
+
 		ListIterator<QueryHint> hints = namedQuery.hints();
 		assertEquals("FOO", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
@@ -271,6 +276,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		assertFalse(hints.hasNext());
 		
 		javaNamedQuery.moveHint(2, 0);
+		getJpaProject().synchronizeContextModel();
 		hints = namedQuery.hints();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
@@ -278,6 +284,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		assertFalse(hints.hasNext());
 	
 		javaNamedQuery.moveHint(0, 1);
+		getJpaProject().synchronizeContextModel();
 		hints = namedQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
@@ -285,17 +292,20 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		assertFalse(hints.hasNext());
 	
 		javaNamedQuery.removeHint(1);
+		getJpaProject().synchronizeContextModel();
 		hints = namedQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 	
 		javaNamedQuery.removeHint(1);
+		getJpaProject().synchronizeContextModel();
 		hints = namedQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
 		javaNamedQuery.removeHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(namedQuery.hints().hasNext());
 	}
 	
@@ -312,13 +322,16 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		
 		
 		javaNamedQuery.addHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(1, namedQuery.hintsSize());
 		
 		javaNamedQuery.addHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(2, namedQuery.hintsSize());
 		
 		javaNamedQuery.removeHint(0);
 		javaNamedQuery.removeHint(0);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(0, namedQuery.hintsSize());
 	}
 }

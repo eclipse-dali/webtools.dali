@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -241,10 +241,12 @@ public class JavaTableTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		table.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("foo", getJavaEntity().getTable().getSpecifiedName());
 		
 		typeResource.removeAnnotation(JPA.TABLE);
+		getJpaProject().synchronizeContextModel();
 		assertNull(getJavaEntity().getTable().getSpecifiedName());
 	}
 	
@@ -256,6 +258,7 @@ public class JavaTableTests extends ContextModelTestCase
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setCatalog("myCatalog");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("myCatalog", getJavaEntity().getTable().getSpecifiedCatalog());
 		assertEquals("myCatalog", getJavaEntity().getTable().getCatalog());
@@ -332,6 +335,7 @@ public class JavaTableTests extends ContextModelTestCase
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setSchema("mySchema");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("mySchema", getJavaEntity().getTable().getSpecifiedSchema());
 		assertEquals("mySchema", getJavaEntity().getTable().getSchema());
@@ -374,6 +378,7 @@ public class JavaTableTests extends ContextModelTestCase
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
+		getJpaProject().synchronizeContextModel();
 		
 		uniqueConstraints = getJavaEntity().getTable().uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
@@ -528,7 +533,7 @@ public class JavaTableTests extends ContextModelTestCase
 		tableAnnotation.addUniqueConstraint(0).addColumnName("FOO");
 		tableAnnotation.addUniqueConstraint(1).addColumnName("BAR");
 		tableAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
-
+		getJpaProject().synchronizeContextModel();
 		
 		ListIterator<UniqueConstraint> uniqueConstraints = table.uniqueConstraints();
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
@@ -537,6 +542,7 @@ public class JavaTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 		
 		tableAnnotation.moveUniqueConstraint(2, 0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
@@ -544,6 +550,7 @@ public class JavaTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableAnnotation.moveUniqueConstraint(0, 1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
@@ -551,17 +558,20 @@ public class JavaTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		tableAnnotation.removeUniqueConstraint(0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 	}

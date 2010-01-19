@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
@@ -40,7 +40,7 @@ public final class SourceAccess2_0Annotation
 
 	public SourceAccess2_0Annotation(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, VALUE_ADAPTER);
+		this.valueAdapter = new MemberAnnotationElementAdapter<String>(member, VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -51,8 +51,8 @@ public final class SourceAccess2_0Annotation
 		this.value = this.buildValue(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setValue(this.buildValue(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncValue(this.buildValue(astRoot));
 	}
 
 	@Override
@@ -69,13 +69,16 @@ public final class SourceAccess2_0Annotation
 	}
 
 	public void setValue(AccessType value) {
-		if (this.attributeValueHasNotChanged(this.value, value)) {
-			return;
+		if (this.attributeValueHasChanged(this.value, value)) {
+			this.value = value;
+			this.valueAdapter.setValue(AccessType.toJavaAnnotationValue(value));
 		}
+	}
+
+	private void syncValue(AccessType astValue) {
 		AccessType old = this.value;
-		this.value = value;
-		this.valueAdapter.setValue(AccessType.toJavaAnnotationValue(value));
-		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+		this.value = astValue;
+		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
 	private AccessType buildValue(CompilationUnit astRoot) {

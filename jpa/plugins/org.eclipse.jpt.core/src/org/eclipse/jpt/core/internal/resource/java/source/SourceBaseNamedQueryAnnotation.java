@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.BaseNamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -67,17 +67,17 @@ abstract class SourceBaseNamedQueryAnnotation
 		AnnotationContainerTools.initialize(this.hintsContainer, astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setName(this.buildName(astRoot));
-		this.setQuery(this.buildQuery(astRoot));
-		AnnotationContainerTools.update(this.hintsContainer, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncName(this.buildName(astRoot));
+		this.syncQuery(this.buildQuery(astRoot));
+		AnnotationContainerTools.synchronize(this.hintsContainer, astRoot);
 	}
 
 	/**
 	 * convenience method
 	 */
 	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String>(this.member, daea);
 	}
 
 	@Override
@@ -94,13 +94,16 @@ abstract class SourceBaseNamedQueryAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasNotChanged(this.name, name)) {
-			return;
+		if (this.attributeValueHasChanged(this.name, name)) {
+			this.name = name;
+			this.nameAdapter.setValue(name);
 		}
+	}
+
+	private void syncName(String astName) {
 		String old = this.name;
-		this.name = name;
-		this.nameAdapter.setValue(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.name = astName;
+		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -123,13 +126,16 @@ abstract class SourceBaseNamedQueryAnnotation
 	}
 
 	public void setQuery(String query) {
-		if (this.attributeValueHasNotChanged(this.query, query)) {
-			return;
+		if (this.attributeValueHasChanged(this.query, query)) {
+			this.query = query;
+			this.queryAdapter.setValue(query);
 		}
+	}
+
+	private void syncQuery(String annotationQuery) {
 		String old = this.query;
-		this.query = query;
-		this.queryAdapter.setValue(query);
-		this.firePropertyChanged(QUERY_PROPERTY, old, query);
+		this.query = annotationQuery;
+		this.firePropertyChanged(QUERY_PROPERTY, old, annotationQuery);
 	}
 
 	private String buildQuery(CompilationUnit astRoot) {
@@ -251,8 +257,8 @@ abstract class SourceBaseNamedQueryAnnotation
 			return SourceBaseNamedQueryAnnotation.this.getAnnotationName();
 		}
 
-		public Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceBaseNamedQueryAnnotation.this.getJdtAnnotation(astRoot);
+		public Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+			return SourceBaseNamedQueryAnnotation.this.getAstAnnotation(astRoot);
 		}
 
 		public String getElementName() {

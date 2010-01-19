@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,8 +17,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitArrayAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -64,11 +64,11 @@ public final class SourceGeneratedAnnotation
 	}
 
 	private AnnotationElementAdapter<String[]> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String[]> daea) {
-		return new ShortCircuitArrayAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String[]>(this.member, daea);
 	}
 
 	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String>(this.member, daea);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -77,10 +77,10 @@ public final class SourceGeneratedAnnotation
 		this.comments = this.buildComments(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.updateValues(astRoot);
-		this.setDate_(this.buildDate(astRoot));
-		this.setComments_(this.buildComments(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncValues(astRoot);
+		this.syncDate(this.buildDate(astRoot));
+		this.syncComments(this.buildComments(astRoot));
 	}
 
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
@@ -113,39 +113,39 @@ public final class SourceGeneratedAnnotation
 	}
 
 	public void addValue(int index, String value) {
-		this.addValue_(index, value);
-		this.valueAdapter.setValue(this.values.toArray(new String[this.values.size()]));
-	}
-
-	private void addValue_(int index, String value) {
-		this.addItemToList(index, value, this.values, VALUES_LIST);
+		this.values.add(index, value);
+		this.writeValues();
 	}
 
 	public void moveValue(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.values, VALUES_LIST);
-		this.valueAdapter.setValue(this.values.toArray(new String[this.values.size()]));
+		CollectionTools.move(this.values, targetIndex, sourceIndex);
+		this.writeValues();
 	}
 
 	public void removeValue(String value) {
-		this.removeItemFromList(value, this.values, VALUES_LIST);
-		this.valueAdapter.setValue(this.values.toArray(new String[this.values.size()]));
+		this.values.remove(value);
+		this.writeValues();
 	}
 
 	public void removeValue(int index) {
-		this.removeItemFromList(index, this.values, VALUES_LIST);
+		this.values.remove(index);
+		this.writeValues();
+	}
+
+	private void writeValues() {
 		this.valueAdapter.setValue(this.values.toArray(new String[this.values.size()]));
 	}
 
 	private void initializeValues(CompilationUnit astRoot) {
-		String[] javaValues = this.valueAdapter.getValue(astRoot);
-		for (int i = 0; i < javaValues.length; i++) {
-			this.values.add(javaValues[i]);
+		String[] astValues = this.valueAdapter.getValue(astRoot);
+		for (int i = 0; i < astValues.length; i++) {
+			this.values.add(astValues[i]);
 		}
 	}
 
-	private void updateValues(CompilationUnit astRoot) {
-		String[] javaValues = this.valueAdapter.getValue(astRoot);
-		this.synchronizeList(Arrays.asList(javaValues), this.values, VALUES_LIST);
+	private void syncValues(CompilationUnit astRoot) {
+		String[] astValues = this.valueAdapter.getValue(astRoot);
+		this.synchronizeList(Arrays.asList(astValues), this.values, VALUES_LIST);
 	}
 
 	// ***** date
@@ -154,19 +154,16 @@ public final class SourceGeneratedAnnotation
 	}
 
 	public void setDate(String date) {
-		if (this.attributeValueHasNotChanged(this.date, date)) {
-			return;
+		if (this.attributeValueHasChanged(this.date, date)) {
+			this.date = date;
+			this.dateAdapter.setValue(date);
 		}
-		String old = this.date;
-		this.date = date;
-		this.dateAdapter.setValue(date);
-		this.firePropertyChanged(DATE_PROPERTY, old, date);
 	}
 	
-	protected void setDate_(String date) {
+	protected void syncDate(String astDate) {
 		String old = this.date;
-		this.date = date;
-		this.firePropertyChanged(DATE_PROPERTY, old, date);
+		this.date = astDate;
+		this.firePropertyChanged(DATE_PROPERTY, old, astDate);
 	}
 
 	private String buildDate(CompilationUnit astRoot) {
@@ -179,19 +176,16 @@ public final class SourceGeneratedAnnotation
 	}
 
 	public void setComments(String comments) {
-		if (this.attributeValueHasNotChanged(this.comments, comments)) {
-			return;
+		if (this.attributeValueHasChanged(this.comments, comments)) {
+			this.comments = comments;
+			this.commentsAdapter.setValue(comments);
 		}
-		String old = this.date;
-		this.comments = comments;
-		this.commentsAdapter.setValue(comments);
-		this.firePropertyChanged(COMMENTS_PROPERTY, old, comments);
 	}
 
-	protected void setComments_(String comments) {
+	protected void syncComments(String astComments) {
 		String old = this.date;
-		this.comments = comments;
-		this.firePropertyChanged(COMMENTS_PROPERTY, old, comments);
+		this.comments = astComments;
+		this.firePropertyChanged(COMMENTS_PROPERTY, old, astComments);
 	}
 
 	private String buildComments(CompilationUnit astRoot) {

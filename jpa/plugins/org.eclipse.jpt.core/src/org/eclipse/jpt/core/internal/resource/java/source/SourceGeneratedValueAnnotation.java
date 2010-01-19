@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.GenerationType;
@@ -45,8 +45,8 @@ public final class SourceGeneratedValueAnnotation
 		
 	public SourceGeneratedValueAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, STRATEGY_ADAPTER);
-		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, GENERATOR_ADAPTER);
+		this.strategyAdapter = new MemberAnnotationElementAdapter<String>(attribute, STRATEGY_ADAPTER);
+		this.generatorAdapter = new MemberAnnotationElementAdapter<String>(attribute, GENERATOR_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
@@ -58,9 +58,9 @@ public final class SourceGeneratedValueAnnotation
 		this.generator = this.buildGenerator(astRoot);
 	}
 	
-	public void update(CompilationUnit astRoot) {
-		this.setStrategy(this.buildStrategy(astRoot));
-		this.setGenerator(this.buildGenerator(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncStrategy(this.buildStrategy(astRoot));
+		this.syncGenerator(this.buildGenerator(astRoot));
 	}
 
 	@Override
@@ -77,13 +77,16 @@ public final class SourceGeneratedValueAnnotation
 	}
 	
 	public void setStrategy(GenerationType strategy) {
-		if (this.attributeValueHasNotChanged(this.strategy, strategy)) {
-			return;
+		if (this.attributeValueHasChanged(this.strategy, strategy)) {
+			this.strategy = strategy;
+			this.strategyAdapter.setValue(GenerationType.toJavaAnnotationValue(strategy));
 		}
+	}
+	
+	private void syncStrategy(GenerationType astStrategy) {
 		GenerationType old = this.strategy;
-		this.strategy = strategy;
-		this.strategyAdapter.setValue(GenerationType.toJavaAnnotationValue(strategy));
-		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
+		this.strategy = astStrategy;
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, astStrategy);
 	}
 	
 	private GenerationType buildStrategy(CompilationUnit astRoot) {
@@ -100,13 +103,16 @@ public final class SourceGeneratedValueAnnotation
 	}
 	
 	public void setGenerator(String generator) {
-		if (this.attributeValueHasNotChanged(this.generator, generator)) {
-			return;
+		if (this.attributeValueHasChanged(this.generator, generator)) {
+			this.generator = generator;
+			this.generatorAdapter.setValue(generator);
 		}
+	}
+
+	private void syncGenerator(String astGenerator) {
 		String old = this.generator;
-		this.generator = generator;
-		this.generatorAdapter.setValue(generator);
-		this.firePropertyChanged(GENERATOR_PROPERTY, old, generator);
+		this.generator = astGenerator;
+		this.firePropertyChanged(GENERATOR_PROPERTY, old, astGenerator);
 	}
 
 	private String buildGenerator(CompilationUnit astRoot) {

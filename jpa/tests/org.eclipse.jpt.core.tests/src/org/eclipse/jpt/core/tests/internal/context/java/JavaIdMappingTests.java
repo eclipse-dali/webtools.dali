@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -448,10 +448,12 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.resource.java.TemporalType.DATE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(TemporalType.DATE, ((TemporalConverter) idMapping.getConverter()).getTemporalType());
 		
 		attributeResource.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		assertFalse(idMapping.isDefault());
@@ -472,6 +474,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("foo", idMapping.getColumn().getSpecifiedName());
 		assertEquals("foo", idMapping.getColumn().getName());
@@ -489,12 +492,15 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		getJpaProject().synchronizeContextModel();
 		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		getJpaProject().synchronizeContextModel();
 		assertNotNull(idMapping.getGeneratorContainer().getSequenceGenerator());
 		assertEquals(2, attributeResource.annotationsSize());
 		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 		
 		idMapping.getGeneratorContainer().getSequenceGenerator().setName("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 	}
 	
@@ -534,6 +540,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		getJpaProject().synchronizeContextModel();
 		
 		
 		idMapping.getGeneratorContainer().removeSequenceGenerator();
@@ -562,6 +569,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		getJpaProject().synchronizeContextModel();
 		assertNotNull(idMapping.getGeneratorContainer().getTableGenerator());		
 		assertEquals(2, attributeResource.annotationsSize());
 		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
@@ -606,6 +614,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		getJpaProject().synchronizeContextModel();
 		
 		
 		idMapping.getGeneratorContainer().removeTableGenerator();
@@ -634,6 +643,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNotNull(idMapping.getGeneratedValue());		
 		assertEquals(2, attributeResource.annotationsSize());
@@ -689,7 +699,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
-		
+		getJpaProject().synchronizeContextModel();
 		
 		idMapping.removeGeneratedValue();
 		

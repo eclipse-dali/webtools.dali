@@ -1181,7 +1181,7 @@ public abstract class AbstractJpaProject
 
 	protected void update(Iterable<JavaResourceCompilationUnit> javaResourceCompilationUnits) {
 		for (JavaResourceCompilationUnit javaResourceCompilationUnit : javaResourceCompilationUnits) {
-			javaResourceCompilationUnit.update();
+			javaResourceCompilationUnit.synchronizeWithJavaSource();
 		}
 	}
 
@@ -1223,7 +1223,7 @@ public abstract class AbstractJpaProject
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
 			for (JavaResourceCompilationUnit jrcu : this.getCombinedJavaResourceCompilationUnits()) {
 				if (jrcu.getCompilationUnit().equals(compilationUnit)) {
-					jrcu.update();
+					jrcu.synchronizeWithJavaSource();
 					// TODO ? this.resolveJavaTypes();  // might have new member types now...
 					break;  // there *shouldn't* be any more...
 				}
@@ -1313,8 +1313,11 @@ public abstract class AbstractJpaProject
 		protected DefaultResourceModelListener() {
 			super();
 		}
-		public void resourceModelChanged() {
-			AbstractJpaProject.this.update();
+		public void resourceModelChanged(JpaResourceModel jpaResourceModel) {
+//			String msg = Thread.currentThread() + " resource model change: " + jpaResourceModel;
+//			System.out.println(msg);
+//			new Exception(msg).printStackTrace(System.out);
+			AbstractJpaProject.this.synchronizeContextModel(jpaResourceModel);
 		}
 	}
 
@@ -1545,6 +1548,18 @@ public abstract class AbstractJpaProject
 
 	public CommandExecutor getModifySharedDocumentCommandExecutor() {
 		return this.modifySharedDocumentCommandExecutor;
+	}
+
+
+	// ********** synchronize context model with resource model **********
+
+	// TODO ...
+	protected void synchronizeContextModel(@SuppressWarnings("unused") JpaResourceModel jpaResourceModel) {
+		this.synchronizeContextModel();
+	}
+
+	public void synchronizeContextModel() {
+		this.update();
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,9 +56,9 @@ public abstract class SourceSequenceGeneratorAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setSequenceName(this.buildSequenceName(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncSequenceName(this.buildSequenceName(astRoot));
 	}
 
 
@@ -88,13 +88,16 @@ public abstract class SourceSequenceGeneratorAnnotation
 	}
 
 	public void setSequenceName(String sequenceName) {
-		if (this.attributeValueHasNotChanged(this.sequenceName, sequenceName)) {
-			return;
+		if (this.attributeValueHasChanged(this.sequenceName, sequenceName)) {
+			this.sequenceName = sequenceName;
+			this.sequenceNameAdapter.setValue(sequenceName);
 		}
+	}
+
+	public void syncSequenceName(String astSequenceName) {
 		String old = this.sequenceName;
-		this.sequenceName = sequenceName;
-		this.sequenceNameAdapter.setValue(sequenceName);
-		this.firePropertyChanged(SEQUENCE_NAME_PROPERTY, old, sequenceName);
+		this.sequenceName = astSequenceName;
+		this.firePropertyChanged(SEQUENCE_NAME_PROPERTY, old, astSequenceName);
 	}
 
 	private String buildSequenceName(CompilationUnit astRoot) {

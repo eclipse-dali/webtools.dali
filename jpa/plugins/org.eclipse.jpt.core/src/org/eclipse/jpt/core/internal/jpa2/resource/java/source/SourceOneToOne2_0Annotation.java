@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -46,9 +46,9 @@ public final class SourceOneToOne2_0Annotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setOrphanRemoval(this.buildOrphanRemoval(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncOrphanRemoval(this.buildOrphanRemoval(astRoot));
 	}
 
 	// ********** OneToOne2_0Annotation implementation **********
@@ -58,13 +58,16 @@ public final class SourceOneToOne2_0Annotation
 	}
 
 	public void setOrphanRemoval(Boolean orphanRemoval) {
-		if (this.attributeValueHasNotChanged(this.orphanRemoval, orphanRemoval)) {
-			return;
+		if (this.attributeValueHasChanged(this.orphanRemoval, orphanRemoval)) {
+			this.orphanRemoval = orphanRemoval;
+			this.orphanRemovalAdapter.setValue(orphanRemoval);
 		}
+	}
+
+	private void syncOrphanRemoval(Boolean astOrphanRemoval) {
 		Boolean old = this.orphanRemoval;
-		this.orphanRemoval = orphanRemoval;
-		this.orphanRemovalAdapter.setValue(orphanRemoval);
-		this.firePropertyChanged(ORPHAN_REMOVAL_PROPERTY, old, orphanRemoval);
+		this.orphanRemoval = astOrphanRemoval;
+		this.firePropertyChanged(ORPHAN_REMOVAL_PROPERTY, old, astOrphanRemoval);
 	}
 
 	public TextRange getOrphanRemovalTextRange(CompilationUnit astRoot) {

@@ -210,6 +210,11 @@ public interface JpaProject
 	void javaElementChanged(ElementChangedEvent event);
 
 
+	// ********** synchronize context model with resource model **********
+
+	void synchronizeContextModel();
+
+
 	// ********** project "update" **********
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -108,15 +108,19 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		
 		typeResource.removeAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.addAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation.setValue("FooBar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FooBar", customizer.getSpecifiedCustomizerClass());	
 	}
 	
@@ -130,15 +134,14 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
-		
 		assertNull(resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to ATTRIBUTE specifically, test context
-		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, contextChangeTracking.getType());
@@ -146,8 +149,8 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to OBJECT specifically, test context
-		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.OBJECT, contextChangeTracking.getType());
@@ -155,8 +158,8 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		assertEquals(EclipseLinkChangeTrackingType.OBJECT, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to DEFERRED specifically, test context
-		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, contextChangeTracking.getType());
@@ -164,8 +167,8 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to AUTO specifically, test context
-		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
@@ -173,8 +176,8 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// remove value from resource, test context
-		
 		resourceChangeTracking.setValue(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
@@ -182,8 +185,8 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkContextModelTestC
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// remove annotation, text context
-		
 		typeResource.removeAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());

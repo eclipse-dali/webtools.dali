@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -53,11 +53,11 @@ abstract class SourceGeneratorAnnotation
 	}
 
 	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String>(this.member, daea);
 	}
 
 	protected AnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
-		return new ShortCircuitAnnotationElementAdapter<Integer>(this.member, daea);
+		return new MemberAnnotationElementAdapter<Integer>(this.member, daea);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -66,10 +66,10 @@ abstract class SourceGeneratorAnnotation
 		this.allocationSize = this.buildAllocationSize(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setName(this.buildName(astRoot));
-		this.setInitialValue(this.buildInitialValue(astRoot));
-		this.setAllocationSize(this.buildAllocationSize(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncName(this.buildName(astRoot));
+		this.syncInitialValue(this.buildInitialValue(astRoot));
+		this.syncAllocationSize(this.buildAllocationSize(astRoot));
 	}
 
 	@Override
@@ -86,13 +86,16 @@ abstract class SourceGeneratorAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasNotChanged(this.name, name)) {
-			return;
+		if (this.attributeValueHasChanged(this.name, name)) {
+			this.name = name;
+			this.nameAdapter.setValue(name);
 		}
+	}
+
+	private void syncName(String astName) {
 		String old = this.name;
-		this.name = name;
-		this.nameAdapter.setValue(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.name = astName;
+		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -111,13 +114,16 @@ abstract class SourceGeneratorAnnotation
 	}
 
 	public void setInitialValue(Integer initialValue) {
-		if (this.attributeValueHasNotChanged(this.initialValue, initialValue)) {
-			return;
+		if (this.attributeValueHasChanged(this.initialValue, initialValue)) {
+			this.initialValue = initialValue;
+			this.initialValueAdapter.setValue(initialValue);
 		}
+	}
+
+	private void syncInitialValue(Integer astIinitialValue) {
 		Integer old = this.initialValue;
-		this.initialValue = initialValue;
-		this.initialValueAdapter.setValue(initialValue);
-		this.firePropertyChanged(INITIAL_VALUE_PROPERTY, old, initialValue);
+		this.initialValue = astIinitialValue;
+		this.firePropertyChanged(INITIAL_VALUE_PROPERTY, old, astIinitialValue);
 	}
 
 	private Integer buildInitialValue(CompilationUnit astRoot) {
@@ -136,13 +142,16 @@ abstract class SourceGeneratorAnnotation
 	}
 
 	public void setAllocationSize(Integer allocationSize) {
-		if (this.attributeValueHasNotChanged(this.allocationSize, allocationSize)) {
-			return;
+		if (this.attributeValueHasChanged(this.allocationSize, allocationSize)) {
+			this.allocationSize = allocationSize;
+			this.allocationSizeAdapter.setValue(allocationSize);
 		}
+	}
+
+	private void syncAllocationSize(Integer astAllocationSize) {
 		Integer old = this.allocationSize;
-		this.allocationSize = allocationSize;
-		this.allocationSizeAdapter.setValue(allocationSize);
-		this.firePropertyChanged(ALLOCATION_SIZE_PROPERTY, old, allocationSize);
+		this.allocationSize = astAllocationSize;
+		this.firePropertyChanged(ALLOCATION_SIZE_PROPERTY, old, astAllocationSize);
 	}
 
 	private Integer buildAllocationSize(CompilationUnit astRoot) {

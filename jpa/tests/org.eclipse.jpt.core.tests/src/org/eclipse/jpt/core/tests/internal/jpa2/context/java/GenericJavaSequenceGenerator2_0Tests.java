@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
@@ -60,6 +60,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		SequenceGenerator2_0Annotation annotation = (SequenceGenerator2_0Annotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		annotation.setCatalog("testCatalog");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("testCatalog", sequenceGenerator.getCatalog());
 		assertEquals("testCatalog", sequenceGenerator.getSpecifiedCatalog());
@@ -115,6 +116,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		SequenceGenerator2_0Annotation annotation = (SequenceGenerator2_0Annotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		annotation.setSchema("testSchema");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("testSchema", sequenceGenerator.getSchema());
 		assertEquals("testSchema", sequenceGenerator.getSpecifiedSchema());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -21,8 +21,8 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.Converter
@@ -40,7 +40,7 @@ public final class SourceEclipseLinkConverterAnnotation
 
 	public SourceEclipseLinkConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.converterClassAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, CONVERTER_CLASS_ADAPTER);
+		this.converterClassAdapter = new MemberAnnotationElementAdapter<String>(member, CONVERTER_CLASS_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -54,9 +54,9 @@ public final class SourceEclipseLinkConverterAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setConverterClass(this.buildConverterClass(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncConverterClass(this.buildConverterClass(astRoot));
 	}
 
 
@@ -76,13 +76,16 @@ public final class SourceEclipseLinkConverterAnnotation
 	}
 
 	public void setConverterClass(String converterClass) {
-		if (this.attributeValueHasNotChanged(this.converterClass, converterClass)) {
-			return;
+		if (this.attributeValueHasChanged(this.converterClass, converterClass)) {
+			this.converterClass = converterClass;
+			this.converterClassAdapter.setValue(converterClass);
 		}
+	}
+
+	private void syncConverterClass(String astConverterClass) {
 		String old = this.converterClass;
-		this.converterClass = converterClass;
-		this.converterClassAdapter.setValue(converterClass);
-		this.firePropertyChanged(CONVERTER_CLASS_PROPERTY, old, converterClass);
+		this.converterClass = astConverterClass;
+		this.firePropertyChanged(CONVERTER_CLASS_PROPERTY, old, astConverterClass);
 	}
 
 	private String buildConverterClass(CompilationUnit astRoot) {

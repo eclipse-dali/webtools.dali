@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -536,16 +536,19 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				
 		//set fetch in the resource model, verify context model updated
 		oneToMany.setFetch(org.eclipse.jpt.core.resource.java.FetchType.EAGER);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(FetchType.EAGER, oneToManyMapping.getSpecifiedFetch());
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.EAGER, oneToMany.getFetch());
 	
 		oneToMany.setFetch(org.eclipse.jpt.core.resource.java.FetchType.LAZY);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(FetchType.LAZY, oneToManyMapping.getSpecifiedFetch());
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.LAZY, oneToMany.getFetch());
 
 		
 		//set fetch to null in the resource model
 		oneToMany.setFetch(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(oneToManyMapping.getSpecifiedFetch());
 		assertNull(oneToMany.getFetch());
 	}
@@ -595,11 +598,13 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				
 		//set mappedBy in the resource model, verify context model updated
 		oneToMany.setMappedBy("newMappedBy");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("newMappedBy", oneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
 		assertEquals("newMappedBy", oneToMany.getMappedBy());
 	
 		//set mappedBy to null in the resource model
 		oneToMany.setMappedBy(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(oneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
 		assertNull(oneToMany.getMappedBy());
 	}
@@ -793,16 +798,19 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				
 		//set mapKey name in the resource model, verify context model updated
 		mapKey.setName("myMapKey");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("myMapKey", oneToManyMapping.getSpecifiedMapKey());
 		assertEquals("myMapKey", mapKey.getName());
 		
 		//set mapKey name to null in the resource model
 		mapKey.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
 		assertNull(mapKey.getName());
 		
 		mapKey.setName("myMapKey");
 		attributeResource.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
@@ -849,11 +857,13 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("newOrderBy", oneToManyMapping.getOrderable().getSpecifiedOrderBy());
 		assertEquals("newOrderBy", orderBy.getValue());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(oneToManyMapping.getOrderable().getSpecifiedOrderBy());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
@@ -898,14 +908,17 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				
 		//set orderBy in the resource model, verify context model updated
 		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(oneToManyMapping.getOrderable().isNoOrdering());
 		
 		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
+		getJpaProject().synchronizeContextModel();
 		assertFalse(oneToManyMapping.getOrderable().isNoOrdering());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertTrue(oneToManyMapping.getOrderable().isNoOrdering());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
@@ -925,14 +938,17 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				
 		//set orderBy in the resource model, verify context model updated
 		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertTrue(oneToManyMapping.getOrderable().isPkOrdering());
 		
 		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
+		getJpaProject().synchronizeContextModel();
 		assertFalse(oneToManyMapping.getOrderable().isPkOrdering());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(oneToManyMapping.getOrderable().isPkOrdering());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
@@ -956,10 +972,12 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		
 		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
+		getJpaProject().synchronizeContextModel();
 		assertTrue(oneToManyMapping.getOrderable().isCustomOrdering());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(oneToManyMapping.getOrderable().isCustomOrdering());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}

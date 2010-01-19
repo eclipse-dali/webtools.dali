@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -107,12 +107,14 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		//set name in the resource model, verify context model updated
 		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
+		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals("FOO", joinColumn.getSpecifiedName());
 		assertEquals("FOO", javaJoinColumn.getName());
 	
 		//set name to null in the resource model, annotation removed, specified join column removed
 		javaJoinColumn.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(0, joinColumns.specifiedJoinColumnsSize());
 		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
@@ -206,12 +208,14 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setReferencedColumnName("BAR");
+		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals("BAR", joinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("BAR", javaJoinColumn.getReferencedColumnName());
 	
 		//set referenced column name to null in the resource model, 
 		javaJoinColumn.setReferencedColumnName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinColumn.getSpecifiedReferencedColumnName());
 		assertNull("BAR", javaJoinColumn.getReferencedColumnName());
 	}
@@ -266,12 +270,14 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setTable("BAR");
+		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals("BAR", joinColumn.getSpecifiedTable());
 		assertEquals("BAR", javaJoinColumn.getTable());
 	
 		//set table to null in the resource model, 
 		javaJoinColumn.setTable(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinColumn.getSpecifiedTable());
 		assertNull("BAR", javaJoinColumn.getTable());
 	}
@@ -327,12 +333,14 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUnique(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals(Boolean.TRUE, joinColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, javaJoinColumn.getUnique());
 	
 		//set unique to null in the resource model, 
 		javaJoinColumn.setUnique(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinColumn.getSpecifiedUnique());
 		assertNull(javaJoinColumn.getUnique());
 	}
@@ -383,12 +391,14 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setNullable(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getNullable());
 	
 		//set nullable to null in the resource model, 
 		javaJoinColumn.setNullable(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinColumn.getSpecifiedNullable());
 		assertNull(javaJoinColumn.getNullable());
 	}
@@ -439,12 +449,14 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setInsertable(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getInsertable());
 	
 		//set insertable to null in the resource model, 
 		javaJoinColumn.setInsertable(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinColumn.getSpecifiedInsertable());
 		assertNull(javaJoinColumn.getInsertable());
 	}
@@ -495,12 +507,14 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUpdatable(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getUpdatable());
 	
 		//set updatable to null in the resource model, 
 		javaJoinColumn.setUpdatable(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinColumn.getSpecifiedUpdatable());
 		assertNull(javaJoinColumn.getUpdatable());
 	}

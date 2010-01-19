@@ -29,13 +29,13 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
-public class JpaModelTests extends TestCase {
+public class JpaProjectManagerTests extends TestCase {
 
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
 
 	protected TestFacetedProject testProject;
-	public JpaModelTests(String name) {
+	public JpaProjectManagerTests(String name) {
 		super(name);
 	}
 
@@ -49,13 +49,13 @@ public class JpaModelTests extends TestCase {
 	}
 
 	private boolean debug() {
-		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(this.getGenericJpaModelClass(), "DEBUG");
+		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(this.getGenericJpaProjectManagerClass(), "DEBUG");
 		return debug.booleanValue();
 	}
 
-	// GenericJpaModel is package-private
-	private Class<?> getGenericJpaModelClass() {
-		return JptCorePlugin.getJpaModel().getClass();
+	// GenericJpaProjectManager is package-private
+	private Class<?> getGenericJpaProjectManagerClass() {
+		return JptCorePlugin.getJpaProjectManager().getClass();
 	}
 
 	private void printName() {
@@ -101,7 +101,7 @@ public class JpaModelTests extends TestCase {
 	 * make sure the DEBUG constants are 'false' before checking in the code
 	 */
 	public void testDEBUG() {
-		this.verifyDEBUG(this.getGenericJpaModelClass());
+		this.verifyDEBUG(this.getGenericJpaProjectManagerClass());
 	}
 
 	private void verifyDEBUG(Class<?> clazz) {
@@ -109,8 +109,8 @@ public class JpaModelTests extends TestCase {
 				((Boolean) ReflectionTools.getStaticFieldValue(clazz, "DEBUG")).booleanValue());
 	}
 	
-	public void testJpaModel() {
-		assertNotNull(JptCorePlugin.getJpaModel());
+	public void testJpaProjectManager() {
+		assertNotNull(JptCorePlugin.getJpaProjectManager());
 	}
 	
 	protected IDataModel buildJpaConfigDataModel() {
@@ -145,12 +145,12 @@ public class JpaModelTests extends TestCase {
 		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0", buildJpaConfigDataModel());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
-		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(1, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 
 		this.testProject.getProject().delete(false, true, null);
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
-		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(0, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		assertEquals(0, ResourcesPlugin.getWorkspace().getRoot().getProjects().length);
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(this.testProject.getProject().getName());
@@ -173,7 +173,7 @@ public class JpaModelTests extends TestCase {
 		assertNull(JptCorePlugin.getJpaProject(this.testProject.getProject()));
 
 		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0", buildJpaConfigDataModel());
-		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(1, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.jpaFilesSize());
@@ -184,7 +184,7 @@ public class JpaModelTests extends TestCase {
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
 
 		this.testProject.uninstallFacet(JptCorePlugin.FACET_ID, "1.0");
-		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(0, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
 	}
@@ -207,7 +207,7 @@ public class JpaModelTests extends TestCase {
 
 		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
 
-		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(1, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 		// persistence.xml and orm.xml do not get created in this situation (?)
@@ -220,7 +220,7 @@ public class JpaModelTests extends TestCase {
 
 		// now remove the JPA facet
 		facetSettingsFile.setContents(new ByteArrayInputStream(oldDocument.getBytes()), false, false, null);
-		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(0, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
 	}
@@ -244,13 +244,13 @@ public class JpaModelTests extends TestCase {
 		String newDocument = oldDocument.replaceAll(oldString, newString);
 
 		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
-		assertEquals(0, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(0, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
 
 		// now add the JPA facet back
 		facetSettingsFile.setContents(new ByteArrayInputStream(oldDocument.getBytes()), false, false, null);
-		assertEquals(1, JptCorePlugin.getJpaModel().getJpaProjectsSize());
+		assertEquals(1, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.jpaFilesSize());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,19 +58,9 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		if (this.columnAdapter.getAnnotation(astRoot) == null) {
-			this.setColumn(null);
-		} else {
-			if (this.column == null) {
-				ColumnAnnotation col = createColumn(this, this.member, this.daa);
-				col.initialize(astRoot);
-				this.setColumn(col);
-			} else {
-				this.column.update(astRoot);
-			}
-		}
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncColumn(astRoot);
 	}
 
 
@@ -99,21 +89,40 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	}
 
 	public ColumnAnnotation addColumn() {
-		ColumnAnnotation col = createColumn(this, this.member, this.daa);
-		col.newAnnotation();
-		this.setColumn(col);
-		return col;
+		if (this.column != null) {
+			throw new IllegalStateException("'column' element already exists: " + this.column); //$NON-NLS-1$
+		}
+		this.column = createColumn(this, this.member, this.daa);
+		this.column.newAnnotation();
+		return this.column;
 	}
 
 	public void removeColumn() {
+		if (this.column == null) {
+			throw new IllegalStateException("'column' element does not exist"); //$NON-NLS-1$
+		}
 		this.column.removeAnnotation();
-		this.setColumn(null);
+		this.column = null;
 	}
 
-	private void setColumn(ColumnAnnotation newColumn) {
+	private void syncColumn(CompilationUnit astRoot) {
+		if (this.columnAdapter.getAnnotation(astRoot) == null) {
+			this.syncColumn_(null);
+		} else {
+			if (this.column == null) {
+				ColumnAnnotation col = createColumn(this, this.member, this.daa);
+				col.initialize(astRoot);
+				this.syncColumn_(col);
+			} else {
+				this.column.synchronizeWith(astRoot);
+			}
+		}
+	}
+
+	private void syncColumn_(ColumnAnnotation astColumn) {
 		ColumnAnnotation old = this.column;
-		this.column = newColumn;
-		this.firePropertyChanged(COLUMN_PROPERTY, old, newColumn);
+		this.column = astColumn;
+		this.firePropertyChanged(COLUMN_PROPERTY, old, astColumn);
 	}
 
 	public TextRange getColumnTextRange(CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -64,9 +64,9 @@ public final class SourceSecondaryTableAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		AnnotationContainerTools.update(this.pkJoinColumnsContainer, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		AnnotationContainerTools.synchronize(this.pkJoinColumnsContainer, astRoot);
 	}
 
 
@@ -210,8 +210,8 @@ public final class SourceSecondaryTableAnnotation
 			return SourceSecondaryTableAnnotation.this.getAnnotationName();
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceSecondaryTableAnnotation.this.getJdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+			return SourceSecondaryTableAnnotation.this.getAstAnnotation(astRoot);
 		}
 
 		public String getElementName() {

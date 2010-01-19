@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -147,10 +147,12 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.removeAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(false, privateOwnable.isPrivateOwned());
 		
 		attributeResource.addAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
@@ -173,6 +175,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		// change resource to INNER specifically, test context
 		
 		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
 		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
@@ -180,6 +183,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		// change resource to OUTER, test context
 		
 		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER, joinFetchAnnotation.getValue());
 		assertEquals(EclipseLinkJoinFetchType.OUTER, contextJoinFetch.getValue());
@@ -187,6 +191,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		// remove value from resource, test context
 		
 		joinFetchAnnotation.setValue(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(joinFetchAnnotation.getValue());
 		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
@@ -194,6 +199,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		// remove annotation, text context
 		
 		attributeResource.removeAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(joinFetchAnnotation.getValue());
 		assertNull(contextJoinFetch.getValue());

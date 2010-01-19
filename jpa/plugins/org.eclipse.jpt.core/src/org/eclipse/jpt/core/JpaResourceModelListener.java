@@ -23,5 +23,5 @@ import java.util.EventListener;
 public interface JpaResourceModelListener
 	extends EventListener
 {
-	void resourceModelChanged();
+	void resourceModelChanged(JpaResourceModel jpaResourceModel);
 }

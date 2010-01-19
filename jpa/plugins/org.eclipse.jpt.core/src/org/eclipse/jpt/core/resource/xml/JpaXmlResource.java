@@ -92,12 +92,13 @@ public class JpaXmlResource
 	// ********** BasicNotifierImpl override **********
 	
 	/**
-	 * override to fire notification only when
-	 * - the resource's state has actually changed; and
-	 * - the resource is loaded; and
-	 * - the resource's resource set is still present (EMF will fire an
+	 * Override to fire notification only when:<ul>
+	 * <li>the resource's state has actually changed; and
+	 * <li>the resource is loaded; and
+	 * <li>the resource's resource set is still present (EMF will fire an
 	 *    notification when the resource set is set to 'null', just before
 	 *    the resource is "unloaded" - we want to swallow this notification)
+	 * </ul>
 	 */
 	@Override
 	public void eNotify(Notification notification) {
@@ -242,7 +243,7 @@ public class JpaXmlResource
 	
 	protected void resourceModelChanged() {
 		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelChanged();
+			listener.resourceModelChanged(this);
 		}
 	}
 	

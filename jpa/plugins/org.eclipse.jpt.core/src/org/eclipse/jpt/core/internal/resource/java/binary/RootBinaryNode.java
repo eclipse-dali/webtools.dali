@@ -60,7 +60,7 @@ abstract class RootBinaryNode
 
 	public void resourceModelChanged() {
 		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelChanged();
+			listener.resourceModelChanged(this);
 		}
 	}
 

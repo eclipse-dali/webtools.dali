@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,9 +57,9 @@ public abstract class SourceOneToManyAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setMappedBy(this.buildMappedBy(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncMappedBy(this.buildMappedBy(astRoot));
 	}
 
 
@@ -88,13 +88,16 @@ public abstract class SourceOneToManyAnnotation
 	}
 
 	public void setMappedBy(String mappedBy) {
-		if (this.attributeValueHasNotChanged(this.mappedBy, mappedBy)) {
-			return;
+		if (this.attributeValueHasChanged(this.mappedBy, mappedBy)) {
+			this.mappedBy = mappedBy;
+			this.mappedByAdapter.setValue(mappedBy);
 		}
+	}
+
+	private void syncMappedBy(String astMappedBy) {
 		String old = this.mappedBy;
-		this.mappedBy = mappedBy;
-		this.mappedByAdapter.setValue(mappedBy);
-		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, mappedBy);
+		this.mappedBy = astMappedBy;
+		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, astMappedBy);
 	}
 
 	private String buildMappedBy(CompilationUnit astRoot) {

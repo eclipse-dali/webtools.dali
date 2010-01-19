@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -128,15 +128,19 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setName("bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("bar", converter.getName());
 		
 		attributeResource.removeAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(null, eclipseLinkConvert.getConverter());
 		
 		converterAnnotation = (EclipseLinkStructConverterAnnotation) attributeResource.addAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		getJpaProject().synchronizeContextModel();
 		assertNotNull(eclipseLinkConvert.getConverter());
 		
 		converterAnnotation.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", eclipseLinkConvert.getConverter().getName());	
 	}
 	
@@ -199,15 +203,19 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setConverter("Bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("Bar", converter.getConverterClass());
 		
 		attributeResource.removeAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(null, eclipseLinkConvert.getConverter());
 		
 		converterAnnotation = (EclipseLinkStructConverterAnnotation) attributeResource.addAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		getJpaProject().synchronizeContextModel();
 		assertNotNull(eclipseLinkConvert.getConverter());
 		
 		converterAnnotation.setConverter("FooBar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FooBar", ((EclipseLinkStructConverter) eclipseLinkConvert.getConverter()).getConverterClass());	
 	}
 }

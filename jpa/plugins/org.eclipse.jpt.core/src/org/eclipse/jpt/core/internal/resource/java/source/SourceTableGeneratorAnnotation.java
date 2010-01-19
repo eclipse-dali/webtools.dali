@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -101,15 +101,15 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setTable(this.buildTable(astRoot));
-		this.setSchema(this.buildSchema(astRoot));
-		this.setCatalog(this.buildCatalog(astRoot));
-		this.setPkColumnName(this.buildPkColumnName(astRoot));
-		this.setValueColumnName(this.buildValueColumnName(astRoot));
-		this.setPkColumnValue(this.buildPkColumnValue(astRoot));
-		AnnotationContainerTools.update(this.uniqueConstraintsContainer, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncTable(this.buildTable(astRoot));
+		this.syncSchema(this.buildSchema(astRoot));
+		this.syncCatalog(this.buildCatalog(astRoot));
+		this.syncPkColumnName(this.buildPkColumnName(astRoot));
+		this.syncValueColumnName(this.buildValueColumnName(astRoot));
+		this.syncPkColumnValue(this.buildPkColumnValue(astRoot));
+		AnnotationContainerTools.synchronize(this.uniqueConstraintsContainer, astRoot);
 	}
 
 
@@ -139,13 +139,16 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setTable(String table) {
-		if (this.attributeValueHasNotChanged(this.table, table)) {
-			return;
+		if (this.attributeValueHasChanged(this.table, table)) {
+			this.table = table;
+			this.tableAdapter.setValue(table);
 		}
+	}
+
+	private void syncTable(String astTable) {
 		String old = this.table;
-		this.table = table;
-		this.tableAdapter.setValue(table);
-		this.firePropertyChanged(TABLE_PROPERTY, old, table);
+		this.table = astTable;
+		this.firePropertyChanged(TABLE_PROPERTY, old, astTable);
 	}
 
 	private String buildTable(CompilationUnit astRoot) {
@@ -166,13 +169,16 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setSchema(String schema) {
-		if (this.attributeValueHasNotChanged(this.schema, schema)) {
-			return;
+		if (this.attributeValueHasChanged(this.schema, schema)) {
+			this.schema = schema;
+			this.schemaAdapter.setValue(schema);
 		}
+	}
+
+	private void syncSchema(String astSchema) {
 		String old = this.schema;
-		this.schema = schema;
-		this.schemaAdapter.setValue(schema);
-		this.firePropertyChanged(SCHEMA_PROPERTY, old, schema);
+		this.schema = astSchema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, astSchema);
 	}
 
 	private String buildSchema(CompilationUnit astRoot) {
@@ -193,13 +199,16 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setCatalog(String catalog) {
-		if (this.attributeValueHasNotChanged(this.catalog, catalog)) {
-			return;
+		if (this.attributeValueHasChanged(this.catalog, catalog)) {
+			this.catalog = catalog;
+			this.catalogAdapter.setValue(catalog);
 		}
+	}
+
+	private void syncCatalog(String astCatalog) {
 		String old = this.catalog;
-		this.catalog = catalog;
-		this.catalogAdapter.setValue(catalog);
-		this.firePropertyChanged(CATALOG_PROPERTY, old, catalog);
+		this.catalog = astCatalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, astCatalog);
 	}
 
 	private String buildCatalog(CompilationUnit astRoot) {
@@ -220,13 +229,16 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setPkColumnName(String pkColumnName) {
-		if (this.attributeValueHasNotChanged(this.pkColumnName, pkColumnName)) {
-			return;
+		if (this.attributeValueHasChanged(this.pkColumnName, pkColumnName)) {
+			this.pkColumnName = pkColumnName;
+			this.pkColumnNameAdapter.setValue(pkColumnName);
 		}
+	}
+
+	private void syncPkColumnName(String astPkColumnName) {
 		String old = this.pkColumnName;
-		this.pkColumnName = pkColumnName;
-		this.pkColumnNameAdapter.setValue(pkColumnName);
-		this.firePropertyChanged(PK_COLUMN_NAME_PROPERTY, old, pkColumnName);
+		this.pkColumnName = astPkColumnName;
+		this.firePropertyChanged(PK_COLUMN_NAME_PROPERTY, old, astPkColumnName);
 	}
 
 	private String buildPkColumnName(CompilationUnit astRoot) {
@@ -247,13 +259,16 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setValueColumnName(String valueColumnName) {
-		if (this.attributeValueHasNotChanged(this.valueColumnName, valueColumnName)) {
-			return;
+		if (this.attributeValueHasChanged(this.valueColumnName, valueColumnName)) {
+			this.valueColumnName = valueColumnName;
+			this.valueColumnNameAdapter.setValue(valueColumnName);
 		}
+	}
+
+	private void syncValueColumnName(String astValueColumnName) {
 		String old = this.valueColumnName;
-		this.valueColumnName = valueColumnName;
-		this.valueColumnNameAdapter.setValue(valueColumnName);
-		this.firePropertyChanged(VALUE_COLUMN_NAME_PROPERTY, old, valueColumnName);
+		this.valueColumnName = astValueColumnName;
+		this.firePropertyChanged(VALUE_COLUMN_NAME_PROPERTY, old, astValueColumnName);
 	}
 
 	private String buildValueColumnName(CompilationUnit astRoot) {
@@ -274,13 +289,16 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public void setPkColumnValue(String pkColumnValue) {
-		if (this.attributeValueHasNotChanged(this.pkColumnValue, pkColumnValue)) {
-			return;
+		if (this.attributeValueHasChanged(this.pkColumnValue, pkColumnValue)) {
+			this.pkColumnValue = pkColumnValue;
+			this.pkColumnValueAdapter.setValue(pkColumnValue);
 		}
+	}
+
+	private void syncPkColumnValue(String astPkColumnValue) {
 		String old = this.pkColumnValue;
-		this.pkColumnValue = pkColumnValue;
-		this.pkColumnValueAdapter.setValue(pkColumnValue);
-		this.firePropertyChanged(PK_COLUMN_VALUE_PROPERTY, old, pkColumnValue);
+		this.pkColumnValue = astPkColumnValue;
+		this.firePropertyChanged(PK_COLUMN_VALUE_PROPERTY, old, astPkColumnValue);
 	}
 
 	private String buildPkColumnValue(CompilationUnit astRoot) {
@@ -386,8 +404,8 @@ public final class SourceTableGeneratorAnnotation
 			return SourceTableGeneratorAnnotation.this.getAnnotationName();
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceTableGeneratorAnnotation.this.getJdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+			return SourceTableGeneratorAnnotation.this.getAstAnnotation(astRoot);
 		}
 
 		public String getElementName() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -138,11 +138,13 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.removeAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(null, readOnly.getSpecifiedReadOnly());
 		assertEquals(false, readOnly.isDefaultReadOnly());
 		
 		typeResource.addAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 	}
 
@@ -193,15 +195,19 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkCustomizerAnnotation customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.getAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		
 		typeResource.removeAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation = (EclipseLinkCustomizerAnnotation) typeResource.addAnnotation(EclipseLinkCustomizerAnnotation.ANNOTATION_NAME);		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation.setValue("FooBar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FooBar", customizer.getSpecifiedCustomizerClass());	
 	}
 	
@@ -224,6 +230,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		// change resource to ATTRIBUTE specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, contextChangeTracking.getType());
@@ -233,6 +240,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		// change resource to OBJECT specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.OBJECT, contextChangeTracking.getType());
@@ -242,6 +250,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		// change resource to DEFERRED specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, contextChangeTracking.getType());
@@ -251,6 +260,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		// change resource to AUTO specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO, resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
@@ -260,6 +270,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		// remove value from resource, test context
 		
 		resourceChangeTracking.setValue(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
@@ -269,6 +280,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		// remove annotation, text context
 		
 		typeResource.removeAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(resourceChangeTracking.getValue());
 		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());

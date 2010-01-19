@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -133,6 +133,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation table = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
 		table.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("foo", getJavaEntity().secondaryTables().next().getSpecifiedName());
 	}
@@ -145,6 +146,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		Iterator<NestableAnnotation> secondaryTableResources = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setCatalog("foo");
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setCatalog("bar");
+		getJpaProject().synchronizeContextModel();
 		
 		ListIterator<JavaSecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
 		assertEquals("foo", secondaryTsbles.next().getSpecifiedCatalog());
@@ -159,6 +161,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		Iterator<NestableAnnotation> secondaryTableResources = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setSchema("foo");
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setSchema("bar");
+		getJpaProject().synchronizeContextModel();
 		
 		ListIterator<JavaSecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
 		assertEquals("foo", secondaryTsbles.next().getSpecifiedSchema());
@@ -173,6 +176,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		SecondaryTableAnnotation table = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
 		
 		table.setCatalog("myCatalog");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("myCatalog", getJavaEntity().secondaryTables().next().getSpecifiedCatalog());
 		assertEquals("myCatalog", getJavaEntity().secondaryTables().next().getCatalog());
@@ -213,6 +217,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
 		
 		tableResource.setSchema("mySchema");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("mySchema", getJavaEntity().secondaryTables().next().getSpecifiedSchema());
 		assertEquals("mySchema", getJavaEntity().secondaryTables().next().getSchema());
@@ -260,12 +265,14 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		//add an annotation to the resource model and verify the context model is updated
 		PrimaryKeyJoinColumnAnnotation pkJoinColumn = tableResource.addPkJoinColumn(0);
 		pkJoinColumn.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();		
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 		assertFalse(specifiedPkJoinColumns.hasNext());
 
 		pkJoinColumn = tableResource.addPkJoinColumn(0);
 		pkJoinColumn.setName("BAR");
+		getJpaProject().synchronizeContextModel();
 		specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();		
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
@@ -274,17 +281,20 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		
 		//move an annotation to the resource model and verify the context model is updated
 		tableResource.movePkJoinColumn(1, 0);
+		getJpaProject().synchronizeContextModel();
 		specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();		
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertFalse(specifiedPkJoinColumns.hasNext());
 
 		tableResource.removePkJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();		
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertFalse(specifiedPkJoinColumns.hasNext());
 	
 		tableResource.removePkJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();		
 		assertFalse(specifiedPkJoinColumns.hasNext());
 	}
@@ -538,6 +548,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getAnnotation(JPA.SECONDARY_TABLE);
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
+		getJpaProject().synchronizeContextModel();
 		
 		uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
@@ -694,6 +705,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName("FOO");
 		secondaryTableAnnotation.addUniqueConstraint(1).addColumnName("BAR");
 		secondaryTableAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
+		getJpaProject().synchronizeContextModel();
 
 		
 		ListIterator<UniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
@@ -703,6 +715,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 		
 		secondaryTableAnnotation.moveUniqueConstraint(2, 0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
@@ -710,6 +723,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableAnnotation.moveUniqueConstraint(0, 1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
@@ -717,17 +731,20 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		secondaryTableAnnotation.removeUniqueConstraint(0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -219,6 +219,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		discriminatorColumn.setDiscriminatorType(org.eclipse.jpt.core.resource.java.DiscriminatorType.CHAR);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(DiscriminatorType.CHAR, getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
 	}
@@ -251,10 +252,12 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		column.setDiscriminatorType(org.eclipse.jpt.core.resource.java.DiscriminatorType.INTEGER);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(DiscriminatorType.INTEGER, getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
 		assertEquals(DiscriminatorType.INTEGER, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
 		
 		column.setDiscriminatorType(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
 		assertEquals(null, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
 
@@ -301,11 +304,13 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		discriminatorColumn.setLength(Integer.valueOf(66));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Integer.valueOf(66), getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		assertEquals(66, getJavaEntity().getDiscriminatorColumn().getLength());		
 		discriminatorColumn.setName(null);
 		discriminatorColumn.setLength(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN));
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());	
@@ -339,10 +344,12 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		column.setLength(Integer.valueOf(78));
+		getJpaProject().synchronizeContextModel();
 		assertEquals(Integer.valueOf(78), getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		assertEquals(78, getJavaEntity().getDiscriminatorColumn().getLength());
 		
 		column.setLength(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		assertEquals(0, getJavaEntity().getDiscriminatorColumn().getLength());
 
@@ -361,10 +368,12 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		column.setColumnDefinition(COLUMN_DEFINITION);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(COLUMN_DEFINITION, getJavaEntity().getDiscriminatorColumn().getColumnDefinition());
 		
 		column.setColumnDefinition(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(getJavaEntity().getDiscriminatorColumn().getColumnDefinition());
 

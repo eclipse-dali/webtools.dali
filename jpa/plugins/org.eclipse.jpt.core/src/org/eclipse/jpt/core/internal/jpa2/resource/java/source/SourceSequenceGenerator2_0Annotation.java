@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,6 @@ public final class SourceSequenceGenerator2_0Annotation
 	// ********** constructor **********
 	public SourceSequenceGenerator2_0Annotation(JavaResourceNode parent, Member member) {
 		super(parent, member);
-
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
 		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);
 	}
@@ -46,18 +45,15 @@ public final class SourceSequenceGenerator2_0Annotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-
 		this.catalog = this.buildCatalog(astRoot);
 		this.schema = this.buildSchema(astRoot);
-
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-
-		this.setCatalog(this.buildCatalog(astRoot));
-		this.setSchema(this.buildSchema(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncCatalog(this.buildCatalog(astRoot));
+		this.syncSchema(this.buildSchema(astRoot));
 	}
 
 	// ********** catalog **********
@@ -66,13 +62,16 @@ public final class SourceSequenceGenerator2_0Annotation
 	}
 
 	public void setCatalog(String catalog) {
-		if (this.attributeValueHasNotChanged(this.catalog, catalog)) {
-			return;
+		if (this.attributeValueHasChanged(this.catalog, catalog)) {
+			this.catalog = catalog;
+			this.catalogAdapter.setValue(catalog);
 		}
+	}
+
+	private void syncCatalog(String astCatalog) {
 		String old = this.catalog;
-		this.catalog = catalog;
-		this.catalogAdapter.setValue(catalog);
-		this.firePropertyChanged(CATALOG_PROPERTY, old, catalog);
+		this.catalog = astCatalog;
+		this.firePropertyChanged(CATALOG_PROPERTY, old, astCatalog);
 	}
 
 	private String buildCatalog(CompilationUnit astRoot) {
@@ -93,13 +92,16 @@ public final class SourceSequenceGenerator2_0Annotation
 	}
 
 	public void setSchema(String schema) {
-		if (this.attributeValueHasNotChanged(this.schema, schema)) {
-			return;
+		if (this.attributeValueHasChanged(this.schema, schema)) {
+			this.schema = schema;
+			this.schemaAdapter.setValue(schema);
 		}
+	}
+
+	private void syncSchema(String astSchema) {
 		String old = this.schema;
-		this.schema = schema;
-		this.schemaAdapter.setValue(schema);
-		this.firePropertyChanged(SCHEMA_PROPERTY, old, schema);
+		this.schema = astSchema;
+		this.firePropertyChanged(SCHEMA_PROPERTY, old, astSchema);
 	}
 
 	private String buildSchema(CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 /**
  * Common behavior for all annotation "containers".
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -34,7 +34,7 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 	 * Return the corresponding JDT DOM annotation from the specified
 	 * AST compilation unit. Used as a starting point when traversing the AST.
 	 */
-	org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot);
+	org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot);
 
 	/**
 	 * Return the name of the container annotation's element that is used
@@ -83,6 +83,7 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 	 * specified source index to the specified target index; notify interested
 	 * parties.
 	 */
+	// TODO vestigial, now that we only fire events during updates...
 	void nestedAnnotationMoved(int targetIndex, int sourceIndex);
 
 	/**

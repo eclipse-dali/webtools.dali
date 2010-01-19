@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,9 +57,9 @@ public final class SourceAssociationOverride2_0Annotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.updateJoinTable(astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncJoinTable(astRoot);
 	}
 
 	//************ AssociationOverride2_0Annotation implementation ****************
@@ -69,50 +69,55 @@ public final class SourceAssociationOverride2_0Annotation
 		return this.joinTable;
 	}
 
+	public JoinTableAnnotation getNonNullJoinTable() {
+		return (this.joinTable != null) ? this.joinTable : new NullAssociationOverrideJoinTableAnnotation(this);
+	}
+	
 	public NestableJoinTableAnnotation addJoinTable() {
-		NestableJoinTableAnnotation table = buildJoinTableAnnotation(this, this.member, this.daa);
-		table.newAnnotation();
-		this.setJoinTable(table);
-		return table;
+		if (this.joinTable != null) {
+			throw new IllegalStateException("'joinTable' element already exists: " + this.joinTable); //$NON-NLS-1$
+		}
+		this.joinTable = buildJoinTableAnnotation(this, this.member, this.daa);
+		this.joinTable.newAnnotation();
+		return this.joinTable;
 	}
 
 	public JoinColumnAnnotation addJoinTable(AnnotationInitializer initializer) {
 		NestableJoinTableAnnotation table = buildJoinTableAnnotation(this, this.member, this.daa);
 		JoinColumnAnnotation joinColumn = (JoinColumnAnnotation) initializer.initializeAnnotation(table);
 		table.newAnnotation();
-		this.setJoinTable(table);
+		this.joinTable = table;
 		return joinColumn;
 	}
 	
 	public void removeJoinTable() {
+		if (this.joinTable == null) {
+			throw new IllegalStateException("'joinTable' element does not exist"); //$NON-NLS-1$
+		}
 		this.joinTable.removeAnnotation();
-		setJoinTable(null);
+		this.joinTable = null;
 	}
 
-	private void setJoinTable(NestableJoinTableAnnotation joinTable) {
-		JoinTableAnnotation old = this.joinTable;
-		this.joinTable = joinTable;
-		this.firePropertyChanged(JOIN_TABLE_PROPERTY, old, joinTable);
-	}
-
-	public JoinTableAnnotation getNonNullJoinTable() {
-		return (this.joinTable != null) ? this.joinTable : new NullAssociationOverrideJoinTableAnnotation(this);
-	}
-	
-	private void updateJoinTable(CompilationUnit astRoot) {
+	private void syncJoinTable(CompilationUnit astRoot) {
 		if (this.joinTableAdapter.getAnnotation(astRoot) == null) {
-			this.setJoinTable(null);
+			this.syncJoinTable_(null);
 		} else {
 			if (this.joinTable == null) {
 				NestableJoinTableAnnotation table = buildJoinTableAnnotation(this, this.member, this.daa);
 				table.initialize(astRoot);
-				this.setJoinTable(table);
+				this.syncJoinTable_(table);
 			} else {
-				this.joinTable.update(astRoot);
+				this.joinTable.synchronizeWith(astRoot);
 			}
 		}
 	}
 	
+	private void syncJoinTable_(NestableJoinTableAnnotation astJoinTable) {
+		JoinTableAnnotation old = this.joinTable;
+		this.joinTable = astJoinTable;
+		this.firePropertyChanged(JOIN_TABLE_PROPERTY, old, astJoinTable);
+	}
+
 	
 	// ********** static methods **********
 

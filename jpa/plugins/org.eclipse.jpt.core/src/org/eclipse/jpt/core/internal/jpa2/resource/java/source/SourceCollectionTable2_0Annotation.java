@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,7 +37,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.CollectionTable
  */
-public class SourceCollectionTable2_0Annotation
+public final class SourceCollectionTable2_0Annotation
 	extends SourceBaseTableAnnotation
 	implements CollectionTable2_0Annotation
 {
@@ -69,9 +69,9 @@ public class SourceCollectionTable2_0Annotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		AnnotationContainerTools.update(this.joinColumnsContainer, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		AnnotationContainerTools.synchronize(this.joinColumnsContainer, astRoot);
 	}
 
 
@@ -187,8 +187,8 @@ public class SourceCollectionTable2_0Annotation
 			return SourceCollectionTable2_0Annotation.this.getAnnotationName();
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceCollectionTable2_0Annotation.this.getJdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+			return SourceCollectionTable2_0Annotation.this.getAstAnnotation(astRoot);
 		}
 
 		public String getElementName() {

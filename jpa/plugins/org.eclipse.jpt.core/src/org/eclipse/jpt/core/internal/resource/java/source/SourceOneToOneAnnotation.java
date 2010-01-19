@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -64,10 +64,10 @@ public abstract class SourceOneToOneAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setMappedBy(this.buildMappedBy(astRoot));
-		this.setOptional(this.buildOptional(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncMappedBy(this.buildMappedBy(astRoot));
+		this.syncOptional(this.buildOptional(astRoot));
 	}
 
 
@@ -97,13 +97,16 @@ public abstract class SourceOneToOneAnnotation
 	}
 
 	public void setMappedBy(String mappedBy) {
-		if (this.attributeValueHasNotChanged(this.mappedBy, mappedBy)) {
-			return;
+		if (this.attributeValueHasChanged(this.mappedBy, mappedBy)) {
+			this.mappedBy = mappedBy;
+			this.mappedByAdapter.setValue(mappedBy);
 		}
+	}
+
+	private void syncMappedBy(String astMappedBy) {
 		String old = this.mappedBy;
-		this.mappedBy = mappedBy;
-		this.mappedByAdapter.setValue(mappedBy);
-		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, mappedBy);
+		this.mappedBy = astMappedBy;
+		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, astMappedBy);
 	}
 
 	private String buildMappedBy(CompilationUnit astRoot) {
@@ -124,13 +127,16 @@ public abstract class SourceOneToOneAnnotation
 	}
 
 	public void setOptional(Boolean optional) {
-		if (this.attributeValueHasNotChanged(this.optional, optional)) {
-			return;
+		if (this.attributeValueHasChanged(this.optional, optional)) {
+			this.optional = optional;
+			this.optionalAdapter.setValue(optional);
 		}
+	}
+
+	private void syncOptional(Boolean astOptional) {
 		Boolean old = this.optional;
-		this.optional = optional;
-		this.optionalAdapter.setValue(optional);
-		this.firePropertyChanged(OPTIONAL_PROPERTY, old, optional);
+		this.optional = astOptional;
+		this.firePropertyChanged(OPTIONAL_PROPERTY, old, astOptional);
 	}
 
 	private Boolean buildOptional(CompilationUnit astRoot) {

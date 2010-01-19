@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,7 +35,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.JoinTable
  */
-public class SourceJoinTableAnnotation
+public final class SourceJoinTableAnnotation
 	extends SourceBaseTableAnnotation
 	implements NestableJoinTableAnnotation
 {
@@ -69,10 +69,10 @@ public class SourceJoinTableAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		AnnotationContainerTools.update(this.joinColumnsContainer, astRoot);
-		AnnotationContainerTools.update(this.inverseJoinColumnsContainer, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		AnnotationContainerTools.synchronize(this.joinColumnsContainer, astRoot);
+		AnnotationContainerTools.synchronize(this.inverseJoinColumnsContainer, astRoot);
 	}
 
 
@@ -276,8 +276,8 @@ public class SourceJoinTableAnnotation
 			return SourceJoinTableAnnotation.this.getAnnotationName();
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceJoinTableAnnotation.this.getJdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+			return SourceJoinTableAnnotation.this.getAstAnnotation(astRoot);
 		}
 
 		public String getNestableAnnotationName() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -538,12 +538,14 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		//add an annotation to the resource model and verify the context model is updated
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
+		getJpaProject().synchronizeContextModel();
 		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
@@ -552,6 +554,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
@@ -560,6 +563,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 	
 		//move an annotation to the resource model and verify the context model is updated
 		attributeResource.moveAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
@@ -567,18 +571,21 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	
 		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		
 		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	}
@@ -672,6 +679,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		annotation.setName("city");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(1, attributeOverrideContainer.virtualAttributeOverridesSize());
 	}
 	
@@ -693,6 +701,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		attributeOverride.setName("FOO");
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
+		getJpaProject().synchronizeContextModel();
 
 		assertEquals(2, attributeOverrideContainer.specifiedAttributeOverridesSize());
 	}
@@ -715,11 +724,13 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		attributeOverride.setName("FOO");
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
+		getJpaProject().synchronizeContextModel();
 
 		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());
 		
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("city");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());	
 	}
 	
@@ -739,15 +750,18 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		//add an annotation to the resource model and verify the context model is updated
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 
 		assertEquals(2, attributeOverrideContainer.virtualAttributeOverridesSize());
 		
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("city");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(1, attributeOverrideContainer.virtualAttributeOverridesSize());
 		
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("state");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(0, attributeOverrideContainer.virtualAttributeOverridesSize());
 	}
 
@@ -852,12 +866,14 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		//add an annotation to the resource model and verify the context model is updated
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) resourceAttribute.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		associationOverride = (AssociationOverrideAnnotation) resourceAttribute.addAnnotation(1, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("BAR");
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
@@ -866,6 +882,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 
 		associationOverride = (AssociationOverrideAnnotation) resourceAttribute.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
@@ -874,6 +891,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 	
 		//move an annotation to the resource model and verify the context model is updated
 		resourceAttribute.moveAnnotation(1, 0, JPA.ASSOCIATION_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
@@ -881,18 +899,21 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		resourceAttribute.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 	
 		resourceAttribute.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		
 		resourceAttribute.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverrides = overrideContainer.specifiedAssociationOverrides();		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 	}
@@ -990,6 +1011,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		associationOverride.setName("FOO");
 		associationOverride = (AssociationOverrideAnnotation) resourceAttribute.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		associationOverride.setName("BAR");
+		getJpaProject().synchronizeContextModel();
 
 		assertEquals(2, overrideContainer.specifiedAssociationOverridesSize());
 	}
@@ -1173,6 +1195,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		((AssociationOverrideAnnotation) resourceAttribute.addAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((AssociationOverrideAnnotation) resourceAttribute.addAnnotation(1, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((AssociationOverrideAnnotation) resourceAttribute.addAnnotation(2, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME)).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 			
 		ListIterator<AssociationOverride> associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("FOO", associationOverrides.next().getName());
@@ -1181,6 +1204,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(associationOverrides.hasNext());
 		
 		resourceAttribute.moveAnnotation(2, 0, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
@@ -1188,6 +1212,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(associationOverrides.hasNext());
 	
 		resourceAttribute.moveAnnotation(0, 1, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
@@ -1195,17 +1220,20 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(associationOverrides.hasNext());
 	
 		resourceAttribute.removeAnnotation(1,  AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 	
 		resourceAttribute.removeAnnotation(1,  AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 		
 		resourceAttribute.removeAnnotation(0,  AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		associationOverrides = overrideContainer.specifiedAssociationOverrides();
 		assertFalse(associationOverrides.hasNext());
 	}

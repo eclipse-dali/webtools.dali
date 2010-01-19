@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
@@ -33,17 +33,17 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 
 	protected String query;
 
-	protected final List<JavaQueryHint> hints;
+	protected final Vector<JavaQueryHint> hints;
 
-	protected BaseNamedQueryAnnotation resourceQuery;
+	protected BaseNamedQueryAnnotation queryAnnotation;
 	
 	protected AbstractJavaQuery(JavaJpaContextNode parent) {
 		super(parent);
-		this.hints = new ArrayList<JavaQueryHint>();
+		this.hints = new Vector<JavaQueryHint>();
 	}
 
 	protected BaseNamedQueryAnnotation getResourceQuery() {
-		return this.resourceQuery;
+		return this.queryAnnotation;
 	}
 	
 	public String getName() {
@@ -53,14 +53,14 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.resourceQuery.setName(newName);
-		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
+		this.queryAnnotation.setName(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
 	protected void setName_(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
 	public String getQuery() {
@@ -70,14 +70,14 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	public void setQuery(String newQuery) {
 		String oldQuery = this.query;
 		this.query = newQuery;
-		this.resourceQuery.setQuery(newQuery);
-		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
+		this.queryAnnotation.setQuery(newQuery);
+		firePropertyChanged(QUERY_PROPERTY, oldQuery, newQuery);
 	}
 	
 	protected void setQuery_(String newQuery) {
 		String oldQuery = this.query;
 		this.query = newQuery;
-		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
+		firePropertyChanged(QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
 	public ListIterator<JavaQueryHint> hints() {
@@ -92,12 +92,12 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		JavaQueryHint hint = getJpaFactory().buildJavaQueryHint(this);
 		this.hints.add(index, hint);
 		this.getResourceQuery().addHint(index);
-		this.fireItemAdded(Query.HINTS_LIST, index, hint);
+		this.fireItemAdded(HINTS_LIST, index, hint);
 		return hint;
 	}
 
 	protected void addHint(int index, JavaQueryHint hint) {
-		addItemToList(index, hint, this.hints, Query.HINTS_LIST);
+		addItemToList(index, hint, this.hints, HINTS_LIST);
 	}
 	
 	protected void addHint(JavaQueryHint hint) {
@@ -111,45 +111,43 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	public void removeHint(int index) {
 		JavaQueryHint removedHint = this.hints.remove(index);
 		this.getResourceQuery().removeHint(index);
-		fireItemRemoved(Query.HINTS_LIST, index, removedHint);
+		fireItemRemoved(HINTS_LIST, index, removedHint);
 	}
 	
 	protected void removeHint_(JavaQueryHint hint) {
-		removeItemFromList(hint, this.hints, Query.HINTS_LIST);
+		removeItemFromList(hint, this.hints, HINTS_LIST);
 	}
 	
 	public void moveHint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.hints, targetIndex, sourceIndex);
 		this.getResourceQuery().moveHint(targetIndex, sourceIndex);
-		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(HINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
-	protected void initialize(BaseNamedQueryAnnotation queryAnnotation) {
-		this.resourceQuery = queryAnnotation;
-		this.name = queryAnnotation.getName();
-		this.query = queryAnnotation.getQuery();
+	protected void initialize(BaseNamedQueryAnnotation annotation) {
+		this.queryAnnotation = annotation;
+		this.name = annotation.getName();
+		this.query = annotation.getQuery();
 		this.initializeQueryHints();
 	}
 
-	protected void update(BaseNamedQueryAnnotation queryAnnotation) {
-		this.resourceQuery = queryAnnotation;
-		this.setName_(queryAnnotation.getName());
-		this.setQuery_(queryAnnotation.getQuery());
+	protected void update(BaseNamedQueryAnnotation annotation) {
+		this.queryAnnotation = annotation;
+		this.setName_(annotation.getName());
+		this.setQuery_(annotation.getQuery());
 		this.updateQueryHints();
 		getPersistenceUnit().addQuery(this);
 	}
 
 	protected void initializeQueryHints() {
-		ListIterator<QueryHintAnnotation> resourceHints = this.resourceQuery.hints();
-		
-		while(resourceHints.hasNext()) {
+		for (ListIterator<QueryHintAnnotation> resourceHints = this.queryAnnotation.hints(); resourceHints.hasNext(); ) {
 			this.hints.add(createQueryHint(resourceHints.next()));
 		}
 	}
 	
 	protected void updateQueryHints() {
 		ListIterator<JavaQueryHint> contextHints = hints();
-		ListIterator<QueryHintAnnotation> resourceHints = this.resourceQuery.hints();
+		ListIterator<QueryHintAnnotation> resourceHints = this.queryAnnotation.hints();
 		
 		while (contextHints.hasNext()) {
 			JavaQueryHint hint = contextHints.next();
@@ -173,11 +171,11 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.resourceQuery.getTextRange(astRoot);
+		return this.queryAnnotation.getTextRange(astRoot);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.resourceQuery.getNameTextRange(astRoot);
+		return this.queryAnnotation.getNameTextRange(astRoot);
 	}
 	
 	public boolean overrides(Query other) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.FetchType;
@@ -45,8 +45,8 @@ public final class SourceBasicAnnotation
 
 	public SourceBasicAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(attribute, OPTIONAL_ADAPTER);
-		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
+		this.optionalAdapter = new MemberAnnotationElementAdapter<Boolean>(attribute, OPTIONAL_ADAPTER);
+		this.fetchAdapter = new MemberAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -58,9 +58,9 @@ public final class SourceBasicAnnotation
 		this.fetch = this.buildFetch(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setOptional(this.buildOptional(astRoot));
-		this.setFetch(this.buildFetch(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncOptional(this.buildOptional(astRoot));
+		this.syncFetch(this.buildFetch(astRoot));
 	}
 
 	@Override
@@ -77,16 +77,19 @@ public final class SourceBasicAnnotation
 	}
 
 	public void setOptional(Boolean optional) {
-		if (this.attributeValueHasNotChanged(this.optional, optional)) {
-			return;
+		if (this.attributeValueHasChanged(this.optional, optional)) {
+			this.optional = optional;
+			this.optionalAdapter.setValue(optional);
 		}
-		Boolean old = this.optional;
-		this.optional = optional;
-		this.optionalAdapter.setValue(optional);
-		this.firePropertyChanged(OPTIONAL_PROPERTY, old, optional);
 	}
 
-	protected Boolean buildOptional(CompilationUnit astRoot) {
+	private void syncOptional(Boolean astOptional) {
+		Boolean old = this.optional;
+		this.optional = astOptional;
+		this.firePropertyChanged(OPTIONAL_PROPERTY, old, astOptional);
+	}
+
+	private Boolean buildOptional(CompilationUnit astRoot) {
 		return this.optionalAdapter.getValue(astRoot);
 	}
 
@@ -100,16 +103,19 @@ public final class SourceBasicAnnotation
 	}
 
 	public void setFetch(FetchType fetch) {
-		if (this.attributeValueHasNotChanged(this.fetch, fetch)) {
-			return;
+		if (this.attributeValueHasChanged(this.fetch, fetch)) {
+			this.fetch = fetch;
+			this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 		}
-		FetchType old = this.fetch;
-		this.fetch = fetch;
-		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
-		this.firePropertyChanged(FETCH_PROPERTY, old, fetch);
 	}
 
-	protected FetchType buildFetch(CompilationUnit astRoot) {
+	private void syncFetch(FetchType astFetch) {
+		FetchType old = this.fetch;
+		this.fetch = astFetch;
+		this.firePropertyChanged(FETCH_PROPERTY, old, astFetch);
+	}
+
+	private FetchType buildFetch(CompilationUnit astRoot) {
 		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
 	}
 

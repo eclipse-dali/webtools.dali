@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -20,9 +20,9 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ChangeTracking
@@ -40,7 +40,7 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 
 	public SourceEclipseLinkChangeTrackingAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
+		this.valueAdapter = new MemberAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -51,8 +51,8 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 		this.value = this.buildValue(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setValue(this.buildValue(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncValue(this.buildValue(astRoot));
 	}
 
 	@Override
@@ -69,13 +69,16 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 	}
 
 	public void setValue(ChangeTrackingType value) {
-		if (this.attributeValueHasNotChanged(this.value, value)) {
-			return;
+		if (this.attributeValueHasChanged(this.value, value)) {
+			this.value = value;
+			this.valueAdapter.setValue(ChangeTrackingType.toJavaAnnotationValue(value));
 		}
+	}
+
+	private void syncValue(ChangeTrackingType astValue) {
 		ChangeTrackingType old = this.value;
-		this.value = value;
-		this.valueAdapter.setValue(ChangeTrackingType.toJavaAnnotationValue(value));
-		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+		this.value = astValue;
+		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
 	private ChangeTrackingType buildValue(CompilationUnit astRoot) {

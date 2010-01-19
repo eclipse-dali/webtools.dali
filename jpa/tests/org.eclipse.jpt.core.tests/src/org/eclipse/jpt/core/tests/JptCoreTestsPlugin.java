@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.jpt.core.JpaModel;
+import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.osgi.framework.BundleContext;
@@ -44,8 +44,8 @@ public class JptCoreTestsPlugin extends Plugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		JpaModel jpaModel = JptCorePlugin.getJpaModel();
-		ReflectionTools.executeMethod(jpaModel, "handleEventsSynchronously");
+		JpaProjectManager jpaProjectManager = JptCorePlugin.getJpaProjectManager();
+		ReflectionTools.executeMethod(jpaProjectManager, "handleEventsSynchronously");
 		ReflectionTools.executeStaticMethod(JptCorePlugin.class, "doNotFlushPreferences");
 	}
 

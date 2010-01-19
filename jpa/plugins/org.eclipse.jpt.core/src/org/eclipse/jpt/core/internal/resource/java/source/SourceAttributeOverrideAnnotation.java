@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,9 +62,9 @@ public final class SourceAttributeOverrideAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.updateColumn(astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncColumn(astRoot);
 	}
 
 
@@ -83,40 +83,45 @@ public final class SourceAttributeOverrideAnnotation
 		return this.column;
 	}
 
-	public NestableColumnAnnotation addColumn() {
-		NestableColumnAnnotation col = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.member, this.daa);
-		col.newAnnotation();
-		this.setColumn(col);
-		return col;
-	}
-
-	public void removeColumn() {
-		this.column.removeAnnotation();
-		setColumn(null);
-	}
-
-	private void setColumn(NestableColumnAnnotation column) {
-		ColumnAnnotation old = this.column;
-		this.column = column;
-		this.firePropertyChanged(COLUMN_PROPERTY, old, column);
-	}
-
 	public ColumnAnnotation getNonNullColumn() {
 		return (this.column != null) ? this.column : new NullAttributeOverrideColumnAnnotation(this);
 	}
 
-	private void updateColumn(CompilationUnit astRoot) {
+	public NestableColumnAnnotation addColumn() {
+		if (this.column != null) {
+			throw new IllegalStateException("'column' element already exists: " + this.column); //$NON-NLS-1$
+		}
+		this.column = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.member, this.daa);
+		this.column.newAnnotation();
+		return this.column;
+	}
+
+	public void removeColumn() {
+		if (this.column == null) {
+			throw new IllegalStateException("'column' element does not exist"); //$NON-NLS-1$
+		}
+		this.column.removeAnnotation();
+		this.column = null;
+	}
+
+	private void syncColumn(CompilationUnit astRoot) {
 		if (this.columnAdapter.getAnnotation(astRoot) == null) {
-			this.setColumn(null);
+			this.syncColumn_(null);
 		} else {
 			if (this.column == null) {
 				NestableColumnAnnotation col = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.member, this.daa);
 				col.initialize(astRoot);
-				this.setColumn(col);
+				this.syncColumn_(col);
 			} else {
-				this.column.update(astRoot);
+				this.column.synchronizeWith(astRoot);
 			}
 		}
+	}
+
+	private void syncColumn_(NestableColumnAnnotation astColumn) {
+		ColumnAnnotation old = this.column;
+		this.column = astColumn;
+		this.firePropertyChanged(COLUMN_PROPERTY, old, astColumn);
 	}
 
 

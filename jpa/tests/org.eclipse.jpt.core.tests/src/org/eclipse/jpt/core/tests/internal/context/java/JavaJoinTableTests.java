@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -111,19 +111,23 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		javaJoinTable.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("FOO", javaJoinTable.getName());
 	
 		//set name to null in the resource model
 		javaJoinTable.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinTable.getSpecifiedName());
 		assertNull(javaJoinTable.getName());
 		
 		javaJoinTable.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("FOO", javaJoinTable.getName());
 
 		attributeResource.removeAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinTable.getSpecifiedName());
 		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 	}
@@ -217,19 +221,23 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		javaJoinTable.setSchema("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", joinTable.getSpecifiedSchema());
 		assertEquals("FOO", javaJoinTable.getSchema());
 	
 		//set schema to null in the resource model
 		javaJoinTable.setSchema(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinTable.getSpecifiedSchema());
 		assertNull(javaJoinTable.getSchema());
 		
 		javaJoinTable.setSchema("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", joinTable.getSpecifiedSchema());
 		assertEquals("FOO", javaJoinTable.getSchema());
 
 		attributeResource.removeAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinTable.getSpecifiedSchema());
 		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 	}
@@ -281,19 +289,23 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		javaJoinTable.setCatalog("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", joinTable.getSpecifiedCatalog());
 		assertEquals("FOO", javaJoinTable.getCatalog());
 	
 		//set catalog to null in the resource model
 		javaJoinTable.setCatalog(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinTable.getSpecifiedCatalog());
 		assertNull(javaJoinTable.getCatalog());
 		
 		javaJoinTable.setCatalog("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", joinTable.getSpecifiedCatalog());
 		assertEquals("FOO", javaJoinTable.getCatalog());
 
 		attributeResource.removeAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		assertNull(joinTable.getSpecifiedCatalog());
 		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 	}
@@ -456,6 +468,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableResource.joinColumnAt(0).setName("FOO");
 		joinTableResource.joinColumnAt(1).setName("BAR");
 		joinTableResource.joinColumnAt(2).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 	
 		ListIterator<JoinColumn> joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
@@ -464,6 +477,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.moveJoinColumn(2, 0);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -471,6 +485,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(joinColumns.hasNext());
 	
 		joinTableResource.moveJoinColumn(0, 1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
@@ -478,17 +493,20 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(joinColumns.hasNext());
 	
 		joinTableResource.removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 	
 		joinTableResource.removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.removeJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(joinTable.specifiedJoinColumns().hasNext());
 	}
 	
@@ -667,6 +685,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableResource.inverseJoinColumnAt(0).setName("FOO");
 		joinTableResource.inverseJoinColumnAt(1).setName("BAR");
 		joinTableResource.inverseJoinColumnAt(2).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 	
 		ListIterator<JoinColumn> inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals("FOO", inverseJoinColumns.next().getName());
@@ -675,6 +694,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(inverseJoinColumns.hasNext());
 		
 		joinTableResource.moveInverseJoinColumn(2, 0);
+		getJpaProject().synchronizeContextModel();
 		inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertEquals("BAZ", inverseJoinColumns.next().getName());
@@ -682,6 +702,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(inverseJoinColumns.hasNext());
 	
 		joinTableResource.moveInverseJoinColumn(0, 1);
+		getJpaProject().synchronizeContextModel();
 		inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals("BAZ", inverseJoinColumns.next().getName());
 		assertEquals("BAR", inverseJoinColumns.next().getName());
@@ -689,17 +710,20 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(inverseJoinColumns.hasNext());
 	
 		joinTableResource.removeInverseJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals("BAZ", inverseJoinColumns.next().getName());
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 		assertFalse(inverseJoinColumns.hasNext());
 	
 		joinTableResource.removeInverseJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals("BAZ", inverseJoinColumns.next().getName());
 		assertFalse(inverseJoinColumns.hasNext());
 		
 		joinTableResource.removeInverseJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(joinTable.specifiedInverseJoinColumns().hasNext());
 	}
 
@@ -762,6 +786,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
+		getJpaProject().synchronizeContextModel();
 		
 		uniqueConstraints = joinTable.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
@@ -930,7 +955,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName("FOO");
 		joinTableAnnotation.addUniqueConstraint(1).addColumnName("BAR");
 		joinTableAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
-
+		getJpaProject().synchronizeContextModel();
 		
 		ListIterator<UniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
@@ -939,6 +964,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.moveUniqueConstraint(2, 0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
@@ -946,6 +972,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.moveUniqueConstraint(0, 1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
@@ -953,17 +980,20 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.removeUniqueConstraint(0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 	}

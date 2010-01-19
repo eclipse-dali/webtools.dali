@@ -58,7 +58,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class JptCorePlugin extends Plugin {
 
-	private volatile GenericJpaModel jpaModel;
+	private volatile GenericJpaProjectManager jpaProjectManager;
 	private volatile ServiceTracker parserTracker;
 	private static volatile boolean flushPreferences = true;
 
@@ -240,10 +240,11 @@ public class JptCorePlugin extends Plugin {
 	// ********** public static methods **********
 
 	/**
-	 * Return the singular JPA model corresponding to the current workspace.
+	 * Return the singular JPA project manager corresponding
+	 * to the current workspace.
 	 */
-	public static JpaModel getJpaModel() {
-		return INSTANCE.getJpaModel_();
+	public static JpaProjectManager getJpaProjectManager() {
+		return INSTANCE.getJpaProjectManager_();
 	}
 
 	/**
@@ -252,7 +253,7 @@ public class JptCorePlugin extends Plugin {
 	 * JPA project.
 	 */
 	public static JpaProject getJpaProject(IProject project) {
-		return getJpaModel().getJpaProject(project);
+		return getJpaProjectManager().getJpaProject(project);
 	}
 
 	/**
@@ -260,7 +261,7 @@ public class JptCorePlugin extends Plugin {
 	 * or <code>null</code> if unable to associate the specified file with a JPA file.
 	 */
 	public static JpaFile getJpaFile(IFile file) {
-		return getJpaModel().getJpaFile(file);
+		return getJpaProjectManager().getJpaFile(file);
 	}
 
 	/**
@@ -270,7 +271,7 @@ public class JptCorePlugin extends Plugin {
 	 * (e.g. when the user changes a project's JPA platform).
 	 */
 	public static void rebuildJpaProject(IProject project) {
-		getJpaModel().rebuildJpaProject(project);
+		getJpaProjectManager().rebuildJpaProject(project);
 	}
 
 	/**
@@ -517,7 +518,7 @@ public class JptCorePlugin extends Plugin {
 	 * This method is called (via reflection) when the test plug-in is loaded.
 	 * The prefs end up getting flushed after the test case has deleted the
 	 * project, resulting resource exceptions in the log, e.g.
-	 *     Resource '/JpaModelTests' is not open.
+	 *     Resource '/JpaProjectManagerTests' is not open.
 	 * @see JptCoreTestsPlugin#start(BundleContext)
 	 */
 	@SuppressWarnings("unused")
@@ -636,17 +637,17 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return whether the model manager's Java change listener is active.
+	 * Return whether the JPA project manager's Java change listener is active.
 	 */
 	public static boolean javaElementChangeListenerIsActive() {
-		return getJpaModel().javaElementChangeListenerIsActive();
+		return getJpaProjectManager().javaElementChangeListenerIsActive();
 	}
 
 	/**
-	 * Set whether the model manager's Java change listener is active.
+	 * Set whether the JPA project manager's Java change listener is active.
 	 */
 	public static void setJavaElementChangeListenerIsActive(boolean javaElementChangeListenerIsActive) {
-		getJpaModel().setJavaElementChangeListenerIsActive(javaElementChangeListenerIsActive);
+		getJpaProjectManager().setJavaElementChangeListenerIsActive(javaElementChangeListenerIsActive);
 	}
 
 	/**
@@ -692,9 +693,9 @@ public class JptCorePlugin extends Plugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		try {
-			if (this.jpaModel != null) {
-				this.jpaModel.stop();
-				this.jpaModel = null;
+			if (this.jpaProjectManager != null) {
+				this.jpaProjectManager.stop();
+				this.jpaProjectManager = null;
 			}
 			if (this.parserTracker != null) {
 				this.parserTracker.close();
@@ -705,16 +706,16 @@ public class JptCorePlugin extends Plugin {
 		}
 	}
 
-	private synchronized GenericJpaModel getJpaModel_() {
-		if (this.jpaModel == null) {
-			this.jpaModel = this.buildJpaModel();
-			this.jpaModel.start();
+	private synchronized GenericJpaProjectManager getJpaProjectManager_() {
+		if (this.jpaProjectManager == null) {
+			this.jpaProjectManager = this.buildJpaProjectManager();
+			this.jpaProjectManager.start();
 		}
-		return this.jpaModel;
+		return this.jpaProjectManager;
 	}
 
-	private GenericJpaModel buildJpaModel() {
-		return new GenericJpaModel();
+	private GenericJpaProjectManager buildJpaProjectManager() {
+		return new GenericJpaProjectManager();
 	}
 
 	public synchronized SAXParserFactory getSAXParserFactory() {

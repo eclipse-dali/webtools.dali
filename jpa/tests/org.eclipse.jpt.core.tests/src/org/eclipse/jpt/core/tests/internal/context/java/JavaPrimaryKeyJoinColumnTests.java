@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -79,6 +79,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		pkJoinColumnResource.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		specifiedPkJoinColumn = getJavaEntity().specifiedPrimaryKeyJoinColumns().next();
 		assertEquals("FOO", specifiedPkJoinColumn.getName());
 	}
@@ -145,14 +146,17 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		PrimaryKeyJoinColumnAnnotation column = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		column.setColumnDefinition(COLUMN_DEFINITION);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(COLUMN_DEFINITION, specifiedPkJoinColumn.getColumnDefinition());
 		
 		column.setColumnDefinition(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(specifiedPkJoinColumn.getColumnDefinition());
 
 		typeResource.removeAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(0, getJavaEntity().specifiedPrimaryKeyJoinColumnsSize());
 	}
@@ -185,6 +189,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		pkJoinColumnResource.setReferencedColumnName("FOO");
+		getJpaProject().synchronizeContextModel();
 		specifiedPkJoinColumn = getJavaEntity().specifiedPrimaryKeyJoinColumns().next();
 		assertEquals("FOO", specifiedPkJoinColumn.getSpecifiedReferencedColumnName());
 	}
@@ -222,6 +227,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
 		pkJoinColumnResource.setReferencedColumnName("FOO");
+		getJpaProject().synchronizeContextModel();
 		
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().specifiedPrimaryKeyJoinColumns().next();
 		assertEquals("FOO", specifiedPkJoinColumn.getReferencedColumnName());

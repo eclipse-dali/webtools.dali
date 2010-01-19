@@ -80,20 +80,20 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		if (this.javaResourceCompilationUnit == null) {
 			return;
 		}
-		this.synchWithJavaDelta(event.getDelta());
+		this.syncWithJavaDelta(event.getDelta());
 	}
 
 	/**
 	 * NB: this is copied from GenericJpaProject, so it might need to be
 	 * kept in synch with that code if it changes... yech...
 	 */
-	protected void synchWithJavaDelta(IJavaElementDelta delta) {
+	protected void syncWithJavaDelta(IJavaElementDelta delta) {
 		switch (delta.getElement().getElementType()) {
 			case IJavaElement.JAVA_MODEL :
 			case IJavaElement.JAVA_PROJECT :
 			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
 			case IJavaElement.PACKAGE_FRAGMENT :
-				this.synchWithJavaDeltaChildren(delta);
+				this.syncWithJavaDeltaChildren(delta);
 				break;
 			case IJavaElement.COMPILATION_UNIT :
 				this.javaCompilationUnitChanged(delta);
@@ -103,15 +103,15 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		}
 	}
 
-	protected void synchWithJavaDeltaChildren(IJavaElementDelta delta) {
+	protected void syncWithJavaDeltaChildren(IJavaElementDelta delta) {
 		for (IJavaElementDelta child : delta.getAffectedChildren()) {
-			this.synchWithJavaDelta(child); // recurse
+			this.syncWithJavaDelta(child); // recurse
 		}
 	}
 
 	protected void javaCompilationUnitChanged(IJavaElementDelta delta) {
 		if (this.deltaIsRelevant(delta)) {
-			this.javaResourceCompilationUnit.update();
+			this.javaResourceCompilationUnit.synchronizeWithJavaSource();
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,14 +15,16 @@ import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- *  SourceNamedQueries2_0Annotation
+ * javax.persistence.NamedQueries
  */
-public class SourceNamedQueries2_0Annotation extends SourceNamedQueriesAnnotation
+public final class SourceNamedQueries2_0Annotation
+	extends SourceNamedQueriesAnnotation
 {
 	public SourceNamedQueries2_0Annotation(JavaResourceNode parent, Type type) {
 		super(parent, type);
 	}
 
+	@Override
 	protected NestableNamedQueryAnnotation buildNamedQuery(int index) {
 		return SourceNamedQuery2_0Annotation.createNestedNamedQuery(this, member, index, this.daa);
 	}

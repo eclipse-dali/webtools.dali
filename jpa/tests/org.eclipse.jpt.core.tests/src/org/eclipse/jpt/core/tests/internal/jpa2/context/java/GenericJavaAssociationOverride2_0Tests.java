@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -142,19 +142,23 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		
 		//set name in the resource model, verify context model updated
 		associationOverrideResource.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", javaAssociationOverride.getName());
 		assertEquals("FOO", associationOverrideResource.getName());
 	
 		//set name to null in the resource model
 		associationOverrideResource.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaAssociationOverride.getName());
 		assertNull(associationOverrideResource.getName());
 		
 		associationOverrideResource.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", javaAssociationOverride.getName());
 		assertEquals("FOO", associationOverrideResource.getName());
 
 		typeResource.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(overrideContainer.specifiedAssociationOverrides().hasNext());
 		assertFalse(typeResource.annotations(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES).hasNext());
 	}
@@ -340,6 +344,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		associationOverrideResource.joinColumnAt(0).setName("FOO");
 		associationOverrideResource.joinColumnAt(1).setName("BAR");
 		associationOverrideResource.joinColumnAt(2).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 
 		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
@@ -349,6 +354,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertFalse(joinColumns.hasNext());
 		
 		associationOverrideResource.moveJoinColumn(2, 0);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -357,6 +363,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertFalse(joinColumns.hasNext());
 
 		associationOverrideResource.moveJoinColumn(0, 1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
@@ -365,6 +372,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertFalse(joinColumns.hasNext());
 
 		associationOverrideResource.removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -372,16 +380,19 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertFalse(joinColumns.hasNext());
 
 		associationOverrideResource.removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("address_id", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());		
 		
 		associationOverrideResource.removeJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("address_id", joinColumns.next().getName());
 
 		associationOverrideResource.removeJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(joiningStrategy.specifiedJoinColumns().hasNext());
 	}
 	
@@ -398,6 +409,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
 		
 		associationOverrideResource.setName("FOO");
+		getJpaProject().synchronizeContextModel();
 		specifiedAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
 		assertEquals("FOO", specifiedAssociationOverride.getName());
 	}
@@ -487,6 +499,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
 	
 		associationOverrideResource.getJoinTable().setName("MY_JOIN_TABLE");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("MY_JOIN_TABLE", joiningStrategy.getJoinTable().getSpecifiedName());
 
 		associationOverrideResource.getJoinTable().addJoinColumn(0);
@@ -496,6 +509,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		associationOverrideResource.getJoinTable().joinColumnAt(0).setName("FOO");
 		associationOverrideResource.getJoinTable().joinColumnAt(1).setName("BAR");
 		associationOverrideResource.getJoinTable().joinColumnAt(2).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
 
 		ListIterator<JoinColumn> joinColumns = joiningStrategy.getJoinTable().specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
@@ -504,6 +518,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertFalse(joinColumns.hasNext());
 		
 		associationOverrideResource.getJoinTable().moveJoinColumn(2, 0);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.getJoinTable().specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -511,6 +526,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertFalse(joinColumns.hasNext());
 
 		associationOverrideResource.getJoinTable().moveJoinColumn(0, 1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.getJoinTable().specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
@@ -518,17 +534,20 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertFalse(joinColumns.hasNext());
 
 		associationOverrideResource.getJoinTable().removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.getJoinTable().specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		associationOverrideResource.getJoinTable().removeJoinColumn(1);
+		getJpaProject().synchronizeContextModel();
 		joinColumns = joiningStrategy.getJoinTable().specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		associationOverrideResource.getJoinTable().removeJoinColumn(0);
+		getJpaProject().synchronizeContextModel();
 		assertFalse(joiningStrategy.getJoinTable().specifiedJoinColumns().hasNext());
 	}	
 	

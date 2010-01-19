@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,11 +59,11 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setLength(this.buildLength(astRoot));
-		this.setPrecision(this.buildPrecision(astRoot));
-		this.setScale(this.buildScale(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncLength(this.buildLength(astRoot));
+		this.syncPrecision(this.buildPrecision(astRoot));
+		this.syncScale(this.buildScale(astRoot));
 	}
 
 
@@ -75,13 +75,16 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	public void setLength(Integer length) {
-		if (this.attributeValueHasNotChanged(this.length, length)) {
-			return;
+		if (this.attributeValueHasChanged(this.length, length)) {
+			this.length = length;
+			this.lengthAdapter.setValue(length);
 		}
+	}
+
+	private void syncLength(Integer astLength) {
 		Integer old = this.length;
-		this.length = length;
-		this.lengthAdapter.setValue(length);
-		this.firePropertyChanged(LENGTH_PROPERTY, old, length);
+		this.length = astLength;
+		this.firePropertyChanged(LENGTH_PROPERTY, old, astLength);
 	}
 
 	private Integer buildLength(CompilationUnit astRoot) {
@@ -100,13 +103,16 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	public void setPrecision(Integer precision) {
-		if (this.attributeValueHasNotChanged(this.precision, precision)) {
-			return;
+		if (this.attributeValueHasChanged(this.precision, precision)) {
+			this.precision = precision;
+			this.precisionAdapter.setValue(precision);
 		}
+	}
+
+	private void syncPrecision(Integer astPrecision) {
 		Integer old = this.precision;
-		this.precision = precision;
-		this.precisionAdapter.setValue(precision);
-		this.firePropertyChanged(PRECISION_PROPERTY, old, precision);
+		this.precision = astPrecision;
+		this.firePropertyChanged(PRECISION_PROPERTY, old, astPrecision);
 	}
 
 	private Integer buildPrecision(CompilationUnit astRoot) {
@@ -125,13 +131,16 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	public void setScale(Integer scale) {
-		if (this.attributeValueHasNotChanged(this.scale, scale)) {
-			return;
+		if (this.attributeValueHasChanged(this.scale, scale)) {
+			this.scale = scale;
+			this.scaleAdapter.setValue(scale);
 		}
+	}
+
+	private void syncScale(Integer astScale) {
 		Integer old = this.scale;
-		this.scale = scale;
-		this.scaleAdapter.setValue(scale);
-		this.firePropertyChanged(SCALE_PROPERTY, old, scale);
+		this.scale = astScale;
+		this.firePropertyChanged(SCALE_PROPERTY, old, astScale);
 	}
 
 	private Integer buildScale(CompilationUnit astRoot) {

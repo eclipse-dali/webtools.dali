@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
- * The JPA model holds all the JPA projects in the workspace.
+ * The JPA project manager holds all the JPA projects in the workspace.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.model.Model;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaModel extends Model {
+public interface JpaProjectManager extends Model {
 
 	/**
 	 * Return the JPA model's JPA projects.

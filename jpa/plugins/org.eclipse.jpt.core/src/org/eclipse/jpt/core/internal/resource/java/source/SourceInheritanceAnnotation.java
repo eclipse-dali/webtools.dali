@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceType;
@@ -39,7 +39,7 @@ public final class SourceInheritanceAnnotation
 
 	public SourceInheritanceAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, STRATEGY_ADAPTER);
+		this.strategyAdapter = new MemberAnnotationElementAdapter<String>(type, STRATEGY_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -50,8 +50,8 @@ public final class SourceInheritanceAnnotation
 		this.strategy = this.buildStrategy(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setStrategy(this.buildStrategy(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncStrategy(this.buildStrategy(astRoot));
 	}
 
 	@Override
@@ -68,13 +68,16 @@ public final class SourceInheritanceAnnotation
 	}
 
 	public void setStrategy(InheritanceType strategy) {
-		if (this.attributeValueHasNotChanged(this.strategy, strategy)) {
-			return;
+		if (this.attributeValueHasChanged(this.strategy, strategy)) {
+			this.strategy = strategy;
+			this.strategyAdapter.setValue(InheritanceType.toJavaAnnotationValue(strategy));
 		}
+	}
+
+	private void syncStrategy(InheritanceType astStrategy) {
 		InheritanceType old = this.strategy;
-		this.strategy = strategy;
-		this.strategyAdapter.setValue(InheritanceType.toJavaAnnotationValue(strategy));
-		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
+		this.strategy = astStrategy;
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, astStrategy);
 	}
 
 	private InheritanceType buildStrategy(CompilationUnit astRoot) {

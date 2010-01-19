@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -97,7 +97,7 @@ final class SourcePersistentType
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentType jrpt = new SourcePersistentType(javaResourceCompilationUnit, type);
 		jrpt.initialize(astRoot);
-		return jrpt;	
+		return jrpt;
 	}
 
 	/**
@@ -118,12 +118,12 @@ final class SourcePersistentType
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentType jrpt = new SourcePersistentType(javaResourceCompilationUnit, type);
 		jrpt.initialize(astRoot);
-		return jrpt;	
+		return jrpt;
 	}
 
 	private SourcePersistentType(JavaResourceCompilationUnit javaResourceCompilationUnit, Type type) {
 		super(javaResourceCompilationUnit, type);
-		this.types = new Vector<JavaResourcePersistentType>(); 
+		this.types = new Vector<JavaResourcePersistentType>();
 		this.fields = new Vector<JavaResourcePersistentAttribute>();
 		this.methods = new Vector<JavaResourcePersistentAttribute>();
 	}
@@ -166,19 +166,19 @@ final class SourcePersistentType
 
 
 	// ********** update **********
-	
+
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setName(this.buildName(astRoot));
-		this.setQualifiedName(this.buildQualifiedName(astRoot));
-		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
-		this.setAbstract(this.buildAbstract(astRoot));
-		this.updateTypes(astRoot);
-		this.updateFields(astRoot);
-		this.updateMethods(astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncName(this.buildName(astRoot));
+		this.syncQualifiedName(this.buildQualifiedName(astRoot));
+		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
+		this.syncAbstract(this.buildAbstract(astRoot));
+		this.syncTypes(astRoot);
+		this.syncFields(astRoot);
+		this.syncMethods(astRoot);
 		// need to wait until everything is built to calculate 'access'
-		this.setAccess(this.buildAccess());
+		this.syncAccess(this.buildAccess());
 	}
 
 	/**
@@ -187,60 +187,60 @@ final class SourcePersistentType
 	 * annotations....
 	 */
 	@Override
-	void addOrUpdateAnnotation(String jdtAnnotationName, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
+	void addOrSyncAnnotation(String jdtAnnotationName, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
 		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
 			if (this.staticMetamodelAnnotation != null) {
-				this.staticMetamodelAnnotation.update(astRoot);
+				this.staticMetamodelAnnotation.synchronizeWith(astRoot);
 			} else {
 				this.staticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
 				this.staticMetamodelAnnotation.initialize(astRoot);
 			}
 		} else if (jdtAnnotationName.equals(GENERATED_ANNOTATION_DEFINITION.getAnnotationName())) {
 			if (this.generatedAnnotation != null) {
-				this.generatedAnnotation.update(astRoot);
+				this.generatedAnnotation.synchronizeWith(astRoot);
 			} else {
 				this.generatedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
 				this.generatedAnnotation.initialize(astRoot);
 			}
 		} else {
-			super.addOrUpdateAnnotation(jdtAnnotationName, astRoot, annotationsToRemove);
+			super.addOrSyncAnnotation(jdtAnnotationName, astRoot, annotationsToRemove);
 		}
 	}
 
 
 	// ********** SourcePersistentMember implementation **********
-	
+
 	@Override
 	Iterator<String> validAnnotationNames() {
 		return this.getAnnotationProvider().typeAnnotationNames();
 	}
-	
+
 	@Override
 	Annotation buildAnnotation(String mappingAnnotationName) {
 		return this.getAnnotationProvider().buildTypeAnnotation(this, this.member, mappingAnnotationName);
 	}
-	
+
 	@Override
 	Annotation buildNullAnnotation(String annotationName) {
 		return this.getAnnotationProvider().buildNullTypeAnnotation(this, annotationName);
 	}
-	
+
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-		
-		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
-		
+
+		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
+
 		for (JavaResourcePersistentAttribute field : this.getFields()) {
 			field.resolveTypes(astRoot);
 		}
-		
+
 		// a new type can trigger a method parameter type to be a resolved,
 		// fully-qualified name, so we need to rebuild our list of methods:
 		//     "setFoo(Foo)" is not the same as "setFoo(com.bar.Foo)"
 		// and, vice-versa, a removed type can "unresolve" a parameter type
-		this.updateMethods(astRoot);
-		
+		this.syncMethods(astRoot);
+
 		for (JavaResourcePersistentAttribute method : this.getMethods()) {
 			method.resolveTypes(astRoot);
 		}
@@ -248,13 +248,13 @@ final class SourcePersistentType
 			type.resolveTypes(astRoot);
 		}
 	}
-	
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-	
-	
+
+
 	// ******** JavaResourcePersistentType implementation ********
 
 	// ***** name
@@ -262,10 +262,10 @@ final class SourcePersistentType
 		return this.name;
 	}
 
-	private void setName(String name) {
+	private void syncName(String astName) {
 		String old = this.name;
-		this.name = name;
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.name = astName;
+		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -278,10 +278,10 @@ final class SourcePersistentType
 		return this.qualifiedName;
 	}
 
-	private void setQualifiedName(String qualifiedName) {
+	private void syncQualifiedName(String astQualifiedName) {
 		String old = this.qualifiedName;
-		this.qualifiedName = qualifiedName;
-		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, qualifiedName);
+		this.qualifiedName = astQualifiedName;
+		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, astQualifiedName);
 	}
 
 	private String buildQualifiedName(CompilationUnit astRoot) {
@@ -294,10 +294,10 @@ final class SourcePersistentType
 		return this.superclassQualifiedName;
 	}
 
-	private void setSuperclassQualifiedName(String superclassQualifiedName) {
+	private void syncSuperclassQualifiedName(String astSuperclassQualifiedName) {
 		String old = this.superclassQualifiedName;
-		this.superclassQualifiedName = superclassQualifiedName;
-		this.firePropertyChanged(SUPERCLASS_QUALIFIED_NAME_PROPERTY, old, superclassQualifiedName);
+		this.superclassQualifiedName = astSuperclassQualifiedName;
+		this.firePropertyChanged(SUPERCLASS_QUALIFIED_NAME_PROPERTY, old, astSuperclassQualifiedName);
 	}
 
 	private String buildSuperclassQualifiedName(CompilationUnit astRoot) {
@@ -314,15 +314,15 @@ final class SourcePersistentType
 		return this.abstract_;
 	}
 
-	private void setAbstract(boolean abstract_) {
+	private void syncAbstract(boolean astAbstract) {
 		boolean old = this.abstract_;
-		this.abstract_ = abstract_;
-		this.firePropertyChanged(ABSTRACT_PROPERTY, old, abstract_);
+		this.abstract_ = astAbstract;
+		this.firePropertyChanged(ABSTRACT_PROPERTY, old, astAbstract);
 	}
 
 	private boolean buildAbstract(CompilationUnit astRoot) {
 		ITypeBinding binding = this.member.getBinding(astRoot);
-		return (binding == null) ? false : Modifier.isAbstract(binding.getModifiers());	
+		return (binding == null) ? false : Modifier.isAbstract(binding.getModifiers());
 	}
 
 	// ***** access
@@ -337,16 +337,16 @@ final class SourcePersistentType
 	//corresponding field/method does not exist?
 	//making this internal since it should only be set based on changes in the source, the
 	//context model should not need to set this
-	private void setAccess(AccessType access) {
+	private void syncAccess(AccessType astAccess) {
 		AccessType old = this.access;
-		this.access = access;
-		this.firePropertyChanged(ACCESS_PROPERTY, old, access);
+		this.access = astAccess;
+		this.firePropertyChanged(ACCESS_PROPERTY, old, astAccess);
 	}
 
 	private AccessType buildAccess() {
 		return JPTTools.buildAccess(this);
 	}
-	
+
 	public boolean isMapped() {
 		for (Annotation each : this.getAnnotations()) {
 			if (this.annotationIsMappingAnnotation(each)) {
@@ -363,7 +363,7 @@ final class SourcePersistentType
 	private Iterator<String> mappingAnnotationNames() {
 		return this.getAnnotationProvider().typeMappingAnnotationNames();
 	}
-	
+
 	/**
 	 * check only persistable attributes
 	 */
@@ -427,7 +427,7 @@ final class SourcePersistentType
 		}
 	}
 
-	private void updateTypes(CompilationUnit astRoot) {
+	private void syncTypes(CompilationUnit astRoot) {
 		TypeDeclaration[] typeDeclarations = this.member.getTypes(astRoot);
 		CounterMap counters = new CounterMap(typeDeclarations.length);
 		HashSet<JavaResourcePersistentType> typesToRemove = new HashSet<JavaResourcePersistentType>(this.types);
@@ -440,7 +440,7 @@ final class SourcePersistentType
 				this.addType(this.buildType(typeDeclaration, occurrence, astRoot));
 			} else {
 				typesToRemove.remove(type);
-				type.update(astRoot);
+				type.synchronizeWith(astRoot);
 			}
 		}
 		this.removeTypes(typesToRemove);
@@ -464,7 +464,7 @@ final class SourcePersistentType
 	public Iterator<JavaResourcePersistentAttribute> persistableFields() {
 		return this.persistableMembers(this.fields());
 	}
-	
+
 	public Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess() {
 		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableFields()) {
 			@Override
@@ -473,7 +473,7 @@ final class SourcePersistentType
 			}
 		};
 	}
-	
+
 	private void addField(JavaResourcePersistentAttribute field) {
 		this.addItemToCollection(field, this.fields, FIELDS_COLLECTION);
 	}
@@ -503,7 +503,7 @@ final class SourcePersistentType
 		}
 	}
 
-	private void updateFields(CompilationUnit astRoot) {
+	private void syncFields(CompilationUnit astRoot) {
 		FieldDeclaration[] fieldDeclarations = this.member.getFields(astRoot);
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		HashSet<JavaResourcePersistentAttribute> fieldsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.fields);
@@ -517,7 +517,7 @@ final class SourcePersistentType
 					this.addField(this.buildField(fieldName, occurrence, astRoot));
 				} else {
 					fieldsToRemove.remove(field);
-					field.update(astRoot);
+					field.synchronizeWith(astRoot);
 				}
 			}
 		}
@@ -548,7 +548,7 @@ final class SourcePersistentType
 	public Iterator<JavaResourcePersistentAttribute> persistableProperties() {
 		return this.persistableMembers(this.methods());
 	}
-	
+
 	public Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess() {
 		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableProperties()) {
 			@Override
@@ -585,7 +585,7 @@ final class SourcePersistentType
 		}
 	}
 
-	private void updateMethods(CompilationUnit astRoot) {
+	private void syncMethods(CompilationUnit astRoot) {
 		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		HashSet<JavaResourcePersistentAttribute> methodsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.methods);
@@ -598,7 +598,7 @@ final class SourcePersistentType
 				this.addMethod(this.buildMethod(signature, occurrence, astRoot));
 			} else {
 				methodsToRemove.remove(method);
-				method.update(astRoot);
+				method.synchronizeWith(astRoot);
 			}
 		}
 		this.removeMethods(methodsToRemove);
@@ -618,7 +618,7 @@ final class SourcePersistentType
 				this.persistableProperties()
 			);
 	}
-	
+
 	public Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess) {
 		if (specifiedAccess == null) {
 			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
@@ -627,7 +627,7 @@ final class SourcePersistentType
 					this.persistableAttributesForFieldAccessType() :
 					this.persistableAttributesForPropertyAccessType();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Iterator<JavaResourcePersistentAttribute> persistableAttributesForFieldAccessType() {
 		return new CompositeIterator<JavaResourcePersistentAttribute>(
@@ -635,7 +635,7 @@ final class SourcePersistentType
 				this.persistablePropertiesWithSpecifiedPropertyAccess()
 			);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Iterator<JavaResourcePersistentAttribute> persistableAttributesForPropertyAccessType() {
 		return new CompositeIterator<JavaResourcePersistentAttribute>(
@@ -643,7 +643,7 @@ final class SourcePersistentType
 				this.persistableFieldsWithSpecifiedFieldAccess()
 			);
 	}
-	
+
 
 	// ********** metamodel **********
 

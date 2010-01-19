@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,7 +60,7 @@ public final class SourceCompilationUnit
 	 * the constructor in a package class (which is what all top-level,
 	 * non-primary classes must be).
 	 */
-	protected JavaResourcePersistentType persistentType;	
+	private JavaResourcePersistentType persistentType;	
 
 
 	// ********** construction **********
@@ -79,14 +79,18 @@ public final class SourceCompilationUnit
 		this.persistentType = this.buildPersistentType();
 	}
 
-	protected JavaResourcePersistentType buildPersistentType() {
+	public void initialize(CompilationUnit astRoot) {
+		// never called?
+	}
+
+	private JavaResourcePersistentType buildPersistentType() {
 		this.openCompilationUnit();
 		CompilationUnit astRoot = this.buildASTRoot();
 		this.closeCompilationUnit();
 		return this.buildPersistentType(astRoot);
 	}
 
-	protected void openCompilationUnit() {
+	private void openCompilationUnit() {
 		try {
 			this.compilationUnit.open(null);
 		} catch (JavaModelException ex) {
@@ -94,7 +98,7 @@ public final class SourceCompilationUnit
 		}
 	}
 
-	protected void closeCompilationUnit() {
+	private void closeCompilationUnit() {
 		try {
 			this.compilationUnit.close();
 		} catch (JavaModelException ex) {
@@ -102,29 +106,13 @@ public final class SourceCompilationUnit
 		}
 	}
 
-	protected JavaResourcePersistentType buildPersistentType(CompilationUnit astRoot) {
-		TypeDeclaration td = this.getPrimaryType(astRoot);
-		return (td == null) ? null : this.buildPersistentType(astRoot, td);
-	}
 
-
-	private void setPersistentType(JavaResourcePersistentType newPersistentType) {
-		JavaResourcePersistentType old = this.persistentType;
-		this.persistentType = newPersistentType;
-		this.firePropertyChanged(PERSISTENT_TYPES_COLLECTION, old, newPersistentType);
-	}
+	// ********** AbstractJavaResourceNode overrides **********
 
 	@Override
 	protected boolean requiresParent() {
 		return false;
 	}
-
-	public void initialize(CompilationUnit astRoot) {
-		// never called?
-	}
-
-
-	// ********** AbstractJavaResourceNode overrides **********
 
 	@Override
 	public JavaResourceCompilationUnit getRoot() {
@@ -144,17 +132,8 @@ public final class SourceCompilationUnit
 
 	// ********** JavaResourceNode implementation **********
 
-	public void update(CompilationUnit astRoot) {
-		TypeDeclaration td = this.getPrimaryType(astRoot);
-		if (td == null) {
-			this.setPersistentType(null);
-		} else {
-			if (this.persistentType == null) {
-				this.setPersistentType(this.buildPersistentType(astRoot, td));
-			} else {
-				this.persistentType.update(astRoot);
-			}
-		}
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncPersistentType(astRoot);
 	}
 
 	public TextRange getTextRange(CompilationUnit astRoot) {
@@ -175,7 +154,7 @@ public final class SourceCompilationUnit
 
 	public void resourceModelChanged() {
 		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelChanged();
+			listener.resourceModelChanged(this);
 		}
 	}
 
@@ -205,6 +184,34 @@ public final class SourceCompilationUnit
 	}
 
 
+	// ********** persistent type **********
+
+	private JavaResourcePersistentType buildPersistentType(CompilationUnit astRoot) {
+		TypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
+		return (td == null) ? null : this.buildPersistentType(astRoot, td);
+	}
+
+
+	private void syncPersistentType(CompilationUnit astRoot) {
+		TypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
+		if (td == null) {
+			this.syncPersistentType_(null);
+		} else {
+			if (this.persistentType == null) {
+				this.syncPersistentType_(this.buildPersistentType(astRoot, td));
+			} else {
+				this.persistentType.synchronizeWith(astRoot);
+			}
+		}
+	}
+
+	private void syncPersistentType_(JavaResourcePersistentType astPersistentType) {
+		JavaResourcePersistentType old = this.persistentType;
+		this.persistentType = astPersistentType;
+		this.firePropertyChanged(PERSISTENT_TYPES_COLLECTION, old, astPersistentType);
+	}
+
+
 	// ********** JpaResourceModel implementation **********
 	
 	public JpaResourceType getResourceType() {
@@ -222,14 +229,14 @@ public final class SourceCompilationUnit
 
 	// ********** Java changes **********
 
-	public void update() {
-		this.update(this.buildASTRoot());
+	public void synchronizeWithJavaSource() {
+		this.synchronizeWith(this.buildASTRoot());
 	}
 
 
 	// ********** internal **********
 
-	protected JavaResourcePersistentType buildPersistentType(CompilationUnit astRoot, TypeDeclaration typeDeclaration) {
+	private JavaResourcePersistentType buildPersistentType(CompilationUnit astRoot, TypeDeclaration typeDeclaration) {
 		return SourcePersistentType.newInstance(this, typeDeclaration, astRoot);
 	}
 
@@ -243,31 +250,35 @@ public final class SourceCompilationUnit
 	 * Return null if the parser did not resolve the type declaration's binding.
 	 * This can occur if the project JRE is removed (bug 225332).
 	 */
-	protected TypeDeclaration getPrimaryType(CompilationUnit astRoot) {
+	private TypeDeclaration getPrimaryTypeDeclaration(CompilationUnit astRoot) {
 		String primaryTypeName = this.getPrimaryTypeName();
-		for (AbstractTypeDeclaration atd : types(astRoot)) {
-			if ((atd.getNodeType() == ASTNode.TYPE_DECLARATION)
-					&& atd.getName().getFullyQualifiedName().equals(primaryTypeName)) {
+		for (AbstractTypeDeclaration atd : this.types(astRoot)) {
+			if (this.nodeIsPrimaryTypeDeclaration(atd, primaryTypeName)) {
 				return (atd.resolveBinding() == null) ? null : (TypeDeclaration) atd;
 			}
 		}
 		return null;
 	}
 
+	private boolean nodeIsPrimaryTypeDeclaration(AbstractTypeDeclaration atd, String primaryTypeName) {
+		return (atd.getNodeType() == ASTNode.TYPE_DECLARATION) &&
+					atd.getName().getFullyQualifiedName().equals(primaryTypeName);
+	}
+
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected static List<AbstractTypeDeclaration> types(CompilationUnit astRoot) {
+	private List<AbstractTypeDeclaration> types(CompilationUnit astRoot) {
 		return astRoot.types();
 	}
 
 	/**
 	 * i.e. the name of the compilation unit
 	 */
-	protected String getPrimaryTypeName() {
-		return removeJavaExtension(this.compilationUnit.getElementName());
+	private String getPrimaryTypeName() {
+		return this.removeJavaExtension(this.compilationUnit.getElementName());
 	}
 
-	protected static String removeJavaExtension(String fileName) {
+	private String removeJavaExtension(String fileName) {
 		int index = fileName.lastIndexOf(".java"); //$NON-NLS-1$
 		return (index == -1) ? fileName : fileName.substring(0, index);
 	}

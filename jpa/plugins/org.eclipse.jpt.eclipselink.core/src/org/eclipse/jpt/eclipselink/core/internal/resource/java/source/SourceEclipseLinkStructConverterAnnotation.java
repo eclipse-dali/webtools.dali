@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -39,7 +39,7 @@ public final class SourceEclipseLinkStructConverterAnnotation
 
 	public SourceEclipseLinkStructConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.converterAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, CONVERTER_ADAPTER);
+		this.converterAdapter = new MemberAnnotationElementAdapter<String>(member, CONVERTER_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -53,9 +53,9 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setConverter(this.buildConverter(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncConverter(this.buildConverter(astRoot));
 	}
 
 
@@ -75,13 +75,16 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	}
 
 	public void setConverter(String converter) {
-		if (this.attributeValueHasNotChanged(this.converter, converter)) {
-			return;
+		if (this.attributeValueHasChanged(this.converter, converter)) {
+			this.converter = converter;
+			this.converterAdapter.setValue(converter);
 		}
+	}
+
+	private void syncConverter(String astConverter) {
 		String old = this.converter;
-		this.converter = converter;
-		this.converterAdapter.setValue(converter);
-		this.firePropertyChanged(CONVERTER_PROPERTY, old, converter);
+		this.converter = astConverter;
+		this.firePropertyChanged(CONVERTER_PROPERTY, old, astConverter);
 	}
 
 	private String buildConverter(CompilationUnit astRoot) {

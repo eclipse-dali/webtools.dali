@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,7 +54,7 @@ import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
 
 /**
- * The JPA model maintains a list of all JPA projects in the workspace.
+ * The JPA project manager maintains a list of all JPA projects in the workspace.
  * It keeps the list (and the state of the JPA projects themselves)
  * synchronized with the workspace by listening for various
  * changes:<ul>
@@ -117,9 +117,9 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  *     -> {@link IResourceDelta#CHANGED} facet settings file
  * </ul>
  */
-class GenericJpaModel
+class GenericJpaProjectManager
 	extends AbstractModel
-	implements JpaModel
+	implements JpaProjectManager
 {
 	/**
 	 * All the JPA projects in the workspace.
@@ -161,7 +161,7 @@ class GenericJpaModel
 
 	/**
 	 * Listen for Java changes (unless the Dali UI is active).
-	 * @see #javaElementChangeListenerIsActive
+	 * @see #javaElementChangeListenerIsActive()
 	 */
 	private final JavaElementChangeListener javaElementChangeListener = new JavaElementChangeListener();
 
@@ -171,7 +171,7 @@ class GenericJpaModel
 	/**
 	 * internal - called by the Dali plug-in
 	 */
-	GenericJpaModel() {
+	GenericJpaProjectManager() {
 		super();
 	}
 
@@ -191,7 +191,7 @@ class GenericJpaModel
 	}
 
 	private void start_() {
-		debug("*** JPA model START ***"); //$NON-NLS-1$
+		debug("*** JPA project manager START ***"); //$NON-NLS-1$
 		try {
 			this.buildJpaProjects();
 			this.eventHandler.start();
@@ -234,7 +234,7 @@ class GenericJpaModel
 	}
 
 	private void stop_() {
-		debug("*** JPA model STOP ***"); //$NON-NLS-1$
+		debug("*** JPA project manager STOP ***"); //$NON-NLS-1$
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
 		FacetedProjectFramework.removeListener(this.facetedProjectListener);
 		this.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
@@ -250,7 +250,7 @@ class GenericJpaModel
 	}
 
 
-	// ********** JpaModel implementation **********
+	// ********** JpaProjectManager implementation **********
 
 	public Iterable<JpaProject> getJpaProjects() {
 		try {
@@ -407,7 +407,7 @@ class GenericJpaModel
 		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
-				GenericJpaModel.this.projectChanged_(delta);
+				GenericJpaProjectManager.this.projectChanged_(delta);
 			}
 			@Override
 			public String toString() {
@@ -437,7 +437,7 @@ class GenericJpaModel
 		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
-				GenericJpaModel.this.projectPostCleanBuild_(project);
+				GenericJpaProjectManager.this.projectPostCleanBuild_(project);
 			}
 			@Override
 			public String toString() {
@@ -465,7 +465,7 @@ class GenericJpaModel
 		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
-				GenericJpaModel.this.projectPreDelete_(project);
+				GenericJpaProjectManager.this.projectPreDelete_(project);
 			}
 			@Override
 			public String toString() {
@@ -496,7 +496,7 @@ class GenericJpaModel
 		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
-				GenericJpaModel.this.checkForJpaFacetTransition_(project);
+				GenericJpaProjectManager.this.checkForJpaFacetTransition_(project);
 			}
 			@Override
 			public String toString() {
@@ -533,7 +533,7 @@ class GenericJpaModel
 		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
-				GenericJpaModel.this.jpaFacetedProjectPostInstall_(event);
+				GenericJpaProjectManager.this.jpaFacetedProjectPostInstall_(event);
 			}
 			@Override
 			public String toString() {
@@ -546,7 +546,7 @@ class GenericJpaModel
 		IProject project = event.getProject().getProject();
 		IDataModel dataModel = (IDataModel) event.getActionConfig();
 
-		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA model
+		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA project manager
 		this.addJpaProject(project);
 
 		boolean buildOrmXml = dataModel.getBooleanProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML);
@@ -595,7 +595,7 @@ class GenericJpaModel
 		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
-				GenericJpaModel.this.jpaFacetedProjectPreUninstall_(project);
+				GenericJpaProjectManager.this.jpaFacetedProjectPreUninstall_(project);
 			}
 			@Override
 			public String toString() {
@@ -605,7 +605,7 @@ class GenericJpaModel
 	}
 
 	/* private */ void jpaFacetedProjectPreUninstall_(IProject project) {
-		// assume(?) this is the first event to indicate we need to remove the JPA project from the JPA model
+		// assume(?) this is the first event to indicate we need to remove the JPA project from the JPA project manager
 		this.removeJpaProject(this.getJpaProject_(project));
 	}
 
@@ -620,7 +620,7 @@ class GenericJpaModel
 		return new EventHandlerCommand() {
 			@Override
 			void execute_() {
-				GenericJpaModel.this.javaElementChanged_(event);
+				GenericJpaProjectManager.this.javaElementChanged_(event);
 			}
 			@Override
 			public String toString() {
@@ -679,15 +679,15 @@ class GenericJpaModel
 
 	/**
 	 * If this "pause" command is executing (asynchronously) on a different
-	 * thread than the JPA model:<ol>
-	 * <li>it will set the flag to <code>true</code>, allowing the JPA model to
-	 * resume executing on its own thread
-	 * <li>then it will suspend its command executor until the JPA model sets
-	 * the flag back to <code>false</code>.
+	 * thread than the JPA project manager:<ol>
+	 * <li>it will set the flag to <code>true</code>, allowing the JPA project
+	 * manager to resume executing on its own thread
+	 * <li>then it will suspend its command executor until the JPA project
+	 * manager sets the flag back to <code>false</code>.
 	 * </ol>
 	 * If this "pause" command is executing (synchronously) on the same thread
-	 * as the JPA model, it will simply set the flag to <code>true</code> and
-	 * return.
+	 * as the JPA project manager, it will simply set the flag to
+	 * <code>true</code> and return.
 	 */
 	private static class PauseCommand
 		implements Command
@@ -737,7 +737,7 @@ class GenericJpaModel
 
 	/**
 	 * Visit the workspace resource tree, adding a JPA project to the
-	 * JPA model for each open Eclipse project that has a JPA facet.
+	 * JPA project manager for each open Eclipse project that has a JPA facet.
 	 */
 	private class ResourceProxyVisitor implements IResourceProxyVisitor {
 		ResourceProxyVisitor() {
@@ -764,7 +764,7 @@ class GenericJpaModel
 			if (resourceProxy.isAccessible()) {  // the project exists and is open
 				IProject project = (IProject) resourceProxy.requestResource();
 				if (JptCorePlugin.projectHasJpaFacet(project)) {
-					GenericJpaModel.this.addJpaProject(project);
+					GenericJpaProjectManager.this.addJpaProject(project);
 				}
 			}
 		}
@@ -780,7 +780,7 @@ class GenericJpaModel
 	// ********** command **********
 
 	/**
-	 * Command that holds the JPA model lock while
+	 * Command that holds the JPA project manager lock while
 	 * executing.
 	 */
 	private abstract class EventHandlerCommand
@@ -792,12 +792,12 @@ class GenericJpaModel
 
 		public final void execute() {
 			try {
-				GenericJpaModel.this.lock.acquire();
+				GenericJpaProjectManager.this.lock.acquire();
 				this.execute_();
 			} catch (RuntimeException ex) {
 				JptCorePlugin.log(ex);
 			} finally {
-				GenericJpaModel.this.lock.release();
+				GenericJpaProjectManager.this.lock.release();
 			}
 		}
 
@@ -886,7 +886,7 @@ class GenericJpaModel
 		}
 
 		private void processPostChangeProjectDelta(IResourceDelta delta) {
-			GenericJpaModel.this.projectChanged(delta);
+			GenericJpaProjectManager.this.projectChanged(delta);
 		}
 		
 		private void processPostChangeSettingsFolderDelta(IFolder folder, IResourceDelta delta) {
@@ -906,7 +906,7 @@ class GenericJpaModel
 				case IResourceDelta.ADDED :
 				case IResourceDelta.REMOVED :
 				case IResourceDelta.CHANGED : 
-					GenericJpaModel.this.checkForJpaFacetTransition(file.getProject());
+					GenericJpaProjectManager.this.checkForJpaFacetTransition(file.getProject());
 					break;
 				case IResourceDelta.ADDED_PHANTOM :
 					break;  // ignore
@@ -954,7 +954,7 @@ class GenericJpaModel
 
 		private void processProjectPostCleanBuild(IProject project) {
 			debug("\tProject CLEAN: ", project.getName()); //$NON-NLS-1$
-			GenericJpaModel.this.projectPostCleanBuild(project);
+			GenericJpaProjectManager.this.projectPostCleanBuild(project);
 		}
 
 		@Override
@@ -968,7 +968,7 @@ class GenericJpaModel
 	// ********** faceted project listener **********
 
 	/**
-	 * Forward the Faceted project change event back to the JPA model.
+	 * Forward the Faceted project change event back to the JPA project manager.
 	 */
 	private class FacetedProjectListener implements IFacetedProjectListener {
 
@@ -1000,14 +1000,14 @@ class GenericJpaModel
 		private void processPostInstallEvent(IProjectFacetActionEvent event) {
 			debug("Facet POST_INSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
 			if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
-				GenericJpaModel.this.jpaFacetedProjectPostInstall(event);
+				GenericJpaProjectManager.this.jpaFacetedProjectPostInstall(event);
 			}
 		}
 
 		private void processPreUninstallEvent(IProjectFacetActionEvent event) {
 			debug("Facet PRE_UNINSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
 			if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
-				GenericJpaModel.this.jpaFacetedProjectPreUninstall(event);
+				GenericJpaProjectManager.this.jpaFacetedProjectPreUninstall(event);
 			}
 		}
 
@@ -1022,7 +1022,7 @@ class GenericJpaModel
 	// ********** Java element change listener **********
 
 	/**
-	 * Forward the Java element change event back to the JPA model.
+	 * Forward the Java element change event back to the JPA project manager.
 	 */
 	private class JavaElementChangeListener implements IElementChangedListener {
 		/**
@@ -1040,7 +1040,7 @@ class GenericJpaModel
 
 		public void elementChanged(ElementChangedEvent event) {
 			if (this.active) {
-				GenericJpaModel.this.javaElementChanged(event);
+				GenericJpaProjectManager.this.javaElementChanged(event);
 			}
 		}
 
@@ -1062,7 +1062,7 @@ class GenericJpaModel
 
 	// ********** DEBUG **********
 
-	// @see JpaModelTests#testDEBUG()
+	// @see JpaProjectManagerTests#testDEBUG()
 	private static final boolean DEBUG = false;
 
 	/**

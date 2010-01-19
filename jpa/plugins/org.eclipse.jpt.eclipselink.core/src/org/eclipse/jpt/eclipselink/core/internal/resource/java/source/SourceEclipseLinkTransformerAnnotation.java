@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -42,10 +42,10 @@ abstract class SourceEclipseLinkTransformerAnnotation
 	SourceEclipseLinkTransformerAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
 		this.transformerClassDeclarationAdapter = new ConversionDeclarationAnnotationElementAdapter<String>(daa, this.getTransformerClassElementName(), false, SimpleTypeStringExpressionConverter.instance());
-		this.transformerClassAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, this.transformerClassDeclarationAdapter);
+		this.transformerClassAdapter = new MemberAnnotationElementAdapter<String>(attribute, this.transformerClassDeclarationAdapter);
 
 		this.methodDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getMethodElementName(), false);
-		this.methodAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, this.methodDeclarationAdapter);
+		this.methodAdapter = new MemberAnnotationElementAdapter<String>(attribute, this.methodDeclarationAdapter);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -53,9 +53,9 @@ abstract class SourceEclipseLinkTransformerAnnotation
 		this.method = this.buildMethod(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setTransformerClass(this.buildTransformerClass(astRoot));
-		this.setMethod(this.buildMethod(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncTransformerClass(this.buildTransformerClass(astRoot));
+		this.syncMethod(this.buildMethod(astRoot));
 	}
 
 	@Override
@@ -72,13 +72,16 @@ abstract class SourceEclipseLinkTransformerAnnotation
 	}
 
 	public void setTransformerClass(String transformerClass) {
-		if (this.attributeValueHasNotChanged(this.transformerClass, transformerClass)) {
-			return;
+		if (this.attributeValueHasChanged(this.transformerClass, transformerClass)) {
+			this.transformerClass = transformerClass;
+			this.transformerClassAdapter.setValue(transformerClass);
 		}
+	}
+
+	private void syncTransformerClass(String astTransformerClass) {
 		String old = this.transformerClass;
-		this.transformerClass = transformerClass;
-		this.transformerClassAdapter.setValue(transformerClass);
-		this.firePropertyChanged(TRANSFORMER_CLASS_PROPERTY, old, transformerClass);
+		this.transformerClass = astTransformerClass;
+		this.firePropertyChanged(TRANSFORMER_CLASS_PROPERTY, old, astTransformerClass);
 	}
 
 	private String buildTransformerClass(CompilationUnit astRoot) {
@@ -97,13 +100,16 @@ abstract class SourceEclipseLinkTransformerAnnotation
 	}
 
 	public void setMethod(String method) {
-		if (this.attributeValueHasNotChanged(this.method, method)) {
-			return;
+		if (this.attributeValueHasChanged(this.method, method)) {
+			this.method = method;
+			this.methodAdapter.setValue(method);
 		}
+	}
+
+	private void syncMethod(String astMethod) {
 		String old = this.method;
-		this.method = method;
-		this.methodAdapter.setValue(method);
-		this.firePropertyChanged(METHOD_PROPERTY, old, method);
+		this.method = astMethod;
+		this.firePropertyChanged(METHOD_PROPERTY, old, astMethod);
 	}
 
 	private String buildMethod(CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,6 +62,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
 		
 		generatedValue.setGenerator("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("foo", idMapping.getGeneratedValue().getGenerator());
 	}
@@ -115,6 +116,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
 		
 		generatedValue.setStrategy(org.eclipse.jpt.core.resource.java.GenerationType.IDENTITY);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(GenerationType.IDENTITY, idMapping.getGeneratedValue().getStrategy());
 		assertEquals(GeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getDefaultStrategy());

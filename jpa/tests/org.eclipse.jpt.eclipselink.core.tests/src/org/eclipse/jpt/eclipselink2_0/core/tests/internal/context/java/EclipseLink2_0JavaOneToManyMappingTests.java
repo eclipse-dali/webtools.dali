@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -130,6 +130,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 	}
@@ -206,15 +207,18 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 
 		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		oneToMany.setOrphanRemoval(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		assertSame(oneToManyMapping, persistentAttribute.getSpecifiedMapping());
 		
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		attributeResource.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
 	}

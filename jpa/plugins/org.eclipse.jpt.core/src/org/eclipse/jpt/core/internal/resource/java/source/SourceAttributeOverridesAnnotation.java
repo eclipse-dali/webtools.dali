@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,8 +48,8 @@ public final class SourceAttributeOverridesAnnotation
 		AnnotationContainerTools.initialize(this, astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		AnnotationContainerTools.update(this, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		AnnotationContainerTools.synchronize(this, astRoot);
 	}
 
 	@Override
@@ -64,8 +64,8 @@ public final class SourceAttributeOverridesAnnotation
 		return this.getAnnotationName();
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-		return this.getJdtAnnotation(astRoot);
+	public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		return this.getAstAnnotation(astRoot);
 	}
 
 	public String getElementName() {

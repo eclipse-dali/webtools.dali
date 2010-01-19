@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ public abstract class NullAnnotation
 		// do nothing
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
 		return null;
 	}
 
@@ -52,7 +52,7 @@ public abstract class NullAnnotation
 		return null;
 	}
 
-	public void update(CompilationUnit astRoot) {
+	public void synchronizeWith(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

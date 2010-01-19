@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,9 @@ import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -25,10 +25,10 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
@@ -79,14 +79,14 @@ public final class SourceEclipseLinkCacheAnnotation
 
 	public SourceEclipseLinkCacheAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.typeAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, TYPE_ADAPTER);
-		this.sizeAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, SIZE_ADAPTER);
-		this.sharedAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, SHARED_ADAPTER);
-		this.expiryAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
-		this.alwaysRefreshAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, ALWAYS_REFRESH_ADAPTER);
-		this.refreshOnlyIfNewerAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, REFRESH_ONLY_IF_NEWER_ADAPTER);
-		this.disableHitsAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, DISABLE_HITS_ADAPTER);
-		this.coordinationTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, COORDINATION_TYPE_ADAPTER);
+		this.typeAdapter = new MemberAnnotationElementAdapter<String>(type, TYPE_ADAPTER);
+		this.sizeAdapter = new MemberAnnotationElementAdapter<Integer>(type, SIZE_ADAPTER);
+		this.sharedAdapter = new MemberAnnotationElementAdapter<Boolean>(type, SHARED_ADAPTER);
+		this.expiryAdapter = new MemberAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
+		this.alwaysRefreshAdapter = new MemberAnnotationElementAdapter<Boolean>(type, ALWAYS_REFRESH_ADAPTER);
+		this.refreshOnlyIfNewerAdapter = new MemberAnnotationElementAdapter<Boolean>(type, REFRESH_ONLY_IF_NEWER_ADAPTER);
+		this.disableHitsAdapter = new MemberAnnotationElementAdapter<Boolean>(type, DISABLE_HITS_ADAPTER);
+		this.coordinationTypeAdapter = new MemberAnnotationElementAdapter<String>(type, COORDINATION_TYPE_ADAPTER);
 		this.expiryTimeOfDayAdapter = new MemberAnnotationAdapter(type, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
@@ -113,30 +113,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		}
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setType(this.buildType(astRoot));
-		this.setSize(this.buildSize(astRoot));
-		this.setShared(this.buildShared(astRoot));
-		this.setExpiry(this.buildExpiry(astRoot));
-		this.updateExpiryTimeOfDay(astRoot);
-		this.setAlwaysRefresh(this.buildAlwaysRefresh(astRoot));
-		this.setRefreshOnlyIfNewer(this.buildRefreshOnlyIfNewer(astRoot));
-		this.setDisableHits(this.buildDisableHits(astRoot));
-		this.setCoordinationType(this.buildCoordinationType(astRoot));
-	}
-
-	private void updateExpiryTimeOfDay(CompilationUnit astRoot) {
-		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) == null) {
-			this.setExpiryTimeOfDay(null);
-		} else {
-			if (this.getExpiryTimeOfDay() == null) {
-				EclipseLinkTimeOfDayAnnotation etod = this.buildExpiryTimeOfDay();
-				etod.initialize(astRoot);
-				this.setExpiryTimeOfDay(etod);
-			} else {
-				this.getExpiryTimeOfDay().update(astRoot);
-			}
-		}
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncType(this.buildType(astRoot));
+		this.syncSize(this.buildSize(astRoot));
+		this.syncShared(this.buildShared(astRoot));
+		this.syncExpiry(this.buildExpiry(astRoot));
+		this.syncExpiryTimeOfDay(astRoot);
+		this.syncAlwaysRefresh(this.buildAlwaysRefresh(astRoot));
+		this.syncRefreshOnlyIfNewer(this.buildRefreshOnlyIfNewer(astRoot));
+		this.syncDisableHits(this.buildDisableHits(astRoot));
+		this.syncCoordinationType(this.buildCoordinationType(astRoot));
 	}
 
 	@Override
@@ -153,13 +139,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setType(CacheType type) {
-		if (this.attributeValueHasNotChanged(this.type, type)) {
-			return;
+		if (this.attributeValueHasChanged(this.type, type)) {
+			this.type = type;
+			this.typeAdapter.setValue(CacheType.toJavaAnnotationValue(type));
 		}
+	}
+
+	private void syncType(CacheType astType) {
 		CacheType old = this.type;
-		this.type = type;
-		this.typeAdapter.setValue(CacheType.toJavaAnnotationValue(type));
-		this.firePropertyChanged(TYPE_PROPERTY, old, type);
+		this.type = astType;
+		this.firePropertyChanged(TYPE_PROPERTY, old, astType);
 	}
 
 	private CacheType buildType(CompilationUnit astRoot) {
@@ -176,13 +165,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setSize(Integer size) {
-		if (this.attributeValueHasNotChanged(this.size, size)) {
-			return;
+		if (this.attributeValueHasChanged(this.size, size)) {
+			this.size = size;
+			this.sizeAdapter.setValue(size);
 		}
+	}
+
+	private void syncSize(Integer astSize) {
 		Integer old = this.size;
-		this.size = size;
-		this.sizeAdapter.setValue(size);
-		this.firePropertyChanged(SIZE_PROPERTY, old, size);
+		this.size = astSize;
+		this.firePropertyChanged(SIZE_PROPERTY, old, astSize);
 	}
 
 	private Integer buildSize(CompilationUnit astRoot) {
@@ -199,13 +191,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setShared(Boolean shared) {
-		if (this.attributeValueHasNotChanged(this.shared, shared)) {
-			return;
+		if (this.attributeValueHasChanged(this.shared, shared)) {
+			this.shared = shared;
+			this.sharedAdapter.setValue(shared);
 		}
+	}
+
+	private void syncShared(Boolean astShared) {
 		Boolean old = this.shared;
-		this.shared = shared;
-		this.sharedAdapter.setValue(shared);
-		this.firePropertyChanged(SHARED_PROPERTY, old, shared);
+		this.shared = astShared;
+		this.firePropertyChanged(SHARED_PROPERTY, old, astShared);
 	}
 
 	private Boolean buildShared(CompilationUnit astRoot) {
@@ -222,13 +217,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setExpiry(Integer expiry) {
-		if (this.attributeValueHasNotChanged(this.expiry, expiry)) {
-			return;
+		if (this.attributeValueHasChanged(this.expiry, expiry)) {
+			this.expiry = expiry;
+			this.expiryAdapter.setValue(expiry);
 		}
+	}
+
+	private void syncExpiry(Integer astExpiry) {
 		Integer old = this.expiry;
-		this.expiry = expiry;
-		this.expiryAdapter.setValue(expiry);
-		this.firePropertyChanged(EXPIRY_PROPERTY, old, expiry);
+		this.expiry = astExpiry;
+		this.firePropertyChanged(EXPIRY_PROPERTY, old, astExpiry);
 	}
 
 	private Integer buildExpiry(CompilationUnit astRoot) {
@@ -246,31 +244,43 @@ public final class SourceEclipseLinkCacheAnnotation
 
 	public EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay != null) {
-			throw new IllegalStateException("'expiryTimeOfDay' element already exists"); //$NON-NLS-1$
+			throw new IllegalStateException("'expiryTimeOfDay' element already exists: " + this.expiryTimeOfDay); //$NON-NLS-1$
 		}
 		this.expiryTimeOfDay = this.buildExpiryTimeOfDay();
-		this.expiryTimeOfDayAdapter.newMarkerAnnotation();
-		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, null, this.expiryTimeOfDay);
+		this.expiryTimeOfDay.newAnnotation();
 		return this.expiryTimeOfDay;
 	}
 
 	public void removeExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay == null) {
-			throw new IllegalStateException("No expiryTimeOfDay element exists"); //$NON-NLS-1$
+			throw new IllegalStateException("'expiryTimeOfDay' element does not exist"); //$NON-NLS-1$
 		}
+		this.expiryTimeOfDay.removeAnnotation();
 		this.expiryTimeOfDay = null;
-		this.expiryTimeOfDayAdapter.removeAnnotation();
-		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, this.expiryTimeOfDay, null);
-	}
-
-	private void setExpiryTimeOfDay(EclipseLinkTimeOfDayAnnotation expiryTimeOfDay) {
-		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
-		this.expiryTimeOfDay = expiryTimeOfDay;
-		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, expiryTimeOfDay);
 	}
 
 	private EclipseLinkTimeOfDayAnnotation buildExpiryTimeOfDay() {
 		return new SourceEclipseLinkTimeOfDayAnnotation(this, this.member, EXPIRY_TIME_OF_DAY_ADAPTER);
+	}
+
+	private void syncExpiryTimeOfDay(CompilationUnit astRoot) {
+		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) == null) {
+			this.syncExpiryTimeOfDay_(null);
+		} else {
+			if (this.expiryTimeOfDay == null) {
+				EclipseLinkTimeOfDayAnnotation tod = this.buildExpiryTimeOfDay();
+				tod.initialize(astRoot);
+				this.syncExpiryTimeOfDay_(tod);
+			} else {
+				this.expiryTimeOfDay.synchronizeWith(astRoot);
+			}
+		}
+	}
+
+	private void syncExpiryTimeOfDay_(EclipseLinkTimeOfDayAnnotation astExpiryTimeOfDay) {
+		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = astExpiryTimeOfDay;
+		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, astExpiryTimeOfDay);
 	}
 
 	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
@@ -283,13 +293,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setAlwaysRefresh(Boolean alwaysRefresh) {
-		if (this.attributeValueHasNotChanged(this.alwaysRefresh, alwaysRefresh)) {
-			return;
+		if (this.attributeValueHasChanged(this.alwaysRefresh, alwaysRefresh)) {
+			this.alwaysRefresh = alwaysRefresh;
+			this.alwaysRefreshAdapter.setValue(alwaysRefresh);
 		}
+	}
+
+	private void syncAlwaysRefresh(Boolean astAlwaysRefresh) {
 		Boolean old = this.alwaysRefresh;
-		this.alwaysRefresh = alwaysRefresh;
-		this.alwaysRefreshAdapter.setValue(alwaysRefresh);
-		this.firePropertyChanged(ALWAYS_REFRESH_PROPERTY, old, alwaysRefresh);
+		this.alwaysRefresh = astAlwaysRefresh;
+		this.firePropertyChanged(ALWAYS_REFRESH_PROPERTY, old, astAlwaysRefresh);
 	}
 
 	private Boolean buildAlwaysRefresh(CompilationUnit astRoot) {
@@ -306,13 +319,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setRefreshOnlyIfNewer(Boolean refreshOnlyIfNewer) {
-		if (this.attributeValueHasNotChanged(this.refreshOnlyIfNewer, refreshOnlyIfNewer)) {
-			return;
+		if (this.attributeValueHasChanged(this.refreshOnlyIfNewer, refreshOnlyIfNewer)) {
+			this.refreshOnlyIfNewer = refreshOnlyIfNewer;
+			this.refreshOnlyIfNewerAdapter.setValue(refreshOnlyIfNewer);
 		}
+	}
+
+	private void syncRefreshOnlyIfNewer(Boolean astRefreshOnlyIfNewer) {
 		Boolean old = this.refreshOnlyIfNewer;
-		this.refreshOnlyIfNewer = refreshOnlyIfNewer;
-		this.refreshOnlyIfNewerAdapter.setValue(refreshOnlyIfNewer);
-		this.firePropertyChanged(REFRESH_ONLY_IF_NEWER_PROPERTY, old, refreshOnlyIfNewer);
+		this.refreshOnlyIfNewer = astRefreshOnlyIfNewer;
+		this.firePropertyChanged(REFRESH_ONLY_IF_NEWER_PROPERTY, old, astRefreshOnlyIfNewer);
 	}
 
 	private Boolean buildRefreshOnlyIfNewer(CompilationUnit astRoot) {
@@ -329,13 +345,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setDisableHits(Boolean disableHits) {
-		if (this.attributeValueHasNotChanged(this.disableHits, disableHits)) {
-			return;
+		if (this.attributeValueHasChanged(this.disableHits, disableHits)) {
+			this.disableHits = disableHits;
+			this.disableHitsAdapter.setValue(disableHits);
 		}
+	}
+
+	private void syncDisableHits(Boolean astDisableHits) {
 		Boolean old = this.disableHits;
-		this.disableHits = disableHits;
-		this.disableHitsAdapter.setValue(disableHits);
-		this.firePropertyChanged(DISABLE_HITS_PROPERTY, old, disableHits);
+		this.disableHits = astDisableHits;
+		this.firePropertyChanged(DISABLE_HITS_PROPERTY, old, astDisableHits);
 	}
 
 	private Boolean buildDisableHits(CompilationUnit astRoot) {
@@ -352,13 +371,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	public void setCoordinationType(CacheCoordinationType coordinationType) {
-		if (this.attributeValueHasNotChanged(this.coordinationType, coordinationType)) {
-			return;
+		if (this.attributeValueHasChanged(this.coordinationType, coordinationType)) {
+			this.coordinationType = coordinationType;
+			this.coordinationTypeAdapter.setValue(CacheCoordinationType.toJavaAnnotationValue(coordinationType));
 		}
+	}
+
+	private void syncCoordinationType(CacheCoordinationType astCoordinationType) {
 		CacheCoordinationType old = this.coordinationType;
-		this.coordinationType = coordinationType;
-		this.coordinationTypeAdapter.setValue(CacheCoordinationType.toJavaAnnotationValue(coordinationType));
-		this.firePropertyChanged(TYPE_PROPERTY, old, coordinationType);
+		this.coordinationType = astCoordinationType;
+		this.firePropertyChanged(TYPE_PROPERTY, old, astCoordinationType);
 	}
 
 	private CacheCoordinationType buildCoordinationType(CompilationUnit astRoot) {

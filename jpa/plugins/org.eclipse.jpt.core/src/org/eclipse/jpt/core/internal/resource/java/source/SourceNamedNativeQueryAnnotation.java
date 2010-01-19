@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -73,11 +73,11 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setResultClass(this.buildResultClass(astRoot));
-		this.setFullyQualifiedResultClassName(this.buildFullyQualifiedResultClassName(astRoot));
-		this.setResultSetMapping(this.buildResultSetMapping(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncResultClass(this.buildResultClass(astRoot));
+		this.syncFullyQualifiedResultClassName(this.buildFullyQualifiedResultClassName(astRoot));
+		this.syncResultSetMapping(this.buildResultSetMapping(astRoot));
 	}
 
 
@@ -112,13 +112,16 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	public void setResultClass(String resultClass) {
-		if (this.attributeValueHasNotChanged(this.resultClass, resultClass)) {
-			return;
+		if (this.attributeValueHasChanged(this.resultClass, resultClass)) {
+			this.resultClass = resultClass;
+			this.resultClassAdapter.setValue(resultClass);
 		}
+	}
+
+	private void syncResultClass(String astResultClass) {
 		String old = this.resultClass;
-		this.resultClass = resultClass;
-		this.resultClassAdapter.setValue(resultClass);
-		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, resultClass);
+		this.resultClass = astResultClass;
+		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, astResultClass);
 	}
 
 	private String buildResultClass(CompilationUnit astRoot) {
@@ -138,10 +141,10 @@ public final class SourceNamedNativeQueryAnnotation
 		return this.fullyQualifiedResultClassName;
 	}
 
-	private void setFullyQualifiedResultClassName(String name) {
+	private void syncFullyQualifiedResultClassName(String astName) {
 		String old = this.fullyQualifiedResultClassName;
-		this.fullyQualifiedResultClassName = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_NAME_PROPERTY, old, name);
+		this.fullyQualifiedResultClassName = astName;
+		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_NAME_PROPERTY, old, astName);
 	}
 
 	private String buildFullyQualifiedResultClassName(CompilationUnit astRoot) {
@@ -154,13 +157,16 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	public void setResultSetMapping(String resultSetMapping) {
-		if (this.attributeValueHasNotChanged(this.resultSetMapping, resultSetMapping)) {
-			return;
+		if (this.attributeValueHasChanged(this.resultSetMapping, resultSetMapping)) {
+			this.resultSetMapping = resultSetMapping;
+			this.resultSetMappingAdapter.setValue(resultSetMapping);
 		}
+	}
+
+	private void syncResultSetMapping(String astResultSetMapping) {
 		String old = this.resultSetMapping;
-		this.resultSetMapping = resultSetMapping;
-		this.resultSetMappingAdapter.setValue(resultSetMapping);
-		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, resultSetMapping);
+		this.resultSetMapping = astResultSetMapping;
+		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, astResultSetMapping);
 	}
 
 	private String buildResultSetMapping(CompilationUnit astRoot) {

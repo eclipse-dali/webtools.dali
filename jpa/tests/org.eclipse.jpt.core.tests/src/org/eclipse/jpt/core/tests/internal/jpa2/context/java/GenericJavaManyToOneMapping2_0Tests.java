@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
@@ -99,10 +98,12 @@ public class GenericJavaManyToOneMapping2_0Tests
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		resourceAttribute.removeAnnotation(JPA.ID);
+		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		resourceAttribute.addAnnotation(JPA.ID);
+		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 	}
@@ -145,14 +146,17 @@ public class GenericJavaManyToOneMapping2_0Tests
 		MapsId2_0Annotation annotation = 
 				(MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID);
 		annotation.setValue("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", annotation.getValue());
 		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		annotation.setValue("bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("bar", annotation.getValue());
 		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		resourceAttribute.removeAnnotation(JPA2_0.MAPS_ID);
+		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 	}

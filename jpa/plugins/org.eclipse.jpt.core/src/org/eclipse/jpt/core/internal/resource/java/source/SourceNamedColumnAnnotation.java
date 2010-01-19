@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
@@ -69,15 +69,15 @@ public abstract class SourceNamedColumnAnnotation
 	}
 
 	AnnotationElementAdapter<String> buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String>(this.member, daea);
 	}
 
 	protected AnnotationElementAdapter<Boolean> buildShortCircuitBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
-		return new ShortCircuitAnnotationElementAdapter<Boolean>(this.member, daea);
+		return new MemberAnnotationElementAdapter<Boolean>(this.member, daea);
 	}
 
 	protected AnnotationElementAdapter<Integer> buildShortCircuitIntegerElementAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
-		return new ShortCircuitAnnotationElementAdapter<Integer>(this.member, daea);
+		return new MemberAnnotationElementAdapter<Integer>(this.member, daea);
 	}
 
 	AnnotationElementAdapter<String> buildShortCircuitStringElementAdapter(String elementName) {
@@ -89,9 +89,9 @@ public abstract class SourceNamedColumnAnnotation
 		this.columnDefinition = this.buildColumnDefinition(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setName(this.buildName(astRoot));
-		this.setColumnDefinition(this.buildColumnDefinition(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncName(this.buildName(astRoot));
+		this.syncColumnDefinition(this.buildColumnDefinition(astRoot));
 	}
 
 	@Override
@@ -112,13 +112,16 @@ public abstract class SourceNamedColumnAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasNotChanged(this.name, name)) {
-			return;
+		if (this.attributeValueHasChanged(this.name, name)) {
+			this.name = name;
+			this.nameAdapter.setValue(name);
 		}
+	}
+
+	private void syncName(String astName) {
 		String old = this.name;
-		this.name = name;
-		this.nameAdapter.setValue(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.name = astName;
+		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -141,13 +144,16 @@ public abstract class SourceNamedColumnAnnotation
 	}
 
 	public void setColumnDefinition(String columnDefinition) {
-		if (this.attributeValueHasNotChanged(this.columnDefinition, columnDefinition)) {
-			return;
+		if (this.attributeValueHasChanged(this.columnDefinition, columnDefinition)) {
+			this.columnDefinition = columnDefinition;
+			this.columnDefinitionAdapter.setValue(columnDefinition);
 		}
+	}
+
+	private void syncColumnDefinition(String astColumnDefinition) {
 		String old = this.columnDefinition;
-		this.columnDefinition = columnDefinition;
-		this.columnDefinitionAdapter.setValue(columnDefinition);
-		this.firePropertyChanged(COLUMN_DEFINITION_PROPERTY, old, columnDefinition);
+		this.columnDefinition = astColumnDefinition;
+		this.firePropertyChanged(COLUMN_DEFINITION_PROPERTY, old, astColumnDefinition);
 	}
 
 	private String buildColumnDefinition(CompilationUnit astRoot) {

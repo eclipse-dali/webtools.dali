@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
@@ -239,10 +239,12 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		resourceAttribute.removeAnnotation(JPA.ID);
+		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		resourceAttribute.addAnnotation(JPA.ID);
+		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 	}
@@ -285,14 +287,17 @@ public class GenericJavaOneToOneMapping2_0Tests
 		MapsId2_0Annotation annotation = 
 				(MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID);
 		annotation.setValue("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", annotation.getValue());
 		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		annotation.setValue("bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("bar", annotation.getValue());
 		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
 		resourceAttribute.removeAnnotation(JPA2_0.MAPS_ID);
+		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 	}
@@ -336,6 +341,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		
 		((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).setValue("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertFalse(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
@@ -453,6 +459,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		oneToOne.setOrphanRemoval(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 	}
@@ -529,15 +536,18 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		OneToOne2_0Annotation oneToOne = (OneToOne2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_ONE);
 		oneToOne.setOrphanRemoval(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
 
 		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		oneToOne.setOrphanRemoval(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		assertSame(oneToOneMapping, persistentAttribute.getSpecifiedMapping());
 		
 		oneToOne.setOrphanRemoval(Boolean.FALSE);
 		attributeResource.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
 	}

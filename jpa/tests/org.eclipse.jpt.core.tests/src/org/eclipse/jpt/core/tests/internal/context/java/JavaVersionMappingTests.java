@@ -366,10 +366,12 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.resource.java.TemporalType.DATE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(TemporalType.DATE, ((TemporalConverter) versionMapping.getConverter()).getTemporalType());
 		
 		attributeResource.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Converter.NO_CONVERTER, versionMapping.getConverter().getType());
 		assertFalse(versionMapping.isDefault());
@@ -390,6 +392,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("foo", versionMapping.getColumn().getSpecifiedName());
 		assertEquals("foo", versionMapping.getColumn().getName());

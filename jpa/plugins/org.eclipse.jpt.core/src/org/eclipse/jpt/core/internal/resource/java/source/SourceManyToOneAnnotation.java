@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,9 +58,9 @@ public final class SourceManyToOneAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setOptional(this.buildOptional(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncOptional(this.buildOptional(astRoot));
 	}
 
 
@@ -90,13 +90,16 @@ public final class SourceManyToOneAnnotation
 	}
 
 	public void setOptional(Boolean optional) {
-		if (this.attributeValueHasNotChanged(this.optional, optional)) {
-			return;
+		if (this.attributeValueHasChanged(this.optional, optional)) {
+			this.optional = optional;
+			this.optionalAdapter.setValue(optional);
 		}
+	}
+
+	private void syncOptional(Boolean astOptional) {
 		Boolean old = this.optional;
-		this.optional = optional;
-		this.optionalAdapter.setValue(optional);
-		this.firePropertyChanged(OPTIONAL_PROPERTY, old, optional);
+		this.optional = astOptional;
+		this.firePropertyChanged(OPTIONAL_PROPERTY, old, astOptional);
 	}
 
 	private Boolean buildOptional(CompilationUnit astRoot) {

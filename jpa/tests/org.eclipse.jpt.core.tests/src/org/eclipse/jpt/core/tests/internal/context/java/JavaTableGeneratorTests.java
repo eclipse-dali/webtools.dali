@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -72,6 +72,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("foo", idMapping.getGeneratorContainer().getTableGenerator().getName());
 	}
@@ -124,6 +125,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
 		tableGenerator.setCatalog("myCatalog");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("myCatalog", idMapping.getGeneratorContainer().getTableGenerator().getCatalog());
 		assertEquals("myCatalog", idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedCatalog());
@@ -173,6 +175,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
 		tableGenerator.setSchema("mySchema");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("mySchema", idMapping.getGeneratorContainer().getTableGenerator().getSchema());
 		assertEquals("mySchema", idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedSchema());
@@ -250,6 +253,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
 		tableGenerator.setPkColumnName("myPkColumnName");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("myPkColumnName", idMapping.getGeneratorContainer().getTableGenerator().getPkColumnName());
 		assertEquals("myPkColumnName", idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedPkColumnName());
@@ -299,6 +303,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
 		tableGenerator.setValueColumnName("myValueColumnName");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("myValueColumnName", idMapping.getGeneratorContainer().getTableGenerator().getValueColumnName());
 		assertEquals("myValueColumnName", idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedValueColumnName());
@@ -348,6 +353,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
 		tableGenerator.setPkColumnValue("myPkColumnValue");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("myPkColumnValue", idMapping.getGeneratorContainer().getTableGenerator().getPkColumnValue());
 		assertEquals("myPkColumnValue", idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedPkColumnValue());
@@ -397,6 +403,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
 		tableGenerator.setInitialValue(Integer.valueOf(82));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(82, idMapping.getGeneratorContainer().getTableGenerator().getInitialValue());
 		assertEquals(Integer.valueOf(82), idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedInitialValue());
@@ -447,6 +454,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
 		tableGenerator.setAllocationSize(Integer.valueOf(20));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(20, idMapping.getGeneratorContainer().getTableGenerator().getAllocationSize());
 		assertEquals(Integer.valueOf(20), idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedAllocationSize());
@@ -499,6 +507,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
+		getJpaProject().synchronizeContextModel();
 		
 		uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
@@ -661,7 +670,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName("FOO");
 		tableGeneratorAnnotation.addUniqueConstraint(1).addColumnName("BAR");
 		tableGeneratorAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
-
+		getJpaProject().synchronizeContextModel();
 		
 		ListIterator<UniqueConstraint> uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
@@ -670,6 +679,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 		
 		tableGeneratorAnnotation.moveUniqueConstraint(2, 0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
@@ -677,6 +687,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableGeneratorAnnotation.moveUniqueConstraint(0, 1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
@@ -684,17 +695,20 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableGeneratorAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableGeneratorAnnotation.removeUniqueConstraint(1);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		tableGeneratorAnnotation.removeUniqueConstraint(0);
+		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 	}

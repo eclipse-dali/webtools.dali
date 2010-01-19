@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
@@ -25,10 +25,10 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -52,7 +52,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 
 	public SourceEclipseLinkObjectTypeConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.defaultObjectValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, DEFAULT_OBJECT_VALUE_ADAPTER);
+		this.defaultObjectValueAdapter = new MemberAnnotationElementAdapter<String>(member, DEFAULT_OBJECT_VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -67,10 +67,10 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	@Override
-	public void update(CompilationUnit astRoot) {
-		super.update(astRoot);
-		this.setDefaultObjectValue(this.buildDefaultObjectValue(astRoot));
-		AnnotationContainerTools.update(this.conversionValuesContainer, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		super.synchronizeWith(astRoot);
+		this.syncDefaultObjectValue(this.buildDefaultObjectValue(astRoot));
+		AnnotationContainerTools.synchronize(this.conversionValuesContainer, astRoot);
 	}
 
 
@@ -103,13 +103,16 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	public void setDefaultObjectValue(String defaultObjectValue) {
-		if (this.attributeValueHasNotChanged(this.defaultObjectValue, defaultObjectValue)) {
-			return;
+		if (this.attributeValueHasChanged(this.defaultObjectValue, defaultObjectValue)) {
+			this.defaultObjectValue = defaultObjectValue;
+			this.defaultObjectValueAdapter.setValue(defaultObjectValue);
 		}
+	}
+
+	private void syncDefaultObjectValue(String astDefaultObjectValue) {
 		String old = this.defaultObjectValue;
-		this.defaultObjectValue = defaultObjectValue;
-		this.defaultObjectValueAdapter.setValue(defaultObjectValue);
-		this.firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, old, defaultObjectValue);
+		this.defaultObjectValue = astDefaultObjectValue;
+		this.firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, old, astDefaultObjectValue);
 	}
 
 	private String buildDefaultObjectValue(CompilationUnit astRoot) {
@@ -204,8 +207,8 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 			return SourceEclipseLinkObjectTypeConverterAnnotation.this.getAnnotationName();
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-			return SourceEclipseLinkObjectTypeConverterAnnotation.this.getJdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+			return SourceEclipseLinkObjectTypeConverterAnnotation.this.getAstAnnotation(astRoot);
 		}
 
 		public String getElementName() {

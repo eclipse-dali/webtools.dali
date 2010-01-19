@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,11 +60,13 @@ public class JavaQueryHintTests extends ContextModelTestCase
 
 		//set name in the resource model, verify context model updated
 		javaQueryHint.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", javaQueryHint.getName());
 		assertEquals("foo", queryHint.getName());
 		
 		//set name to null in the resource model
 		javaQueryHint.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaQueryHint.getName());
 		assertEquals(0, entity.getQueryContainer().namedQueries().next().hintsSize());
 	}
@@ -108,11 +110,13 @@ public class JavaQueryHintTests extends ContextModelTestCase
 
 		//set name in the resource model, verify context model updated
 		javaQueryhint.setValue("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", javaQueryhint.getValue());
 		assertEquals("foo", queryHint.getValue());
 		
 		//set name to null in the resource model
 		javaQueryhint.setValue(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(javaQueryhint.getValue());
 		assertEquals(0, entity.getQueryContainer().namedQueries().next().hintsSize());
 	}

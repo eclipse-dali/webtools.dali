@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaModel;
+import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -255,7 +255,7 @@ public class JpaStructurePage
 		this.viewer.addSelectionChangedListener(this.treeSelectionListener);
 		this.viewer.addPostSelectionChangedListener(this.treePostSelectionListener);
 		this.jpaProject.addCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, this.jpaFilesListener);
-		JptCorePlugin.getJpaModel().addCollectionChangeListener(JpaModel.JPA_PROJECTS_COLLECTION, this.projectsListener);
+		JptCorePlugin.getJpaProjectManager().addCollectionChangeListener(JpaProjectManager.JPA_PROJECTS_COLLECTION, this.projectsListener);
 	}
 	
 	@Override
@@ -265,7 +265,7 @@ public class JpaStructurePage
 	}
 	
 	protected void disengageListeners() {
-		JptCorePlugin.getJpaModel().removeCollectionChangeListener(JpaModel.JPA_PROJECTS_COLLECTION, this.projectsListener);
+		JptCorePlugin.getJpaProjectManager().removeCollectionChangeListener(JpaProjectManager.JPA_PROJECTS_COLLECTION, this.projectsListener);
 		if (this.jpaProject != null) {
 			this.jpaProject.removeCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, this.jpaFilesListener);
 		}

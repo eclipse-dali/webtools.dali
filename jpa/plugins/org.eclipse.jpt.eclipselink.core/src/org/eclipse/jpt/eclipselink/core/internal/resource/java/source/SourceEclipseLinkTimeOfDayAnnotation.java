@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -50,13 +50,13 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa) {
 		super(parent, type, daa);
 		this.hourDeclarationAdapter = buildHourAdapter(daa);
-		this.hourAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, this.hourDeclarationAdapter);
+		this.hourAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.hourDeclarationAdapter);
 		this.minuteDeclarationAdapter = buildMinuteAdapter(daa);
-		this.minuteAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, this.minuteDeclarationAdapter);
+		this.minuteAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.minuteDeclarationAdapter);
 		this.secondDeclarationAdapter = buildSecondAdapter(daa);
-		this.secondAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, this.secondDeclarationAdapter);
+		this.secondAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.secondDeclarationAdapter);
 		this.millisecondDeclarationAdapter = buildMillisecondAdapter(daa);
-		this.millisecondAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, this.millisecondDeclarationAdapter);
+		this.millisecondAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.millisecondDeclarationAdapter);
 	}
 
 	public String getAnnotationName() {
@@ -70,11 +70,11 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		this.millisecond = this.buildMillisecond(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setHour(this.buildHour(astRoot));
-		this.setMinute(this.buildMinute(astRoot));
-		this.setSecond(this.buildSecond(astRoot));
-		this.setMillisecond(this.buildMillisecond(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncHour(this.buildHour(astRoot));
+		this.syncMinute(this.buildMinute(astRoot));
+		this.syncSecond(this.buildSecond(astRoot));
+		this.syncMillisecond(this.buildMillisecond(astRoot));
 	}
 
 
@@ -86,13 +86,16 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	}
 
 	public void setHour(Integer hour) {
-		if (this.attributeValueHasNotChanged(this.hour, hour)) {
-			return;
+		if (this.attributeValueHasChanged(this.hour, hour)) {
+			this.hour = hour;
+			this.hourAdapter.setValue(hour);
 		}
+	}
+
+	private void syncHour(Integer astHour) {
 		Integer old = this.hour;
-		this.hour = hour;
-		this.hourAdapter.setValue(hour);
-		this.firePropertyChanged(HOUR_PROPERTY, old, hour);
+		this.hour = astHour;
+		this.firePropertyChanged(HOUR_PROPERTY, old, astHour);
 	}
 
 	private Integer buildHour(CompilationUnit astRoot) {
@@ -108,14 +111,17 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		return this.minute;
 	}
 
-	public void setMinute(Integer newMinute) {
-		if (attributeValueHasNotChanged(this.minute, newMinute)) {
-			return;
+	public void setMinute(Integer minute) {
+		if (this.attributeValueHasChanged(this.minute, minute)) {
+			this.minute = minute;
+			this.minuteAdapter.setValue(minute);
 		}
-		Integer oldMinute = this.minute;
-		this.minute = newMinute;
-		this.minuteAdapter.setValue(newMinute);
-		firePropertyChanged(MINUTE_PROPERTY, oldMinute, newMinute);
+	}
+
+	private void syncMinute(Integer astMinute) {
+		Integer old = this.minute;
+		this.minute = astMinute;
+		this.firePropertyChanged(MINUTE_PROPERTY, old, astMinute);
 	}
 
 	private Integer buildMinute(CompilationUnit astRoot) {
@@ -132,13 +138,16 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	}
 
 	public void setSecond(Integer newSecond) {
-		if (attributeValueHasNotChanged(this.second, newSecond)) {
-			return;
+		if (this.attributeValueHasChanged(this.second, newSecond)) {
+			this.second = newSecond;
+			this.secondAdapter.setValue(newSecond);
 		}
-		Integer oldSecond = this.second;
-		this.second = newSecond;
-		this.secondAdapter.setValue(newSecond);
-		firePropertyChanged(SECOND_PROPERTY, oldSecond, newSecond);
+	}
+
+	private void syncSecond(Integer astSecond) {
+		Integer old = this.second;
+		this.second = astSecond;
+		this.firePropertyChanged(SECOND_PROPERTY, old, astSecond);
 	}
 
 	private Integer buildSecond(CompilationUnit astRoot) {
@@ -154,14 +163,17 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		return this.millisecond;
 	}
 
-	public void setMillisecond(Integer newMillisecond) {
-		if (attributeValueHasNotChanged(this.millisecond, newMillisecond)) {
-			return;
+	public void setMillisecond(Integer millisecond) {
+		if (this.attributeValueHasChanged(this.millisecond, millisecond)) {
+			this.millisecond = millisecond;
+			this.millisecondAdapter.setValue(millisecond);
 		}
+	}
+
+	private void syncMillisecond(Integer astMillisecond) {
 		Integer oldMillisecond = this.millisecond;
-		this.millisecond = newMillisecond;
-		this.millisecondAdapter.setValue(newMillisecond);
-		firePropertyChanged(MILLISECOND_PROPERTY, oldMillisecond, newMillisecond);
+		this.millisecond = astMillisecond;
+		this.firePropertyChanged(MILLISECOND_PROPERTY, oldMillisecond, astMillisecond);
 	}
 
 	private Integer buildMillisecond(CompilationUnit astRoot) {

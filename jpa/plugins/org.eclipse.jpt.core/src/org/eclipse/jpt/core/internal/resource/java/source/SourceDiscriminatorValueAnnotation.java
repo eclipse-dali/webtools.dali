@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -38,7 +38,7 @@ public final class SourceDiscriminatorValueAnnotation
 
 	public SourceDiscriminatorValueAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
+		this.valueAdapter = new MemberAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -49,8 +49,8 @@ public final class SourceDiscriminatorValueAnnotation
 		this.value = this.buildValue(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setValue(this.buildValue(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncValue(this.buildValue(astRoot));
 	}
 
 	@Override
@@ -67,13 +67,16 @@ public final class SourceDiscriminatorValueAnnotation
 	}
 
 	public void setValue(String value) {
-		if (this.attributeValueHasNotChanged(this.value, value)) {
-			return;
+		if (this.attributeValueHasChanged(this.value, value)) {
+			this.value = value;
+			this.valueAdapter.setValue(value);
 		}
+	}
+
+	private void syncValue(String astValue) {
 		String old = this.value;
-		this.value = value;
-		this.valueAdapter.setValue(value);
-		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+		this.value = astValue;
+		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
 	private String buildValue(CompilationUnit astRoot) {

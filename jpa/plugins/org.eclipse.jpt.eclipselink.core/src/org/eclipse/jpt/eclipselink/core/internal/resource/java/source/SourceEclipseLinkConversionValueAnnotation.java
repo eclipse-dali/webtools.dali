@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,9 +12,9 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -23,10 +23,10 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.ConversionValue
@@ -53,7 +53,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new MemberAnnotationElementAdapter<String>(this.member, daea);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildDataValueAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
@@ -73,9 +73,9 @@ final class SourceEclipseLinkConversionValueAnnotation
 		this.objectValue = this.buildObjectValue(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setDataValue(this.buildDataValue(astRoot));
-		this.setObjectValue(this.buildObjectValue(astRoot));
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncDataValue(this.buildDataValue(astRoot));
+		this.syncObjectValue(this.buildObjectValue(astRoot));
 	}
 
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
@@ -98,13 +98,16 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	public void setDataValue(String dataValue) {
-		if (this.attributeValueHasNotChanged(this.dataValue, dataValue)) {
-			return;
+		if (this.attributeValueHasChanged(this.dataValue, dataValue)) {
+			this.dataValue = dataValue;
+			this.dataValueAdapter.setValue(dataValue);
 		}
+	}
+
+	private void syncDataValue(String astDataValue) {
 		String old = this.dataValue;
-		this.dataValue = dataValue;
-		this.dataValueAdapter.setValue(dataValue);
-		this.firePropertyChanged(DATA_VALUE_PROPERTY, old, dataValue);
+		this.dataValue = astDataValue;
+		this.firePropertyChanged(DATA_VALUE_PROPERTY, old, astDataValue);
 	}
 
 	private String buildDataValue(CompilationUnit astRoot) {
@@ -121,13 +124,16 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	public void setObjectValue(String objectValue) {
-		if (this.attributeValueHasNotChanged(this.objectValue, objectValue)) {
-			return;
+		if (this.attributeValueHasChanged(this.objectValue, objectValue)) {
+			this.objectValue = objectValue;
+			this.objectValueAdapter.setValue(objectValue);
 		}
+	}
+
+	private void syncObjectValue(String astObjectValue) {
 		String old = this.objectValue;
-		this.objectValue = objectValue;
-		this.objectValueAdapter.setValue(objectValue);
-		this.firePropertyChanged(OBJECT_VALUE_PROPERTY, old, objectValue);
+		this.objectValue = astObjectValue;
+		this.firePropertyChanged(OBJECT_VALUE_PROPERTY, old, astObjectValue);
 	}
 
 	private String buildObjectValue(CompilationUnit astRoot) {

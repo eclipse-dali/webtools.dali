@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -200,10 +200,12 @@ public class JavaColumnTests extends ContextModelTestCase
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 
 		column.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", basicMapping.getColumn().getSpecifiedName());
 		assertEquals("foo", basicMapping.getColumn().getName());
 		
 		column.setName(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(basicMapping.getColumn().getSpecifiedName());
 	}
 	
@@ -308,10 +310,12 @@ public class JavaColumnTests extends ContextModelTestCase
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 
 		column.setTable("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", basicMapping.getColumn().getSpecifiedTable());
 		assertEquals("foo", basicMapping.getColumn().getTable());
 		
 		column.setTable(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(basicMapping.getColumn().getSpecifiedTable());
 	}
 	
@@ -352,9 +356,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 
 		column.setColumnDefinition("foo");
+		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", basicMapping.getColumn().getColumnDefinition());
 		
 		column.setColumnDefinition(null);
+		getJpaProject().synchronizeContextModel();
 		assertNull(basicMapping.getColumn().getColumnDefinition());
 
 	}
@@ -393,11 +399,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setLength(Integer.valueOf(66));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedLength());
 		assertEquals(66, basicMapping.getColumn().getLength());
 		
 		column.setLength(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(basicMapping.getColumn().getSpecifiedLength());	
@@ -458,11 +466,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setPrecision(Integer.valueOf(66));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedPrecision());
 		assertEquals(66, basicMapping.getColumn().getPrecision());
 		
 		column.setPrecision(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(basicMapping.getColumn().getSpecifiedPrecision());	
@@ -523,11 +533,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setScale(Integer.valueOf(66));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedScale());
 		assertEquals(66, basicMapping.getColumn().getScale());
 		
 		column.setScale(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(basicMapping.getColumn().getSpecifiedScale());	
@@ -588,11 +600,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setUnique(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedUnique());
 		assertEquals(true, basicMapping.getColumn().isUnique());
 		
 		column.setUnique(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(basicMapping.getColumn().getSpecifiedUnique());	
@@ -653,11 +667,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setInsertable(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedInsertable());
 		assertEquals(true, basicMapping.getColumn().isInsertable());
 		
 		column.setInsertable(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(basicMapping.getColumn().getSpecifiedInsertable());	
@@ -718,11 +734,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setNullable(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedNullable());
 		assertEquals(true, basicMapping.getColumn().isNullable());
 		
 		column.setNullable(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(basicMapping.getColumn().getSpecifiedNullable());	
@@ -783,11 +801,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setUpdatable(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedUpdatable());
 		assertEquals(true, basicMapping.getColumn().isUpdatable());
 		
 		column.setUpdatable(null);
+		getJpaProject().synchronizeContextModel();
 		
 		assertNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(basicMapping.getColumn().getSpecifiedUpdatable());	

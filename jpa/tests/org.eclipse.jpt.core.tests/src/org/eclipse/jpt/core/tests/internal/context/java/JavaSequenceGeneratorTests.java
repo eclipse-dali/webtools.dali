@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,6 +63,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		sequenceGenerator.setName("foo");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("foo", idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 	}
@@ -115,6 +116,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setInitialValue(Integer.valueOf(82));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(82, idMapping.getGeneratorContainer().getSequenceGenerator().getInitialValue());
 		assertEquals(Integer.valueOf(82), idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedInitialValue());
@@ -165,6 +167,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setAllocationSize(Integer.valueOf(20));
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals(20, idMapping.getGeneratorContainer().getSequenceGenerator().getAllocationSize());
 		assertEquals(Integer.valueOf(20), idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedAllocationSize());
@@ -216,6 +219,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setSequenceName("mySequenceName");
+		getJpaProject().synchronizeContextModel();
 		
 		assertEquals("mySequenceName", idMapping.getGeneratorContainer().getSequenceGenerator().getSequenceName());
 		assertEquals("mySequenceName", idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedSequenceName());

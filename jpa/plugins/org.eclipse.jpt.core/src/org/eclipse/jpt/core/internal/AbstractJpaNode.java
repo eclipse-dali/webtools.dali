@@ -161,7 +161,9 @@ public abstract class AbstractJpaNode
 
 	protected void aspectChanged(String aspectName) {
 		if (this.aspectTriggersUpdate(aspectName)) {
-			// System.out.println(Thread.currentThread() + " \"update\" change: " + this + ": " + aspectName);
+//			String msg = Thread.currentThread() + " aspect change: " + this + ": " + aspectName;
+//			System.out.println(msg);
+//			new Exception(msg).printStackTrace(System.out);
 			this.getJpaProject().update();
 		}
 	}

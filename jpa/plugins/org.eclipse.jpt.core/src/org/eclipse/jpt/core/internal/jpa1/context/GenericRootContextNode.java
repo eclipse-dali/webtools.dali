@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -35,80 +35,116 @@ import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledExcepti
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * the context model root
+ */
 public class GenericRootContextNode
 	extends AbstractJpaContextNode
 	implements JpaRootContextNode2_0
 {
 	/* This object has no parent, so it must point to the JPA project explicitly. */
 	protected final JpaProject jpaProject;
-	
+
 	/* Main context object. */
 	protected PersistenceXml persistenceXml;
-	
-	
+
+
 	public GenericRootContextNode(JpaProject jpaProject) {
-		super(null);
+		super(null);  // the JPA project is not really a "parent"...
 		if (jpaProject == null) {
 			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
-		JpaXmlResource resource = getPersistenceXmlResource();
-		if (resource != null) {
-			this.persistenceXml = buildPersistenceXml(resource);
-		}
+		this.initialize();
 	}
-	
-	
+
+
 	@Override
 	protected boolean requiresParent() {
 		return false;
 	}
-	
-	
-	// **************** JpaNode impl *******************************************
-	
+
+	protected void initialize() {
+		JpaXmlResource resource = this.resolvePersistenceXmlResource();
+		if (resource != null) {
+			this.persistenceXml = this.buildPersistenceXml(resource);
+		}
+	}
+
+	public void update(IProgressMonitor monitor) {
+		JpaXmlResource resource = this.resolvePersistenceXmlResource();
+		if (resource == null) {
+			this.setPersistenceXml(null);
+		} else {
+			if (this.persistenceXml == null) {
+				this.setPersistenceXml(this.buildPersistenceXml(resource));
+			} else {
+				this.persistenceXml.update(resource);
+			}
+		}
+	}
+
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.persistenceXml != null) {
+			this.persistenceXml.postUpdate();
+		}
+	}
+
+
+	// ********** AbstractJpaNode overrides **********
+
 	@Override
 	public JpaProject getJpaProject() {
 		return this.jpaProject;
 	}
-	
+
 	@Override
 	public IResource getResource() {
 		return this.getProject();
 	}
-	
+
 	protected IProject getProject() {
 		return this.jpaProject.getProject();
 	}
-	
-	
-	// **************** JpaContextNode impl ************************************
-	
+
+
+	// ********** AbstractJpaContextNode overrides **********
+
 	@Override
 	public PersistenceUnit getPersistenceUnit() {
 		return null;
 	}
-	
+
 	@Override
 	public MappingFileRoot getMappingFileRoot() {
 		return null;
 	}
-	
-	
-	// **************** persistence xml ****************************************
-	
+
+
+	// ********** persistence.xml **********
+
 	public PersistenceXml getPersistenceXml() {
 		return this.persistenceXml;
 	}
-	
+
 	protected void setPersistenceXml(PersistenceXml persistenceXml) {
 		PersistenceXml old = this.persistenceXml;
 		this.persistenceXml = persistenceXml;
 		this.firePropertyChanged(PERSISTENCE_XML_PROPERTY, old, persistenceXml);
 	}
-	
 
-	// *************** metamodel ****************
+	protected JpaXmlResource resolvePersistenceXmlResource() {
+		return this.jpaProject.getPersistenceXmlResource();
+	}
+
+	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
+		return this.getJpaFactory().buildPersistenceXml(this, resource);
+	}
+
+
+	// ********** metamodel **********
 
 	public void initializeMetamodel() {
 		if (this.persistenceXml != null) {
@@ -129,41 +165,8 @@ public class GenericRootContextNode
 	}
 
 
-	// **************** updating ***********************************************
-	
-	public void update(IProgressMonitor monitor) {
-		JpaXmlResource resource = getPersistenceXmlResource();
-		
-		if (resource != null) {
-			if (this.persistenceXml == null) {
-				this.setPersistenceXml(this.buildPersistenceXml(resource));
-			} else {
-				this.persistenceXml.update(resource);
-			}
-		} else {
-			this.setPersistenceXml(null);
-		}
-	}
-	
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		if (this.persistenceXml != null) {
-			this.persistenceXml.postUpdate();
-		}
-	}
-	
-	protected JpaXmlResource getPersistenceXmlResource() {
-		return this.jpaProject.getPersistenceXmlResource();
-	}
-	
-	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
-		return this.getJpaFactory().buildPersistenceXml(this, resource);
-	}
-	
-	
-	// **************** Validation *********************************************
-	
+	// ********** validation **********
+
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
@@ -172,7 +175,7 @@ public class GenericRootContextNode
 		if (this.persistenceXml == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY, 
+					IMessage.HIGH_SEVERITY,
 					this.buildMissingFileMessageID(),
 					this
 				)
@@ -187,15 +190,14 @@ public class GenericRootContextNode
 
 	protected String buildMissingFileMessageID() {
 		return this.getPlatformFile().exists() ?
-					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT
-				:
+					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT :
 					JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML;
 	}
 
 	protected IFile getPlatformFile() {
 		return this.jpaProject.convertToPlatformFile(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
 	}
-	
+
 	protected void validateOrphanClasses(List<IMessage> messages) {
 		Persistence persistence = this.persistenceXml.getPersistence();
 		if (persistence == null) {
@@ -213,7 +215,7 @@ public class GenericRootContextNode
 				orphans.remove(annotatedClassName);
 			}
 		}
-		
+
 		// TODO remove 'jrcu'
 		// replace jrcu.getFile() with jrpt.getFile()
 		// replace jrpt.getMappingAnnotation().getTextRange(jrcu.buildASTRoot())
@@ -246,4 +248,5 @@ public class GenericRootContextNode
 			}
 		}
 	}
+
 }
