@@ -47,23 +47,14 @@ public class EclipseLinkCustomizationComposite extends Pane<Customization>
 			0, groupBoxMargin, 0, groupBoxMargin
 		);
 
-		// Weaving
-		new WeavingComposite(this, defaultPane);
+		// Weaving Group
+		new WeavingPropertiesComposite(this, defaultPane);
 
-		// Weaving Lazy
-		new WeavingLazyComposite(this, defaultPane);
+		// Validation Only
+		new ValidationOnlyComposite(this, defaultPane);
 
-		// Weaving Fetch Groups
-		new WeavingFetchGroupsComposite(this, defaultPane);
-
-		// Weaving Internal
-		new WeavingInternalComposite(this, defaultPane);
-
-		// Weaving Eager
-		new WeavingEagerComposite(this, defaultPane);
-
-		// Weaving Change Tracking
-		new WeavingChangeTrackingComposite(this, defaultPane);
+		// Mapping Files Validate Schema
+		new ValidateSchemaComposite(this, defaultPane);
 
 		// Throw Exceptions
 		new ThrowExceptionsComposite(this, defaultPane);
@@ -76,9 +67,6 @@ public class EclipseLinkCustomizationComposite extends Pane<Customization>
 
 		// EntitiesList
 		new EntityListComposite(this, composite);
-
-		// Validation Only
-		new ValidationOnlyComposite(this, composite);
 
 		// Profiler:
 		new ProfilerComposite(this, composite);

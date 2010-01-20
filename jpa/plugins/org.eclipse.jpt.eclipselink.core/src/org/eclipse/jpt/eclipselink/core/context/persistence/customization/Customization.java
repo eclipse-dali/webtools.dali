@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -132,4 +132,11 @@ public interface Customization extends PersistenceUnitProperties
 
 		String ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME = "org.eclipse.persistence.exceptions.ExceptionHandler"; //$NON-NLS-1$
 
+	Boolean getDefaultValidateSchema();
+	Boolean getValidateSchema();
+	void setValidateSchema(Boolean newValidateSchema);
+		static final String VALIDATE_SCHEMA_PROPERTY = "validateSchema"; //$NON-NLS-1$
+		// EclipseLink key string
+		static final String ECLIPSELINK_VALIDATE_SCHEMA = "eclipselink.orm.validate.schema"; //$NON-NLS-1$
+		static final Boolean DEFAULT_VALIDATE_SCHEMA = Boolean.FALSE;
 }

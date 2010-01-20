@@ -203,6 +203,7 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlCustomizationTab_sectionDescription;
 	public static String PersistenceXmlCustomizationTab_defaultWithOneParam;
 
+	public static String PersistenceXmlCustomizationTab_weavingPropertiesGroupBox;
 	public static String PersistenceXmlCustomizationTab_weavingLabel;
 
 	public static String PersistenceXmlCustomizationTab_weavingLazyLabelDefault;
@@ -242,6 +243,9 @@ public class EclipseLinkUiMessages {
 
 	public static String PersistenceXmlCustomizationTab_validationOnlyLabel;
 	public static String PersistenceXmlCustomizationTab_validationOnlyLabelDefault;
+
+	public static String PersistenceXmlCustomizationTab_validateSchemaLabel;
+	public static String PersistenceXmlCustomizationTab_validateSchemaLabelDefault;
 	
 	public static String PersistenceXmlCustomizationTab_profilerLabel;
 	public static String PersistenceXmlCustomizationTab_browse;

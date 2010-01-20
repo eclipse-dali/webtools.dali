@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
  * PersistenceUnit changes.
  */
 @SuppressWarnings("nls")
-public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCase
+public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Customization customization;
 	private ListChangeEvent entitiesEvent;
@@ -70,6 +70,10 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 	public static final Boolean VALIDATION_ONLY_TEST_VALUE = false;
 	public static final Boolean VALIDATION_ONLY_TEST_VALUE_2 = ! VALIDATION_ONLY_TEST_VALUE;
 
+	public static final String VALIDATE_SCHEMA_KEY = Customization.ECLIPSELINK_VALIDATE_SCHEMA;
+	public static final Boolean VALIDATE_SCHEMA_TEST_VALUE = true;
+	public static final Boolean VALIDATE_SCHEMA_TEST_VALUE_2 = ! VALIDATE_SCHEMA_TEST_VALUE;
+
 	private static final String SESSION_CUSTOMIZER_KEY = Customization.ECLIPSELINK_SESSION_CUSTOMIZER;
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE = "java.lang.String";
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE_2 = "java.lang.Boolean";
@@ -89,11 +93,13 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 	public static final String EXCEPTION_HANDLER_KEY = Customization.ECLIPSELINK_EXCEPTION_HANDLER;
 	public static final String EXCEPTION_HANDLER_TEST_VALUE = "acme.CustomSessionEventListener";
 	public static final String EXCEPTION_HANDLER_TEST_VALUE_2 = "oracle.sessions.CustomSessionEventListener";
-	
-	public CustomizationAdapterTests(String name) {
+
+	// ********** constructors **********
+	public EclipseLinkCustomizationTests(String name) {
 		super(name);
 	}
 
+	// ********** behavior **********
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -108,6 +114,7 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 		this.customization.addPropertyChangeListener(Customization.WEAVING_EAGER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.VALIDATION_ONLY_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(Customization.VALIDATE_SCHEMA_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.PROFILER_PROPERTY, propertyChangeListener);
@@ -126,7 +133,7 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 12;
+		this.modelPropertiesSizeOriginal = 13;
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -138,6 +145,7 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 		this.persistenceUnitSetProperty(WEAVING_INTERNAL_KEY, WEAVING_INTERNAL_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(WEAVING_EAGER_KEY, WEAVING_EAGER_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(VALIDATION_ONLY_KEY, VALIDATION_ONLY_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(VALIDATE_SCHEMA_KEY, VALIDATE_SCHEMA_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty("misc.property.2", "value.2");
 		this.persistenceUnitSetProperty(SESSION_CUSTOMIZER_KEY, SESSION_CUSTOMIZER_TEST_VALUE.toString());
 		this.persistenceUnitSetProperty(WEAVING_KEY, WEAVING_TEST_VALUE);
@@ -153,27 +161,27 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 	private ListChangeListener buildEntitiesChangeListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListAddEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void itemsRemoved(ListRemoveEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void itemsReplaced(ListReplaceEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void itemsMoved(ListMoveEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void listCleared(ListClearEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void listChanged(ListChangeEvent e) {
-				CustomizationAdapterTests.this.entityChanged(e);
+				EclipseLinkCustomizationTests.this.entityChanged(e);
 			}
 		};
 	}
@@ -181,27 +189,27 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 	private ListChangeListener buildSessionCustomizersChangeListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListAddEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void itemsRemoved(ListRemoveEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void itemsReplaced(ListReplaceEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void itemsMoved(ListMoveEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void listCleared(ListClearEvent e) {
-				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 
 			public void listChanged(ListChangeEvent e) {
-				CustomizationAdapterTests.this.sessionCustomizerChanged(e);
+				EclipseLinkCustomizationTests.this.sessionCustomizerChanged(e);
 			}
 		};
 	}
@@ -219,6 +227,96 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 
 	void sessionCustomizerChanged(ListChangeEvent e) {
 		this.sessionCustomizersEvent = e;
+	}
+
+	// ********** get/set property **********
+	@Override
+	protected void setProperty(String propertyName, Object newValue) throws Exception {
+		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
+			this.customization.setThrowExceptions((Boolean) newValue);
+		else if (propertyName.equals(Customization.WEAVING_LAZY_PROPERTY))
+			this.customization.setWeavingLazy((Boolean) newValue);
+		else if (propertyName.equals(Customization.WEAVING_CHANGE_TRACKING_PROPERTY))
+			this.customization.setWeavingChangeTracking((Boolean) newValue);
+		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
+			this.customization.setWeavingFetchGroups((Boolean) newValue);
+		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
+			this.customization.setWeavingInternal((Boolean) newValue);
+		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
+			this.customization.setWeavingEager((Boolean) newValue);
+		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
+			this.customization.setValidationOnly((Boolean) newValue);
+		else if (propertyName.equals(Customization.VALIDATE_SCHEMA_PROPERTY))
+			this.customization.setValidateSchema((Boolean) newValue);
+		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
+			this.customization.setExceptionHandler((String) newValue);
+		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
+			this.customization.addSessionCustomizer((String) newValue);
+		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
+			this.customization.setWeaving((Weaving) newValue);
+		else if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
+			if (newValue.getClass().isEnum())
+				this.customization.setProfiler((Profiler) newValue);
+			else
+				this.customization.setProfiler((String) newValue);
+		}
+		else
+			this.throwMissingDefinition("setProperty", propertyName);
+	}
+
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
+		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
+			modelValue = this.customization.getThrowExceptions();
+		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
+			modelValue = this.customization.getWeaving();
+		else if (propertyName.equals(Customization.WEAVING_LAZY_PROPERTY))
+			modelValue = this.customization.getWeavingLazy();
+		else if (propertyName.equals(Customization.WEAVING_CHANGE_TRACKING_PROPERTY))
+			modelValue = this.customization.getWeavingChangeTracking();
+		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
+			modelValue = this.customization.getWeavingFetchGroups();
+		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
+			modelValue = this.customization.getWeavingInternal();
+		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
+			modelValue = this.customization.getWeavingEager();
+		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
+			modelValue = this.customization.getValidationOnly();
+		else if (propertyName.equals(Customization.VALIDATE_SCHEMA_PROPERTY))
+			modelValue = this.customization.getValidateSchema();
+		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
+			modelValue = this.customization.getExceptionHandler();
+		else if (propertyName.equals(Customization.PROFILER_PROPERTY))
+			modelValue = this.customization.getProfiler();
+		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {
+			ListIterator<String> iterator = this.customization.sessionCustomizers();
+			if(iterator.hasNext()) {
+				modelValue = iterator.next();
+			}
+		}
+		else if (propertyName.equals(Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
+			modelValue = this.customization.getDescriptorCustomizerOf(ENTITY_TEST);
+		else
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
+	}
+	
+	@Override
+	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+		Object expectedValue_ = expectedValue;
+		if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
+			
+			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
+				this.getPropertyStringValueOf(PROFILER_TEST_VALUE) : // model is storing EclipseLinkStringValue
+				expectedValue;
+		}
+		super.verifyPutProperty(propertyName, expectedValue_);
+	}
+
+	@Override
+	protected PersistenceUnitProperties getModel() {
+		return this.customization;
 	}
 
 	// ********** entities list **********
@@ -431,6 +529,24 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 			VALIDATION_ONLY_TEST_VALUE_2);
 	}
 
+	// ********** ValidateSchema tests **********
+	public void testSetValidateSchema() throws Exception {
+		this.verifyModelInitialized(
+			VALIDATE_SCHEMA_KEY,
+			VALIDATE_SCHEMA_TEST_VALUE);
+		this.verifySetProperty(
+			VALIDATE_SCHEMA_KEY,
+			VALIDATE_SCHEMA_TEST_VALUE,
+			VALIDATE_SCHEMA_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveValidateSchema() throws Exception {
+		this.verifyAddRemoveProperty(
+			VALIDATE_SCHEMA_KEY,
+			VALIDATE_SCHEMA_TEST_VALUE,
+			VALIDATE_SCHEMA_TEST_VALUE_2);
+	}
+
 	// ********** ExceptionHandler tests **********
 	public void testSetExceptionHandler() throws Exception {
 		this.verifyModelInitialized(
@@ -539,6 +655,7 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 		this.verifyPutSessionCustomizerProperty(propertyName, testValue1);
 	}
 	
+	@SuppressWarnings("unused") 
 	protected void verifyAddRemoveSessionCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
 		// Remove
 		this.clearEvent();
@@ -561,6 +678,7 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 		this.verifySessionCustomizerEvent(propertyName, expectedValue);
 	}
 
+	@SuppressWarnings("unused")
 	protected void verifySessionCustomizerEvent(String propertyName, Object expectedValue) throws Exception {
 		// verify event value
 		EclipseLinkCustomization customization = (EclipseLinkCustomization) this.sessionCustomizersEvent.getSource();
@@ -623,91 +741,5 @@ public class CustomizationAdapterTests extends EclipseLinkPersistenceUnitTestCas
 			this.customization.setDescriptorCustomizerOf(entityName, (String) newValue);
 		else
 			this.throwMissingDefinition("setCustomizationProperty", propertyName);
-	}
-
-	// ********** get/set property **********
-	@Override
-	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
-			this.customization.setThrowExceptions((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_LAZY_PROPERTY))
-			this.customization.setWeavingLazy((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_CHANGE_TRACKING_PROPERTY))
-			this.customization.setWeavingChangeTracking((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
-			this.customization.setWeavingFetchGroups((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
-			this.customization.setWeavingInternal((Boolean) newValue);
-		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
-			this.customization.setWeavingEager((Boolean) newValue);
-		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
-			this.customization.setValidationOnly((Boolean) newValue);
-		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
-			this.customization.setExceptionHandler((String) newValue);
-		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
-			this.customization.addSessionCustomizer((String) newValue);
-		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
-			this.customization.setWeaving((Weaving) newValue);
-		else if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
-			if (newValue.getClass().isEnum())
-				this.customization.setProfiler((Profiler) newValue);
-			else
-				this.customization.setProfiler((String) newValue);
-		}
-		else
-			this.throwMissingDefinition("setProperty", propertyName);
-	}
-
-	@Override
-	protected Object getProperty(String propertyName) throws NoSuchFieldException {
-		Object modelValue = null;
-		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
-			modelValue = this.customization.getThrowExceptions();
-		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
-			modelValue = this.customization.getWeaving();
-		else if (propertyName.equals(Customization.WEAVING_LAZY_PROPERTY))
-			modelValue = this.customization.getWeavingLazy();
-		else if (propertyName.equals(Customization.WEAVING_CHANGE_TRACKING_PROPERTY))
-			modelValue = this.customization.getWeavingChangeTracking();
-		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
-			modelValue = this.customization.getWeavingFetchGroups();
-		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
-			modelValue = this.customization.getWeavingInternal();
-		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
-			modelValue = this.customization.getWeavingEager();
-		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
-			modelValue = this.customization.getValidationOnly();
-		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
-			modelValue = this.customization.getExceptionHandler();
-		else if (propertyName.equals(Customization.PROFILER_PROPERTY))
-			modelValue = this.customization.getProfiler();
-		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {
-			ListIterator<String> iterator = this.customization.sessionCustomizers();
-			if(iterator.hasNext()) {
-				modelValue = iterator.next();
-			}
-		}
-		else if (propertyName.equals(Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
-			modelValue = this.customization.getDescriptorCustomizerOf(ENTITY_TEST);
-		else
-			this.throwMissingDefinition("getProperty", propertyName);
-		return modelValue;
-	}
-	
-	@Override
-	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
-		Object expectedValue_ = expectedValue;
-		if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
-			
-			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
-				this.getPropertyStringValueOf(PROFILER_TEST_VALUE) : // model is storing EclipseLinkStringValue
-				expectedValue;
-		}
-		super.verifyPutProperty(propertyName, expectedValue_);
-	}
-
-	@Override
-	protected PersistenceUnitProperties getModel() {
-		return this.customization;
 	}
 }

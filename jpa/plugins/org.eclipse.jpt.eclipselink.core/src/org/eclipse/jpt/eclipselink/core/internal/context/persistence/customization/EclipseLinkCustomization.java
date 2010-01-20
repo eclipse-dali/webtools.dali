@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,6 +39,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Boolean weavingInternal;
 	private Boolean weavingEager;
 	private Boolean validationOnly;
+	private Boolean validateSchema;
 	private List<String> sessionCustomizers;
 	private String profiler; // storing EclipseLinkStringValue since value can be Profiler or custom class
 	private String exceptionHandler;
@@ -74,6 +75,8 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.getBooleanValue(ECLIPSELINK_WEAVING_EAGER);
 		this.validationOnly = 
 			this.getBooleanValue(ECLIPSELINK_VALIDATION_ONLY);
+		this.validateSchema = 
+			this.getBooleanValue(ECLIPSELINK_VALIDATE_SCHEMA);
 		this.initializeSessionCustomizersFromPersistenceUnit();
 
 		Set<PersistenceUnit.Property> properties = 
@@ -145,6 +148,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		else if (propertyName.equals(ECLIPSELINK_VALIDATION_ONLY)) {
 			this.validationOnlyChanged(newValue);
 		}
+		else if (propertyName.equals(ECLIPSELINK_VALIDATE_SCHEMA)) {
+			this.validateSchemaChanged(newValue);
+		}
 		else if (propertyName.equals(ECLIPSELINK_SESSION_CUSTOMIZER)) {
 			this.sessionCustomizersChanged();
 		}
@@ -183,6 +189,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		}
 		else if (propertyName.equals(ECLIPSELINK_VALIDATION_ONLY)) {
 			this.validationOnlyChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_VALIDATE_SCHEMA)) {
+			this.validateSchemaChanged(null);
 		}
 		else if (propertyName.equals(ECLIPSELINK_SESSION_CUSTOMIZER)) {
 			this.sessionCustomizersChanged();
@@ -230,6 +239,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		propertyNames.put(
 			ECLIPSELINK_VALIDATION_ONLY,
 			VALIDATION_ONLY_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_VALIDATE_SCHEMA,
+			VALIDATE_SCHEMA_PROPERTY);
 		propertyNames.put(
 			ECLIPSELINK_SESSION_CUSTOMIZER,
 			SESSION_CUSTOMIZER_PROPERTY);
@@ -462,6 +474,30 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	public Boolean getDefaultValidationOnly() {
 		return DEFAULT_VALIDATION_ONLY;
+	}
+
+	// ********** ValidateSchema **********
+	public Boolean getValidateSchema() {
+		return this.validateSchema;
+	}
+
+	public void setValidateSchema(Boolean newValidateSchema) {
+		Boolean old = this.validateSchema;
+		this.validateSchema = newValidateSchema;
+		this.putProperty(VALIDATE_SCHEMA_PROPERTY, newValidateSchema);
+		this.firePropertyChanged(VALIDATE_SCHEMA_PROPERTY, old, newValidateSchema);
+	}
+
+	private void validateSchemaChanged(String stringValue) {
+		Boolean newValue = getBooleanValueOf(stringValue);
+		
+		Boolean old = this.validateSchema;
+		this.validateSchema = newValue;
+		this.firePropertyChanged(VALIDATE_SCHEMA_PROPERTY, old, newValue);
+	}
+
+	public Boolean getDefaultValidateSchema() {
+		return DEFAULT_VALIDATE_SCHEMA;
 	}
 
 	// ********** SessionCustomizers **********
