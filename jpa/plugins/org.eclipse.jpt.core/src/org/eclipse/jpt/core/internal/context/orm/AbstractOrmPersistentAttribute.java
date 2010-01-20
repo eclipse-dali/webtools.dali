@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -127,27 +126,27 @@ public abstract class AbstractOrmPersistentAttribute
 				mappingDefinition.buildResourceMapping(getResourceNodeFactory());
 		this.attributeMapping = buildAttributeMapping(resourceAttributeMapping);
 		
-		getPersistentType().changeMapping(this, oldMapping, this.attributeMapping);
+		getOwningPersistentType().changeMapping(this, oldMapping, this.attributeMapping);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
 
-	public OrmPersistentType getPersistentType() {
+	public OrmPersistentType getOwningPersistentType() {
 		return (OrmPersistentType) getParent();
 	}
 
-	public OrmTypeMapping getTypeMapping() {
-		return getPersistentType().getMapping();
+	public OrmTypeMapping getOwningTypeMapping() {
+		return getOwningPersistentType().getMapping();
 	}
 
 	public boolean isVirtual() {
-		return getPersistentType().containsVirtualAttribute(this);
+		return getOwningPersistentType().containsVirtualAttribute(this);
 	}
 
 	public void makeVirtual() {
 		if (isVirtual()) {
 			throw new IllegalStateException("Attribute is already virtual"); //$NON-NLS-1$
 		}
-		getPersistentType().makeAttributeVirtual(this);
+		getOwningPersistentType().makeAttributeVirtual(this);
 	}
 	
 	public void makeSpecified() {
@@ -157,22 +156,27 @@ public abstract class AbstractOrmPersistentAttribute
 		if (getMappingKey() == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 			throw new IllegalStateException("Use makeSpecified(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
-		getPersistentType().makeAttributeSpecified(this);
+		getOwningPersistentType().makeAttributeSpecified(this);
 	}
 	
 	public void makeSpecified(String mappingKey) {
 		if (!isVirtual()) {
 			throw new IllegalStateException("Attribute is already specified"); //$NON-NLS-1$
 		}
-		getPersistentType().makeAttributeSpecified(this, mappingKey);
+		getOwningPersistentType().makeAttributeSpecified(this, mappingKey);
 	}
 	
 	public String getPrimaryKeyColumnName() {
 		return this.attributeMapping.getPrimaryKeyColumnName();
 	}
+	
+	public String getTypeName() {
+		JavaPersistentAttribute javaAttribute = getJavaPersistentAttribute();
+		return (javaAttribute == null) ? null : javaAttribute.getTypeName();
+	}
 
-	public boolean isIdAttribute() {
-		return this.attributeMapping.isIdMapping();
+	public boolean isPrimaryKeyAttribute() {
+		return this.attributeMapping.isPrimaryKeyMapping();
 	}
 	
 	public void update() {
@@ -193,7 +197,7 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 	
 	protected AccessType buildDefaultAccess() {
-		return getPersistentType().getAccess();
+		return getOwningPersistentType().getAccess();
 	}
 
 
@@ -246,7 +250,7 @@ public abstract class AbstractOrmPersistentAttribute
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-					new String[] {this.getName(), this.getPersistentType().getMapping().getClass_()},
+					new String[] {this.getName(), this.getOwningPersistentType().getMapping().getClass_()},
 					this.attributeMapping, 
 					this.attributeMapping.getNameTextRange()
 				)
@@ -287,7 +291,7 @@ public abstract class AbstractOrmPersistentAttribute
 
 	public TextRange getValidationTextRange() {
 		if (isVirtual()) {
-			return getPersistentType().getMapping().getAttributesTextRange();
+			return getOwningPersistentType().getMapping().getAttributesTextRange();
 		}
 		return this.attributeMapping.getValidationTextRange();
 	}

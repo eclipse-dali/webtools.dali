@@ -133,7 +133,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractXmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="#//AbstractXmlEmbedded #//v2_0/XmlEmbedded_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="#//AbstractXmlEmbedded"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer #//XmlEventMethodContainer #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer #//v2_0/XmlEntity_2_0">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer #//XmlEventMethodContainer #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer #//v2_0/XmlEntity_2_0 #//XmlIdClassContainer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//XmlTable"
         containment="true" resolveProxies="false"/>
@@ -141,8 +141,6 @@
         eType="#//XmlSecondaryTable" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
         upperBound="-1" eType="#//XmlPrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
-        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inheritance" eType="#//Inheritance"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorValue" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -244,6 +242,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlIdClassContainer" abstract="true"
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Inheritance">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="#//InheritanceType"
         defaultValueLiteral="SINGLE_TABLE"/>
@@ -276,9 +279,7 @@
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
-        containment="true" resolveProxies="false"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping #//XmlIdClassContainer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeSuperclassListeners"

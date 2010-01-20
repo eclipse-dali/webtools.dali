@@ -158,7 +158,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/table"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/secondaryTables"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/primaryKeyJoinColumns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/idClass"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/inheritance"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlEntity/discriminatorValue"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/discriminatorColumn"/>
@@ -226,6 +225,9 @@
     <genClasses ecoreClass="orm.ecore#//XmlIdClass">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlIdClass/className"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlIdClassContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlIdClassContainer/idClass"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//Inheritance">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Inheritance/strategy"/>
     </genClasses>
@@ -252,7 +254,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMappedByMapping/mappedBy"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlMappedSuperclass">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMappedSuperclass/idClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMappedSuperclass/excludeDefaultListeners"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMappedSuperclass/excludeSuperclassListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMappedSuperclass/entityListeners"/>

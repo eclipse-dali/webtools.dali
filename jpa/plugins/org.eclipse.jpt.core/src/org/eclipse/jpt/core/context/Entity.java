@@ -21,149 +21,157 @@ import java.util.ListIterator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Entity
-	extends TypeMapping, IdClassHolder
+	extends TypeMapping
 {
 	// **************** name **************************************
-
+	
 	/**
 	 * Return the name, specified or default if not specified.
 	 */
 	String getName();
-
+	
 	/**
 	 * Return the specified name.
 	 */
 	String getSpecifiedName();
-
+	
 	/**
 	 * Set the specified name on the entity.
 	 */
 	void setSpecifiedName(String value);
 		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
-
+	
 	/**
 	 * Return the default name, based on the class name.
 	 */
 	String getDefaultName();
 		String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
-
-
+	
+	
+	// **************** id class **********************************************
+ 	
+ 	/**
+ 	 * Return the (aggregate) class reference for configuring and validating id class
+ 	 */
+ 	IdClassReference getIdClassReference();
+ 	
+ 	
 	// **************** table **************************************
-
+	
 	/**
 	 * Return the table for this entity, either specified or default.
 	 * This will not be null.
 	 */
 	Table getTable();
-
+	
 	/**
 	 * Return the name of the entity's primary key column.
 	 * Return null if the entity's primary key is "compound"
 	 * (i.e. the primary key is composed of multiple columns).
 	 */
 	String getPrimaryKeyColumnName();
-
+	
 	/**
 	 * Return the entity's default table name, which depends on the entity's
 	 * inheritance hierarchy.
 	 */
 	String getDefaultTableName();
-
+	
 	/**
 	 * Return the entity's default schema, which depends on the entity's
 	 * inheritance hierarchy.
 	 */
 	String getDefaultSchema();
-
+	
 	/**
 	 * Return the entity's default catalog, which depends on the entity's
 	 * inheritance hierarchy.
 	 */
 	String getDefaultCatalog();
-
-
+	
+	
 	// **************** secondary tables **************************************
-
+	
 	/**
 	 * Return a list iterator of the secondary tables whether specified or default.
 	 * This will not be null.
 	 */
 	<T extends SecondaryTable> ListIterator<T> secondaryTables();
-
+	
 	/**
 	 * Return the number of secondary tables, both specified and default.
 	 */
 	int secondaryTablesSize();
-
+	
 	/**
 	 * Return a list iterator of the specified secondary tables.
 	 * This will not be null.
 	 */
 	<T extends SecondaryTable> ListIterator<T> specifiedSecondaryTables();
-
+	
 	/**
 	 * Return the number of specified secondary tables.
 	 */
 	int specifiedSecondaryTablesSize();
-
+	
 	/**
 	 * Add a specified secondary table to the entity return the object 
 	 * representing it.
 	 */
 	SecondaryTable addSpecifiedSecondaryTable(int index);
-
+	
 	/**
 	 * Add a specified secondary table to the entity return the object 
 	 * representing it.
 	 */
 	SecondaryTable addSpecifiedSecondaryTable();
-
+	
 	/**
 	 * Remove the specified secondary table from the entity.
 	 */
 	void removeSpecifiedSecondaryTable(int index);
-
+	
 	/**
 	 * Remove the specified secondary table at the index from the entity.
 	 */
 	void removeSpecifiedSecondaryTable(SecondaryTable secondaryTable);
-
+	
 	/**
 	 * Move the specified secondary table from the source index to the target index.
 	 */
 	void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex);
 		String SPECIFIED_SECONDARY_TABLES_LIST = "specifiedSecondaryTables"; //$NON-NLS-1$
-
-
+	
+	
 	// **************** inheritance **************************************
-
+	
 	InheritanceType getInheritanceStrategy();
-
+	
 	InheritanceType getDefaultInheritanceStrategy();
 		String DEFAULT_INHERITANCE_STRATEGY_PROPERTY = "defaultInheritanceStrategy"; //$NON-NLS-1$
-
+	
 	InheritanceType getSpecifiedInheritanceStrategy();
 	void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType);
 		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy"; //$NON-NLS-1$
-
+	
 	/**
 	 * The first parent in the class hierarchy that is an entity. 
 	 * This is the parent in the entity (persistent) inheritance hierarchy
 	 * (vs class inheritance hierarchy).  Return null if there is no parent entity.
 	 */
 	Entity getParentEntity();
-
+	
 	DiscriminatorColumn getDiscriminatorColumn();
-
+	
 	String getDiscriminatorValue();
-
+	
 	String getDefaultDiscriminatorValue();
 		String DEFAULT_DISCRIMINATOR_VALUE_PROPERTY = "defaultDiscriminatorValue"; //$NON-NLS-1$
-
+	
 	String getSpecifiedDiscriminatorValue();
 	void setSpecifiedDiscriminatorValue(String value);
 		String SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY = "specifiedDiscriminatorValue"; //$NON-NLS-1$
-
+	
 	/** 
 	 * Return whether a DiscriminatorValue is allowed for this Entity.
 	 * It is allowed if the entity is not abstract and not part of 
@@ -171,7 +179,7 @@ public interface Entity
 	 */
 	boolean specifiedDiscriminatorValueIsAllowed();
  		String SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY = "discriminatorValueIsAllowed"; //$NON-NLS-1$
-
+ 	
 	 /**
 	 * Return whether a DiscriminatorValue is undefined for this Entity.
 	 * It is undefined if the entity is abstract or if it
@@ -179,7 +187,7 @@ public interface Entity
 	 */
 	boolean discriminatorValueIsUndefined();
  		String DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY = "discriminatorValueIsUndefined"; //$NON-NLS-1$
-
+ 	
 	/**
 	 * Return whether a DiscriminatorColumn is allowed for this Entity.
 	 * It is allowed if the entity is the root of the inheritance hierarchy (with descendant entities)
@@ -212,34 +220,35 @@ public interface Entity
 	 */
  	boolean tableIsUndefined();
  		String TABLE_IS_UNDEFINED_PROPERTY = "tableIsUndefined"; //$NON-NLS-1$
-
-	// **************** primary key join columns **************************************
-
+ 	
+ 	
+ 	// **************** primary key join columns ******************************
+ 	
 	<T extends PrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns();
-
+	
 	int primaryKeyJoinColumnsSize();
-
+	
 	<T extends PrimaryKeyJoinColumn> ListIterator<T> specifiedPrimaryKeyJoinColumns();
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumns"; //$NON-NLS-1$
-
+	
 	int specifiedPrimaryKeyJoinColumnsSize();
-
+	
 	PrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 		String DEFAULT_PRIMARY_KEY_JOIN_COLUMN = "defaultPrimaryKeyJoinColumn"; //$NON-NLS-1$
-
+	
 	PrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
-
+	
 	void removeSpecifiedPrimaryKeyJoinColumn(int index);
-
+	
 	void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn);
-
+	
 	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
-
-
+	
+	
 	// ********** misc **********
-
+	
 	AttributeOverrideContainer getAttributeOverrideContainer();
-
+	
 	AssociationOverrideContainer getAssociationOverrideContainer();
 		
 	QueryContainer getQueryContainer();
@@ -258,11 +267,10 @@ public interface Entity
 	 * In 2.0 this name could use dot-notation for nested mappings.
 	 */
 	AttributeMapping resolveAttributeMapping(String name);
-
+	
 	/**
-	 * Return the entity's ID attribute.
-	 * Return null if the entity has multiple ID attributes.
+	 * Return the entity's primary key attribute.
+	 * Return null if the entity has multiple primary key attributes.
 	 */
-	PersistentAttribute getIdAttribute();
-
+	PersistentAttribute getPrimaryKeyAttribute();
 }

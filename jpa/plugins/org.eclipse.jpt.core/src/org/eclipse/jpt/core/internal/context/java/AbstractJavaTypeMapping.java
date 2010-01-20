@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.Table;
@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -106,7 +107,50 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 			}
 		};
 	}
-
+	
+	public boolean specifiesPrimaryKey() {
+		// default implementation
+		return false;
+	}
+	
+	/**
+	 * Return whether an ancestor class has defined a primary key
+	 */
+	protected boolean primaryKeyIsDefinedOnAncestor() {
+		for (TypeMapping each : CollectionTools.iterable(inheritanceHierarchy())) {
+			if (each != this && each.specifiesPrimaryKey()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected boolean hasNoPrimaryKeyAttribute() {
+		return ! this.hasPrimaryKeyAttribute();
+	}
+	
+	protected boolean hasPrimaryKeyAttribute() {
+		for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext(); ) {
+			if (stream.next().isPrimaryKeyAttribute()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Return all attributes defined on this type mapping that define the type's primary key
+	 */
+	protected Iterable<JavaPersistentAttribute> getPrimaryKeyAttributes() {
+		return new FilteringIterable<JavaPersistentAttribute>(
+				CollectionTools.collection(getPersistentType().attributes())) {
+			@Override
+			protected boolean accept(JavaPersistentAttribute o) {
+				return o.isPrimaryKeyAttribute();
+			}
+		};
+	}
+	
 	public Iterator<JavaAttributeMapping> attributeMappings() {
 		return new TransformationIterator<JavaPersistentAttribute, JavaAttributeMapping>(getPersistentType().attributes()) {
 			@Override

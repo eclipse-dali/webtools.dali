@@ -171,7 +171,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public OrmTypeMapping getTypeMapping() {
-		return this.getPersistentAttribute().getTypeMapping();
+		return this.getPersistentAttribute().getOwningTypeMapping();
 	}
 
 
@@ -183,7 +183,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return false;
 	}
 
-	public boolean isIdMapping() {
+	public boolean isPrimaryKeyMapping() {
 		return false;
 	}
 	

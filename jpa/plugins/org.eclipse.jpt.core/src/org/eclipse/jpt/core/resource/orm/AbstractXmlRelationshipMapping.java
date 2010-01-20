@@ -363,7 +363,8 @@ public abstract class AbstractXmlRelationshipMapping extends AbstractXmlAttribut
 	public TextRange getTargetEntityTextRange() {
 		return getAttributeTextRange(JPA.TARGET_ENTITY);
 	}
-
+	
+	
 	// ********** translators **********
 	
 	protected static Translator buildTargetEntityTranslator() {

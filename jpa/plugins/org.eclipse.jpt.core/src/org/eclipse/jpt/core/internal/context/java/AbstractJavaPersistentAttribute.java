@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -138,20 +137,24 @@ public abstract class AbstractJavaPersistentAttribute
 		return this.resourcePersistentAttribute;
 	}
 
-	public PersistentType getPersistentType() {
+	public PersistentType getOwningPersistentType() {
 		return this.getParent();
 	}
 
-	public TypeMapping getTypeMapping() {
-		return this.getPersistentType().getMapping();
+	public TypeMapping getOwningTypeMapping() {
+		return this.getOwningPersistentType().getMapping();
 	}
 
 	public String getPrimaryKeyColumnName() {
 		return this.getMapping().getPrimaryKeyColumnName();
 	}
-
-	public boolean isIdAttribute() {
-		return this.getMapping().isIdMapping();
+	
+	public String getTypeName() {
+		return this.resourcePersistentAttribute.getTypeName();
+	}
+	
+	public boolean isPrimaryKeyAttribute() {
+		return this.getMapping().isPrimaryKeyMapping();
 	}
 
 	public boolean isVirtual() {
@@ -172,8 +175,8 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public Embeddable getEmbeddable() {
-		String typeName = this.resourcePersistentAttribute.getTypeName();
-		return (typeName == null) ? null : this.getPersistenceUnit().getEmbeddable(typeName);
+		return (getTypeName() == null) ? 
+				null : this.getPersistenceUnit().getEmbeddable(getTypeName());
 	}
 
 	public boolean isField() {
@@ -216,7 +219,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 */
 	public boolean typeIsBasic() {
 		// 'typeName' may include array brackets but not generic type arguments
-		String typeName = this.resourcePersistentAttribute.getTypeName();
+		String typeName = getTypeName();
 		if (typeName == null) {
 			return false;
 		}
@@ -294,7 +297,7 @@ public abstract class AbstractJavaPersistentAttribute
 	public String getSingleReferenceTargetTypeName() {
 		// 'typeName' may include array brackets ("[]")
 		// but not generic type arguments (e.g. "<java.lang.String>")
-		String typeName = this.resourcePersistentAttribute.getTypeName();
+		String typeName = getTypeName();
 		if (typeName == null) {
 			return null;
 		}
@@ -583,7 +586,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getMetamodelTypeName() {
-		String typeName = this.resourcePersistentAttribute.getTypeName();
+		String typeName = getTypeName();
 		if (typeName == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
@@ -592,7 +595,8 @@ public abstract class AbstractJavaPersistentAttribute
 		}
 		return typeName;
 	}
-
+	
+	
 	// ********** JPA containers **********
 
 	public JpaContainer getJpaContainer() {

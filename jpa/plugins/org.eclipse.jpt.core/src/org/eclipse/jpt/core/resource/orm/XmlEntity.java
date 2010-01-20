@@ -47,7 +47,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getTable <em>Table</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getSecondaryTables <em>Secondary Tables</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getIdClass <em>Id Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getInheritance <em>Inheritance</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getDiscriminatorValue <em>Discriminator Value</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getDiscriminatorColumn <em>Discriminator Column</em>}</li>
@@ -62,7 +61,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlEntity_2_0
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlEntity_2_0, XmlIdClassContainer
 {
 
 	/**
@@ -216,6 +215,16 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlIdClass idClass;
+
+	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -264,16 +273,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected EList<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns;
-
-	/**
-	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getIdClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlIdClass idClass;
 
 	/**
 	 * The cached value of the '{@link #getInheritance() <em>Inheritance</em>}' containment reference.
@@ -555,7 +554,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
 	 * @see #setIdClass(XmlIdClass)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_IdClass()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClassContainer_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1616,14 +1615,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				return basicSetIdClass(null, msgs);
 			case OrmPackage.XML_ENTITY__TABLE:
 				return basicSetTable(null, msgs);
 			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
 				return ((InternalEList<?>)getSecondaryTables()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				return basicSetIdClass(null, msgs);
 			case OrmPackage.XML_ENTITY__INHERITANCE:
 				return basicSetInheritance(null, msgs);
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
@@ -1674,6 +1673,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getAssociationOverrides();
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				return getCacheable();
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				return getIdClass();
 			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1682,8 +1683,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getSecondaryTables();
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				return getPrimaryKeyJoinColumns();
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				return getIdClass();
 			case OrmPackage.XML_ENTITY__INHERITANCE:
 				return getInheritance();
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_VALUE:
@@ -1759,6 +1758,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				setCacheable((Boolean)newValue);
 				return;
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				setIdClass((XmlIdClass)newValue);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
 				return;
@@ -1772,9 +1774,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				getPrimaryKeyJoinColumns().addAll((Collection<? extends XmlPrimaryKeyJoinColumn>)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((XmlIdClass)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__INHERITANCE:
 				setInheritance((Inheritance)newValue);
@@ -1854,6 +1853,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				setCacheable(CACHEABLE_EDEFAULT);
 				return;
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				setIdClass((XmlIdClass)null);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -1865,9 +1867,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
-				return;
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((XmlIdClass)null);
 				return;
 			case OrmPackage.XML_ENTITY__INHERITANCE:
 				setInheritance((Inheritance)null);
@@ -1932,6 +1931,8 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return associationOverrides != null && !associationOverrides.isEmpty();
 			case OrmPackage.XML_ENTITY__CACHEABLE:
 				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
+			case OrmPackage.XML_ENTITY__ID_CLASS:
+				return idClass != null;
 			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1940,8 +1941,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return secondaryTables != null && !secondaryTables.isEmpty();
 			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
-			case OrmPackage.XML_ENTITY__ID_CLASS:
-				return idClass != null;
 			case OrmPackage.XML_ENTITY__INHERITANCE:
 				return inheritance != null;
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_VALUE:
@@ -2031,6 +2030,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlIdClassContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__ID_CLASS: return OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -2102,6 +2109,14 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 		{
 			switch (baseFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlIdClassContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS: return OrmPackage.XML_ENTITY__ID_CLASS;
 				default: return -1;
 			}
 		}
@@ -2212,7 +2227,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	}
 	
 	protected static Translator buildIdClassTranslator() {
-		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlEntity_IdClass());
+		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlIdClassContainer_IdClass());
 	}
 	
 	protected static Translator buildInheritanceTranslator() {

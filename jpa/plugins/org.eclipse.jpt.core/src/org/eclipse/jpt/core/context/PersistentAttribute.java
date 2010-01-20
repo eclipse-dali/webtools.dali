@@ -58,25 +58,43 @@ public interface PersistentAttribute
 	 */
 	void setSpecifiedMappingKey(String key);
 	
-	TypeMapping getTypeMapping();
-
-	PersistentType getPersistentType();
+	/**
+	 * Return the persistent type that owns this attribute
+	 */
+	PersistentType getOwningPersistentType();
+	
+	/**
+	 * Return the mapping of the owning persistent type
+	 */
+	TypeMapping getOwningTypeMapping();
 	
 	/**
 	 * If the attribute is mapped to a primary key column, return the
 	 * column's name, otherwise return null.
 	 */
 	String getPrimaryKeyColumnName();
-
+	
 	/**
-	 * Return whether the attribute's mapping is for an ID.
+	 * Return the resolved, qualified name of the attribute's type
+	 * (e.g. "java.util.Collection" or "byte[]").
+	 * Return null if the attribute's type can not be resolved.
+	 * If the type is an array, this name will include the appropriate number
+	 * of bracket pairs.
+	 * This name will not include the type's generic type arguments
+	 * (e.g. "java.util.Collection<java.lang.String>" will only return
+	 * "java.util.Collection").
 	 */
-	boolean isIdAttribute();
+	String getTypeName();
+	
+	/**
+	 * Return whether the attribute is mapped as a primary key
+	 * (id or embedded id, for instance)
+	 */
+	boolean isPrimaryKeyAttribute();
 	
 	/**
 	 * Return whether this attribute actually has a textual representation
 	 * in its underlying resource (false = no).
 	 */
 	boolean isVirtual();
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -217,7 +217,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	}
 
 	protected String getDefaultPackageName() {
-		return this.getPersistentAttribute().getPersistentType().getDefaultPackage();
+		return this.getPersistentAttribute().getOwningPersistentType().getDefaultPackage();
 	}
 
 	protected Entity getEntity(String typeName) {
@@ -253,13 +253,13 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 				EmptyIterator.<AttributeMapping> instance();
 	}
 
-	protected String getTargetEntityIdAttributeName() {
-		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
+	protected String getTargetEntityPrimaryKeyAttributeName() {
+		PersistentAttribute attribute = this.getTargetEntityPrimaryKeyAttribute();
 		return (attribute == null) ? null : attribute.getName();
 	}
 
-	protected PersistentAttribute getTargetEntityIdAttribute() {
-		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
+	protected PersistentAttribute getTargetEntityPrimaryKeyAttribute() {
+		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getPrimaryKeyAttribute();
 	}
 
 	@Override

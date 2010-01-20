@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -31,6 +31,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -169,6 +170,49 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 			@Override
 			protected TypeMapping transform(PersistentType type) {
 				return type.getMapping();
+			}
+		};
+	}
+	
+	public boolean specifiesPrimaryKey() {
+		// default implementation
+		return false;
+	}
+	
+	/**
+	 * Return whether an ancestor class has defined a primary key
+	 */
+	protected boolean primaryKeyIsDefinedOnAncestor() {
+		for (TypeMapping each : CollectionTools.iterable(inheritanceHierarchy())) {
+			if (each != this && each.specifiesPrimaryKey()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected boolean hasNoPrimaryKeyAttribute() {
+		return ! this.hasPrimaryKeyAttribute();
+	}
+	
+	protected boolean hasPrimaryKeyAttribute() {
+		for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext(); ) {
+			if (stream.next().isPrimaryKeyAttribute()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Return all attributes defined on this type mapping that define the type's primary key
+	 */
+	protected Iterable<OrmPersistentAttribute> getPrimaryKeyAttributes() {
+		return new FilteringIterable<OrmPersistentAttribute>(
+				CollectionTools.collection(getPersistentType().attributes())) {
+			@Override
+			protected boolean accept(OrmPersistentAttribute o) {
+				return o.isPrimaryKeyAttribute();
 			}
 		};
 	}

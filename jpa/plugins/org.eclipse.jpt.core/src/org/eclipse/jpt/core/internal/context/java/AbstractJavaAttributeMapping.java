@@ -105,7 +105,7 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	}
 	
 	public TypeMapping getTypeMapping() {
-		return this.getPersistentAttribute().getTypeMapping();
+		return this.getPersistentAttribute().getOwningTypeMapping();
 	}
 
 	public String getName() {
@@ -128,7 +128,7 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 		return false;
 	}
 
-	public boolean isIdMapping() {
+	public boolean isPrimaryKeyMapping() {
 		return false;
 	}
 	

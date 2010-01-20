@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -19,7 +17,7 @@ package org.eclipse.jpt.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface MappedSuperclass
-	extends TypeMapping, IdClassHolder
+	extends TypeMapping
 {
-	//nothing yet
+	IdClassReference getIdClassReference();
 }

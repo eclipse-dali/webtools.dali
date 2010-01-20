@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -36,6 +35,7 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
@@ -46,6 +46,8 @@ import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
+import org.eclipse.jpt.core.context.orm.OrmIdClassReference;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
@@ -63,7 +65,6 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.core.resource.orm.XmlIdClass;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -72,6 +73,7 @@ import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -88,17 +90,17 @@ public abstract class AbstractOrmEntity
 	implements OrmEntity, OrmCacheableHolder2_0
 {
 	protected String specifiedName;
-
+	
 	protected String defaultName;
-
-	protected String idClass;
-
+	
+	protected final OrmIdClassReference idClassReference;
+	
 	protected final OrmTable table;
-
+	
 	protected boolean specifiedTableIsAllowed;
 	
 	protected boolean tableIsUndefined;
-
+	
 	protected final List<OrmSecondaryTable> specifiedSecondaryTables;
 	
 	protected final List<OrmSecondaryTable> virtualSecondaryTables;
@@ -106,37 +108,38 @@ public abstract class AbstractOrmEntity
 	protected final List<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 	
 	protected final List<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
-
+	
 	protected InheritanceType specifiedInheritanceStrategy;
 	
 	protected InheritanceType defaultInheritanceStrategy;
-
+	
 	protected String defaultDiscriminatorValue;
-
+	
 	protected String specifiedDiscriminatorValue;
-
+	
 	protected boolean specifiedDiscriminatorValueIsAllowed;
-
+	
 	protected boolean discriminatorValueIsUndefined;
-
+	
 	protected final OrmDiscriminatorColumn discriminatorColumn;
-
+	
 	protected boolean specifiedDiscriminatorColumnIsAllowed;
 	
 	protected boolean discriminatorColumnIsUndefined;
-
+	
 	protected final OrmGeneratorContainer generatorContainer;
-
+	
 	protected final OrmAttributeOverrideContainer attributeOverrideContainer;
 	
 	protected final OrmAssociationOverrideContainer associationOverrideContainer;
-
+	
 	protected final OrmQueryContainer queryContainer;
 	
 	protected Entity rootEntity;
 	
 	protected AbstractOrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
+		this.idClassReference = buildIdClassReference();
 		this.table = getXmlContextNodeFactory().buildOrmTable(this);
 		this.specifiedSecondaryTables = new ArrayList<OrmSecondaryTable>();
 		this.virtualSecondaryTables = new ArrayList<OrmSecondaryTable>();
@@ -165,7 +168,10 @@ public abstract class AbstractOrmEntity
 		this.initializeVirtualSecondaryTables();
 		this.initializeSpecifiedPrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumns();
-		this.initializeIdClass(this.getResourceIdClass());
+	}
+	
+	protected OrmIdClassReference buildIdClassReference() {
+		return new GenericOrmIdClassReference(this);
 	}
 	
 	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
@@ -359,32 +365,44 @@ public abstract class AbstractOrmEntity
 		}
 		return null;
 	}
-		
+	
+	// **************** name **************************************************
+	
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
 	}
-
+	
 	public String getSpecifiedName() {
 		return this.specifiedName;
 	}
-
+	
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
 		this.resourceTypeMapping.setName(newSpecifiedName);
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
-
+	
 	public String getDefaultName() {
 		return this.defaultName;
 	}
-
+	
 	protected void setDefaultName(String newDefaultName) {
 		String oldDefaultName = this.defaultName;
 		this.defaultName = newDefaultName;
 		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
-
+	
+	
+	// **************** id class **********************************************
+	
+	public OrmIdClassReference getIdClassReference() {
+		return this.idClassReference;
+	}
+	
+	
+	// **************** table *************************************************
+	
 	public OrmTable getTable() {
 		return this.table;
 	}
@@ -872,50 +890,7 @@ public abstract class AbstractOrmEntity
 		return this.queryContainer;
 	}
 	
-	public char getIdClassEnclosingTypeSeparator() {
-		return '$';
-	}
 	
-	public String getIdClass() {
-		return this.idClass;
-	}
-	
-	public void setIdClass(String newIdClass) {
-		String oldIdClass = this.idClass;
-		this.idClass = newIdClass;
-		if (this.attributeValueHasChanged(oldIdClass, newIdClass)) {
-			if (this.getResourceIdClass() != null) {
-				this.getResourceIdClass().setClassName(newIdClass);						
-				if (this.getResourceIdClass().isUnset()) {
-					removeResourceIdClass();
-				}
-			}
-			else if (newIdClass != null) {
-				addResourceIdClass();
-				getResourceIdClass().setClassName(newIdClass);
-			}
-		}
-		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
-	}
-	
-	protected void setIdClass_(String newIdClass) {
-		String oldIdClass = this.idClass;
-		this.idClass = newIdClass;
-		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
-	}
-
-	protected XmlIdClass getResourceIdClass() {
-		return this.resourceTypeMapping.getIdClass();
-	}
-	
-	protected void addResourceIdClass() {
-		this.resourceTypeMapping.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
-	}
-	
-	protected void removeResourceIdClass() {
-		this.resourceTypeMapping.setIdClass(null);
-	}
-
 	public Entity getParentEntity() {
 		for (Iterator<PersistentType> stream = getPersistentType().ancestors(); stream.hasNext();) {
 			TypeMapping tm = stream.next().getMapping();
@@ -1254,19 +1229,12 @@ public abstract class AbstractOrmEntity
 		}
 	}
 	
-	protected void initializeIdClass(XmlIdClass idClassResource) {
-		this.idClass = this.getResourceIdClass(idClassResource);	
-	}
-
-	protected String getResourceIdClass(XmlIdClass idClassResource) {
-		return idClassResource == null ? null : idClassResource.getClassName();
-	}
-
 	@Override
 	public void update() {
 		super.update();
 		this.setSpecifiedName(this.resourceTypeMapping.getName());
 		this.setDefaultName(this.buildDefaultName());
+		this.idClassReference.update();
 		this.updateInheritance(this.getResourceInheritance());
 		this.updateRootEntity();
 		this.updateDiscriminatorColumn();
@@ -1282,7 +1250,6 @@ public abstract class AbstractOrmEntity
 		getAttributeOverrideContainer().update();
 		getAssociationOverrideContainer().update();
 		getQueryContainer().update();
-		this.updateIdClass(this.getResourceIdClass());
 	}
 	
 	@Override
@@ -1544,10 +1511,6 @@ public abstract class AbstractOrmEntity
 		return getXmlContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
 	}
 	
-	protected void updateIdClass(XmlIdClass idClassResource) {
-		this.setIdClass_(this.getResourceIdClass(idClassResource));
-	}
-	
 	
 	// *************************************************************************
 	
@@ -1555,8 +1518,8 @@ public abstract class AbstractOrmEntity
 		return AbstractJavaEntity.getPrimaryKeyColumnName(this);
 	}
 	
-	public PersistentAttribute getIdAttribute() {
-		Iterator<PersistentAttribute> stream = this.allIdAttributes();
+	public PersistentAttribute getPrimaryKeyAttribute() {
+		Iterator<PersistentAttribute> stream = this.allPrimaryKeyAttributes();
 		if (stream.hasNext()) {
 			PersistentAttribute attribute = stream.next();
 			return stream.hasNext() ? null /*more than one*/: attribute;
@@ -1564,11 +1527,11 @@ public abstract class AbstractOrmEntity
 		return null;
 	}
 
-	protected Iterator<PersistentAttribute> allIdAttributes() {
+	protected Iterator<PersistentAttribute> allPrimaryKeyAttributes() {
 		return new FilteringIterator<PersistentAttribute>(this.getPersistentType().allAttributes()) {
 			@Override
 			protected boolean accept(PersistentAttribute pa) {
-				return pa.isIdAttribute();
+				return pa.isPrimaryKeyAttribute();
 			}
 		};
 	}
@@ -1587,17 +1550,139 @@ public abstract class AbstractOrmEntity
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-
-		this.validateTable(messages, reporter);	
-		this.validateId(messages);
-		this.validateInheritance(messages, reporter);
+		
+		validatePrimaryKey(messages, reporter);
+		validateTable(messages, reporter);	
+		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
+			stream.next().validate(messages, reporter);
+		}
+		validateInheritance(messages, reporter);
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
 		this.attributeOverrideContainer.validate(messages, reporter);
 		this.associationOverrideContainer.validate(messages, reporter);
+	}
+	
+	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
+		// if an entity is non-root, it is not allowed to define primary keys
+		if (! isRoot()) {
+			validatePrimaryKeySettingsForNonRootEntity(messages, reporter);
+		}
+		else {
+			validatePrimaryKeySettingsForRootEntity(messages, reporter);
+		}
+	}
+	
+	// split out to allow different implementations to override
+	protected void validatePrimaryKeySettingsForNonRootEntity(List<IMessage> messages, IReporter reporter) {
+		if (this.idClassReference.getIdClassName() != null) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,
+						new String[0],
+						this,
+						this.idClassReference.getValidationTextRange()));
+		}
+		for (OrmPersistentAttribute each : getPrimaryKeyAttributes()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
+						new String[0],
+						each,
+						each.getMapping().getValidationTextRange()));
+		}
+	}
+	
+	// split out to allow different implementations to override
+	protected void validatePrimaryKeySettingsForRootEntity(List<IMessage> messages, IReporter reporter) {
+		// for JPA portability, a hierarchy must define its primary key on one class 
+		// (entity *or* mapped superclass)
+		if (primaryKeyIsDefinedOnAncestor()) {
+			if (this.idClassReference.getIdClassName() != null) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,
+							new String[0],
+							this,
+							this.idClassReference.getValidationTextRange()));
+			}
+			for (OrmPersistentAttribute each : getPrimaryKeyAttributes()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,
+							new String[0],
+							each,
+							each.getMapping().getValidationTextRange()));
+			}
+			return;
+		}
 		
-		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
-			stream.next().validate(messages, reporter);
+		// if the primary key is not defined on an ancestor, it must be defined here
+		if (hasNoPrimaryKeyAttribute()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_NO_ID,
+						new String[] {this.getName()},
+						this,
+						this.getValidationTextRange()));
+		}
+		
+		if (this.idClassReference.getIdClass() != null) {
+			validateIdClass(messages, reporter);
+		}
+	}
+	
+	// split out to allow different implementations to override
+	// assumes id class is not null
+	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
+		JavaPersistentType idClass = this.idClassReference.getIdClass();
+		for (JavaPersistentAttribute idClassAttribute : 
+				new SubIterableWrapper<PersistentAttribute, JavaPersistentAttribute>(
+					CollectionTools.iterable(idClass.allAttributes()))) {
+			boolean foundMatch = false;
+			for (OrmPersistentAttribute persistentAttribute : 
+					CollectionTools.iterable(getPersistentType().attributes())) {
+				if (idClassAttribute.getName().equals(persistentAttribute.getName())) {
+					foundMatch = true;
+					
+					// the matching attribute should be a primary key
+					if (! persistentAttribute.isPrimaryKeyAttribute()) {
+						messages.add(DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
+								new String[0],
+								persistentAttribute,
+								persistentAttribute.getValidationTextRange()));
+					}
+					
+//					// the matching attribute's type should agree
+//					String persistentAttributeTypeName = persistentAttribute.getTypeName();
+//					if (persistentAttributeTypeName != null 	// if it's null, there should be 
+//																// another failing validation elsewhere
+//							&& ! idClassAttribute.getTypeName().equals(persistentAttributeTypeName)) {
+//						messages.add(DefaultJpaValidationMessages.buildMessage(
+//								IMessage.HIGH_SEVERITY,
+//								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
+//								new String[0],
+//								persistentAttribute,
+//								persistentAttribute.getValidationTextRange()));
+//					}
+				}
+			}
+			
+//			if (! foundMatch) {
+//				messages.add(DefaultJpaValidationMessages.buildMessage(
+//						IMessage.HIGH_SEVERITY,
+//						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
+//						new String[] {idClassAttribute.getName()},
+//						this,
+//						this.idClassReference.getValidationTextRange()));
+//			}
 		}
 	}
 	
@@ -1631,20 +1716,6 @@ public abstract class AbstractOrmEntity
 			return;
 		}
 		this.table.validate(messages, reporter);
-	}
-	
-	protected void validateId(List<IMessage> messages) {
-		if (this.hasNoIdMapping()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ENTITY_NO_ID,
-					new String[] {this.getName()},
-					this, 
-					this.getValidationTextRange()
-				)
-			);
-		}
 	}
 	
 	protected void validateInheritance(List<IMessage> messages, IReporter reporter) {
@@ -1753,21 +1824,13 @@ public abstract class AbstractOrmEntity
 	protected TextRange getInheritanceStrategyTextRange() {
 		return this.resourceTypeMapping.getInheritanceStrategyTextRange();
 	}
-
-	private boolean hasNoIdMapping() {
-		return ! this.hasIdMapping();
-	}
 	
-	private boolean hasIdMapping() {
-		for (Iterator<PersistentAttribute> stream = this.getPersistentType().allAttributes(); stream.hasNext(); ) {
-			if (stream.next().isIdAttribute()) {
-				return true;
-			}
-		}
-		return false;
+	@Override
+	public boolean specifiesPrimaryKey() {
+		return this.idClassReference.getIdClassName() != null
+				|| hasPrimaryKeyAttribute();
 	}
-
-	
+		
 	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmEntity.this.getOverridableTypeMapping();

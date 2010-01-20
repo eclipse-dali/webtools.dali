@@ -34,7 +34,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getIdClass <em>Id Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getEntityListeners <em>Entity Listeners</em>}</li>
@@ -45,7 +44,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends AbstractXmlTypeMapping
+public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlIdClassContainer
 {
 
 	/**
@@ -147,7 +146,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
 	 * @see #setIdClass(XmlIdClass)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_IdClass()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClassContainer_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -447,6 +446,44 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * @generated
 	 */
 	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlIdClassContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS: return OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlIdClassContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ID_CLASS_CONTAINER__ID_CLASS: return OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String toString()
 	{
 		if (eIsProxy()) return super.toString();
@@ -492,7 +529,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	}
 	
 	protected static Translator buildIdClassTranslator() {
-		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_IdClass());
+		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlIdClassContainer_IdClass());
 	}
 	
 	protected static Translator buildExcludeDefaultListenersTranslator() {
