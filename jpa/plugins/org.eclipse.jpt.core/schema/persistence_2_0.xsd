@@ -29,6 +29,9 @@
       Linda DeMichiel - Java Persistence 2.0, Version 2.0 (October 1, 2009)
       Specification available from http://jcp.org/en/jsr/detail?id=317
  
+   This copy of persistence_2_0.xsd was originally copied from the Eclipse Runtime 
+   EclipseLink Project and is included here without modification.
+   
     </xsd:documentation>
   </xsd:annotation>
 
