@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.tests.feature"
       label="Dali Java Persistence Tools JUnit Tests"
-      version="3.0.0.qualifier"
+      version="2.3.0.qualifier"
       provider-name="Eclipse.org">
 
    <description>
