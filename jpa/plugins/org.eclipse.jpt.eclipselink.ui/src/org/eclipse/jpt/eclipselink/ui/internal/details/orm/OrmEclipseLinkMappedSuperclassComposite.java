@@ -15,12 +15,13 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMappedSuperclass> extends AbstractOrmEclipseLinkMappedSuperclassComposite<T>
+public class OrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMappedSuperclass>
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite<T>
 {
 	public OrmEclipseLinkMappedSuperclassComposite(
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
 }

@@ -10,10 +10,11 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.IdClassHolder;
+import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -34,7 +35,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class IdClassComposite extends Pane<IdClassHolder>
+public class IdClassComposite<T extends IdClassReference>
+	extends Pane<T>
 {
 	/**
 	 * Creates a new <code>IdClassComposite</code>.
@@ -42,48 +44,50 @@ public class IdClassComposite extends Pane<IdClassHolder>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public IdClassComposite(Pane<? extends IdClassHolder> parentPane,
-                           Composite parent) {
-
-		super(parentPane, parent);
+	public IdClassComposite(
+			Pane<?> parentPane,
+			PropertyValueModel<T> subjectHolder,
+			Composite parent) {
+		
+		super(parentPane, subjectHolder, parent);
 	}
 	
-	public IdClassComposite(Pane<? extends IdClassHolder> parentPane,
-        					Composite parent,
-        					boolean automaticallyAlignWidgets) {
-
-		super(parentPane, parent, automaticallyAlignWidgets);
+	public IdClassComposite(
+			Pane<?> parentPane,
+			PropertyValueModel<T> subjectHolder,
+			Composite parent,
+        	boolean automaticallyAlignWidgets) {
+		
+		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
 	}
-
-	private ClassChooserPane<IdClassHolder> addClassChooser(Composite container) {
-
-		return new ClassChooserPane<IdClassHolder>(this, container) {
-
+	
+	
+	private ClassChooserPane<IdClassReference> addClassChooser(Composite container) {
+		return new ClassChooserPane<IdClassReference>(this, container) {
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<IdClassHolder, String>(getSubjectHolder(), IdClassHolder.ID_CLASS_PROPERTY) {
+				return new PropertyAspectAdapter<IdClassReference, String>(
+						getSubjectHolder(), IdClassReference.ID_CLASS_NAME_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return this.subject.getIdClass();
+						return this.subject.getIdClassName();
 					}
-
+					
 					@Override
 					protected void setValue_(String value) {
-
 						if (value.length() == 0) {
 							value = null;
 						}
-
-						this.subject.setIdClass(value);
+						this.subject.setIdClassName(value);
 					}
 				};
 			}
-
+			
 			@Override
 			protected String getClassName() {
-				return getSubject().getIdClass();
+				return getSubject().getIdClassName();
 			}
-
+			
 			@Override
 			protected String getLabelText() {
 				return JptUiDetailsMessages.IdClassComposite_label;
@@ -96,7 +100,7 @@ public class IdClassComposite extends Pane<IdClassHolder>
 			
 			@Override
 			protected void setClassName(String className) {
-				getSubject().setIdClass(className);
+				getSubject().setIdClassName(className);
 			}
 			
 			@Override
@@ -105,7 +109,7 @@ public class IdClassComposite extends Pane<IdClassHolder>
 			}
 		};
 	}
-
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 		addClassChooser(container);

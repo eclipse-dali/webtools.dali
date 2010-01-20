@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.AbstractJavaEclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -28,7 +29,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class JavaEclipseLinkMappedSuperclass1_1Composite extends AbstractJavaEclipseLinkMappedSuperclassComposite
+public class JavaEclipseLinkMappedSuperclass1_1Composite
+	extends AbstractJavaEclipseLinkMappedSuperclassComposite
 {
 	/**
 	 * Creates a new <code>MappedSuperclassComposite</code>.
@@ -37,23 +39,23 @@ public class JavaEclipseLinkMappedSuperclass1_1Composite extends AbstractJavaEcl
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEclipseLinkMappedSuperclass1_1Composite(PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
-	                                 Composite parent,
-	                                 WidgetFactory widgetFactory) {
-
+	public JavaEclipseLinkMappedSuperclass1_1Composite(
+			PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void initializeGeneralPane(Composite container) {
 		new AccessTypeComposite(this, buildAccessHolder(), container);	
-		new IdClassComposite(this, container);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, AccessHolder>(
-			getSubjectHolder())
-		{
+		return new PropertyAspectAdapter<JavaMappedSuperclass, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();

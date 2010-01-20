@@ -23,8 +23,8 @@ import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmEntityComposite;
 import org.eclipse.jpt.ui.internal.details.orm.MetadataCompleteComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmJavaClassChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.Cacheable2_0Pane;
-import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -36,7 +36,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see OrmEntity
  * @see Entity2_0OverridesComposite
  */
-public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
+public class OrmEntity2_0Composite
+	extends AbstractOrmEntityComposite
 {
 	/**
 	 * Creates a new <code>OrmEntityComposite</code>.
@@ -45,23 +46,32 @@ public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEntity2_0Composite(PropertyValueModel<? extends OrmEntity> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
+	public OrmEntity2_0Composite(
+			PropertyValueModel<? extends OrmEntity> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
+	
 	@Override
 	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 		
-		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new OrmJavaClassChooser(
+				this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 		new TableComposite(this, container);
-		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
-		new Cacheable2_0Pane(this, buildCacheableHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new EntityNameComposite(
+				this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(
+				this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new IdClassComposite(
+				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new Cacheable2_0Pane(
+				this, buildCacheableHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new MetadataCompleteComposite(
+				this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 	}
 	
 	protected PropertyValueModel<Cacheable2_0> buildCacheableHolder() {
@@ -72,20 +82,19 @@ public class OrmEntity2_0Composite extends AbstractOrmEntityComposite
 			}
 		};
 	}
-
+	
 	@Override
 	protected void addAttributeOverridesComposite(Composite container) {
 		new Entity2_0OverridesComposite(this, container);
 	}
-
+	
 	@Override
 	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
 		new Generation2_0Composite(this, generatorContainerHolder, container);
 	}
-
+	
 	@Override
 	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
 		new Queries2_0Composite(this, queryContainerHolder, container);
 	}
-
 }

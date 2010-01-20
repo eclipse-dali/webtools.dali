@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
+import org.eclipse.jpt.core.context.IdClassReference;
+import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
@@ -33,6 +35,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	protected AbstractOrmEclipseLinkMappedSuperclassComposite(
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
@@ -48,14 +51,12 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	protected void initializeGeneralPane(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolder(), container);
-		new IdClassComposite(this, container);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<T, AccessHolder>(
-			getSubjectHolder())
-		{
+		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();
@@ -63,37 +64,39 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		};
 	}
 	
+	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
+		return new PropertyAspectAdapter<MappedSuperclass, IdClassReference>(getSubjectHolder()) {
+			@Override
+			protected IdClassReference buildValue_() {
+				return this.subject.getIdClassReference();
+			}
+		};
+	}
+	
 	protected void initializeCachingPane(Composite container) {
 		container = addCollapsibleSection(
-			addSubPane(container, 5),
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching
-		);
-		
+				addSubPane(container, 5),
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
 		addCachingComposite(container, buildCachingHolder());
 	}
 	
 	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
 		new OrmEclipseLinkCachingComposite(this, cachingHolder, container);
 	}
-
+	
 	private PropertyAspectAdapter<T, OrmEclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<T, OrmEclipseLinkCaching>(
-			getSubjectHolder())
-		{
+		return new PropertyAspectAdapter<T, OrmEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkCaching buildValue_() {
 				return this.subject.getCaching();
 			}
 		};
 	}
-
+	
 	protected void initializeConvertersPane(Composite container) {
-
 		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label
-		);
-
+				container,
+				EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label);
 		new OrmEclipseLinkConvertersComposite(this, buildConverterHolder(), container);
 	}
 	

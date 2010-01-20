@@ -17,13 +17,16 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkMappedSuperclass2_0Composite<T extends OrmEclipseLinkMappedSuperclass > extends AbstractOrmEclipseLinkMappedSuperclassComposite<T>
+public class OrmEclipseLinkMappedSuperclass2_0Composite<T extends OrmEclipseLinkMappedSuperclass >
+	extends AbstractOrmEclipseLinkMappedSuperclassComposite<T>
 {
 	public OrmEclipseLinkMappedSuperclass2_0Composite(
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {

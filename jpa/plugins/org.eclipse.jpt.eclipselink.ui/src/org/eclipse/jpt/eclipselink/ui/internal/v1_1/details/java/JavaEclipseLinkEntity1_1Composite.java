@@ -31,7 +31,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.2
  */
-public class JavaEclipseLinkEntity1_1Composite extends AbstractJavaEclipseLinkEntityComposite<JavaEntity>
+public class JavaEclipseLinkEntity1_1Composite
+	extends AbstractJavaEclipseLinkEntityComposite<JavaEntity>
 {
 	/**
 	 * Creates a new <code>EclipseLinkJavaEntityComposite</code>.
@@ -40,27 +41,30 @@ public class JavaEclipseLinkEntity1_1Composite extends AbstractJavaEclipseLinkEn
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEclipseLinkEntity1_1Composite(PropertyValueModel<? extends JavaEntity> subjectHolder,
-	                           Composite parent,
-	                           WidgetFactory widgetFactory) {
-
+	public JavaEclipseLinkEntity1_1Composite(
+			PropertyValueModel<? extends JavaEntity> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-
+		
 		new TableComposite(this, container);
-		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
-		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
-		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new EntityNameComposite(
+				this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
+		new AccessTypeComposite(
+				this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
+		new IdClassComposite(
+				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(
-			getSubjectHolder())
-		{
+		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();

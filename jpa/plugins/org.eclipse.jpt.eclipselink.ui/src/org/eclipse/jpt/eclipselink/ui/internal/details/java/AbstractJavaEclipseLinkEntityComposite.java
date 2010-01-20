@@ -10,9 +10,9 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEntityAdvancedComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -32,7 +32,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntity> extends AbstractEntityComposite<T>
+public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntity>
+	extends AbstractEntityComposite<T>
 {
 	/**
 	 * Creates a new <code>EclipseLinkJavaEntityComposite</code>.
@@ -41,13 +42,14 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	protected AbstractJavaEclipseLinkEntityComposite(PropertyValueModel<? extends T> subjectHolder,
-	                           Composite parent,
-	                           WidgetFactory widgetFactory) {
-
+	protected AbstractJavaEclipseLinkEntityComposite(
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
 	
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -61,43 +63,34 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 		initializeSecondaryTablesPane(container);
 		initializeAdvancedPane(container);
 	}
-
+	
 	protected void initializeCachingPane(Composite container) {
-
 		container = addCollapsibleSection(
-			addSubPane(container, 5),
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching
-		);
-
+				addSubPane(container, 5),
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
 		addCachingComposite(container, buildCachingHolder());
 	}
 	
 	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
 		new JavaEclipseLinkCachingComposite(this, cachingHolder, container);
 	}
-
+	
 	private PropertyAspectAdapter<JavaEntity, JavaEclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkCaching>(
-			getSubjectHolder())
-		{
+		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkCaching buildValue_() {
 				return ((JavaEclipseLinkEntity) this.subject).getCaching();
 			}
 		};
-		
 	}
-
+	
 	protected void initializeConvertersPane(Composite container) {
-
 		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
-
+				container,
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
 		new JavaEclipseLinkConvertersComposite(this, buildConverterHolderValueModel(), container);
 	}
-
+	
 	protected PropertyValueModel<JavaEclipseLinkConverterHolder> buildConverterHolderValueModel() {
 		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override

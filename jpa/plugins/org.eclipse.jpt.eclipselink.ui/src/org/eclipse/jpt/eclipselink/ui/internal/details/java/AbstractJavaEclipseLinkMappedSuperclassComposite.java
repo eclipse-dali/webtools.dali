@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, Form Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010, Form Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.IdClassReference;
+import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
@@ -32,8 +35,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 2.1
  */
-public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite extends Pane<JavaMappedSuperclass>
-                                       implements JpaComposite
+public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
+	extends Pane<JavaMappedSuperclass>
+    implements JpaComposite
 {
 	/**
 	 * Creates a new <code>MappedSuperclassComposite</code>.
@@ -42,13 +46,15 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite extends P
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	protected AbstractJavaEclipseLinkMappedSuperclassComposite(PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
-	                                 Composite parent,
-	                                 WidgetFactory widgetFactory) {
-
+	protected AbstractJavaEclipseLinkMappedSuperclassComposite(
+		PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 		initializeGeneralPane(container);		
@@ -58,26 +64,31 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite extends P
 	}
 	
 	protected void initializeGeneralPane(Composite container) {
-		new IdClassComposite(this, container);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+	}
+	
+	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
+		return new PropertyAspectAdapter<MappedSuperclass, IdClassReference>(getSubjectHolder()) {
+			@Override
+			protected IdClassReference buildValue_() {
+				return this.subject.getIdClassReference();
+			}
+		};
 	}
 	
 	protected void initializeCachingPane(Composite container) {
-
 		container = addCollapsibleSection(
-			addSubPane(container, 5),
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching
-		);
+				addSubPane(container, 5),
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
 		addCachingComposite(container, buildCachingHolder());
 	}
 	
 	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
 		new JavaEclipseLinkCachingComposite(this, cachingHolder, container);
 	}
-
+	
 	private PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching>(
-			getSubjectHolder())
-		{
+		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkCaching buildValue_() {
 				return ((JavaEclipseLinkMappedSuperclass) this.subject).getCaching();
@@ -87,13 +98,11 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite extends P
 	
 	protected void initializeConvertersPane(Composite container) {
 		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
-
+				container,
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
 		new JavaEclipseLinkConvertersComposite(this, buildConverterHolderValueModel(), container);
 	}
-
+	
 	protected PropertyValueModel<JavaEclipseLinkConverterHolder> buildConverterHolderValueModel() {
 		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override

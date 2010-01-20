@@ -38,7 +38,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
+public class JavaEntity2_0Composite
+	extends AbstractEntityComposite<JavaEntity>
 {
 	/**
 	 * Creates a new <code>JavaEntityComposite</code>.
@@ -47,28 +48,32 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEntity2_0Composite(PropertyValueModel<? extends JavaEntity> subjectHolder,
-	                           Composite parent,
-	                           WidgetFactory widgetFactory) {
-
+	public JavaEntity2_0Composite(
+			PropertyValueModel<? extends JavaEntity> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-
+		
 		new TableComposite(this, container);
-		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
-		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
-		new Cacheable2_0Pane(this, buildCacheableHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new EntityNameComposite(
+				this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(
+				this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
+		new IdClassComposite(
+				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new Cacheable2_0Pane(
+				this, buildCacheableHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(
-			getSubjectHolder())
-		{
+		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();
@@ -84,7 +89,7 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 			}
 		};
 	}
-
+	
 	@Override
 	protected void addSecondaryTablesComposite(Composite container) {
 		new JavaSecondaryTablesComposite(this, container);
@@ -99,7 +104,7 @@ public class JavaEntity2_0Composite extends AbstractEntityComposite<JavaEntity>
 	protected void addAttributeOverridesComposite(Composite container) {
 		new Entity2_0OverridesComposite(this, container);
 	}
-
+	
 	@Override
 	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
 		new Queries2_0Composite(this, queryContainerHolder, container);

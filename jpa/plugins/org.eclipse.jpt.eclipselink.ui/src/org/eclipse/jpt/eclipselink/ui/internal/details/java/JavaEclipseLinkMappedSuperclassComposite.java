@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +24,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class JavaEclipseLinkMappedSuperclassComposite extends AbstractJavaEclipseLinkMappedSuperclassComposite
+public class JavaEclipseLinkMappedSuperclassComposite
+	extends AbstractJavaEclipseLinkMappedSuperclassComposite
 {
 	/**
 	 * Creates a new <code>MappedSuperclassComposite</code>.
@@ -32,11 +34,11 @@ public class JavaEclipseLinkMappedSuperclassComposite extends AbstractJavaEclips
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEclipseLinkMappedSuperclassComposite(PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
-	                                 Composite parent,
-	                                 WidgetFactory widgetFactory) {
-
+	public JavaEclipseLinkMappedSuperclassComposite(
+			PropertyValueModel<? extends JavaMappedSuperclass> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
 }

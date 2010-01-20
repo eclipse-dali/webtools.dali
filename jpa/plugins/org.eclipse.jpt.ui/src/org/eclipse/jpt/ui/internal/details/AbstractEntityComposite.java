@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.GeneratorContainer;
+import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -88,8 +89,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class AbstractEntityComposite<T extends Entity> extends Pane<T>
-                                                                implements JpaComposite
+public abstract class AbstractEntityComposite<T extends Entity>
+	extends Pane<T>
+    implements JpaComposite
 {
 	/**
 	 * Creates a new <code>AbstractEntityComposite</code>.
@@ -98,20 +100,21 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Pane<T>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public AbstractEntityComposite(PropertyValueModel<? extends T> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
-
+	public AbstractEntityComposite(
+			PropertyValueModel<? extends T> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	protected abstract void addSecondaryTablesComposite(Composite container);
 	
 	protected abstract void addInheritanceComposite(Composite container);
-
+	
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		initializeGeneralPane(container);
 		initializeQueriesPane(container);
 		initializeInheritancePane(container);
@@ -119,22 +122,29 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Pane<T>
 		initializeGeneratorsPane(container);
 		initializeSecondaryTablesPane(container);
 	}
-
+	
 	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-
+		
 		new TableComposite(this, container);
 		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new IdClassComposite(
+				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 	}
-
+	
+	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
+		return new PropertyAspectAdapter<Entity, IdClassReference>(getSubjectHolder()) {
+			@Override
+			protected IdClassReference buildValue_() {
+				return this.subject.getIdClassReference();
+			}
+		};
+	}
+	
 	protected void initializeQueriesPane(Composite container) {
-
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.EntityComposite_queries
-		);
-
+				container,
+				JptUiDetailsMessages.EntityComposite_queries);
 		addQueriesComposite(container, buildQueryContainerHolder());
 	}
 	
@@ -150,38 +160,29 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Pane<T>
 			}
 		};
 	}
-
+	
 	protected void initializeAttributeOverridesPane(Composite container) {
-
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.OverridesComposite_attributeOverridesSection
-		);
-
+				container,
+				JptUiDetailsMessages.OverridesComposite_attributeOverridesSection);
 		addAttributeOverridesComposite(container);
 	}
 	
 	protected void addAttributeOverridesComposite(Composite container) {
 		new EntityOverridesComposite(this, container);
 	}
-
+	
 	protected void initializeInheritancePane(Composite container) {
-
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.EntityComposite_inheritance
-		);
-
+				container,
+				JptUiDetailsMessages.EntityComposite_inheritance);
 		addInheritanceComposite(container);
 	}
-
+	
 	protected void initializeGeneratorsPane(Composite container) {
-
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection
-		);
-
+				container,
+				JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
 		addGeneratorsComposite(container, buildGeneratorContainer());
 	}
 	
@@ -197,14 +198,11 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Pane<T>
 			}
 		};
 	}
-
+	
 	protected void initializeSecondaryTablesPane(Composite container) {
-
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.SecondaryTablesComposite_secondaryTables
-		);
-
+				container,
+				JptUiDetailsMessages.SecondaryTablesComposite_secondaryTables);
 		addSecondaryTablesComposite(container);
 	}
 }
