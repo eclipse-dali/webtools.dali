@@ -21,7 +21,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
-	private static final String COLUMN_TABLE = "MY_TABLE";
 	private static final String COLUMN_COLUMN_DEFINITION = "COLUMN_DEFINITION";
 	
 	public OrderColumn2_0AnnotationTests(String name) {

@@ -152,10 +152,10 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		
-		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
-		JavaJoinColumn defaultJavaJoinColumn = joinColumns.getDefaultJoinColumn();
-		
+//		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
+//		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
+//		JavaJoinColumn defaultJavaJoinColumn = joinColumns.getDefaultJoinColumn();
+//	
 //		assertNull(defaultJavaJoinColumn.getDefaultName());
 //TODO test default join column name
 //		//add target entity to the persistence unit, now join table name is [table name]_[target table name]

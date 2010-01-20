@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -1605,7 +1604,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".ZipCode");
 		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
-		PersistentType customerPersistentType = specifiedClassRefs.next().getJavaPersistentType();
+		specifiedClassRefs.next();
 		PersistentType longTimeCustomerPersistentType = specifiedClassRefs.next().getJavaPersistentType();
 		PersistentType addressPersistentType = specifiedClassRefs.next().getJavaPersistentType();		
 		PersistentType zipCodePersistentType = specifiedClassRefs.next().getJavaPersistentType();

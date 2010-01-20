@@ -38,9 +38,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 @SuppressWarnings("nls")
 public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextModelTestCase
 {
-	private static final String ASSOCIATION_OVERRIDE_NAME = "MY_ASSOCIATION_OVERRIDE_NAME";
-
-		
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override

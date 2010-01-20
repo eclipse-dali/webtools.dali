@@ -10,13 +10,10 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.IdMapping;
-import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
@@ -48,10 +45,6 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
-
-		GeneratorContainer cc = idMapping.getGeneratorContainer();
-		SequenceGenerator sg = cc.getSequenceGenerator();
-		
 		SequenceGenerator2_0 sequenceGenerator = (SequenceGenerator2_0) idMapping.getGeneratorContainer().getSequenceGenerator();
 		
 		assertNull(sequenceGenerator.getCatalog());
