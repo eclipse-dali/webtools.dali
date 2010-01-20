@@ -571,7 +571,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentAttribute javaPersistentAttribute = idAttribute.getJavaPersistentAttribute();
 		assertNotNull(javaPersistentAttribute);
 		assertEquals("id", javaPersistentAttribute.getName());
-		assertEquals("test.Employee", javaPersistentAttribute.getPersistentType().getName());
+		assertEquals("test.Employee", javaPersistentAttribute.getOwningPersistentType().getName());
 		assertEquals("test.Model", ((JavaResourcePersistentType) ReflectionTools.getFieldValue(javaPersistentAttribute.getResourcePersistentAttribute(), "parent")).getQualifiedName());
 	}
 }

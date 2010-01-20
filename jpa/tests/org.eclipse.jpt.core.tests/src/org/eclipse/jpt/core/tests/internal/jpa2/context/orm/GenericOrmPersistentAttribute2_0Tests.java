@@ -399,7 +399,7 @@ public class GenericOrmPersistentAttribute2_0Tests
 		JavaPersistentAttribute javaPersistentAttribute = javaPersistentType.getAttributeNamed("id");
 		
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertEquals(AccessType.FIELD, javaPersistentAttribute.getPersistentType().getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getOwningPersistentType().getAccess());
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());

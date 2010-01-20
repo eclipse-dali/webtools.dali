@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,7 +62,7 @@ public class PersistentAttributeItemLabelProvider extends AbstractItemLabelProvi
 				StringBuilder sb = new StringBuilder();
 				sb.append(this.subject.getPersistenceUnit().getName());
 				sb.append('/');
-				sb.append(this.subject.getPersistentType().getName());
+				sb.append(this.subject.getOwningPersistentType().getName());
 				sb.append('/');
 				sb.append(this.subject.getName());
 				IResource resource = this.subject.getResource();

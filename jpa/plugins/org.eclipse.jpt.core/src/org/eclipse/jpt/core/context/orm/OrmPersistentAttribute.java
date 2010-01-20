@@ -32,9 +32,9 @@ public interface OrmPersistentAttribute
 	
 	OrmAttributeMapping getSpecifiedMapping();
 	
-	OrmTypeMapping getTypeMapping();
+	OrmTypeMapping getOwningTypeMapping();
 	
-	OrmPersistentType getPersistentType();
+	OrmPersistentType getOwningPersistentType();
 
 	
 	// ********** java persistent attribute **********

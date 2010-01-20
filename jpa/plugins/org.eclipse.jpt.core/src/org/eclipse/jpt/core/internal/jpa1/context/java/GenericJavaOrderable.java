@@ -88,7 +88,7 @@ public class GenericJavaOrderable
 	}
 
 	public TypeMapping getTypeMapping() {
-		return getPersistentAttribute().getTypeMapping();
+		return getPersistentAttribute().getOwningTypeMapping();
 	}
 	
 	// ********** order by **********  

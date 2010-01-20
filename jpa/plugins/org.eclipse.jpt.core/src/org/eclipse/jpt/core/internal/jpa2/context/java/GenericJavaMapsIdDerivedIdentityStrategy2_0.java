@@ -75,7 +75,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	protected String calculateDefaultValue() {
 		Iterable<AttributeMapping> validAttributeMappings = 
 			new FilteringIterable<AttributeMapping>(
-				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
+				CollectionTools.collection(getMapping().getPersistentAttribute().getOwningTypeMapping().allAttributeMappings())) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
 				return StringTools.stringsAreEqual(o.getKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)
@@ -150,7 +150,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	public Iterable<AttributeMapping> getAllAttributeMappingChoices() {
 		return 	new CompositeIterable<AttributeMapping>(
 			getAttributeMappingChoiceIterables(
-				CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())));
+				CollectionTools.collection(getMapping().getPersistentAttribute().getOwningTypeMapping().allAttributeMappings())));
 	}
 	
 	protected Iterable<Iterable<AttributeMapping>> getAttributeMappingChoiceIterables(Iterable<AttributeMapping> availableMappings) {
@@ -252,7 +252,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return 	new CompositeIterable<AttributeMapping>(
 			getAttributeMappingChoiceIterables(
 				new FilteringIterable<AttributeMapping>(
-						CollectionTools.collection(getMapping().getPersistentAttribute().getTypeMapping().allAttributeMappings())) {
+						CollectionTools.collection(getMapping().getPersistentAttribute().getOwningTypeMapping().allAttributeMappings())) {
 					@Override
 					protected boolean accept(AttributeMapping o) {
 						return StringTools.stringsAreEqual(o.getKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)

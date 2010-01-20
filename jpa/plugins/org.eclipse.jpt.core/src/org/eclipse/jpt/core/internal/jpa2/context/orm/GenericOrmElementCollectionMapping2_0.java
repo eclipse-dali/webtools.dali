@@ -271,7 +271,7 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 
 	protected String getDefaultPackageName() {
-		return this.getPersistentAttribute().getPersistentType().getDefaultPackage();
+		return this.getPersistentAttribute().getOwningPersistentType().getDefaultPackage();
 	}
 
 	protected PersistentType getPersistentType(String typeName) {

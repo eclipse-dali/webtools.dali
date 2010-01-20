@@ -40,7 +40,7 @@ public class AddPersistentAttributeToXmlAndMapHandler extends AbstractHandler
 		
 		// only applies for multiply selected OrmPersistentAttribute objects in a tree
 		for (OrmPersistentAttribute attribute : (Iterable<OrmPersistentAttribute>) CollectionTools.iterable(selection.iterator())) {
-			OrmPersistentType type = attribute.getPersistentType();
+			OrmPersistentType type = attribute.getOwningPersistentType();
 			String attributeName = attribute.getName();
 			
 			AddPersistentAttributeToXmlAndMapDialog dialog = new AddPersistentAttributeToXmlAndMapDialog(window.getShell(), attribute);

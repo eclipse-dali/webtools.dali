@@ -45,13 +45,13 @@ public class GenericOrmPersistentAttribute extends AbstractOrmPersistentAttribut
 	protected void validateAttribute(List<IMessage> messages) {
 		super.validateAttribute(messages);
 		if (this.javaPersistentAttribute != null) {
-			JavaPersistentType javaPersistentType = getPersistentType().getJavaPersistentType();
+			JavaPersistentType javaPersistentType = getOwningPersistentType().getJavaPersistentType();
 			if (javaPersistentType != null && javaPersistentType.getAttributeNamed(this.javaPersistentAttribute.getName()) == null) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.NORMAL_SEVERITY,
 							JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED,
-							new String[] {this.getName(), this.getPersistentType().getMapping().getClass_()},
+							new String[] {this.getName(), this.getOwningPersistentType().getMapping().getClass_()},
 							this.attributeMapping, 
 							this.attributeMapping.getNameTextRange()
 						)

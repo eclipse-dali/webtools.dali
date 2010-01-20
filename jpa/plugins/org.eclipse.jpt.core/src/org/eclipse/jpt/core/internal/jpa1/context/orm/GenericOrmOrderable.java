@@ -253,7 +253,7 @@ public class GenericOrmOrderable
 	}
 
 	public TypeMapping getTypeMapping() {
-		return getPersistentAttribute().getTypeMapping();
+		return getPersistentAttribute().getOwningTypeMapping();
 	}
 	
 	
