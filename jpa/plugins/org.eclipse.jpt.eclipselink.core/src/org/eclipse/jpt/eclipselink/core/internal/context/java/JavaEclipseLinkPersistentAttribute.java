@@ -54,7 +54,7 @@ public class JavaEclipseLinkPersistentAttribute
 
 	public boolean typeIsValidForVariableOneToOne() {
 		return this.resourcePersistentAttribute.typeIsInterface()
-				&& this.interfaceIsValidForVariableOneToOne(this.resourcePersistentAttribute.getTypeName());
+				&& this.interfaceIsValidForVariableOneToOne(getTypeName());
 	}
 
 	protected boolean interfaceIsValidForVariableOneToOne(String interfaceName) {
