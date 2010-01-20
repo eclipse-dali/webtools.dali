@@ -54,6 +54,11 @@ public interface TypeMapping extends JpaContextNode {
 	Iterator<TypeMapping> inheritanceHierarchy();
 	
 	/**
+	 * Return whether there is a primary key defined on this type mapping
+	 */
+	boolean specifiesPrimaryKey();
+	
+	/**
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables.
 	 */

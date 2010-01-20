@@ -96,7 +96,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXml
 	}
 	
 	@Override
-	public boolean isIdMapping() {
+	public boolean isPrimaryKeyMapping() {
 		return this.derivedIdentity.usesIdDerivedIdentityStrategy();
 	}
 	

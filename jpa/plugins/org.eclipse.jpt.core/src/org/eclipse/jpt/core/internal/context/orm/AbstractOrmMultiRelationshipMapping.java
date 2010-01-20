@@ -89,7 +89,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 			return null;
 		}
 		if (this.pkMapKey) {
-			return this.getTargetEntityIdAttributeName();
+			return this.getTargetEntityPrimaryKeyAttributeName();
 		}
 		if (this.customMapKey) {
 			return this.specifiedMapKey;

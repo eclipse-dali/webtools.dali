@@ -162,7 +162,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 
 	@Override
-	public boolean isIdMapping() {
+	public boolean isPrimaryKeyMapping() {
 		return true;
 	}
 	

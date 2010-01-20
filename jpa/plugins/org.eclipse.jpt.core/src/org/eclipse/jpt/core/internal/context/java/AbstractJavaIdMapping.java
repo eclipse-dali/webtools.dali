@@ -338,7 +338,7 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	@Override
-	public boolean isIdMapping() {
+	public boolean isPrimaryKeyMapping() {
 		return true;
 	}
 

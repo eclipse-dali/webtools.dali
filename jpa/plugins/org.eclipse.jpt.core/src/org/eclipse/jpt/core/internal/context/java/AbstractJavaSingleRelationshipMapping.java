@@ -112,7 +112,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}
 	
 	@Override
-	public boolean isIdMapping() {
+	public boolean isPrimaryKeyMapping() {
 		return this.derivedIdentity.usesIdDerivedIdentityStrategy();
 	}
 	

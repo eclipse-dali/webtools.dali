@@ -153,13 +153,13 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 				EmptyIterator.<AttributeMapping> instance();
 	}
 
-	protected String getTargetEntityIdAttributeName() {
-		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
+	protected String getTargetEntityPrimaryKeyAttributeName() {
+		PersistentAttribute attribute = this.getTargetEntityPrimaryKeyAttribute();
 		return (attribute == null) ? null : attribute.getName();
 	}
 
-	protected PersistentAttribute getTargetEntityIdAttribute() {
-		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
+	protected PersistentAttribute getTargetEntityPrimaryKeyAttribute() {
+		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getPrimaryKeyAttribute();
 	}
 
 	public char getTargetEntityEnclosingTypeSeparator() {

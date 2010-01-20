@@ -127,7 +127,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			return null;
 		}
 		if (this.pkMapKey) {
-			return this.getTargetEntityIdAttributeName();
+			return this.getTargetEntityPrimaryKeyAttributeName();
 		}
 		if (this.customMapKey) {
 			return this.specifiedMapKey;

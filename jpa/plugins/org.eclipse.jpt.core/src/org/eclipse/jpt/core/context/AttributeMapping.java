@@ -53,9 +53,9 @@ public interface AttributeMapping
 	TypeMapping getTypeMapping();
 
 	/**
-	 * Return whether the "attribute" mapping is for an ID.
+	 * Return whether the attribute is mapped as a primary key
 	 */
-	boolean isIdMapping();
+	boolean isPrimaryKeyMapping();
 
 	/**
 	 * If the mapping is for a primary key column, return the column's name,

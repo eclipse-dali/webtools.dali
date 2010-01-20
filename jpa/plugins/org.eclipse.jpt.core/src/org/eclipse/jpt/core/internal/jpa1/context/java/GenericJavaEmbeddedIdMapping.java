@@ -36,7 +36,7 @@ public class GenericJavaEmbeddedIdMapping
 	}
 
 	@Override
-	public boolean isIdMapping() {
+	public boolean isPrimaryKeyMapping() {
 		return true;
 	}
 }
