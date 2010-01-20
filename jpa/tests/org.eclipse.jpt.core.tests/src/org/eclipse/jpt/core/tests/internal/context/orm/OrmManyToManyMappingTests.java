@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -69,6 +70,72 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		});
 	}
 	
+	private ICompilationUnit createTestEntityWithValidManyToManyMapMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);				
+				sb.append("    private java.util.Map<String, Address> addresses;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidMapManyToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);				
+				sb.append("    private java.util.Map<String, Address> addresses;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidNonGenericMapManyToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);				
+				sb.append("    private java.util.Map addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -119,9 +186,9 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 				sb.append("public class ").append("State").append(" ");
 				sb.append("{").append(CR);
 				sb.append(CR);
-				sb.append("    private String foo;").append(CR);
+				sb.append("    private String name;").append(CR);
 				sb.append(CR);
-				sb.append("    private Address address;").append(CR);
+				sb.append("    private String abbr;").append(CR);
 				sb.append(CR);
 				sb.append("}").append(CR);
 		}
@@ -357,6 +424,41 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		ormManyToManyMapping.setSpecifiedMapKey(null);
 		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
 		assertNull(manyToMany.getMapKey());
+	}
+
+	public void testUpdateVirtualMapKey() throws Exception {
+		createTestEntityWithValidManyToManyMapMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
+
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
+		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+		assertNull(ormManyToManyMapping.getSpecifiedMapKey());
+		assertNull(ormManyToManyMapping.getMapKey());
+		assertFalse(ormManyToManyMapping.isPkMapKey());
+		assertFalse(ormManyToManyMapping.isCustomMapKey());
+		assertTrue(ormManyToManyMapping.isNoMapKey());
+		
+		//set pk mapKey in the java, verify virtual orm mapping updates
+		javaManyToManyMapping.setPkMapKey(true);
+		assertEquals("id", ormManyToManyMapping.getMapKey());
+		assertTrue(ormManyToManyMapping.isPkMapKey());
+		assertFalse(ormManyToManyMapping.isCustomMapKey());
+		assertFalse(ormManyToManyMapping.isNoMapKey());
+		
+		
+		//set custom specified mapKey in the java, verify virtual orm mapping updates
+		javaManyToManyMapping.setCustomMapKey(true);
+		javaManyToManyMapping.setSpecifiedMapKey("city");
+		assertEquals("city", ormManyToManyMapping.getSpecifiedMapKey());
+		assertEquals("city", ormManyToManyMapping.getMapKey());
+		assertFalse(ormManyToManyMapping.isPkMapKey());
+		assertTrue(ormManyToManyMapping.isCustomMapKey());
+		assertFalse(ormManyToManyMapping.isNoMapKey());
 	}
 	
 	public void testUpdateOrderBy() throws Exception {
@@ -718,5 +820,66 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		
 		AttributeMapping stateFooMapping = manyToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
 		assertNull(stateFooMapping);
+	}
+
+	public void testCandidateMapKeyNames() throws Exception {
+		createTestEntityWithValidMapManyToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
+		
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
+
+		Iterator<String> mapKeyNames = 
+			ormManyToManyMapping.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+	}
+
+	public void testCandidateMapKeyNames2() throws Exception {
+		createTestEntityWithValidNonGenericMapManyToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
+		
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
+		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+
+		Iterator<String> mapKeyNames = ormManyToManyMapping.candidateMapKeyNames();
+		assertEquals(false, mapKeyNames.hasNext());
+		
+		javaManyToManyMapping.setSpecifiedTargetEntity("test.Address");
+		mapKeyNames = ormManyToManyMapping.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+		
+		ormManyToManyMapping.getPersistentAttribute().makeSpecified();
+		ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
+		mapKeyNames = ormManyToManyMapping.candidateMapKeyNames();
+		assertEquals(false, mapKeyNames.hasNext());
+		
+		ormManyToManyMapping.setSpecifiedTargetEntity("test.Address");
+		mapKeyNames = ormManyToManyMapping.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+		
+		ormManyToManyMapping.setSpecifiedTargetEntity("String");
+		mapKeyNames = ormManyToManyMapping.candidateMapKeyNames();
+		assertEquals(false, mapKeyNames.hasNext());
 	}
 }

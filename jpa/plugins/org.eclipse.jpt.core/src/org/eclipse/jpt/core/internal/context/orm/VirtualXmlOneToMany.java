@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,7 +39,6 @@ public class VirtualXmlOneToMany
 	
 	protected final MapKey mapKey;
 	
-	
 	public VirtualXmlOneToMany(
 			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
 		super();
@@ -48,7 +47,7 @@ public class VirtualXmlOneToMany
 		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaOneToManyMapping);
 		this.virtualCascadeType = 
 			new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
-		this.mapKey = new VirtualMapKey(javaOneToManyMapping, this.isOrmMetadataComplete());
+		this.mapKey = new VirtualMapKey(javaOneToManyMapping);
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -160,6 +159,12 @@ public class VirtualXmlOneToMany
 	
 	@Override
 	public MapKey getMapKey() {
+		if (this.isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.isNoMapKey()) {
+			return null;
+		}
 		return this.mapKey;
 	}
 	

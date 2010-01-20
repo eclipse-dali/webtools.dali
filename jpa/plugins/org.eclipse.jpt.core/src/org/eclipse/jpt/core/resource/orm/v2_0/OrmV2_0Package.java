@@ -476,7 +476,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable_2_0()
 	 * @generated
 	 */
-	public static final int XML_CACHEABLE_20 = 27;
+	public static final int XML_CACHEABLE_20 = 28;
 
 	/**
 	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
@@ -616,7 +616,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderable_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORDERABLE_20 = 29;
+	public static final int XML_ORDERABLE_20 = 30;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -637,6 +637,88 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ORDERABLE_20_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0 <em>Xml Multi Relationship Mapping 20</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMultiRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20 = 15;
+
+	/**
+	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20__ORDER_COLUMN = XML_ORDERABLE_20__ORDER_COLUMN;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS = XML_ORDERABLE_20_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL = XML_ORDERABLE_20_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED = XML_ORDERABLE_20_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_ORDERABLE_20_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN = XML_ORDERABLE_20_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS = XML_ORDERABLE_20_FEATURE_COUNT + 5;
+
+	/**
+	 * The number of structural features of the '<em>Xml Multi Relationship Mapping 20</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20_FEATURE_COUNT = XML_ORDERABLE_20_FEATURE_COUNT + 6;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0 <em>Xml Many To Many 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -653,7 +735,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__ORDER_COLUMN = XML_ORDERABLE_20__ORDER_COLUMN;
+	public static final int XML_MANY_TO_MANY_20__ORDER_COLUMN = XML_MULTI_RELATIONSHIP_MAPPING_20__ORDER_COLUMN;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
@@ -662,7 +744,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_CLASS = XML_ORDERABLE_20_FEATURE_COUNT + 0;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_CLASS = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
@@ -671,7 +753,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_TEMPORAL = XML_ORDERABLE_20_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_TEMPORAL = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
@@ -680,7 +762,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ENUMERATED = XML_ORDERABLE_20_FEATURE_COUNT + 2;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ENUMERATED = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
@@ -689,7 +771,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_ORDERABLE_20_FEATURE_COUNT + 3;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ATTRIBUTE_OVERRIDES;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
@@ -698,7 +780,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_COLUMN = XML_ORDERABLE_20_FEATURE_COUNT + 4;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_COLUMN = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
@@ -707,7 +789,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = XML_ORDERABLE_20_FEATURE_COUNT + 5;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS;
 
 	/**
 	 * The number of structural features of the '<em>Xml Many To Many 20</em>' class.
@@ -716,7 +798,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20_FEATURE_COUNT = XML_ORDERABLE_20_FEATURE_COUNT + 6;
+	public static final int XML_MANY_TO_MANY_20_FEATURE_COUNT = XML_MULTI_RELATIONSHIP_MAPPING_20_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
@@ -782,7 +864,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlNamedQuery_2_0()
 	 * @generated
 	 */
-	public static final int XML_NAMED_QUERY_20 = 15;
+	public static final int XML_NAMED_QUERY_20 = 16;
 
 	/**
 	 * The feature id for the '<em><b>Lock Mode</b></em>' attribute.
@@ -810,25 +892,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORPHAN_REMOVABLE_20 = 28;
-
-	/**
-	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Orphan Removable 20</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT = 1;
+	public static final int XML_ORPHAN_REMOVABLE_20 = 29;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.
@@ -838,16 +902,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToMany_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_20 = 16;
-
-	/**
-	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY_20__ORPHAN_REMOVAL = XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL;
+	public static final int XML_ONE_TO_MANY_20 = 17;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -856,7 +911,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__ORDER_COLUMN = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 0;
+	public static final int XML_ONE_TO_MANY_20__ORDER_COLUMN = XML_MULTI_RELATIONSHIP_MAPPING_20__ORDER_COLUMN;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
@@ -865,7 +920,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_CLASS = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_CLASS = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
@@ -874,7 +929,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 2;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
@@ -883,7 +938,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 3;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
@@ -892,7 +947,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 4;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ATTRIBUTE_OVERRIDES;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
@@ -901,7 +956,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_COLUMN = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 5;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_COLUMN = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
@@ -910,7 +965,16 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 6;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY_20__ORPHAN_REMOVAL = XML_MULTI_RELATIONSHIP_MAPPING_20_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To Many 20</em>' class.
@@ -919,7 +983,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20_FEATURE_COUNT = XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT + 7;
+	public static final int XML_ONE_TO_MANY_20_FEATURE_COUNT = XML_MULTI_RELATIONSHIP_MAPPING_20_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0 <em>Xml Single Relationship Mapping 20</em>}' class.
@@ -929,7 +993,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSingleRelationshipMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20 = 24;
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20 = 25;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -966,7 +1030,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToOne_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_20 = 17;
+	public static final int XML_ONE_TO_ONE_20 = 18;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -1012,7 +1076,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderColumn_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN_20 = 18;
+	public static final int XML_ORDER_COLUMN_20 = 19;
 
 	/**
 	 * The feature id for the '<em><b>Nullable</b></em>' attribute.
@@ -1058,7 +1122,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlPersistenceUnitDefaults_2_0()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_20 = 19;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_20 = 20;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1095,7 +1159,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlPersistenceUnitMetadata_2_0()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_METADATA_20 = 20;
+	public static final int XML_PERSISTENCE_UNIT_METADATA_20 = 21;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1123,7 +1187,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlQuery_2_0()
 	 * @generated
 	 */
-	public static final int XML_QUERY_20 = 21;
+	public static final int XML_QUERY_20 = 22;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1151,7 +1215,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlQueryHint_2_0()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT_20 = 22;
+	public static final int XML_QUERY_HINT_20 = 23;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1179,7 +1243,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSequenceGenerator_2_0()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR_20 = 23;
+	public static final int XML_SEQUENCE_GENERATOR_20 = 24;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -1216,7 +1280,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSqlResultSetMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 25;
+	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 26;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1244,7 +1308,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlUniqueConstraint_2_0()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT_20 = 26;
+	public static final int XML_UNIQUE_CONSTRAINT_20 = 27;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1265,6 +1329,24 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_UNIQUE_CONSTRAINT_20_FEATURE_COUNT = 1;
 
 	/**
+	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ORPHAN_REMOVABLE_20__ORPHAN_REMOVAL = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Orphan Removable 20</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ORPHAN_REMOVABLE_20_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.LockModeType_2_0 <em>Lock Mode Type 20</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1272,7 +1354,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getLockModeType_2_0()
 	 * @generated
 	 */
-	public static final int LOCK_MODE_TYPE_20 = 30;
+	public static final int LOCK_MODE_TYPE_20 = 31;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1378,6 +1460,13 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlMapsId_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlMultiRelationshipMapping_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2056,96 +2145,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyClass <em>Map Key Class</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Map Key Class</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyClass()
-	 * @see #getXmlManyToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlManyToMany_2_0_MapKeyClass()
-	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Map Key Temporal</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyTemporal()
-	 * @see #getXmlManyToMany_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlManyToMany_2_0_MapKeyTemporal()
-	{
-		return (EAttribute)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(1);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyEnumerated <em>Map Key Enumerated</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Map Key Enumerated</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyEnumerated()
-	 * @see #getXmlManyToMany_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlManyToMany_2_0_MapKeyEnumerated()
-	{
-		return (EAttribute)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(2);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Map Key Attribute Overrides</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyAttributeOverrides()
-	 * @see #getXmlManyToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlManyToMany_2_0_MapKeyAttributeOverrides()
-	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(3);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyColumn <em>Map Key Column</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Map Key Column</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyColumn()
-	 * @see #getXmlManyToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlManyToMany_2_0_MapKeyColumn()
-	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(4);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyJoinColumns <em>Map Key Join Columns</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Map Key Join Columns</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlManyToMany_2_0#getMapKeyJoinColumns()
-	 * @see #getXmlManyToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlManyToMany_2_0_MapKeyJoinColumns()
-	{
-		return (EReference)xmlManyToMany_2_0EClass.getEStructuralFeatures().get(5);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2204,6 +2203,110 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0 <em>Xml Multi Relationship Mapping 20</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Multi Relationship Mapping 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0
+	 * @generated
+	 */
+	public EClass getXmlMultiRelationshipMapping_2_0()
+	{
+		return xmlMultiRelationshipMapping_2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyClass <em>Map Key Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Map Key Class</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyClass()
+	 * @see #getXmlMultiRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public EReference getXmlMultiRelationshipMapping_2_0_MapKeyClass()
+	{
+		return (EReference)xmlMultiRelationshipMapping_2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Map Key Temporal</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyTemporal()
+	 * @see #getXmlMultiRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlMultiRelationshipMapping_2_0_MapKeyTemporal()
+	{
+		return (EAttribute)xmlMultiRelationshipMapping_2_0EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyEnumerated <em>Map Key Enumerated</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Map Key Enumerated</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyEnumerated()
+	 * @see #getXmlMultiRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlMultiRelationshipMapping_2_0_MapKeyEnumerated()
+	{
+		return (EAttribute)xmlMultiRelationshipMapping_2_0EClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Map Key Attribute Overrides</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyAttributeOverrides()
+	 * @see #getXmlMultiRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public EReference getXmlMultiRelationshipMapping_2_0_MapKeyAttributeOverrides()
+	{
+		return (EReference)xmlMultiRelationshipMapping_2_0EClass.getEStructuralFeatures().get(3);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyColumn <em>Map Key Column</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Map Key Column</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyColumn()
+	 * @see #getXmlMultiRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public EReference getXmlMultiRelationshipMapping_2_0_MapKeyColumn()
+	{
+		return (EReference)xmlMultiRelationshipMapping_2_0EClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyJoinColumns <em>Map Key Join Columns</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Map Key Join Columns</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyJoinColumns()
+	 * @see #getXmlMultiRelationshipMapping_2_0()
+	 * @generated
+	 */
+	public EReference getXmlMultiRelationshipMapping_2_0_MapKeyJoinColumns()
+	{
+		return (EReference)xmlMultiRelationshipMapping_2_0EClass.getEStructuralFeatures().get(5);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlNamedQuery_2_0 <em>Xml Named Query 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2243,96 +2346,6 @@ public class OrmV2_0Package extends EPackageImpl
 	public EClass getXmlOneToMany_2_0()
 	{
 		return xmlOneToMany_2_0EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyClass <em>Map Key Class</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Map Key Class</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyClass()
-	 * @see #getXmlOneToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlOneToMany_2_0_MapKeyClass()
-	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Map Key Temporal</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyTemporal()
-	 * @see #getXmlOneToMany_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlOneToMany_2_0_MapKeyTemporal()
-	{
-		return (EAttribute)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(1);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyEnumerated <em>Map Key Enumerated</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Map Key Enumerated</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyEnumerated()
-	 * @see #getXmlOneToMany_2_0()
-	 * @generated
-	 */
-	public EAttribute getXmlOneToMany_2_0_MapKeyEnumerated()
-	{
-		return (EAttribute)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(2);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Map Key Attribute Overrides</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyAttributeOverrides()
-	 * @see #getXmlOneToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlOneToMany_2_0_MapKeyAttributeOverrides()
-	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(3);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyColumn <em>Map Key Column</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Map Key Column</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyColumn()
-	 * @see #getXmlOneToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlOneToMany_2_0_MapKeyColumn()
-	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(4);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyJoinColumns <em>Map Key Join Columns</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Map Key Join Columns</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0#getMapKeyJoinColumns()
-	 * @see #getXmlOneToMany_2_0()
-	 * @generated
-	 */
-	public EReference getXmlOneToMany_2_0_MapKeyJoinColumns()
-	{
-		return (EReference)xmlOneToMany_2_0EClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -2832,12 +2845,6 @@ public class OrmV2_0Package extends EPackageImpl
 		createEAttribute(xmlGenerator_2_0EClass, XML_GENERATOR_20__DESCRIPTION);
 
 		xmlManyToMany_2_0EClass = createEClass(XML_MANY_TO_MANY_20);
-		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_CLASS);
-		createEAttribute(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_TEMPORAL);
-		createEAttribute(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_ENUMERATED);
-		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES);
-		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_COLUMN);
-		createEReference(xmlManyToMany_2_0EClass, XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS);
 
 		xmlMapKeyClass_2_0EClass = createEClass(XML_MAP_KEY_CLASS_20);
 		createEAttribute(xmlMapKeyClass_2_0EClass, XML_MAP_KEY_CLASS_20__CLASS_NAME);
@@ -2845,16 +2852,18 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlMapsId_2_0EClass = createEClass(XML_MAPS_ID_20);
 		createEAttribute(xmlMapsId_2_0EClass, XML_MAPS_ID_20__MAPS_ID);
 
+		xmlMultiRelationshipMapping_2_0EClass = createEClass(XML_MULTI_RELATIONSHIP_MAPPING_20);
+		createEReference(xmlMultiRelationshipMapping_2_0EClass, XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS);
+		createEAttribute(xmlMultiRelationshipMapping_2_0EClass, XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL);
+		createEAttribute(xmlMultiRelationshipMapping_2_0EClass, XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED);
+		createEReference(xmlMultiRelationshipMapping_2_0EClass, XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ATTRIBUTE_OVERRIDES);
+		createEReference(xmlMultiRelationshipMapping_2_0EClass, XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN);
+		createEReference(xmlMultiRelationshipMapping_2_0EClass, XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS);
+
 		xmlNamedQuery_2_0EClass = createEClass(XML_NAMED_QUERY_20);
 		createEAttribute(xmlNamedQuery_2_0EClass, XML_NAMED_QUERY_20__LOCK_MODE);
 
 		xmlOneToMany_2_0EClass = createEClass(XML_ONE_TO_MANY_20);
-		createEReference(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_CLASS);
-		createEAttribute(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL);
-		createEAttribute(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED);
-		createEReference(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES);
-		createEReference(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_COLUMN);
-		createEReference(xmlOneToMany_2_0EClass, XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS);
 
 		xmlOneToOne_2_0EClass = createEClass(XML_ONE_TO_ONE_20);
 
@@ -2942,9 +2951,10 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
 		xmlEntity_2_0EClass.getESuperTypes().add(this.getXmlCacheable_2_0());
-		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
+		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlMultiRelationshipMapping_2_0());
+		xmlMultiRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
+		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlMultiRelationshipMapping_2_0());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable_2_0());
-		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
 		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlSingleRelationshipMapping_2_0());
 		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable_2_0());
 		xmlSingleRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlDerivedId_2_0());
@@ -2996,12 +3006,6 @@ public class OrmV2_0Package extends EPackageImpl
 		initEAttribute(getXmlGenerator_2_0_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlGenerator_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToMany_2_0EClass, XmlManyToMany_2_0.class, "XmlManyToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlManyToMany_2_0_MapKeyClass(), theOrmPackage.getXmlMapKeyClass(), null, "mapKeyClass", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlManyToMany_2_0_MapKeyTemporal(), theOrmPackage.getTemporalType(), "mapKeyTemporal", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlManyToMany_2_0_MapKeyEnumerated(), theOrmPackage.getEnumType(), "mapKeyEnumerated", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlManyToMany_2_0_MapKeyAttributeOverrides(), theOrmPackage.getXmlAttributeOverride(), null, "mapKeyAttributeOverrides", null, 0, -1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlManyToMany_2_0_MapKeyColumn(), theOrmPackage.getXmlColumn(), null, "mapKeyColumn", null, 0, 1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlManyToMany_2_0_MapKeyJoinColumns(), theOrmPackage.getXmlJoinColumn(), null, "mapKeyJoinColumns", null, 0, -1, XmlManyToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMapKeyClass_2_0EClass, XmlMapKeyClass_2_0.class, "XmlMapKeyClass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapKeyClass_2_0_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlMapKeyClass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3009,16 +3013,18 @@ public class OrmV2_0Package extends EPackageImpl
 		initEClass(xmlMapsId_2_0EClass, XmlMapsId_2_0.class, "XmlMapsId_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapsId_2_0_MapsId(), theXMLTypePackage.getString(), "mapsId", null, 0, 1, XmlMapsId_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(xmlMultiRelationshipMapping_2_0EClass, XmlMultiRelationshipMapping_2_0.class, "XmlMultiRelationshipMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMultiRelationshipMapping_2_0_MapKeyClass(), theOrmPackage.getXmlMapKeyClass(), null, "mapKeyClass", null, 0, 1, XmlMultiRelationshipMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlMultiRelationshipMapping_2_0_MapKeyTemporal(), theOrmPackage.getTemporalType(), "mapKeyTemporal", null, 0, 1, XmlMultiRelationshipMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlMultiRelationshipMapping_2_0_MapKeyEnumerated(), theOrmPackage.getEnumType(), "mapKeyEnumerated", null, 0, 1, XmlMultiRelationshipMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMultiRelationshipMapping_2_0_MapKeyAttributeOverrides(), theOrmPackage.getXmlAttributeOverride(), null, "mapKeyAttributeOverrides", null, 0, -1, XmlMultiRelationshipMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMultiRelationshipMapping_2_0_MapKeyColumn(), theOrmPackage.getXmlColumn(), null, "mapKeyColumn", null, 0, 1, XmlMultiRelationshipMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMultiRelationshipMapping_2_0_MapKeyJoinColumns(), theOrmPackage.getXmlJoinColumn(), null, "mapKeyJoinColumns", null, 0, -1, XmlMultiRelationshipMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(xmlNamedQuery_2_0EClass, XmlNamedQuery_2_0.class, "XmlNamedQuery_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlNamedQuery_2_0_LockMode(), this.getLockModeType_2_0(), "lockMode", null, 0, 1, XmlNamedQuery_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_0EClass, XmlOneToMany_2_0.class, "XmlOneToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlOneToMany_2_0_MapKeyClass(), theOrmPackage.getXmlMapKeyClass(), null, "mapKeyClass", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlOneToMany_2_0_MapKeyTemporal(), theOrmPackage.getTemporalType(), "mapKeyTemporal", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlOneToMany_2_0_MapKeyEnumerated(), theOrmPackage.getEnumType(), "mapKeyEnumerated", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlOneToMany_2_0_MapKeyAttributeOverrides(), theOrmPackage.getXmlAttributeOverride(), null, "mapKeyAttributeOverrides", null, 0, -1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlOneToMany_2_0_MapKeyColumn(), theOrmPackage.getXmlColumn(), null, "mapKeyColumn", null, 0, 1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlOneToMany_2_0_MapKeyJoinColumns(), theOrmPackage.getXmlJoinColumn(), null, "mapKeyJoinColumns", null, 0, -1, XmlOneToMany_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToOne_2_0EClass, XmlOneToOne_2_0.class, "XmlOneToOne_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3378,54 +3384,6 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EClass XML_MANY_TO_MANY_20 = eINSTANCE.getXmlManyToMany_2_0();
 
 		/**
-		 * The meta object literal for the '<em><b>Map Key Class</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MANY_TO_MANY_20__MAP_KEY_CLASS = eINSTANCE.getXmlManyToMany_2_0_MapKeyClass();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Temporal</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_MANY_TO_MANY_20__MAP_KEY_TEMPORAL = eINSTANCE.getXmlManyToMany_2_0_MapKeyTemporal();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Enumerated</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_MANY_TO_MANY_20__MAP_KEY_ENUMERATED = eINSTANCE.getXmlManyToMany_2_0_MapKeyEnumerated();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MANY_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = eINSTANCE.getXmlManyToMany_2_0_MapKeyAttributeOverrides();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Column</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MANY_TO_MANY_20__MAP_KEY_COLUMN = eINSTANCE.getXmlManyToMany_2_0_MapKeyColumn();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Join Columns</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MANY_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = eINSTANCE.getXmlManyToMany_2_0_MapKeyJoinColumns();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3462,6 +3420,64 @@ public class OrmV2_0Package extends EPackageImpl
 		public static final EAttribute XML_MAPS_ID_20__MAPS_ID = eINSTANCE.getXmlMapsId_2_0_MapsId();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0 <em>Xml Multi Relationship Mapping 20</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMultiRelationshipMapping_2_0()
+		 * @generated
+		 */
+		public static final EClass XML_MULTI_RELATIONSHIP_MAPPING_20 = eINSTANCE.getXmlMultiRelationshipMapping_2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Class</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS = eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyClass();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Temporal</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL = eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyTemporal();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Enumerated</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED = eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyEnumerated();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ATTRIBUTE_OVERRIDES = eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyAttributeOverrides();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Column</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN = eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyColumn();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Join Columns</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS = eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyJoinColumns();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlNamedQuery_2_0 <em>Xml Named Query 20</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3488,54 +3504,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ONE_TO_MANY_20 = eINSTANCE.getXmlOneToMany_2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Class</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ONE_TO_MANY_20__MAP_KEY_CLASS = eINSTANCE.getXmlOneToMany_2_0_MapKeyClass();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Temporal</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ONE_TO_MANY_20__MAP_KEY_TEMPORAL = eINSTANCE.getXmlOneToMany_2_0_MapKeyTemporal();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Enumerated</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ONE_TO_MANY_20__MAP_KEY_ENUMERATED = eINSTANCE.getXmlOneToMany_2_0_MapKeyEnumerated();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ONE_TO_MANY_20__MAP_KEY_ATTRIBUTE_OVERRIDES = eINSTANCE.getXmlOneToMany_2_0_MapKeyAttributeOverrides();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Column</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ONE_TO_MANY_20__MAP_KEY_COLUMN = eINSTANCE.getXmlOneToMany_2_0_MapKeyColumn();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Join Columns</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ONE_TO_MANY_20__MAP_KEY_JOIN_COLUMNS = eINSTANCE.getXmlOneToMany_2_0_MapKeyJoinColumns();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToOne_2_0 <em>Xml One To One 20</em>}' class.

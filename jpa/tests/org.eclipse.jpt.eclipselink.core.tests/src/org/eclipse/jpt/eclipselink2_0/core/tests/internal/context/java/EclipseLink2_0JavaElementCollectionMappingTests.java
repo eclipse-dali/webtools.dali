@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
+package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -44,12 +44,13 @@ import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
-import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.EclipseLink2_0ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0ContextModelTestCase
+public class EclipseLink2_0JavaElementCollectionMappingTests
+	extends EclipseLink2_0ContextModelTestCase
 {
 
 	private ICompilationUnit createTestEntityWithElementCollectionMapping() throws Exception {
@@ -237,7 +238,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 
-	public GenericJavaElementCollectionMapping2_0Tests(String name) {
+	public EclipseLink2_0JavaElementCollectionMappingTests(String name) {
 		super(name);
 	}
 	
@@ -624,17 +625,20 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		//set fetch in the resource model, verify context model updated
 		elementCollection.setFetch(org.eclipse.jpt.core.resource.java.FetchType.EAGER);
 		getJpaProject().synchronizeContextModel();
+		
 		assertEquals(FetchType.EAGER, elementCollectionMapping.getSpecifiedFetch());
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.EAGER, elementCollection.getFetch());
 		
 		elementCollection.setFetch(org.eclipse.jpt.core.resource.java.FetchType.LAZY);
 		getJpaProject().synchronizeContextModel();
+		
 		assertEquals(FetchType.LAZY, elementCollectionMapping.getSpecifiedFetch());
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.LAZY, elementCollection.getFetch());
 		
 		//set fetch to null in the resource model
 		elementCollection.setFetch(null);
 		getJpaProject().synchronizeContextModel();
+		
 		assertNull(elementCollectionMapping.getSpecifiedFetch());
 		assertNull(elementCollection.getFetch());
 	}
@@ -719,6 +723,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		//set mapKey in the resource model, verify context model does not change
 		attributeResource.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		
 		assertNull(elementCollectionMapping.getSpecifiedMapKey());
 		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNotNull(mapKey);
@@ -738,7 +744,6 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		mapKey.setName("myMapKey");
 		attributeResource.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
-		getJpaProject().synchronizeContextModel();
 		assertNull(elementCollectionMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
@@ -838,22 +843,20 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				
 		//set mapKey name in the resource model, verify context model updated
 		mapKeyClass.setValue("myMapKeyClass");
-		getJpaProject().synchronizeContextModel();
-
 		assertEquals("myMapKeyClass", elementCollectionMapping.getSpecifiedMapKeyClass());
 		assertEquals("myMapKeyClass", mapKeyClass.getValue());
 		
 		//set mapKey name to null in the resource model
 		mapKeyClass.setValue(null);
 		getJpaProject().synchronizeContextModel();
-
+		
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
 		assertNull(mapKeyClass.getValue());
 		
 		mapKeyClass.setValue("myMapKeyClass");
 		attributeResource.removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
-
+		
 		assertNull(elementCollectionMapping.getSpecifiedMapKeyClass());
 		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
 	}

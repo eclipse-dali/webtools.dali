@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToMany;
@@ -17,9 +16,9 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
-import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -35,12 +34,15 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	protected final JavaManyToManyMapping javaAttributeMapping;
 
 	protected final VirtualXmlManyToMany virtualXmlManyToMany;
-		
+	
+	protected final XmlMapKeyClass mapKeyClass;
+	
 	public VirtualXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;
 		this.virtualXmlManyToMany = new VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		this.mapKeyClass = new VirtualMapKeyClass(javaManyToManyMapping);
 	}
 
 	protected boolean isOrmMetadataComplete() {
@@ -75,10 +77,6 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	@Override
 	public void setFetch(FetchType newFetch) {
 		this.virtualXmlManyToMany.setFetch(newFetch);
-	}
-
-	public EList<XmlJoinColumn> getJoinColumns() {
-		return this.virtualXmlManyToMany.getJoinColumns();
 	}
 
 	@Override
@@ -130,6 +128,19 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	@Override
 	public void setMapKey(MapKey value) {
 		this.virtualXmlManyToMany.setMapKey(value);
+	}
+	
+	@Override
+	public XmlMapKeyClass getMapKeyClass() {
+		if (this.isOrmMetadataComplete()) {
+			return null;
+		}
+		return this.mapKeyClass;
+	}
+
+	@Override
+	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	@Override

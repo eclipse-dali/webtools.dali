@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,14 +15,16 @@ import java.util.List;
 import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Orderable;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -40,10 +42,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	protected boolean pkMapKey = false;
 	protected boolean customMapKey = false;
 	
+	protected String specifiedMapKeyClass;
+	protected String defaultMapKeyClass;
+
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this);
 		this.initializeMapKey();
+		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
+		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
 	}
 	
 	@Override
@@ -51,6 +58,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		super.update();
 		this.orderable.update();
 		this.updateMapKey();
+		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
+		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
 	}
 	
 	@Override
@@ -62,6 +71,9 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		return CollectionMapping.DEFAULT_FETCH_TYPE;
 	}
 	
+	public PersistentType getResolvedTargetType() {
+		return getResolvedTargetEntity() == null ? null : getResolvedTargetEntity().getPersistentType();
+	}
 	
 	// **************** order by ***********************************************
 
@@ -236,11 +248,87 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	}
 	
 
+	// **************** map key class ******************************************
+
+	public char getMapKeyClassEnclosingTypeSeparator() {
+		return '$';
+	}
+	
+	public String getMapKeyClass() {
+		return (this.specifiedMapKeyClass != null) ? this.specifiedMapKeyClass : this.defaultMapKeyClass;
+	}
+
+	public String getSpecifiedMapKeyClass() {
+		return this.specifiedMapKeyClass;
+	}
+
+	public void setSpecifiedMapKeyClass(String mapKeyClass) {
+		String old = this.specifiedMapKeyClass;
+		this.specifiedMapKeyClass = mapKeyClass;
+		if (this.attributeValueHasChanged(old, mapKeyClass)) {
+			XmlMapKeyClass xmlMapKeyClass = this.getXmlMapKeyClass();
+			if (mapKeyClass == null) {
+				if (xmlMapKeyClass != null) {
+					this.removeXmlMapKeyClass();
+				}
+			} else {
+				if (xmlMapKeyClass == null) {
+					xmlMapKeyClass = this.addXmlMapKeyClass();
+				}
+				xmlMapKeyClass.setClassName(mapKeyClass);
+			}
+		}
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected void setSpecifiedMapKeyClass_(String mapKeyClass) {
+		String old = this.specifiedMapKeyClass;
+		this.specifiedMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+	
+	protected XmlMapKeyClass getXmlMapKeyClass() {
+		return this.resourceAttributeMapping.getMapKeyClass();
+	}
+	
+	protected XmlMapKeyClass addXmlMapKeyClass() {
+		XmlMapKeyClass mapKeyClass = OrmFactory.eINSTANCE.createXmlMapKeyClass();
+		this.resourceAttributeMapping.setMapKeyClass(mapKeyClass);
+		return mapKeyClass;
+	}
+
+	protected void removeXmlMapKeyClass() {
+		this.resourceAttributeMapping.setMapKeyClass(null);
+	}
+
+	public String getDefaultMapKeyClass() {
+		return this.defaultMapKeyClass;
+	}
+
+	protected void setDefaultMapKeyClass(String mapKeyClass) {
+		String old = this.defaultMapKeyClass;
+		this.defaultMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(DEFAULT_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String getResourceMapKeyClass() {
+		XmlMapKeyClass mapKeyClass = this.resourceAttributeMapping.getMapKeyClass();
+		return mapKeyClass == null ? null : mapKeyClass.getClassName();
+	}
+	
+	protected String buildDefaultMapKeyClass() {
+		if (this.getJavaPersistentAttribute() != null) {
+			return this.getJavaPersistentAttribute().getMultiReferenceMapKeyTypeName();
+		}
+		return null;
+	}
+
+	
 	// ********** metamodel **********  
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((JavaPersistentAttribute2_0) this.getJavaPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((OrmPersistentAttribute2_0) getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -250,7 +338,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = ((JavaPersistentAttribute2_0) this.getJavaPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((OrmPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}

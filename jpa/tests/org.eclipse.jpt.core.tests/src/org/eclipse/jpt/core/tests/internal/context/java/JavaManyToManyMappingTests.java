@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
@@ -189,6 +190,50 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 				sb.append(CR);
 				sb.append("    @ManyToMany").append(CR);				
 				sb.append("    private Address addresses;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidMapManyToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);				
+				sb.append("    private java.util.Map<String, Address> addresses;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidNonGenericMapManyToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);				
+				sb.append("    private java.util.Map addresses;").append(CR);			
 				sb.append(CR);
 				sb.append("    @Id").append(CR);				
 			}
@@ -835,7 +880,49 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
+	
+	public void testCandidateMapKeyNames() throws Exception {
+		createTestEntityWithValidMapManyToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
+		Iterator<String> mapKeyNames = 
+			javaManyToManyMapping.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+	}
+	
+	public void testCandidateMapKeyNames2() throws Exception {
+		createTestEntityWithValidNonGenericMapManyToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+
+		Iterator<String> mapKeyNames = javaManyToManyMapping.candidateMapKeyNames();
+		assertEquals(false, mapKeyNames.hasNext());
+		
+		javaManyToManyMapping.setSpecifiedTargetEntity("test.Address");
+		mapKeyNames = javaManyToManyMapping.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+	}
 	public void testUpdateOrderBy() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

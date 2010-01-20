@@ -16,6 +16,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
@@ -46,14 +47,20 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -86,6 +93,16 @@ public class GenericJavaElementCollectionMapping2_0
 	protected final JavaAssociationOverrideContainer valueAssociationOverrideContainer;
 	
 	protected Type keyType;
+	
+	//MapKey is not supported by the spec, so this is only for EclipseLink
+	//In the generic case we can handle this with validation and not showing the UI widgets
+	protected String specifiedMapKey;
+	protected boolean noMapKey = false;
+	protected boolean pkMapKey = false;
+	protected boolean customMapKey = false;
+
+	protected String specifiedMapKeyClass;
+	protected String defaultMapKeyClass;
 
 	public GenericJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		super(parent);
@@ -119,6 +136,9 @@ public class GenericJavaElementCollectionMapping2_0
 		this.valueAttributeOverrideContainer.initialize(getResourcePersistentAttribute());
 		this.valueAssociationOverrideContainer.initialize(getResourcePersistentAttribute());
 		this.initializeKeyType();
+		this.initializeMapKey();
+		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
+		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
 	}
 
 	@Override
@@ -137,6 +157,9 @@ public class GenericJavaElementCollectionMapping2_0
 		this.valueAttributeOverrideContainer.update(getResourcePersistentAttribute());
 		this.valueAssociationOverrideContainer.update(getResourcePersistentAttribute());
 		this.updateKeyType();
+		this.updateMapKey();
+		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
+		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
 	}
 
 	@Override
@@ -231,6 +254,10 @@ public class GenericJavaElementCollectionMapping2_0
 		Embeddable old = this.resolvedTargetEmbeddable;
 		this.resolvedTargetEmbeddable = embeddable;
 		this.firePropertyChanged(RESOLVED_TARGET_EMBEDDABLE_PROPERTY, old, embeddable);
+	}
+
+	public PersistentType getResolvedTargetType() {
+		return getResolvedTargetEmbeddable() == null ? null : getResolvedTargetEmbeddable().getPersistentType();
 	}
 	
 	protected PersistentType buildResolvedTargetType() {
@@ -488,7 +515,251 @@ public class GenericJavaElementCollectionMapping2_0
 		//TODO key type
 	}
 
-	
+
+	// ********** map key **********  
+
+	public String getMapKey() {
+		if (this.noMapKey) {
+			return null;
+		}
+		if (this.pkMapKey) {
+			return null;//the target is either embeddable or basic, so a key will have to be specified
+		}
+		if (this.customMapKey) {
+			return this.specifiedMapKey;
+		}
+		throw new IllegalStateException("unknown map key"); //$NON-NLS-1$
+	}
+
+	public String getSpecifiedMapKey() {
+		return this.specifiedMapKey;
+	}
+
+	public void setSpecifiedMapKey(String mapKey) {
+		String old = this.specifiedMapKey;
+		this.specifiedMapKey = mapKey;
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		if (mapKey == null) {
+			if (mapKeyAnnotation != null) {
+				this.removeMapKeyAnnotation();
+			}
+		} else {
+			if (mapKeyAnnotation == null) {
+				mapKeyAnnotation = this.addMapKeyAnnotation();
+			}
+			mapKeyAnnotation.setName(mapKey);
+		}
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_PROPERTY, old, mapKey);
+	}
+
+	protected void setSpecifiedMapKey_(String mapKey) {
+		String old = this.specifiedMapKey;
+		this.specifiedMapKey = mapKey;
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_PROPERTY, old, mapKey);
+	}
+
+	protected void initializeMapKey() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		if (mapKeyAnnotation == null) {
+			this.noMapKey = true;
+		} else {
+			this.specifiedMapKey = mapKeyAnnotation.getName();
+			if (this.specifiedMapKey == null) {
+				this.pkMapKey = true;
+			} else {
+				this.customMapKey = true;
+			}
+		}
+	}
+
+	protected void updateMapKey() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		if (mapKeyAnnotation == null) {
+			this.setSpecifiedMapKey_(null);
+			this.setNoMapKey_(true);
+			this.setPkMapKey_(false);
+			this.setCustomMapKey_(false);
+		} else {
+			String mk = mapKeyAnnotation.getName();
+			this.setSpecifiedMapKey_(mk);
+			this.setNoMapKey_(false);
+			this.setPkMapKey_(mk == null);
+			this.setCustomMapKey_(mk != null);
+		}
+	}
+
+	protected MapKeyAnnotation getMapKeyAnnotation() {
+		return (MapKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	}
+
+	protected MapKeyAnnotation addMapKeyAnnotation() {
+		return (MapKeyAnnotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void removeMapKeyAnnotation() {
+		this.getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	}
+
+	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
+	}
+
+
+	// ********** no map key **********  
+
+	public boolean isNoMapKey() {
+		return this.noMapKey;
+	}
+
+	public void setNoMapKey(boolean noMapKey) {
+		boolean old = this.noMapKey;
+		this.noMapKey = noMapKey;
+		if (noMapKey) {
+			if (this.getMapKeyAnnotation() != null) {
+				this.removeMapKeyAnnotation();
+			}
+		} else {
+			// the 'noMapKey' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setNoMapKey_(boolean)
+		}
+		this.firePropertyChanged(NO_MAP_KEY_PROPERTY, old, noMapKey);
+	}
+
+	protected void setNoMapKey_(boolean noMapKey) {
+		boolean old = this.noMapKey;
+		this.noMapKey = noMapKey;
+		this.firePropertyChanged(NO_MAP_KEY_PROPERTY, old, noMapKey);	
+	}
+
+
+	// ********** pk map key **********  
+
+	public boolean isPkMapKey() {
+		return this.pkMapKey;
+	}
+
+	public void setPkMapKey(boolean pkMapKey) {
+		boolean old = this.pkMapKey;
+		this.pkMapKey = pkMapKey;
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		if (pkMapKey) {
+			if (mapKeyAnnotation == null) {
+				this.addMapKeyAnnotation();
+			} else {
+				mapKeyAnnotation.setName(null);
+			}
+		} else {
+			// the 'pkMapKey' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setPkMapKey_(boolean)
+		}
+		this.firePropertyChanged(PK_MAP_KEY_PROPERTY, old, pkMapKey);
+	}
+
+	protected void setPkMapKey_(boolean pkMapKey) {
+		boolean old = this.pkMapKey;
+		this.pkMapKey = pkMapKey;
+		this.firePropertyChanged(PK_MAP_KEY_PROPERTY, old, pkMapKey);
+	}
+
+
+	// ********** custom map key **********  
+
+	public boolean isCustomMapKey() {
+		return this.customMapKey;
+	}
+
+	public void setCustomMapKey(boolean customMapKey) {
+		boolean old = this.customMapKey;
+		this.customMapKey = customMapKey;
+		if (customMapKey) {
+			this.setSpecifiedMapKey(""); //$NON-NLS-1$
+		} else {
+			// the 'customMapKey' flag is cleared as a
+			// side-effect of setting the other flags,
+			// via a call to #setCustomMapKey_(boolean)
+		}
+		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
+	}
+
+	protected void setCustomMapKey_(boolean customMapKey) {
+		boolean old = this.customMapKey;
+		this.customMapKey = customMapKey;
+		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
+	}
+
+	// *************** map key class *************
+
+	public String getMapKeyClass() {
+		return (this.specifiedMapKeyClass != null) ? this.specifiedMapKeyClass : this.defaultMapKeyClass;
+	}
+
+	public String getSpecifiedMapKeyClass() {
+		return this.specifiedMapKeyClass;
+	}
+
+	public void setSpecifiedMapKeyClass(String mapKeyClass) {
+		String old = this.specifiedMapKeyClass;
+		this.specifiedMapKeyClass = mapKeyClass;
+		MapKeyClass2_0Annotation mapKeyClassAnnotation = this.getMapKeyClassAnnotation();
+		if (mapKeyClass == null) {
+			if (mapKeyClassAnnotation != null) {
+				this.removeMapKeyClassAnnotation();
+			}
+		} else {
+			if (mapKeyClassAnnotation == null) {
+				mapKeyClassAnnotation = this.addMapKeyClassAnnotation();
+			}
+			mapKeyClassAnnotation.setValue(mapKeyClass);
+		}
+
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected void setSpecifiedMapKeyClass_(String mapKeyClass) {
+		String old = this.specifiedMapKeyClass;
+		this.specifiedMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String getResourceMapKeyClass() {
+		MapKeyClass2_0Annotation annotation = getMapKeyClassAnnotation();
+		return annotation == null ? null : annotation.getValue();
+	}
+
+	public String getDefaultMapKeyClass() {
+		return this.defaultMapKeyClass;
+	}
+
+	protected void setDefaultMapKeyClass(String mapKeyClass) {
+		String old = this.defaultMapKeyClass;
+		this.defaultMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(DEFAULT_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String buildDefaultMapKeyClass() {
+		return this.getPersistentAttribute().getMultiReferenceMapKeyTypeName();
+	}
+
+	public char getMapKeyClassEnclosingTypeSeparator() {
+		return '.';
+	}
+
+	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation() {
+		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected MapKeyClass2_0Annotation addMapKeyClassAnnotation() {
+		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected void removeMapKeyClassAnnotation() {
+		this.getResourcePersistentAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	}
+
+
 	// ********** Java completion proposals **********  
 
 	@Override
@@ -522,14 +793,42 @@ public class GenericJavaElementCollectionMapping2_0
 			return result;
 		}
 		
-//		if (this.mapKeyNameTouches(pos, astRoot)) {
-//			return this.javaCandidateMapKeyNames(filter);
-//		}
+		if (this.mapKeyNameTouches(pos, astRoot)) {
+			return this.javaCandidateMapKeyNames(filter);
+		}
 		return null;
 	}
-	
+
+	protected Iterator<String> javaCandidateMapKeyNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateMapKeyNames(filter));
+	}
+
+	protected Iterator<String> candidateMapKeyNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateMapKeyNames(), filter);
+	}
+
+	public Iterator<String> candidateMapKeyNames() {
+		return this.allTargetEmbeddableAttributeNames();
+	}
+
+	public Iterator<String> allTargetEmbeddableAttributeNames() {
+		return new CompositeIterator<String>(
+			new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEmbeddableAttributeMappings()) {
+				@Override
+				protected Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allMappingNames();
+				}
+		});
+	}
+
+	protected Iterator<AttributeMapping> allTargetEmbeddableAttributeMappings() {
+		return (this.resolvedTargetEmbeddable != null) ?
+				this.resolvedTargetEmbeddable.allAttributeMappings() :
+				EmptyIterator.<AttributeMapping> instance();
+	}
+
+
 	// ********** metamodel **********  
-	//TODO map metamodel
 	@Override
 	protected String getMetamodelFieldTypeName() {
 		return ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
@@ -548,15 +847,15 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-//		String keyTypeName = ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
-//		if (keyTypeName != null) {
-//			typeArgumentNames.add(keyTypeName);
-//		}
+		String keyTypeName = ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		if (keyTypeName != null) {
+			typeArgumentNames.add(keyTypeName);
+		}
 	}
 
-//	public String getMetamodelFieldMapKeyTypeName() {
-//		return MappingTools.getMetamodelFieldMapKeyTypeName(this);
-//	}
+	public String getMetamodelFieldMapKeyTypeName() {
+		return MappingTools.getMetamodelFieldMapKeyTypeName(this);
+	}
 	
 	
 	// ********** validation **********

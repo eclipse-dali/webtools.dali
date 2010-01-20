@@ -15,8 +15,11 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlElementCollectio
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.EnumType;
+import org.eclipse.jpt.core.resource.orm.FetchType;
+import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection;
@@ -63,6 +66,15 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	@Override
 	public TextRange getNameTextRange() {
 		return this.virtualXmlElementCollection.getNameTextRange();
+	}
+	@Override
+	public FetchType getFetch() {
+		return this.virtualXmlElementCollection.getFetch();
+	}
+
+	@Override
+	public void setFetch(FetchType newFetch) {
+		this.virtualXmlElementCollection.setFetch(newFetch);
 	}
 
 	@Override
@@ -154,5 +166,25 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	@Override
 	public void setTargetClass(String newTargetClass) {
 		this.virtualXmlElementCollection.setTargetClass(newTargetClass);
+	}
+	
+	@Override
+	public MapKey getMapKey() {
+		return this.virtualXmlElementCollection.getMapKey();
+	}
+	
+	@Override
+	public void setMapKey(MapKey newMapKey) {
+		this.virtualXmlElementCollection.setMapKey(newMapKey);
+	}
+	
+	@Override
+	public XmlMapKeyClass getMapKeyClass() {
+		return this.virtualXmlElementCollection.getMapKeyClass();
+	}
+	
+	@Override
+	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+		this.virtualXmlElementCollection.setMapKeyClass(newMapKeyClass);
 	}
 }

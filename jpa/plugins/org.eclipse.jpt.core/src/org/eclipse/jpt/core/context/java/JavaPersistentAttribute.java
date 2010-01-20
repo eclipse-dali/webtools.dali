@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
@@ -108,5 +110,65 @@ public interface JavaPersistentAttribute
 	 * an array or a "container").
 	 */
 	String getMultiReferenceTargetTypeName();
+
+	/**
+	 * If the attribute's type is a map type,
+	 * return the type parameter that can be used as a key type.
+	 * Return null if the attribute is not a map or if the type
+	 * parameter is not valid as a key type (i.e. it is either
+	 * an array or a "container").
+	 */
+	String getMultiReferenceMapKeyTypeName();
+
+	/**
+	 * Return the JpaContainer that corresponds to this attribute's type.
+	 * Return a null implementation if the type is not a container (map or collection)
+	 */
+	JpaContainer getJpaContainer();
+
+	/**
+	 * JPA container interface (and null implementation)
+	 */
+	interface JpaContainer {
+		String getTypeName();
+		boolean isContainer();
+		String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
+		String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
+		String getMetamodelContainerFieldTypeName();
+		String getMetamodelContainerFieldMapKeyTypeName(CollectionMapping mapping);
+
+		final class Null implements JpaContainer {
+			public static final JpaContainer INSTANCE = new Null();
+			public static JpaContainer instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Null() {
+				super();
+			}
+			public String getTypeName() {
+				return null;
+			}
+			public boolean isContainer() {
+				return false;
+			}
+			public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+				return null;
+			}
+			public String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+				return null;
+			}
+			public String getMetamodelContainerFieldTypeName() {
+				return JPA2_0.COLLECTION_ATTRIBUTE;
+			}
+			public String getMetamodelContainerFieldMapKeyTypeName(CollectionMapping mapping) {
+				return null;
+			}
+			@Override
+			public String toString() {
+				return "JpaContainer.Null";  //$NON-NLS-1$
+			}
+		}
+	}
 
 }

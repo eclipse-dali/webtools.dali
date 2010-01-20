@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,15 +14,18 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -33,7 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmPersistentAttribute
 	extends AbstractOrmXmlContextNode
-	implements OrmPersistentAttribute
+	implements OrmPersistentAttribute2_0
 {
 	protected final Owner owner;
 
@@ -192,7 +195,10 @@ public abstract class AbstractOrmPersistentAttribute
 	protected AccessType buildDefaultAccess() {
 		return getPersistentType().getAccess();
 	}
-	
+
+
+	// ********** JpaStructureNode implementation **********
+
 	public JpaStructureNode getStructureNode(int offset) {
 		return this;
 	}
@@ -211,6 +217,21 @@ public abstract class AbstractOrmPersistentAttribute
 		return this.attributeMapping.getSelectionTextRange();
 	}
 	
+	public void dispose() {
+		//nothing to dispose
+	}
+
+
+	// ********** misc overrides **********
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
+	}
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -271,13 +292,25 @@ public abstract class AbstractOrmPersistentAttribute
 		return this.attributeMapping.getValidationTextRange();
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
-	}
+
+	// ********** metamodel **********
 	
-	public void dispose() {
-		//nothing to dispose
+	public String getMetamodelContainerFieldTypeName() {
+		return this.getJpaContainer().getMetamodelContainerFieldTypeName();
+	}
+
+	public String getMetamodelContainerFieldMapKeyTypeName() {
+		return this.getJpaContainer().getMetamodelContainerFieldMapKeyTypeName((CollectionMapping) this.getMapping());
+	}
+
+	public String getMetamodelTypeName() {
+		JavaPersistentAttribute2_0 javaAttribute = (JavaPersistentAttribute2_0) getJavaPersistentAttribute();
+		return javaAttribute == null ? MetamodelField.DEFAULT_TYPE_NAME : javaAttribute.getMetamodelTypeName();
+	}
+
+	protected JavaPersistentAttribute.JpaContainer getJpaContainer() {
+		JavaPersistentAttribute2_0 javaAttribute = (JavaPersistentAttribute2_0) getJavaPersistentAttribute();
+		return javaAttribute == null ? JavaPersistentAttribute.JpaContainer.Null.instance() : javaAttribute.getJpaContainer();
 	}
 
 }

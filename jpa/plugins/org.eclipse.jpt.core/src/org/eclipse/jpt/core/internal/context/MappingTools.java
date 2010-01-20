@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,12 @@ package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReferenceTable;
@@ -230,16 +230,14 @@ public class MappingTools {
 		}
 	}
 
-	public static String getMetamodelFieldMapKeyTypeName(MultiRelationshipMapping mapping) {
-		Entity targetEntity = mapping.getResolvedTargetEntity();
-		if (targetEntity == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
-		}
+	public static String getMetamodelFieldMapKeyTypeName(CollectionMapping mapping) {
+		PersistentType targetType = mapping.getResolvedTargetType();
 		String mapKey = mapping.getMapKey();
-		if (mapKey == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
+		if (mapKey == null || targetType == null) {
+			String mapKeyClass = mapping.getMapKeyClass();
+			return mapKeyClass != null ? mapKeyClass : MetamodelField.DEFAULT_TYPE_NAME;
 		}
-		PersistentAttribute mapKeyAttribute = targetEntity.getPersistentType().resolveAttribute(mapKey);
+		PersistentAttribute mapKeyAttribute = targetType.resolveAttribute(mapKey);
 		if (mapKeyAttribute == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,42 +7,46 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.orm;
+package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToMany;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlManyToMany2_0;
+import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
+import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkManyToManyMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlManyToMany;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 
 /**
- * VirtualBasic is an implementation of Basic used when there is 
- * no tag in the orm.xml and an underlying javaBasicMapping exists.
+ * VirtualEclipseLinkXmlManyToMany2_0 is an implementation of XmlManyToMany used when there is 
+ * no tag in the orm.xml and an underlying java many to many exists.
  */
-public class VirtualEclipseLinkXmlManyToMany extends XmlManyToMany
+public class VirtualEclipseLinkXmlManyToMany2_0 extends XmlManyToMany
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected final JavaManyToManyMapping javaAttributeMapping;
 
-	protected final VirtualXmlManyToMany virtualXmlManyToMany;
+	protected final VirtualEclipseLinkXmlManyToMany eclipseLinkVirtualXmlManyToMany;
+	
+	protected final VirtualXmlManyToMany2_0 virtualXmlManyToMany;
 		
-	public VirtualEclipseLinkXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
+	public VirtualEclipseLinkXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;
-		this.virtualXmlManyToMany = new VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		this.eclipseLinkVirtualXmlManyToMany = new VirtualEclipseLinkXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		this.virtualXmlManyToMany = new VirtualXmlManyToMany2_0(ormTypeMapping, javaManyToManyMapping);
 	}
 
 	protected boolean isOrmMetadataComplete() {
@@ -131,6 +135,16 @@ public class VirtualEclipseLinkXmlManyToMany extends XmlManyToMany
 	}
 	
 	@Override
+	public XmlMapKeyClass getMapKeyClass() {
+		return this.virtualXmlManyToMany.getMapKeyClass();
+	}
+	
+	@Override
+	public void setMapKeyClass(XmlMapKeyClass value) {
+		this.virtualXmlManyToMany.setMapKeyClass(value);
+	}
+
+	@Override
 	public String getOrderBy() {
 		return this.virtualXmlManyToMany.getOrderBy();
 	}
@@ -157,35 +171,41 @@ public class VirtualEclipseLinkXmlManyToMany extends XmlManyToMany
 	
 	@Override
 	public XmlJoinFetchType getJoinFetch() {
-		if (isOrmMetadataComplete()) {
-			return null; //don't return default value, it only applies for an empty @JoinFetch
-		}
-		return EclipseLinkJoinFetchType.toOrmResourceModel(((JavaEclipseLinkManyToManyMapping) this.javaAttributeMapping).getJoinFetch().getValue());
+		return this.eclipseLinkVirtualXmlManyToMany.getJoinFetch();
 	}
 	
 	@Override
 	public void setJoinFetch(XmlJoinFetchType value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+		this.eclipseLinkVirtualXmlManyToMany.setJoinFetch(value);
 	}
 	
 	@Override
 	public XmlAccessMethods getAccessMethods() {
-		return null;
+		return this.eclipseLinkVirtualXmlManyToMany.getAccessMethods();
 	}
 	
 	@Override
 	public void setAccessMethods(XmlAccessMethods value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
+		this.eclipseLinkVirtualXmlManyToMany.setAccessMethods(value);
 	}
 	
 	@Override
 	public EList<XmlProperty> getProperties() {
-		// TODO get from java annotations
-		return null;
+		return this.eclipseLinkVirtualXmlManyToMany.getProperties();
 	}
 	
 	@Override
 	public TextRange getJoinFetchTextRange() {
-		return null;
+		return this.eclipseLinkVirtualXmlManyToMany.getJoinFetchTextRange();
+	}
+	
+	@Override
+	public AccessType getAccess() {
+		return org.eclipse.jpt.core.context.AccessType.toOrmResourceModel(this.javaAttributeMapping.getPersistentAttribute().getAccess());
+	}
+	
+	@Override
+	public void setAccess(AccessType value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

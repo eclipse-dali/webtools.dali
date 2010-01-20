@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,15 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa2.context.orm;
+package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
-import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlOneToMany2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -23,32 +19,36 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlOneToMany1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 
 /**
- * VirtualBasic is an implementation of Basic used when there is 
- * no tag in the orm.xml and an underlying javaBasicMapping exists.
+ * VirtualEclipseLinkXmlOneToMany2_0 is an implementation of XmlOneToMany used when there is 
+ * no tag in the orm.xml and an underlying javaOneToMany exists.
  */
-public class VirtualXmlOneToMany2_0 extends XmlOneToMany
+public class VirtualEclipseLinkXmlOneToMany2_0 extends XmlOneToMany
 {
-		
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaOneToManyMapping2_0 javaAttributeMapping;
+	protected final JavaEclipseLinkOneToManyMapping javaAttributeMapping;
 
-	protected final VirtualXmlOneToMany virtualXmlOneToMany;
-
-	protected final XmlMapKeyClass mapKeyClass;
+	protected final VirtualEclipseLinkXmlOneToMany1_1 eclipseLinkVirtualXmlOneToMany;
+	
+	protected final VirtualXmlOneToMany2_0 virtualXmlOneToMany;
 		
-	public VirtualXmlOneToMany2_0(
-			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping2_0 javaOneToManyMapping) {
+	public VirtualEclipseLinkXmlOneToMany2_0(
+			OrmTypeMapping ormTypeMapping, JavaEclipseLinkOneToManyMapping javaOneToManyMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToManyMapping;
-		this.virtualXmlOneToMany = new VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
-		this.mapKeyClass = new VirtualMapKeyClass(javaOneToManyMapping);
+		this.eclipseLinkVirtualXmlOneToMany = new VirtualEclipseLinkXmlOneToMany1_1(ormTypeMapping, javaOneToManyMapping);
+		this.virtualXmlOneToMany = new VirtualXmlOneToMany2_0(ormTypeMapping, javaOneToManyMapping);
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -95,24 +95,6 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 		this.virtualXmlOneToMany.setCascade(value);
 	}
 	
-	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
-		return ((JavaOrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
-	}
-	
-	@Override
-	public Boolean getOrphanRemoval() {
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(this.javaAttributeMapping);
-		if (this.isOrmMetadataComplete()) {
-			return mappingsOrphanRemoval.isDefaultOrphanRemoval();
-		}
-		return mappingsOrphanRemoval.isOrphanRemoval();
-	}
-
-	@Override
-	public void setOrphanRemoval(Boolean newOrphanRemoval) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
 	@Override
 	public XmlJoinTable getJoinTable() {
 		return this.virtualXmlOneToMany.getJoinTable();
@@ -156,17 +138,14 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	
 	@Override
 	public XmlMapKeyClass getMapKeyClass() {
-		if (this.isOrmMetadataComplete()) {
-			return null;
-		}
-		return this.mapKeyClass;
+		return this.virtualXmlOneToMany.getMapKeyClass();
 	}
-
+	
 	@Override
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	public void setMapKeyClass(XmlMapKeyClass value) {
+		this.virtualXmlOneToMany.setMapKeyClass(value);
 	}
-
+	
 	@Override
 	public String getOrderBy() {
 		return this.virtualXmlOneToMany.getOrderBy();
@@ -194,16 +173,61 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	
 	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
-		return this.virtualXmlOneToMany.getJoinColumns();
+		return this.eclipseLinkVirtualXmlOneToMany.getJoinColumns();
+	}
+
+	@Override
+	public XmlJoinFetchType getJoinFetch() {
+		return this.eclipseLinkVirtualXmlOneToMany.getJoinFetch();
+	}
+	
+	@Override
+	public void setJoinFetch(XmlJoinFetchType value) {
+		this.eclipseLinkVirtualXmlOneToMany.setJoinFetch(value);
+	}
+	
+	@Override
+	public boolean isPrivateOwned() {
+		return this.eclipseLinkVirtualXmlOneToMany.isPrivateOwned();
+	}
+	
+	@Override
+	public void setPrivateOwned(boolean value) {
+		this.eclipseLinkVirtualXmlOneToMany.setPrivateOwned(value);
+	}
+	
+	@Override
+	public XmlAccessMethods getAccessMethods() {
+		return this.eclipseLinkVirtualXmlOneToMany.getAccessMethods();
+	}
+	
+	@Override
+	public void setAccessMethods(XmlAccessMethods value) {
+		this.eclipseLinkVirtualXmlOneToMany.setAccessMethods(value);
+	}
+	
+	@Override
+	public EList<XmlProperty> getProperties() {
+		return this.eclipseLinkVirtualXmlOneToMany.getProperties();
+	}
+	
+	@Override
+	public TextRange getJoinFetchTextRange() {
+		return this.eclipseLinkVirtualXmlOneToMany.getJoinFetchTextRange();
+	}
+	
+	@Override
+	public TextRange getPrivateOwnedTextRange() {
+		return this.eclipseLinkVirtualXmlOneToMany.getPrivateOwnedTextRange();
 	}
 	
 	@Override
 	public AccessType getAccess() {
-		return org.eclipse.jpt.core.context.AccessType.toOrmResourceModel(this.javaAttributeMapping.getPersistentAttribute().getAccess());
+		return this.eclipseLinkVirtualXmlOneToMany.getAccess();
 	}
 	
 	@Override
 	public void setAccess(AccessType value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+		this.eclipseLinkVirtualXmlOneToMany.setAccess(value);
 	}
 }

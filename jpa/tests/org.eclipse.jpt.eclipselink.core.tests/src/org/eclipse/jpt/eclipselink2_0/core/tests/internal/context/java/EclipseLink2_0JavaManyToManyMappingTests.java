@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
+ *  Copyright (c) 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
+package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -20,19 +20,41 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
-import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.EclipseLink2_0ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class GenericJavaManyToManyMapping2_0Tests
-	extends Generic2_0ContextModelTestCase
+public class EclipseLink2_0JavaManyToManyMappingTests
+	extends EclipseLink2_0ContextModelTestCase
 {
-	public GenericJavaManyToManyMapping2_0Tests(String name) {
+	public EclipseLink2_0JavaManyToManyMappingTests(String name) {
 		super(name);
 	}
 	
-	
+	private ICompilationUnit createTestEntityWithJoinFetchManyToMany() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, EclipseLink.JOIN_FETCH);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ManyToMany").append(CR);
+				sb.append("@JoinFetch").append(CR);
+			}
+		});
+	}
 	
 	private ICompilationUnit createTestEntityWithValidManyToManyMapping() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -159,7 +181,100 @@ public class GenericJavaManyToManyMapping2_0Tests
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
+	
+	public void testGetJoinFetchValue() throws Exception {
+		createTestEntityWithJoinFetchManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		
+		// base annotated, test context value
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change resource to INNER specifically, test context
+		
+		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change resource to OUTER, test context
+		
+		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER);
+		getJpaProject().synchronizeContextModel();
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER, joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.OUTER, contextJoinFetch.getValue());
+		
+		// remove value from resource, test context
+		
+		joinFetchAnnotation.setValue(null);
+		getJpaProject().synchronizeContextModel();
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// remove annotation, text context
+		
+		attributeResource.removeAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertNull(contextJoinFetch.getValue());
+	}
+	
+	public void testSetJoinFetchValue() throws Exception {
+		createTestEntityWithJoinFetchManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		
+		// base annotated, test resource value
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change context to INNER specifically, test resource
+		
+		contextJoinFetch.setValue(EclipseLinkJoinFetchType.INNER);
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change context to OUTER, test resource
+		
+		contextJoinFetch.setValue(EclipseLinkJoinFetchType.OUTER);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER, joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.OUTER, contextJoinFetch.getValue());
+		
+		// set context to null, test resource
+		
+		contextJoinFetch.setValue(null);
+		
+		assertNull(attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME));
+		assertNull(contextJoinFetch.getValue());
+		
+		// change context to INNER specifically (this time from no annotation), test resource
+		
+		contextJoinFetch.setValue(EclipseLinkJoinFetchType.INNER);
+		joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
+	}		
 	public void testCandidateMappedByAttributeNames() throws Exception {
 		createTestEntityWithValidManyToManyMapping();
 		createTestTargetEntityAddress();
@@ -236,8 +351,6 @@ public class GenericJavaManyToManyMapping2_0Tests
 		
 		mapKey.setName("myMapKey");
 		attributeResource.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
-		getJpaProject().synchronizeContextModel();
-
 		assertNull(manyToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
@@ -350,6 +463,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		mapKeyClass.setValue("myMapKeyClass");
 		attributeResource.removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
+
 		assertNull(manyToManyMapping.getSpecifiedMapKeyClass());
 		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,15 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.orm.VirtualMapKey;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
+import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
+import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -30,13 +33,18 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	
 	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
 	
+	protected final MapKey mapKey;
 	
+	protected final XmlMapKeyClass mapKeyClass;
+
 	public VirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaMapping;
 		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaMapping);
+		this.mapKey = new VirtualMapKey(javaMapping);
+		this.mapKeyClass = new VirtualMapKeyClass(javaMapping);
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -122,4 +130,32 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
+	public MapKey getMapKey() {
+		if (this.isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.isNoMapKey()) {
+			return null;
+		}
+		return this.mapKey;
+	}
+
+	@Override
+	public void setMapKey(MapKey value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	@Override
+	public XmlMapKeyClass getMapKeyClass() {
+		if (this.isOrmMetadataComplete()) {
+			return null;
+		}
+		return this.mapKeyClass;
+	}
+
+	@Override
+	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
 }

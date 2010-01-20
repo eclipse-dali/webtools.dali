@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
-import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
@@ -48,7 +46,7 @@ public class VirtualXmlManyToMany
 		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaManyToManyMapping);
 		this.virtualCascadeType = 
 			new VirtualCascadeType(javaManyToManyMapping.getCascade(), this.isOrmMetadataComplete());
-		this.mapKey = new VirtualMapKey(javaManyToManyMapping, this.isOrmMetadataComplete());
+		this.mapKey = new VirtualMapKey(javaManyToManyMapping);
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -86,10 +84,6 @@ public class VirtualXmlManyToMany
 	@Override
 	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
-	public EList<XmlJoinColumn> getJoinColumns() {
-		return null;
 	}
 
 	@Override
@@ -147,6 +141,12 @@ public class VirtualXmlManyToMany
 	
 	@Override
 	public MapKey getMapKey() {
+		if (this.isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.isNoMapKey()) {
+			return null;
+		}
 		return this.mapKey;
 	}
 	

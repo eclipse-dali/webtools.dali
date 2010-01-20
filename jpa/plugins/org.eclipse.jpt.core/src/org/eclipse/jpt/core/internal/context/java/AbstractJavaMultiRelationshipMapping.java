@@ -16,12 +16,14 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
@@ -45,6 +47,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	protected boolean pkMapKey = false;
 	protected boolean customMapKey = false;
 
+	protected String specifiedMapKeyClass;
+	protected String defaultMapKeyClass;
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
@@ -56,6 +60,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		super.initialize();
 		this.orderable.initialize();
 		this.initializeMapKey();
+		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
+		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 	}
 
 	@Override
@@ -63,6 +69,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		super.update();
 		this.orderable.update();
 		this.updateMapKey();
+		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
+		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 	}
 
 	// ********** AbstractJavaAttributeMapping implementation **********  
@@ -105,6 +113,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return DEFAULT_FETCH_TYPE;
 	}
 
+
+	// ********** CollectionMapping implementation **********  
+
+	public PersistentType getResolvedTargetType() {
+		return getResolvedTargetEntity() == null ? null : getResolvedTargetEntity().getPersistentType();
+	}
 
 	// ********** map key **********  
 
@@ -280,6 +294,75 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
 	}
 
+
+	// *************** map key class *************
+
+	public String getMapKeyClass() {
+		return (this.specifiedMapKeyClass != null) ? this.specifiedMapKeyClass : this.defaultMapKeyClass;
+	}
+
+	public String getSpecifiedMapKeyClass() {
+		return this.specifiedMapKeyClass;
+	}
+
+	public void setSpecifiedMapKeyClass(String mapKeyClass) {
+		String old = this.specifiedMapKeyClass;
+		this.specifiedMapKeyClass = mapKeyClass;
+		MapKeyClass2_0Annotation mapKeyClassAnnotation = this.getMapKeyClassAnnotation();
+		if (mapKeyClass == null) {
+			if (mapKeyClassAnnotation != null) {
+				this.removeMapKeyClassAnnotation();
+			}
+		} else {
+			if (mapKeyClassAnnotation == null) {
+				mapKeyClassAnnotation = this.addMapKeyClassAnnotation();
+			}
+			mapKeyClassAnnotation.setValue(mapKeyClass);
+		}
+
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected void setSpecifiedMapKeyClass_(String mapKeyClass) {
+		String old = this.specifiedMapKeyClass;
+		this.specifiedMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String getResourceMapKeyClass() {
+		MapKeyClass2_0Annotation annotation = getMapKeyClassAnnotation();
+		return annotation == null ? null : annotation.getValue();
+	}
+
+	public String getDefaultMapKeyClass() {
+		return this.defaultMapKeyClass;
+	}
+
+	protected void setDefaultMapKeyClass(String targetClass) {
+		String old = this.defaultMapKeyClass;
+		this.defaultMapKeyClass = targetClass;
+		this.firePropertyChanged(DEFAULT_MAP_KEY_CLASS_PROPERTY, old, targetClass);
+	}
+
+	protected String buildDefaultMapKeyClass() {
+		return this.getPersistentAttribute().getMultiReferenceMapKeyTypeName();
+	}
+
+	public char getMapKeyClassEnclosingTypeSeparator() {
+		return '.';
+	}
+
+	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation() {
+		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected MapKeyClass2_0Annotation addMapKeyClassAnnotation() {
+		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected void removeMapKeyClassAnnotation() {
+		this.getResourcePersistentAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+	}
 
 	// ********** Java completion proposals **********  
 

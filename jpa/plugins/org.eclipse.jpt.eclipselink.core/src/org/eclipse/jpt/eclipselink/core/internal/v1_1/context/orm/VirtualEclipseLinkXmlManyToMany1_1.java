@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
-import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -77,10 +76,6 @@ public class VirtualEclipseLinkXmlManyToMany1_1 extends XmlManyToMany
 	@Override
 	public void setFetch(FetchType newFetch) {
 		this.virtualXmlManyToMany.setFetch(newFetch);
-	}
-
-	public EList<XmlJoinColumn> getJoinColumns() {
-		return this.virtualXmlManyToMany.getJoinColumns();
 	}
 
 	@Override

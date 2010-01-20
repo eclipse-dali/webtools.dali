@@ -10,14 +10,11 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.utility.internal.ClassName;
 
 /**
  * JPA 2.0 Java persistent attribute
@@ -68,27 +65,4 @@ public class GenericJavaPersistentAttribute2_0
 		super.update();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 	}
-
-
-	// ********** metamodel **********
-
-	public String getMetamodelContainerFieldTypeName() {
-		return this.getJpaContainer(this.resourcePersistentAttribute.getTypeName()).getMetamodelContainerFieldTypeName();
-	}
-
-	public String getMetamodelContainerFieldMapKeyTypeName() {
-		return this.getJpaContainer(this.resourcePersistentAttribute.getTypeName()).getMetamodelContainerFieldMapKeyTypeName((MultiRelationshipMapping) this.getMapping());
-	}
-
-	public String getMetamodelTypeName() {
-		String typeName = this.resourcePersistentAttribute.getTypeName();
-		if (typeName == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
-		}
-		if (ClassName.isPrimitive(typeName)) {
-			return ClassName.getWrapperClassName(typeName);  // ???
-		}
-		return typeName;
-	}
-
 }

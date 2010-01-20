@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
@@ -190,6 +191,50 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 				sb.append(CR);
 				sb.append("    @OneToMany").append(CR);				
 				sb.append("    private Address addresses;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidMapOneToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToMany").append(CR);				
+				sb.append("    private java.util.Map<String, Address> addresses;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidNonGenericMapOneToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToMany").append(CR);				
+				sb.append("    private java.util.Map addresses;").append(CR);			
 				sb.append(CR);
 				sb.append("    @Id").append(CR);				
 			}
@@ -838,6 +883,49 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedMapKey(null);
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
 		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+	}
+	
+	public void testCandidateMapKeyNames() throws Exception {
+		createTestEntityWithValidMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+
+		Iterator<String> mapKeyNames = 
+			javaOneToManyMapping.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+	}
+	
+	public void testCandidateMapKeyNames2() throws Exception {
+		createTestEntityWithValidNonGenericMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+
+		Iterator<String> mapKeyNames = javaOneToManyMapping.candidateMapKeyNames();
+		assertEquals(false, mapKeyNames.hasNext());
+		
+		javaOneToManyMapping.setSpecifiedTargetEntity("test.Address");
+		mapKeyNames = javaOneToManyMapping.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
 	}
 
 	public void testUpdateOrderBy() throws Exception {

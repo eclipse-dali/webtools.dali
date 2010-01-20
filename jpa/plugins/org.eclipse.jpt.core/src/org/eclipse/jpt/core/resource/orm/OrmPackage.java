@@ -496,13 +496,67 @@ public class OrmPackage extends EPackageImpl
 	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 9;
+
+	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Abstract Xml Multi Relationship Mapping</em>' class.
@@ -511,7 +565,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 11;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping <em>Abstract Xml Single Relationship Mapping</em>}' class.
@@ -3649,6 +3703,60 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__ORDER_BY = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_TEMPORAL = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_ENUMERATED = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_COLUMN = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS;
+
+	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3658,67 +3766,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__MAP_KEY = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_TEMPORAL = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_ENUMERATED = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_COLUMN = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_JOIN_COLUMNS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
-
-	/**
 	 * The number of structural features of the '<em>Xml Many To Many</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
+	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -4234,6 +4288,60 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__ORDER_BY = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_TEMPORAL = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_ENUMERATED = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_COLUMN = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS;
+
+	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4261,67 +4369,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__ORPHAN_REMOVAL = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_TEMPORAL = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_ENUMERATED = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_COLUMN = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Join Columns</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_JOIN_COLUMNS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 7;
-
-	/**
 	 * The number of structural features of the '<em>Xml One To Many</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_FEATURE_COUNT = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 8;
+	public static final int XML_ONE_TO_MANY_FEATURE_COUNT = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -9877,6 +9931,7 @@ public class OrmPackage extends EPackageImpl
 		abstractXmlMultiRelationshipMappingEClass.getESuperTypes().add(this.getXmlMappedByMapping());
 		abstractXmlMultiRelationshipMappingEClass.getESuperTypes().add(this.getXmlJoinTableMapping());
 		abstractXmlMultiRelationshipMappingEClass.getESuperTypes().add(this.getXmlOrderable());
+		abstractXmlMultiRelationshipMappingEClass.getESuperTypes().add(theOrmV2_0Package.getXmlMultiRelationshipMapping_2_0());
 		abstractXmlRelationshipMappingEClass.getESuperTypes().add(this.getAbstractXmlAttributeMapping());
 		abstractXmlSingleRelationshipMappingEClass.getESuperTypes().add(this.getAbstractXmlRelationshipMapping());
 		abstractXmlSingleRelationshipMappingEClass.getESuperTypes().add(this.getXmlJoinTableMapping());

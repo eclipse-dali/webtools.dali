@@ -58,8 +58,9 @@ public interface ElementCollectionMapping2_0
 		String KEY_TYPE_PROPERTY = "keyType"; //$NON-NLS-1$
 
 	public enum Type {
-		EMBEDDABLE_TYPE,
 		BASIC_TYPE,
+		EMBEDDABLE_TYPE,
+		ENTITY_TYPE,
 		NO_TYPE
 	}
 

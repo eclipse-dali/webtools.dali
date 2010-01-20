@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.java;
 
 import java.util.Iterator;
@@ -18,10 +18,12 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -78,6 +80,51 @@ public class GenericJavaOneToManyMapping2_0Tests
 			}
 		});
 	}
+
+	private ICompilationUnit createTestEntityWithValidGenericMapOneToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToMany").append(CR);				
+				sb.append("    private java.util.Map<Integer, Address> addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithValidNonGenericMapOneToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToMany").append(CR);				
+				sb.append("    private java.util.Map addresses;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+
 	
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -323,4 +370,222 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertNull(persistentAttribute.getSpecifiedMapping());
 	}
 	
+	public void testUpdateMapKey() throws Exception {
+		createTestEntityWithValidOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		
+		assertNull(oneToManyMapping.getSpecifiedMapKey());
+		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		
+		//set mapKey in the resource model, verify context model does not change
+		attributeResource.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		assertNull(oneToManyMapping.getSpecifiedMapKey());
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		assertNotNull(mapKey);
+				
+		//set mapKey name in the resource model, verify context model updated
+		mapKey.setName("myMapKey");
+		getJpaProject().synchronizeContextModel();
+		assertEquals("myMapKey", oneToManyMapping.getSpecifiedMapKey());
+		assertEquals("myMapKey", mapKey.getName());
+		
+		//set mapKey name to null in the resource model
+		mapKey.setName(null);
+		getJpaProject().synchronizeContextModel();
+		
+		assertNull(oneToManyMapping.getSpecifiedMapKey());
+		assertNull(mapKey.getName());
+		
+		mapKey.setName("myMapKey");
+		attributeResource.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+
+		assertNull(oneToManyMapping.getSpecifiedMapKey());
+		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+	}
+	
+	public void testModifyMapKey() throws Exception {
+		createTestEntityWithValidOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		
+		assertNull(oneToManyMapping.getSpecifiedMapKey());
+		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+					
+		//set mapKey  in the context model, verify resource model updated
+		oneToManyMapping.setSpecifiedMapKey("myMapKey");
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		assertEquals("myMapKey", oneToManyMapping.getSpecifiedMapKey());
+		assertEquals("myMapKey", mapKey.getName());
+	
+		//set mapKey to null in the context model
+		oneToManyMapping.setSpecifiedMapKey(null);
+		assertNull(oneToManyMapping.getSpecifiedMapKey());
+		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+	}
+	
+	public void testCandidateMapKeyNames() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping2_0 = (OneToManyMapping2_0) persistentAttribute.getMapping();
+
+		Iterator<String> mapKeyNames = 
+			oneToManyMapping2_0.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("state.foo", mapKeyNames.next());
+		assertEquals("state.address", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+	}
+	
+	public void testCandidateMapKeyNames2() throws Exception {
+		createTestEntityWithValidNonGenericMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping2_0 = (OneToManyMapping2_0) persistentAttribute.getMapping();
+
+		Iterator<String> mapKeyNames = oneToManyMapping2_0.candidateMapKeyNames();
+		assertEquals(false, mapKeyNames.hasNext());
+		
+		oneToManyMapping2_0.setSpecifiedTargetEntity("Address");
+		mapKeyNames = oneToManyMapping2_0.candidateMapKeyNames();
+		assertEquals("id", mapKeyNames.next());
+		assertEquals("city", mapKeyNames.next());
+		assertEquals("state", mapKeyNames.next());
+		assertEquals("state.foo", mapKeyNames.next());
+		assertEquals("state.address", mapKeyNames.next());
+		assertEquals("zip", mapKeyNames.next());
+		assertFalse(mapKeyNames.hasNext());
+		
+		oneToManyMapping2_0.setSpecifiedTargetEntity("String");
+		mapKeyNames = oneToManyMapping2_0.candidateMapKeyNames();
+		assertEquals(false, mapKeyNames.hasNext());
+	}
+	
+	public void testUpdateMapKeyClass() throws Exception {
+		createTestEntityWithValidOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		
+		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
+		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		
+		//set mapKey in the resource model, verify context model does not change
+		attributeResource.addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
+		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		assertNotNull(mapKeyClass);
+				
+		//set mapKey name in the resource model, verify context model updated
+		mapKeyClass.setValue("myMapKeyClass");
+		assertEquals("myMapKeyClass", oneToManyMapping.getSpecifiedMapKeyClass());
+		assertEquals("myMapKeyClass", mapKeyClass.getValue());
+		
+		//set mapKey name to null in the resource model
+		mapKeyClass.setValue(null);
+		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
+		assertNull(mapKeyClass.getValue());
+		
+		mapKeyClass.setValue("myMapKeyClass");
+		attributeResource.removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
+		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testModifyMapKeyClass() throws Exception {
+		createTestEntityWithValidOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		
+		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
+		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+					
+		//set mapKey  in the context model, verify resource model updated
+		oneToManyMapping.setSpecifiedMapKeyClass("String");
+		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		assertEquals("String", oneToManyMapping.getSpecifiedMapKeyClass());
+		assertEquals("String", mapKeyClass.getValue());
+	
+		//set mapKey to null in the context model
+		oneToManyMapping.setSpecifiedMapKeyClass(null);
+		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
+		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+	}
+
+	public void testDefaultMapKeyClass() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals("java.lang.Integer", oneToManyMapping.getDefaultMapKeyClass());
+
+		//test default still the same when specified target entity it set
+		oneToManyMapping.setSpecifiedMapKeyClass("foo");
+		assertEquals("java.lang.Integer", oneToManyMapping.getDefaultMapKeyClass());
+	}
+	
+	public void testDefaultMapKeyClassCollectionType() throws Exception {
+		createTestEntityWithValidOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+	
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertNull(oneToManyMapping.getDefaultMapKeyClass());
+	}
+	
+	public void testMapKeyClass() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals("java.lang.Integer", oneToManyMapping.getMapKeyClass());
+
+		oneToManyMapping.setSpecifiedMapKeyClass("foo");
+		assertEquals("foo", oneToManyMapping.getMapKeyClass());
+		
+		oneToManyMapping.setSpecifiedMapKeyClass(null);
+		assertEquals("java.lang.Integer", oneToManyMapping.getMapKeyClass());
+	}
 }

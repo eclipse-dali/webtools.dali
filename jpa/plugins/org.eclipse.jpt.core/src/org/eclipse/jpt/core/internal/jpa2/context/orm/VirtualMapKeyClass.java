@@ -7,27 +7,27 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.orm;
+package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.CollectionMapping;
-import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 
-public class VirtualMapKey extends MapKey
+public class VirtualMapKeyClass extends XmlMapKeyClass
 {
 	CollectionMapping javaCollectionMapping;
-	
-	public VirtualMapKey(CollectionMapping collectionMapping) {
+
+	public VirtualMapKeyClass(CollectionMapping collectionMapping) {
 		super();
 		this.javaCollectionMapping = collectionMapping;
 	}
 
 	@Override
-	public String getName() {
-		return this.javaCollectionMapping.getSpecifiedMapKey();
+	public String getClassName() {
+		return this.javaCollectionMapping.getSpecifiedMapKeyClass();
 	}
 
 	@Override
-	public void setName(String newName) {
+	public void setClassName(String newClassName) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }
