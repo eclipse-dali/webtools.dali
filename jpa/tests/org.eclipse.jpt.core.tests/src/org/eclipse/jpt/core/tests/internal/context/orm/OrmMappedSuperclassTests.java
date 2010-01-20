@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 
 @SuppressWarnings("nls")
 public class OrmMappedSuperclassTests extends ContextModelTestCase
@@ -40,6 +42,17 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		getPersistenceXmlResource().save(null);
+	}
+	
+	private void createTestIdClass() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public class ").append("TestTypeId").append(" ");
+				sb.append("{}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
 	}
 	
 	public void testUpdateClass() throws Exception {
@@ -296,50 +309,78 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateIdClass() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		createTestIdClass();
+		OrmPersistentType ormPersistentType = 
+				getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		
+		XmlMappedSuperclass mappedSuperclassResource = getXmlEntityMappings().getMappedSuperclasses().get(0);
 		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) ormPersistentType.getMapping();
-		XmlMappedSuperclass mappedSuperclassResource = getXmlEntityMappings().getMappedSuperclasses().get(0);		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
-
-		assertNull(ormMappedSuperclass.getIdClass());
+		IdClassReference idClassRef = ormMappedSuperclass.getIdClassReference();
+		
 		assertNull(mappedSuperclassResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 		
 		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
-		
-		assertNull(ormMappedSuperclass.getIdClass());
 		assertNotNull(mappedSuperclassResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 		
-		mappedSuperclassResource.getIdClass().setClassName("model.Foo");
-		assertEquals("model.Foo", ormMappedSuperclass.getIdClass());
-		assertEquals("model.Foo", mappedSuperclassResource.getIdClass().getClassName());
+		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
+		mappedSuperclassResource.getIdClass().setClassName(nonExistentIdClassName);
+		assertEquals(nonExistentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
+		
+		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
+		mappedSuperclassResource.getIdClass().setClassName(existentIdClassName);
+		assertEquals(existentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
+		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertNotNull(idClassRef.getIdClass());
 		
 		//test setting  @IdClass value to null, id-class tag is not removed
 		mappedSuperclassResource.getIdClass().setClassName(null);
-		assertNull(ormMappedSuperclass.getIdClass());
 		assertNotNull(mappedSuperclassResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 		
 		//reset @IdClass value and then remove id-class tag
 		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
 		mappedSuperclassResource.getIdClass().setClassName("model.Foo");
 		mappedSuperclassResource.setIdClass(null);
-		
-		assertNull(ormMappedSuperclass.getIdClass());
 		assertNull(mappedSuperclassResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 	}
 	
 	public void testModifyIdClass() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) ormPersistentType.getMapping();
-		XmlMappedSuperclass mappedSuperclassResource = getXmlEntityMappings().getMappedSuperclasses().get(0);		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
-
-		assertNull(ormMappedSuperclass.getIdClass());
-		assertNull(mappedSuperclassResource.getIdClass());
-			
-		ormMappedSuperclass.setIdClass("model.Foo");
-		assertEquals("model.Foo", mappedSuperclassResource.getIdClass().getClassName());
-		assertEquals("model.Foo", ormMappedSuperclass.getIdClass());
+		createTestIdClass();
+		OrmPersistentType ormPersistentType = 
+				getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		
-		ormMappedSuperclass.setIdClass(null);
-		assertNull(ormMappedSuperclass.getIdClass());
+		XmlMappedSuperclass mappedSuperclassResource = getXmlEntityMappings().getMappedSuperclasses().get(0);
+		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) ormPersistentType.getMapping();
+		IdClassReference idClassRef = ormMappedSuperclass.getIdClassReference();
+		
 		assertNull(mappedSuperclassResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
+		
+		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
+		idClassRef.setIdClassName(nonExistentIdClassName);
+		assertEquals(nonExistentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
+		
+		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
+		idClassRef.setIdClassName(existentIdClassName);
+		assertEquals(existentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
+		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertNotNull(idClassRef.getIdClass());
+		
+		idClassRef.setIdClassName(null);
+		assertNull(mappedSuperclassResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 	}
 }

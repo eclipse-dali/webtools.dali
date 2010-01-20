@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -62,13 +63,14 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 @SuppressWarnings("nls")
 public class OrmEntityTests extends ContextModelTestCase
 {
-	
 	protected static final String CHILD_TYPE_NAME = "AnnotationTestTypeChild";
 	protected static final String FULLY_QUALIFIED_CHILD_TYPE_NAME = PACKAGE_NAME + "." + CHILD_TYPE_NAME;
-
+	
+	
 	public OrmEntityTests(String name) {
 		super(name);
 	}
+	
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -155,8 +157,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
-
-
+	
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -280,6 +281,17 @@ public class OrmEntityTests extends ContextModelTestCase
 		});
 	}
 
+	private void createTestIdClass() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public class ").append("TestTypeId").append(" ");
+				sb.append("{}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "TestTypeId.java", sourceWriter);
+	}
+	
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
@@ -2595,53 +2607,79 @@ public class OrmEntityTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateIdClass() throws Exception {
-		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		createTestIdClass();
+		OrmPersistentType persistentType = 
+				getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-
-		assertNull(ormEntity.getIdClass());
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		IdClassReference idClassRef = ormEntity.getIdClassReference();
+		
 		assertNull(entityResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 		
 		entityResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
-		
-		assertNull(ormEntity.getIdClass());
 		assertNotNull(entityResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 		
-		entityResource.getIdClass().setClassName("model.Foo");
-		assertEquals("model.Foo", ormEntity.getIdClass());
-		assertEquals("model.Foo", entityResource.getIdClass().getClassName());
+		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
+		entityResource.getIdClass().setClassName(nonExistentIdClassName);
+		assertEquals(nonExistentIdClassName, entityResource.getIdClass().getClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
+		
+		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
+		entityResource.getIdClass().setClassName(existentIdClassName);
+		assertEquals(existentIdClassName, entityResource.getIdClass().getClassName());
+		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertNotNull(idClassRef.getIdClass());
 		
 		//test setting  @IdClass value to null, id-class tag is not removed
 		entityResource.getIdClass().setClassName(null);
-		assertNull(ormEntity.getIdClass());
 		assertNotNull(entityResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 		
 		//reset @IdClass value and then remove id-class tag
 		entityResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
 		entityResource.getIdClass().setClassName("model.Foo");
 		entityResource.setIdClass(null);
-		
-		assertNull(ormEntity.getIdClass());
 		assertNull(entityResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 	}
 	
 	public void testModifyIdClass() throws Exception {
-		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		createTestIdClass();
+		OrmPersistentType persistentType = 
+				getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-
-		assertNull(ormEntity.getIdClass());
-		assertNull(entityResource.getIdClass());
-			
-		ormEntity.setIdClass("model.Foo");
-		assertEquals("model.Foo", entityResource.getIdClass().getClassName());
-		assertEquals("model.Foo", ormEntity.getIdClass());
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		IdClassReference idClassRef = ormEntity.getIdClassReference();
 		
-		ormEntity.setIdClass(null);
-		assertNull(ormEntity.getIdClass());
 		assertNull(entityResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
+		
+		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
+		idClassRef.setIdClassName(nonExistentIdClassName);
+		assertEquals(nonExistentIdClassName, entityResource.getIdClass().getClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
+		
+		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
+		idClassRef.setIdClassName(existentIdClassName);
+		assertEquals(existentIdClassName, entityResource.getIdClass().getClassName());
+		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertNotNull(idClassRef.getIdClass());
+		
+		idClassRef.setIdClassName(null);
+		assertNull(entityResource.getIdClass());
+		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getIdClass());
 	}
 
 	
