@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -24,6 +23,8 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.db.Table;
@@ -68,7 +69,6 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	public Embeddable getTargetEmbeddable() {
 		return this.targetEmbeddable;
 	}
-	
 	
 	@Override
 	protected void initialize() {
@@ -181,7 +181,24 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		validateTargetEmbeddable(messages, reporter, astRoot);
 		getAttributeOverrideContainer().validate(messages, reporter, astRoot);
+	}
+	
+	protected void validateTargetEmbeddable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (getTargetEmbeddable() == null) {
+			String targetEmbeddableTypeName = getPersistentAttribute().getTypeName();
+			// if the type isn't resolveable, there'll already be a java error
+			if (targetEmbeddableTypeName != null) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
+							new String[] {targetEmbeddableTypeName}, 
+							this, 
+							this.getValidationTextRange(astRoot)));
+			}
+		}
 	}
 	
 	
