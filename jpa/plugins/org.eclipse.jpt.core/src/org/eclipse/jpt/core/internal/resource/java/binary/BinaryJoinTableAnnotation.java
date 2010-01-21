@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -116,9 +116,6 @@ public final class BinaryJoinTableAnnotation
 		throw new UnsupportedOperationException();
 	}
 
-	public JoinColumnAnnotation initializeJoinColumns() {
-		throw new UnsupportedOperationException();
-	}
 
 	// ***** inverse join columns
 	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
@@ -160,10 +157,6 @@ public final class BinaryJoinTableAnnotation
 
 	// TODO
 	private void updateInverseJoinColumns() {
-		throw new UnsupportedOperationException();
-	}
-
-	public JoinColumnAnnotation initializeInverseJoinColumns() {
 		throw new UnsupportedOperationException();
 	}
 

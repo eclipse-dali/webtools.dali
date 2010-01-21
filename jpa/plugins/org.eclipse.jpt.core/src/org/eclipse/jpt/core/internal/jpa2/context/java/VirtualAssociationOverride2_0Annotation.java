@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,7 @@ import org.eclipse.jpt.core.internal.context.java.VirtualAssociationOverrideAnno
 import org.eclipse.jpt.core.internal.resource.java.NullJoinTableAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 
 /**
  * javax.persistence.AssociationOverride
@@ -59,7 +57,4 @@ public final class VirtualAssociationOverride2_0Annotation
 		throw new UnsupportedOperationException();
 	}
 
-	public JoinColumnAnnotation addJoinTable(AnnotationInitializer initializer) {
-		throw new UnsupportedOperationException();
-	}
 }

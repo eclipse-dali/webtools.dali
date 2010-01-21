@@ -169,13 +169,8 @@ public final class SourceCollectionTable2_0Annotation
 		this.fireItemRemoved(JOIN_COLUMNS_LIST, index, joinColumn);
 	}
 
-	public JoinColumnAnnotation initializeJoinColumns() {
-		return this.addJoinColumnInternal();
-	}
-
 
 	// ********** annotation containers **********
-
 
 	/**
 	 * adapt the AnnotationContainer interface to the collection table's join columns

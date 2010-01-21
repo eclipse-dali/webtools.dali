@@ -151,15 +151,6 @@ abstract class SourcePersistentMember<E extends Member>
 		return annotation;
 	}
 
-	public Annotation addAnnotation(String annotationName, AnnotationInitializer annotationInitializer) {
-		Annotation annotation = this.buildAnnotation(annotationName);
-		this.annotations.add(annotation);
-		annotation.newAnnotation();
-		Annotation nestedAnnotation = annotationInitializer.initializeAnnotation(annotation);
-		nestedAnnotation.newAnnotation();
-		return nestedAnnotation;
-	}
-
 	/**
 	 * 1. check for a container annotation;
 	 *     if it is present, add a nested annotation to it

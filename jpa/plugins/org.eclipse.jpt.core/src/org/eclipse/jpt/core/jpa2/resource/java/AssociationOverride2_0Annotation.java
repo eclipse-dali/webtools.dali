@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,7 @@
 package org.eclipse.jpt.core.jpa2.resource.java;
 
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 
 /**
  * Corresponds to the JPA 2.0 annotation
@@ -42,8 +40,6 @@ public interface AssociationOverride2_0Annotation
 	 */
 	JoinTableAnnotation addJoinTable();
 	
-	JoinColumnAnnotation addJoinTable(AnnotationInitializer initializer);
-
 	/**
 	 * Remove the 'joinTable' element from the AssociationOverride annotation.
 	 */
