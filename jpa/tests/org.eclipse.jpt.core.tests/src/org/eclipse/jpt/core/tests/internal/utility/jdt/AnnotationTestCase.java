@@ -98,7 +98,7 @@ public abstract class AnnotationTestCase extends TestCase {
 				deleted = true;
 			} catch (CoreException ex) {
 				if (i == 4) {
-					throw ex;
+					throw new RuntimeException(this.getName() + " - unable to delete project", ex);
 				}
 				Thread.sleep(1000);
 				i++;
