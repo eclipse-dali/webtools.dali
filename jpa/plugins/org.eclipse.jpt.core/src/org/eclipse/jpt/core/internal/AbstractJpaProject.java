@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -79,6 +78,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1305,25 +1305,34 @@ public abstract class AbstractJpaProject
 		this.updater.stop();
 		this.dataSource.dispose();
 	}
-
-
+	
+	
 	// ********** resource model listener **********
-
-	protected class DefaultResourceModelListener implements JpaResourceModelListener {
+	
+	protected class DefaultResourceModelListener 
+		implements JpaResourceModelListener 
+	{
 		protected DefaultResourceModelListener() {
 			super();
 		}
+		
 		public void resourceModelChanged(JpaResourceModel jpaResourceModel) {
 //			String msg = Thread.currentThread() + " resource model change: " + jpaResourceModel;
 //			System.out.println(msg);
 //			new Exception(msg).printStackTrace(System.out);
 			AbstractJpaProject.this.synchronizeContextModel(jpaResourceModel);
 		}
+		
+		public void resourceModelUnloaded(JpaResourceModel jpaResourceModel) {
+			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+			AbstractJpaProject.this.removeJpaFile(file);
+			AbstractJpaProject.this.addJpaFile(file);
+		}
 	}
-
-
+	
+	
 	// ********** resource events **********
-
+	
 	// TODO need to do the same thing for external projects and compilation units
 	public void projectChanged(IResourceDelta delta) {
 		if (delta.getResource().equals(this.getProject())) {

@@ -66,13 +66,14 @@ public class JpaXmlResource
 		this.rootTranslator = rootTranslator;
 		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
 	}
-
+	
+	
 	//296544 - override this to avoid internet access finding the schema during tests
 	@Override
 	public EntityResolver getEntityResolver() {
 		return J2EEXmlDtDEntityResolver.INSTANCE;
 	}
-
+	
 	public IContentType getContentType() {
 		return this.contentType;
 	}
@@ -105,9 +106,14 @@ public class JpaXmlResource
 		if ( ! notification.isTouch() && this.isLoaded() && (this.resourceSet != null)) {
 			super.eNotify(notification);
 			this.resourceModelChanged();
+		} 
+		//Unload events can happen before the resource set is removed - should always react to unload events
+		else if (notification.getEventType() == Notification.SET && notification.getFeatureID(null) == Resource.RESOURCE__IS_LOADED) {
+			super.eNotify(notification);
+			this.resourceModelUnloaded();
 		}
 	}
-
+	
 	/**
 	 * we could use this method to suppress some notifications; or we could just
 	 * check whether 'resourceSet' is 'null' (which is what we do)
@@ -244,6 +250,12 @@ public class JpaXmlResource
 	protected void resourceModelChanged() {
 		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelChanged(this);
+		}
+	}
+	
+	protected void resourceModelUnloaded() {
+		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+			listener.resourceModelUnloaded(this);
 		}
 	}
 	

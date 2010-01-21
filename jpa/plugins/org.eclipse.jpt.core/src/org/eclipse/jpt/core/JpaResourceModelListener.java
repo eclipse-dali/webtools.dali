@@ -24,4 +24,6 @@ public interface JpaResourceModelListener
 	extends EventListener
 {
 	void resourceModelChanged(JpaResourceModel jpaResourceModel);
+	
+	void resourceModelUnloaded(JpaResourceModel jpaResourceModel);
 }
