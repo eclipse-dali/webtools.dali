@@ -50,7 +50,8 @@ abstract class SourceRelationshipMappingAnnotation
 
 	final DeclarationAnnotationElementAdapter<String[]> cascadeDeclarationAdapter;
 	final AnnotationElementAdapter<String[]> cascadeAdapter;
-	CascadeType[] cascadeTypes;
+	CascadeType[] cascadeTypes = EMPTY_CASCADE_TYPE_ARRAY;  // this should never be null
+	private static final CascadeType[] EMPTY_CASCADE_TYPE_ARRAY = new CascadeType[0];
 
 
 	SourceRelationshipMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
@@ -203,6 +204,10 @@ abstract class SourceRelationshipMappingAnnotation
 		return CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astRoot));
 	}
 
+	private boolean cascadeTypeIsTrue(CascadeType cascadeType) {
+		return ArrayTools.contains(this.cascadeTypes, cascadeType);
+	}
+
 	public TextRange getCascadeTextRange(CompilationUnit astRoot) {
 		return getElementTextRange(this.cascadeDeclarationAdapter, astRoot);
 	}
@@ -214,7 +219,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	// ***** cascade all
 	public boolean isCascadeAll() {
-		return ArrayTools.contains(this.cascadeTypes, CascadeType.ALL);
+		return this.cascadeTypeIsTrue(CascadeType.ALL);
 	}
 
 	public void setCascadeAll(boolean cascadeAll) {
@@ -230,7 +235,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	// ***** cascade persist
 	public boolean isCascadePersist() {
-		return ArrayTools.contains(this.cascadeTypes, CascadeType.PERSIST);
+		return this.cascadeTypeIsTrue(CascadeType.PERSIST);
 	}
 
 	public void setCascadePersist(boolean cascadePersist) {
@@ -246,7 +251,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	// ***** cascade merge
 	public boolean isCascadeMerge() {
-		return ArrayTools.contains(this.cascadeTypes, CascadeType.MERGE);
+		return this.cascadeTypeIsTrue(CascadeType.MERGE);
 	}
 
 	public void setCascadeMerge(boolean cascadeMerge) {
@@ -262,7 +267,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	// ***** cascade remove
 	public boolean isCascadeRemove() {
-		return ArrayTools.contains(this.cascadeTypes, CascadeType.REMOVE);
+		return this.cascadeTypeIsTrue(CascadeType.REMOVE);
 	}
 
 	public void setCascadeRemove(boolean cascadeRemove) {
@@ -278,7 +283,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	// ***** cascade refresh
 	public boolean isCascadeRefresh() {
-		return ArrayTools.contains(this.cascadeTypes, CascadeType.REFRESH);
+		return this.cascadeTypeIsTrue(CascadeType.REFRESH);
 	}
 
 	public void setCascadeRefresh(boolean cascadeRefresh) {
