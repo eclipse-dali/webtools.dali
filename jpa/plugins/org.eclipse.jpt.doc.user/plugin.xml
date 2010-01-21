@@ -23,7 +23,7 @@
 	<!-- Cheatsheets -->
 	<!-- =========== -->
 	<extension point="org.eclipse.ui.cheatsheets.cheatSheetContent">
-		<category name="JPA Development" id="com.jpa.category"/>
+		<category name="%jpaDevelopment" id="com.jpa.category"/>
 		<cheatsheet name="%createAJpaProject" category="com.jpa.category" contentFile="$nl$/cheatsheets/add_persistence.xml" id="org.eclipse.jpa.cheatsheet.createproject1">
 			<description>%createAJpaProjectDescription</description>
 		</cheatsheet>
