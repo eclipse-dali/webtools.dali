@@ -8,10 +8,10 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <title>Persistence Unit information</title>
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2009-05-01T8:12:52Z" />
+<meta name="date" content="2010-01-22T9:29:53Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Persistence Unit information" />
-<meta name="relnum" content="Release 2.2" />
+<meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -43,22 +43,29 @@
 <td align="left" headers="r2c1-t21 r1c3-t21"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t21" headers="r1c1-t21">Schema</td>
-<td align="left" headers="r3c1-t21 r1c2-t21">The database schema that contains the <span class="bold">Table</span>.
-<p>This field corresponds to the <code>&lt;schema&gt;</code> element in the <code>orm.xml</code> file.</p>
+<td align="left" id="r3c1-t21" headers="r1c1-t21">Cascade Persist</td>
+<td align="left" headers="r3c1-t21 r1c2-t21">Adds cascade-persist to the set of cascade options in entity relationships of the persistence unit.
+<p>This field corresponds to the <code>&lt;cascade-persist&gt;</code> element in the <code>orm.xml</code> file.</p>
 </td>
 <td align="left" headers="r3c1-t21 r1c3-t21"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t21" headers="r1c1-t21">Catalog</td>
-<td align="left" headers="r4c1-t21 r1c2-t21">The database catalog that contains the <span class="bold">Table</span>.
-<p>This field corresponds to the <code>&lt;catalog&gt;</code> element in the <code>orm.xml</code> file.</p>
+<td align="left" id="r4c1-t21" headers="r1c1-t21">Schema</td>
+<td align="left" headers="r4c1-t21 r1c2-t21">The database schema that contains the <span class="bold">Table</span>.
+<p>This field corresponds to the <code>&lt;schema&gt;</code> element in the <code>orm.xml</code> file.</p>
 </td>
 <td align="left" headers="r4c1-t21 r1c3-t21"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t21" headers="r1c1-t21">Access</td>
-<td align="left" headers="r5c1-t21 r1c2-t21">Specify how the entity its access instance variables.
+<td align="left" id="r5c1-t21" headers="r1c1-t21">Catalog</td>
+<td align="left" headers="r5c1-t21 r1c2-t21">The database catalog that contains the <span class="bold">Table</span>.
+<p>This field corresponds to the <code>&lt;catalog&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r5c1-t21 r1c3-t21"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t21" headers="r1c1-t21">Access</td>
+<td align="left" headers="r6c1-t21 r1c2-t21">Specify how the entity its access instance variables.
 <ul>
 <li>
 <p>Property &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
@@ -68,14 +75,7 @@
 </li>
 </ul>
 </td>
-<td align="left" headers="r5c1-t21 r1c3-t21">Property</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t21" headers="r1c1-t21">Cascade Persist</td>
-<td align="left" headers="r6c1-t21 r1c2-t21">Adds cascade-persist to the set of cascade options in entity relationships of the persistence unit.
-<p>This field corresponds to the <code>&lt;cascade-persist&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r6c1-t21 r1c3-t21"><br /></td>
+<td align="left" headers="r6c1-t21 r1c3-t21">Property</td>
 </tr>
 </tbody>
 </table>
@@ -96,7 +96,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

@@ -8,10 +8,10 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <title>Basic mapping</title>
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2009-05-01T8:12:45Z" />
+<meta name="date" content="2010-01-22T9:29:46Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Basic mapping" />
-<meta name="relnum" content="Release 2.2" />
+<meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -21,7 +21,7 @@
 <p><a id="BABBABCE" name="BABBABCE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
 <h1>Basic mapping</h1>
-<p><a id="sthref113" name="sthref113"></a><a id="sthref114" name="sthref114"></a><a id="sthref115" name="sthref115"></a><a id="sthref116" name="sthref116"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
+<p><a id="sthref112" name="sthref112"></a><a id="sthref113" name="sthref113"></a><a id="sthref114" name="sthref114"></a><a id="sthref115" name="sthref115"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
 <ul>
 <li>
 <p>Java primitive types and wrappers of the primitive types</p>
@@ -120,26 +120,24 @@
 <td align="left" headers="r6c1-t14 r1c3-t14">Yes</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t14" headers="r1c1-t14">Temporal</td>
-<td align="left" headers="r7c1-t14 r1c2-t14">Specifies the type of data. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.
+<td align="left" id="r7c1-t14" headers="r1c1-t14">Type</td>
+<td align="left" headers="r7c1-t14 r1c2-t14">Specifies the type of data:
 <ul>
 <li>
-<p>Date</p>
+<p>Default</p>
 </li>
 <li>
-<p>Time</p>
+<p>LOB &ndash; Specifies if this is a large objects (BLOB or CLOB). See <a href="ref_mapping_general.htm#CACBBIBI">"Lob"</a> for details.</p>
 </li>
 <li>
-<p>Timestamp</p>
+<p>Temporal &ndash; Specify if this is a Date, Time, or Timestamp object. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.</p>
+</li>
+<li>
+<p>Enumerated &ndash; Specify how to persist enumerated constraints as ordinal or string, in order to match an existing database schema.</p>
 </li>
 </ul>
 </td>
 <td align="left" headers="r7c1-t14 r1c3-t14"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r8c1-t14" headers="r1c1-t14">Lob</td>
-<td align="left" headers="r8c1-t14 r1c2-t14">Specifies if this is a large objects (BLOB or CLOB). See <a href="ref_mapping_general.htm#CACBBIBI">"Lob"</a> for details.</td>
-<td align="left" headers="r8c1-t14 r1c3-t14"><br /></td>
 </tr>
 </tbody>
 </table>
@@ -175,7 +173,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
