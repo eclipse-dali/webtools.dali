@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2;
 import java.util.Iterator;
 
 import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
@@ -68,7 +69,12 @@ public class GenericJpaDatabaseIdentifierAdapter
 	}
 
 	protected PersistenceXml getPersistenceXml() {
-		return this.dataSource.getJpaProject().getRootContextNode().getPersistenceXml();
+		// TODO this null check can be removed if the data source is moved to the persistence unit;
+		// the root context node can be null during construction;
+		// this shouldn't be a problem since the default-delimiters flag
+		// is recalculated during the initial, post-project construction, "update"
+		JpaRootContextNode rcn = this.dataSource.getJpaProject().getRootContextNode();
+		return (rcn == null) ? null : rcn.getPersistenceXml();
 	}
 
 }
