@@ -66,8 +66,8 @@ public class GenericOrmMappedByJoiningStrategy
 			(getRelationshipReference().getEntity()) == null ?
 				null : getRelationshipReference().getEntity().getName();
 		String targetEntity = 
-			(getRelationshipMapping().getResolvedTargetEntity() == null) ?
-				null : getRelationshipMapping().getResolvedTargetEntity().getName();
+			(otherMapping.getResolvedTargetEntity() == null) ?
+				null : otherMapping.getResolvedTargetEntity().getName();
 		return StringTools.stringsAreEqual(
 				thisEntity,
 				targetEntity)

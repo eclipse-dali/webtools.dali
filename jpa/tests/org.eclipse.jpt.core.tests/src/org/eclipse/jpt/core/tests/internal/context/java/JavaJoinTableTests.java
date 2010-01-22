@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.UniqueConstraint;
@@ -26,6 +28,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaJoinTableTests extends ContextModelTestCase
 {
 	public JavaJoinTableTests(String name) {
@@ -87,10 +90,44 @@ public class JavaJoinTableTests extends ContextModelTestCase
 				sb.append("    @Id").append(CR);
 				sb.append("    private int proj_id;").append(CR);
 				sb.append(CR);
+				sb.append("}");
 			}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
 	}
+
+	private void createTargetEntityWithBackPointer() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.MANY_TO_MANY);
+					sb.append(";");
+					sb.append(CR);
+				sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class Project {").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int proj_id;").append(CR);
+				sb.append("    @ManyToMany(mappedBy=\"projects\"").append(CR);
+				sb.append("    private java.util.Collection<" + TYPE_NAME + "> employees;").append(CR);
+				sb.append(CR);
+				sb.append("}");
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
+	}
+
 	public void testUpdateSpecifiedName() throws Exception {
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -199,6 +236,135 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		//set a table on the owning entity, very default join table name updates
 		getJavaEntity().getTable().setSpecifiedName("BAR");
 		assertEquals("BAR_FOO", joinTable.getDefaultName());
+	}
+
+	public void testDefaultJoinColumns() throws Exception {
+		createTestEntityWithValidManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
+		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JoinColumn joinColumn = joinTable.joinColumns().next();
+		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
+		
+		//joinTable default name is null because targetEntity is not in the persistence unit
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add target entity to the persistence unit, join column default name and referenced column still null because owning entity has no primary key
+		createTargetEntity();
+		addXmlClassRef(PACKAGE_NAME + ".Project");
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		//create primary key  in owning entity
+		getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(TYPE_NAME + "_id", joinColumn.getDefaultName());
+		assertEquals("id", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//set specified column name on primary key in owning entity
+		((IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+	
+		//target entity does not resolve, inverse join column name and referenced column name is null
+		manyToManyMapping.setSpecifiedTargetEntity("Foo");
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//default target entity does resolve, so defaults for join column are back
+		manyToManyMapping.setSpecifiedTargetEntity(null);
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add the join table annotation, verify default join table name is the same
+		attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+	}
+
+	public void testDefaultJoinColumnsBidirectionalRelationship() throws Exception {
+		createTestEntityWithValidManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		
+		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
+		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JoinColumn joinColumn = joinTable.joinColumns().next();
+		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
+		
+		//joinTable default name is null because targetEntity is not in the persistence unit
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add target entity to the persistence unit, join column default name and referenced column still null because owning entity has no primary key
+		createTargetEntityWithBackPointer();
+		addXmlClassRef(PACKAGE_NAME + ".Project");
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		//create primary key  in owning entity
+		getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals("employees_id", joinColumn.getDefaultName());
+		assertEquals("id", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//set specified column name on primary key in owning entity
+		((IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
+		assertEquals("employees_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+	
+		//target entity does not resolve, inverse join column name and referenced column name is null
+		manyToManyMapping.setSpecifiedTargetEntity("Foo");
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//default target entity does resolve, so defaults for join column are back
+		manyToManyMapping.setSpecifiedTargetEntity(null);
+		assertEquals("employees_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add the join table annotation, verify default join table name is the same
+		attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		assertEquals("employees_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
@@ -508,10 +674,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableResource.removeJoinColumn(0);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(joinTable.specifiedJoinColumns().hasNext());
-	}
-	
-	public void testGetDefaultJoinColumn() {
-		//TODO
 	}
 	
 	public void testSpecifiedJoinColumnsSize() throws Exception {

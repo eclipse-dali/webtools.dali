@@ -63,12 +63,12 @@ public class GenericJavaMappedByJoiningStrategy
 		String thisEntity = 
 			(getRelationshipReference().getEntity()) == null ?
 				null : getRelationshipReference().getEntity().getName();
-		String targetEntity = 
-			(getRelationshipMapping().getResolvedTargetEntity() == null) ?
-				null : getRelationshipMapping().getResolvedTargetEntity().getName();
+		String otherTargetEntity = 
+			(otherMapping.getResolvedTargetEntity() == null) ?
+				null : otherMapping.getResolvedTargetEntity().getName();
 		return StringTools.stringsAreEqual(
 				thisEntity,
-				targetEntity)
+				otherTargetEntity)
 			&& StringTools.stringsAreEqual(
 				getMappedByAttribute(), 
 				otherMapping.getName());

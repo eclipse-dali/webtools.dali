@@ -14,6 +14,9 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
@@ -67,7 +70,6 @@ public class OrmJoinTableTests extends ContextModelTestCase
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany").append(CR);
 				sb.append("    private Collection<Project> projects;").append(CR);
-				sb.append("@Id").append(CR);
 			}
 		});
 	}
@@ -92,6 +94,39 @@ public class OrmJoinTableTests extends ContextModelTestCase
 				sb.append("    @Id").append(CR);
 				sb.append("    private int proj_id;").append(CR);
 				sb.append(CR);
+				sb.append("}");
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
+	}
+
+	private void createTargetEntityWithBackPointer() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.MANY_TO_MANY);
+					sb.append(";");
+					sb.append(CR);
+				sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class Project {").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int proj_id;").append(CR);
+				sb.append("    @ManyToMany(mappedBy=\"projects\"").append(CR);
+				sb.append("    private java.util.Collection<" + TYPE_NAME + "> employees;").append(CR);
+				sb.append(CR);
+				sb.append("}");
 			}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
@@ -1151,6 +1186,175 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.attributes().next().getMapping();
 		assertEquals(0,  ormManyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().uniqueConstraintsSize());
+	}
+	
+	public void testDefaultName() throws Exception {
+		createTestEntityWithValidManyToMany();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		ormPersistentType.getAttributeNamed("projects").makeSpecified();
+		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
+		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		
+		//joinTable default name is null because targetEntity is not in the persistence unit
+		assertNull(joinTable.getDefaultName());
+
+		//add target entity to the persistence unit, now join table name is [table name]_[target table name]
+		createTargetEntity();
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Project");
+		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
+		
+		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		assertNull(manyToMany.getJoinTable());
+	
+		//target entity does not resolve, default name is null
+		manyToManyMapping.setSpecifiedTargetEntity("Foo");
+		assertNull(joinTable.getDefaultName());
+
+		//default target entity does resolve, so default name is again [table name]_[target table name]
+		manyToManyMapping.setSpecifiedTargetEntity(null);
+		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
+
+		//add the join table xml element, verify default join table name is the same
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
+		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
+		assertNotNull(manyToMany.getJoinTable());
+		
+		//set a table on the target entity, very default join table name updates
+		manyToManyMapping.getResolvedTargetEntity().getTable().setSpecifiedName("FOO");
+		assertEquals(TYPE_NAME + "_FOO", joinTable.getDefaultName());
+		
+		//set a table on the owning entity, very default join table name updates
+		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("BAR");
+		assertEquals("BAR_FOO", joinTable.getDefaultName());
+	}
+
+	public void testDefaultJoinColumns() throws Exception {
+		createTestEntityWithValidManyToMany();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		ormPersistentType.getAttributeNamed("projects").makeSpecified();
+		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
+		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JoinColumn joinColumn = joinTable.joinColumns().next();
+		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
+		
+		//joinTable default name is null because targetEntity is not in the persistence unit
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add target entity to the persistence unit, join column default name and referenced column still null because owning entity has no primary key
+		createTargetEntity();
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Project");
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		//create primary key  in owning entity
+		ormPersistentType.getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(TYPE_NAME + "_id", joinColumn.getDefaultName());
+		assertEquals("id", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//set specified column name on primary key in owning entity
+		((IdMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		assertNull(manyToMany.getJoinTable());
+	
+		//target entity does not resolve, inverse join column name and referenced column name is null
+		manyToManyMapping.setSpecifiedTargetEntity("Foo");
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//default target entity does resolve, so defaults for join column are back
+		manyToManyMapping.setSpecifiedTargetEntity(null);
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add the join table xml element, verify default join column defaults are the same
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		assertNotNull(manyToMany.getJoinTable());
+	}
+
+	public void testDefaultJoinColumnsBidirectionalRelationship() throws Exception {
+		createTestEntityWithValidManyToMany();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		ormPersistentType.getAttributeNamed("projects").makeSpecified();
+		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
+		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JoinColumn joinColumn = joinTable.joinColumns().next();
+		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
+		
+		//joinTable default name is null because targetEntity is not in the persistence unit
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add target entity to the persistence unit, join column default name and referenced column still null because owning entity has no primary key
+		createTargetEntityWithBackPointer();
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Project");
+		assertNull(joinColumn.getDefaultName());
+		assertNull(joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		//create primary key  in owning entity
+		ormPersistentType.getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals("employees_id", joinColumn.getDefaultName());
+		assertEquals("id", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//set specified column name on primary key in owning entity
+		((IdMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
+		assertEquals("employees_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		
+		XmlManyToMany manyToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		assertNull(manyToMany.getJoinTable());
+	
+		//target entity does not resolve, inverse join column name and referenced column name is null
+		manyToManyMapping.setSpecifiedTargetEntity("Foo");
+		assertEquals(TYPE_NAME + "_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertNull(inverseJoinColumn.getDefaultName());
+		assertNull(inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//default target entity does resolve, so defaults for join column are back
+		manyToManyMapping.setSpecifiedTargetEntity(null);
+		assertEquals("employees_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+
+		//add the join table xml element, verify default join column defaults are the same
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
+		assertEquals("employees_MY_ID", joinColumn.getDefaultName());
+		assertEquals("MY_ID", joinColumn.getDefaultReferencedColumnName());
+		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
+		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
+		assertNotNull(manyToMany.getJoinTable());
 	}
 
 }
