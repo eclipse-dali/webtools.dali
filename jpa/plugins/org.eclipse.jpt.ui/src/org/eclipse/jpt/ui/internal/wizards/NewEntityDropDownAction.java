@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -34,6 +33,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowPulldownDelegate2;
@@ -128,7 +128,7 @@ public class NewEntityDropDownAction extends Action implements IMenuCreator, IWo
 				
 				notifyResult(res == Window.OK);
 			} catch (CoreException e) {
-				Logger.getLogger().log(e);
+				JptUiPlugin.log(e);
 			}
 		}
 

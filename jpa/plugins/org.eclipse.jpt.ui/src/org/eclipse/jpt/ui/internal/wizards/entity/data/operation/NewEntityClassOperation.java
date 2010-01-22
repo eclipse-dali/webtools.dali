@@ -41,7 +41,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -183,7 +182,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			try {
 				pack = packRoot.createPackageFragment(packName, true, null);
 			} catch (JavaModelException e) {
-				Logger.getLogger().log(e);
+				JptUiPlugin.log(e);
 			}
 		}
 		// Return the package
@@ -362,7 +361,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			try {
 				folder.create(true, true, null);
 			} catch (CoreException e) {
-				Logger.getLogger().log(e);
+				JptUiPlugin.log(e);
 			}
 		}
 		// Return the source folder
