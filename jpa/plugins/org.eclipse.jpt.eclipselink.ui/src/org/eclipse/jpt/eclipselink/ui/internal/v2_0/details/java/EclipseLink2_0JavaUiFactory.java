@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
@@ -90,4 +91,13 @@ public class EclipseLink2_0JavaUiFactory
 		WidgetFactory widgetFactory) {
 		return new JavaEclipseLinkManyToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
+	
+	@Override
+	public JpaComposite createJavaManyToManyMappingComposite(
+			PropertyValueModel<JavaManyToManyMapping> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		return new JavaEclipseLinkManyToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+
 }
