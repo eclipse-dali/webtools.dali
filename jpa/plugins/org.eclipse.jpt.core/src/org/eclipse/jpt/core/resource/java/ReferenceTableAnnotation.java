@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,5 +62,11 @@ public interface ReferenceTableAnnotation
 	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
 	 */
 	void removeJoinColumn(int index);
+
+	/**
+	 * Silently add an initial join column to the join table (i.e. without
+	 * change notification).
+	 */
+	JoinColumnAnnotation initializeJoinColumns();
 
 }

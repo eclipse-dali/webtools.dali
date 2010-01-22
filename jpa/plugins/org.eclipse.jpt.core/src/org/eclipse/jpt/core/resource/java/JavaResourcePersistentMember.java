@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -74,6 +74,26 @@ public interface JavaResourcePersistentMember
 	 * Return the newly-created annotation.
 	 */
 	Annotation addAnnotation(String annotationName);
+	
+	/**
+	 * Add an annotation with the specified name.
+	 * Initialize the newly-created annotation with the specified annotation initializer.
+	 * Return the annotation returned by the annotation initializer.
+	 */
+	Annotation addAnnotation(String annotationName, AnnotationInitializer annotationInitializer);
+	
+	/**
+	 * Callback that allows clients to initialize an annotation added to the
+	 * member before the member fires a change event. The initializer should
+	 * not trigger any change events either.
+	 */
+	interface AnnotationInitializer {
+		/**
+		 * Initialize the specified supporting annotation.
+		 * Return the newly-created nested annotation.
+		 */
+		Annotation initializeAnnotation(Annotation supportingAnnotation);
+	}
 	
 	/**
 	 * Add a new nestable annotation with the specified name.

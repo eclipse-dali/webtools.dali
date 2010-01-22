@@ -167,8 +167,8 @@ abstract class BinaryPersistentMember
 		return this.adapter.getMember();
 	}
 
-	private Annotation selectAnnotationNamed(Iterable<Annotation> annotationList, String annotationName) {
-		for (Annotation annotation : annotationList) {
+	private Annotation selectAnnotationNamed(Iterable<Annotation> annotations, String annotationName) {
+		for (Annotation annotation : annotations) {
 			if (annotation.getAnnotationName().equals(annotationName)) {
 				return annotation;
 			}
@@ -238,6 +238,10 @@ abstract class BinaryPersistentMember
 	// ********** unsupported JavaResourcePersistentMember implementation **********
 	
 	public Annotation addAnnotation(String annotationName) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public Annotation addAnnotation(String annotationName, AnnotationInitializer foo) {
 		throw new UnsupportedOperationException();
 	}
 	

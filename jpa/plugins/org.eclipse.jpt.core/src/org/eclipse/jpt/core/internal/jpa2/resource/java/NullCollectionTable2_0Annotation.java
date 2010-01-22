@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,9 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.internal.resource.java.NullBaseTableAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
@@ -37,6 +39,11 @@ public class NullCollectionTable2_0Annotation
 		return (CollectionTable2_0Annotation) super.addAnnotation();
 	}
 	
+	@Override
+	protected JoinColumnAnnotation addAnnotation(AnnotationInitializer initializer) {
+		return (JoinColumnAnnotation) super.addAnnotation(initializer);
+	}
+	
 	// ***** join columns
 	public ListIterator<JoinColumnAnnotation> joinColumns() {
 		return EmptyListIterator.instance();
@@ -56,8 +63,19 @@ public class NullCollectionTable2_0Annotation
 	
 	public JoinColumnAnnotation addJoinColumn(int index) {
 		// the JoinTable annotation is missing, add both it and a join column at the same time
-		return this.addAnnotation().addJoinColumn(index);
+		return addAnnotation(buildJoinColumnInitializer());
 	}
+	
+	protected AnnotationInitializer buildJoinColumnInitializer() {
+		return JOIN_COLUMN_INITIALIZER;
+	}
+	
+	protected static final AnnotationInitializer JOIN_COLUMN_INITIALIZER =
+			new AnnotationInitializer() {
+				public Annotation initializeAnnotation(Annotation supportingAnnotation) {
+					return ((CollectionTable2_0Annotation) supportingAnnotation).initializeJoinColumns();
+				}
+			};
 	
 	public void moveJoinColumn(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();
@@ -67,4 +85,7 @@ public class NullCollectionTable2_0Annotation
 		throw new UnsupportedOperationException();
 	}
 	
+	public JoinColumnAnnotation initializeJoinColumns() {
+		throw new UnsupportedOperationException();
+	}
 }
