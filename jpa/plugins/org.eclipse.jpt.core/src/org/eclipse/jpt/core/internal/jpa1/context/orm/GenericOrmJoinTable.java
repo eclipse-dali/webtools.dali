@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlReferenceTable;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -310,6 +311,36 @@ public class GenericOrmJoinTable
 	@Override
 	protected boolean shouldValidateAgainstDatabase() {
 		return getRelationshipMapping().shouldValidateAgainstDatabase();
+	}
+
+	@Override
+	protected String getUnresolvedCatalogMessageId() {
+		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG;
+	}
+
+	@Override
+	protected String getUnresolvedNameMessageId() {
+		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME;
+	}
+
+	@Override
+	protected String getUnresolvedSchemaMessageId() {
+		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA;
+	}
+
+	@Override
+	protected String getVirtualAttributeUnresolvedCatalogMessageId() {
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG;
+	}
+
+	@Override
+	protected String getVirtualAttributeUnresolvedNameMessageId() {
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME;
+	}
+
+	@Override
+	protected String getVirtualAttributeUnresolvedSchemaMessageId() {
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA;
 	}
 
 	// ********** join column owner adapters **********

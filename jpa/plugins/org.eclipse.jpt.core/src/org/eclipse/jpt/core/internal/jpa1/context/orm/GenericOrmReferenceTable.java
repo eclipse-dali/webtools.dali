@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.context.orm.OrmReferenceTable;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlReferenceTable;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -297,7 +296,7 @@ public abstract class GenericOrmReferenceTable
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,
+						getVirtualAttributeUnresolvedCatalogMessageId(),
 						new String[] {persistentAttribute.getName(), this.getCatalog(), this.getName()}, 
 						this,
 						this.getCatalogTextRange()
@@ -308,7 +307,7 @@ public abstract class GenericOrmReferenceTable
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
+						getUnresolvedCatalogMessageId(),
 						new String[] {this.getCatalog(), this.getName()}, 
 						this,
 						this.getCatalogTextRange()
@@ -323,7 +322,7 @@ public abstract class GenericOrmReferenceTable
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
+						getVirtualAttributeUnresolvedSchemaMessageId(),
 						new String[] {persistentAttribute.getName(), this.getSchema(), this.getName()}, 
 						this,
 						this.getSchemaTextRange()
@@ -333,7 +332,7 @@ public abstract class GenericOrmReferenceTable
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+						getUnresolvedSchemaMessageId(),
 						new String[] {this.getSchema(), this.getName()}, 
 						this,
 						this.getSchemaTextRange()
@@ -348,7 +347,7 @@ public abstract class GenericOrmReferenceTable
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
+							getVirtualAttributeUnresolvedNameMessageId(),
 							new String[] {persistentAttribute.getName(), this.getName()}, 
 							this,
 							this.getNameTextRange()
@@ -359,7 +358,7 @@ public abstract class GenericOrmReferenceTable
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+								getUnresolvedNameMessageId(),
 								new String[] {this.getName()}, 
 								this, 
 								this.getNameTextRange())
@@ -377,4 +376,17 @@ public abstract class GenericOrmReferenceTable
 			joinColumns.next().validate(messages, reporter);
 		}
 	}
+	
+	protected abstract String getUnresolvedCatalogMessageId();
+	
+	protected abstract String getUnresolvedSchemaMessageId();
+	
+	protected abstract String getUnresolvedNameMessageId();
+	
+	protected abstract String getVirtualAttributeUnresolvedCatalogMessageId();
+	
+	protected abstract String getVirtualAttributeUnresolvedSchemaMessageId();
+	
+	protected abstract String getVirtualAttributeUnresolvedNameMessageId();
+
 }

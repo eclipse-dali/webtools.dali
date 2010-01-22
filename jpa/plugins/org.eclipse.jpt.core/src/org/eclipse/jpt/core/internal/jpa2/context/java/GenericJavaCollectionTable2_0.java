@@ -87,17 +87,17 @@ public class GenericJavaCollectionTable2_0
 
 	@Override
 	protected String getUnresolvedCatalogMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG;
+		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG;
 	}
 	
 	@Override
 	protected String getUnresolvedSchemaMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA;
+		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA;
 	}
 	
 	@Override
 	protected String getUnresolvedNameMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME;
+		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME;
 	}
 
 

@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmReferenceTable;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
@@ -87,6 +88,37 @@ public class GenericOrmCollectionTable2_0
 	protected boolean shouldValidateAgainstDatabase() {
 		return getParent().shouldValidateAgainstDatabase();
 	}
+
+	@Override
+	protected String getUnresolvedCatalogMessageId() {
+		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG;
+	}
+
+	@Override
+	protected String getUnresolvedNameMessageId() {
+		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME;
+	}
+
+	@Override
+	protected String getUnresolvedSchemaMessageId() {
+		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA;
+	}
+
+	@Override
+	protected String getVirtualAttributeUnresolvedCatalogMessageId() {
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG;
+	}
+
+	@Override
+	protected String getVirtualAttributeUnresolvedNameMessageId() {
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME;
+	}
+
+	@Override
+	protected String getVirtualAttributeUnresolvedSchemaMessageId() {
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA;
+	}
+
 
 	// ********** join column owner adapters **********
 
