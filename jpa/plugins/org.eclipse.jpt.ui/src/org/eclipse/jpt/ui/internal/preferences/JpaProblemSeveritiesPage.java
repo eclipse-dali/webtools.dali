@@ -241,6 +241,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,                                      JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,                                           JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG,                                 JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA,                                  JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME,                                    JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME);
 	}
 
 	private void addInheritanceStrategoryCategory(Composite parent) {
@@ -328,6 +331,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,                             JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,           JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG,                                 JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA,                                  JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_NAME,                                    JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME);
 	}
 
 	private void addProjectLevelCategory(Composite parent) {
