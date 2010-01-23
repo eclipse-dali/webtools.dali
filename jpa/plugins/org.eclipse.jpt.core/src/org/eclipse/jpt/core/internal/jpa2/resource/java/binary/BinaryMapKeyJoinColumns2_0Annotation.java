@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.resource.java.binary;
 
-import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -18,7 +17,7 @@ import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.NestableMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
  * javax.persistence.MapKeyJoinColumns
@@ -39,11 +38,11 @@ public final class BinaryMapKeyJoinColumns2_0Annotation
 		return ANNOTATION_NAME;
 	}
 
-	public ListIterator<NestableMapKeyJoinColumnAnnotation> nestedAnnotations() {
-		return new CloneListIterator<NestableMapKeyJoinColumnAnnotation>(this.mapKeyJoinColumns);
+	public Iterable<NestableMapKeyJoinColumnAnnotation> getNestedAnnotations() {
+		return new LiveCloneIterable<NestableMapKeyJoinColumnAnnotation>(this.mapKeyJoinColumns);
 	}
 
-	public int nestedAnnotationsSize() {
+	public int getNestedAnnotationsSize() {
 		return this.mapKeyJoinColumns.size();
 	}
 

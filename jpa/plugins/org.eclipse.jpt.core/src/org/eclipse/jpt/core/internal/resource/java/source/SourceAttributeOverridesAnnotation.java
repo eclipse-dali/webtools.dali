@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
-import java.util.ListIterator;
 import java.util.Vector;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.NestableAttributeOverrideAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
  * javax.persistence.AttributeOverrides
@@ -60,58 +60,53 @@ public final class SourceAttributeOverridesAnnotation
 
 	// ********** AnnotationContainer implementation **********
 
-	public String getContainerAnnotationName() {
-		return this.getAnnotationName();
-	}
-
-	public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
-		return this.getAstAnnotation(astRoot);
-	}
-
 	public String getElementName() {
 		return JPA.ATTRIBUTE_OVERRIDES__VALUE;
 	}
 
-	public String getNestableAnnotationName() {
+	public String getNestedAnnotationName() {
 		return AttributeOverrideAnnotation.ANNOTATION_NAME;
 	}
 
-	public ListIterator<NestableAttributeOverrideAnnotation> nestedAnnotations() {
-		return new CloneListIterator<NestableAttributeOverrideAnnotation>(this.attributesOverrides);
+	public Iterable<NestableAttributeOverrideAnnotation> getNestedAnnotations() {
+		return new LiveCloneIterable<NestableAttributeOverrideAnnotation>(this.attributesOverrides);
 	}
 
-	public int nestedAnnotationsSize() {
+	public int getNestedAnnotationsSize() {
 		return this.attributesOverrides.size();
 	}
 
-	public NestableAttributeOverrideAnnotation addNestedAnnotationInternal() {
-		NestableAttributeOverrideAnnotation attributeOverride = this.buildAttributeOverride(this.attributesOverrides.size());
+	public NestableAttributeOverrideAnnotation addNestedAnnotation() {
+		return this.addNestedAnnotation(this.attributesOverrides.size());
+	}
+
+	private NestableAttributeOverrideAnnotation addNestedAnnotation(int index) {
+		NestableAttributeOverrideAnnotation attributeOverride = this.buildAttributeOverride(index);
 		this.attributesOverrides.add(attributeOverride);
 		return attributeOverride;
+	}
+
+	public void syncAddNestedAnnotation(Annotation astAnnotation) {
+		int index = this.attributesOverrides.size();
+		NestableAttributeOverrideAnnotation attributeOverride = this.addNestedAnnotation(index);
+		attributeOverride.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 	}
 
 	private NestableAttributeOverrideAnnotation buildAttributeOverride(int index) {
 		return SourceAttributeOverrideAnnotation.buildNestedAttributeOverride(this, this.member, index, this.daa);
 	}
 
-	public void nestedAnnotationAdded(int index, NestableAttributeOverrideAnnotation nestedAnnotation) {
-		this.fireItemAdded(ATTRIBUTE_OVERRIDES_LIST, index, nestedAnnotation);
-	}
-
-	public NestableAttributeOverrideAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+	public NestableAttributeOverrideAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.attributesOverrides, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);
-	}
-
-	public NestableAttributeOverrideAnnotation removeNestedAnnotationInternal(int index) {
+	public NestableAttributeOverrideAnnotation removeNestedAnnotation(int index) {
 		return this.attributesOverrides.remove(index);
 	}
 
-	public void nestedAnnotationRemoved(int index, NestableAttributeOverrideAnnotation nestedAnnotation) {
-		this.fireItemRemoved(ATTRIBUTE_OVERRIDES_LIST, index, nestedAnnotation);
+	public void syncRemoveNestedAnnotations(int index) {
+		this.removeItemsFromList(index, this.attributesOverrides, ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 }

@@ -125,7 +125,7 @@ abstract class SourcePersistentMember<E extends Member>
 	public Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = this.getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
-			return containerAnnotation.nestedAnnotations();
+			return containerAnnotation.getNestedAnnotations().iterator();
 		}
 		NestableAnnotation nestableAnnotation = this.getNestableAnnotation(nestableAnnotationName);
 		if (nestableAnnotation != null) {
@@ -184,9 +184,9 @@ abstract class SourcePersistentMember<E extends Member>
 		this.annotations.add(containerAnnotation);
 		containerAnnotation.newAnnotation();
 
-		NestableAnnotation nestedAnnotation0 = containerAnnotation.addNestedAnnotationInternal();
+		NestableAnnotation nestedAnnotation0 = containerAnnotation.addNestedAnnotation();
 		nestedAnnotation0.newAnnotation();
-		NestableAnnotation nestedAnnotation1 = containerAnnotation.addNestedAnnotationInternal();
+		NestableAnnotation nestedAnnotation1 = containerAnnotation.addNestedAnnotation();
 		nestedAnnotation1.newAnnotation();
 		this.removeAnnotation(standAloneAnnotation);
 
@@ -237,7 +237,7 @@ abstract class SourcePersistentMember<E extends Member>
 	 */
 	private void removeAnnotation(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		AnnotationContainerTools.removeNestedAnnotation(index, containerAnnotation);
-		switch (containerAnnotation.nestedAnnotationsSize()) {
+		switch (containerAnnotation.getNestedAnnotationsSize()) {
 			case 0:
 				this.removeAnnotation(containerAnnotation);
 				break;
@@ -254,7 +254,7 @@ abstract class SourcePersistentMember<E extends Member>
 	 * annotation
 	 */
 	private void convertLastNestedAnnotation(ContainerAnnotation<NestableAnnotation> containerAnnotation) {
-		NestableAnnotation lastNestedAnnotation = containerAnnotation.nestedAnnotations().next();
+		NestableAnnotation lastNestedAnnotation = containerAnnotation.getNestedAnnotations().iterator().next();
 		this.annotations.remove(containerAnnotation);
 		containerAnnotation.removeAnnotation();
 

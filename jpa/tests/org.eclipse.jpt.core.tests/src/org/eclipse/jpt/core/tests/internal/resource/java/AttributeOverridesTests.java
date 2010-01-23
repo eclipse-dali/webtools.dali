@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -78,7 +78,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
-		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
+		AttributeOverrideAnnotation attributeOverride = attributeOverrides.getNestedAnnotations().iterator().next();
 
 		assertNotNull(attributeOverride);
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
@@ -89,7 +89,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
-		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
+		AttributeOverrideAnnotation attributeOverride = attributeOverrides.getNestedAnnotations().iterator().next();
 		ColumnAnnotation column = attributeOverride.getColumn();
 		assertNotNull(attributeOverride);
 		assertNull(column);
@@ -100,7 +100,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
-		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
+		AttributeOverrideAnnotation attributeOverride = attributeOverrides.getNestedAnnotations().iterator().next();
 
 		assertNotNull(attributeOverride);
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
@@ -115,7 +115,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
-		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
+		AttributeOverrideAnnotation attributeOverride = attributeOverrides.getNestedAnnotations().iterator().next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
 		
 		attributeOverride.setName(null);
@@ -131,7 +131,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
-		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
+		AttributeOverrideAnnotation attributeOverride = attributeOverrides.getNestedAnnotations().iterator().next();
 
 		ColumnAnnotation column = attributeOverride.getColumn();
 		assertEquals(COLUMN_NAME, column.getName());

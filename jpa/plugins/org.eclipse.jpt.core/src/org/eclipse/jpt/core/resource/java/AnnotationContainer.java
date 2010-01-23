@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 /**
  * Common behavior for all annotation "containers".
+ * This interface is used mainly in
+ * {@link org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools}.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,16 +25,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 public interface AnnotationContainer<T extends NestableAnnotation>
 {
 	/**
-	 * Return the name of the container annotation.
-	 * Used when traversing the AST.
-	 */
-	String getContainerAnnotationName();
-
-	/**
 	 * Return the corresponding JDT DOM annotation from the specified
 	 * AST compilation unit. Used as a starting point when traversing the AST.
 	 */
-	org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot);
+	org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot);
 
 	/**
 	 * Return the name of the container annotation's element that is used
@@ -47,55 +41,47 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 	 * Return the name of the nested annotations held by the container.
 	 * Used when traversing the AST.
 	 */
-	String getNestableAnnotationName();
+	String getNestedAnnotationName();
 
 	/**
 	 * Return the nested annotations held by the container.
 	 */
-	ListIterator<T> nestedAnnotations();
+	Iterable<T> getNestedAnnotations();
 
 	/**
 	 * Return the number of nested annotations held by the container.
 	 */
-	int nestedAnnotationsSize();
+	int getNestedAnnotationsSize();
 
 	/**
 	 * Add a nested annotation to the container
 	 * without firing change notification.
 	 */
-	T addNestedAnnotationInternal();
+	T addNestedAnnotation();
 
 	/**
 	 * The specified nested annotation was added to the container at the
 	 * specified index; notify interested parties.
 	 */
-	void nestedAnnotationAdded(int index, T nestedAnnotation);
+	void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation);
 
 	/**
 	 * Move the nested annotation at the specified source index in the
 	 * container to the specified target index without firing change notification.
 	 * Return the moved nested annotation.
 	 */
-	T moveNestedAnnotationInternal(int targetIndex, int sourceIndex);
-
-	/**
-	 * A nested annotation was moved within the container annotation from the
-	 * specified source index to the specified target index; notify interested
-	 * parties.
-	 */
-	// TODO vestigial, now that we only fire events during updates...
-	void nestedAnnotationMoved(int targetIndex, int sourceIndex);
+	T moveNestedAnnotation(int targetIndex, int sourceIndex);
 
 	/**
 	 * Remove the nested annotation at the specified index from the
 	 * container without firing change notification.
 	 */
-	T removeNestedAnnotationInternal(int index);
+	T removeNestedAnnotation(int index);
 
 	/**
-	 * The specified nested annotation was removed from the container
-	 * at the specified index; notify interested parties.
+	 * Remove the nested annotations starting at the specified index from the
+	 * container; notify interested parties.
 	 */
-	void nestedAnnotationRemoved(int index, T nestedAnnotation);
+	void syncRemoveNestedAnnotations(int index);
 
 }

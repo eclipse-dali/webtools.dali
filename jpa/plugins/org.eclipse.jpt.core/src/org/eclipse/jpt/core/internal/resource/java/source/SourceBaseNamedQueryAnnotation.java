@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -157,8 +158,8 @@ abstract class SourceBaseNamedQueryAnnotation
 		return new CloneListIterator<QueryHintAnnotation>(this.hints);
 	}
 
-	ListIterator<NestableQueryHintAnnotation> nestableHints() {
-		return new CloneListIterator<NestableQueryHintAnnotation>(this.hints);
+	Iterable<NestableQueryHintAnnotation> getNestableHints() {
+		return new LiveCloneIterable<NestableQueryHintAnnotation>(this.hints);
 	}
 
 	public int hintsSize() {
@@ -169,21 +170,32 @@ abstract class SourceBaseNamedQueryAnnotation
 		return this.hints.get(index);
 	}
 
-	public int indexOfHint(QueryHintAnnotation queryHint) {
-		return this.hints.indexOf(queryHint);
+	public int indexOfHint(QueryHintAnnotation hint) {
+		return this.hints.indexOf(hint);
 	}
 
 	public NestableQueryHintAnnotation addHint(int index) {
 		return (NestableQueryHintAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.hintsContainer);
 	}
 
-	NestableQueryHintAnnotation addHintInternal() {
-		NestableQueryHintAnnotation hint = this.buildQueryHint(this.hints.size());
+	NestableQueryHintAnnotation addHint_() {
+		return this.addHint_(this.hints.size());
+	}
+
+	private NestableQueryHintAnnotation addHint_(int index) {
+		NestableQueryHintAnnotation hint = this.buildHint(index);
 		this.hints.add(hint);
 		return hint;
 	}
 
-	abstract NestableQueryHintAnnotation buildQueryHint(int index);
+	void syncAddHint(Annotation astAnnotation) {
+		int index = this.hints.size();
+		NestableQueryHintAnnotation hint = this.addHint_(index);
+		hint.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(HINTS_LIST, index, hint);
+	}
+
+	abstract NestableQueryHintAnnotation buildHint(int index);
 
 	void hintAdded(int index, NestableQueryHintAnnotation hint) {
 		this.fireItemAdded(HINTS_LIST, index, hint);
@@ -193,24 +205,20 @@ abstract class SourceBaseNamedQueryAnnotation
 		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.hintsContainer);
 	}
 
-	NestableQueryHintAnnotation moveHintInternal(int targetIndex, int sourceIndex) {
+	NestableQueryHintAnnotation moveHint_(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.hints, targetIndex, sourceIndex).get(targetIndex);
-	}
-
-	void hintMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(HINTS_LIST, targetIndex, sourceIndex);
 	}
 
 	public void removeHint(int index) {
 		AnnotationContainerTools.removeNestedAnnotation(index, this.hintsContainer);
 	}
 
-	NestableQueryHintAnnotation removeHintInternal(int index) {
+	NestableQueryHintAnnotation removeHint_(int index) {
 		return this.hints.remove(index);
 	}
 
-	void hintRemoved(int index, NestableQueryHintAnnotation hint) {
-		this.fireItemRemoved(HINTS_LIST, index, hint);
+	void syncRemoveHints(int index) {
+		this.removeItemsFromList(index, this.hints, HINTS_LIST);
 	}
 
 	abstract String getHintsElementName();
@@ -226,9 +234,9 @@ abstract class SourceBaseNamedQueryAnnotation
 		BaseNamedQueryAnnotation oldQuery = (BaseNamedQueryAnnotation) oldAnnotation;
 		this.setName(oldQuery.getName());
 		this.setQuery(oldQuery.getQuery());
-		for (QueryHintAnnotation oldQueryHint : CollectionTools.iterable(oldQuery.hints())) {
-			NestableQueryHintAnnotation newQueryHint = this.addHint(oldQuery.indexOfHint(oldQueryHint));
-			newQueryHint.initializeFrom((NestableQueryHintAnnotation) oldQueryHint);
+		for (QueryHintAnnotation oldHint : CollectionTools.iterable(oldQuery.hints())) {
+			NestableQueryHintAnnotation newHint = this.addHint(oldQuery.indexOfHint(oldHint));
+			newHint.initializeFrom((NestableQueryHintAnnotation) oldHint);
 		}
 	}
 
@@ -253,11 +261,7 @@ abstract class SourceBaseNamedQueryAnnotation
 	class HintsAnnotationContainer
 		implements AnnotationContainer<NestableQueryHintAnnotation>
 	{
-		public String getContainerAnnotationName() {
-			return SourceBaseNamedQueryAnnotation.this.getAnnotationName();
-		}
-
-		public Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		public Annotation getAstAnnotation(CompilationUnit astRoot) {
 			return SourceBaseNamedQueryAnnotation.this.getAstAnnotation(astRoot);
 		}
 
@@ -265,40 +269,36 @@ abstract class SourceBaseNamedQueryAnnotation
 			return SourceBaseNamedQueryAnnotation.this.getHintsElementName();
 		}
 
-		public String getNestableAnnotationName() {
+		public String getNestedAnnotationName() {
 			return QueryHintAnnotation.ANNOTATION_NAME;
 		}
 
-		public ListIterator<NestableQueryHintAnnotation> nestedAnnotations() {
-			return SourceBaseNamedQueryAnnotation.this.nestableHints();
+		public Iterable<NestableQueryHintAnnotation> getNestedAnnotations() {
+			return SourceBaseNamedQueryAnnotation.this.getNestableHints();
 		}
 
-		public int nestedAnnotationsSize() {
+		public int getNestedAnnotationsSize() {
 			return SourceBaseNamedQueryAnnotation.this.hintsSize();
 		}
 
-		public NestableQueryHintAnnotation addNestedAnnotationInternal() {
-			return SourceBaseNamedQueryAnnotation.this.addHintInternal();
+		public NestableQueryHintAnnotation addNestedAnnotation() {
+			return SourceBaseNamedQueryAnnotation.this.addHint_();
 		}
 
-		public void nestedAnnotationAdded(int index, NestableQueryHintAnnotation nestedAnnotation) {
-			SourceBaseNamedQueryAnnotation.this.hintAdded(index, nestedAnnotation);
+		public void syncAddNestedAnnotation(Annotation astAnnotation) {
+			SourceBaseNamedQueryAnnotation.this.syncAddHint(astAnnotation);
 		}
 
-		public NestableQueryHintAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
-			return SourceBaseNamedQueryAnnotation.this.moveHintInternal(targetIndex, sourceIndex);
+		public NestableQueryHintAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+			return SourceBaseNamedQueryAnnotation.this.moveHint_(targetIndex, sourceIndex);
 		}
 
-		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-			SourceBaseNamedQueryAnnotation.this.hintMoved(targetIndex, sourceIndex);
+		public NestableQueryHintAnnotation removeNestedAnnotation(int index) {
+			return SourceBaseNamedQueryAnnotation.this.removeHint_(index);
 		}
 
-		public NestableQueryHintAnnotation removeNestedAnnotationInternal(int index) {
-			return SourceBaseNamedQueryAnnotation.this.removeHintInternal(index);
-		}
-
-		public void nestedAnnotationRemoved(int index, NestableQueryHintAnnotation nestedAnnotation) {
-			SourceBaseNamedQueryAnnotation.this.hintRemoved(index, nestedAnnotation);
+		public void syncRemoveNestedAnnotations(int index) {
+			SourceBaseNamedQueryAnnotation.this.syncRemoveHints(index);
 		}
 
 		@Override

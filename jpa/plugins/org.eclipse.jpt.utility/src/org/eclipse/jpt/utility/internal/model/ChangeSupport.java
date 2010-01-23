@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1996,6 +1996,17 @@ public class ChangeSupport
 		list.remove(index);
 		this.fireItemRemoved(listName, index, item);
 		return true;
+	}
+
+	/**
+	 * Remove the items from the specified index on
+	 * from the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the removed items.
+	 * @see java.util.List#remove(int)
+	 */
+	public <E> List<E> removeItemsFromList(int index, List<E> list, String listName) {
+		return this.removeItemsFromList(index, list.size() - index, list, listName);
 	}
 
 	/**

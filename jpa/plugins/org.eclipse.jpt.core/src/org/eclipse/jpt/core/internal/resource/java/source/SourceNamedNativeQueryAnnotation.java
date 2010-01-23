@@ -99,7 +99,7 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	@Override
-	NestableQueryHintAnnotation buildQueryHint(int index) {
+	NestableQueryHintAnnotation buildHint(int index) {
 		return SourceQueryHintAnnotation.createNamedNativeQueryQueryHint(this, this.member, this.daa, index);
 	}
 

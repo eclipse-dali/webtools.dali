@@ -55,7 +55,7 @@ public class NullCollectionTable2_0Annotation
 	}
 	
 	public JoinColumnAnnotation addJoinColumn(int index) {
-		// the JoinTable annotation is missing, add both it and a join column at the same time
+		// the CollectionTable annotation is missing, add both it and a join column at the same time
 		return this.addAnnotation().addJoinColumn(index);
 	}
 	

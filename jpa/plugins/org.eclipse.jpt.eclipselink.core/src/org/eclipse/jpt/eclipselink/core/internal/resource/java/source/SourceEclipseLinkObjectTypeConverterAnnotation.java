@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -31,6 +32,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConve
 import org.eclipse.jpt.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -128,8 +130,8 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		return new CloneListIterator<EclipseLinkConversionValueAnnotation>(this.conversionValues);
 	}
 
-	ListIterator<NestableEclipseLinkConversionValueAnnotation> nestableConversionValues() {
-		return new CloneListIterator<NestableEclipseLinkConversionValueAnnotation>(this.conversionValues);
+	Iterable<NestableEclipseLinkConversionValueAnnotation> getNestableConversionValues() {
+		return new LiveCloneIterable<NestableEclipseLinkConversionValueAnnotation>(this.conversionValues);
 	}
 
 	public int conversionValuesSize() {
@@ -148,10 +150,21 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		return (NestableEclipseLinkConversionValueAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.conversionValuesContainer);
 	}
 
-	NestableEclipseLinkConversionValueAnnotation addConversionValueInternal() {
-		NestableEclipseLinkConversionValueAnnotation conversionValue = this.buildConversionValue(this.conversionValues.size());
+	NestableEclipseLinkConversionValueAnnotation addConversionValue_() {
+		return this.addConversionValue_(this.conversionValues.size());
+	}
+
+	private NestableEclipseLinkConversionValueAnnotation addConversionValue_(int index) {
+		NestableEclipseLinkConversionValueAnnotation conversionValue = this.buildConversionValue(index);
 		this.conversionValues.add(conversionValue);
 		return conversionValue;
+	}
+
+	void syncAddConversionValue(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		int index = this.conversionValues.size();
+		NestableEclipseLinkConversionValueAnnotation conversionValue = this.addConversionValue_(index);
+		conversionValue.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(CONVERSION_VALUES_LIST, index, conversionValue);
 	}
 
 	private NestableEclipseLinkConversionValueAnnotation buildConversionValue(int index) {
@@ -166,24 +179,20 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.conversionValuesContainer);
 	}
 
-	NestableEclipseLinkConversionValueAnnotation moveConversionValueInternal(int targetIndex, int sourceIndex) {
+	NestableEclipseLinkConversionValueAnnotation moveConversionValue_(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.conversionValues, targetIndex, sourceIndex).get(targetIndex);
-	}
-
-	void conversionValueMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(CONVERSION_VALUES_LIST, targetIndex, sourceIndex);
 	}
 
 	public void removeConversionValue(int index) {
 		AnnotationContainerTools.removeNestedAnnotation(index, this.conversionValuesContainer);
 	}
 
-	NestableEclipseLinkConversionValueAnnotation removeConversionValueInternal(int index) {
+	NestableEclipseLinkConversionValueAnnotation removeConversionValue_(int index) {
 		return this.conversionValues.remove(index);
 	}
 
-	void conversionValueRemoved(int index, NestableEclipseLinkConversionValueAnnotation conversionValue) {
-		this.fireItemRemoved(CONVERSION_VALUES_LIST, index, conversionValue);
+	void syncRemoveConversionValues(int index) {
+		this.removeItemsFromList(index, this.conversionValues, CONVERSION_VALUES_LIST);
 	}
 
 
@@ -203,11 +212,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	class ConversionValuesAnnotationContainer
 		implements AnnotationContainer<NestableEclipseLinkConversionValueAnnotation> 
 	{
-		public String getContainerAnnotationName() {
-			return SourceEclipseLinkObjectTypeConverterAnnotation.this.getAnnotationName();
-		}
-
-		public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
 			return SourceEclipseLinkObjectTypeConverterAnnotation.this.getAstAnnotation(astRoot);
 		}
 
@@ -215,40 +220,36 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 			return EclipseLink.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES;
 		}
 
-		public String getNestableAnnotationName() {
+		public String getNestedAnnotationName() {
 			return EclipseLinkConversionValueAnnotation.ANNOTATION_NAME;
 		}
 
-		public ListIterator<NestableEclipseLinkConversionValueAnnotation> nestedAnnotations() {
-			return SourceEclipseLinkObjectTypeConverterAnnotation.this.nestableConversionValues();
+		public Iterable<NestableEclipseLinkConversionValueAnnotation> getNestedAnnotations() {
+			return SourceEclipseLinkObjectTypeConverterAnnotation.this.getNestableConversionValues();
 		}
 
-		public int nestedAnnotationsSize() {
+		public int getNestedAnnotationsSize() {
 			return SourceEclipseLinkObjectTypeConverterAnnotation.this.conversionValuesSize();
 		}
 
-		public NestableEclipseLinkConversionValueAnnotation addNestedAnnotationInternal() {
-			return SourceEclipseLinkObjectTypeConverterAnnotation.this.addConversionValueInternal();
+		public NestableEclipseLinkConversionValueAnnotation addNestedAnnotation() {
+			return SourceEclipseLinkObjectTypeConverterAnnotation.this.addConversionValue_();
 		}
 
-		public void nestedAnnotationAdded(int index, NestableEclipseLinkConversionValueAnnotation nestedAnnotation) {
-			SourceEclipseLinkObjectTypeConverterAnnotation.this.conversionValueAdded(index, nestedAnnotation);
+		public void syncAddNestedAnnotation(Annotation astAnnotation) {
+			SourceEclipseLinkObjectTypeConverterAnnotation.this.syncAddConversionValue(astAnnotation);
 		}
 
-		public NestableEclipseLinkConversionValueAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
-			return SourceEclipseLinkObjectTypeConverterAnnotation.this.moveConversionValueInternal(targetIndex, sourceIndex);
+		public NestableEclipseLinkConversionValueAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+			return SourceEclipseLinkObjectTypeConverterAnnotation.this.moveConversionValue_(targetIndex, sourceIndex);
 		}
 
-		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-			SourceEclipseLinkObjectTypeConverterAnnotation.this.conversionValueMoved(targetIndex, sourceIndex);
+		public NestableEclipseLinkConversionValueAnnotation removeNestedAnnotation(int index) {
+			return SourceEclipseLinkObjectTypeConverterAnnotation.this.removeConversionValue_(index);
 		}
 
-		public NestableEclipseLinkConversionValueAnnotation removeNestedAnnotationInternal(int index) {
-			return SourceEclipseLinkObjectTypeConverterAnnotation.this.removeConversionValueInternal(index);
-		}
-
-		public void nestedAnnotationRemoved(int index, NestableEclipseLinkConversionValueAnnotation nestedAnnotation) {
-			SourceEclipseLinkObjectTypeConverterAnnotation.this.conversionValueRemoved(index, nestedAnnotation);
+		public void syncRemoveNestedAnnotations(int index) {
+			SourceEclipseLinkObjectTypeConverterAnnotation.this.syncRemoveConversionValues(index);
 		}
 
 		@Override

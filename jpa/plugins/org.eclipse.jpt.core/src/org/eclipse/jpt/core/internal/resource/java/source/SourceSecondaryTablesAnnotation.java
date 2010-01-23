@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
-import java.util.ListIterator;
 import java.util.Vector;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.SecondaryTablesAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
  * javax.persistence.SecondaryTables
@@ -60,58 +60,53 @@ public final class SourceSecondaryTablesAnnotation
 
 	// ********** AnnotationContainer implementation **********
 
-	public String getContainerAnnotationName() {
-		return this.getAnnotationName();
-	}
-
-	public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
-		return this.getAstAnnotation(astRoot);
-	}
-
 	public String getElementName() {
 		return JPA.SECONDARY_TABLES__VALUE;
 	}
 
-	public String getNestableAnnotationName() {
+	public String getNestedAnnotationName() {
 		return SecondaryTableAnnotation.ANNOTATION_NAME;
 	}
 
-	public ListIterator<NestableSecondaryTableAnnotation> nestedAnnotations() {
-		return new CloneListIterator<NestableSecondaryTableAnnotation>(this.secondaryTables);
+	public Iterable<NestableSecondaryTableAnnotation> getNestedAnnotations() {
+		return new LiveCloneIterable<NestableSecondaryTableAnnotation>(this.secondaryTables);
 	}
 
-	public int nestedAnnotationsSize() {
+	public int getNestedAnnotationsSize() {
 		return this.secondaryTables.size();
 	}
 
-	public NestableSecondaryTableAnnotation addNestedAnnotationInternal() {
-		NestableSecondaryTableAnnotation secondaryTable = this.buildSecondaryTable(this.secondaryTables.size());
+	public NestableSecondaryTableAnnotation addNestedAnnotation() {
+		return this.addNestedAnnotation(this.secondaryTables.size());
+	}
+
+	private NestableSecondaryTableAnnotation addNestedAnnotation(int index) {
+		NestableSecondaryTableAnnotation secondaryTable = this.buildSecondaryTable(index);
 		this.secondaryTables.add(secondaryTable);
 		return secondaryTable;
+	}
+
+	public void syncAddNestedAnnotation(Annotation astAnnotation) {
+		int index = this.secondaryTables.size();
+		NestableSecondaryTableAnnotation secondaryTable = this.addNestedAnnotation(index);
+		secondaryTable.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(SECONDARY_TABLES_LIST, index, secondaryTable);
 	}
 
 	private NestableSecondaryTableAnnotation buildSecondaryTable(int index) {
 		return SourceSecondaryTableAnnotation.createNestedSecondaryTable(this, this.member, index, this.daa);
 	}
 
-	public void nestedAnnotationAdded(int index, NestableSecondaryTableAnnotation nestedAnnotation) {
-		this.fireItemAdded(SECONDARY_TABLES_LIST, index, nestedAnnotation);
-	}
-
-	public NestableSecondaryTableAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+	public NestableSecondaryTableAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.secondaryTables, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(SECONDARY_TABLES_LIST, targetIndex, sourceIndex);
-	}
-
-	public NestableSecondaryTableAnnotation removeNestedAnnotationInternal(int index) {
+	public NestableSecondaryTableAnnotation removeNestedAnnotation(int index) {
 		return this.secondaryTables.remove(index);
 	}
 
-	public void nestedAnnotationRemoved(int index, NestableSecondaryTableAnnotation nestedAnnotation) {
-		this.fireItemRemoved(SECONDARY_TABLES_LIST, index, nestedAnnotation);
+	public void syncRemoveNestedAnnotations(int index) {
+		this.removeItemsFromList(index, this.secondaryTables, SECONDARY_TABLES_LIST);
 	}
 
 }

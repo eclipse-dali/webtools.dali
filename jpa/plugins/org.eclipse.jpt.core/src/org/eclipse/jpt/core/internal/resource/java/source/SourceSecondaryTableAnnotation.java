@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -100,8 +102,8 @@ public final class SourceSecondaryTableAnnotation
 		return new CloneListIterator<PrimaryKeyJoinColumnAnnotation>(this.pkJoinColumns);
 	}
 
-	ListIterator<NestablePrimaryKeyJoinColumnAnnotation> nestablePkJoinColumns() {
-		return new CloneListIterator<NestablePrimaryKeyJoinColumnAnnotation>(this.pkJoinColumns);
+	Iterable<NestablePrimaryKeyJoinColumnAnnotation> getNestablePkJoinColumns() {
+		return new LiveCloneIterable<NestablePrimaryKeyJoinColumnAnnotation>(this.pkJoinColumns);
 	}
 
 	public int pkJoinColumnsSize() {
@@ -120,10 +122,21 @@ public final class SourceSecondaryTableAnnotation
 		return (NestablePrimaryKeyJoinColumnAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.pkJoinColumnsContainer);
 	}
 
-	NestablePrimaryKeyJoinColumnAnnotation addPkJoinColumnInternal() {
-		NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn = this.buildPrimaryKeyJoinColumn(this.pkJoinColumns.size());
+	NestablePrimaryKeyJoinColumnAnnotation addPkJoinColumn_() {
+		return this.addPkJoinColumn_(this.pkJoinColumns.size());
+	}
+
+	private NestablePrimaryKeyJoinColumnAnnotation addPkJoinColumn_(int index) {
+		NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn = this.buildPrimaryKeyJoinColumn(index);
 		this.pkJoinColumns.add(pkJoinColumn);
 		return pkJoinColumn;
+	}
+
+	void syncAddPkJoinColumn(Annotation astAnnotation) {
+		int index = this.pkJoinColumns.size();
+		NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn = this.addPkJoinColumn_(index);
+		pkJoinColumn.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(PK_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 	}
 
 	private NestablePrimaryKeyJoinColumnAnnotation buildPrimaryKeyJoinColumn(int index) {
@@ -138,24 +151,20 @@ public final class SourceSecondaryTableAnnotation
 		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.pkJoinColumnsContainer);
 	}
 
-	NestablePrimaryKeyJoinColumnAnnotation movePkJoinColumnInternal(int targetIndex, int sourceIndex) {
+	NestablePrimaryKeyJoinColumnAnnotation movePkJoinColumn_(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.pkJoinColumns, targetIndex, sourceIndex).get(targetIndex);
-	}
-
-	void pkJoinColumnMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(PK_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 
 	public void removePkJoinColumn(int index) {
 		AnnotationContainerTools.removeNestedAnnotation(index, this.pkJoinColumnsContainer);
 	}
 
-	NestablePrimaryKeyJoinColumnAnnotation removePkJoinColumnInternal(int index) {
+	NestablePrimaryKeyJoinColumnAnnotation removePkJoinColumn_(int index) {
 		return this.pkJoinColumns.remove(index);
 	}
 
-	void pkJoinColumnRemoved(int index, NestablePrimaryKeyJoinColumnAnnotation joinColumn) {
-		this.fireItemRemoved(PK_JOIN_COLUMNS_LIST, index, joinColumn);
+	void syncRemovePkJoinColumns(int index) {
+		this.removeItemsFromList(index, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
 	}
 
 
@@ -206,11 +215,7 @@ public final class SourceSecondaryTableAnnotation
 	class PkJoinColumnsAnnotationContainer
 		implements AnnotationContainer<NestablePrimaryKeyJoinColumnAnnotation> 
 	{
-		public String getContainerAnnotationName() {
-			return SourceSecondaryTableAnnotation.this.getAnnotationName();
-		}
-
-		public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
 			return SourceSecondaryTableAnnotation.this.getAstAnnotation(astRoot);
 		}
 
@@ -218,40 +223,36 @@ public final class SourceSecondaryTableAnnotation
 			return JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS;
 		}
 
-		public String getNestableAnnotationName() {
+		public String getNestedAnnotationName() {
 			return PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME;
 		}
 
-		public ListIterator<NestablePrimaryKeyJoinColumnAnnotation> nestedAnnotations() {
-			return SourceSecondaryTableAnnotation.this.nestablePkJoinColumns();
+		public Iterable<NestablePrimaryKeyJoinColumnAnnotation> getNestedAnnotations() {
+			return SourceSecondaryTableAnnotation.this.getNestablePkJoinColumns();
 		}
 
-		public int nestedAnnotationsSize() {
+		public int getNestedAnnotationsSize() {
 			return SourceSecondaryTableAnnotation.this.pkJoinColumnsSize();
 		}
 
-		public NestablePrimaryKeyJoinColumnAnnotation addNestedAnnotationInternal() {
-			return SourceSecondaryTableAnnotation.this.addPkJoinColumnInternal();
+		public NestablePrimaryKeyJoinColumnAnnotation addNestedAnnotation() {
+			return SourceSecondaryTableAnnotation.this.addPkJoinColumn_();
 		}
 
-		public void nestedAnnotationAdded(int index, NestablePrimaryKeyJoinColumnAnnotation nestedAnnotation) {
-			SourceSecondaryTableAnnotation.this.pkJoinColumnAdded(index, nestedAnnotation);
+		public void syncAddNestedAnnotation(Annotation astAnnotation) {
+			SourceSecondaryTableAnnotation.this.syncAddPkJoinColumn(astAnnotation);
 		}
 
-		public NestablePrimaryKeyJoinColumnAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
-			return SourceSecondaryTableAnnotation.this.movePkJoinColumnInternal(targetIndex, sourceIndex);
+		public NestablePrimaryKeyJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+			return SourceSecondaryTableAnnotation.this.movePkJoinColumn_(targetIndex, sourceIndex);
 		}
 
-		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-			SourceSecondaryTableAnnotation.this.pkJoinColumnMoved(targetIndex, sourceIndex);
+		public NestablePrimaryKeyJoinColumnAnnotation removeNestedAnnotation(int index) {
+			return SourceSecondaryTableAnnotation.this.removePkJoinColumn_(index);
 		}
 
-		public NestablePrimaryKeyJoinColumnAnnotation removeNestedAnnotationInternal(int index) {
-			return SourceSecondaryTableAnnotation.this.removePkJoinColumnInternal(index);
-		}
-
-		public void nestedAnnotationRemoved(int index, NestablePrimaryKeyJoinColumnAnnotation nestedAnnotation) {
-			SourceSecondaryTableAnnotation.this.pkJoinColumnRemoved(index, nestedAnnotation);
+		public void syncRemoveNestedAnnotations(int index) {
+			SourceSecondaryTableAnnotation.this.syncRemovePkJoinColumns(index);
 		}
 
 		@Override
