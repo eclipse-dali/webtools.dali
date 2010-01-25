@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.Orderable;
+import org.eclipse.jpt.db.Table;
 
 /**
  * Multi-valued (1:m, m:m) relationship mappings support ordering.
@@ -25,9 +26,23 @@ public interface Orderable2_0
 {
 	
 	boolean isOrderColumnOrdering();
-	void setOrderColumnOrdering(boolean orderColumn);
+	void setOrderColumnOrdering(boolean value);
 		String ORDER_COLUMN_ORDERING_PROPERTY = "orderColumnOrdering"; //$NON-NLS-1$
 	
 	OrderColumn2_0 getOrderColumn();
+	
+	String getDefaultTableName();
+	
+	/**
+	 * interface allowing Orderable2_0 to be used in multiple places
+	 */
+	interface Owner {
+		/**
+		 * Return the name of the table which the column belongs to
+		 */
+		String getTableName();
+		
+		Table getDbTable(String tableName);
+	}
 
 }

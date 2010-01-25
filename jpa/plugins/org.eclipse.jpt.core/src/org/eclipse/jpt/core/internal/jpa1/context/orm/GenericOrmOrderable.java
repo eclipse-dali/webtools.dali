@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
@@ -33,6 +34,8 @@ public class GenericOrmOrderable
 	extends AbstractOrmXmlContextNode
 	implements OrmOrderable2_0
 {
+	private final Orderable2_0.Owner owner;
+
 	protected String specifiedOrderBy;
 	protected boolean noOrdering = false;
 	protected boolean pkOrdering = false;
@@ -48,9 +51,10 @@ public class GenericOrmOrderable
 	protected boolean customMapKey = false;
 
 
-	public GenericOrmOrderable(OrmAttributeMapping parent) {
+	public GenericOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner) {
 		super(parent);
 		this.orderColumn = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmOrderColumn(this, this);
+		this.owner = owner;
 		this.initializeOrdering();
 	}
 
@@ -71,6 +75,10 @@ public class GenericOrmOrderable
 		return (XmlOrderable) getParent().getResourceAttributeMapping();
 	}
 	
+	public Orderable2_0.Owner getOwner() {
+		return this.owner;
+	}
+
 	// **************** order by ***********************************************
 	
 	public String getSpecifiedOrderBy() {
@@ -244,8 +252,12 @@ public class GenericOrmOrderable
 
 	// ********** OrderColumn OrmBaseColumn.Owner implementation **********  
 
+	public String getDefaultTableName() {
+		return getOwner().getTableName();
+	}
+
 	public Table getDbTable(String tableName) {
-		return this.getTypeMapping().getDbTable(tableName);
+		return getOwner().getDbTable(tableName);
 	}
 
 	public String getDefaultColumnName() {
@@ -260,14 +272,17 @@ public class GenericOrmOrderable
 	// ********** Validation **********  
 
 	public TextRange getValidationTextRange() {
-		return getResourceOrderable().getValidationTextRange();
+		TextRange textRange = getResourceOrderable().getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();	
 	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		//order-column and order-by both specified is handled with schema validation
 		if (isOrderColumnOrdering()) {
 			//TODO validation message if type is not List
+			this.getOrderColumn().validate(messages, reporter);
 		}
 	}
 

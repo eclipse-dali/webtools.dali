@@ -23,8 +23,6 @@ import java.util.Iterator;
 public interface BaseColumn extends NamedColumn
 {
 
-	String getTable();
-
 	String getDefaultTable();
 		String DEFAULT_TABLE_PROPERTY = "defaultTable"; //$NON-NLS-1$
 
@@ -90,10 +88,6 @@ public interface BaseColumn extends NamedColumn
 	 */
 	interface Owner extends NamedColumn.Owner
 	{
-		/**
-		 * Return the name of the table which the column belongs to by default
-		 */
-		String getDefaultTableName();
 		
 		/**
 		 * return whether the given table cannot be explicitly specified

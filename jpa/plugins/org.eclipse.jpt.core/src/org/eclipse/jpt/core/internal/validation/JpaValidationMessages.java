@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -128,5 +128,7 @@ public interface JpaValidationMessages {
 	public static final String VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA = "VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA";
 	public static final String COLLECTION_TABLE_UNRESOLVED_NAME = "COLLECTION_TABLE_UNRESOLVED_NAME";
 	public static final String VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME = "VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME";
+	public static final String ORDER_COLUMN_UNRESOLVED_NAME = "ORDER_COLUMN_UNRESOLVED_NAME";
+	public static final String VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME = "VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME";
 	
 }

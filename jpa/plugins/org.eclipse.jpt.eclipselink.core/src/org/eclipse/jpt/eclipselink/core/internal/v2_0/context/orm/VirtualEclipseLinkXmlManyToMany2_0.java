@@ -160,6 +160,11 @@ public class VirtualEclipseLinkXmlManyToMany2_0 extends XmlManyToMany
 	}
 	
 	@Override
+	public void setOrderColumn(XmlOrderColumn newOrderColumn) {
+		this.virtualXmlManyToMany.setOrderColumn(newOrderColumn);
+	}
+
+	@Override
 	public TextRange getMappedByTextRange() {
 		return this.virtualXmlManyToMany.getMappedByTextRange();
 	}

@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -65,15 +66,34 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		return (OrmPersistentAttribute) super.getParent();
 	}
 	
+	@Override
 	public boolean isRelationshipOwner() {
 		return this.relationshipReference.isRelationshipOwner();
 	}
 	
 	@Override
-	public boolean isOwnedBy(RelationshipMapping mapping) {
-		return this.relationshipReference.isOwnedBy(mapping);
+	public boolean isOwnedBy(AttributeMapping mapping) {
+		if (mapping.isRelationshipOwner()) {
+			return this.relationshipReference.isOwnedBy((RelationshipMapping) mapping);
+		}
+		return false;
 	}
-	
+
+	public RelationshipMapping getRelationshipOwner() {
+		Entity targetEntity = this.getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return null;
+		}
+		for (PersistentAttribute each : 
+			CollectionTools.iterable(
+				targetEntity.getPersistentType().allAttributes())) {
+			if (this.isOwnedBy(each.getMapping())) {
+				return (RelationshipMapping) each.getMapping();
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean isOverridableAssociationMapping() {
 		return this.relationshipReference.isOverridableAssociation();

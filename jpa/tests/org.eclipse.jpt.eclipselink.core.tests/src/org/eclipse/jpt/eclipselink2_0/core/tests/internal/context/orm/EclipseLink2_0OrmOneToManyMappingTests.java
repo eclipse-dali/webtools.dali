@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,14 +12,18 @@ package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
@@ -366,5 +370,144 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		ormOneToManyMapping.setSpecifiedMapKeyClass(null);
 		assertNull(ormOneToManyMapping.getSpecifiedMapKeyClass());
 		assertNull(oneToMany.getMapKeyClass());
+	}
+
+	public void testOrderColumnDefaults() throws Exception {
+		createTestEntityPrintQueue();
+		createTestEntityPrintJob();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintQueue");
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintJob");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "jobs");
+		OrmOneToManyMapping oneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
+		oneToManyMapping.getRelationshipReference().setMappedByJoiningStrategy();
+		oneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().setMappedByAttribute("queue");
+
+		Orderable2_0 orderable = ((Orderable2_0) oneToManyMapping.getOrderable());
+		assertEquals(false, orderable.isOrderColumnOrdering());
+		assertEquals(true, orderable.isNoOrdering());
+		
+		orderable.setOrderColumnOrdering(true);
+		OrderColumn2_0 orderColumn = orderable.getOrderColumn();
+		assertEquals(true, orderable.isOrderColumnOrdering());
+		assertEquals(null, orderColumn.getSpecifiedName());
+		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
+		assertEquals("PrintJob", orderColumn.getTable());
+		
+		orderColumn.setSpecifiedName("FOO");
+		assertEquals("FOO", orderColumn.getSpecifiedName());
+		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
+		assertEquals("PrintJob", orderColumn.getTable());
+		
+		OrmPersistentType printJobPersistentType = (OrmPersistentType) getPersistenceUnit().getPersistentType("test.PrintJob");
+		((Entity) printJobPersistentType.getMapping()).getTable().setSpecifiedName("MY_TABLE");
+
+		assertEquals("MY_TABLE", orderColumn.getTable());
+	}
+	
+	public void testVirtualOrderColumn() throws Exception {
+		createTestEntityPrintQueue();
+		createTestEntityPrintJob();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintQueue");
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".PrintJob");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "jobs");
+		OrmOneToManyMapping oneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
+
+		Orderable2_0 orderable = ((Orderable2_0) oneToManyMapping.getOrderable());
+		assertEquals(false, orderable.isOrderColumnOrdering());
+		assertEquals(true, orderable.isNoOrdering());
+		
+		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
+		((Orderable2_0) javaOneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+				
+		assertEquals(false, orderable.isOrderColumnOrdering());
+		assertEquals(true, orderable.isNoOrdering());
+
+		ormPersistentAttribute.makeVirtual();		
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("jobs");
+		oneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
+		orderable = ((Orderable2_0) oneToManyMapping.getOrderable());
+		assertEquals(true, orderable.isOrderColumnOrdering());
+		assertEquals(false, orderable.isNoOrdering());
+		assertEquals("PrintJob", orderable.getOrderColumn().getTable());
+		assertEquals("jobs_ORDER", orderable.getOrderColumn().getName());
+		
+		((Orderable2_0) javaOneToManyMapping.getOrderable()).getOrderColumn().setSpecifiedName("FOO");
+		assertEquals("PrintJob", orderable.getOrderColumn().getTable());
+		assertEquals("FOO", orderable.getOrderColumn().getName());
+	}
+	
+	
+	private void createTestEntityPrintQueue() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ONE_TO_MANY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA2_0.ORDER_COLUMN);
+					sb.append(";");
+					sb.append(CR);
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("PrintQueue").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private String name;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToMany(mappedBy=\"queue\")").append(CR);
+				sb.append("    @OrderColumn").append(CR);
+				sb.append("    private java.util.List<PrintJob> jobs;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
+	}
+	
+	private void createTestEntityPrintJob() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.MANY_TO_ONE);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("PrintJob").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    @ManyToOne").append(CR);
+				sb.append("    private PrintQueue queue;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmNamedColumn;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericOrmOrderColumn2_0
@@ -34,6 +41,24 @@ public class GenericOrmOrderColumn2_0
 	
 	public GenericOrmOrderColumn2_0(OrmOrderable2_0 parent, OrmNamedColumn.Owner owner) {
 		super(parent, owner);
+	}
+
+	@Override
+	public OrmOrderable2_0 getParent() {
+		return (OrmOrderable2_0) super.getParent();
+	}
+
+	protected TypeMapping getTypeMapping() {
+		return getParent().getTypeMapping();
+	}
+
+	protected PersistentAttribute getPersistentAttribute() {
+		return getParent().getParent().getPersistentAttribute();
+	}
+
+	@Override
+	public String getTable() {
+		return getParent().getDefaultTableName();
 	}
 	
 	@Override
@@ -200,6 +225,49 @@ public class GenericOrmOrderColumn2_0
 	
 	protected Boolean getResourceInsertable(XmlOrderColumn column) {
 		return column == null ? null : column.getInsertable();
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		if (this.shouldValidateAgainstDatabase()) {
+			this.validateColumn(messages);
+		}
+	}
+
+	protected boolean shouldValidateAgainstDatabase() {
+		return this.getTypeMapping().shouldValidateAgainstDatabase();
+	}
+
+	protected void validateColumn(List<IMessage> messages) {
+		if (!this.isResolved() && this.getDbTable() != null) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getPersistentAttribute().getName(), this.getName(), getTable()}, 
+						this,
+						this.getNameTextRange()
+					)
+				);
+
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getName(), getTable()}, 
+						this,
+						this.getNameTextRange()
+					)
+				);
+			}
+		}
 	}
 
 	@Override

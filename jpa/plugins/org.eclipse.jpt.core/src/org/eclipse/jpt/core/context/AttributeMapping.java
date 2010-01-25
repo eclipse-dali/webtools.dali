@@ -62,11 +62,21 @@ public interface AttributeMapping
 	 * otherwise return null.
 	 */
 	String getPrimaryKeyColumnName();
-	
+
+	/**
+	 * Return whether this mapping is the owning side of the relationship.
+	 * Either this is a unidirectional mapping or it is the owning side of a
+	 * bidirectional relationship. If bidirectional, the owning side is the
+	 * side that does not specify 'mappedBy'. The owning side is the side where
+	 * the join table would be specified. If this returns true then the mapping
+	 * will be a RelationshipMapping
+	 */
+	boolean isRelationshipOwner();
+
 	/**
 	 * Return whether the given mapping manages a relationship with this mapping
 	 */
-	boolean isOwnedBy(RelationshipMapping mapping);
+	boolean isOwnedBy(AttributeMapping mapping);
 	
 	/**
 	 * Return whether any database metadata specific validation should occur.

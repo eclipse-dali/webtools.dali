@@ -41,6 +41,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
@@ -106,7 +107,7 @@ public class GenericJavaElementCollectionMapping2_0
 
 	public GenericJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		super(parent);
-		this.orderable = getJpaFactory().buildJavaOrderable(this);
+		this.orderable = getJpaFactory().buildJavaOrderable(this, buildOrderableOwner());
 		this.collectionTable = getJpaFactory().buildJavaCollectionTable(this);
 		this.valueColumn = getJpaFactory().buildJavaColumn(parent, new ValueColumnOwner());
 		this.nullConverter = getJpaFactory().buildJavaNullConverter(this);
@@ -466,6 +467,17 @@ public class GenericJavaElementCollectionMapping2_0
 	
 	public JavaOrderable getOrderable() {
 		return this.orderable;
+	}
+
+	protected Orderable2_0.Owner buildOrderableOwner() {
+		return new Orderable2_0.Owner() {
+			public String getTableName() {
+				return getCollectionTable().getName();
+			}
+			public Table getDbTable(String tableName) {
+				return getCollectionTable().getDbTable();
+			}
+		};
 	}
 
 

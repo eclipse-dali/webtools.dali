@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,7 +69,19 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	public boolean isOverridableAssociation() {
 		return false;
 	}
-	
+
+	public String getTableName() {
+		return getTypeMapping().getPrimaryTableName();
+	}
+
+	public Table getDbTable(String tableName) {
+		return getTypeMapping().getDbTable(tableName);
+	}
+
+	protected TypeMapping getTypeMapping() {
+		return getRelationshipMapping().getTypeMapping();
+	}
+
 	// **************** primary key join columns *******************************
 	
 	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
@@ -261,7 +273,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return GenericJavaPrimaryKeyJoinColumnJoiningStrategy.this.getTableName();
 		}
 		
 		public Entity getTargetEntity() {
@@ -288,7 +300,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public TypeMapping getTypeMapping() {
-			return getRelationshipMapping().getTypeMapping();
+			return GenericJavaPrimaryKeyJoinColumnJoiningStrategy.this.getTypeMapping();
 		}
 		
 		public Table getDbTable(String tableName) {

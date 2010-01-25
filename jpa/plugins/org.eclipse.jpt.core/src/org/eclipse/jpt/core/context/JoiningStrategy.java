@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -9,6 +9,8 @@
  *  	Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.context;
+
+import org.eclipse.jpt.db.Table;
 
 /**
  * Represents how the information in two entities are joined together via a 
@@ -47,4 +49,17 @@ public interface JoiningStrategy extends JpaContextNode
 	 * Return whether the mapping can be overridden with an association override
 	 */
 	boolean isOverridableAssociation();
+	
+	/**
+	 * Return the table name associated with columns on this joining strategy.
+	 * The join table name, for instance, or in the case of a bi-directional relationship, 
+	 * the table of the owning relationship.
+	 */
+	String getTableName();
+	
+	/**
+	 * Return the database table for the specified table name
+	 */
+	Table getDbTable(String tableName);
+
 }

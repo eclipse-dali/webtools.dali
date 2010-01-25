@@ -72,6 +72,7 @@ import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -231,7 +232,7 @@ public interface JpaFactory
 
 	JavaConverter buildJavaNullConverter(JavaAttributeMapping parent);
 	
-	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent);
+	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner);
 	
 	AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy);
 	

@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualMapKey;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOrderColumn;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -19,6 +21,7 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
+import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -37,6 +40,8 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	
 	protected final XmlMapKeyClass mapKeyClass;
 
+	protected VirtualXmlOrderColumn orderColumn;
+
 	public VirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping) {
 		super();
@@ -45,6 +50,9 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaMapping);
 		this.mapKey = new VirtualMapKey(javaMapping);
 		this.mapKeyClass = new VirtualMapKeyClass(javaMapping);
+		this.orderColumn = new VirtualXmlOrderColumn(
+			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
+			this.ormTypeMapping);
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -156,6 +164,32 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 
 	@Override
 	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}	
+	
+	@Override
+	public String getOrderBy() {
+		if (this.isOrmMetadataComplete()) {
+			return null;
+		}
+		return this.javaAttributeMapping.getOrderable().getSpecifiedOrderBy();
+	}
+
+	@Override
+	public void setOrderBy(String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	@Override
+	public XmlOrderColumn getOrderColumn() {
+		if (((Orderable2_0) this.javaAttributeMapping.getOrderable()).isOrderColumnOrdering()) {
+			return this.orderColumn;
+		}
+		return null;
+	}
+
+	@Override
+	public void setOrderColumn(XmlOrderColumn newOrderColumn) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

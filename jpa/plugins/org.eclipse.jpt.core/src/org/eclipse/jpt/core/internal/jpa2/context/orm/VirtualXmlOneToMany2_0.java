@@ -12,7 +12,9 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOrderColumn;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
@@ -41,7 +43,9 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	protected final VirtualXmlOneToMany virtualXmlOneToMany;
 
 	protected final XmlMapKeyClass mapKeyClass;
-		
+
+	protected VirtualXmlOrderColumn orderColumn;
+
 	public VirtualXmlOneToMany2_0(
 			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping2_0 javaOneToManyMapping) {
 		super();
@@ -49,6 +53,9 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 		this.javaAttributeMapping = javaOneToManyMapping;
 		this.virtualXmlOneToMany = new VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
 		this.mapKeyClass = new VirtualMapKeyClass(javaOneToManyMapping);
+		this.orderColumn = new VirtualXmlOrderColumn(
+			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
+			this.ormTypeMapping);
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -176,12 +183,20 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	public void setOrderBy(String value) {
 		this.virtualXmlOneToMany.setOrderBy(value);
 	}
-	
+
 	@Override
 	public XmlOrderColumn getOrderColumn() {
-		return this.virtualXmlOneToMany.getOrderColumn();
+		if (((Orderable2_0) this.javaAttributeMapping.getOrderable()).isOrderColumnOrdering()) {
+			return this.orderColumn;
+		}
+		return null;
 	}
 	
+	@Override
+	public void setOrderColumn(XmlOrderColumn newOrderColumn) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
 	@Override
 	public TextRange getMappedByTextRange() {
 		return this.virtualXmlOneToMany.getMappedByTextRange();

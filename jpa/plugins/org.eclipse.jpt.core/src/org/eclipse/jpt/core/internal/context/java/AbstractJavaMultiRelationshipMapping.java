@@ -21,12 +21,14 @@ import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -52,7 +54,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.orderable = getJpaFactory().buildJavaOrderable(this);
+		this.orderable = getJpaFactory().buildJavaOrderable(this, buildOrderableOwner());
 	}
 
 	@Override
@@ -106,7 +108,17 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return this.orderable;
 	}
 
-
+	protected Orderable2_0.Owner buildOrderableOwner() {
+		return new Orderable2_0.Owner() {
+			public String getTableName() {
+				return getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+			}
+			public Table getDbTable(String tableName) {
+				return getRelationshipReference().getPredominantJoiningStrategy().getDbTable(tableName);
+			}
+		};
+	}
+	
 	// ********** Fetchable implementation **********  
 
 	public FetchType getDefaultFetch() {

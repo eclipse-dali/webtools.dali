@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -97,6 +97,7 @@ public class JptUiValidationPreferenceMessages {
 	public static String COLLECTION_TABLE_UNRESOLVED_CATALOG;
 	public static String COLLECTION_TABLE_UNRESOLVED_SCHEMA;
 	public static String COLLECTION_TABLE_UNRESOLVED_NAME;
+	public static String ORDER_COLUMN_UNRESOLVED_NAME;
 	
 	public static String IMPLIED_ATTRIBUTE_CATEGORY;
 	public static String VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG;
@@ -116,6 +117,7 @@ public class JptUiValidationPreferenceMessages {
 	public static String VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG;
 	public static String VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA;
 	public static String VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME;
+	public static String VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME;
 	
 	public static String IMPLIED_ASSOCIATION_CATEGORY;
 	public static String VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE;

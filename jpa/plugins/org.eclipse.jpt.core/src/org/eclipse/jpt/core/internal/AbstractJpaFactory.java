@@ -134,6 +134,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
@@ -389,8 +390,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaNullConverter(parent);
 	}
 	
-	public JavaOrderable buildJavaOrderable(JavaAttributeMapping parent) {
-		return new GenericJavaOrderable(parent);
+	public JavaOrderable buildJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner) {
+		return new GenericJavaOrderable(parent, owner);
 	}
 	
 	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {

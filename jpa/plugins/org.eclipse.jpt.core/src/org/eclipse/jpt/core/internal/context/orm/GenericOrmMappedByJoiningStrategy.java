@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlMappedByMapping;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -53,10 +54,24 @@ public class GenericOrmMappedByJoiningStrategy
 		return this.getParent();
 	}
 	
+	public String getTableName() {
+		RelationshipMapping owner = getRelationshipOwner();
+		return owner == null ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+	}
+
+	public Table getDbTable(String tableName) {
+		RelationshipMapping owner = getRelationshipOwner();
+		return owner == null ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getDbTable(tableName);
+	}
+
+	protected RelationshipMapping getRelationshipOwner() {
+		return getRelationshipMapping().getRelationshipOwner();
+	}
+
 	public boolean isOverridableAssociation() {
 		return false;
 	}
-	
+
 	public OrmRelationshipMapping getRelationshipMapping() {
 		return getParent().getRelationshipMapping();
 	}

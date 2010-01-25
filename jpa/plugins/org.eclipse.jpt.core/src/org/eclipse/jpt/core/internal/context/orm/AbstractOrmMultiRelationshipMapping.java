@@ -20,11 +20,13 @@ import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -47,7 +49,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this);
+		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this, this.buildOrderableOwner());
 		this.initializeMapKey();
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
@@ -79,6 +81,17 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	public Orderable getOrderable() {
 		return this.orderable;
+	}
+
+	protected Orderable2_0.Owner buildOrderableOwner() {
+		return new Orderable2_0.Owner() {
+			public String getTableName() {
+				return getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+			}
+			public Table getDbTable(String tableName) {
+				return getRelationshipReference().getPredominantJoiningStrategy().getDbTable(tableName);
+			}
+		};
 	}
 	
 	

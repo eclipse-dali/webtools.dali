@@ -28,6 +28,8 @@ import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -926,5 +928,29 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		elementCollectionMapping.setSpecifiedMapKeyClass(null);
 		assertEquals("java.lang.Integer", elementCollectionMapping.getMapKeyClass());
+	}
+
+	public void testOrderColumnDefaults() throws Exception {
+		createTestEntityWithGenericEmbeddableElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		Orderable2_0 orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
+		assertEquals(false, orderable.isOrderColumnOrdering());
+		assertEquals(true, orderable.isNoOrdering());
+		
+		orderable.setOrderColumnOrdering(true);
+		OrderColumn2_0 orderColumn = orderable.getOrderColumn();
+		assertEquals(true, orderable.isOrderColumnOrdering());
+		assertEquals(null, orderColumn.getSpecifiedName());
+		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
+		
+		orderColumn.setSpecifiedName("FOO");
+		assertEquals("FOO", orderColumn.getSpecifiedName());
+		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
 	}
 }

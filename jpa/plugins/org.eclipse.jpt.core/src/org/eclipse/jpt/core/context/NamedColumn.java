@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,6 +33,11 @@ public interface NamedColumn
 	void setSpecifiedName(String value);
 		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
 
+	/**
+	 * Return the table name for this column.  Columns that don't have a
+	 * specified table still have a table that they belong to.
+	 */
+	String getTable();
 
 	String getColumnDefinition();
 
@@ -64,6 +69,11 @@ public interface NamedColumn
 		 * Return the type mapping that contains the column.
 		 */
 		TypeMapping getTypeMapping();
+
+		/**
+		 * Return the name of the table which the column belongs to by default
+		 */
+		String getDefaultTableName();
 
 		/**
 		 * Return the database table for the specified table name

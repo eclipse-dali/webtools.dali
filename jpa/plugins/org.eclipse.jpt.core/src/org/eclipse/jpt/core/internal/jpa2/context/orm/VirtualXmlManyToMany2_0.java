@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToMany;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOrderColumn;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -37,12 +39,17 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	
 	protected final XmlMapKeyClass mapKeyClass;
 	
+	protected VirtualXmlOrderColumn orderColumn;
+
 	public VirtualXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;
 		this.virtualXmlManyToMany = new VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
 		this.mapKeyClass = new VirtualMapKeyClass(javaManyToManyMapping);
+		this.orderColumn = new VirtualXmlOrderColumn(
+			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
+			this.ormTypeMapping);
 	}
 
 	protected boolean isOrmMetadataComplete() {
@@ -152,12 +159,20 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	public void setOrderBy(String value) {
 		this.virtualXmlManyToMany.setOrderBy(value);
 	}
-	
+
 	@Override
 	public XmlOrderColumn getOrderColumn() {
-		return this.virtualXmlManyToMany.getOrderColumn();
+		if (((Orderable2_0) this.javaAttributeMapping.getOrderable()).isOrderColumnOrdering()) {
+			return this.orderColumn;
+		}
+		return null;
 	}
-	
+
+	@Override
+	public void setOrderColumn(XmlOrderColumn newOrderColumn) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
 	@Override
 	public TextRange getMappedByTextRange() {
 		return this.virtualXmlManyToMany.getMappedByTextRange();

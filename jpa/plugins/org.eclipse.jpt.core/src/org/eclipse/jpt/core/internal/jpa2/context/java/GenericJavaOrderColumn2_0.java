@@ -9,15 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseColumn;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericJavaOrderColumn2_0
@@ -31,7 +37,7 @@ public class GenericJavaOrderColumn2_0
 	protected Boolean specifiedUpdatable;
 
 	
-	public GenericJavaOrderColumn2_0(JavaJpaContextNode parent, JavaNamedColumn.Owner owner) {
+	public GenericJavaOrderColumn2_0(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
@@ -61,6 +67,20 @@ public class GenericJavaOrderColumn2_0
 		this.setSpecifiedNullable_(this.getResourceNullable(column));
 		this.setSpecifiedInsertable_(this.getResourceInsertable(column));
 		this.setSpecifiedUpdatable_(this.getResourceUpdatable(column));
+	}
+
+	@Override
+	public JavaOrderable2_0 getParent() {
+		return (JavaOrderable2_0) super.getParent();
+	}
+
+	protected TypeMapping getTypeMapping() {
+		return getParent().getTypeMapping();
+	}
+
+	@Override
+	public String getTable() {
+		return getParent().getDefaultTableName();
 	}
 
 	public boolean isNullable() {
@@ -166,6 +186,35 @@ public class GenericJavaOrderColumn2_0
 	
 	protected Boolean getResourceUpdatable(OrderColumn2_0Annotation column) {
 		return column.getUpdatable();
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (this.shouldValidateAgainstDatabase()) {
+			this.validateColumn(messages, astRoot);
+		}
+	}
+
+	protected boolean shouldValidateAgainstDatabase() {
+		return this.getTypeMapping().shouldValidateAgainstDatabase();
+	}
+
+	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
+		if (!this.isResolved() && this.getDbTable() != null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
+					new String[] {this.getName(), getTable()}, 
+					this,
+					this.getNameTextRange(astRoot)
+				)
+			);
+		}
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

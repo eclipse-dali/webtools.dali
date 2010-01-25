@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -175,13 +176,32 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	protected abstract JavaRelationshipReference buildRelationshipReference();
 
+	@Override
 	public boolean isRelationshipOwner() {
 		return this.relationshipReference.isRelationshipOwner();
 	}
 
+	public RelationshipMapping getRelationshipOwner() {
+		Entity targetEntity = this.getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return null;
+		}
+		for (PersistentAttribute each : 
+			CollectionTools.iterable(
+				targetEntity.getPersistentType().allAttributes())) {
+			if (this.isOwnedBy(each.getMapping())) {
+				return (RelationshipMapping) each.getMapping();
+			}
+		}
+		return null;
+	}
+
 	@Override
-	public boolean isOwnedBy(RelationshipMapping mapping) {
-		return this.relationshipReference.isOwnedBy(mapping);
+	public boolean isOwnedBy(AttributeMapping mapping) {
+		if (mapping.isRelationshipOwner()) {
+			return this.relationshipReference.isOwnedBy((RelationshipMapping) mapping);
+		}
+		return false;
 	}
 
 	@Override

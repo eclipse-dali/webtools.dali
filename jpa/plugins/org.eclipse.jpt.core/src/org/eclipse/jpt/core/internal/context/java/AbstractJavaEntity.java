@@ -163,6 +163,10 @@ public abstract class AbstractJavaEntity
 	
 	protected JavaDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
 		return new JavaDiscriminatorColumn.Owner(){
+			public String getDefaultTableName() {
+				return AbstractJavaEntity.this.getPrimaryTableName();
+			}
+
 			public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 				return AbstractJavaEntity.this.getDbTable(tableName);
 			}
@@ -1684,6 +1688,10 @@ public abstract class AbstractJavaEntity
 
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaEntity.this;
+		}
+
+		public String getDefaultTableName() {
+			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {

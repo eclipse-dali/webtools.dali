@@ -186,8 +186,12 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public boolean isPrimaryKeyMapping() {
 		return false;
 	}
-	
-	public boolean isOwnedBy(RelationshipMapping mapping) {
+
+	public boolean isRelationshipOwner() {
+		return false;
+	}
+
+	public boolean isOwnedBy(AttributeMapping mapping) {
 		// Default implementation - override where needed
 		return false;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -17,17 +18,21 @@ public class VirtualXmlOrderColumn extends XmlOrderColumn
 {	
 	protected OrderColumn2_0 javaOrderColumn;
 
-	protected boolean metadataComplete;
+	protected OrmTypeMapping ormTypeMapping;
 
-	public VirtualXmlOrderColumn(OrderColumn2_0 javaOrderColumn, boolean metadataComplete) {
+	public VirtualXmlOrderColumn(OrderColumn2_0 javaOrderColumn, OrmTypeMapping ormTypeMapping) {
 		super();
 		this.javaOrderColumn = javaOrderColumn;
-		this.metadataComplete = metadataComplete;
+		this.ormTypeMapping = ormTypeMapping;
 	}
-	
+
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+
 	@Override
 	public String getColumnDefinition() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
 		return this.javaOrderColumn.getColumnDefinition();
@@ -40,7 +45,7 @@ public class VirtualXmlOrderColumn extends XmlOrderColumn
 
 	@Override
 	public Boolean getInsertable() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.javaOrderColumn.isDefaultInsertable());
 		}
 		return Boolean.valueOf(this.javaOrderColumn.isInsertable());
@@ -53,7 +58,7 @@ public class VirtualXmlOrderColumn extends XmlOrderColumn
 
 	@Override
 	public String getName() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.javaOrderColumn.getDefaultName();
 		}
 		return this.javaOrderColumn.getName();
@@ -67,7 +72,7 @@ public class VirtualXmlOrderColumn extends XmlOrderColumn
 	
 	@Override
 	public Boolean getNullable() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.javaOrderColumn.isDefaultNullable());
 		}
 		return Boolean.valueOf(this.javaOrderColumn.isNullable());
@@ -80,7 +85,7 @@ public class VirtualXmlOrderColumn extends XmlOrderColumn
 
 	@Override
 	public Boolean getUpdatable() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.javaOrderColumn.isDefaultUpdatable());
 		}
 		return Boolean.valueOf(this.javaOrderColumn.isUpdatable());

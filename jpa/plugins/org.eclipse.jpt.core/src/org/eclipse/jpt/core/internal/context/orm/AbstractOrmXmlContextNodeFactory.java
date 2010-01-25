@@ -126,6 +126,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmOrphanRemoval2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
@@ -372,8 +373,8 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmNullConverter(parent);
 	}
 	
-	public OrmOrderable buildOrmOrderable(OrmAttributeMapping parent) {
-		return new GenericOrmOrderable(parent);
+	public OrmOrderable buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner) {
+		return new GenericOrmOrderable(parent, owner);
 	}
 	
 	public OrmOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmNamedColumn.Owner owner) {

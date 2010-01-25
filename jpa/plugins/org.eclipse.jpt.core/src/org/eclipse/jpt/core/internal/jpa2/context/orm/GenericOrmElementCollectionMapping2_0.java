@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
@@ -102,7 +103,7 @@ public class GenericOrmElementCollectionMapping2_0
 	public GenericOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
 		this.specifiedFetch = this.getResourceFetch();
-		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this);
+		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this, buildOrderableOwner());
 		this.specifiedTargetClass = getResourceTargetClass();
 		this.defaultTargetClass = buildDefaultTargetClass();
 		this.resolvedTargetType = this.buildResolvedTargetType();
@@ -443,6 +444,17 @@ public class GenericOrmElementCollectionMapping2_0
 
 	public OrmOrderable getOrderable() {
 		return this.orderable;
+	}
+
+	protected Orderable2_0.Owner buildOrderableOwner() {
+		return new Orderable2_0.Owner() {
+			public String getTableName() {
+				return getCollectionTable().getName();
+			}
+			public Table getDbTable(String tableName) {
+				return getCollectionTable().getDbTable();
+			}
+		};
 	}
 
 

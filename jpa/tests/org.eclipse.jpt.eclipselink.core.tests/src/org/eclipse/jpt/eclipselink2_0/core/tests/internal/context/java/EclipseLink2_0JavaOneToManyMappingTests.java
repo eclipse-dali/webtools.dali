@@ -12,12 +12,17 @@ package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -563,4 +568,104 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		oneToManyMapping.setSpecifiedMapKeyClass(null);
 		assertEquals("java.lang.String", oneToManyMapping.getMapKeyClass());
 	}
+
+	public void testOrderColumnDefaults() throws Exception {
+		createTestEntityPrintQueue();
+		createTestEntityPrintJob();
+		
+		addXmlClassRef(PACKAGE_NAME + ".PrintQueue");
+		addXmlClassRef(PACKAGE_NAME + ".PrintJob");
+		
+		OneToManyMapping oneToManyMapping = (OneToManyMapping) getJavaPersistentType().getAttributeNamed("jobs").getMapping();
+
+		Orderable2_0 orderable = ((Orderable2_0) oneToManyMapping.getOrderable());
+		OrderColumn2_0 orderColumn = orderable.getOrderColumn();
+		assertEquals(true, orderable.isOrderColumnOrdering());
+		assertEquals(null, orderColumn.getSpecifiedName());
+		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
+		assertEquals("PrintJob", orderColumn.getTable());
+		
+		orderColumn.setSpecifiedName("FOO");
+		assertEquals("FOO", orderColumn.getSpecifiedName());
+		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
+		assertEquals("PrintJob", orderColumn.getTable());
+		
+		JavaPersistentType printJobPersistentType = (JavaPersistentType) getPersistenceUnit().getPersistentType("test.PrintJob");
+		((Entity) printJobPersistentType.getMapping()).getTable().setSpecifiedName("MY_TABLE");
+
+		assertEquals("MY_TABLE", orderColumn.getTable());
+	}
+	
+	private void createTestEntityPrintQueue() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ONE_TO_MANY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA2_0.ORDER_COLUMN);
+					sb.append(";");
+					sb.append(CR);
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("PrintQueue").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private String name;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToMany(mappedBy=\"queue\")").append(CR);
+				sb.append("    @OrderColumn").append(CR);
+				sb.append("    private java.util.List<PrintJob> jobs;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintQueue.java", sourceWriter);
+	}
+	
+	private void createTestEntityPrintJob() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.MANY_TO_ONE);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("PrintJob").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    @ManyToOne").append(CR);
+				sb.append("    private PrintQueue queue;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
+	}
+
 }

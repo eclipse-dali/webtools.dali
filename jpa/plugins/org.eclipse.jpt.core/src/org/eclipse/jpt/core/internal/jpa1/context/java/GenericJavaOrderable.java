@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
@@ -36,6 +37,8 @@ public class GenericJavaOrderable
 	extends AbstractJavaJpaContextNode
 	implements JavaOrderable2_0
 {
+	private final Orderable2_0.Owner owner;
+
 	protected String specifiedOrderBy = null;
 	protected boolean noOrdering = false;
 	protected boolean pkOrdering = false;
@@ -50,9 +53,10 @@ public class GenericJavaOrderable
 	protected boolean customMapKey = false;
 
 
-	public GenericJavaOrderable(JavaAttributeMapping parent) {
+	public GenericJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner) {
 		super(parent);
 		this.orderColumn = ((JpaFactory2_0) getJpaFactory()).buildJavaOrderColumn(this, this);
+		this.owner = owner;
 	}
 
 	public void initialize() {
@@ -76,11 +80,19 @@ public class GenericJavaOrderable
 		return this.getPersistentAttribute().getResourcePersistentAttribute();
 	}
 
+	protected Orderable2_0.Owner getOwner() {
+		return this.owner;
+	}
+
 	
 	// ********** JavaBaseColumn.Owner implementation **********  
 
+	public String getDefaultTableName() {
+		return getOwner().getTableName();
+	}
+	
 	public Table getDbTable(String tableName) {
-		return this.getTypeMapping().getDbTable(tableName);
+		return getOwner().getDbTable(tableName);
 	}
 
 	public String getDefaultColumnName() {
@@ -352,6 +364,7 @@ public class GenericJavaOrderable
 		}
 		if (isOrderColumnOrdering()) {
 			//TODO validation message if type is not List
+			this.getOrderColumn().validate(messages, reporter, astRoot);
 		}
 	}
 	

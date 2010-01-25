@@ -131,8 +131,12 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	public boolean isPrimaryKeyMapping() {
 		return false;
 	}
-	
-	public boolean isOwnedBy(RelationshipMapping mapping) {
+
+	public boolean isRelationshipOwner() {
+		return false;
+	}
+
+	public boolean isOwnedBy(AttributeMapping mapping) {
 		return false;
 	}
 	

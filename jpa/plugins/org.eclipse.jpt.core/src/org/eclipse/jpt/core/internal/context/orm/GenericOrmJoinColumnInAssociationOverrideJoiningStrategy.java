@@ -43,6 +43,14 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		return getAssociationOverride().getOwner().getTypeMapping();
 	}
 	
+	public String getTableName() {
+		return getAssociationOverride().getOwner().getDefaultTableName();
+	}
+
+	public Table getDbTable(String tableName) {
+		return getAssociationOverride().getOwner().getDbTable(tableName);
+	}
+
 	public boolean isOverridableAssociation() {
 		return false;
 	}
@@ -83,7 +91,7 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		}
 		
 		public String getDefaultTableName() {
-			return getAssociationOverride().getOwner().getDefaultTableName();
+			return GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.getTableName();
 		}
 		
 		public String getDefaultColumnName() {
@@ -118,7 +126,7 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getAssociationOverride().getOwner().getTypeMapping();
+			return GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.getTypeMapping();
 		}
 
 		public Table getDbTable(String tableName) {

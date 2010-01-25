@@ -28,6 +28,8 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
@@ -875,5 +877,58 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		ormElementCollectionMapping.setSpecifiedMapKeyClass(null);
 		assertNull(ormElementCollectionMapping.getSpecifiedMapKeyClass());
 		assertNull(elementCollection.getMapKeyClass());
+	}
+	
+	public void testOrderColumnDefaults() throws Exception {
+		createTestEntityWithGenericBasicElementCollectionMapping();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+
+		Orderable2_0 orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
+		assertEquals(false, orderable.isOrderColumnOrdering());
+		assertEquals(true, orderable.isNoOrdering());
+		
+		orderable.setOrderColumnOrdering(true);
+		OrderColumn2_0 orderColumn = orderable.getOrderColumn();
+		assertEquals(true, orderable.isOrderColumnOrdering());
+		assertEquals(null, orderColumn.getSpecifiedName());
+		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
+		
+		orderColumn.setSpecifiedName("FOO");
+		assertEquals("FOO", orderColumn.getSpecifiedName());
+		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
+	}
+	
+	public void testVirtualOrderColumn() throws Exception {
+		createTestEntityWithGenericBasicElementCollectionMapping();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+
+		Orderable2_0 orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
+		assertEquals(false, orderable.isOrderColumnOrdering());
+		assertEquals(true, orderable.isNoOrdering());
+		
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
+		((Orderable2_0) javaElementCollectionMapping.getOrderable()).setOrderColumnOrdering(true);
+				
+		assertEquals(false, orderable.isOrderColumnOrdering());
+		assertEquals(true, orderable.isNoOrdering());
+
+		ormPersistentAttribute.makeVirtual();		
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
+		elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
+		assertEquals(true, orderable.isOrderColumnOrdering());
+		assertEquals(false, orderable.isNoOrdering());
+		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTable());
+		assertEquals("addresses_ORDER", orderable.getOrderColumn().getName());
+		
+		((Orderable2_0) javaElementCollectionMapping.getOrderable()).getOrderColumn().setSpecifiedName("FOO");
+		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTable());
+		assertEquals("FOO", orderable.getOrderColumn().getName());
 	}
 }

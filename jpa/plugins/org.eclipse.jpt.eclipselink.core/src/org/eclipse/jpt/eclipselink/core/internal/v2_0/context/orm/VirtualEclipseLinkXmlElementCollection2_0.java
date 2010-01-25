@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
+import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection;
@@ -186,5 +187,25 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	@Override
 	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
 		this.virtualXmlElementCollection.setMapKeyClass(newMapKeyClass);
+	}
+	
+	@Override
+	public String getOrderBy() {
+		return this.virtualXmlElementCollection.getOrderBy();
+	}
+	
+	@Override
+	public void setOrderBy(String newOrderBy) {
+		this.virtualXmlElementCollection.setOrderBy(newOrderBy);
+	}
+	
+	@Override
+	public XmlOrderColumn getOrderColumn() {
+		return this.virtualXmlElementCollection.getOrderColumn();
+	}
+	
+	@Override
+	public void setOrderColumn(XmlOrderColumn newOrderColumn) {
+		this.virtualXmlElementCollection.setOrderColumn(newOrderColumn);
 	}
 }

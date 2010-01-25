@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,7 +39,15 @@ public class GenericOrmJoinColumnJoiningStrategy
 	public TypeMapping getTypeMapping() {
 		return getRelationshipMapping().getTypeMapping();
 	}
-	
+
+	public String getTableName() {
+		return getTypeMapping().getPrimaryTableName();
+	}
+
+	public Table getDbTable(String tableName) {
+		return getTypeMapping().getDbTable(tableName);
+	}
+
 	public boolean isOverridableAssociation() {
 		return true;
 	}
@@ -66,7 +74,7 @@ public class GenericOrmJoinColumnJoiningStrategy
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return GenericOrmJoinColumnJoiningStrategy.this.getTableName();
 		}
 		
 		public Entity getTargetEntity() {
@@ -97,7 +105,7 @@ public class GenericOrmJoinColumnJoiningStrategy
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getRelationshipMapping().getTypeMapping();
+			return GenericOrmJoinColumnJoiningStrategy.this.getTypeMapping();
 		}
 		
 		public Table getDbTable(String tableName) {

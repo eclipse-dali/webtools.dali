@@ -180,6 +180,10 @@ public abstract class AbstractOrmEntity
 	
 	protected OrmDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
 		return new OrmDiscriminatorColumn.Owner(){
+			public String getDefaultTableName() {
+				return AbstractOrmEntity.this.getPrimaryTableName();
+			}
+
 			public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 				return AbstractOrmEntity.this.getDbTable(tableName);
 			}
@@ -1908,7 +1912,7 @@ public abstract class AbstractOrmEntity
 			}
 			return new VirtualXmlColumn(AbstractOrmEntity.this, javaAttributeOverride.getColumn());
 		}
-		
+
 		public boolean tableNameIsInvalid(String tableName) {
 			return AbstractOrmEntity.this.tableNameIsInvalid(tableName);
 		}
@@ -1930,6 +1934,10 @@ public abstract class AbstractOrmEntity
 	{
 		public TypeMapping getTypeMapping() {
 			return AbstractOrmEntity.this;
+		}
+
+		public String getDefaultTableName() {
+			return AbstractOrmEntity.this.getPrimaryTableName();
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {

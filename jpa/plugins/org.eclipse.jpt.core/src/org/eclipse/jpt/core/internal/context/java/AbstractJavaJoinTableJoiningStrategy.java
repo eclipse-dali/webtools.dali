@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -49,6 +50,14 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 		return this.getRelationshipReference().getRelationshipMapping();
 	}
 	
+	public String getTableName() {
+		return getJoinTable().getName();
+	}
+
+	public Table getDbTable(String tableName) {
+		return getJoinTable().getDbTable();
+	}
+
 	public String getJoinTableDefaultName() {
 		return MappingTools.buildJoinTableDefaultName(this.getRelationshipReference());
 	}

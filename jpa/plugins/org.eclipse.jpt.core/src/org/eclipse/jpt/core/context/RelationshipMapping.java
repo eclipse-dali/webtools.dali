@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,14 +30,10 @@ public interface RelationshipMapping
 	RelationshipReference getRelationshipReference();
 
 	/**
-	 * Return whether this mapping is the owning side of the relationship.
-	 * Either this is a unidirectional mapping or it is the owning side of a
-	 * bidirectional relationship. If bidirectional, the owning side is the
-	 * side that does not specify 'mappedBy'. The owning side is the side where
-	 * the join table would be specified
+	 * Return the relationship owner or null if this is the owning side
+ 	 * or it is a unidirectional mapping.
 	 */
-	boolean isRelationshipOwner();
-
+	RelationshipMapping getRelationshipOwner();
 
 	// **************** target entity **************************************
 	

@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
@@ -158,7 +159,7 @@ public interface OrmXmlContextNodeFactory
 
 	OrmConverter buildOrmNullConverter(OrmAttributeMapping parent);
 	
-	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent);
+	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner);
 	
 	// ********** ORM Virtual Resource Model **********
 	

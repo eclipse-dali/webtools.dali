@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -53,6 +54,20 @@ public class GenericJavaMappedByJoiningStrategy
 	
 	public JavaRelationshipMapping getRelationshipMapping() {
 		return getParent().getRelationshipMapping();
+	}
+	
+	public String getTableName() {
+		RelationshipMapping owner = getRelationshipOwner();
+		return owner == null ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+	}
+
+	public Table getDbTable(String tableName) {
+		RelationshipMapping owner = getRelationshipOwner();
+		return owner == null ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getDbTable(tableName);
+	}
+
+	protected RelationshipMapping getRelationshipOwner() {
+		return getRelationshipMapping().getRelationshipOwner();
 	}
 	
 	public boolean isOverridableAssociation() {

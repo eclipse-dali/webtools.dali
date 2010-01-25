@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -82,7 +82,19 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	public OrmRelationshipMapping getRelationshipMapping() {
 		return this.getRelationshipReference().getRelationshipMapping();
 	}
-	
+
+	public String getTableName() {
+		return getTypeMapping().getPrimaryTableName();
+	}
+
+	public Table getDbTable(String tableName) {
+		return getTypeMapping().getDbTable(tableName);
+	}
+
+	protected TypeMapping getTypeMapping() {
+		return getRelationshipMapping().getTypeMapping();
+	}
+
 	public void addStrategy() {
 		if (primaryKeyJoinColumnsSize() == 0) {
 			addPrimaryKeyJoinColumn(0);
@@ -199,7 +211,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.getTableName();
 		}
 		
 		public Entity getTargetEntity() {
@@ -230,7 +242,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getRelationshipMapping().getTypeMapping();
+			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.getTypeMapping();
 		}
 		
 		public Table getDbTable(String tableName) {
