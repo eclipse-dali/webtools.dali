@@ -133,7 +133,8 @@ public class PackageGenerator2 {
 		}
 		progress.done();
 	}
-	private void updatePersistenceXml(List<String> genClasses) {
+	
+	private void updatePersistenceXml(final List<String> genClasses) {
 		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
 			//the resource would only be null if the persistence.xml file had an invalid content type,
@@ -141,31 +142,32 @@ public class PackageGenerator2 {
 			return;
 		}
 
-		Persistence persistence = jpaProject.getRootContextNode().getPersistenceXml().getPersistence();	
-		if (persistence == null) {
-			//invalid content, do not attempt to update
-			return;
-		}
-		
-		PersistenceUnit persistenceUnit;
-		//create a persistence unit if one doesn't already exist
-		if (persistence.persistenceUnitsSize()== 0){
-			persistenceUnit = persistence.addPersistenceUnit();
-			persistenceUnit.setName(jpaProject.getName());
-		}
-		else {
-			//we only support one persistence unit - take the first one
-			persistenceUnit = persistence.persistenceUnits().next();
-		}
-		
-		for (Iterator<String> stream = genClasses.iterator(); stream.hasNext();){
-			String className = stream.next();
-			if (!persistenceUnit.mappingFileRefsContaining(className).hasNext()
-					&& !persistenceUnit.specifiesPersistentType(className)){
-				ClassRef classRef = persistenceUnit.addSpecifiedClassRef();
-				classRef.setClassName(className);
+		resource.modify(new Runnable() {
+			public void run() {
+				Persistence persistence = jpaProject.getRootContextNode().getPersistenceXml().getPersistence();
+				if (persistence == null) {
+					// invalid content, do not attempt to update
+					return;
+				}
+				PersistenceUnit persistenceUnit;
+				// create a persistence unit if one doesn't already exist
+				if (persistence.persistenceUnitsSize() == 0) {
+					persistenceUnit = persistence.addPersistenceUnit();
+					persistenceUnit.setName(jpaProject.getName());
+				} else {
+					// we only support one persistence unit - take the first one
+					persistenceUnit = persistence.persistenceUnits().next();
+				}
+				for (Iterator<String> stream = genClasses.iterator(); stream.hasNext();) {
+					String className = stream.next();
+					if (!persistenceUnit.mappingFileRefsContaining(className).hasNext() && !persistenceUnit.specifiesPersistentType(className)) {
+						ClassRef classRef = persistenceUnit.addSpecifiedClassRef();
+						classRef.setClassName(className);
+					}
+				}
 			}
-		}
+		});
+		System.out.println("Workspace Job is still running");
 	}
 
 	private File prepareTemplatesFolder() throws IOException, Exception,
