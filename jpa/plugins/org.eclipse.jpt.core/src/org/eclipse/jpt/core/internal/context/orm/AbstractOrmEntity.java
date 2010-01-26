@@ -71,6 +71,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
@@ -1271,10 +1272,7 @@ public abstract class AbstractOrmEntity
 			}
 		}
 		String className = getClass_();
-		if (className != null) {
-			return ClassName.getSimpleName(className);
-		}
-		return null;
+		return StringTools.stringIsEmpty(className) ? null : ClassName.getSimpleName(className);
 	}
 	
 	protected void updateDiscriminatorColumn() {

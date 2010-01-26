@@ -1722,8 +1722,10 @@ public abstract class AbstractPersistenceUnit
 
 	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType2_0> persistentTypeMap) {
 		for (PersistentType persistentType : persistentTypes) {
-			// hopefully this is case-insensitive enough...
-			persistentTypeMap.put(persistentType.getName().toLowerCase(), (PersistentType2_0) persistentType);
+			if (persistentType.getName() != null) {
+				// hopefully this is case-insensitive enough...
+				persistentTypeMap.put(persistentType.getName().toLowerCase(), (PersistentType2_0) persistentType);
+			}
 		}
 	}
 

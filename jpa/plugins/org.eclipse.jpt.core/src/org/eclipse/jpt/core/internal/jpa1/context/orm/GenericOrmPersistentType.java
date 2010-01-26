@@ -51,6 +51,7 @@ import org.eclipse.jpt.core.resource.xml.EmfTools;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
@@ -142,7 +143,7 @@ public class GenericOrmPersistentType
 
 	public String getShortName(){
 		String className = this.getName();
-		return (className == null) ? null : ClassName.getSimpleName(className);
+		return StringTools.stringIsEmpty(className) ? null : ClassName.getSimpleName(className);
 	}
 
 

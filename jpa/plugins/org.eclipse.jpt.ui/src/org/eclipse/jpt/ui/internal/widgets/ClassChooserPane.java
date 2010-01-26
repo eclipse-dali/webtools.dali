@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.ClassName;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -152,7 +153,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		newClassWizardPage.setSuperClass(getSuperclassName(), true);
 		newClassWizardPage.setSuperInterfaces(getSuperInterfaceNames(), true);
 		newClassWizardPage.setPackageFragmentRoot(getPackageFragmentRoot(), true);
-		if (getClassName() != null) {
+		if (!StringTools.stringIsEmpty(getClassName())) {
 			newClassWizardPage.setTypeName(ClassName.getSimpleName(getClassName()), true);
 			String packageName = ClassName.getPackageName(getClassName());
 			newClassWizardPage.setPackageFragment(getPackageFragmentRoot().getPackageFragment(packageName), true);
@@ -285,7 +286,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 				scope,
 				getTypeDialogStyle(),
 				false,
-				getClassName() != null ? ClassName.getSimpleName(getClassName()) : ""
+				StringTools.stringIsEmpty(getClassName()) ? "" : ClassName.getSimpleName(getClassName())
 			);
 		}
 		catch (JavaModelException e) {
