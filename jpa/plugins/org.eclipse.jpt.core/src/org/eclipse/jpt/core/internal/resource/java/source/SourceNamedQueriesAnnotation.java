@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.ListIterator;
 import java.util.Vector;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.persistence.NamedQueries
@@ -60,51 +60,56 @@ public abstract class SourceNamedQueriesAnnotation
 
 	// ********** AnnotationContainer implementation **********
 
+	public String getContainerAnnotationName() {
+		return this.getAnnotationName();
+	}
+
+	public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		return this.getAstAnnotation(astRoot);
+	}
+
 	public String getElementName() {
 		return JPA.NAMED_QUERIES__VALUE;
 	}
 
-	public String getNestedAnnotationName() {
+	public String getNestableAnnotationName() {
 		return NamedQueryAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterable<NestableNamedQueryAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<NestableNamedQueryAnnotation>(this.namedQueries);
+	public ListIterator<NestableNamedQueryAnnotation> nestedAnnotations() {
+		return new CloneListIterator<NestableNamedQueryAnnotation>(this.namedQueries);
 	}
 
-	public int getNestedAnnotationsSize() {
+	public int nestedAnnotationsSize() {
 		return this.namedQueries.size();
 	}
 
-	public NestableNamedQueryAnnotation addNestedAnnotation() {
-		return this.addNestedAnnotation(this.namedQueries.size());
-	}
-
-	private NestableNamedQueryAnnotation addNestedAnnotation(int index) {
-		NestableNamedQueryAnnotation namedQuery = this.buildNamedQuery(index);
+	public NestableNamedQueryAnnotation addNestedAnnotationInternal() {
+		NestableNamedQueryAnnotation namedQuery = this.buildNamedQuery(this.namedQueries.size());
 		this.namedQueries.add(namedQuery);
 		return namedQuery;
 	}
 
-	public void syncAddNestedAnnotation(Annotation astAnnotation) {
-		int index = this.namedQueries.size();
-		NestableNamedQueryAnnotation namedQuery = this.addNestedAnnotation(index);
-		namedQuery.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(NAMED_QUERIES_LIST, index, namedQuery);
-	}
-
 	protected abstract NestableNamedQueryAnnotation buildNamedQuery(int index);
 
-	public NestableNamedQueryAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+	public void nestedAnnotationAdded(int index, NestableNamedQueryAnnotation nestedAnnotation) {
+		this.fireItemAdded(NAMED_QUERIES_LIST, index, nestedAnnotation);
+	}
+
+	public NestableNamedQueryAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.namedQueries, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public NestableNamedQueryAnnotation removeNestedAnnotation(int index) {
+	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
+		this.fireItemMoved(NAMED_QUERIES_LIST, targetIndex, sourceIndex);
+	}
+
+	public NestableNamedQueryAnnotation removeNestedAnnotationInternal(int index) {
 		return this.namedQueries.remove(index);
 	}
 
-	public void syncRemoveNestedAnnotations(int index) {
-		this.removeItemsFromList(index, this.namedQueries, NAMED_QUERIES_LIST);
+	public void nestedAnnotationRemoved(int index, NestableNamedQueryAnnotation nestedAnnotation) {
+		this.fireItemRemoved(NAMED_QUERIES_LIST, index, nestedAnnotation);
 	}
 
 }

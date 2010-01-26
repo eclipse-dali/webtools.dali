@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
+import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -16,7 +17,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedNativeQueryAnnotation;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.persistence.NamedNativeQueries
@@ -37,11 +38,11 @@ public final class BinaryNamedNativeQueriesAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public Iterable<NestableNamedNativeQueryAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<NestableNamedNativeQueryAnnotation>(this.namedNativeQueries);
+	public ListIterator<NestableNamedNativeQueryAnnotation> nestedAnnotations() {
+		return new CloneListIterator<NestableNamedNativeQueryAnnotation>(this.namedNativeQueries);
 	}
 
-	public int getNestedAnnotationsSize() {
+	public int nestedAnnotationsSize() {
 		return this.namedNativeQueries.size();
 	}
 

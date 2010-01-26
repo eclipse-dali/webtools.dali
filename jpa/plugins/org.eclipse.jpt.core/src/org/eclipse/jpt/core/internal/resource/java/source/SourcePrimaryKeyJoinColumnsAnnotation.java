@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.ListIterator;
 import java.util.Vector;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.persistence.PrimaryKeyJoinColumns
@@ -60,53 +60,58 @@ public final class SourcePrimaryKeyJoinColumnsAnnotation
 
 	// ********** AnnotationContainer Implementation **********
 
+	public String getContainerAnnotationName() {
+		return this.getAnnotationName();
+	}
+
+	public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		return this.getAstAnnotation(astRoot);
+	}
+
 	public String getElementName() {
 		return JPA.PRIMARY_KEY_JOIN_COLUMNS__VALUE;
 	}
 
-	public String getNestedAnnotationName() {
+	public String getNestableAnnotationName() {
 		return PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterable<NestablePrimaryKeyJoinColumnAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<NestablePrimaryKeyJoinColumnAnnotation>(this.pkJoinColumns);
+	public ListIterator<NestablePrimaryKeyJoinColumnAnnotation> nestedAnnotations() {
+		return new CloneListIterator<NestablePrimaryKeyJoinColumnAnnotation>(this.pkJoinColumns);
 	}
 
-	public int getNestedAnnotationsSize() {
+	public int nestedAnnotationsSize() {
 		return this.pkJoinColumns.size();
 	}
 
-	public NestablePrimaryKeyJoinColumnAnnotation addNestedAnnotation() {
-		return this.addNestedAnnotation(this.pkJoinColumns.size());
-	}
-
-	private NestablePrimaryKeyJoinColumnAnnotation addNestedAnnotation(int index) {
-		NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn = this.buildPrimaryKeyJoinColumn(index);
+	public NestablePrimaryKeyJoinColumnAnnotation addNestedAnnotationInternal() {
+		NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn = this.buildPrimaryKeyJoinColumn(this.pkJoinColumns.size());
 		this.pkJoinColumns.add(pkJoinColumn);
 		return pkJoinColumn;
-	}
-
-	public void syncAddNestedAnnotation(Annotation astAnnotation) {
-		int index = this.pkJoinColumns.size();
-		NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn = this.addNestedAnnotation(index);
-		pkJoinColumn.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(PK_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 	}
 
 	private NestablePrimaryKeyJoinColumnAnnotation buildPrimaryKeyJoinColumn(int index) {
 		return SourcePrimaryKeyJoinColumnAnnotation.createNestedPrimaryKeyJoinColumn(this, this.member, index, this.daa);
 	}
 
-	public NestablePrimaryKeyJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+	public void nestedAnnotationAdded(int index, NestablePrimaryKeyJoinColumnAnnotation nestedAnnotation) {
+		this.fireItemAdded(PK_JOIN_COLUMNS_LIST, index, nestedAnnotation);
+	}
+
+	public NestablePrimaryKeyJoinColumnAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.pkJoinColumns, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public NestablePrimaryKeyJoinColumnAnnotation removeNestedAnnotation(int index) {
+	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
+		this.fireItemMoved(PK_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
+	}
+
+	public NestablePrimaryKeyJoinColumnAnnotation removeNestedAnnotationInternal(int index) {
 		return this.pkJoinColumns.remove(index);
 	}
 
-	public void syncRemoveNestedAnnotations(int index) {
-		this.removeItemsFromList(index, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
+	public void nestedAnnotationRemoved(int index, NestablePrimaryKeyJoinColumnAnnotation nestedAnnotation) {
+		this.fireItemRemoved(PK_JOIN_COLUMNS_LIST, index, nestedAnnotation);
 	}
 
 }

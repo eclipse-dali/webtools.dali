@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -134,7 +134,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
 		assertNotNull(secondaryTables);
 		
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertEquals(TABLE_NAME, secondaryTable.getName());
 	}
 
@@ -143,7 +143,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertNull(secondaryTable.getName());
 		assertNull(secondaryTable.getCatalog());
 		assertNull(secondaryTable.getSchema());
@@ -154,7 +154,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 	
 		assertNull(secondaryTable.getName());
 
@@ -169,7 +169,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertEquals(TABLE_NAME, secondaryTable.getName());
 		
 		secondaryTable.setName(null);
@@ -183,7 +183,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertEquals(CATALOG_NAME, secondaryTable.getCatalog());
 	}
 
@@ -192,7 +192,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertNull(secondaryTable.getCatalog());
 
 		secondaryTable.setCatalog("Foo");
@@ -206,7 +206,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertEquals(CATALOG_NAME, secondaryTable.getCatalog());
 		
 		secondaryTable.setCatalog(null);
@@ -220,7 +220,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertNotNull(secondaryTable);
 		assertEquals(SCHEMA_NAME, secondaryTable.getSchema());
 	}
@@ -230,7 +230,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertNull(secondaryTable.getSchema());
 
 		secondaryTable.setSchema("Foo");
@@ -244,7 +244,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		assertEquals(SCHEMA_NAME, secondaryTable.getSchema());
 		
 		secondaryTable.setSchema(null);
@@ -258,7 +258,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestSecondaryTables();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		
 		assertEquals(0, secondaryTable.uniqueConstraintsSize());
 	}
@@ -267,7 +267,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestSecondaryTables();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		
 		secondaryTable.addUniqueConstraint(0);
 		secondaryTable.addUniqueConstraint(1);
@@ -279,7 +279,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 				
 		assertEquals(2, secondaryTable.uniqueConstraintsSize());
 	}
@@ -288,7 +288,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestSecondaryTables();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		
 		secondaryTable.addUniqueConstraint(0).addColumnName("FOO");
 		secondaryTable.addUniqueConstraint(1);
@@ -305,7 +305,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName("FOO");
 		
 		secondaryTable.removeUniqueConstraint(2);
@@ -322,7 +322,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName("FOO");
 	
 		assertEquals("FOO", secondaryTable.uniqueConstraintAt(0).columnNames().next());
@@ -340,7 +340,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		SecondaryTablesAnnotation secondaryTables = (SecondaryTablesAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLES);
-		SecondaryTableAnnotation secondaryTable = secondaryTables.getNestedAnnotations().iterator().next();
+		SecondaryTableAnnotation secondaryTable = secondaryTables.nestedAnnotations().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName("FOO");
 		
 		assertEquals("FOO", secondaryTable.uniqueConstraintAt(0).columnNames().next());

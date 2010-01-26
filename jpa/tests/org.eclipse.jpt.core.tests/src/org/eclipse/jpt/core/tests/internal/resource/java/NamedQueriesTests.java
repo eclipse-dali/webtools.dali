@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -96,7 +96,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		assertNotNull(namedQuery);
 	}
 
@@ -105,7 +105,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_NAME, namedQuery.getName());
 	}
 
@@ -114,7 +114,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_NAME, namedQuery.getName());
 		
 		namedQuery.setName("foo");
@@ -133,7 +133,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 	}
 
@@ -142,7 +142,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 		
 		namedQuery.setQuery("foo");
@@ -161,7 +161,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		
 		assertEquals(0, namedQuery.hintsSize());
 	}
@@ -171,7 +171,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		
 		namedQuery.addHint(0);
 		namedQuery.addHint(1);
@@ -184,7 +184,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		
 		assertEquals(2, namedQuery.hintsSize());
 	}
@@ -194,7 +194,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1);
@@ -212,7 +212,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
@@ -241,7 +241,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
@@ -263,7 +263,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueriesAnnotation namedQueries = (NamedQueriesAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERIES);
-		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.getNestedAnnotations().iterator().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) namedQueries.nestedAnnotations().next();
 		namedQuery.addHint(0).setName("BAZ");
 		
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
