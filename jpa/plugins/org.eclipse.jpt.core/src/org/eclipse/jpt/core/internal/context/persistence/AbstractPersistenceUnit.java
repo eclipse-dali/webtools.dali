@@ -1110,16 +1110,14 @@ public abstract class AbstractPersistenceUnit
 	}
 	
 	protected void initializeProperties() {
+		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
+		if (xmlProperties != null) {
+			for (XmlProperty xmlProperty : xmlProperties.getProperties()) {
+				this.properties.add(this.buildProperty(xmlProperty));
+			}
+		}
 		this.connection = this.getContextNodeFactory().buildConnection(this);
 		this.options = this.getContextNodeFactory().buildOptions(this);
-
-		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
-		if (xmlProperties == null) {
-			return;
-		}
-		for (XmlProperty xmlProperty : xmlProperties.getProperties()) {
-			this.properties.add(this.buildProperty(xmlProperty));
-		}
 	}
 
 	/**
