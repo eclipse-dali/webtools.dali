@@ -107,11 +107,6 @@ public class JpaXmlResource
 			super.eNotify(notification);
 			this.resourceModelChanged();
 		} 
-		//Unload events can happen before the resource set is removed - should always react to unload events
-		else if (notification.getEventType() == Notification.SET && notification.getFeatureID(null) == Resource.RESOURCE__IS_LOADED) {
-			super.eNotify(notification);
-			this.resourceModelUnloaded();
-		}
 	}
 	
 	/**
@@ -252,13 +247,6 @@ public class JpaXmlResource
 			listener.resourceModelChanged(this);
 		}
 	}
-	
-	protected void resourceModelUnloaded() {
-		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelUnloaded(this);
-		}
-	}
-	
 	
 	// ********** cast things back to what they are in EMF **********
 	
