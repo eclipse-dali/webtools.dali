@@ -1324,9 +1324,9 @@ public abstract class AbstractJpaProject
 		}
 		
 		public void resourceModelUnloaded(JpaResourceModel jpaResourceModel) {
-			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
-			AbstractJpaProject.this.removeJpaFile(file);
-			AbstractJpaProject.this.addJpaFile(file);
+//			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+//			AbstractJpaProject.this.removeJpaFile(file);
+//			AbstractJpaProject.this.addJpaFile(file);
 		}
 	}
 	
