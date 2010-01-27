@@ -65,6 +65,10 @@ public class GenericOrmDerivedIdentity2_0
 		return this.cachedPredominantDerivedIdentityStrategy;
 	}
 	
+	protected void setPredominantJoiningStrategy() {
+		setPredominantJoiningStrategy(calculatePredominantDerivedIdentityStrategy());
+	}
+	
 	protected void setPredominantJoiningStrategy(DerivedIdentityStrategy2_0 newStrategy) {
 		DerivedIdentityStrategy2_0 oldStrategy = this.cachedPredominantDerivedIdentityStrategy;
 		this.cachedPredominantDerivedIdentityStrategy = newStrategy;
@@ -98,6 +102,7 @@ public class GenericOrmDerivedIdentity2_0
 	public void setNullDerivedIdentityStrategy() {
 		this.mapsIdDerivedIdentityStrategy.removeStrategy();
 		this.idDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean usesNullDerivedIdentityStrategy() {
@@ -114,10 +119,12 @@ public class GenericOrmDerivedIdentity2_0
 	public void setMapsIdDerivedIdentityStrategy() {
 		this.mapsIdDerivedIdentityStrategy.addStrategy();
 		this.idDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetMapsIdDerivedIdentityStrategy() {
 		this.mapsIdDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean usesMapsIdDerivedIdentityStrategy() {
@@ -134,10 +141,12 @@ public class GenericOrmDerivedIdentity2_0
 	public void setIdDerivedIdentityStrategy() {
 		this.idDerivedIdentityStrategy.addStrategy();
 		this.mapsIdDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetIdDerivedIdentityStrategy() {
 		this.idDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean usesIdDerivedIdentityStrategy() {

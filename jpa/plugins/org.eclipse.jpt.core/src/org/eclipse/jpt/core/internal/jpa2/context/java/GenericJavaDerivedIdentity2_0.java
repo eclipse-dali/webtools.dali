@@ -66,6 +66,10 @@ public class GenericJavaDerivedIdentity2_0 extends AbstractJavaJpaContextNode
 		return this.cachedPredominantDerivedIdentityStrategy;
 	}
 	
+	protected void setPredominantJoiningStrategy() {
+		setPredominantJoiningStrategy(calculatePredominantDerivedIdentityStrategy());
+	}
+	
 	protected void setPredominantJoiningStrategy(DerivedIdentityStrategy2_0 newStrategy) {
 		DerivedIdentityStrategy2_0 oldStrategy = this.cachedPredominantDerivedIdentityStrategy;
 		this.cachedPredominantDerivedIdentityStrategy = newStrategy;
@@ -105,6 +109,7 @@ public class GenericJavaDerivedIdentity2_0 extends AbstractJavaJpaContextNode
 	public void setNullDerivedIdentityStrategy() {
 		this.mapsIdDerivedIdentityStrategy.removeStrategy();
 		this.idDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean usesNullDerivedIdentityStrategy() {
@@ -121,10 +126,12 @@ public class GenericJavaDerivedIdentity2_0 extends AbstractJavaJpaContextNode
 	public void setMapsIdDerivedIdentityStrategy() {
 		this.mapsIdDerivedIdentityStrategy.addStrategy();
 		this.idDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetMapsIdDerivedIdentityStrategy() {
 		this.mapsIdDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean usesMapsIdDerivedIdentityStrategy() {
@@ -141,10 +148,12 @@ public class GenericJavaDerivedIdentity2_0 extends AbstractJavaJpaContextNode
 	public void setIdDerivedIdentityStrategy() {
 		this.idDerivedIdentityStrategy.addStrategy();
 		this.mapsIdDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetIdDerivedIdentityStrategy() {
 		this.idDerivedIdentityStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean usesIdDerivedIdentityStrategy() {

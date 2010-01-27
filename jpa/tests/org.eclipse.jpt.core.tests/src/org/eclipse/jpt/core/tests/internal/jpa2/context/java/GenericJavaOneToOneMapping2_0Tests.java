@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
@@ -329,6 +330,87 @@ public class GenericJavaOneToOneMapping2_0Tests
 		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue(null);
 		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+	}
+	
+	public void testUpdatePredominantDerivedIdentityStrategy() throws Exception {
+		createTestEntityWithMapsIdDerivedIdentity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourceType = 
+				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
+		JavaPersistentType contextType = getJavaPersistentType();
+		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
+		JavaDerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
+		
+		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertTrue(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesNullDerivedIdentityStrategy());
+		
+		resourceAttribute.addAnnotation(JPA.ID);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertTrue(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesNullDerivedIdentityStrategy());
+		
+		resourceAttribute.removeAnnotation(JPA2_0.MAPS_ID);
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertFalse(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertTrue(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesNullDerivedIdentityStrategy());
+		
+		resourceAttribute.removeAnnotation(JPA.ID);
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertFalse(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertTrue(derivedIdentity.usesNullDerivedIdentityStrategy());
+	}
+	
+	public void testSetPredominantDerivedIdentityStrategy() throws Exception {
+		createTestEntityWithMapsIdDerivedIdentity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourceType = 
+				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
+		JavaPersistentType contextType = getJavaPersistentType();
+		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
+		JavaDerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
+		
+		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertTrue(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesNullDerivedIdentityStrategy());
+		
+		derivedIdentity.setIdDerivedIdentityStrategy();
+		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertFalse(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertTrue(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesNullDerivedIdentityStrategy());
+		
+		derivedIdentity.setNullDerivedIdentityStrategy();
+		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertFalse(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertTrue(derivedIdentity.usesNullDerivedIdentityStrategy());
+		
+		derivedIdentity.setMapsIdDerivedIdentityStrategy();
+		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertTrue(derivedIdentity.usesMapsIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesIdDerivedIdentityStrategy());
+		assertFalse(derivedIdentity.usesNullDerivedIdentityStrategy());
 	}
 	
 	public void testMorphMapping() throws Exception {
