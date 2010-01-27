@@ -375,18 +375,18 @@ public abstract class AbstractComboModelAdapter<E> {
 		}
 		int index = event.getIndex();
 		int selectionIndex = this.comboHolder.getSelectionIndex();
-		for (E item : this.getNewItems(event)) {
-			this.comboHolder.setItem(index++, this.convert(item));
-		}
-		if (selectionIndex == 0) {
-			//fixing bug 269100 by setting the populating flag to true
-			this.comboHolder.setPopulating(true);
-			try {
+		//fixing bug 269100 by setting the populating flag to true
+		this.comboHolder.setPopulating(true);
+		try {
+			for (E item : this.getNewItems(event)) {
+				this.comboHolder.setItem(index++, this.convert(item));
+			}
+			if (selectionIndex == 0) {
 				this.comboHolder.setText(this.comboHolder.getItems()[0]);
 			}
-			finally {
-				this.comboHolder.setPopulating(false);
-			}
+		}
+		finally {
+			this.comboHolder.setPopulating(false);
 		}
 	}
 
@@ -397,7 +397,13 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
-		this.comboHolder.removeAll();
+		this.comboHolder.setPopulating(true);
+		try {
+			this.comboHolder.removeAll();
+		}
+		finally {
+			this.comboHolder.setPopulating(false);
+		}
 	}
 
 	/**
