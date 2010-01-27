@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -34,16 +34,16 @@ public final class AnnotationContainerTools {
 	/**
 	 * Add a nested annotation to the specified annotation container
 	 * at the specified index.
-	 * This method modifies both the resource model annotation container and the
+	 * This method modifies both the model annotation container and the
 	 * AST; with <em>no</em> change notification.
 	 */
 	public static <T extends NestableAnnotation> NestableAnnotation addNestedAnnotation(int index, AnnotationContainer<T> annotationContainer) {
 		// add a new annotation to the end of the list...
-		int sourceIndex = annotationContainer.getNestedAnnotationsSize();
-		T nestedAnnotation = annotationContainer.addNestedAnnotation();
+		int sourceIndex = annotationContainer.nestedAnnotationsSize();
+		T nestedAnnotation = annotationContainer.addNestedAnnotationInternal();
 		nestedAnnotation.newAnnotation();
 		// ...then move it to the specified index...
-		annotationContainer.moveNestedAnnotation(index, sourceIndex);
+		annotationContainer.moveNestedAnnotationInternal(index, sourceIndex);
 		syncAstAnnotationsAfterMove(index, sourceIndex, annotationContainer, nestedAnnotation);
 		return nestedAnnotation;
 	}
@@ -51,25 +51,25 @@ public final class AnnotationContainerTools {
 	/**
 	 * Move the nested annotation at the specified source index in the
 	 * specified annotation container to the specified target index.
-	 * This method modifies both the resource model annotation container and the
+	 * This method modifies both the model annotation container and the
 	 * AST; with <em>no</em> change notification.
 	 */
 	public static <T extends NestableAnnotation> void moveNestedAnnotation(int targetIndex, int sourceIndex, AnnotationContainer<T> annotationContainer) {
-		NestableAnnotation nestedAnnotation = annotationContainer.moveNestedAnnotation(targetIndex, sourceIndex);
+		NestableAnnotation nestedAnnotation = annotationContainer.moveNestedAnnotationInternal(targetIndex, sourceIndex);
 		syncAstAnnotationsAfterMove(targetIndex, sourceIndex, annotationContainer, nestedAnnotation);
 	}
 
 	/**
 	 * An annotation was moved within the specified annotation container from
 	 * the specified source index to the specified target index.
-	 * Synchronize the AST annotations with the resource model annotation container,
+	 * Synchronize the AST annotations with the model annotation container,
 	 * starting with the lower index to prevent overlap.
 	 */
 	private static <T extends NestableAnnotation> void syncAstAnnotationsAfterMove(int targetIndex, int sourceIndex, AnnotationContainer<T> annotationContainer, NestableAnnotation nestedAnnotation) {
 		// move the Java annotation to the end of the list...
-		nestedAnnotation.moveAnnotation(annotationContainer.getNestedAnnotationsSize());
+		nestedAnnotation.moveAnnotation(annotationContainer.nestedAnnotationsSize());
 		// ...then shift the other AST annotations over one slot...
-		List<T> nestableAnnotations = CollectionTools.list(annotationContainer.getNestedAnnotations());
+		List<T> nestableAnnotations = CollectionTools.list(annotationContainer.nestedAnnotations());
 		if (sourceIndex < targetIndex) {
 			for (int i = sourceIndex; i < targetIndex; i++) {
 				nestableAnnotations.get(i).moveAnnotation(i);
@@ -86,11 +86,11 @@ public final class AnnotationContainerTools {
 	/**
 	 * Remove the nested annotation at the specified index in the
 	 * specified annotation container.
-	 * This method modifies both the resource model annotation container and the
+	 * This method modifies both the model annotation container and the
 	 * AST; with <em>no</em> change notification.
 	 */
 	public static <T extends NestableAnnotation> void removeNestedAnnotation(int index, AnnotationContainer<T> annotationContainer) {
-		T nestedAnnotation = annotationContainer.removeNestedAnnotation(index);
+		T nestedAnnotation = annotationContainer.removeNestedAnnotationInternal(index);
 		nestedAnnotation.removeAnnotation();
 		syncAstAnnotationsAfterRemove(index, annotationContainer);
 	}
@@ -98,29 +98,29 @@ public final class AnnotationContainerTools {
 	/**
 	 * An annotation was removed from the specified annotation container at the
 	 * specified index.
-	 * Synchronize the AST annotations with the resource model annotation container,
+	 * Synchronize the AST annotations with the model annotation container,
 	 * starting at the specified index to prevent overlap.
 	 */
 	private static <T extends NestableAnnotation> void syncAstAnnotationsAfterRemove(int index, AnnotationContainer<T> annotationContainer) {
-		List<T> nestableAnnotations = CollectionTools.list(annotationContainer.getNestedAnnotations());
+		List<T> nestableAnnotations = CollectionTools.list(annotationContainer.nestedAnnotations());
 		for (int i = index; i < nestableAnnotations.size(); i++) {
 			// the indices are the same because the model annotations are
 			// already in the proper locations - it's the AST annotations that
-			// need to be moved to the matching location
+			// need to be moved to the same location
 			nestableAnnotations.get(i).moveAnnotation(i);
 		}
 	}
 
 	/**
-	 * Initialize the specified resource model annotation container to be in
-	 * sync with the specified AST. No change notification will occur.
+	 * Initialize the specified annotation container to be in synch with the
+	 * specified AST. No change notification will occur.
 	 */
 	public static <T extends NestableAnnotation> void initialize(AnnotationContainer<T> annotationContainer, CompilationUnit astRoot) {
 		// ignore the nested AST annotations themselves
 		// (maybe someday we can use them during initialization...)
 		int size = getNestedAstAnnotations(astRoot, annotationContainer).size();
 		for (int i = 0; i < size; i++) {
-			T nestedAnnotation = annotationContainer.addNestedAnnotation();
+			T nestedAnnotation = annotationContainer.addNestedAnnotationInternal();
 			nestedAnnotation.initialize(astRoot);
 		}
 	}
@@ -130,24 +130,24 @@ public final class AnnotationContainerTools {
 	 */
 	private static <T extends NestableAnnotation> ArrayList<Annotation> getNestedAstAnnotations(CompilationUnit astRoot, AnnotationContainer<T> annotationContainer) {
 		ArrayList<Annotation> result = new ArrayList<Annotation>();
-		Annotation astContainerAnnotation = annotationContainer.getAstAnnotation(astRoot);
-		if (astContainerAnnotation.isMarkerAnnotation()) {
+		Annotation containerAstAnnotation = annotationContainer.getContainerAstAnnotation(astRoot);
+		if (containerAstAnnotation.isMarkerAnnotation()) {
 			// no nested annotations
 		}
-		else if (astContainerAnnotation.isSingleMemberAnnotation()) {
+		else if (containerAstAnnotation.isSingleMemberAnnotation()) {
 			if (annotationContainer.getElementName().equals("value")) { //$NON-NLS-1$
-				Expression ex = ((SingleMemberAnnotation) astContainerAnnotation).getValue();
-				addAstAnnotationsTo(ex, annotationContainer.getNestedAnnotationName(), result);
+				Expression ex = ((SingleMemberAnnotation) containerAstAnnotation).getValue();
+				addAstAnnotationsTo(ex, annotationContainer.getNestableAnnotationName(), result);
 			} else {
 				// no nested annotations
 			}
 		}
-		else if (astContainerAnnotation.isNormalAnnotation()) {
-			MemberValuePair pair = getMemberValuePair((NormalAnnotation) astContainerAnnotation, annotationContainer.getElementName());
+		else if (containerAstAnnotation.isNormalAnnotation()) {
+			MemberValuePair pair = getMemberValuePair((NormalAnnotation) containerAstAnnotation, annotationContainer.getElementName());
 			if (pair == null) {
 				// no nested annotations
 			} else {
-				addAstAnnotationsTo(pair.getValue(), annotationContainer.getNestedAnnotationName(), result);
+				addAstAnnotationsTo(pair.getValue(), annotationContainer.getNestableAnnotationName(), result);
 			}
 		}
 		return result;
@@ -155,7 +155,7 @@ public final class AnnotationContainerTools {
 
 	/**
 	 * Add whatever annotations are represented by the specified expression to
-	 * the specified list. Add null to the list for any non-annotation expression.
+	 * the specified bag. Add null to the bag for any non-annotation expression.
 	 */
 	private static void addAstAnnotationsTo(Expression expression, String annotationName, ArrayList<Annotation> astAnnotations) {
 		if (expression == null) {
@@ -227,29 +227,34 @@ public final class AnnotationContainerTools {
 	}
 
 	/**
-	 * Synchronize the resource model annotations in the specified annotation
-	 * container with those in the specified AST. Trigger the appropriate change
+	 * Synchronize the annotations in the specified annotation container
+	 * with those in the specified AST. Trigger the appropriate change
 	 * notification.
 	 */
 	public static <T extends NestableAnnotation> void synchronize(AnnotationContainer<T> annotationContainer, CompilationUnit astRoot) {
-		ArrayList<Annotation> astAnnotations = getNestedAstAnnotations(astRoot, annotationContainer);
-		Iterator<Annotation> astAnnotationStream = astAnnotations.iterator();
+		ListIterator<Annotation> astAnnotations = getNestedAstAnnotations(astRoot, annotationContainer).listIterator();
 
-		for (T nestedAnnotation : annotationContainer.getNestedAnnotations()) {
-			if (astAnnotationStream.hasNext()) {
-				// matching AST annotation is present - synchronize the nested annotation
-				astAnnotationStream.next();  // maybe someday we can pass this to the update
+		for (ListIterator<T> nestedAnnotations = annotationContainer.nestedAnnotations(); nestedAnnotations.hasNext(); ) {
+			T nestedAnnotation = nestedAnnotations.next();
+			if (astAnnotations.hasNext()) {
+				// matching AST annotation is present - update the nested annotation
+				astAnnotations.next();  // maybe someday we can pass this to the update
 				nestedAnnotation.synchronizeWith(astRoot);
 			} else {
-				// no more AST annotations - remove the remaining nested annotations and exit
-				annotationContainer.syncRemoveNestedAnnotations(astAnnotations.size());
-				return;
+				// no more AST annotations - remove the nested annotation at the end of the container's list
+				int last = annotationContainer.nestedAnnotationsSize() - 1;
+				T remove = annotationContainer.removeNestedAnnotationInternal(last);
+				annotationContainer.nestedAnnotationRemoved(last, remove);
 			}
 		}
 
-		// add nested annotations for any remaining AST annotations
-		while (astAnnotationStream.hasNext()) {
-			annotationContainer.syncAddNestedAnnotation(astAnnotationStream.next());
+		// add nested annotations for the remaining AST annotations
+		int i = annotationContainer.nestedAnnotationsSize();
+		while (astAnnotations.hasNext()) {
+			astAnnotations.next();  // maybe someday we can pass this to the initialize
+			T nestedAnnotation = annotationContainer.addNestedAnnotationInternal();
+			nestedAnnotation.initialize(astRoot);
+			annotationContainer.nestedAnnotationAdded(i++, nestedAnnotation);
 		}
 	}
 

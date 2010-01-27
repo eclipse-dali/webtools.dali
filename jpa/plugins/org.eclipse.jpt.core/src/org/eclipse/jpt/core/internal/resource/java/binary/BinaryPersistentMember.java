@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.JavaModelException;
@@ -39,13 +38,13 @@ abstract class BinaryPersistentMember
 {
 	/** JDT member adapter */
 	final Adapter adapter;
-
+	
 	/** annotations */
 	final Vector<Annotation> annotations = new Vector<Annotation>();
-
+	
 	boolean persistable;
-
-
+	
+	
 	// ********** construction/initialization **********
 
 	public BinaryPersistentMember(JavaResourceNode parent, Adapter adapter) {
@@ -66,77 +65,81 @@ abstract class BinaryPersistentMember
 			this.annotations.add(this.buildAnnotation(jdtAnnotation));
 		}
 	}
-
-
+	
+	
 	// ********** updating **********
-
+	
 	@Override
 	public void update() {
 		super.update();
 		this.updateAnnotations();
 		this.setPersistable(this.buildPersistable());
 	}
-
+	
 	// TODO
 	private void updateAnnotations() {
 		throw new UnsupportedOperationException();
 	}
-
-
+	
+	
 	// ********** annotations **********
-
+	
 	public Iterator<Annotation> annotations() {
 		return this.getAnnotations().iterator();
 	}
-
+	
 	private Iterable<Annotation> getAnnotations() {
 		return new LiveCloneIterable<Annotation>(this.annotations);
 	}
-
+	
 	public int annotationsSize() {
 		return this.annotations.size();
 	}
-
+	
 	public Annotation getAnnotation(String annotationName) {
 		return this.selectAnnotationNamed(this.getAnnotations(), annotationName);
 	}
-
+	
 	public Annotation getNonNullAnnotation(String annotationName) {
 		Annotation annotation = this.getAnnotation(annotationName);
 		return (annotation != null) ? annotation : this.buildNullAnnotation(annotationName);
 	}
-
-	public Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = this.getContainerAnnotation(containerAnnotationName);
+	
+	public Iterator<NestableAnnotation> annotations(
+			String nestableAnnotationName, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = 
+				getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
-			return containerAnnotation.getNestedAnnotations().iterator();
+			return containerAnnotation.nestedAnnotations();
 		}
-		NestableAnnotation nestableAnnotation = this.getNestableAnnotation(nestableAnnotationName);
+		NestableAnnotation nestableAnnotation = 
+				getNestableAnnotation(nestableAnnotationName);
 		return (nestableAnnotation == null) ?
 				EmptyListIterator.<NestableAnnotation>instance() :
 				new SingleElementIterator<NestableAnnotation>(nestableAnnotation);
 	}
-
+	
 	private NestableAnnotation getNestableAnnotation(String annotationName) {
 		return (NestableAnnotation) this.getAnnotation(annotationName);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private ContainerAnnotation<NestableAnnotation> getContainerAnnotation(String annotationName) {
 		return (ContainerAnnotation<NestableAnnotation>) this.getAnnotation(annotationName);
 	}
-
+	
 	private boolean annotationIsValid(IAnnotation jdtAnnotation) {
-		return CollectionTools.contains(this.validAnnotationNames(), jdtAnnotation.getElementName());
+		return CollectionTools.contains(
+				this.validAnnotationNames(), jdtAnnotation.getElementName());
 	}
-
+	
 	abstract Iterator<String> validAnnotationNames();
-
+	
 	abstract Annotation buildAnnotation(IAnnotation jdtAnnotation);
-
+	
 	abstract Annotation buildNullAnnotation(String annotationName);
-
-
+	
+	
 	// ********** simple state **********
 
 	public boolean isPersistable() {
@@ -164,8 +167,8 @@ abstract class BinaryPersistentMember
 		return this.adapter.getMember();
 	}
 
-	private Annotation selectAnnotationNamed(Iterable<Annotation> annotationList, String annotationName) {
-		for (Annotation annotation : annotationList) {
+	private Annotation selectAnnotationNamed(Iterable<Annotation> annotations, String annotationName) {
+		for (Annotation annotation : annotations) {
 			if (annotation.getAnnotationName().equals(annotationName)) {
 				return annotation;
 			}
@@ -233,39 +236,46 @@ abstract class BinaryPersistentMember
 
 
 	// ********** unsupported JavaResourcePersistentMember implementation **********
-
+	
 	public Annotation addAnnotation(String annotationName) {
 		throw new UnsupportedOperationException();
 	}
-
-	public NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
+	
+	public Annotation addAnnotation(String annotationName, AnnotationInitializer foo) {
 		throw new UnsupportedOperationException();
 	}
-
-	public void moveAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName) {
+	
+	public NestableAnnotation addAnnotation(
+			int index, String nestableAnnotationName, String containerAnnotationName) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public void moveAnnotation(
+			int targetIndex, int sourceIndex, String containerAnnotationName) {
+		throw new UnsupportedOperationException();
+	}
+	
 	public void removeAnnotation(String annotationName) {
 		throw new UnsupportedOperationException();
 	}
-
-	public void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
+	
+	public void removeAnnotation(
+			int index, String nestableAnnotationName, String containerAnnotationName) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public void resolveTypes(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public boolean isFor(String memberName, int occurrence) {
 		throw new UnsupportedOperationException();
 	}

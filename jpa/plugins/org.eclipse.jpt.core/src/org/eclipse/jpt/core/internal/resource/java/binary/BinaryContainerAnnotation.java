@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
@@ -27,31 +28,43 @@ public abstract class BinaryContainerAnnotation<T extends NestableAnnotation>
 		super(parent, jdtAnnotation);
 	}
 
+	public String getContainerAnnotationName() {
+		throw new UnsupportedOperationException();
+	}
+
+	public Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
 	public String getElementName() {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getNestedAnnotationName() {
+	public String getNestableAnnotationName() {
 		throw new UnsupportedOperationException();
 	}
 
-	public T addNestedAnnotation() {
+	public T addNestedAnnotationInternal() {
 		throw new UnsupportedOperationException();
 	}
 
-	public void syncAddNestedAnnotation(Annotation astAnnotation) {
+	public void nestedAnnotationAdded(int index, T nestedAnnotation) {
 		throw new UnsupportedOperationException();
 	}
 
-	public T moveNestedAnnotation(int targetIndex, int sourceIndex) {
+	public T moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();
 	}
 
-	public T removeNestedAnnotation(int index) {
+	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void syncRemoveNestedAnnotations(int index) {
+	public T removeNestedAnnotationInternal(int index) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void nestedAnnotationRemoved(int index, T nestedAnnotation) {
 		throw new UnsupportedOperationException();
 	}
 

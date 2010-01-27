@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.ListIterator;
 import java.util.Vector;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.persistence.AssociationOverrides
@@ -60,51 +60,56 @@ public abstract class SourceAssociationOverridesAnnotation
 
 	// ********** AnnotationContainer implementation **********
 
+	public String getContainerAnnotationName() {
+		return this.getAnnotationName();
+	}
+
+	public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		return this.getAstAnnotation(astRoot);
+	}
+
 	public String getElementName() {
 		return JPA.ASSOCIATION_OVERRIDES__VALUE;
 	}
 
-	public String getNestedAnnotationName() {
+	public String getNestableAnnotationName() {
 		return AssociationOverrideAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterable<NestableAssociationOverrideAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<NestableAssociationOverrideAnnotation>(this.associationOverrides);
+	public ListIterator<NestableAssociationOverrideAnnotation> nestedAnnotations() {
+		return new CloneListIterator<NestableAssociationOverrideAnnotation>(this.associationOverrides);
 	}
 
-	public int getNestedAnnotationsSize() {
+	public int nestedAnnotationsSize() {
 		return this.associationOverrides.size();
 	}
 
-	public NestableAssociationOverrideAnnotation addNestedAnnotation() {
-		return this.addNestedAnnotation(this.associationOverrides.size());
-	}
-
-	private NestableAssociationOverrideAnnotation addNestedAnnotation(int index) {
-		NestableAssociationOverrideAnnotation associationOverride = this.buildAssociationOverride(index);
+	public NestableAssociationOverrideAnnotation addNestedAnnotationInternal() {
+		NestableAssociationOverrideAnnotation associationOverride = this.buildAssociationOverride(this.associationOverrides.size());
 		this.associationOverrides.add(associationOverride);
 		return associationOverride;
 	}
 
 	protected abstract NestableAssociationOverrideAnnotation buildAssociationOverride(int index);
 
-	public void syncAddNestedAnnotation(Annotation astAnnotation) {
-		int index = this.associationOverrides.size();
-		NestableAssociationOverrideAnnotation associationOverride = this.addNestedAnnotation(index);
-		associationOverride.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
+	public void nestedAnnotationAdded(int index, NestableAssociationOverrideAnnotation nestedAnnotation) {
+		this.fireItemAdded(ASSOCIATION_OVERRIDES_LIST, index, nestedAnnotation);
 	}
 
-	public NestableAssociationOverrideAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+	public NestableAssociationOverrideAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.associationOverrides, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public NestableAssociationOverrideAnnotation removeNestedAnnotation(int index) {
+	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
+		this.fireItemMoved(ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);
+	}
+
+	public NestableAssociationOverrideAnnotation removeNestedAnnotationInternal(int index) {
 		return this.associationOverrides.remove(index);
 	}
 
-	public void syncRemoveNestedAnnotations(int index) {
-		this.removeItemsFromList(index, this.associationOverrides, ASSOCIATION_OVERRIDES_LIST);
+	public void nestedAnnotationRemoved(int index, NestableAssociationOverrideAnnotation nestedAnnotation) {
+		this.fireItemRemoved(ASSOCIATION_OVERRIDES_LIST, index, nestedAnnotation);
 	}
 
 }

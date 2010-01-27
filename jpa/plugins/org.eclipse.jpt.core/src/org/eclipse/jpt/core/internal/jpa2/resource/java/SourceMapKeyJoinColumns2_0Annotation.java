@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
+import java.util.ListIterator;
 import java.util.Vector;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
@@ -21,11 +21,10 @@ import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.NestableMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.persistence.MapKeyJoinColumns
@@ -63,53 +62,58 @@ public final class SourceMapKeyJoinColumns2_0Annotation
 
 	// ********** AnnotationContainer implementation **********
 
+	public String getContainerAnnotationName() {
+		return this.getAnnotationName();
+	}
+
+	public org.eclipse.jdt.core.dom.Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
+		return this.getAstAnnotation(astRoot);
+	}
+
 	public String getElementName() {
 		return JPA2_0.MAP_KEY_JOIN_COLUMNS__VALUE;
 	}
 
-	public String getNestedAnnotationName() {
+	public String getNestableAnnotationName() {
 		return MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME;
 	}
 
-	public Iterable<NestableMapKeyJoinColumnAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<NestableMapKeyJoinColumnAnnotation>(this.mapKeyJoinColumns);
+	public ListIterator<NestableMapKeyJoinColumnAnnotation> nestedAnnotations() {
+		return new CloneListIterator<NestableMapKeyJoinColumnAnnotation>(this.mapKeyJoinColumns);
 	}
 
-	public int getNestedAnnotationsSize() {
+	public int nestedAnnotationsSize() {
 		return this.mapKeyJoinColumns.size();
 	}
 
-	public NestableMapKeyJoinColumnAnnotation addNestedAnnotation() {
-		return this.addNestedAnnotation(this.mapKeyJoinColumns.size());
-	}
-
-	private NestableMapKeyJoinColumnAnnotation addNestedAnnotation(int index) {
-		NestableMapKeyJoinColumnAnnotation joinColumn = this.buildMapKeyJoinColumn(index);
+	public NestableMapKeyJoinColumnAnnotation addNestedAnnotationInternal() {
+		NestableMapKeyJoinColumnAnnotation joinColumn = this.buildMapKeyJoinColumn(this.mapKeyJoinColumns.size());
 		this.mapKeyJoinColumns.add(joinColumn);
 		return joinColumn;
-	}
-
-	public void syncAddNestedAnnotation(Annotation astAnnotation) {
-		int index = this.mapKeyJoinColumns.size();
-		NestableMapKeyJoinColumnAnnotation joinColumn = this.addNestedAnnotation(index);
-		joinColumn.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(MAP_KEY_JOIN_COLUMNS_LIST, index, joinColumn);
 	}
 
 	private NestableMapKeyJoinColumnAnnotation buildMapKeyJoinColumn(int index) {
 		return SourceMapKeyJoinColumn2_0Annotation.createNestedMapKeyJoinColumn(this, this.member, index, this.daa);
 	}
 
-	public NestableMapKeyJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+	public void nestedAnnotationAdded(int index, NestableMapKeyJoinColumnAnnotation nestedAnnotation) {
+		this.fireItemAdded(MAP_KEY_JOIN_COLUMNS_LIST, index, nestedAnnotation);
+	}
+
+	public NestableMapKeyJoinColumnAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.mapKeyJoinColumns, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public NestableMapKeyJoinColumnAnnotation removeNestedAnnotation(int index) {
+	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
+		this.fireItemMoved(MAP_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
+	}
+
+	public NestableMapKeyJoinColumnAnnotation removeNestedAnnotationInternal(int index) {
 		return this.mapKeyJoinColumns.remove(index);
 	}
 
-	public void syncRemoveNestedAnnotations(int index) {
-		this.removeItemsFromList(index, this.mapKeyJoinColumns, MAP_KEY_JOIN_COLUMNS_LIST);
+	public void nestedAnnotationRemoved(int index, NestableMapKeyJoinColumnAnnotation nestedAnnotation) {
+		this.fireItemRemoved(MAP_KEY_JOIN_COLUMNS_LIST, index, nestedAnnotation);
 	}
 
 }

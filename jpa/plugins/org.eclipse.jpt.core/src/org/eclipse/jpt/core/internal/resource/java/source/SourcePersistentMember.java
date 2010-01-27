@@ -125,7 +125,7 @@ abstract class SourcePersistentMember<E extends Member>
 	public Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = this.getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
-			return containerAnnotation.getNestedAnnotations().iterator();
+			return containerAnnotation.nestedAnnotations();
 		}
 		NestableAnnotation nestableAnnotation = this.getNestableAnnotation(nestableAnnotationName);
 		if (nestableAnnotation != null) {
@@ -149,6 +149,15 @@ abstract class SourcePersistentMember<E extends Member>
 		this.annotations.add(annotation);
 		annotation.newAnnotation();
 		return annotation;
+	}
+
+	public Annotation addAnnotation(String annotationName, AnnotationInitializer annotationInitializer) {
+		Annotation annotation = this.buildAnnotation(annotationName);
+		this.annotations.add(annotation);
+		annotation.newAnnotation();
+		Annotation nestedAnnotation = annotationInitializer.initializeAnnotation(annotation);
+		nestedAnnotation.newAnnotation();
+		return nestedAnnotation;
 	}
 
 	/**
@@ -184,9 +193,9 @@ abstract class SourcePersistentMember<E extends Member>
 		this.annotations.add(containerAnnotation);
 		containerAnnotation.newAnnotation();
 
-		NestableAnnotation nestedAnnotation0 = containerAnnotation.addNestedAnnotation();
+		NestableAnnotation nestedAnnotation0 = containerAnnotation.addNestedAnnotationInternal();
 		nestedAnnotation0.newAnnotation();
-		NestableAnnotation nestedAnnotation1 = containerAnnotation.addNestedAnnotation();
+		NestableAnnotation nestedAnnotation1 = containerAnnotation.addNestedAnnotationInternal();
 		nestedAnnotation1.newAnnotation();
 		this.removeAnnotation(standAloneAnnotation);
 
@@ -237,7 +246,7 @@ abstract class SourcePersistentMember<E extends Member>
 	 */
 	private void removeAnnotation(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		AnnotationContainerTools.removeNestedAnnotation(index, containerAnnotation);
-		switch (containerAnnotation.getNestedAnnotationsSize()) {
+		switch (containerAnnotation.nestedAnnotationsSize()) {
 			case 0:
 				this.removeAnnotation(containerAnnotation);
 				break;
@@ -254,7 +263,7 @@ abstract class SourcePersistentMember<E extends Member>
 	 * annotation
 	 */
 	private void convertLastNestedAnnotation(ContainerAnnotation<NestableAnnotation> containerAnnotation) {
-		NestableAnnotation lastNestedAnnotation = containerAnnotation.getNestedAnnotations().iterator().next();
+		NestableAnnotation lastNestedAnnotation = containerAnnotation.nestedAnnotations().next();
 		this.annotations.remove(containerAnnotation);
 		containerAnnotation.removeAnnotation();
 

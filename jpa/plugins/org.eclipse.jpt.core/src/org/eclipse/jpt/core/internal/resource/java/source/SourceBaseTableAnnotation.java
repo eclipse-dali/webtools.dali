@@ -33,7 +33,6 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -221,8 +220,8 @@ public abstract class SourceBaseTableAnnotation
 		return new CloneListIterator<UniqueConstraintAnnotation>(this.uniqueConstraints);
 	}
 
-	Iterable<NestableUniqueConstraintAnnotation> getNestableUniqueConstraints() {
-		return new LiveCloneIterable<NestableUniqueConstraintAnnotation>(this.uniqueConstraints);
+	ListIterator<NestableUniqueConstraintAnnotation> nestableUniqueConstraints() {
+		return new CloneListIterator<NestableUniqueConstraintAnnotation>(this.uniqueConstraints);
 	}
 
 	public int uniqueConstraintsSize() {
@@ -241,21 +240,10 @@ public abstract class SourceBaseTableAnnotation
 		return (NestableUniqueConstraintAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.uniqueConstraintsContainer);
 	}
 
-	NestableUniqueConstraintAnnotation addUniqueConstraint_() {
-		return this.addUniqueConstraint_(this.uniqueConstraints.size());
-	}
-
-	private NestableUniqueConstraintAnnotation addUniqueConstraint_(int index) {
-		NestableUniqueConstraintAnnotation uniqueConstraint = this.buildUniqueConstraint(index);
+	NestableUniqueConstraintAnnotation addUniqueConstraintInternal() {
+		NestableUniqueConstraintAnnotation uniqueConstraint = this.buildUniqueConstraint(this.uniqueConstraints.size());
 		this.uniqueConstraints.add(uniqueConstraint);
 		return uniqueConstraint;
-	}
-
-	void syncAddUniqueConstraint(Annotation astAnnotation) {
-		int index = this.uniqueConstraints.size();
-		NestableUniqueConstraintAnnotation uniqueConstraint = this.addUniqueConstraint_(index);
-		uniqueConstraint.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 	}
 
 	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
@@ -274,20 +262,24 @@ public abstract class SourceBaseTableAnnotation
 		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.uniqueConstraintsContainer);
 	}
 
-	NestableUniqueConstraintAnnotation moveUniqueConstraint_(int targetIndex, int sourceIndex) {
+	NestableUniqueConstraintAnnotation moveUniqueConstraintInternal(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex).get(targetIndex);
+	}
+
+	void uniqueConstraintMoved(int targetIndex, int sourceIndex) {
+		this.fireItemMoved(UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
 	}
 
 	public void removeUniqueConstraint(int index) {
 		AnnotationContainerTools.removeNestedAnnotation(index, this.uniqueConstraintsContainer);
 	}
 
-	NestableUniqueConstraintAnnotation removeUniqueConstraint_(int index) {
+	NestableUniqueConstraintAnnotation removeUniqueConstraintInternal(int index) {
 		return this.uniqueConstraints.remove(index);
 	}
 
-	void syncRemoveUniqueConstraints(int index) {
-		this.removeItemsFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	void uniqueConstraintRemoved(int index, NestableUniqueConstraintAnnotation constraint) {
+		this.fireItemRemoved(UNIQUE_CONSTRAINTS_LIST, index, constraint);
 	}
 
 	
@@ -312,7 +304,11 @@ public abstract class SourceBaseTableAnnotation
 	class UniqueConstraintsAnnotationContainer
 		implements AnnotationContainer<NestableUniqueConstraintAnnotation> 
 	{
-		public Annotation getAstAnnotation(CompilationUnit astRoot) {
+		public String getContainerAnnotationName() {
+			return SourceBaseTableAnnotation.this.getAnnotationName();
+		}
+
+		public Annotation getContainerAstAnnotation(CompilationUnit astRoot) {
 			return SourceBaseTableAnnotation.this.getAstAnnotation(astRoot);
 		}
 
@@ -320,36 +316,40 @@ public abstract class SourceBaseTableAnnotation
 			return SourceBaseTableAnnotation.this.getUniqueConstraintsElementName();
 		}
 
-		public String getNestedAnnotationName() {
+		public String getNestableAnnotationName() {
 			return UniqueConstraintAnnotation.ANNOTATION_NAME;
 		}
 
-		public Iterable<NestableUniqueConstraintAnnotation> getNestedAnnotations() {
-			return SourceBaseTableAnnotation.this.getNestableUniqueConstraints();
+		public ListIterator<NestableUniqueConstraintAnnotation> nestedAnnotations() {
+			return SourceBaseTableAnnotation.this.nestableUniqueConstraints();
 		}
 
-		public int getNestedAnnotationsSize() {
+		public int nestedAnnotationsSize() {
 			return SourceBaseTableAnnotation.this.uniqueConstraintsSize();
 		}
 
-		public NestableUniqueConstraintAnnotation addNestedAnnotation() {
-			return SourceBaseTableAnnotation.this.addUniqueConstraint_();
+		public NestableUniqueConstraintAnnotation addNestedAnnotationInternal() {
+			return SourceBaseTableAnnotation.this.addUniqueConstraintInternal();
 		}
 
-		public void syncAddNestedAnnotation(Annotation astAnnotation) {
-			SourceBaseTableAnnotation.this.syncAddUniqueConstraint(astAnnotation);
+		public void nestedAnnotationAdded(int index, NestableUniqueConstraintAnnotation nestedAnnotation) {
+			SourceBaseTableAnnotation.this.uniqueConstraintAdded(index, nestedAnnotation);
 		}
 
-		public NestableUniqueConstraintAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
-			return SourceBaseTableAnnotation.this.moveUniqueConstraint_(targetIndex, sourceIndex);
+		public NestableUniqueConstraintAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+			return SourceBaseTableAnnotation.this.moveUniqueConstraintInternal(targetIndex, sourceIndex);
 		}
 
-		public NestableUniqueConstraintAnnotation removeNestedAnnotation(int index) {
-			return SourceBaseTableAnnotation.this.removeUniqueConstraint_(index);
+		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
+			SourceBaseTableAnnotation.this.uniqueConstraintMoved(targetIndex, sourceIndex);
 		}
 
-		public void syncRemoveNestedAnnotations(int index) {
-			SourceBaseTableAnnotation.this.syncRemoveUniqueConstraints(index);
+		public NestableUniqueConstraintAnnotation removeNestedAnnotationInternal(int index) {
+			return SourceBaseTableAnnotation.this.removeUniqueConstraintInternal(index);
+		}
+
+		public void nestedAnnotationRemoved(int index, NestableUniqueConstraintAnnotation nestedAnnotation) {
+			SourceBaseTableAnnotation.this.uniqueConstraintRemoved(index, nestedAnnotation);
 		}
 
 		@Override
