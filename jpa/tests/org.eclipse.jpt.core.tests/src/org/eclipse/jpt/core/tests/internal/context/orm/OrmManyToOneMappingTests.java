@@ -19,14 +19,18 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -69,6 +73,28 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 			}
 		});
 	}	
+	
+	private void createTestEntityWithManyToOneMapping() throws Exception {
+		createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_ONE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ManyToOne").append(CR);
+			}
+		});
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.makeSpecified();
+		}
+	}
 	
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -339,6 +365,46 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		
 		strategy.removeSpecifiedJoinColumn(0);
 		assertEquals(0, manyToOneResource.getJoinColumns().size());
+	}
+	
+	public void testModifyPredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmManyToOneMapping contextMapping = (OrmManyToOneMapping) contextAttribute.getMapping();
+		OrmManyToOneRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlManyToOne resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
+		
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		
+		relationshipReference.setJoinColumnJoiningStrategy();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+	}
+	
+	public void testUpdatePredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmManyToOneMapping contextMapping = (OrmManyToOneMapping) contextAttribute.getMapping();
+		OrmManyToOneRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlManyToOne resourceMapping = resourceEntity.getAttributes().getManyToOnes().get(0);
+		
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		
+		resourceMapping.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumn());
+		getJpaProject().synchronizeContextModel();
+		assertFalse(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		
+		resourceMapping.getJoinColumns().clear();
+		getJpaProject().synchronizeContextModel();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {

@@ -126,10 +126,12 @@ public class GenericOrmManyToManyRelationshipReference
 	public void setMappedByJoiningStrategy() {
 		this.mappedByJoiningStrategy.addStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {
 		this.mappedByJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayBeMappedBy(AttributeMapping mappedByMapping) {
@@ -150,10 +152,12 @@ public class GenericOrmManyToManyRelationshipReference
 	public void setJoinTableJoiningStrategy() {
 		// join table is the default strategy, so no need to add to resource
 		this.mappedByJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetJoinTableJoiningStrategy() {
 		this.joinTableJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayHaveDefaultJoinTable() {

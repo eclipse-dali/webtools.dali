@@ -17,10 +17,10 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyRelations
 public class GenericJavaOneToManyRelationshipReference
 	extends AbstractJavaOneToManyRelationshipReference
 {	
-	
 	public GenericJavaOneToManyRelationshipReference(JavaOneToManyMapping parent) {
 		super(parent);
 	}	
+	
 	
 	@Override
 	protected JoiningStrategy calculatePredominantJoiningStrategy() {
@@ -29,5 +29,4 @@ public class GenericJavaOneToManyRelationshipReference
 		}
 		return this.joinTableJoiningStrategy;
 	}
-
 }

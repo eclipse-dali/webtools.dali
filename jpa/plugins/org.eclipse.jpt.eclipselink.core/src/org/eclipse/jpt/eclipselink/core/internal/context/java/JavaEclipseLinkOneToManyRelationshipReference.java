@@ -76,8 +76,8 @@ public class JavaEclipseLinkOneToManyRelationshipReference
 	// **************** mapped by **********************************************
 	
 	@Override
-	public void setMappedByJoiningStrategy() {
-		super.setMappedByJoiningStrategy();
+	protected void setMappedByJoiningStrategy_() {
+		super.setMappedByJoiningStrategy_();
 		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
@@ -91,8 +91,8 @@ public class JavaEclipseLinkOneToManyRelationshipReference
 	// **************** join table *********************************************
 	
 	@Override
-	public void setJoinTableJoiningStrategy() {
-		super.setJoinTableJoiningStrategy();
+	protected void setJoinTableJoiningStrategy_() {
+		super.setJoinTableJoiningStrategy_();
 		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
@@ -117,10 +117,12 @@ public class JavaEclipseLinkOneToManyRelationshipReference
 		this.joinColumnJoiningStrategy.addStrategy();
 		this.mappedByJoiningStrategy.removeStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetJoinColumnJoiningStrategy() {
 		this.joinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayHaveDefaultJoinColumn() {

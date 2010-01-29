@@ -58,6 +58,10 @@ public abstract class AbstractJavaRelationshipReference
 		return this.cachedPredominantJoiningStrategy;
 	}
 	
+	protected void setPredominantJoiningStrategy() {
+		setPredominantJoiningStrategy(calculatePredominantJoiningStrategy());
+	}
+	
 	protected void setPredominantJoiningStrategy(JoiningStrategy newJoiningStrategy) {
 		JoiningStrategy oldJoiningStrategy = this.cachedPredominantJoiningStrategy;
 		this.cachedPredominantJoiningStrategy = newJoiningStrategy;
@@ -76,7 +80,7 @@ public abstract class AbstractJavaRelationshipReference
 	
 	public void update() {
 		updateJoiningStrategies();
-		setPredominantJoiningStrategy(calculatePredominantJoiningStrategy());
+		setPredominantJoiningStrategy();
 	}
 	
 	protected abstract void updateJoiningStrategies();

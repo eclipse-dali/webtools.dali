@@ -33,16 +33,20 @@ import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -85,6 +89,28 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 			}
 		});
 	}	
+	
+	private void createTestEntityWithOneToOneMapping() throws Exception {
+		createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@OneToOne").append(CR);
+			}
+		});
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.makeSpecified();
+		}
+	}
 	
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -334,6 +360,117 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertNull(oneToOne.getMappedBy());
 	}
 	
+	public void testModifyPredominantJoiningStrategy() throws Exception {
+		createTestEntityWithOneToOneMapping();
+		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmOneToOneMapping contextMapping = (OrmOneToOneMapping) contextAttribute.getMapping();
+		OrmOneToOneRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlOneToOne resourceMapping = (XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
+		
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setMappedByJoiningStrategy();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNotNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setPrimaryKeyJoinColumnJoiningStrategy();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertFalse(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setJoinColumnJoiningStrategy();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());	
+	}
+	
+	public void testUpdatePredominantJoiningStrategy() throws Exception {
+		createTestEntityWithOneToOneMapping();
+		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmOneToOneMapping contextMapping = (OrmOneToOneMapping) contextAttribute.getMapping();
+		OrmOneToOneRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlOneToOne resourceMapping = (XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
+		
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		getJpaProject().synchronizeContextModel();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertFalse(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumn());
+		getJpaProject().synchronizeContextModel();
+		assertFalse(resourceMapping.getJoinColumns().isEmpty());
+		assertFalse(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.setMappedBy("foo");
+		getJpaProject().synchronizeContextModel();
+		assertFalse(resourceMapping.getJoinColumns().isEmpty());
+		assertFalse(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNotNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.getPrimaryKeyJoinColumns().clear();
+		getJpaProject().synchronizeContextModel();
+		assertFalse(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNotNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.getJoinColumns().clear();
+		getJpaProject().synchronizeContextModel();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNotNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.setMappedBy(null);
+		getJpaProject().synchronizeContextModel();
+		assertTrue(resourceMapping.getJoinColumns().isEmpty());
+		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+	}
 	
 	public void testUpdateSpecifiedOptional() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");

@@ -115,10 +115,12 @@ public class GenericJavaOneToOneRelationshipReference
 		this.mappedByJoiningStrategy.addStrategy();
 		this.joinColumnJoiningStrategy.removeStrategy();
 		this.primaryKeyJoinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {
 		this.mappedByJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayBeMappedBy(AttributeMapping mappedByMapping) {
@@ -140,10 +142,12 @@ public class GenericJavaOneToOneRelationshipReference
 		this.mappedByJoiningStrategy.removeStrategy();
 		this.primaryKeyJoinColumnJoiningStrategy.removeStrategy();
 		// join columns are default, so no need to add annotations
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetJoinColumnJoiningStrategy() {
 		this.joinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayHaveDefaultJoinColumn() {
@@ -166,10 +170,12 @@ public class GenericJavaOneToOneRelationshipReference
 		this.primaryKeyJoinColumnJoiningStrategy.addStrategy();
 		this.mappedByJoiningStrategy.removeStrategy();
 		this.joinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetPrimaryKeyJoinColumnJoiningStrategy() {
 		this.primaryKeyJoinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayHaveDefaultPrimaryKeyJoinColumn() {

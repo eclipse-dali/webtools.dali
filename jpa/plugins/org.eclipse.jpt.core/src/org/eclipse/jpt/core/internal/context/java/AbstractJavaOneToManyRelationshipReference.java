@@ -84,12 +84,22 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 		return this.mappedByJoiningStrategy;
 	}
 	
-	public void setMappedByJoiningStrategy() {
+	public final void setMappedByJoiningStrategy() {
+		setMappedByJoiningStrategy_();
+		setPredominantJoiningStrategy();
+	}
+	
+	protected void setMappedByJoiningStrategy_() {
 		this.mappedByJoiningStrategy.addStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
 	}
 	
-	public void unsetMappedByJoiningStrategy() {
+	public final void unsetMappedByJoiningStrategy() {
+		unsetMappedByJoiningStrategy_();
+		setPredominantJoiningStrategy();
+	}
+	
+	protected void unsetMappedByJoiningStrategy_() {
 		this.mappedByJoiningStrategy.removeStrategy();
 	}
 	
@@ -112,12 +122,22 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 		return getPredominantJoiningStrategy() == this.joinTableJoiningStrategy;
 	}
 	
-	public void setJoinTableJoiningStrategy() {
+	public final void setJoinTableJoiningStrategy() {
+		setJoinTableJoiningStrategy_();
+		setPredominantJoiningStrategy();
+	}
+	
+	protected void setJoinTableJoiningStrategy_() {
 		// join table is default, so no need to add annotation
 		this.mappedByJoiningStrategy.removeStrategy();
 	}
 	
-	public void unsetJoinTableJoiningStrategy() {
+	public final void unsetJoinTableJoiningStrategy() {
+		unsetJoinTableJoiningStrategy_();
+		setPredominantJoiningStrategy();
+	}
+	
+	protected void unsetJoinTableJoiningStrategy_() {
 		this.joinTableJoiningStrategy.removeStrategy();
 	}
 	

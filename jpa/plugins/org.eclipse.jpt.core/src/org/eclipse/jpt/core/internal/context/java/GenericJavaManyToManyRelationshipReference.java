@@ -99,10 +99,12 @@ public class GenericJavaManyToManyRelationshipReference
 	public void setMappedByJoiningStrategy() {
 		this.mappedByJoiningStrategy.addStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {
 		this.mappedByJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean usesMappedByJoiningStrategy() {
@@ -127,10 +129,12 @@ public class GenericJavaManyToManyRelationshipReference
 	public void setJoinTableJoiningStrategy() {
 		// join table is default option, so no need to add to resource
 		this.mappedByJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetJoinTableJoiningStrategy() {
 		this.joinTableJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayHaveDefaultJoinTable() {

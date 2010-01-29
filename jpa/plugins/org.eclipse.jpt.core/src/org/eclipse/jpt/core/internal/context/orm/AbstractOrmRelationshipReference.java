@@ -33,6 +33,7 @@ public abstract class AbstractOrmRelationshipReference
 	
 	protected AbstractOrmRelationshipReference(
 			OrmRelationshipMapping parent, AbstractXmlRelationshipMapping resourceMapping) {
+		
 		super(parent);
 		this.resourceMapping = resourceMapping;
 		this.initialize();
@@ -81,6 +82,10 @@ public abstract class AbstractOrmRelationshipReference
 		return this.cachedPredominantJoiningStrategy;
 	}
 	
+	protected void setPredominantJoiningStrategy() {
+		setPredominantJoiningStrategy(calculatePredominantJoiningStrategy());
+	}
+	
 	protected void setPredominantJoiningStrategy(JoiningStrategy newJoiningStrategy) {
 		JoiningStrategy oldJoiningStrategy = this.cachedPredominantJoiningStrategy;
 		this.cachedPredominantJoiningStrategy = newJoiningStrategy;
@@ -100,7 +105,7 @@ public abstract class AbstractOrmRelationshipReference
 
 	public void update() {
 		updateJoiningStrategies();
-		setPredominantJoiningStrategy(calculatePredominantJoiningStrategy());
+		setPredominantJoiningStrategy();
 	}
 	
 	protected abstract void updateJoiningStrategies();

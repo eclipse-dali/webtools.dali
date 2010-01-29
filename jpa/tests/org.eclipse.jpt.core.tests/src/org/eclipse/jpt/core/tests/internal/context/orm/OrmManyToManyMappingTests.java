@@ -30,16 +30,19 @@ import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -68,6 +71,28 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 				sb.append("    @Id").append(CR);				
 			}
 		});
+	}
+	
+	private void createTestEntityWithManyToManyMapping() throws Exception {
+		createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ManyToMany").append(CR);
+			}
+		});
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.makeSpecified();
+		}
 	}
 	
 	private ICompilationUnit createTestEntityWithValidManyToManyMapMapping() throws Exception {
@@ -374,6 +399,76 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		strategy.setMappedByAttribute(null);
 		assertNull(strategy.getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
+	}
+	
+	public void testModifyPredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToManyMapping();
+		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmManyToManyMapping contextMapping = (OrmManyToManyMapping) contextAttribute.getMapping();
+		OrmManyToManyRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlManyToMany resourceMapping = resourceEntity.getAttributes().getManyToManys().get(0);
+		
+		assertNull(resourceMapping.getJoinTable());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setMappedByJoiningStrategy();
+		assertNull(resourceMapping.getJoinTable());
+		assertNotNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setJoinTableJoiningStrategy();
+		assertNull(resourceMapping.getJoinTable());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+	}
+	
+	public void testUpdatePredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToManyMapping();
+		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmManyToManyMapping contextMapping = (OrmManyToManyMapping) contextAttribute.getMapping();
+		OrmManyToManyRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlManyToMany resourceMapping = resourceEntity.getAttributes().getManyToManys().get(0);
+		
+		assertNull(resourceMapping.getJoinTable());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.setMappedBy("foo");
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceMapping.getJoinTable());
+		assertNotNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceMapping.getJoinTable());
+		assertNotNull(resourceMapping.getMappedBy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.setMappedBy(null);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceMapping.getJoinTable());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceMapping.setJoinTable(null);
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceMapping.getJoinTable());
+		assertNull(resourceMapping.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
 	}
 	
 	public void testUpdateMapKey() throws Exception {

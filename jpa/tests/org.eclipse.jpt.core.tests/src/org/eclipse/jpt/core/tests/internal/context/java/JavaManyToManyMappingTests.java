@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
@@ -676,8 +677,79 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertNull(manyToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
 	}
-
-
+	
+	public void testModifyPredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
+		ManyToManyAnnotation annotation = (ManyToManyAnnotation) resourceAttribute.getAnnotation(JPA.MANY_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		ManyToManyMapping mapping = (ManyToManyMapping) contextAttribute.getMapping();
+		ManyToManyRelationshipReference relationshipReference = mapping.getRelationshipReference();
+		
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setMappedByJoiningStrategy();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setJoinTableJoiningStrategy();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+	}
+	
+	public void testUpdatePredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
+		ManyToManyAnnotation annotation = (ManyToManyAnnotation) resourceAttribute.getAnnotation(JPA.MANY_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		ManyToManyMapping mapping = (ManyToManyMapping) contextAttribute.getMapping();
+		ManyToManyRelationshipReference relationshipReference = mapping.getRelationshipReference();
+		
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		annotation.setMappedBy("foo");
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		annotation.setMappedBy(null);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+	}
+	
 	public void testCandidateMappedByAttributeNames() throws Exception {
 		createTestEntityWithValidManyToManyMapping();
 		createTestTargetEntityAddress();

@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -810,6 +811,46 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(specifiedJoinColumn.isVirtual());
 		
 		assertNull(joinColumns.getDefaultJoinColumn());
+	}
+	
+	public void testModifyPredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
+		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		ManyToOneMapping mapping = (ManyToOneMapping) contextAttribute.getMapping();
+		ManyToOneRelationshipReference relationshipReference = mapping.getRelationshipReference();
+		
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		
+		relationshipReference.setJoinColumnJoiningStrategy();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+	}
+	
+	public void testUpdatePredominantJoiningStrategy() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
+		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		ManyToOneMapping mapping = (ManyToOneMapping) contextAttribute.getMapping();
+		ManyToOneRelationshipReference relationshipReference = mapping.getRelationshipReference();
+		
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		
+		resourceAttribute.addAnnotation(JPA.JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		
+		resourceAttribute.removeAnnotation(JPA.JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
 	}
 	
 	public void testDefaultTargetEntity() throws Exception {

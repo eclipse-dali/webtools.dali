@@ -99,10 +99,12 @@ public class GenericOrmManyToOneRelationshipReference
 	
 	public void setJoinColumnJoiningStrategy() {
 		// join columns are default (only strategy in fact) so no need to add to resource
+		setPredominantJoiningStrategy();
 	}
 	
 	public void unsetJoinColumnJoiningStrategy() {
 		this.joinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
 	}
 	
 	public boolean mayHaveDefaultJoinColumn() {
