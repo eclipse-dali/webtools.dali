@@ -18,11 +18,12 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 public class GenericOrmOneToManyRelationshipReference
 	extends AbstractOrmOneToManyRelationshipReference
 {	
-	
 	public GenericOrmOneToManyRelationshipReference(
 			OrmOneToManyMapping parent, XmlOneToMany resource) {
+		
 		super(parent, resource);
 	}
+	
 	
 	@Override
 	protected JoiningStrategy calculatePredominantJoiningStrategy() {
@@ -31,5 +32,4 @@ public class GenericOrmOneToManyRelationshipReference
 		}
 		return this.joinTableJoiningStrategy;
 	}
-	
 }
