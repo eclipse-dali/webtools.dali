@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ public class GenericClassRef
 	implements ClassRef
 {
 	// this is null for an "implied" class ref
-	protected XmlJavaClassRef xmlJavaClassRef;
+	protected final XmlJavaClassRef xmlJavaClassRef;
 
 	protected String className;
 
@@ -65,11 +65,11 @@ public class GenericClassRef
 
 	protected GenericClassRef(PersistenceUnit parent, XmlJavaClassRef classRef, String className) {
 		super(parent);
-		this.initialize(classRef, className);
+		this.xmlJavaClassRef = classRef;
+		this.initialize(className);
 	}
 
-	protected void initialize(XmlJavaClassRef classRef, String typeName) {
-		this.xmlJavaClassRef = classRef;
+	protected void initialize(String typeName) {
 		this.className = typeName;
 		this.javaPersistentType = this.buildJavaPersistentType();
 	}
@@ -77,6 +77,10 @@ public class GenericClassRef
 	@Override
 	public PersistenceUnit getParent() {
 		return (PersistenceUnit) super.getParent();
+	}
+	
+	public XmlJavaClassRef getResourceClassRef() {
+		return this.xmlJavaClassRef;
 	}
 
 
@@ -196,16 +200,11 @@ public class GenericClassRef
 
 	// ********** updating **********
 
-	public void update(XmlJavaClassRef classRef) {
-		this.update(classRef, classRef.getJavaClass());
+	public void update() {
+		this.update(this.xmlJavaClassRef.getJavaClass());
 	}
 
 	public void update(String typeName) {
-		this.update(null, typeName);
-	}
-
-	protected void update(XmlJavaClassRef classRef, String typeName) {
-		this.xmlJavaClassRef = classRef;
 		this.setClassName_(typeName);
 		this.updateJavaPersistentType();
 	}

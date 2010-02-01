@@ -749,13 +749,17 @@ public abstract class AbstractPersistenceUnit
 		this.fireItemRemoved(SPECIFIED_CLASS_REFS_LIST, index, classRef);
 	}
 
-	protected void addSpecifiedClassRef_(ClassRef classRef) {
-		this.addItemToList(classRef, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
+	protected void addSpecifiedClassRef_(int index, ClassRef classRef) {
+		this.addItemToList(index, classRef, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
 	}
 
 	protected void removeSpecifiedClassRef_(ClassRef classRef) {
 		classRef.dispose();
 		this.removeItemFromList(classRef, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
+	}
+
+	private void moveSpecifiedClassRef_(int index, ClassRef classRef) {
+		this.moveItemInList(index, this.specifiedClassRefs.indexOf(classRef), this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
 	}
 
 	protected void initializeSpecifiedClassRefs() {
@@ -770,19 +774,35 @@ public abstract class AbstractPersistenceUnit
 	 * with 'impliedClassRefs'.
 	 */
 	protected void updateSpecifiedClassRefs() {
-		// make a copy of the XML class refs (to prevent ConcurrentModificationException)
-		Iterator<XmlJavaClassRef> xmlClassRefs = new CloneIterator<XmlJavaClassRef>(this.xmlPersistenceUnit.getClasses());
+		HashBag<ClassRef> contextClassRefsToRemove = CollectionTools.bag(this.specifiedClassRefs(), this.specifiedClassRefsSize());
+		ArrayList<ClassRef> contextClassRefsToUpdate = new ArrayList<ClassRef>(this.specifiedClassRefsSize());
+		int resourceIndex = 0;
 
-		for (ClassRef contextClassRef : this.getSpecifiedClassRefs()) {
-			if (xmlClassRefs.hasNext()) {
-				contextClassRef.update(xmlClassRefs.next());
-			} else {
-				this.removeSpecifiedClassRef_(contextClassRef);
+		for (Iterator<XmlJavaClassRef> xmlClassRefs = new CloneIterator<XmlJavaClassRef>(this.xmlPersistenceUnit.getClasses()); xmlClassRefs.hasNext(); ) {
+			XmlJavaClassRef resourceClassRef = xmlClassRefs.next();
+			boolean match = false;
+			for (Iterator<ClassRef> contextClassRefs = contextClassRefsToRemove.iterator(); contextClassRefs.hasNext(); ) {
+				ClassRef contextClassRef = contextClassRefs.next();
+				if (contextClassRef.getResourceClassRef() == resourceClassRef) {
+					this.moveSpecifiedClassRef_(resourceIndex, contextClassRef);
+					contextClassRefs.remove();
+					contextClassRefsToUpdate.add(contextClassRef);
+					match = true;
+					break;
+				}
 			}
+			if ( ! match) {
+				this.addSpecifiedClassRef_(resourceIndex, this.buildClassRef(resourceClassRef));
+			}
+			resourceIndex++;
 		}
-
-		while (xmlClassRefs.hasNext()) {
-			this.addSpecifiedClassRef_(this.buildClassRef(xmlClassRefs.next()));
+		for (ClassRef contextClassRef : contextClassRefsToRemove) {
+			this.removeSpecifiedClassRef_(contextClassRef);
+		}
+		// handle adding and removing class refs first, update the
+		// remaining class refs last; this reduces the churn during "update"
+		for (ClassRef contextClassRef : contextClassRefsToUpdate) {
+			contextClassRef.update();
 		}
 	}
 

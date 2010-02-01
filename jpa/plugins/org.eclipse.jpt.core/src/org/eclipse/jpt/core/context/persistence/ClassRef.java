@@ -43,6 +43,7 @@ public interface ClassRef
 	 */
 	boolean isVirtual();
 	
+	XmlJavaClassRef getResourceClassRef();
 	
 	// **************** class name *********************************************
 	
@@ -83,7 +84,7 @@ public interface ClassRef
 	 * Update the ClassRef context model object to match the XmlJavaClassRef 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(XmlJavaClassRef classRef);
+	void update();
 	
 	/**
 	 * Update the ClassRef context model object to match the className. This is used
