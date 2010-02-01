@@ -167,7 +167,6 @@ public class PackageGenerator2 {
 				}
 			}
 		});
-		System.out.println("Workspace Job is still running");
 	}
 
 	private File prepareTemplatesFolder() throws IOException, Exception,
