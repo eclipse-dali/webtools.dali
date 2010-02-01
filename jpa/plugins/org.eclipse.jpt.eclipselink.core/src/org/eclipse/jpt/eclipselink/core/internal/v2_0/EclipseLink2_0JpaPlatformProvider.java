@@ -34,7 +34,6 @@ import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -48,6 +47,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDe
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1Definition;
 import org.eclipse.jpt.eclipselink.core.internal.v1_2.context.orm.EclipseLinkOrmXml1_2Definition;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkIdMappingDefinition2_0;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm.EclipseLinkOrmXml2_0Definition;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLink2_0PersistenceXmlDefinition;
 
@@ -145,13 +145,13 @@ public class EclipseLink2_0JpaPlatformProvider
 	@Override
 	protected JavaAttributeMappingDefinition[] buildNonNullSpecifiedJavaAttributeMappingDefinitions() {
 		// order determined by analyzing order that eclipselink uses
-		// NOTE: no new attribute mappings from eclipselink 1.0 to 1.1
+		// NOTE: no new attribute mappings from eclipselink 1.0 to 2.0
 		return new JavaAttributeMappingDefinition[] {
 			JavaTransientMappingDefinition.instance(),
 			JavaEclipseLinkBasicCollectionMappingDefinition.instance(),
 			JavaEclipseLinkBasicMapMappingDefinition.instance(),
 			JavaElementCollectionMappingDefinition2_0.instance(),
-			JavaIdMappingDefinition2_0.instance(),
+			JavaEclipseLinkIdMappingDefinition2_0.instance(),
 			JavaVersionMappingDefinition.instance(),
 			JavaBasicMappingDefinition.instance(),
 			JavaEmbeddedMappingDefinition.instance(),

@@ -29,8 +29,16 @@ import org.eclipse.swt.graphics.Image;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappingUiDefinition<T> {
-
+public interface MappingUiDefinition<T>
+{
+	/**
+	 * Returns a unique string that corresponds to the key of the mapping in the
+	 * core (JavaAttributeMappingDefinition and/or OrmAttributeMappingProvider).
+	 *
+	 * @return The key representing the mapping
+	 */
+	String getKey();
+	
 	/**
 	 * Returns a human readable text of the mapping type.
 	 *
@@ -50,12 +58,4 @@ public interface MappingUiDefinition<T> {
 	 * is required
 	 */
 	Image getImage();
-
-	/**
-	 * Returns a unique string that corresponds to the key of the mapping in the
-	 * core (JavaAttributeMappingDefinition and/or OrmAttributeMappingProvider).
-	 *
-	 * @return The key representing the mapping
-	 */
-	String getKey();
 }

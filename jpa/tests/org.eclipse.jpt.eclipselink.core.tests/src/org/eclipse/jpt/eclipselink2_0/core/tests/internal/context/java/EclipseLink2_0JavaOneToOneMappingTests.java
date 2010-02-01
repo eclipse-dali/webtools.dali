@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -368,7 +367,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
-		assertTrue(contextAttribute.getMapping() instanceof JavaIdMapping);
+		assertTrue(contextAttribute.getMapping() instanceof JavaOneToOneMapping2_0);
 		
 		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
