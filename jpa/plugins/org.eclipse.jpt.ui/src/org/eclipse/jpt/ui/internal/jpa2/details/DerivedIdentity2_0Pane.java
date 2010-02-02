@@ -23,12 +23,12 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-public class DerivedIdentity2_0Pane<T extends DerivedIdentity2_0>
-	extends Pane<T>
+public class DerivedIdentity2_0Pane
+	extends Pane<DerivedIdentity2_0>
 {
 	public DerivedIdentity2_0Pane(
 			Pane<?> parentPane, 
-			PropertyValueModel<T> subjectHolder, 
+			PropertyValueModel<? extends DerivedIdentity2_0> subjectHolder, 
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
