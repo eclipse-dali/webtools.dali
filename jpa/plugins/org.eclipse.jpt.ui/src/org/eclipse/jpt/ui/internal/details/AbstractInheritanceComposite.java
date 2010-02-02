@@ -179,7 +179,8 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 			public String convertToString(String value) {
 
 				if (getSubject() == null) {
-					return null;
+					//this is part of a list given to a combo, combos don't take kindly to null
+					return JptUiDetailsMessages.NoneSelected;
 				}
 
 				if (value == null) {
