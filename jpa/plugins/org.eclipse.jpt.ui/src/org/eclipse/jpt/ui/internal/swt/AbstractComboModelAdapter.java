@@ -410,7 +410,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	 * The model has changed - synchronize the combo.
 	 */
 	protected void listChanged(ListChangeEvent event) {
-		this.synchronizeComboItems();
+		this.synchronizeCombo();
 	}
 
 	// minimized scope of suppressed warnings
