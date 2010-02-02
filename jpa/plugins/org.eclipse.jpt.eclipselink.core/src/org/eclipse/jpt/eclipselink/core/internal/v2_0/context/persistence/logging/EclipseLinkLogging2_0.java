@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.loggi
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.logging.Logging2_0;
@@ -36,7 +36,7 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 	private LoggingLevel categoriesDefaultValue;
 	
 	// ********** constructors **********
-	public EclipseLinkLogging2_0(PersistenceUnit parent) {
+	public EclipseLinkLogging2_0(PersistenceUnit2_0 parent) {
 		super(parent);
 	}
 
@@ -89,6 +89,7 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 
 	// ********** behavior **********
 	
+	@Override
 	public void propertyValueChanged(String propertyName, String newValue) {
 		super.propertyValueChanged(propertyName, newValue);
 		

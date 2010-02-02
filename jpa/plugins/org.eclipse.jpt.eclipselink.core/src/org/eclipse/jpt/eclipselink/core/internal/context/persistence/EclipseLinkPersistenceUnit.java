@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.persistence.EclipseLinkPersistenceXmlContextNodeFactory;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
@@ -34,7 +35,6 @@ import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeListIterable;
@@ -64,6 +64,11 @@ public class EclipseLinkPersistenceUnit
 	// ********** constructors/initialization **********
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
+	}
+
+	@Override
+	public EclipseLinkPersistenceXmlContextNodeFactory getContextNodeFactory() {
+		return (EclipseLinkPersistenceXmlContextNodeFactory) super.getContextNodeFactory();
 	}
 
 	@Override
@@ -195,7 +200,7 @@ public class EclipseLinkPersistenceUnit
 	}
 	
 	protected Logging buildEclipseLinkLogging() {
-		return new EclipseLinkLogging(this);
+		return (Logging) this.getContextNodeFactory().buildLogging(this);
 	}
 	
 	protected Options buildEclipseLinkOptions() {

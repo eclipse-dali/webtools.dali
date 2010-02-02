@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.EclipseLink2_0PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.logging.Logging2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiFactory;
@@ -76,7 +75,7 @@ public class EclipseLink2_0PersistenceXmlUiFactory extends EclipseLinkPersistenc
 			@Override
 			protected Logging2_0 transform_(EclipseLinkPersistenceUnit value) {
 
-				return (Logging2_0) ((EclipseLink2_0PersistenceUnit)value).getLogging();
+				return (Logging2_0) value.getLogging();
 			}
 		};
 	}

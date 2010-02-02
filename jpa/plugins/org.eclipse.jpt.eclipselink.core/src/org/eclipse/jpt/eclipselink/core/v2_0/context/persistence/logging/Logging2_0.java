@@ -16,7 +16,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel
  */
 public interface Logging2_0 extends Logging
 {
-	public static final String CATEGORY_PREFIX_ = "eclipselink.logging.level.";
+	public static final String CATEGORY_PREFIX_ = "eclipselink.logging.level."; //$NON-NLS-1$
 
 	LoggingLevel getCategoriesDefaultLevel();
 	LoggingLevel getLevel(String category);

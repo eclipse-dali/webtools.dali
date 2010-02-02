@@ -17,10 +17,13 @@ import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlC
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 
 
-public class EclipseLinkPersistenceXmlContextNodeFactory extends AbstractPersistenceXmlContextNodeFactory
+public class EclipseLinkPersistenceXmlContextNodeFactory
+	extends AbstractPersistenceXmlContextNodeFactory
+		implements org.eclipse.jpt.eclipselink.core.context.persistence.EclipseLinkPersistenceXmlContextNodeFactory
 {
 	
 	@Override
@@ -39,5 +42,9 @@ public class EclipseLinkPersistenceXmlContextNodeFactory extends AbstractPersist
 	
 	public PersistenceUnitProperties buildOptions(PersistenceUnit parent) {
 		return new EclipseLinkOptions(parent);
+	}
+	
+	public PersistenceUnitProperties buildLogging(PersistenceUnit parent) {
+		return new EclipseLinkLogging(parent);
 	}
 }
