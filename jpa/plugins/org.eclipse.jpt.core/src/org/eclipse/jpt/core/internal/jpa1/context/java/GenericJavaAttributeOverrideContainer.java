@@ -56,7 +56,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		this.virtualAttributeOverrides = new ArrayList<JavaAttributeOverride>();
 	}
 
-	public Owner getOwner() {
+	protected Owner getOwner() {
 		return this.owner;
 	}
 	
@@ -355,7 +355,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourcePersistentMember.getTextRange(astRoot);
+		return getOwner().getValidationTextRange(astRoot);
 	}
 
 	

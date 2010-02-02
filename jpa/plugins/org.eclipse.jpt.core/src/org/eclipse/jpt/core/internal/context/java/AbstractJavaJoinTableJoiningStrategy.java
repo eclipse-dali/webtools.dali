@@ -80,7 +80,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	}
 			
 	public void initializeFrom(JoinTableJoiningStrategy oldStrategy) {
-		JoinTable oldJoinTable = (oldStrategy.getJoinTable());
+		JoinTable oldJoinTable = oldStrategy.getJoinTable();
 		if (oldJoinTable != null) {
 			this.addStrategy();
 			this.getJoinTable().setSpecifiedCatalog(oldJoinTable.getSpecifiedCatalog());

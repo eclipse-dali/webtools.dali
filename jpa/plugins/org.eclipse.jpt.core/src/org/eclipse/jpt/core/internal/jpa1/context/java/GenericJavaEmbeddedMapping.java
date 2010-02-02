@@ -15,7 +15,6 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -27,6 +26,7 @@ import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -176,7 +176,7 @@ public class GenericJavaEmbeddedMapping
 	
 	// ********** association override container owner **********
 
-	class AssociationOverrideContainerOwner implements AssociationOverrideContainer.Owner {
+	class AssociationOverrideContainerOwner implements JavaAssociationOverrideContainer.Owner {
 		
 		public TypeMapping getOverridableTypeMapping() {
 			return GenericJavaEmbeddedMapping.this.getOverridableTypeMapping();
@@ -204,6 +204,10 @@ public class GenericJavaEmbeddedMapping
 		
 		public String getDefaultTableName() {
 			return getTypeMapping().getPrimaryTableName();
+		}
+		
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaEmbeddedMapping.this.getValidationTextRange(astRoot);
 		}
 	}
 

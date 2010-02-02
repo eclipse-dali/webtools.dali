@@ -17,10 +17,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
@@ -1614,7 +1612,7 @@ public abstract class AbstractJavaEntity
 	
 	// ********** association override container owner **********
 
-	class AssociationOverrideContainerOwner implements AssociationOverrideContainer.Owner {
+	class AssociationOverrideContainerOwner implements JavaAssociationOverrideContainer.Owner {
 		
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractJavaEntity.this.getOverridableTypeMapping();
@@ -1643,11 +1641,15 @@ public abstract class AbstractJavaEntity
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
+		
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
+		}
 	}
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner implements AttributeOverrideContainer.Owner {
+	class AttributeOverrideContainerOwner implements JavaAttributeOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractJavaEntity.this.getOverridableTypeMapping();
 		}
@@ -1674,6 +1676,10 @@ public abstract class AbstractJavaEntity
 		
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
+		}
+		
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
 		}
 	}
 	

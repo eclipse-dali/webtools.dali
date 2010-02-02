@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -23,9 +22,9 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 public class NullJavaAssociationOverrideContainer extends AbstractJavaJpaContextNode
 	implements JavaAssociationOverrideContainer
 {
-	protected final AssociationOverrideContainer.Owner owner;
+	protected final JavaAssociationOverrideContainer.Owner owner;
 	
-	public NullJavaAssociationOverrideContainer(JavaJpaContextNode parent, AssociationOverrideContainer.Owner owner) {
+	public NullJavaAssociationOverrideContainer(JavaJpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}
@@ -38,7 +37,7 @@ public class NullJavaAssociationOverrideContainer extends AbstractJavaJpaContext
 		// no-op
 	}
 	
-	public Owner getOwner() {
+	protected Owner getOwner() {
 		return this.owner;
 	}
 

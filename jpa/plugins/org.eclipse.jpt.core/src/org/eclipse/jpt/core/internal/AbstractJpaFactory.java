@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -330,11 +329,11 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaAttributeOverrideContainer(parent, owner);
 	}
 	
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent, AssociationOverrideContainer.Owner owner) {
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
 	}
 	
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, AssociationOverrideContainer.Owner owner) {
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner) {
 		return new NullJavaAssociationOverrideContainer(parent, owner);
 	}
 	

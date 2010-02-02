@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.jpa2;
 
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -59,7 +58,7 @@ public interface JpaFactory2_0
 	// ********** Java Context Model **********
 	
 	//overloaded because the 2.0 JPA spec supports association overrides on an embedded mapping while the 1.0 spec did not
-	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, AssociationOverrideContainer.Owner owner);
+	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner);
 	
 	JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent);
 	

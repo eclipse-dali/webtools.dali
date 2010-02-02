@@ -66,7 +66,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		}
 	}
 
-	public Owner getOwner() {
+	protected Owner getOwner() {
 		return this.owner;
 	}
 	

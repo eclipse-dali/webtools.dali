@@ -58,7 +58,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 		this.initializeVirtualAssociationOverrides();
 	}
 
-	public Owner getOwner() {
+	protected Owner getOwner() {
 		return this.owner;
 	}
 	

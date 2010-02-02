@@ -12,9 +12,7 @@ package org.eclipse.jpt.core;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -204,11 +202,11 @@ public interface JpaFactory
 	
 	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner);
 	
-	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent, AttributeOverrideContainer.Owner owner);
+	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent, JavaAttributeOverrideContainer.Owner owner);
 
 	JavaAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverride.Owner owner);
 	
-	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent, AssociationOverrideContainer.Owner owner);
+	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent, JavaAssociationOverrideContainer.Owner owner);
 
 	JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverride.Owner owner);
 	

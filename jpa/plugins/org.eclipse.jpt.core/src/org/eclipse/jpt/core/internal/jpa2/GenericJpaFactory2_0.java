@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer.Owner;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
@@ -110,7 +109,7 @@ public class GenericJpaFactory2_0
 	
 	//The 2.0 JPA spec supports association overrides on an embedded mapping while the 1.0 spec did not
 	@Override
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, Owner owner) {
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner) {
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
 	}
 	

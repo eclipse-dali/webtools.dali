@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -959,7 +957,7 @@ public class GenericJavaElementCollectionMapping2_0
 
 	// ********** association override container owner **********
 
-	class AssociationOverrideContainerOwner implements AssociationOverrideContainer.Owner {
+	class AssociationOverrideContainerOwner implements JavaAssociationOverrideContainer.Owner {
 		
 		public TypeMapping getOverridableTypeMapping() {
 			return GenericJavaElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
@@ -992,11 +990,15 @@ public class GenericJavaElementCollectionMapping2_0
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
 		}
+
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
+		}
 	}
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner implements AttributeOverrideContainer.Owner {
+	class AttributeOverrideContainerOwner implements JavaAttributeOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
 			return GenericJavaElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
 		}
@@ -1027,6 +1029,10 @@ public class GenericJavaElementCollectionMapping2_0
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
 			return false;
+		}
+		
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
 		}
 	}
 }

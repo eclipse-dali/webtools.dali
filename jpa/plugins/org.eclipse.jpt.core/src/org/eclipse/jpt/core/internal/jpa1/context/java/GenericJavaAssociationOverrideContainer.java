@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
@@ -45,20 +44,20 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 {
 	protected JavaResourcePersistentMember javaResourcePersistentMember;
 
-	protected final AssociationOverrideContainer.Owner owner;
+	protected final JavaAssociationOverrideContainer.Owner owner;
 	
 	protected final List<JavaAssociationOverride> specifiedAssociationOverrides;
 
 	protected final List<JavaAssociationOverride> virtualAssociationOverrides;
 	
-	public GenericJavaAssociationOverrideContainer(JavaJpaContextNode parent, AssociationOverrideContainer.Owner owner) {
+	public GenericJavaAssociationOverrideContainer(JavaJpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
 		super(parent);
 		this.owner = owner;
 		this.specifiedAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 	}
 
-	public Owner getOwner() {
+	protected Owner getOwner() {
 		return this.owner;
 	}
 
@@ -369,7 +368,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourcePersistentMember.getTextRange(astRoot);
+		return getOwner().getValidationTextRange(astRoot);
 	}
 
 	
