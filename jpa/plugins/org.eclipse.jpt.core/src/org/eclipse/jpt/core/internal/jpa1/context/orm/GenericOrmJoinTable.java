@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -417,12 +417,16 @@ public class GenericOrmJoinTable
 		}
 
 		public String getAttributeName() {
-			Entity targetEntity = GenericOrmJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
+			RelationshipMapping relationshipMapping = GenericOrmJoinTable.this.getRelationshipMapping();
+			if (relationshipMapping == null) {
+				return null;
+			}
+			Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 			if (targetEntity == null) {
 				return null;
 			}
 			for (PersistentAttribute each : CollectionTools.iterable(targetEntity.getPersistentType().allAttributes())) {
-				if (each.getMapping().isOwnedBy(getRelationshipMapping())) {
+				if (each.getMapping().isOwnedBy(relationshipMapping)) {
 					return each.getName();
 				}
 			}
@@ -466,11 +470,13 @@ public class GenericOrmJoinTable
 		}
 
 		public Entity getTargetEntity() {
-			return GenericOrmJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
+			RelationshipMapping relationshipMapping = GenericOrmJoinTable.this.getRelationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
 
 		public String getAttributeName() {
-			return GenericOrmJoinTable.this.getRelationshipMapping().getName();
+			RelationshipMapping relationshipMapping = GenericOrmJoinTable.this.getRelationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getName();
 		}
 
 		@Override

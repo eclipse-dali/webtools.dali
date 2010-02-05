@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,12 +21,14 @@ import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.LockModeType_2_0;
@@ -37,7 +39,10 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -273,7 +278,6 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
 	}
-
 	
 	private LockModeType_2_0 lockModeOf(XmlNamedQuery resourceQuery) {
 		return resourceQuery == null ? null : LockModeType_2_0.fromOrmResourceModel(resourceQuery.getLockMode());
@@ -1744,5 +1748,35 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		javaCacheable.setSpecifiedCacheable(Boolean.FALSE);
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
+	}
+	
+	//This is a test for bug 301892
+	public void testAssociationOverrideJoinTableUpdate() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity entity = (OrmEntity) ormPersistentType.getMapping();
+		
+		XmlEntity resourceEntity = getXmlEntityMappings().getEntities().get(0);
+		
+		XmlAssociationOverride_2_0 resourceAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
+		resourceEntity.getAssociationOverrides().add((XmlAssociationOverride) resourceAssociationOverride);
+		((XmlAssociationOverride) resourceAssociationOverride).setName("a");
+		
+		OrmAssociationOverride associationOverride = entity.getAssociationOverrideContainer().specifiedAssociationOverrides().next();
+		assertEquals("a", associationOverride.getName());
+		
+		XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
+		resourceAssociationOverride.setJoinTable(resourceJoinTable);
+		resourceJoinTable.setName("FOO");
+		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
+		resourceJoinTable.getInverseJoinColumns().add(resourceJoinColumn);
+		resourceJoinColumn.setName("BAR");
+
+		associationOverride = entity.getAssociationOverrideContainer().specifiedAssociationOverrides().next();
+		assertEquals("a", associationOverride.getName());
+		JoinTable joinTable = ((GenericOrmAssociationOverrideRelationshipReference2_0) associationOverride.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
+		assertEquals("FOO", joinTable.getSpecifiedName());
+		assertEquals("BAR", joinTable.inverseJoinColumns().next().getName());
 	}
 }

@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -35,6 +37,7 @@ import org.eclipse.jpt.core.jpa2.context.LockModeType_2_0;
 import org.eclipse.jpt.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.NamedQuery2_0Annotation;
@@ -282,6 +285,20 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
+	}
+
+	private ICompilationUnit createTestEntityWithAssociationOverride() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_TABLE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+				sb.append("@AssociationOverride(name=\"a\", joinTable=@JoinTable)");
+			}
+		});
 	}
 
 	
@@ -1827,5 +1844,26 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		cacheable.setSpecifiedCacheable(Boolean.TRUE);
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(false, cacheable.isDefaultCacheable());
+	}
+	
+	//This is a test for bug 301892
+	public void testAssociationOverrideJoinTableUpdate() throws Exception {
+		createTestEntityWithAssociationOverride();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaAssociationOverride associationOverride = getJavaEntity().getAssociationOverrideContainer().specifiedAssociationOverrides().next();
+		assertEquals("a", associationOverride.getName());
+		
+		AssociationOverride2_0Annotation annotation = (AssociationOverride2_0Annotation) getJavaPersistentType().getResourcePersistentType().getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		annotation.getJoinTable().setName("FOO");
+		annotation.getJoinTable().addInverseJoinColumn(0).setName("BAR");
+		
+		getJpaProject().synchronizeContextModel();
+
+		associationOverride = getJavaEntity().getAssociationOverrideContainer().specifiedAssociationOverrides().next();
+		assertEquals("a", associationOverride.getName());
+		JoinTable joinTable = ((GenericJavaAssociationOverrideRelationshipReference2_0) associationOverride.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
+		assertEquals("FOO", joinTable.getSpecifiedName());
+		assertEquals("BAR", joinTable.inverseJoinColumns().next().getName());
 	}
 }

@@ -398,14 +398,18 @@ public class GenericJavaJoinTable
 		}
 
 		public String getAttributeName() {
-			Entity targetEntity = GenericJavaJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
+			RelationshipMapping relationshipMapping = GenericJavaJoinTable.this.getRelationshipMapping();
+			if (relationshipMapping == null) {
+				return null;
+			}
+			Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 			if (targetEntity == null) {
 				return null;
 			}
 			for (PersistentAttribute each : 
 					CollectionTools.iterable(
 						targetEntity.getPersistentType().allAttributes())) {
-				if (each.getMapping().isOwnedBy(GenericJavaJoinTable.this.getRelationshipMapping())) {
+				if (each.getMapping().isOwnedBy(relationshipMapping)) {
 					return each.getName();
 				}
 			}
@@ -443,11 +447,13 @@ public class GenericJavaJoinTable
 		}
 
 		public Entity getTargetEntity() {
-			return GenericJavaJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
+			RelationshipMapping relationshipMapping = GenericJavaJoinTable.this.getRelationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
 
 		public String getAttributeName() {
-			return GenericJavaJoinTable.this.getRelationshipMapping().getName();
+			RelationshipMapping relationshipMapping = GenericJavaJoinTable.this.getRelationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getName();
 		}
 
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
