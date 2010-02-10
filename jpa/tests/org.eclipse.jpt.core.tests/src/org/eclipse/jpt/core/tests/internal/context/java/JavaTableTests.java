@@ -398,6 +398,7 @@ public class JavaTableTests extends ContextModelTestCase
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(2,  getJavaEntity().getTable().uniqueConstraintsSize());
 	}
 

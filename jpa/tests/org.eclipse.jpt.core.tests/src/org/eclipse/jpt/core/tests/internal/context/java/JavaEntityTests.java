@@ -839,6 +839,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((SecondaryTableAnnotation) typeResource.addAnnotation(1, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((SecondaryTableAnnotation) typeResource.addAnnotation(2, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(3, entity.secondaryTablesSize());
 	}
 	
@@ -867,6 +868,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((SecondaryTableAnnotation) typeResource.addAnnotation(1, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((SecondaryTableAnnotation) typeResource.addAnnotation(2, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(3, entity.specifiedSecondaryTablesSize());
 	}
 
@@ -3012,6 +3014,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((NamedQueryAnnotation) typeResource.addAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((NamedQueryAnnotation) typeResource.addAnnotation(2, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(3, entity.getQueryContainer().namedQueriesSize());
 	}
 	
@@ -3195,6 +3198,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((NamedNativeQueryAnnotation) typeResource.addAnnotation(1, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((NamedNativeQueryAnnotation) typeResource.addAnnotation(2, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(3, entity.getQueryContainer().namedNativeQueriesSize());
 	}
 

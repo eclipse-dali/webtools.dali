@@ -42,9 +42,8 @@ public final class AnnotationContainerTools {
 		int sourceIndex = annotationContainer.getNestedAnnotationsSize();
 		T nestedAnnotation = annotationContainer.addNestedAnnotation();
 		nestedAnnotation.newAnnotation();
-		// ...then move it to the specified index...
-		annotationContainer.moveNestedAnnotation(index, sourceIndex);
-		syncAstAnnotationsAfterMove(index, sourceIndex, annotationContainer, nestedAnnotation);
+		// ...then move it to the specified index
+		moveNestedAnnotation(index, sourceIndex, annotationContainer);
 		return nestedAnnotation;
 	}
 
@@ -55,6 +54,12 @@ public final class AnnotationContainerTools {
 	 * AST; with <em>no</em> change notification.
 	 */
 	public static <T extends NestableAnnotation> void moveNestedAnnotation(int targetIndex, int sourceIndex, AnnotationContainer<T> annotationContainer) {
+		if (targetIndex != sourceIndex) {
+			moveNestedAnnotation_(targetIndex, sourceIndex, annotationContainer);
+		}
+	}
+
+	private static <T extends NestableAnnotation> void moveNestedAnnotation_(int targetIndex, int sourceIndex, AnnotationContainer<T> annotationContainer) {
 		NestableAnnotation nestedAnnotation = annotationContainer.moveNestedAnnotation(targetIndex, sourceIndex);
 		syncAstAnnotationsAfterMove(targetIndex, sourceIndex, annotationContainer, nestedAnnotation);
 	}

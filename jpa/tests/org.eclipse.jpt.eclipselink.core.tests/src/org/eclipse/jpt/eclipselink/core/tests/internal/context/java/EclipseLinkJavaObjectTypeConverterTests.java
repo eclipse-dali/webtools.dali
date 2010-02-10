@@ -549,6 +549,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		converterAnnotation.addConversionValue(1).setDataValue("M");
 		converterAnnotation.addConversionValue(2).setDataValue("O");
 		
+		this.getJpaProject().synchronizeContextModel();
 		assertEquals(3, converter.conversionValuesSize());
 	}
 

@@ -530,7 +530,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		((NamedQuery2_0Annotation) typeResource.addAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((NamedQuery2_0Annotation) typeResource.addAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((NamedQuery2_0Annotation) typeResource.addAnnotation(2, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");
-		
+
+		this.getJpaProject().synchronizeContextModel();
 		assertEquals(3, entity.getQueryContainer().namedQueriesSize());
 	}
 	

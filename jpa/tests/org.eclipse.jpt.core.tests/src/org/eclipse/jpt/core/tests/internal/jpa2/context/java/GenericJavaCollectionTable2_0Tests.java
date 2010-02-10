@@ -529,6 +529,7 @@ public class GenericJavaCollectionTable2_0Tests extends Generic2_0ContextModelTe
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		joinTableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(2,  collectionTable.uniqueConstraintsSize());
 	}
 

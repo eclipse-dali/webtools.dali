@@ -530,6 +530,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableGeneratorAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(2,  tableGenerator.uniqueConstraintsSize());
 	}
 

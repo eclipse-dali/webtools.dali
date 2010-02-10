@@ -570,6 +570,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		secondaryTableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
 		
+		getJpaProject().synchronizeContextModel();
 		assertEquals(2,  secondaryTable.uniqueConstraintsSize());
 	}
 
