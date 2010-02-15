@@ -682,6 +682,10 @@ public abstract class AbstractJavaPersistentAttribute
 		public String getMetamodelContainerFieldMapKeyTypeName(CollectionMapping mapping) {
 			return null;
 		}
+
+		public boolean isMap() {
+			return false;
+		}
 	}
 
 	/**
@@ -706,6 +710,10 @@ public abstract class AbstractJavaPersistentAttribute
 
 		public String getMetamodelContainerFieldMapKeyTypeName(CollectionMapping mapping) {
 			return mapping.getMetamodelFieldMapKeyTypeName();
+		}
+
+		public boolean isMap() {
+			return true;
 		}
 	}
 

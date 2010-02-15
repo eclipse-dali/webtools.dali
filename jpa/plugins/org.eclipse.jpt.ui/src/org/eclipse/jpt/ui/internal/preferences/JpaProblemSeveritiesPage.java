@@ -185,6 +185,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 			JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+			JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED);
 	}
 	
 	/**
@@ -256,6 +259,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME,                                        				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,                                		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,           		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,                                		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,                            		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,      		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,      							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);

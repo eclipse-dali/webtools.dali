@@ -132,6 +132,7 @@ public interface JavaPersistentAttribute
 	interface JpaContainer {
 		String getTypeName();
 		boolean isContainer();
+		boolean isMap();
 		String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
 		String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
 		String getMetamodelContainerFieldTypeName();
@@ -150,6 +151,9 @@ public interface JavaPersistentAttribute
 				return null;
 			}
 			public boolean isContainer() {
+				return false;
+			}
+			public boolean isMap() {
 				return false;
 			}
 			public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {

@@ -800,6 +800,7 @@ public class GenericOrmElementCollectionMapping2_0
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateTargetClass(messages);
+		this.validateMapKeyClass(messages);
 		this.getOrderable().validate(messages, reporter);
 		this.getCollectionTable().validate(messages, reporter);
 		if (getValueType() == Type.BASIC_TYPE) {
@@ -830,7 +831,7 @@ public class GenericOrmElementCollectionMapping2_0
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
-						new String[] {this.getName()}, 
+						new String[0], 
 						this, 
 						this.getValidationTextRange()
 					)
@@ -865,6 +866,36 @@ public class GenericOrmElementCollectionMapping2_0
 			}
 		}
 	}
+
+	protected void validateMapKeyClass(List<IMessage> messages) {
+		if (getJavaPersistentAttribute() != null && !getJavaPersistentAttribute().getJpaContainer().isMap()) {
+			return;
+		}
+		if (getMapKeyClass() == null) {
+			if (getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+						new String[] {this.getName()}, 
+						this, 
+						this.getValidationTextRange()
+					)
+				);
+			}
+			else { 
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+						new String[0], 
+						this, 
+						this.getValidationTextRange()
+					)
+				);
+			}
+		}
+	}	
 
 	protected TextRange getTargetClassTextRange() {
 		return this.resourceAttributeMapping.getTargetClassTextRange();

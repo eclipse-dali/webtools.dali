@@ -879,6 +879,7 @@ public class GenericJavaElementCollectionMapping2_0
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.validateTargetClass(messages, astRoot);
+		this.validateMapKeyClass(messages, astRoot);
 		this.getOrderable().validate(messages, reporter, astRoot);
 		this.getCollectionTable().validate(messages, reporter, astRoot);
 		//TODO should we handle validation when the type is embeddable, but a value column is specified, or things like that if that is invalid?
@@ -898,7 +899,7 @@ public class GenericJavaElementCollectionMapping2_0
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
-					new String[] {this.getName()}, 
+					new String[0], 
 					this, 
 					this.getValidationTextRange(astRoot)
 				)
@@ -911,12 +912,29 @@ public class GenericJavaElementCollectionMapping2_0
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-						new String[] {this.getTargetClass(), this.getName()}, 
+						new String[] {this.getTargetClass()}, 
 						this, 
 						this.getTargetClassTextRange(astRoot)
 					)
 				);
 			}
+		}
+	}
+
+	protected void validateMapKeyClass(List<IMessage> messages, CompilationUnit astRoot) {
+		if (!getPersistentAttribute().getJpaContainer().isMap()) {
+			return;
+		}
+		if (this.getMapKeyClass() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+					new String[0], 
+					this, 
+					this.getValidationTextRange(astRoot)
+				)
+			);
 		}
 	}
 
