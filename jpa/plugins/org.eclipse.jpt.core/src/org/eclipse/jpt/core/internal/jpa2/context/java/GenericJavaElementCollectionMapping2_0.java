@@ -1031,7 +1031,7 @@ public class GenericJavaElementCollectionMapping2_0
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ELEMENT_COLLECTION_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
 				new String[] {column.getTable(), column.getName()}, 
 				column, 
 				textRange
@@ -1209,7 +1209,7 @@ public class GenericJavaElementCollectionMapping2_0
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ELEMENT_COLLECTION_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
 				new String[] {column.getTable(), column.getName()}, 
 				column, 
 				textRange
