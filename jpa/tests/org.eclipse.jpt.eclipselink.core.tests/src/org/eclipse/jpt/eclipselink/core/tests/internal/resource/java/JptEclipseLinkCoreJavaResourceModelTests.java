@@ -26,6 +26,7 @@ public class JptEclipseLinkCoreJavaResourceModelTests {
 		suite.addTestSuite(JoinFetchTests.class);
 		suite.addTestSuite(MutableAnnotationTests.class);
 		suite.addTestSuite(ObjectTypeConverterAnnotationTests.class);
+		suite.addTestSuite(EclipseLinkPrimaryKeyAnnotationTests.class);
 		suite.addTestSuite(PrivateOwnedTests.class);
 		suite.addTestSuite(ReadOnlyTests.class);
 		suite.addTestSuite(ReadTransformerAnnotationTests.class);

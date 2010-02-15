@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkExiste
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkJoinFetchAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkMutableAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConverterAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkPrimaryKeyAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkPrivateOwnedAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkReadOnlyAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkReadTransformerAnnotationDefinition;
@@ -68,6 +69,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 		definitions.add(EclipseLinkCustomizerAnnotationDefinition.instance());
 		definitions.add(EclipseLinkExistenceCheckingAnnotationDefinition.instance());
 		definitions.add(EclipseLinkObjectTypeConverterAnnotationDefinition.instance());
+		definitions.add(EclipseLinkPrimaryKeyAnnotationDefinition.instance());
 		definitions.add(EclipseLinkReadOnlyAnnotationDefinition.instance());
 		definitions.add(EclipseLinkStructConverterAnnotationDefinition.instance());		
 		definitions.add(EclipseLinkTypeConverterAnnotationDefinition.instance());		

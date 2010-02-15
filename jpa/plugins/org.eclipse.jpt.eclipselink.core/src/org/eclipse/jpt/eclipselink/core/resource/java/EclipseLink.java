@@ -68,6 +68,10 @@ public interface EclipseLink {
 		String OBJECT_TYPE_CONVERTER__OBJECT_TYPE = "objectType";
 		String OBJECT_TYPE_CONVERTER__CONVERSION_VALUES = "conversionValues";
 		String OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE = "defaultObjectValue";
+	String PRIMARY_KEY = PACKAGE_ + "PrimaryKey";
+		String PRIMARY_KEY__VALIDATION = "validation";
+		String PRIMARY_KEY__CACHE_KEY_TYPE = "cacheKeyType";
+		String PRIMARY_KEY__COLUMNS = "columns";
 	String PRIVATE_OWNED = PACKAGE_ + "PrivateOwned";
 	String READ_ONLY = PACKAGE_ + "ReadOnly";
 	String READ_TRANSFORMER = PACKAGE_ + "ReadTransformer";
