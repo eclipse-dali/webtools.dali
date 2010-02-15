@@ -9,20 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import java.util.ListIterator;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualMapKey;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverride;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlColumn;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOrderColumn;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
+import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualXmlElementCollection2_0 is an implementation of XmlElementCollection used when there is 
@@ -40,7 +52,11 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	
 	protected final XmlMapKeyClass mapKeyClass;
 
-	protected VirtualXmlOrderColumn orderColumn;
+	protected final VirtualXmlOrderColumn orderColumn;
+
+	protected final VirtualXmlCollectionTable collectionTable;
+
+	protected final VirtualXmlColumn valueColumn;
 
 	public VirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping) {
@@ -53,6 +69,10 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
 			this.ormTypeMapping);
+		this.collectionTable = new VirtualXmlCollectionTable(
+			this.ormTypeMapping, 
+			this.javaAttributeMapping.getCollectionTable());
+		this.valueColumn = new VirtualXmlColumn(ormTypeMapping, javaMapping.getValueColumn());
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -125,17 +145,57 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	
 	@Override
 	public XmlCollectionTable getCollectionTable() {
-		if (this.javaAttributeMapping.getCollectionTable() != null) {
-			return 	new VirtualXmlCollectionTable(
-				this.ormTypeMapping, 
-				this.javaAttributeMapping.getCollectionTable());
-		}
-		return null;
+		return this.collectionTable;
 	}
 
 	@Override
 	public void setCollectionTable(XmlCollectionTable value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	@Override
+	public XmlColumn getColumn() {
+		return this.valueColumn;
+	}
+
+	@Override
+	public void setColumn(XmlColumn newColumn) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	@Override
+	public EList<XmlAttributeOverride> getAttributeOverrides() {
+		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_OVERRIDES);
+		ListIterator<JavaAttributeOverride> javaAttributeOverrides;
+		if (!this.isOrmMetadataComplete()) {
+			javaAttributeOverrides = this.javaAttributeMapping.getValueAttributeOverrideContainer().attributeOverrides();
+		}
+		else {
+			javaAttributeOverrides = this.javaAttributeMapping.getValueAttributeOverrideContainer().virtualAttributeOverrides();
+		}
+		for (JavaAttributeOverride javaAttributeOverride : CollectionTools.iterable(javaAttributeOverrides)) {
+			XmlColumn xmlColumn = new VirtualXmlColumn(this.ormTypeMapping, javaAttributeOverride.getColumn());
+			XmlAttributeOverride xmlAttributeOverride = new VirtualXmlAttributeOverride(javaAttributeOverride.getName(), xmlColumn);
+			attributeOverrides.add(xmlAttributeOverride);
+		}
+		return attributeOverrides;
+	}
+
+	@Override
+	public EList<XmlAssociationOverride> getAssociationOverrides() {
+		EList<XmlAssociationOverride> associationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES);
+		ListIterator<JavaAssociationOverride> javaAssociationOverrides;
+		if (!this.isOrmMetadataComplete()) {
+			javaAssociationOverrides = this.javaAttributeMapping.getValueAssociationOverrideContainer().associationOverrides();
+		}
+		else {
+			javaAssociationOverrides = this.javaAttributeMapping.getValueAssociationOverrideContainer().virtualAssociationOverrides();
+		}
+		for (JavaAssociationOverride javaAssociationOverride : CollectionTools.iterable(javaAssociationOverrides)) {
+			XmlAssociationOverride xmlAssociationOverride = new VirtualXmlAssociationOverride2_0(javaAssociationOverride.getName(), this.ormTypeMapping, javaAssociationOverride.getRelationshipReference().getPredominantJoiningStrategy());
+			associationOverrides.add(xmlAssociationOverride);
+		}
+		return associationOverrides;
 	}
 
 	@Override

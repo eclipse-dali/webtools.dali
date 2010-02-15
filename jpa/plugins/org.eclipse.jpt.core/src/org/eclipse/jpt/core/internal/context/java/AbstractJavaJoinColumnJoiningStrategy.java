@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,6 @@ import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -293,88 +291,8 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (getRelationshipMapping().shouldValidateAgainstDatabase()) {
-			for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
-				validateJoinColumn(stream.next(), messages, astRoot);
-			}
+		for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
+			stream.next().validate(messages, reporter, astRoot);
 		}
 	}
-
-	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		if (joinColumn.tableNameIsInvalid()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-					new String[] {joinColumn.getTable(), joinColumn.getName()}, 
-					joinColumn,
-					joinColumn.getTableTextRange(astRoot)
-				)
-			);
-			return;
-		}
-		validateJoinColumnName(joinColumn, messages, astRoot);
-		validationJoinColumnReferencedColumnName(joinColumn, messages, astRoot);
-	}
-	
-	protected void validateJoinColumnName(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		if ( ! joinColumn.isResolved() && joinColumn.getDbTable() != null) {
-			if (joinColumn.getName() != null) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn,
-						joinColumn.getNameTextRange(astRoot)
-					)
-				);
-			}
-			else if (this.joinColumnsSize() > 1) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-							joinColumn,
-							joinColumn.getNameTextRange(astRoot)
-						)
-					);
-			}
-			//If the name is null and there is only one join-column, one of these validation messages will apply
-			// 1. target entity does not have a primary key
-			// 2. target entity is not specified
-			// 3. target entity is not an entity
-		}
-	}
-	
-	protected void validationJoinColumnReferencedColumnName(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		if ( ! joinColumn.isReferencedColumnResolved() && joinColumn.getReferencedColumnDbTable() != null) {
-			if (joinColumn.getReferencedColumnName() != null) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn,
-						joinColumn.getReferencedColumnNameTextRange(astRoot)
-					)
-				);
-			}
-			else if (this.joinColumnsSize() > 1) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-							joinColumn,
-							joinColumn.getReferencedColumnNameTextRange(astRoot)
-						)
-					);
-			}
-			//If the referenced column name is null and there is only one join-column, one of these validation messages will apply
-			// 1. target entity does not have a primary key
-			// 2. target entity is not specified
-			// 3. target entity is not an entity			
-		}
-	}
-
 }

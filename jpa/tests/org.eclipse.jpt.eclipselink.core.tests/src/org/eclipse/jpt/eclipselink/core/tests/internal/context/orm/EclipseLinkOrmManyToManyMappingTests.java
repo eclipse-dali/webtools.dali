@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -215,10 +215,10 @@ public class EclipseLinkOrmManyToManyMappingTests
 		assertEquals(true, oneToMany.getPersistentAttribute().isVirtual());
 		ormJoinTable = oneToMany.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals("Department_Employee", ormJoinTable.getName());
-		assertEquals("Department_id", ormJoinTable.specifiedJoinColumns().next().getName());
-		assertEquals("id", ormJoinTable.specifiedJoinColumns().next().getReferencedColumnName());
-		assertEquals("employees_empId", ormJoinTable.specifiedInverseJoinColumns().next().getName());
-		assertEquals("empId", ormJoinTable.specifiedInverseJoinColumns().next().getReferencedColumnName());
+		assertEquals("Department_id", ormJoinTable.getDefaultJoinColumn().getName());
+		assertEquals("id", ormJoinTable.getDefaultJoinColumn().getReferencedColumnName());
+		assertEquals("employees_empId", ormJoinTable.getDefaultInverseJoinColumn().getName());
+		assertEquals("empId", ormJoinTable.getDefaultInverseJoinColumn().getReferencedColumnName());
 		
 		//set metadata-complete to false, add mapping to orm.xml verify JoinTable info is not taken from the java
 		departmentPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.FALSE);

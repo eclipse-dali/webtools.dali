@@ -75,6 +75,10 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return this.getJavaPersistentAttribute().getResourcePersistentAttribute();
 	}
 
+	public boolean isVirtual() {
+		return getPersistentAttribute().isVirtual();
+	}
+
 	public String getName() {
 		return this.name;
 	}

@@ -10,7 +10,9 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -90,5 +92,16 @@ public interface BaseOverride extends JpaContextNode
 		 * Return the name of the table which the column belongs to by default
 		 */
 		String getDefaultTableName();
+
+		/**
+		 * 
+		 */
+		IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange);
+
+		/**
+		 * Return a validation message for the column's name not resolving on the 
+		 * table either specified or default. Use the given text range in the message
+		 */
+		IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange);
 	}
 }

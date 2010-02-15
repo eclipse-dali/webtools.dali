@@ -177,8 +177,14 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 				parent, JptUiValidationPreferenceMessages.MAPS_ID_VALUE_INVALID,
 				JpaValidationMessages.MAPS_ID_VALUE_INVALID);
 		addLabeledCombo(
-				parent, JptUiValidationPreferenceMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
-				JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED);
+			parent, JptUiValidationPreferenceMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
+			JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
+			JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+			JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
 	}
 	
 	/**
@@ -218,33 +224,52 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.IMPLIED_ASSOCIATION_CATEGORY);
 
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,                  JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,                   JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME, JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,                   JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME, 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME, 				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, 		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE, 			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
 	}
 
 	private void addImpliedAttributeCategory(Composite parent) {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.IMPLIED_ATTRIBUTE_CATEGORY);
 
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,                                       JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,                                        JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,                                          JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,                                             JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,                                    JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,                                              JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,                                     JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,                                        JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,                                         JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,                   JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,                       JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,                                      JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,                                           JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG,                                 JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA,                                  JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME,                                    JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME,                                        JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,                                      	 			JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,                                       				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,                                          				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,                  		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,                                              				JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,                                    	 		JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,                                  		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,                                        				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,                                         				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,                   		JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,                       				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,		 	JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,                                      				JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,                                           				JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG,                                 				JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA,                                  				JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME,                                    				JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME,                                        				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,                                		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,           		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,                            		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,      		JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,      							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE,      									JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,      									JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE,      							JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME,      											JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,      				JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,      						JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME, 														JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME, 									JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE, 					JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE, 			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
 	}
 
 	private void addInheritanceStrategoryCategory(Composite parent) {
@@ -314,28 +339,53 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.PHYSICAL_MAPPING_CATEGORY);
 
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_CATALOG,                                            JpaValidationMessages.TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_SCHEMA,                                             JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_NAME,                                               JpaValidationMessages.TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,                                  JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,                                   JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.SECONDARY_TABLE_UNRESOLVED_NAME,                                     JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_TABLE_UNRESOLVED_CATALOG,                                       JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,                                        JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_TABLE_UNRESOLVED_NAME,                                          JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_UNRESOLVED_TABLE,                                             JpaValidationMessages.COLUMN_UNRESOLVED_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_UNRESOLVED_NAME,                                              JpaValidationMessages.COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_UNRESOLVED_TABLE,                                        JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_UNRESOLVED_NAME,                                         JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,                   JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,                       JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,                             JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,           JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG,                                 JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA,                                  JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_NAME,                                    JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ORDER_COLUMN_UNRESOLVED_NAME,                                        JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_CATALOG,                                            					JpaValidationMessages.TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_SCHEMA,                                             					JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_NAME,                                               					JpaValidationMessages.TABLE_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,                                  					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,                                   					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.SECONDARY_TABLE_UNRESOLVED_NAME,                                     					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_TABLE_UNRESOLVED_CATALOG,                                       					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,                                        					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_TABLE_UNRESOLVED_NAME,                                          					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,                                      			JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_UNRESOLVED_TABLE,                                             					JpaValidationMessages.COLUMN_UNRESOLVED_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_UNRESOLVED_NAME,                                              					JpaValidationMessages.COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,                    JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,                                    JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE,                                  		JpaValidationMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,                                  		JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_UNRESOLVED_NAME,                                         					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,                   			JpaValidationMessages.JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,                       					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, 			JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE,                                  JpaValidationMessages.INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_NAME,                                         			JpaValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,                   	JpaValidationMessages.INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,                       			JpaValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, 	JpaValidationMessages.INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,                            	 				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,                 JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,           					JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG,                                					JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA,                                 		 			JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLLECTION_TABLE_UNRESOLVED_NAME,                                    					JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ORDER_COLUMN_UNRESOLVED_NAME,                                        					JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,                                      JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,                JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,                					JpaValidationMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,                   							JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME, 							JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY, 							JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, 				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME, 										JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME, 					JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, 		JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS, JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE, 				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE, 		JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE);
 	}
 
 	private void addProjectLevelCategory(Composite parent) {

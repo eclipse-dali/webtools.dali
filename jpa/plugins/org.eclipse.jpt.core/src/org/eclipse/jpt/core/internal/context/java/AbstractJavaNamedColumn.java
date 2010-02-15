@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -23,6 +24,8 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> extends AbstractJavaJpaContextNode
@@ -195,5 +198,26 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
+	}
+
+
+	// ****************** validation ****************
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = getResourceColumn().getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
+	}
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateName(messages, astRoot);
+	}
+
+	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
+		Table dbTable = this.getDbTable();
+		if (dbTable != null && !this.isResolved()) {
+			messages.add(this.getOwner().buildUnresolvedNameMessage(this, this.getNameTextRange(astRoot)));
+		}
 	}
 }

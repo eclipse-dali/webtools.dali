@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -282,14 +282,20 @@ public abstract class GenericOrmReferenceTable
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		boolean continueValidating = true;
 		if (this.shouldValidateAgainstDatabase()) {
-			this.validateAgainstDatabase(messages, reporter);
+			continueValidating = this.validateAgainstDatabase(messages, reporter);
+		}
+		//join column validation will handle the check for whether to validate against the database
+		//some validation messages are not database specific. If the database validation for the
+		//table fails we will stop there and not validate the join columns at all
+		if (continueValidating) {
+			this.validateJoinColumns(messages, reporter);
 		}
 	}
-	
 	protected abstract boolean shouldValidateAgainstDatabase();
 	
-	protected void validateAgainstDatabase(List<IMessage> messages, IReporter reporter) {
+	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter) {
 		PersistentAttribute persistentAttribute = this.getPersistentAttribute();
 		if ( ! this.hasResolvedCatalog()) {
 			if (persistentAttribute.isVirtual()) {
@@ -302,7 +308,6 @@ public abstract class GenericOrmReferenceTable
 						this.getCatalogTextRange()
 					)
 				);
-
 			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -314,7 +319,7 @@ public abstract class GenericOrmReferenceTable
 					)
 				);
 			}
-			return;
+			return false;
 		}
 
 		if ( ! this.hasResolvedSchema()) {
@@ -339,7 +344,7 @@ public abstract class GenericOrmReferenceTable
 					)
 				);
 			}
-			return;
+			return false;
 		}
 		if ( ! this.isResolved()) {
 			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
@@ -365,10 +370,13 @@ public abstract class GenericOrmReferenceTable
 						);
 				}
 			}
-			return;
+			return false;
 		}
+		return true;
+	}
 
-		this.validateJoinColumns(this.joinColumns(), messages, reporter);
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
+		this.validateJoinColumns(this.joinColumns(), messages, reporter);		
 	}
 
 	protected void validateJoinColumns(Iterator<OrmJoinColumn> joinColumns, List<IMessage> messages, IReporter reporter) {

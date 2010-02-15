@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,10 @@ public class GenericJavaJoinTableInAssociationOverrideJoiningStrategy2_0
 	@Override
 	public JavaAssociationOverrideRelationshipReference2_0 getRelationshipReference() {
 		return (JavaAssociationOverrideRelationshipReference2_0) super.getRelationshipReference();
+	}
+	
+	public boolean shouldValidateAgainstDatabase() {
+		return getRelationshipReference().getTypeMapping().shouldValidateAgainstDatabase();
 	}
 	
 	// **************** join table *********************************************

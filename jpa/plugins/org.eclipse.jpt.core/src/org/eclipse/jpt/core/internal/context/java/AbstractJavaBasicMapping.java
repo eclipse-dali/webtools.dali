@@ -15,9 +15,11 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
@@ -31,6 +33,7 @@ import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -278,36 +281,27 @@ public abstract class AbstractJavaBasicMapping
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.shouldValidateAgainstDatabase()) {
-			this.validateColumn(messages, astRoot);
-		}
+		this.getColumn().validate(messages, reporter, astRoot);
 		this.getConverter().validate(messages, reporter, astRoot);
 	}
-	
-	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.column.tableNameIsInvalid()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-					new String[] {this.column.getTable(), this.column.getName()}, 
-					this.column,
-					this.column.getTableTextRange(astRoot)
-				)
-			);
-			return;
-		}
-		
-		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-					new String[] {this.column.getName()}, 
-					this.column,
-					this.column.getNameTextRange(astRoot)
-				)
-			);
-		}
+
+	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+			new String[] {column.getTable(), column.getName()}, 
+			column,
+			textRange
+		);
+	}
+
+	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+			new String[] {column.getName(), column.getDbTable().getName()}, 
+			column,
+			textRange
+		);
 	}
 }

@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -109,6 +111,18 @@ public interface AttributeOverrideContainer
 		 * Return a list of table names that are valid for the overrides column, or join columns
 		 */
 		Iterator<String> candidateTableNames();		
+		
+		/**
+		 * Return a validation message for the column's table not being valid in the context.
+		 * Use the given text range in the message
+		 */
+		IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange);
+		
+		/**
+		 * Return a validation message for the column's name not resolving on the 
+		 * table either specified or default. Use the given text range in the message
+		 */
+		IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange);
 	}
 
 }

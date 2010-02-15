@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -17,6 +18,8 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipRefere
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmAssociationOverride extends AbstractOrmXmlContextNode
 	implements OrmAssociationOverride
@@ -37,7 +40,12 @@ public class GenericOrmAssociationOverride extends AbstractOrmXmlContextNode
 		this.resourceAssociationOverride = xmlAssociationOverride;
 		this.name = xmlAssociationOverride.getName();
 	}
-	
+
+	@Override
+	public OrmAssociationOverrideContainer getParent() {
+		return (OrmAssociationOverrideContainer) super.getParent();
+	}
+
 	protected OrmAssociationOverrideRelationshipReference buildRelationshipReference(XmlAssociationOverride xmlAssociationOverride) {
 		return getXmlContextNodeFactory().buildOrmAssociationOverrideRelationshipReference(this, xmlAssociationOverride);
 	}
@@ -88,13 +96,23 @@ public class GenericOrmAssociationOverride extends AbstractOrmXmlContextNode
 		this.relationshipReference.update(xao);
 	}	
 
-	public TextRange getValidationTextRange() {
-		return this.resourceAssociationOverride.getValidationTextRange();
-	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
 
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.relationshipReference.validate(messages, reporter);
+	}
+
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.resourceAssociationOverride.getValidationTextRange();
+		return textRange == null ? getParent().getValidationTextRange() : textRange;
+	}
 }

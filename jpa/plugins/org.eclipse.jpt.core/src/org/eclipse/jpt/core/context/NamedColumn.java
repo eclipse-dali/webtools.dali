@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -84,6 +86,11 @@ public interface NamedColumn
 		 * Return the default column name
 		 */
 		String getDefaultColumnName();
-	}
 
+		/**
+		 * Return a validation message for the column's name not resolving on the 
+		 * table either specified or default. Use the given text range in the message
+		 */
+		IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange);
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -135,12 +135,10 @@ public class VirtualXmlColumn extends XmlColumn
 
 	@Override
 	public String getTable() {
-		if (!this.isOrmMetadataComplete()) {
-			if (this.column.getSpecifiedTable() != null) {
-				return this.column.getSpecifiedTable();
-			}	
+		if (this.isOrmMetadataComplete()) {
+			return this.column.getDefaultTable();
 		}
-		return this.ormTypeMapping.getPrimaryTableName();
+		return this.column.getTable();
 	}
 
 	@Override

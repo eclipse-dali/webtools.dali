@@ -13,7 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
@@ -29,6 +31,7 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -276,65 +279,56 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (this.shouldValidateAgainstDatabase()) {
-			this.validateColumn(messages);
-		}
+		this.getColumn().validate(messages, reporter);
 		if (this.generatedValue != null) {
 			this.generatedValue.validate(messages, reporter);
 		}
 		this.generatorContainer.validate(messages, reporter);
 	}
-	
-	protected void validateColumn(List<IMessage> messages) {
-		OrmPersistentAttribute pa = this.getPersistentAttribute();
-		if (this.column.tableNameIsInvalid()) {
-			if (pa.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {pa.getName(), this.column.getTable(), this.column.getName()},
-						this.column, 
-						this.column.getTableTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.column.getTable(), this.column.getName()}, 
-						this.column, 
-						this.column.getTableTextRange()
-					)
-				);
-			}
-			return;
+
+	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		if (isVirtual()) {
+			return this.buildVirtualUnresolvedNameMessage(column, textRange);
 		}
-		
-		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
-			if (pa.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {pa.getName(), this.column.getName()}, 
-						this.column, 
-						this.column.getNameTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {this.column.getName()}, 
-						this.column, 
-						this.column.getNameTextRange()
-					)
-				);
-			}
-		}
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+			new String[] {column.getName(), column.getDbTable().getName()}, 
+			column,
+			textRange
+		);
 	}
 
+	protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
+			new String[] {getName(), column.getName(), column.getDbTable().getName()},
+			column, 
+			textRange
+		);
+	}
+
+	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+		if (isVirtual()) {
+			return this.buildVirtualTableNotValidMessage(column, textRange);
+		}
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+			new String[] {column.getTable(), column.getName()}, 
+			column, 
+			textRange
+		);
+	}
+	
+	public IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+			new String[] {getName(), column.getTable(), column.getName()},
+			column, 
+			textRange
+		);
+	}
 }

@@ -15,8 +15,10 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
@@ -235,6 +237,52 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaBaseEmbeddedMapping.this.getValidationTextRange(astRoot);
+		}
+
+		public IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+				new String[] {column.getTable(), column.getName()}, 
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+				new String[] {overrideName, column.getTable(), column.getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getTable(), column.getName()}, 
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {overrideName, column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
 		}
 	}
 }

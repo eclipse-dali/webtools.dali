@@ -18,6 +18,8 @@ import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
@@ -134,6 +136,11 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	}
 	
 	@Override
+	public EList<XmlAttributeOverride> getAttributeOverrides() {
+		return this.virtualXmlElementCollection.getAttributeOverrides();
+	}
+
+	@Override
 	public XmlAccessMethods getAccessMethods() {
 		return null;
 	}
@@ -169,6 +176,16 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 		this.virtualXmlElementCollection.setTargetClass(newTargetClass);
 	}
 	
+	@Override
+	public XmlCollectionTable getCollectionTable() {
+		return this.virtualXmlElementCollection.getCollectionTable();
+	}
+
+	@Override
+	public void setCollectionTable(XmlCollectionTable value) {
+		this.virtualXmlElementCollection.setCollectionTable(value);
+	}
+
 	@Override
 	public MapKey getMapKey() {
 		return this.virtualXmlElementCollection.getMapKey();

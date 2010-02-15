@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
@@ -101,13 +101,15 @@ public class VirtualXmlManyToOne
 	
 	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
-		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
-		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
-		for (JavaJoinColumn joinColumn : 
-				CollectionTools.iterable(
-					this.javaAttributeMapping.getRelationshipReference().
-						getJoinColumnJoiningStrategy().joinColumns())) {
-			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
+		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_MANY_TO_ONE__JOIN_COLUMNS);
+		if (isOrmMetadataComplete()) {
+			return joinColumns;
+		}
+		for (JoinColumn joinColumn : 
+			CollectionTools.iterable(
+				this.javaAttributeMapping.getRelationshipReference().
+					getJoinColumnJoiningStrategy().specifiedJoinColumns())) {
+			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, isOrmMetadataComplete());
 			joinColumns.add(xmlJoinColumn);
 		}
 		return joinColumns;

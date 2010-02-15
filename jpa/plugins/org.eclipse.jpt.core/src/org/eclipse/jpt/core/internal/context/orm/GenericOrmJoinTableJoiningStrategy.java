@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
@@ -18,8 +17,6 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmJoinTableJoiningStrategy 
 	extends AbstractOrmJoinTableJoiningStrategy
@@ -60,6 +57,9 @@ public class GenericOrmJoinTableJoiningStrategy
 		return getJpaPlatformVariation().isJoinTableOverridable();
 	}
 	
+	public boolean shouldValidateAgainstDatabase() {
+		return getRelationshipMapping().shouldValidateAgainstDatabase();
+	}
 	
 	// **************** join table *********************************************
 	
@@ -123,14 +123,6 @@ public class GenericOrmJoinTableJoiningStrategy
 	
 	
 	// **************** validation *********************************************
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		if (this.joinTable != null) {
-			this.joinTable.validate(messages, reporter);
-		}
-	}
 	
 	public TextRange getValidationTextRange() {
 		return getRelationshipReference().getValidationTextRange();

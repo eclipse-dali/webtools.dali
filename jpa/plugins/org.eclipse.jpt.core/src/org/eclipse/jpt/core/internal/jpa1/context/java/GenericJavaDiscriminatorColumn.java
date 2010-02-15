@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -9,19 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<DiscriminatorColumnAnnotation>
 	implements JavaDiscriminatorColumn
@@ -130,11 +123,6 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		this.specifiedLength = newSpecifiedLength;
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
-	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getResourceColumn().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
-	}
 
 	
 	// ********** java annotations -> persistence model **********
@@ -179,23 +167,5 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	
 	protected DiscriminatorType buildDefaultDiscriminatorType() {
 		return this.getOwner().getDefaultDiscriminatorType();
-	}
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		if (this.connectionProfileIsActive()) {
-			if ( ! this.isResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName()}, 
-						this,
-						this.getNameTextRange(astRoot)
-					)
-				);
-			}
-		}
 	}
 }

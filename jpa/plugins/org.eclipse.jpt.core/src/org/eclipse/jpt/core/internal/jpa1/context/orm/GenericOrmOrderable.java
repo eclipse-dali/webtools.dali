@@ -10,10 +10,13 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
@@ -286,4 +289,38 @@ public class GenericOrmOrderable
 		}
 	}
 
+	public String getUnresolvedNameMessage() {
+		return JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME;
+	}
+
+	protected boolean isPersistentAttributeVirtual() {
+		return getPersistentAttribute().isVirtual();
+	}
+
+	protected String getPersistentAttributeName() {
+		return getPersistentAttribute().getName();
+	}
+
+	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		if (isPersistentAttributeVirtual()) {
+			return this.buildVirtualUnresolvedNameMessage(column, textRange);
+		}
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
+			new String[] {column.getName(), column.getDbTable().getName()}, 
+			column,
+			textRange
+		);
+	}
+
+	protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME,
+			new String[] {getPersistentAttributeName(), column.getName(), column.getDbTable().getName()},
+			column, 
+			textRange
+		);
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,11 @@
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlEmbedded2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.VirtualEclipseLinkXmlEmbedded1_1;
@@ -28,15 +30,17 @@ public class VirtualEclipseLinkXmlEmbedded2_0 extends XmlEmbedded
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaEmbeddedMapping javaAttributeMapping;
+	protected final JavaEmbeddedMapping2_0 javaAttributeMapping;
 
 	protected final VirtualEclipseLinkXmlEmbedded1_1 virtualXmlEmbedded;
+	protected final VirtualXmlEmbedded2_0 virtualXmlEmbedded2_0;
 		
-	public VirtualEclipseLinkXmlEmbedded2_0(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
+	public VirtualEclipseLinkXmlEmbedded2_0(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping2_0 javaEmbeddedMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaEmbeddedMapping;
 		this.virtualXmlEmbedded = new VirtualEclipseLinkXmlEmbedded1_1(ormTypeMapping, javaEmbeddedMapping);
+		this.virtualXmlEmbedded2_0 = new VirtualXmlEmbedded2_0(ormTypeMapping, javaEmbeddedMapping);
 	}
 	
 	@Override
@@ -89,21 +93,8 @@ public class VirtualEclipseLinkXmlEmbedded2_0 extends XmlEmbedded
 		this.virtualXmlEmbedded.setAccess(null);
 	}
 	
-//	@Override
-//	public EList<XmlAttributeOverride> getAssociationOverrides() {
-//		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
-//		ListIterator<JavaAttributeOverride> javaAttributeOverrides;
-//		if (!this.isOrmMetadataComplete()) {
-//			javaAttributeOverrides = this.javaAttributeMapping.getAttributeOverrideContainer().attributeOverrides();
-//		}
-//		else {
-//			javaAttributeOverrides = this.javaAttributeMapping.getAttributeOverrideContainer().virtualAttributeOverrides();
-//		}
-//		for (JavaAttributeOverride javaAttributeOverride : CollectionTools.iterable(javaAttributeOverrides)) {
-//			XmlColumn xmlColumn = new VirtualXmlColumn(this.ormTypeMapping, javaAttributeOverride.getColumn());
-//			XmlAttributeOverride xmlAttributeOverride = new VirtualXmlAttributeOverride(javaAttributeOverride.getName(), xmlColumn);
-//			attributeOverrides.add(xmlAttributeOverride);
-//		}
-//		return attributeOverrides;
-//	}
+	@Override
+	public EList<XmlAssociationOverride> getAssociationOverrides() {
+		return this.virtualXmlEmbedded2_0.getAssociationOverrides();
+	}
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
@@ -16,6 +17,8 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlNamedColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> extends AbstractOrmXmlContextNode
@@ -198,6 +201,19 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> e
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateName(messages);
+	}
+	
+	protected void validateName(List<IMessage> messages) {
+		Table dbTable = this.getDbTable();
+		if (dbTable != null && ! this.isResolved()) {
+			messages.add(this.getOwner().buildUnresolvedNameMessage(this, this.getNameTextRange()));
+		}
 	}
 
 }

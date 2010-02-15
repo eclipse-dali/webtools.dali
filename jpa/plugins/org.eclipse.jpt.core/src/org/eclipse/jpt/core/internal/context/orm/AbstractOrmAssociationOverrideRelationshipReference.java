@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoiningStrategy;
@@ -19,6 +20,8 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipRefere
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnInAssociationOverrideJoiningStrategy;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmAssociationOverrideRelationshipReference extends AbstractOrmXmlContextNode
 	implements OrmAssociationOverrideRelationshipReference
@@ -137,8 +140,14 @@ public abstract class AbstractOrmAssociationOverrideRelationshipReference extend
 		return getRelationshipMapping().isRelationshipOwner();
 	}
 	
+
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.joinColumnJoiningStrategy.validate(messages, reporter);
+	}
 
 	public TextRange getValidationTextRange() {
 		return getAssociationOverride().getValidationTextRange();

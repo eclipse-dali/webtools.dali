@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,6 @@ import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
@@ -267,143 +265,8 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (getRelationshipMapping().shouldValidateAgainstDatabase()) {
-			for (Iterator<OrmJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
-				this.validateJoinColumn(stream.next(), messages);
-			}
+		for (Iterator<OrmJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
+			stream.next().validate(messages, reporter);
 		}
 	}
-	
-	protected void validateJoinColumn(OrmJoinColumn joinColumn, List<IMessage> messages) {
-		if (joinColumn.tableNameIsInvalid()) {
-			if (this.getRelationshipMapping().getPersistentAttribute().isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {getRelationshipMapping().getName(), joinColumn.getTable(), joinColumn.getName()},
-						joinColumn,
-						joinColumn.getTableTextRange()
-					)
-				);
-			} 
-			else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {joinColumn.getTable(), joinColumn.getName()}, 
-						joinColumn, 
-						joinColumn.getTableTextRange()
-					)
-				);
-			}
-			return;
-		}
-		validateJoinColumnName(joinColumn, messages);
-		validationJoinColumnReferencedColumnName(joinColumn, messages);
-	}
-	
-	protected void validateJoinColumnName(OrmJoinColumn joinColumn, List<IMessage> messages) {
-		if ( ! joinColumn.isResolved() && joinColumn.getDbTable() != null) {
-			if (joinColumn.getName() != null) {
-				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
-							new String[] {getRelationshipMapping().getName(), joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getNameTextRange()
-						)
-					);
-				} else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-							new String[] {joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getNameTextRange()
-						)
-					);
-				}
-			}
-			else if (this.joinColumnsSize() > 1) {
-				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
-					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-								new String[] {getRelationshipMapping().getName()}, 
-								joinColumn,
-								joinColumn.getNameTextRange()
-							)
-						);
-				}
-				else {
-					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-								joinColumn,
-								joinColumn.getNameTextRange()
-							)
-						);
-				}
-			}
-		}
-	}
-	
-	protected void validationJoinColumnReferencedColumnName(OrmJoinColumn joinColumn, List<IMessage> messages) {
-		if ( ! joinColumn.isReferencedColumnResolved() && joinColumn.getReferencedColumnDbTable() != null) {
-			if (joinColumn.getReferencedColumnName() != null) {
-				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-							new String[] {getRelationshipMapping().getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getReferencedColumnNameTextRange()
-						)
-					);
-				} else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-							new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getReferencedColumnNameTextRange()
-						)
-					);
-				}
-			}
-			else if (this.joinColumnsSize() > 1) {
-				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
-					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-								new String[] {getRelationshipMapping().getName(), joinColumn.getName()}, 
-								joinColumn,
-								joinColumn.getReferencedColumnNameTextRange()
-							)
-						);					
-				}
-				else {
-					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-								joinColumn,
-								joinColumn.getReferencedColumnNameTextRange()
-							)
-						);
-				}
-			}			
-		}
-	}
-
 }

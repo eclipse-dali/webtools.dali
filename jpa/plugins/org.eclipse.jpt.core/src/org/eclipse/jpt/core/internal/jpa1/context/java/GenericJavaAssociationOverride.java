@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -98,89 +95,6 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.connectionProfileIsActive()) {
-			this.validateJoinColumns(messages, astRoot);
-		}
-	}
-	
-	protected void validateJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
-		for (Iterator<JavaJoinColumn> stream = this.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumns(); stream.hasNext(); ) {
-			this.validateJoinColumn(stream.next(), messages, astRoot);
-		}
-	}
-
-	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		if (joinColumn.tableNameIsInvalid()) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getName(), joinColumn.getTable(), joinColumn.getName()},
-						joinColumn, 
-						joinColumn.getTableTextRange(astRoot)
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {joinColumn.getTable(), joinColumn.getName()}, 
-						joinColumn,
-						joinColumn.getTableTextRange(astRoot)
-					)
-				);
-			}
-			return;
-		}
-		
-		if ( ! joinColumn.isResolved()) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName(), joinColumn.getName()}, 
-						joinColumn,
-						joinColumn.getNameTextRange(astRoot)
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn, 
-						joinColumn.getNameTextRange(astRoot)
-					)
-				);
-			}
-		}
-		
-		if ( ! joinColumn.isReferencedColumnResolved()) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn,
-						joinColumn.getReferencedColumnNameTextRange(astRoot)
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn,
-						joinColumn.getReferencedColumnNameTextRange(astRoot)
-					)
-				);
-			}
-		}
+		this.relationshipReference.validate(messages, reporter, astRoot);
 	}
 }

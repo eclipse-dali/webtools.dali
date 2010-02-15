@@ -15,9 +15,11 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -26,12 +28,14 @@ import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -300,14 +304,14 @@ public class GenericJavaJoinTable
 	// ********** validation **********
 
 	@Override
-	protected void validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validateAgainstDatabase(messages, reporter, astRoot);
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validateJoinColumns(messages, reporter, astRoot);
 		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter, astRoot);
 	}
 
 	@Override
 	protected boolean shouldValidateAgainstDatabase() {
-		return getRelationshipMapping().shouldValidateAgainstDatabase();
+		return getParent().shouldValidateAgainstDatabase();
 	}
 
 	@Override
@@ -347,11 +351,11 @@ public class GenericJavaJoinTable
 		}
 
 		/**
-		 * the default table name is always valid and a specified table name
-		 * is prohibited (which will be handled elsewhere)
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the join table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return false;
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
 		}
 
 		/**
@@ -379,6 +383,65 @@ public class GenericJavaJoinTable
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaJoinTable.this.getValidationTextRange(astRoot);
 		}
+
+		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getTableNotValidMessage(),
+				new String[] {column.getTable(), column.getName()}, 
+				column,
+				textRange
+			);
+		}
+
+		protected abstract String getTableNotValidMessage();
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getUnresolvedNameMessage(),
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+
+		protected abstract String getUnresolvedNameMessage();
+
+		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getUnresolvedReferencedColumnNameMessage(),
+				new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected abstract String getUnresolvedReferencedColumnNameMessage();
+
+		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getUnspecifiedNameMultipleJoinColumnsMessage(),
+				new String[0],
+				column, 
+				textRange
+			);
+		}
+		
+		protected abstract String getUnspecifiedNameMultipleJoinColumnsMessage();
+
+		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
+				new String[0],
+				column, 
+				textRange
+			);
+		}
+		protected abstract String getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 	}
 
 
@@ -432,6 +495,31 @@ public class GenericJavaJoinTable
 		public int joinColumnsSize() {
 			return GenericJavaJoinTable.this.joinColumnsSize();
 		}
+
+		@Override
+		protected String getUnresolvedNameMessage() {
+			return JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME;
+		}
+
+		@Override
+		protected String getTableNotValidMessage() {
+			return JpaValidationMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+		}
+
+		@Override
+		protected String getUnspecifiedNameMultipleJoinColumnsMessage() {
+			return JpaValidationMessages.JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		}
+
+		@Override
+		protected String getUnresolvedReferencedColumnNameMessage() {
+			return JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
+		}
+
+		@Override
+		protected String getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+			return JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		}
 	}
 
 
@@ -473,6 +561,30 @@ public class GenericJavaJoinTable
 		public int joinColumnsSize() {
 			return GenericJavaJoinTable.this.inverseJoinColumnsSize();
 		}
-	}
 
+		@Override
+		protected String getUnresolvedNameMessage() {
+			return JpaValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_NAME;
+		}
+
+		@Override
+		protected String getTableNotValidMessage() {
+			return JpaValidationMessages.INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+		}
+
+		@Override
+		protected String getUnresolvedReferencedColumnNameMessage() {
+			return JpaValidationMessages.INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
+		}
+
+		@Override
+		protected String getUnspecifiedNameMultipleJoinColumnsMessage() {
+			return JpaValidationMessages.INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		}
+
+		@Override
+		protected String getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+			return JpaValidationMessages.INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		}
+	}
 }

@@ -10,10 +10,12 @@
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.FetchType;
@@ -23,6 +25,11 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -47,6 +54,9 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 @SuppressWarnings("nls")
 public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0ContextModelTestCase
 {
+	private static final String ATTRIBUTE_OVERRIDE_NAME = "city";
+	private static final String ATTRIBUTE_OVERRIDE_COLUMN_NAME = "E_CITY";
+	
 	public GenericOrmElementCollectionMapping2_0Tests(String name) {
 		super(name);
 	}
@@ -117,7 +127,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.FETCH_TYPE);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.FETCH_TYPE, JPA.ATTRIBUTE_OVERRIDE, JPA.COLUMN);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -129,6 +139,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 				sb.append(CR);
 				sb.append("    @ElementCollection");
 				sb.append(CR);
+				sb.append("    @AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\", column=@Column(name=\"" + ATTRIBUTE_OVERRIDE_COLUMN_NAME + "\"))");
 				sb.append("    private java.util.Collection<Address> addresses;").append(CR);
 				sb.append(CR);
 				sb.append("    @Id");				
@@ -931,4 +942,354 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTable());
 		assertEquals("FOO", orderable.getOrderColumn().getName());
 	}
+
+	public void testVirtualValueColumnDefaults() throws Exception {
+		createTestEntityWithGenericBasicElementCollectionMapping();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		//virtual attrubte in orm.xml, java attribute has no value Column annotation
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
+		OrmColumn ormColumn = addressesVirtualMapping.getValueColumn();
+		assertEquals("addresses", ormColumn.getSpecifiedName());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getSpecifiedTable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength().intValue());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision().intValue());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale().intValue());
+	
+		//set Column annotation in Java
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+		javaElementCollectionMapping.getValueColumn().setSpecifiedName("FOO");		
+		javaElementCollectionMapping.getValueColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getValueColumn().setColumnDefinition("COLUMN_DEFINITION");
+		javaElementCollectionMapping.getValueColumn().setSpecifiedInsertable(Boolean.FALSE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedUpdatable(Boolean.FALSE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedNullable(Boolean.FALSE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedUnique(Boolean.TRUE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedLength(Integer.valueOf(45));
+		javaElementCollectionMapping.getValueColumn().setSpecifiedPrecision(Integer.valueOf(46));
+		javaElementCollectionMapping.getValueColumn().setSpecifiedScale(Integer.valueOf(47));
+
+		assertEquals("FOO", ormColumn.getSpecifiedName());
+		assertEquals("FOO_TABLE", ormColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEFINITION", ormColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUnique());
+		assertEquals(Integer.valueOf(45), ormColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(46), ormColumn.getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(47), ormColumn.getSpecifiedScale());
+
+	
+		//set metadata-complete, orm.xml virtual column ignores java column annotation
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		//no longer an element collection mapping
+		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, addressesPersistentAttribute.getMappingKey());
+	}
+	
+	public void testNullColumnDefaults() throws Exception {
+		createTestEntityWithGenericBasicElementCollectionMapping();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+
+		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
+		OrmColumn ormColumn = addressesVirtualMapping.getValueColumn();
+	
+		//set Column annotation in Java
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+		javaElementCollectionMapping.getValueColumn().setSpecifiedName("FOO");		
+		javaElementCollectionMapping.getValueColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getValueColumn().setColumnDefinition("COLUMN_DEFINITION");
+		javaElementCollectionMapping.getValueColumn().setSpecifiedInsertable(Boolean.FALSE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedUpdatable(Boolean.FALSE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedNullable(Boolean.FALSE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedUnique(Boolean.TRUE);	
+		javaElementCollectionMapping.getValueColumn().setSpecifiedLength(Integer.valueOf(45));
+		javaElementCollectionMapping.getValueColumn().setSpecifiedPrecision(Integer.valueOf(46));
+		javaElementCollectionMapping.getValueColumn().setSpecifiedScale(Integer.valueOf(47));
+
+	
+		assertEquals("addresses", ormColumn.getDefaultName());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTable());
+		assertEquals(true, ormColumn.isDefaultInsertable());
+		assertEquals(true, ormColumn.isDefaultUpdatable());
+		assertEquals(true, ormColumn.isDefaultNullable());
+		assertEquals(false, ormColumn.isDefaultUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertNull(ormColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getColumnDefinition());
+		assertNull(ormColumn.getSpecifiedInsertable());
+		assertNull(ormColumn.getSpecifiedUpdatable());
+		assertNull(ormColumn.getSpecifiedNullable());
+		assertNull(ormColumn.getSpecifiedUnique());
+		assertNull(ormColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedPrecision());
+		assertNull(ormColumn.getSpecifiedScale());
+	}
+
+	public void testVirtualValueColumnTable() throws Exception {
+		createTestEntityWithGenericBasicElementCollectionMapping();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		//virtual attribute in orm.xml, java attribute has no Column annotation
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
+		OrmColumn ormColumn = addressesVirtualMapping.getValueColumn();
+		
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getSpecifiedTable());
+	
+		//entity table should have no affect on the collection table default name
+		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE");
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getSpecifiedTable());
+		
+		//set Column table element in Java
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+		javaElementCollectionMapping.getCollectionTable().setSpecifiedName("JAVA_COLLECTION_TABLE");
+		assertEquals("JAVA_COLLECTION_TABLE", ormColumn.getSpecifiedTable());
+		javaElementCollectionMapping.getValueColumn().setSpecifiedTable("JAVA_TABLE");	
+		assertEquals("JAVA_TABLE", ormColumn.getSpecifiedTable());
+		
+		//make name persistent attribute not virtual
+		addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
+		ormColumn = addressesVirtualMapping.getValueColumn();
+		assertNull(ormColumn.getSpecifiedTable());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTable());
+	}
+
+	public void testMoveSpecifiedAttributeOverride() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		OrmAttributeOverrideContainer attributeOverrideContainer = ormElementCollectionMapping.getValueAttributeOverrideContainer();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+
+		elementCollectionResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		elementCollectionResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		elementCollectionResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		
+		elementCollectionResource.getAttributeOverrides().get(0).setName("FOO");
+		elementCollectionResource.getAttributeOverrides().get(1).setName("BAR");
+		elementCollectionResource.getAttributeOverrides().get(2).setName("BAZ");
+		
+		assertEquals(3, elementCollectionResource.getAttributeOverrides().size());		
+		
+		attributeOverrideContainer.moveSpecifiedAttributeOverride(2, 0);
+		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+
+		assertEquals("BAR", elementCollectionResource.getAttributeOverrides().get(0).getName());
+		assertEquals("BAZ", elementCollectionResource.getAttributeOverrides().get(1).getName());
+		assertEquals("FOO", elementCollectionResource.getAttributeOverrides().get(2).getName());
+
+
+		attributeOverrideContainer.moveSpecifiedAttributeOverride(0, 1);
+		attributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+
+		assertEquals("BAZ", elementCollectionResource.getAttributeOverrides().get(0).getName());
+		assertEquals("BAR", elementCollectionResource.getAttributeOverrides().get(1).getName());
+		assertEquals("FOO", elementCollectionResource.getAttributeOverrides().get(2).getName());
+	}
+	
+	public void testUpdateAttributeOverrides() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		OrmAttributeOverrideContainer attributeOverrideContainer = ormElementCollectionMapping.getValueAttributeOverrideContainer();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		elementCollectionResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		elementCollectionResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		elementCollectionResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		
+		elementCollectionResource.getAttributeOverrides().get(0).setName("FOO");
+		elementCollectionResource.getAttributeOverrides().get(1).setName("BAR");
+		elementCollectionResource.getAttributeOverrides().get(2).setName("BAZ");
+
+		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		elementCollectionResource.getAttributeOverrides().move(2, 0);
+		attributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+
+		elementCollectionResource.getAttributeOverrides().move(0, 1);
+		attributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+
+		elementCollectionResource.getAttributeOverrides().remove(1);
+		attributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+
+		elementCollectionResource.getAttributeOverrides().remove(1);
+		attributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		elementCollectionResource.getAttributeOverrides().remove(0);
+		assertFalse(attributeOverrideContainer.specifiedAttributeOverrides().hasNext());
+	}
+
+	public void testElementCollectionMappingNoUnderylingJavaAttribute() throws Exception {
+		createTestEntityWithEmbeddableElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "foo");
+		assertEquals(3, ormPersistentType.virtualAttributesSize());
+		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		OrmAttributeOverrideContainer attributeOverrideContainer = ormElementCollectionMapping.getValueAttributeOverrideContainer();
+		
+		assertEquals("foo", ormElementCollectionMapping.getName());
+
+		
+		assertFalse(attributeOverrideContainer.specifiedAttributeOverrides().hasNext());
+		assertFalse(attributeOverrideContainer.virtualAttributeOverrides().hasNext());
+	}
+	
+	public void testVirtualAttributeOverrides() throws Exception {
+		createTestEntityWithEmbeddableElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddableState();
+		
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType persistentType2 = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		OrmPersistentType persistentType3 = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
+		
+		//embedded mapping is virtual, specified attribute overrides should exist
+		OrmPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("addresses");
+		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		OrmAttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());
+		assertEquals(0, attributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals(4, attributeOverrideContainer.specifiedAttributeOverridesSize());
+		ListIterator<OrmAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		OrmAttributeOverride attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("city", attributeOverride.getName());
+		attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("zip", attributeOverride.getName());
+		attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("state.name", attributeOverride.getName());
+		attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("state.abbr", attributeOverride.getName());
+		
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
+		Column javaAttributeOverrideColumn = javaElementCollectionMapping.getValueAttributeOverrideContainer().specifiedAttributeOverrides().next().getColumn();
+		
+		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
+		javaAttributeOverrideColumn.setSpecifiedTable("FOO_TABLE");
+		javaAttributeOverrideColumn.setColumnDefinition("COLUMN_DEF");
+		javaAttributeOverrideColumn.setSpecifiedInsertable(Boolean.FALSE);
+		javaAttributeOverrideColumn.setSpecifiedUpdatable(Boolean.FALSE);
+		javaAttributeOverrideColumn.setSpecifiedUnique(Boolean.TRUE);
+		javaAttributeOverrideColumn.setSpecifiedNullable(Boolean.FALSE);
+		javaAttributeOverrideColumn.setSpecifiedLength(Integer.valueOf(5));
+		javaAttributeOverrideColumn.setSpecifiedPrecision(Integer.valueOf(6));
+		javaAttributeOverrideColumn.setSpecifiedScale(Integer.valueOf(7));
+
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) persistentType3.getJavaPersistentType().getAttributeNamed("name").getMapping();
+		javaBasicMapping.getColumn().setSpecifiedName("MY_STATE_COLUMN");
+		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());
+		assertEquals(0, attributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals(4, attributeOverrideContainer.specifiedAttributeOverridesSize());
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("city", attributeOverride.getName());
+		assertEquals("FOO_COLUMN", attributeOverride.getColumn().getSpecifiedName());
+		assertEquals("FOO_TABLE", attributeOverride.getColumn().getSpecifiedTable());
+		assertEquals("COLUMN_DEF", attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, attributeOverride.getColumn().isInsertable());
+		assertEquals(false, attributeOverride.getColumn().isUpdatable());
+		assertEquals(true, attributeOverride.getColumn().isUnique());
+		assertEquals(false, attributeOverride.getColumn().isNullable());
+		assertEquals(5, attributeOverride.getColumn().getLength());
+		assertEquals(6, attributeOverride.getColumn().getPrecision());
+		assertEquals(7, attributeOverride.getColumn().getScale());
+		
+		attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("zip", attributeOverride.getName());
+		attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("state.name", attributeOverride.getName());
+		assertEquals("MY_STATE_COLUMN", attributeOverride.getColumn().getSpecifiedName());
+		attributeOverride = specifiedAttributeOverrides.next();
+		assertEquals("state.abbr", attributeOverride.getName());
+		
+		
+		
+		//embedded mapping is specified, virtual attribute overrides should exist
+		persistentType.getAttributeNamed("addresses").makeSpecified();
+		elementCollectionMapping = (OrmElementCollectionMapping2_0) persistentType.getAttributeNamed("addresses").getMapping();
+		attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());
+		assertEquals(4, attributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals(0, attributeOverrideContainer.specifiedAttributeOverridesSize());
+		ListIterator<OrmAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.virtualAttributeOverrides();
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("city", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("state.name", attributeOverride.getName());
+		assertEquals("MY_STATE_COLUMN", attributeOverride.getColumn().getName());
+		assertEquals(TYPE_NAME + "_addresses", attributeOverride.getColumn().getTable());
+		assertEquals(null, attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, attributeOverride.getColumn().isInsertable());
+		assertEquals(true, attributeOverride.getColumn().isUpdatable());
+		assertEquals(false, attributeOverride.getColumn().isUnique());
+		assertEquals(true, attributeOverride.getColumn().isNullable());
+		assertEquals(255, attributeOverride.getColumn().getLength());
+		assertEquals(0, attributeOverride.getColumn().getPrecision());
+		assertEquals(0, attributeOverride.getColumn().getScale());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("state.abbr", attributeOverride.getName());
+		assertEquals(TYPE_NAME + "_addresses", attributeOverride.getColumn().getDefaultTable());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("zip", attributeOverride.getName());
+		
+		//set one of the virtual attribute overrides to specified, verify others are still virtual
+		attributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		
+		assertEquals(4, attributeOverrideContainer.attributeOverridesSize());
+		assertEquals(1, attributeOverrideContainer.specifiedAttributeOverridesSize());
+		assertEquals(3, attributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals("city", attributeOverrideContainer.specifiedAttributeOverrides().next().getName());
+		virtualAttributeOverrides = attributeOverrideContainer.virtualAttributeOverrides();
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("state.name", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("state.abbr", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("zip", attributeOverride.getName());
+	}
+
 }

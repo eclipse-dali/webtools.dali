@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,6 +35,7 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer.Owner;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
@@ -156,7 +157,7 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	
 	@Override
 	public XmlEmbedded buildVirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
-		return new VirtualXmlEmbedded2_0(ormTypeMapping, javaEmbeddedMapping);
+		return new VirtualXmlEmbedded2_0(ormTypeMapping, (JavaEmbeddedMapping2_0) javaEmbeddedMapping);
 	}
 	
 	@Override

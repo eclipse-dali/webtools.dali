@@ -13,16 +13,17 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -150,60 +151,14 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.connectionProfileIsActive()) {
-			this.validateColumn(messages, astRoot);
-		}
+		getColumn().validate(messages, reporter, astRoot);
 	}
 
-	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.column.tableNameIsInvalid()) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getName(), this.column.getTable(), this.column.getName()},
-						this.column,
-						this.column.getTableTextRange(astRoot)
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.column.getTable(), this.column.getName()}, 
-						this.column,
-						this.column.getTableTextRange(astRoot)
-					)
-				);
-			}
-			return;
-		}
-		
-		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName(), this.column.getName()},
-						this.column,
-						this.column.getNameTextRange(astRoot)
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {this.column.getName()},
-						this.column,
-						this.column.getNameTextRange(astRoot)
-					)
-				);
-			}
-		}
+	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		return getOwner().buildColumnUnresolvedNameMessage(this, column, textRange);
 	}
 
+	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+		return getOwner().buildColumnTableNotValidMessage(this, column, textRange);
+	}
 }

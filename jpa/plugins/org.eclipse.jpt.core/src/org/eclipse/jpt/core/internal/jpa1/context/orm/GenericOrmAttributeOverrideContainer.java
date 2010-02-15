@@ -14,8 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
@@ -326,10 +328,8 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.resourceAttributeOverrideContainer.getValidationTextRange();
+		return getOwner().getValidationTextRange();
 	}
-	
-	
 	
 	
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
@@ -372,6 +372,13 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		public Table getDbTable(String tableName) {
 			return getOwner().getDbTable(tableName);
 		}
-	}
+		
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
+			return getOwner().buildColumnTableNotValidMessage((AttributeOverride) override, column, textRange);
+		}
 
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
+			return getOwner().buildColumnUnresolvedNameMessage((AttributeOverride) override, column, textRange);
+		}
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -86,7 +86,7 @@ public class VirtualXmlCollectionTable
 	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_COLLECTION_TABLE__JOIN_COLUMNS);
-		if (this.collectionTable == null) {
+		if (this.collectionTable == null || isOrmMetadataComplete()) {
 			return joinColumns;
 		}
 		for (JoinColumn joinColumn : CollectionTools.iterable(this.collectionTable.specifiedJoinColumns())) {
@@ -99,6 +99,9 @@ public class VirtualXmlCollectionTable
 	@Override
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_COLLECTION_TABLE__UNIQUE_CONSTRAINTS);
+		if (this.collectionTable == null || isOrmMetadataComplete()) {
+			return xmlUniqueConstraints;
+		}
 		for (UniqueConstraint uniqueConstraint : CollectionTools.iterable(this.collectionTable.uniqueConstraints())) {
 			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, isOrmMetadataComplete());
 			xmlUniqueConstraints.add(xmlUniqueConstraint);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -9,20 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
-import java.util.List;
-
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmNamedColumn;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDiscriminatorColumn>
 	implements OrmDiscriminatorColumn
@@ -201,23 +195,5 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	
 	protected DiscriminatorType buildDefaultDiscriminatorType() {
 		return this.getOwner().getDefaultDiscriminatorType();
-	}
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		if (this.connectionProfileIsActive()) {
-			if ( ! this.isResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName()}, 
-						this,
-						this.getNameTextRange()
-					)
-				);
-			}
-		}
 	}
 }

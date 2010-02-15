@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -289,14 +289,21 @@ public abstract class GenericJavaReferenceTable
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		boolean continueValidating = true;
 		if (this.shouldValidateAgainstDatabase()) {
-			this.validateAgainstDatabase(messages, reporter, astRoot);
+			continueValidating = this.validateAgainstDatabase(messages, reporter, astRoot);
+		}
+		//join column validation will handle the check for whether to validate against the database
+		//some validation messages are not database specific. If the database validation for the
+		//table fails we will stop there and not validate the join columns at all
+		if (continueValidating) {
+			this.validateJoinColumns(messages, reporter, astRoot);
 		}
 	}
-
+	
 	protected abstract boolean shouldValidateAgainstDatabase();
 
-	protected void validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -307,7 +314,7 @@ public abstract class GenericJavaReferenceTable
 					this.getCatalogTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
 
 		if ( ! this.hasResolvedSchema()) {
@@ -320,7 +327,7 @@ public abstract class GenericJavaReferenceTable
 					this.getSchemaTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
 
 		if ( ! this.isResolved()) {
@@ -334,12 +341,15 @@ public abstract class GenericJavaReferenceTable
 							this.getNameTextRange(astRoot))
 					);
 			}
-			return;
+			return false;
 		}
-
-		this.validateJoinColumns(this.joinColumns(), messages, reporter, astRoot);
+		return true;
 	}
-	
+
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.validateJoinColumns(this.joinColumns(), messages, reporter, astRoot);		
+	}
+
 	protected void validateJoinColumns(Iterator<JavaJoinColumn> joinColumns, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		while (joinColumns.hasNext()) {
 			joinColumns.next().validate(messages, reporter, astRoot);

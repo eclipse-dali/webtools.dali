@@ -15,13 +15,18 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -876,10 +881,15 @@ public class GenericJavaElementCollectionMapping2_0
 		this.validateTargetClass(messages, astRoot);
 		this.getOrderable().validate(messages, reporter, astRoot);
 		this.getCollectionTable().validate(messages, reporter, astRoot);
-		this.getValueColumn().validate(messages, reporter, astRoot);
-		this.getConverter().validate(messages, reporter, astRoot);
-		this.getValueAttributeOverrideContainer().validate(messages, reporter, astRoot);
-		this.getValueAssociationOverrideContainer().validate(messages, reporter, astRoot);
+		//TODO should we handle validation when the type is embeddable, but a value column is specified, or things like that if that is invalid?
+		if (getValueType() == Type.BASIC_TYPE) {
+			this.getValueColumn().validate(messages, reporter, astRoot);
+			this.getConverter().validate(messages, reporter, astRoot);
+		}
+		if (getValueType() == Type.EMBEDDABLE_TYPE) {
+			this.getValueAttributeOverrideContainer().validate(messages, reporter, astRoot);
+			this.getValueAssociationOverrideContainer().validate(messages, reporter, astRoot);
+		}
 	}
 
 	protected void validateTargetClass(List<IMessage> messages, CompilationUnit astRoot) {
@@ -939,11 +949,11 @@ public class GenericJavaElementCollectionMapping2_0
 		}
 		
 		/**
-		 * the default table name is always valid and a specified table name
-		 * is prohibited (which will be handled elsewhere)
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return false;
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
 		}
 
 		public java.util.Iterator<String> candidateTableNames() {
@@ -952,6 +962,26 @@ public class GenericJavaElementCollectionMapping2_0
 		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
+		}
+
+		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				new String[] {column.getTable(), column.getName()}, 
+				column,
+				textRange
+			);
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
 		}
 	}
 
@@ -972,11 +1002,11 @@ public class GenericJavaElementCollectionMapping2_0
 		}	
 
 		/**
-		 * the default table name is always valid and a specified table name
-		 * is prohibited (which will be handled elsewhere)
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return false;
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
 		}
 
 		public java.util.Iterator<String> candidateTableNames() {
@@ -994,6 +1024,121 @@ public class GenericJavaElementCollectionMapping2_0
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
 		}
+
+		public IMessage buildColumnTableNotValidMessage(AssociationOverride override, BaseColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ELEMENT_COLLECTION_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				new String[] {column.getTable(), column.getName()}, 
+				column, 
+				textRange
+			);
+		}
+	
+		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				new String[] {overrideName, column.getTable(), column.getName()},
+				column, 
+				textRange
+			);
+		}
+		
+		public IMessage buildColumnUnresolvedNameMessage(AssociationOverride override, NamedColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+		
+		protected IMessage buildVirtualColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,
+				new String[] {overrideName, column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildColumnUnresolvedReferencedColumnNameMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnUnresolvedReferencedColumnNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+				new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualColumnUnresolvedReferencedColumnNameMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+				new String[] {overrideName, column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[0],
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+					new String[] {overrideName},
+				column, 
+				textRange
+			);
+		}
+		
+		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[0],
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+					new String[] {overrideName},
+				column, 
+				textRange
+			);
+		}
 	}
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
@@ -1004,7 +1149,7 @@ public class GenericJavaElementCollectionMapping2_0
 		}
 		
 		public TypeMapping getTypeMapping() {
-			return GenericJavaElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
+			return GenericJavaElementCollectionMapping2_0.this.getTypeMapping();
 		}
 
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
@@ -1024,15 +1169,62 @@ public class GenericJavaElementCollectionMapping2_0
 		}
 		
 		/**
-		 * the default table name is always valid and a specified table name
-		 * is prohibited (which will be handled elsewhere)
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return false;
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
 		}
 		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
+		}
+
+		public IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+		
+		protected IMessage buildVirtualColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {overrideName, column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ELEMENT_COLLECTION_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				new String[] {column.getTable(), column.getName()}, 
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				new String[] {overrideName, column.getTable(), column.getName()},
+				column, 
+				textRange
+			);
+
 		}
 	}
 }

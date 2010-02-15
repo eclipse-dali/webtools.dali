@@ -16,6 +16,7 @@ import java.util.Vector;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -381,12 +382,128 @@ public class GenericOrmSecondaryTable
 			}
 			Entity parentEntity = getOrmEntity().getParentEntity();
 			return (parentEntity == null) ? getOrmEntity().getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
-	}
+		}
 		
 		public TextRange getValidationTextRange() {
-			return null;
+			return GenericOrmSecondaryTable.this.getValidationTextRange();
 		}
 
-	}
+		protected boolean isSecondaryTableVirtual() {
+			return GenericOrmSecondaryTable.this.isVirtual();
+		}
 
+		protected String getSecondaryTableName() {
+			return GenericOrmSecondaryTable.this.getName();
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			if (isSecondaryTableVirtual()) {
+				return buildVirtualUnresolvedNameMessage(column, textRange);
+			}
+			if (((BaseJoinColumn) column).isVirtual()) {
+				return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
+					new String[] {column.getName(), column.getTable()}, 
+					column, 
+					textRange
+				);				
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getTable()}, 
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
+				new String[] {this.getSecondaryTableName(), column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
+			if (isSecondaryTableVirtual()) {
+				return buildVirtualUnresolvedReferencedColumnNameMessage(column, textRange);
+			}
+			if (column.isVirtual()) {
+				return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+					new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+					column, 
+					textRange
+				);				
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+				new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+				new String[] {this.getSecondaryTableName(), column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			if (this.isSecondaryTableVirtual()) {
+				return this.buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[0],
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[] {this.getSecondaryTableName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			if (this.isSecondaryTableVirtual()) {
+				return this.buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[0],
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[] {this.getSecondaryTableName()},
+				column, 
+				textRange
+			);
+		}
+	}
 }

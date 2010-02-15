@@ -11,8 +11,10 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn.Owner;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy 
 	extends AbstractOrmJoinColumnJoiningStrategy
@@ -150,5 +153,24 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 			return GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.getValidationTextRange();
 		}
 
+		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			return getAssociationOverride().getOwner().buildColumnTableNotValidMessage(getAssociationOverride(), column, textRange);
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return getAssociationOverride().getOwner().buildColumnUnresolvedNameMessage(getAssociationOverride(), column, textRange);
+		}
+
+		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
+			return getAssociationOverride().getOwner().buildColumnUnresolvedReferencedColumnNameMessage(getAssociationOverride(), column, textRange);
+		}
+
+		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return getAssociationOverride().getOwner().buildUnspecifiedNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
+		}
+
+		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return getAssociationOverride().getOwner().buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
+		}
 	}
 }

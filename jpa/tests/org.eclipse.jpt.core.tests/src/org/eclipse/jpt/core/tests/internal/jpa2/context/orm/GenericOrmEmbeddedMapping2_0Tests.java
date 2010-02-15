@@ -1529,7 +1529,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		getOrmXmlResource().save(null);
 		embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentType.getAttributeNamed("myEmbedded").getMapping();
 		overrideContainer = embeddedMapping.getAssociationOverrideContainer();
-		virtualAssociationOverride = CollectionTools.get(overrideContainer.virtualAssociationOverrides(), 1);
+		virtualAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
 		assertEquals("addresses", virtualAssociationOverride.getName());
 		joiningStrategy = ((AssociationOverrideRelationshipReference2_0) virtualAssociationOverride.getRelationshipReference()).getJoinTableJoiningStrategy();
 		joinTable = joiningStrategy.getJoinTable();

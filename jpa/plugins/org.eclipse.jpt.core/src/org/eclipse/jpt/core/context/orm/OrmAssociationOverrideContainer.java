@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public interface OrmAssociationOverrideContainer extends AssociationOverrideContainer, XmlContextNode
 {
@@ -31,5 +32,7 @@ public interface OrmAssociationOverrideContainer extends AssociationOverrideCont
 	interface Owner extends AssociationOverrideContainer.Owner
 	{		
 		OrmTypeMapping getTypeMapping();
+		
+		TextRange getValidationTextRange();
 	}
 }

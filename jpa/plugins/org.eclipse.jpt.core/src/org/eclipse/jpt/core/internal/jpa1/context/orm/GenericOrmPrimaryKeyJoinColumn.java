@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPrimaryKeyJoinColumn>
 	implements OrmPrimaryKeyJoinColumn
@@ -118,6 +120,11 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	public boolean isVirtual() {
 		return getOwner().isVirtual(this);
 	}
+
+	@Override
+	public String getTable() {
+		return getOwner().getDefaultTableName();
+	}
 	
 	@Override
 	protected void initialize(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
@@ -142,5 +149,53 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
 	protected String buildDefaultReferencedColumnName() {
 		return buildDefaultName();
+	}
+
+
+	//******************* validation ***********************
+
+	@Override
+	//this method will only be called if the table validates correctly
+	protected void validateName(List<IMessage> messages) {
+		//do not call super here, first need to check for multiple join columns errors
+		this.validateJoinColumnName(messages);
+		this.validateReferencedColumnName(messages);
+	}
+
+	protected void validateJoinColumnName(List<IMessage> messages) {
+		if (this.getSpecifiedName() == null && this.getOwner().joinColumnsSize() > 1) {
+			messages.add(this.buildUnspecifiedNameMultipleJoinColumnsMessage());
+		}
+		else if (this.getName() != null){
+			super.validateName(messages);
+		}
+		//If the name is null and there is only one join-column, one of these validation messages will apply
+		// 1. target entity does not have a primary key
+		// 2. target entity is not specified
+		// 3. target entity is not an entity
+	}
+
+	protected void validateReferencedColumnName(List<IMessage> messages) {
+		if (this.getSpecifiedReferencedColumnName() == null && this.getOwner().joinColumnsSize() > 1) {
+			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
+		}
+		else if (this.getReferencedColumnName() != null) {
+			Table refColumnDbTable = this.getReferencedColumnDbTable();
+			if (refColumnDbTable != null && ! this.isReferencedColumnResolved()) {
+				messages.add(getOwner().buildUnresolvedReferencedColumnNameMessage(this, this.getReferencedColumnNameTextRange()));
+			}
+		}
+		//If the referenced column name is null and there is only one join-column, one of these validation messages will apply
+		// 1. target entity does not have a primary key
+		// 2. target entity is not specified
+		// 3. target entity is not an entity
+	}
+
+	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
+		return getOwner().buildUnspecifiedNameMultipleJoinColumnsMessage(this, getNameTextRange());
+	}
+
+	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+		return getOwner().buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(this, getReferencedColumnNameTextRange());
 	}
 }

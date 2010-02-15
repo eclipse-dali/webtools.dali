@@ -44,10 +44,5 @@ public interface JoinColumn
 		 * return the persistent attribute for this join column
 		 */
 		PersistentAttribute getPersistentAttribute();
-		
-		/**
-		 * return the size of the joinColumns collection this join column is a part of
-		 */
-		int joinColumnsSize();
 	}
 }

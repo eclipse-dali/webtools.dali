@@ -17,6 +17,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
@@ -284,15 +285,21 @@ public class GenericJavaSecondaryTable
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		boolean continueValidating = true;
 		if (this.connectionProfileIsActive()) {
-			this.validateAgainstDatabase(messages, astRoot);
+			continueValidating = this.validateAgainstDatabase(messages, astRoot);
 		}
-		for (Iterator<JavaPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
-			stream.next().validate(messages, reporter, astRoot);
+		//join column validation will handle the check for whether to validate against the database
+		//some validation messages are not database specific. If the database validation for the
+		//table fails we will stop there and not validate the join columns at all
+		if (continueValidating) {
+			for (Iterator<JavaPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
+				stream.next().validate(messages, reporter, astRoot);
+			}
 		}
 	}
 
-	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+	protected boolean validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -303,7 +310,7 @@ public class GenericJavaSecondaryTable
 					this.getCatalogTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
 		
 		if ( ! this.hasResolvedSchema()) {
@@ -316,7 +323,7 @@ public class GenericJavaSecondaryTable
 					this.getSchemaTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
 		
 		if ( ! this.isResolved()) {
@@ -329,8 +336,9 @@ public class GenericJavaSecondaryTable
 					this.getNameTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
+		return true;
 	}
 
 
@@ -393,10 +401,66 @@ public class GenericJavaSecondaryTable
 
 		}
 
-		private int joinColumnsSize() {
+		public int joinColumnsSize() {
 			return GenericJavaSecondaryTable.this.primaryKeyJoinColumnsSize();
 		}
-		
-	}
 
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			if (((BaseJoinColumn) column).isVirtual()) {
+				return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
+					new String[] {column.getName(), column.getDbTable().getName()}, 
+					column, 
+					textRange
+				);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
+			if (column.isVirtual()) {
+				return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+					new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+					column, 
+					textRange
+				);				
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+				new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[0],
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[0],
+				column, 
+				textRange
+			);
+		}
+	}
 }

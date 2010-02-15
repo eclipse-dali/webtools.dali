@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> implements JavaColumn
 {
@@ -132,10 +130,5 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	
 	protected Integer getResourceScale() {
 		return getResourceColumn().getScale();
-	}
-	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getResourceColumn().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,19 +12,15 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import java.util.List;
 
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmBaseColumn;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> implements OrmJoinColumn
 {
@@ -160,78 +156,47 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	//******************* validation ***********************
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		validateName(messages);
-		validateReferencedColumnName(messages);
-	}
-	
+	//this method will only be called if the table validates correctly
 	protected void validateName(List<IMessage> messages) {
-		if ( ! this.isResolved() && getDbTable() != null) {
-			if (getName() != null) {
-				messages.add(this.buildUnresolvedMessage());
-			}
-			else if (getOwner().joinColumnsSize() > 1) {
-			
-			}
-		}
+		//do not call super here, first need to check for multiple join columns errors
+		this.validateJoinColumnName(messages);
+		this.validateReferencedColumnName(messages);
 	}
-	
+
+	protected void validateJoinColumnName(List<IMessage> messages) {
+		if (this.getSpecifiedName() == null && this.getOwner().joinColumnsSize() > 1) {
+			messages.add(this.buildUnspecifiedNameMultipleJoinColumnsMessage());
+		}
+		else if (this.getName() != null){
+			super.validateName(messages);
+		}
+		//If the name is null and there is only one join-column, one of these validation messages will apply
+		// 1. target entity does not have a primary key
+		// 2. target entity is not specified
+		// 3. target entity is not an entity
+	}
+
 	protected void validateReferencedColumnName(List<IMessage> messages) {
-		if ( ! this.isReferencedColumnResolved() && getReferencedColumnDbTable() != null) {
-			if (getReferencedColumnName() != null) {
-				messages.add(this.buildUnresolvedMessage());
-			}
-			else if (getOwner().joinColumnsSize() > 1) {
-				
+		if (this.getSpecifiedReferencedColumnName() == null && this.getOwner().joinColumnsSize() > 1) {
+			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
+		}
+		else if (this.getReferencedColumnName() != null) {
+			Table refColumnDbTable = this.getReferencedColumnDbTable();
+			if (refColumnDbTable != null && ! this.isReferencedColumnResolved()) {
+				messages.add(getOwner().buildUnresolvedReferencedColumnNameMessage(this, this.getReferencedColumnNameTextRange()));
 			}
 		}
-	}
-	
-	protected IMessage buildUnresolvedMessage() {
-		PersistentAttribute persistentAttribute = this.getOwner().getPersistentAttribute();
-		return persistentAttribute.isVirtual() ? this.buildVirtualUnresolvedNameMessage(persistentAttribute) : this.buildNonVirtualUnresolvedNameMessage();
-	}
-
-	protected IMessage buildVirtualUnresolvedNameMessage(PersistentAttribute persistentAttribute) {
-		return this.buildMessage(
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {persistentAttribute.getName(), this.getName()},
-						this.getNameTextRange()
-					);
+		//If the referenced column name is null and there is only one join-column, one of these validation messages will apply
+		// 1. target entity does not have a primary key
+		// 2. target entity is not specified
+		// 3. target entity is not an entity
 	}
 
-	protected IMessage buildNonVirtualUnresolvedNameMessage() {
-		return this.buildMessage(
-						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName()},
-						this.getNameTextRange()
-					);
+	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
+		return getOwner().buildUnspecifiedNameMultipleJoinColumnsMessage(this, getNameTextRange());
 	}
 
-	protected IMessage buildUnresolvedReferenceColumnNameMessage() {
-		PersistentAttribute persistentAttribute = this.getOwner().getPersistentAttribute();
-		return persistentAttribute.isVirtual() ? this.buildVirtualUnresolvedReferenceColumnNameMessage(persistentAttribute) : this.buildNonVirtualUnresolvedReferenceColumnNameMessage();
+	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+		return getOwner().buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(this, getReferencedColumnNameTextRange());
 	}
-
-	protected IMessage buildVirtualUnresolvedReferenceColumnNameMessage(PersistentAttribute persistentAttribute) {
-		return this.buildMessage(
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {persistentAttribute.getName(), this.getName()},
-						this.getReferencedColumnNameTextRange()
-					);
-	}
-
-	protected IMessage buildNonVirtualUnresolvedReferenceColumnNameMessage() {
-		return this.buildMessage(
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName()},
-						this.getReferencedColumnNameTextRange()
-					);
-	}
-
-	protected IMessage buildMessage(String msgID, String[] parms, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(IMessage.HIGH_SEVERITY, msgID, parms, this, textRange);
-	}
-
 }

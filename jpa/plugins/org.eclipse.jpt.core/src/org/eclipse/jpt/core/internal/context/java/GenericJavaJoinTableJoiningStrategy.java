@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -40,9 +39,8 @@ public class GenericJavaJoinTableJoiningStrategy
 		return this.getParent();
 	}
 	
-	@Override
-	public JavaRelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getRelationshipMapping();
+	public boolean shouldValidateAgainstDatabase() {
+		return getRelationshipMapping().shouldValidateAgainstDatabase();
 	}
 	
 	

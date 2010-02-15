@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -84,7 +84,7 @@ public class VirtualXmlJoinTable
 	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
-		if (this.joinTable == null) {
+		if (this.joinTable == null || isOrmMetadataComplete()) {
 			return joinColumns;
 		}
 		for (JoinColumn joinColumn : CollectionTools.iterable(this.joinTable.specifiedJoinColumns())) {
@@ -98,7 +98,7 @@ public class VirtualXmlJoinTable
 	@Override
 	public EList<XmlJoinColumn> getInverseJoinColumns() {
 		EList<XmlJoinColumn> inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS);
-		if (this.joinTable == null) {
+		if (this.joinTable == null || isOrmMetadataComplete()) {
 			return inverseJoinColumns;
 		}
 		for (JoinColumn joinColumn : CollectionTools.iterable(this.joinTable.specifiedInverseJoinColumns())) {
@@ -112,6 +112,9 @@ public class VirtualXmlJoinTable
 	@Override
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_JOIN_TABLE__UNIQUE_CONSTRAINTS);
+		if (this.joinTable == null || isOrmMetadataComplete()) {
+			return xmlUniqueConstraints;
+		}
 		for (UniqueConstraint uniqueConstraint : CollectionTools.iterable(this.joinTable.uniqueConstraints())) {
 			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, isOrmMetadataComplete());
 			xmlUniqueConstraints.add(xmlUniqueConstraint);

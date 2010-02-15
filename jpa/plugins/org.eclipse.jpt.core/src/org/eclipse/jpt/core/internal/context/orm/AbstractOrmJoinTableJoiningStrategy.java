@@ -130,7 +130,7 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	}
 	
 	public void update() {
-		if (mayHaveJoinTable()) {
+		if (mayHaveJoinTable() || getRelationshipReference().mayHaveDefaultJoinTable()) {
 			if (this.joinTable == null) {
 				setJoinTable_(getXmlContextNodeFactory().buildOrmJoinTable(this, getResourceJoinTable()));
 			}

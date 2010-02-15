@@ -10,10 +10,13 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
@@ -23,11 +26,16 @@ import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedded> extends AbstractOrmAttributeMapping<T> implements OrmBaseEmbeddedMapping
@@ -159,7 +167,33 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		this.targetEmbeddable = embeddableFor(this.getJavaPersistentAttribute());
 		getAttributeOverrideContainer().update();
 	}
-	
+
+
+	//******** Validation ******************
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		validateTargetEmbeddable(messages, reporter);
+		getAttributeOverrideContainer().validate(messages, reporter);
+	}
+
+	protected void validateTargetEmbeddable(List<IMessage> messages, IReporter reporter) {
+		if (getTargetEmbeddable() == null) {
+			String targetEmbeddableTypeName = getPersistentAttribute().getTypeName();
+			// if the type isn't resolveable, there'll already be a java error
+			if (targetEmbeddableTypeName != null) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
+							new String[] {targetEmbeddableTypeName}, 
+							this, 
+							this.getValidationTextRange()));
+			}
+		}
+	}
+
 	//************ static methods ************
 	
 	public static Embeddable embeddableFor(JavaPersistentAttribute javaPersistentAttribute) {
@@ -206,6 +240,96 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		
 		public String getDefaultTableName() {
 			return getTypeMapping().getPrimaryTableName();
+		}
+
+		public IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualAttributeUnresolvedColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			if (override.isVirtual()) {
+				return this.buildVirtualOverrideUnresolvedColumnNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualAttributeUnresolvedColumnTableNotValidMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					AbstractOrmBaseEmbeddedMapping.this.getName(), 
+					overrideName, 
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+		
+		protected IMessage buildVirtualOverrideUnresolvedColumnNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					overrideName, 
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+				);
+		}
+
+		public IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			if (override.isVirtual()) {
+				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+					new String[] {column.getTable(), column.getName()}, 
+					column, 
+					textRange
+				);
+		}
+
+		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+				new String[] {
+					AbstractOrmBaseEmbeddedMapping.this.getName(), 
+					overrideName, 
+					column.getTable(), 
+					column.getName()},
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+				new String[] { 
+					overrideName, 
+					column.getTable(), 
+					column.getName()},
+				column,
+				textRange
+			);
+		}
+
+		public TextRange getValidationTextRange() {
+			return AbstractOrmBaseEmbeddedMapping.this.getValidationTextRange();
 		}
 	}
 }

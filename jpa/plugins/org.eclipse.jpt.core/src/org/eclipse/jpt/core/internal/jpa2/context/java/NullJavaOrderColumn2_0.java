@@ -84,6 +84,7 @@ public class NullJavaOrderColumn2_0
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return null;
 	}

@@ -13,8 +13,10 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -32,6 +34,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	extends AbstractJavaJpaContextNode
@@ -317,7 +320,6 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public String getDefaultColumnName() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 		
@@ -327,6 +329,26 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		
 		public int joinColumnsSize() {
 			return GenericJavaPrimaryKeyJoinColumnJoiningStrategy.this.primaryKeyJoinColumnsSize();
+		}
+
+		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
+		}
+
+		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
+		}
+
+		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
+		}
+
+		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
 		}
 	}
 }

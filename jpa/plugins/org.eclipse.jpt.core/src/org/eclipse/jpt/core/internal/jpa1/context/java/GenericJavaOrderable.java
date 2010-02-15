@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -367,5 +368,14 @@ public class GenericJavaOrderable
 			this.getOrderColumn().validate(messages, reporter, astRoot);
 		}
 	}
-	
+
+	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
+			new String[] {column.getName(), column.getDbTable().getName()},
+			column, 
+			textRange
+		);
+	}
 }

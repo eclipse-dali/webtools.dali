@@ -12,16 +12,16 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -130,7 +130,6 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		return getOwner().candidateTableNames();
 	}
 
-
 	public boolean isVirtual() {
 		return getOwner().isVirtual(this);
 	}
@@ -155,7 +154,14 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		this.resourceAttributeOverride.setColumn(null);
 	}
 	
+	//****************** miscellaneous ********************
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
+
 	//***************** updating ****************
 	
 	public void update(XmlAttributeOverride xmlAttributeOverride) {
@@ -163,71 +169,21 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		this.setName_(xmlAttributeOverride.getName());
 		this.column.update(xmlAttributeOverride.getColumn());
 	}
-	
+
+
 	//****************** validation ********************
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (this.connectionProfileIsActive()) {
-			this.validateColumn(messages);
-		}
-	}
-	
-	protected void validateColumn(List<IMessage> messages) {
-		if (this.column.tableNameIsInvalid()) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getName(), this.column.getTable(), this.column.getName()},
-						this.column, 
-						this.column.getTableTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.column.getTable(), this.column.getName()}, 
-						this.column,
-						this.column.getTableTextRange()
-					)
-				);
-			}
-			return;
-		}
-		
-		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName(), this.column.getName()}, 
-						this.column,
-						this.column.getNameTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {this.column.getName()}, 
-						this.column,
-						this.column.getNameTextRange()
-					)
-				);
-			}
-		}
-	}
-	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
+		getColumn().validate(messages, reporter);
 	}
 
+	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+		return getOwner().buildColumnUnresolvedNameMessage(this, column, textRange);
+	}
+
+	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+		return getOwner().buildColumnTableNotValidMessage(this, column, textRange);
+	}
 }
