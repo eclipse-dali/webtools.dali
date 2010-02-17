@@ -644,6 +644,9 @@ public abstract class AbstractOrmEntity
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
+		if (tableIsUndefined()) {
+			return false;
+		}
 		return ! CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
 	
