@@ -167,6 +167,42 @@ public class GenericJavaOneToManyMapping2_0Tests
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
+	private void createTestTargetEntityAddressWithElementCollection() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA2_0.ELEMENT_COLLECTION);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Address").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    private String city;").append(CR);
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);
+				sb.append("    private java.util.Collection<State> state;").append(CR);
+				sb.append(CR);
+				sb.append("    private int zip;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+	}
 	
 	private void createTestEmbeddableState() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -194,6 +230,47 @@ public class GenericJavaOneToManyMapping2_0Tests
 	public void testCandidateMappedByAttributeNames() throws Exception {
 		createTestEntityWithValidOneToManyMapping();
 		createTestTargetEntityAddress();
+		createTestEmbeddableState();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		PersistentAttribute persistentAttribute = (getJavaPersistentType()).attributes().next();
+		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
+
+		Iterator<String> attributeNames = 
+			oneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+		assertEquals("id", attributeNames.next());
+		assertEquals("city", attributeNames.next());
+		assertEquals("state", attributeNames.next());
+		assertEquals("state.foo", attributeNames.next());
+		assertEquals("state.address", attributeNames.next());
+		assertEquals("zip", attributeNames.next());
+		assertFalse(attributeNames.hasNext());
+		
+		oneToManyMapping.setSpecifiedTargetEntity("foo");
+		attributeNames = 
+			oneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+		assertFalse(attributeNames.hasNext());
+		
+		oneToManyMapping.setSpecifiedTargetEntity(null);
+		attributeNames = 
+			oneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+		assertEquals("id", attributeNames.next());
+		assertEquals("city", attributeNames.next());
+		assertEquals("state", attributeNames.next());
+		assertEquals("state.foo", attributeNames.next());
+		assertEquals("state.address", attributeNames.next());
+		assertEquals("zip", attributeNames.next());
+		assertFalse(attributeNames.hasNext());
+
+		AttributeMapping stateFooMapping = oneToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
+		assertEquals("foo", stateFooMapping.getName());
+	}
+	
+	public void testCandidateMappedByAttributeNamesElementCollection() throws Exception {
+		createTestEntityWithValidOneToManyMapping();
+		createTestTargetEntityAddressWithElementCollection();
 		createTestEmbeddableState();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");

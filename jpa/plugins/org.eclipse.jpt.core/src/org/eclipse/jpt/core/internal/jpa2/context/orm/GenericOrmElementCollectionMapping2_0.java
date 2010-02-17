@@ -60,7 +60,9 @@ import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -608,13 +610,170 @@ public class GenericOrmElementCollectionMapping2_0
 				}
 		});
 	}
+	
+	protected Iterator<String> allEmbeddableAttributeMappingNames() {
+		return this.embeddableOverrideableMappingNames(
+			new Transformer<AttributeMapping, Iterator<String>>() {
+				public Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allMappingNames();
+				}
+			}
+		);
+	}
+
+	@Override
+	public Iterator<String> allMappingNames() {
+		return new CompositeIterator<String>(this.getName(), this.allEmbeddableAttributeMappingNames());
+	}
 
 	protected Iterator<AttributeMapping> allTargetEmbeddableAttributeMappings() {
 		return (this.resolvedTargetEmbeddable != null) ?
 				this.resolvedTargetEmbeddable.allAttributeMappings() :
 				EmptyIterator.<AttributeMapping> instance();
 	}
+
+	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
+		if (this.getResolvedTargetEmbeddable() == null) {
+			return EmptyIterator.instance();
+		}
+		return this.getResolvedTargetEmbeddable().attributeMappings();
+	}
+
+	@Override
+	public Iterator<String> allOverrideableAttributeMappingNames() {
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverrideableAttributeMappingNames() :
+				super.allOverrideableAttributeMappingNames();
+	}
 	
+	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
+		return this.embeddableOverrideableMappingNames(
+			new Transformer<AttributeMapping, Iterator<String>>() {
+				public Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allOverrideableAttributeMappingNames();
+				}
+			}
+		);
+	}
+	
+	@Override
+	public Iterator<String> allOverrideableAssociationMappingNames() {
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverrideableAssociationMappingNames() :
+				super.allOverrideableAssociationMappingNames();
+	}
+	
+	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
+		return this.embeddableOverrideableMappingNames(
+			new Transformer<AttributeMapping, Iterator<String>>() {
+				public Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allOverrideableAssociationMappingNames();
+				}
+			}
+		);
+	}
+	
+	protected Iterator<String> embeddableOverrideableMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
+		return new TransformationIterator<String, String>(
+			new CompositeIterator<String>(
+				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings(), transformer))) 
+		{
+			@Override
+			protected String transform(String next) {
+				return getName() + '.' + next;
+			}
+		};
+	}
+
+
+	@Override
+	public Column resolveOverriddenColumn(String attributeName) {
+		if (getName() == null) {
+			return null;
+		}
+		if (this.isJpa2_0Compatible()) {
+			int dotIndex = attributeName.indexOf('.');
+			if (dotIndex != -1) {
+				if (getName().equals(attributeName.substring(0, dotIndex))) {
+					attributeName = attributeName.substring(dotIndex + 1);
+					AttributeOverride override = getValueAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+					if (override != null && !override.isVirtual()) {
+						return override.getColumn();
+					}
+					if (this.getResolvedTargetEmbeddable() == null) {
+						return null;
+					}
+					return this.getResolvedTargetEmbeddable().resolveOverriddenColumn(attributeName);
+				}
+			}
+		}
+		return null;
+	}
+
+	protected Iterator<String> embeddableAttributeMappingNames() {
+		return new TransformationIterator<String, String>(
+			new CompositeIterator<String>(
+				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
+					@Override
+					protected Iterator<String> transform(AttributeMapping mapping) {
+						return mapping.allMappingNames();
+					}
+				}
+			)
+		) {
+			@Override
+			protected String transform(String next) {
+				return getName() + '.' + next;
+			}
+		};
+	}
+
+	@Override
+	public AttributeMapping resolveAttributeMapping(String attributeName) {
+		if (getName() == null) {
+			return null;
+		}
+		AttributeMapping resolvedMapping = super.resolveAttributeMapping(attributeName);
+		if (resolvedMapping != null) {
+			return resolvedMapping;
+		}
+		int dotIndex = attributeName.indexOf('.');
+		if (dotIndex != -1) {
+			if (getName().equals(attributeName.substring(0, dotIndex))) {
+				for (AttributeMapping attributeMapping : CollectionTools.iterable(embeddableAttributeMappings())) {
+					resolvedMapping = attributeMapping.resolveAttributeMapping(attributeName.substring(dotIndex + 1));
+					if (resolvedMapping != null) {
+						return resolvedMapping;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public RelationshipReference resolveRelationshipReference(String attributeName) {
+		if (getName() == null) {
+			return null;
+		}
+		if (this.isJpa2_0Compatible()) {
+			int dotIndex = attributeName.indexOf('.');
+			if (dotIndex != -1) {
+				if (getName().equals(attributeName.substring(0, dotIndex))) {
+					attributeName = attributeName.substring(dotIndex + 1);
+					AssociationOverride override = getValueAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
+					if (override != null && !override.isVirtual()) {
+						return override.getRelationshipReference();
+					}
+					if (this.getResolvedTargetEmbeddable() == null) {
+						return null;
+					}
+					return this.getResolvedTargetEmbeddable().resolveRelationshipReference(attributeName);
+				}
+			}
+		}
+		return null;
+	}
 	
 	// **************** no map key ***********************************************
 		
