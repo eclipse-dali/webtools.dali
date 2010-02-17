@@ -24,8 +24,7 @@ public interface EclipseLink2_0
 	// EclipseLink 2.0 specific nodes
 
 	String CACHE_INTERCEPTOR = "cache-interceptor";
-	String CACHE_INTERCEPTOR__VALUE = "value";
-
+	
 	String CORRECTION_TYPE = "correction-type";
 	String MAP_KEY_ASSOCIATION_OVERRIDE = "map-key-association-override";
 

@@ -37,30 +37,30 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlEntity_2_0;
 public interface XmlEntity2_0 extends XmlEntity_2_0
 {
 	/**
-	 * Returns the value of the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cache Interceptor</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Cache Interceptor</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor2_0)
+	 * @return the value of the '<em>Cache Interceptor</em>' attribute.
+	 * @see #setCacheInterceptor(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlEntity2_0_CacheInterceptor()
-	 * @model containment="true"
+	 * @model
 	 * @generated
 	 */
-	XmlCacheInterceptor2_0 getCacheInterceptor();
+	String getCacheInterceptor();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0#getCacheInterceptor <em>Cache Interceptor</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity2_0#getCacheInterceptor <em>Cache Interceptor</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cache Interceptor</em>' containment reference.
+	 * @param value the new value of the '<em>Cache Interceptor</em>' attribute.
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	void setCacheInterceptor(XmlCacheInterceptor2_0 value);
+	void setCacheInterceptor(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Query Redirectors</b></em>' containment reference.

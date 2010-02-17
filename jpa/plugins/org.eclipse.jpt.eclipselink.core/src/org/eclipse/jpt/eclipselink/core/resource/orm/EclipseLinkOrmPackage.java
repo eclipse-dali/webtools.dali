@@ -719,21 +719,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_CACHE_INTERCEPTOR = 9;
 	/**
-	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CACHE_INTERCEPTOR__CLASS_NAME = EclipseLinkOrmV2_0Package.XML_CACHE_INTERCEPTOR2_0__CLASS_NAME;
-	/**
 	 * The number of structural features of the '<em>Xml Cache Interceptor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE_INTERCEPTOR_FEATURE_COUNT = EclipseLinkOrmV2_0Package.XML_CACHE_INTERCEPTOR2_0_FEATURE_COUNT + 0;
+	public static final int XML_CACHE_INTERCEPTOR_FEATURE_COUNT = 0;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking <em>Xml Change Tracking</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -1872,6 +1864,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ENTITY__CACHEABLE = OrmPackage.XML_ENTITY__CACHEABLE;
 	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ID_CLASS = OrmPackage.XML_ENTITY__ID_CLASS;
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1903,14 +1903,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS = OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS;
-	/**
-	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ID_CLASS = OrmPackage.XML_ENTITY__ID_CLASS;
 	/**
 	 * The feature id for the '<em><b>Inheritance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -2975,7 +2967,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MAPPED_SUPERCLASS__CACHEABLE = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 11;
 	/**
-	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cache Interceptor</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -7312,7 +7304,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlBasicCollectionEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlBasicMapEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
 		xmlBasicMapEClass.getESuperTypes().add(this.getXmlAttributeMapping());
-		xmlCacheInterceptorEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlCacheInterceptor2_0());
 		xmlConverterEClass.getESuperTypes().add(this.getXmlNamedConverter());
 		xmlConvertibleMappingEClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
 		xmlConvertibleMappingEClass.getESuperTypes().add(this.getXmlConverterHolder());
@@ -7423,8 +7414,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlCacheHolderEClass, XmlCacheHolder.class, "XmlCacheHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlCacheHolder_Cache(), this.getXmlCache(), null, "cache", null, 0, 1, XmlCacheHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlCacheHolder_ExistenceChecking(), this.getExistenceType(), "existenceChecking", "", 0, 1, XmlCacheHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlCacheInterceptorEClass, XmlCacheInterceptor.class, "XmlCacheInterceptor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlChangeTrackingEClass, XmlChangeTracking.class, "XmlChangeTracking", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlChangeTracking_Type(), this.getXmlChangeTrackingType(), "type", null, 0, 1, XmlChangeTracking.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

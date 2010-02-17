@@ -19,17 +19,16 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlMappedSuperclass_1_1;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -213,14 +212,24 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	protected Boolean cacheable = CACHEABLE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getCacheInterceptor() <em>Cache Interceptor</em>}' containment reference.
+	 * The default value of the '{@link #getCacheInterceptor() <em>Cache Interceptor</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCacheInterceptor2_0 cacheInterceptor;
+	protected static final String CACHE_INTERCEPTOR_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCacheInterceptor() <em>Cache Interceptor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheInterceptor()
+	 * @generated
+	 * @ordered
+	 */
+	protected String cacheInterceptor = CACHE_INTERCEPTOR_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
@@ -1008,63 +1017,38 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cache Interceptor</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Cache Interceptor</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor2_0)
+	 * @return the value of the '<em>Cache Interceptor</em>' attribute.
+	 * @see #setCacheInterceptor(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_0_CacheInterceptor()
-	 * @model containment="true"
+	 * @model
 	 * @generated
 	 */
-	public XmlCacheInterceptor2_0 getCacheInterceptor()
+	public String getCacheInterceptor()
 	{
 		return cacheInterceptor;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCacheInterceptor <em>Cache Interceptor</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetCacheInterceptor(XmlCacheInterceptor2_0 newCacheInterceptor, NotificationChain msgs)
-	{
-		XmlCacheInterceptor2_0 oldCacheInterceptor = cacheInterceptor;
-		cacheInterceptor = newCacheInterceptor;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR, oldCacheInterceptor, newCacheInterceptor);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCacheInterceptor <em>Cache Interceptor</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cache Interceptor</em>' containment reference.
+	 * @param value the new value of the '<em>Cache Interceptor</em>' attribute.
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	public void setCacheInterceptor(XmlCacheInterceptor2_0 newCacheInterceptor)
+	public void setCacheInterceptor(String newCacheInterceptor)
 	{
-		if (newCacheInterceptor != cacheInterceptor)
-		{
-			NotificationChain msgs = null;
-			if (cacheInterceptor != null)
-				msgs = ((InternalEObject)cacheInterceptor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR, null, msgs);
-			if (newCacheInterceptor != null)
-				msgs = ((InternalEObject)newCacheInterceptor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR, null, msgs);
-			msgs = basicSetCacheInterceptor(newCacheInterceptor, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR, newCacheInterceptor, newCacheInterceptor));
+		String oldCacheInterceptor = cacheInterceptor;
+		cacheInterceptor = newCacheInterceptor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR, oldCacheInterceptor, cacheInterceptor));
 	}
 
 	/**
@@ -1130,8 +1114,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				return basicSetPrimaryKey(null, msgs);
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				return basicSetCacheInterceptor(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return basicSetOptimisticLocking(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1247,7 +1229,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				setCacheable((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor2_0)newValue);
+				setCacheInterceptor((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)newValue);
@@ -1315,7 +1297,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				setCacheable(CACHEABLE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor2_0)null);
+				setCacheInterceptor(CACHE_INTERCEPTOR_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)null);
@@ -1371,7 +1353,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
 				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				return cacheInterceptor != null;
+				return CACHE_INTERCEPTOR_EDEFAULT == null ? cacheInterceptor != null : !CACHE_INTERCEPTOR_EDEFAULT.equals(cacheInterceptor);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1577,6 +1559,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		result.append(existenceChecking);
 		result.append(", cacheable: ");
 		result.append(cacheable);
+		result.append(", cacheInterceptor: ");
+		result.append(cacheInterceptor);
 		result.append(", excludeDefaultMappings: ");
 		result.append(excludeDefaultMappings);
 		result.append(')');
@@ -1679,7 +1663,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 	
 	protected static Translator buildCacheInterceptorTranslator() {
-		return XmlCacheInterceptor.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity2_0_CacheInterceptor());
+		return new Translator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMappedSuperclass_2_0_CacheInterceptor());
 	}
 	
 	protected static Translator buildConverterTranslator() {

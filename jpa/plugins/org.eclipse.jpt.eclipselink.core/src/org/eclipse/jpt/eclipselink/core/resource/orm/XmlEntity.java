@@ -1552,7 +1552,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 	
 	protected static Translator buildCacheInterceptorTranslator() {
-		return XmlCacheInterceptor.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity2_0_CacheInterceptor());
+		return new Translator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity2_0_CacheInterceptor());
 	}
 	
 	protected static Translator buildQueryRedirectorsTranslator() {
