@@ -213,14 +213,14 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	public Iterator<String> allOverrideableAttributeMappingNames() {
 		if (isOverridableAttributeMapping()) {
-			return allMappingNames();
+			return new SingleElementIterator<String>(getName());
 		}
 		return EmptyIterator.<String> instance();
 	}
 	
 	public Iterator<String> allOverrideableAssociationMappingNames() {
 		if (isOverridableAssociationMapping()) {
-			return allMappingNames();
+			return new SingleElementIterator<String>(getName());
 		}
 		return EmptyIterator.<String> instance();
 	}

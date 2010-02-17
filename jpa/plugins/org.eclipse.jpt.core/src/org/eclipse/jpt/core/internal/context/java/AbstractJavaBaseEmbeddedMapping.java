@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -100,6 +101,16 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 				super.allOverrideableAttributeMappingNames();
 	}
 	
+	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
+		return this.embeddableOverrideableMappingNames(
+			new Transformer<AttributeMapping, Iterator<String>>() {
+				public Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allOverrideableAttributeMappingNames();
+				}
+			}
+		);
+	}
+	
 	@Override
 	public Iterator<String> allOverrideableAssociationMappingNames() {
 		return this.isJpa2_0Compatible() ?
@@ -107,35 +118,21 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 				super.allOverrideableAssociationMappingNames();
 	}
 	
-	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
-		return new TransformationIterator<String, String>(
-			new CompositeIterator<String>(
-				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
-					@Override
-					protected Iterator<String> transform(AttributeMapping mapping) {
-						return mapping.allOverrideableAttributeMappingNames();
-					}
+	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
+		return this.embeddableOverrideableMappingNames(
+			new Transformer<AttributeMapping, Iterator<String>>() {
+				public Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allOverrideableAssociationMappingNames();
 				}
-			)
-		) {
-			@Override
-			protected String transform(String next) {
-				return getName() + '.' + next;
 			}
-		};
+		);
 	}
 	
-	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
+	protected Iterator<String> embeddableOverrideableMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
 		return new TransformationIterator<String, String>(
 			new CompositeIterator<String>(
-				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
-					@Override
-					protected Iterator<String> transform(AttributeMapping mapping) {
-						return mapping.allOverrideableAssociationMappingNames();
-					}
-				}
-			)
-		) {
+				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings(), transformer))) 
+		{
 			@Override
 			protected String transform(String next) {
 				return getName() + '.' + next;

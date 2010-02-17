@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -98,29 +99,22 @@ public class GenericOrmEmbeddedMapping
 	
 	//only putting this in EmbeddedMapping since relationship mappings
 	//defined within an embedded id class are not supported  by the 2.0 spec.
+	//i.e. the mappedBy choices will not include attributes nested in an embedded mapping
 	@Override
 	public Iterator<String> allMappingNames() {
 		return this.isJpa2_0Compatible() ?
-				new CompositeIterator<String>(this.getName(),this.embeddableAttributeMappingNames()) :
+				new CompositeIterator<String>(this.getName(),this.allEmbeddableAttributeMappingNames()) :
 				super.allMappingNames();
 	}
 
-	protected Iterator<String> embeddableAttributeMappingNames() {
-		return new TransformationIterator<String, String>(
-			new CompositeIterator<String>(
-				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings()) {
-					@Override
-					protected Iterator<String> transform(AttributeMapping mapping) {
-						return mapping.allMappingNames();
-					}
+	protected Iterator<String> allEmbeddableAttributeMappingNames() {
+		return this.embeddableOverrideableMappingNames(
+			new Transformer<AttributeMapping, Iterator<String>>() {
+				public Iterator<String> transform(AttributeMapping mapping) {
+					return mapping.allMappingNames();
 				}
-			)
-		) {
-			@Override
-			protected String transform(String next) {
-				return getName() + '.' + next;
 			}
-		};
+		);
 	}
 
 	@Override

@@ -85,6 +85,7 @@ public interface AttributeMapping
 	boolean shouldValidateAgainstDatabase();
 
 	/**
+	 * This is used for mappedBy choices in a relationship mapping.
 	 * Typically this will just be a single element iterator with the name of the mapping.
 	 * In a 2.0 project, an embedded mapping should return its own name as well as 
 	 * the name of its target Embeddable's mappings with the embedded mapping name 
@@ -92,8 +93,20 @@ public interface AttributeMapping
 	 */
 	Iterator<String> allMappingNames();
 	
+	/**
+	 * This is used to determine the virtual attribute overrides for an embedded mapping
+	 * or an entity. Return an Iterator of all attribute names that can be overridden.
+	 * In a 2.0 project this will include nested attributes that are overridable
+	 * @see isOverridableAttributeMapping()
+	 */
 	Iterator<String> allOverrideableAttributeMappingNames();
 	
+	/**
+	 * This is used to determine the virtual association overrides for an embedded mapping
+	 * or an entity. Return an Iterator of all association names that can be overridden.
+	 * In a 2.0 project this will include nested associations that are overridable
+	 * @see isOverridableAssociationMapping()
+	 */
 	Iterator<String> allOverrideableAssociationMappingNames();
 
 	/**
