@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.context.XmlFile;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * JPA <code>persistence.xml</code> file.
@@ -41,9 +40,8 @@ public interface PersistenceXml
 	// ********** updating **********
 	
 	/**
-	 * Update the context persistence XML model to match the resource model.
+	 * Update the context persistence XML model to match its resource file.
 	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
-	void update(JpaXmlResource resource);
-
+	void update();
 }

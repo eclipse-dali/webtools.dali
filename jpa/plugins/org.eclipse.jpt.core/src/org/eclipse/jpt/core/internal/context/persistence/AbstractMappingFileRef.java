@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -142,18 +141,24 @@ public abstract class AbstractMappingFileRef
 
 	protected void updateMappingFile() {
 		JpaXmlResource newXmlResource = this.resolveMappingFileXmlResource();
-		if (newXmlResource == null) {
+		
+		if (newXmlResource == null 
+				|| ! getJpaPlatform().supportsResourceType(newXmlResource.getResourceType())) {
+			
 			if (this.mappingFile != null) {
 				this.mappingFile.dispose();
 				this.setMappingFile(null);
 			}
-		} else {
+		}
+		else {
 			if (this.mappingFile == null) {
 				this.setMappingFile(this.buildMappingFile(newXmlResource));
-			} else {
+			} 
+			else {
 				if (this.mappingFile.getXmlResource() == newXmlResource) {
 					this.mappingFile.update();
-				} else {
+				}
+				else {
 					// if the resource's content type has changed, we completely rebuild the mapping file
 					this.mappingFile.dispose();
 					this.setMappingFile(this.buildMappingFile(newXmlResource));

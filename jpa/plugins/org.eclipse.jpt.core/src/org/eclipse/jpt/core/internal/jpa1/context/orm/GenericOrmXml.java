@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaResourceType;
@@ -43,7 +42,7 @@ public class GenericOrmXml
 	 * ref will dispose its current mapping file and build a new one.
 	 */
 	protected final JpaXmlResource xmlResource;
-
+	
 	/**
 	 * The resouce type will only change if the XML file's version changes
 	 * (since, if the content type changes, we get garbage-collected).
@@ -114,6 +113,10 @@ public class GenericOrmXml
 		if (this.entityMappings != null) {
 			this.entityMappings.dispose();
 		}
+		JpaFile jpaFile = getJpaFile();
+		if (jpaFile != null) {
+			jpaFile.removeRootStructureNode(this.xmlResource);
+		}
 	}
 
 	// ********** MappingFile implementation **********
@@ -163,31 +166,38 @@ public class GenericOrmXml
 		XmlEntityMappings oldXmlEntityMappings = (this.entityMappings == null) ? null : this.entityMappings.getXmlEntityMappings();
 		XmlEntityMappings newXmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
 		JpaResourceType newResourceType = this.xmlResource.getResourceType();
-
+		
 		// If the old and new xml entity mappings are different instances,
 		// we scrap the old context entity mappings and rebuild. This can
 		// happen when the resource model drastically changes, such as
 		// a cvs checkout or an edit reversion.
-		if ((oldXmlEntityMappings != newXmlEntityMappings) ||
-				(newXmlEntityMappings == null) ||
-				this.valuesAreDifferent(this.resourceType, newResourceType)
-		) {
+		if ((oldXmlEntityMappings != newXmlEntityMappings)
+				|| (newXmlEntityMappings == null)
+				|| this.valuesAreDifferent(this.resourceType, newResourceType)) {
+			
 			if (this.entityMappings != null) {
-				this.getJpaFile().removeRootStructureNode(this.xmlResource);
+				getJpaFile().removeRootStructureNode(this.xmlResource);
 				this.entityMappings.dispose();
-				this.setEntityMappings(null);
+				setEntityMappings(null);
 			}
 		}
-
+		
+		this.resourceType = newResourceType;
+		
 		if (newXmlEntityMappings != null) {
 			if (this.entityMappings != null) {
 				this.entityMappings.update();
-			} else {
-				this.setEntityMappings(this.buildEntityMappings(newXmlEntityMappings));
 			}
-			this.getJpaFile().addRootStructureNode(this.xmlResource, this.entityMappings);
+			else {
+				setEntityMappings(buildEntityMappings(newXmlEntityMappings));
+			}
+			
+			JpaFile jpaFile = getJpaFile();
+			if (jpaFile == null) {
+				System.out.print("Jpa file is null");
+			}
+			jpaFile.addRootStructureNode(this.xmlResource, this.entityMappings);
 		}
-		this.resourceType = newResourceType;
 	}
 
 	protected JpaFile getJpaFile() {

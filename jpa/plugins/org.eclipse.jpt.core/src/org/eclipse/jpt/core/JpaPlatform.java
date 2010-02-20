@@ -15,6 +15,9 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullJavaTypeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 
@@ -135,6 +138,12 @@ public interface JpaPlatform
 	
 	
 	// ********** resource types and definitions **********
+	
+	/**
+	 * Return true if the resource type is supported.  The result of this call is consistent with
+	 * the result of {@link #getResourceDefinition(JpaResourceType)}
+	 */
+	boolean supportsResourceType(JpaResourceType resourceType);
 	
 	/**
 	 * Return a {@link ResourceDefinition} to describe the context model for a file of the given

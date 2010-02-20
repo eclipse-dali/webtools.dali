@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -73,13 +72,20 @@ public class GenericRootContextNode
 
 	public void update(IProgressMonitor monitor) {
 		JpaXmlResource resource = this.resolvePersistenceXmlResource();
-		if (resource == null) {
-			this.setPersistenceXml(null);
-		} else {
+		if (resource == null
+				|| ! getJpaPlatform().supportsResourceType(resource.getResourceType())) {
+			
+			if (this.persistenceXml != null) {
+				this.persistenceXml.dispose();
+				setPersistenceXml(null);
+			}
+		}
+		else {
 			if (this.persistenceXml == null) {
-				this.setPersistenceXml(this.buildPersistenceXml(resource));
-			} else {
-				this.persistenceXml.update(resource);
+				setPersistenceXml(buildPersistenceXml(resource));
+			}
+			else {
+				this.persistenceXml.update();
 			}
 		}
 	}

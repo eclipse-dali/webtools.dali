@@ -78,6 +78,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1320,6 +1321,17 @@ public abstract class AbstractJpaProject
 //			System.out.println(msg);
 //			new Exception(msg).printStackTrace(System.out);
 			AbstractJpaProject.this.synchronizeContextModel(jpaResourceModel);
+		}
+		
+		public void resourceModelReverted(JpaResourceModel jpaResourceModel) {
+			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+			AbstractJpaProject.this.removeJpaFile(file);
+			AbstractJpaProject.this.addJpaFile(file);
+		}
+		
+		public void resourceModelUnloaded(JpaResourceModel jpaResourceModel) {
+			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+			AbstractJpaProject.this.removeJpaFile(file);
 		}
 	}
 	

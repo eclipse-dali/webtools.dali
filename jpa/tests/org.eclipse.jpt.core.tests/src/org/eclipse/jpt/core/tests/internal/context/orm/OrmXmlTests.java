@@ -64,7 +64,6 @@ public class OrmXmlTests extends ContextModelTestCase
 		assertNotNull(getOrmXml().getRoot());
 		
 		ormResource.getContents().clear();
-		
-		assertNull(getOrmXml().getRoot());
+		assertNull(getOrmXml());
 	}
 }

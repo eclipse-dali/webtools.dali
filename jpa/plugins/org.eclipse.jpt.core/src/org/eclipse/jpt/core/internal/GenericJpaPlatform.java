@@ -207,6 +207,15 @@ public class GenericJpaPlatform
 	
 	// ********** resource types and definitions **********
 	
+	public boolean supportsResourceType(JpaResourceType resourceType) {
+		for (ResourceDefinition resourceDefinition : CollectionTools.iterable(resourceDefinitions())) {
+			if (resourceDefinition.getResourceType().equals(resourceType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public ResourceDefinition getResourceDefinition(JpaResourceType resourceType) {
 		for (ResourceDefinition resourceDefinition : CollectionTools.iterable(resourceDefinitions())) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {

@@ -25,4 +25,7 @@ public interface JpaResourceModelListener
 {
 	void resourceModelChanged(JpaResourceModel jpaResourceModel);
 	
+	void resourceModelReverted(JpaResourceModel jpaResourceModel);
+	
+	void resourceModelUnloaded(JpaResourceModel jpaResourceModel);
 }

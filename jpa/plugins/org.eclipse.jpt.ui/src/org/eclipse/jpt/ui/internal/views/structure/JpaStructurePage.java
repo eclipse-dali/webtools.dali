@@ -27,8 +27,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -83,10 +83,10 @@ public class JpaStructurePage
 	
 	private final CollectionChangeListener jpaFilesListener;
 	
+	
 	public JpaStructurePage(
-			JpaStructureView jpaStructureView, 
-			JpaFile jpaFile, 
-			JpaStructureProvider structureProvider) {
+			JpaStructureView jpaStructureView, JpaFile jpaFile, JpaStructureProvider structureProvider) {
+		
 		this.jpaStructureView = jpaStructureView;
 		this.jpaFile = jpaFile;
 		this.jpaProject = jpaFile.getJpaProject();
@@ -98,6 +98,7 @@ public class JpaStructurePage
 		this.projectsListener = buildProjectsListener();
 		this.jpaFilesListener = buildJpaFilesListener();
 	}
+	
 	
 	private CollectionChangeListener buildProjectsListener() {
 		return new CollectionChangeListener(){
@@ -182,7 +183,7 @@ public class JpaStructurePage
 	@SuppressWarnings("unchecked")
 	void jpaFilesAdded(CollectionAddEvent event) {
 		for (JpaFile item : (Iterable<JpaFile>) event.getItems()) {
-			if (item.getFile() == JpaStructurePage.this.file) {
+			if (item.getFile() != null && item.getFile().equals(JpaStructurePage.this.file)) {
 				setJpaFile(item);
 				break;
 			}

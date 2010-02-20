@@ -103,10 +103,20 @@ public class JpaXmlResource
 	 */
 	@Override
 	public void eNotify(Notification notification) {
-		if ( ! notification.isTouch() && this.isLoaded() && (this.resourceSet != null)) {
+		//Unload events can happen before the resource set is removed - should always react to unload events
+		if (notification.getEventType() == Notification.SET && notification.getFeatureID(null) == Resource.RESOURCE__IS_LOADED) {
+			super.eNotify(notification);
+			if (isReverting()) {
+				resourceModelReverted();
+			}
+			else {
+				resourceModelUnloaded();
+			}
+		}
+		else if ( ! notification.isTouch() && this.isLoaded() && (this.resourceSet != null)) {
 			super.eNotify(notification);
 			this.resourceModelChanged();
-		} 
+		}
 	}
 	
 	/**
@@ -247,6 +257,19 @@ public class JpaXmlResource
 			listener.resourceModelChanged(this);
 		}
 	}
+	
+	protected void resourceModelReverted() {
+		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+			listener.resourceModelReverted(this);
+		}
+	}
+	
+	protected void resourceModelUnloaded() {
+		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+			listener.resourceModelUnloaded(this);
+		}
+	}
+	
 	
 	// ********** cast things back to what they are in EMF **********
 	

@@ -50,7 +50,6 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		assertNotNull(getPersistenceXml().getPersistence());
 		
 		prm.getContents().clear();
-		
-		assertNull(getPersistenceXml().getPersistence());
+		assertNull(getPersistenceXml());
 	}
 }
