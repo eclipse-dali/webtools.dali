@@ -41,13 +41,15 @@ import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaIdClassReference;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -70,7 +72,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -327,6 +328,11 @@ public abstract class AbstractJavaEntity
 
 	public boolean isMapped() {
 		return true;
+	}
+	
+	@Override
+	public JavaPersistentType getIdClass() {
+		return this.idClassReference.getIdClass();
 	}
 
 	@Override
@@ -791,20 +797,23 @@ public abstract class AbstractJavaEntity
 		}
 		return null;
 	}
-
-	/**
-	 * Return the ultimate top of the inheritance hierarchy 
-	 * This method should never return null. The root
-	 * is defined as the persistent type in the inheritance hierarchy
-	 * that has no parent.  The root should be an entity
-	 *  
-	 * Non-entities in the hierarchy should be ignored, ie skip
-	 * over them in the search for the root. 
-	 */
-	protected Entity getRootEntity() {
+	
+	public Entity getRootEntity() {
 		return this.rootEntity;
 	}
 
+	public boolean isRoot() {
+		return this == this.getRootEntity();
+	}
+
+	/**
+	 * Return whether the entity is a descendant in (as opposed to the root of)
+	 * an inheritance hierarchy.
+	 */
+	protected boolean isDescendant() {
+		return ! this.isRoot();
+	}
+	
 	/**
 	 * Table name defaults to the entity name.
 	 * If the entity is part of a single table inheritance hierarchy, table
@@ -849,21 +858,6 @@ public abstract class AbstractJavaEntity
 	protected boolean isSingleTableDescendant() {
 		return (this.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE)
 					&& this.isDescendant();
-	}
-	
-	/**
-	 * Return whether the entity is a descendant in (as opposed to the root of)
-	 * an inheritance hierarchy.
-	 */
-	protected boolean isDescendant() {
-		return ! this.isRoot();
-	}
-
-	/**
-	 * Return whether the entity is the top of an inheritance hierarchy.
-	 */
-	protected boolean isRoot() {
-		return this == this.getRootEntity();
 	}
 	
 	/**
@@ -937,28 +931,12 @@ public abstract class AbstractJavaEntity
 		return pkColumnName;
 	}
 
-	public PersistentAttribute getPrimaryKeyAttribute() {
-		Iterator<PersistentAttribute> stream = this.allPrimaryKeyAttributes();
-		if (stream.hasNext()) {
-			PersistentAttribute attribute = stream.next();
-			return stream.hasNext() ? null /*more than one*/: attribute;
+	public PersistentAttribute getIdAttribute() {
+		Iterable<AttributeMapping> idAttributeMappings = getAllAttributeMappings(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		if (CollectionTools.size(idAttributeMappings) != 1) {
+			return null;
 		}
-		return null;
-	}
-
-	protected Iterator<PersistentAttribute> allPrimaryKeyAttributes() {
-		return new FilteringIterator<PersistentAttribute>(this.getPersistentType().allAttributes()) {
-			@Override
-			protected boolean accept(PersistentAttribute pa) {
-				return pa.isPrimaryKeyAttribute();
-			}
-		};
-	}
-	
-	@Override
-	public boolean specifiesPrimaryKey() {
-		return this.idClassReference.getIdClassName() != null
-				|| hasPrimaryKeyAttribute();
+		return idAttributeMappings.iterator().next().getPersistentAttribute();
 	}
 	
 	public boolean tableNameIsInvalid(String tableName) {
@@ -1358,132 +1336,15 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		// if an entity is non-root, it is not allowed to define primary keys
-		if (! isRoot()) {
-			validatePrimaryKeySettingsForNonRootEntity(messages, reporter, astRoot);
-		}
-		else {
-			validatePrimaryKeySettingsForRootEntity(messages, reporter, astRoot);
-		}
+		buildPrimaryKeyValidator(astRoot).validate(messages, reporter);
 	}
 	
-	// split out to allow different implementations to override
-	protected void validatePrimaryKeySettingsForNonRootEntity(
-			List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		
-		if (this.idClassReference.getIdClassName() != null) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,
-						new String[0],
-						this,
-						this.idClassReference.getValidationTextRange(astRoot)));
-		}
-		for (JavaPersistentAttribute each : getPrimaryKeyAttributes()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
-						new String[0],
-						each,
-						each.getMapping().getValidationTextRange(astRoot)));
-		}
+	protected PrimaryKeyValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
+		return new GenericEntityPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
 	}
 	
-	// split out to allow different implementations to override
-	protected void validatePrimaryKeySettingsForRootEntity(
-			List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		
-		// for JPA portability, a hierarchy must define its primary key on one class 
-		// (entity *or* mapped superclass)
-		if (primaryKeyIsDefinedOnAncestor()) {
-			if (this.idClassReference.getIdClassName() != null) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,
-							new String[0],
-							this,
-							this.idClassReference.getValidationTextRange(astRoot)));
-			}
-			for (JavaPersistentAttribute each : getPrimaryKeyAttributes()) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,
-							new String[0],
-							each,
-							each.getMapping().getValidationTextRange(astRoot)));
-			}
-			return;
-		}
-		
-		// if the primary key is not defined on an ancestor, it must be defined here
-		if (hasNoPrimaryKeyAttribute()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NO_ID,
-						new String[] {this.getName()},
-						this,
-						this.getValidationTextRange(astRoot)));
-		}
-		
-		if (this.idClassReference.getIdClass() != null) {
-			validateIdClass(messages, reporter, astRoot);
-		}
-	}
-	
-	// split out to allow different implementations to override
-	// assumes id class is not null
-	protected void validateIdClass(
-			List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		
-		JavaPersistentType idClass = this.idClassReference.getIdClass();
-		for (JavaPersistentAttribute idClassAttribute : 
-				new SubIterableWrapper<PersistentAttribute, JavaPersistentAttribute>(
-					CollectionTools.iterable(idClass.allAttributes()))) {
-			boolean foundMatch = false;
-			for (JavaPersistentAttribute persistentAttribute : 
-					CollectionTools.iterable(getPersistentType().attributes())) {
-				if (idClassAttribute.getName().equals(persistentAttribute.getName())) {
-					foundMatch = true;
-					
-					// the matching attribute should be a primary key
-					if (! persistentAttribute.isPrimaryKeyAttribute()) {
-						messages.add(DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
-								new String[0],
-								persistentAttribute,
-								persistentAttribute.getValidationTextRange(astRoot)));
-					}
-					
-//					// the matching attribute's type should agree
-//					String persistentAttributeTypeName = persistentAttribute.getTypeName();
-//					if (persistentAttributeTypeName != null 	// if it's null, there should be 
-//																// another failing validation elsewhere
-//							&& ! idClassAttribute.getTypeName().equals(persistentAttributeTypeName)) {
-//						messages.add(DefaultJpaValidationMessages.buildMessage(
-//								IMessage.HIGH_SEVERITY,
-//								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
-//								new String[0],
-//								persistentAttribute,
-//								persistentAttribute.getValidationTextRange(astRoot)));
-//					}
-				}
-			}
-			
-//			if (! foundMatch) {
-//				messages.add(DefaultJpaValidationMessages.buildMessage(
-//						IMessage.HIGH_SEVERITY,
-//						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
-//						new String[] {idClassAttribute.getName()},
-//						this,
-//						this.idClassReference.getValidationTextRange(astRoot)));
-//			}
-		}
+	protected PrimaryKeyTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaEntityTextRangeResolver(this, astRoot);
 	}
 	
 	protected void validateTable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

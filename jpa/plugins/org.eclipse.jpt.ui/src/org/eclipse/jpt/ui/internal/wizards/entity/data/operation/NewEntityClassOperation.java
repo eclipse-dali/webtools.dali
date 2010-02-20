@@ -404,7 +404,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 					entity.getTable().setSpecifiedName(model.getTableName());
 				}
 				if (model.isCompositePK()) {
-					entity.getIdClassReference().setIdClassName(model.getIdClassName());
+					entity.getIdClassReference().setSpecifiedIdClassName(model.getIdClassName());
 				}
 				for (String fieldName : model.getPKFields()) {
 					persistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, fieldName);
@@ -448,7 +448,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 				MappedSuperclass mappedSuperclass = (MappedSuperclass) persistentType.getMapping();
 				
 				if (model.isCompositePK()) {
-					mappedSuperclass.getIdClassReference().setIdClassName(model.getIdClassName());
+					mappedSuperclass.getIdClassReference().setSpecifiedIdClassName(model.getIdClassName());
 				}
 				
 				for (String fieldName : model.getPKFields()) {

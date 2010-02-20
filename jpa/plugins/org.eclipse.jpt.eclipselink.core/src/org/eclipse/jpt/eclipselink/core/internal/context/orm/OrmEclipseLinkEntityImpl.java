@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
@@ -19,11 +20,12 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -33,7 +35,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkEntityImpl extends AbstractOrmEntity
+public class OrmEclipseLinkEntityImpl
+	extends AbstractOrmEntity
 	implements OrmEclipseLinkEntity
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
@@ -54,6 +57,17 @@ public class OrmEclipseLinkEntityImpl extends AbstractOrmEntity
 		this.changeTracking = new OrmEclipseLinkChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
 		this.caching = new OrmEclipseLinkCachingImpl(this, (XmlCacheHolder) this.resourceTypeMapping, (XmlCacheable_2_0) this.resourceTypeMapping, getJavaCaching());
 		this.converterHolder = new OrmEclipseLinkConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping);
+	}
+	
+	
+	@Override
+	public XmlEntity getResourceTypeMapping() {
+		return (XmlEntity) super.getResourceTypeMapping();
+	}
+	
+	public boolean usesPrimaryKeyColumns() {
+		return getResourceTypeMapping().getPrimaryKey() != null 
+				|| getJavaEntityForDefaults().usesPrimaryKeyColumns();
 	}
 	
 	public OrmEclipseLinkCaching getCaching() {
@@ -131,5 +145,10 @@ public class OrmEclipseLinkEntityImpl extends AbstractOrmEntity
 		this.customizer.validate(messages, reporter);
 		this.changeTracking.validate(messages, reporter);
 		this.caching.validate(messages, reporter);
+	}
+	
+	@Override
+	protected PrimaryKeyValidator buildPrimaryKeyValidator() {
+		return new EclipseLinkEntityPrimaryKeyValidator(this, buildTextRangeResolver());
 	}
 }

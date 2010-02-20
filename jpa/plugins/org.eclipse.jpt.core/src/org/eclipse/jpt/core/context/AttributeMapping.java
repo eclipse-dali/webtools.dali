@@ -34,7 +34,7 @@ public interface AttributeMapping
 	 * an extension they should be equal.
 	 */
 	String getKey();
-
+	
 	/**
 	 * Return whether the "attribute" mapping can be overridden.
 	 * Must be a {@link ColumnMapping}
@@ -51,11 +51,6 @@ public interface AttributeMapping
 	 * Return the mapping for the attribute mapping's attribute's type.
 	 */
 	TypeMapping getTypeMapping();
-
-	/**
-	 * Return whether the attribute is mapped as a primary key
-	 */
-	boolean isPrimaryKeyMapping();
 
 	/**
 	 * If the mapping is for a primary key column, return the column's name,

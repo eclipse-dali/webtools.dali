@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ColumnMapping;
@@ -184,10 +183,6 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public boolean isOverridableAssociationMapping() {
-		return false;
-	}
-
-	public boolean isPrimaryKeyMapping() {
 		return false;
 	}
 

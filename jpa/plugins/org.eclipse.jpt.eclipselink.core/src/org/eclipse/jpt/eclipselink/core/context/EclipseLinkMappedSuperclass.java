@@ -18,10 +18,11 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
-public interface EclipseLinkMappedSuperclass extends MappedSuperclass
+public interface EclipseLinkMappedSuperclass
+	extends EclipseLinkTypeMapping, MappedSuperclass
 {
 	EclipseLinkCaching getCaching();
 	

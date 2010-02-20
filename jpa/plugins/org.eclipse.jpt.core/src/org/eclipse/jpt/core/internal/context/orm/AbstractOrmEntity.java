@@ -37,7 +37,7 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
@@ -49,7 +49,6 @@ import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmIdClassReference;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
@@ -57,7 +56,10 @@ import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
+import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
@@ -76,7 +78,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -174,7 +175,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected OrmIdClassReference buildIdClassReference() {
-		return new GenericOrmIdClassReference(this);
+		return new GenericOrmIdClassReference(this, getJavaIdClassReferenceForDefaults());
 	}
 	
 	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
@@ -283,7 +284,12 @@ public abstract class AbstractOrmEntity
 
 	public String getKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
-	}	
+	}
+	
+	@Override
+	public JavaPersistentType getIdClass() {
+		return this.idClassReference.getIdClass();
+	}
 
 	@Override
 	public String getPrimaryTableName() {
@@ -341,6 +347,11 @@ public abstract class AbstractOrmEntity
 			return null;
 		}
 		return getJavaEntity();
+	}
+	
+	protected JavaIdClassReference getJavaIdClassReferenceForDefaults() {
+		JavaEntity entity = getJavaEntityForDefaults();
+		return (entity == null) ? null : entity.getIdClassReference();
 	}
 	
 	
@@ -909,30 +920,6 @@ public abstract class AbstractOrmEntity
 	public OrmQueryContainer getQueryContainer() {
 		return this.queryContainer;
 	}
-	
-	
-	public Entity getParentEntity() {
-		for (Iterator<PersistentType> stream = getPersistentType().ancestors(); stream.hasNext();) {
-			TypeMapping tm = stream.next().getMapping();
-			if (tm instanceof Entity) {
-				return (Entity) tm;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Return the ultimate top of the inheritance hierarchy 
-	 * This method should never return null. The root
-	 * is defined as the persistent type in the inheritance hierarchy
-	 * that has no parent.  The root should be an entity
-	 *  
-	 * Non-entities in the hierarchy should be ignored, ie skip
-	 * over them in the search for the root. 
-	 */
-	protected Entity getRootEntity() {
-		return this.rootEntity;
-	}
 
 	public String getDefaultTableName() {
 		JavaEntity javaEntity = this.getJavaEntity();
@@ -1001,19 +988,30 @@ public abstract class AbstractOrmEntity
 		return this.isDescendant() && (this.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE);
 	}
 	
+	public Entity getParentEntity() {
+		for (Iterator<PersistentType> stream = getPersistentType().ancestors(); stream.hasNext();) {
+			TypeMapping tm = stream.next().getMapping();
+			if (tm instanceof Entity) {
+				return (Entity) tm;
+			}
+		}
+		return null;
+	}
+	
+	public Entity getRootEntity() {
+		return this.rootEntity;
+	}
+	
+	public boolean isRoot() {
+		return this == this.getRootEntity();
+	}
+	
 	/**
 	 * Return whether the entity is a descendant in (as opposed to the root of)
 	 * an inheritance hierarchy.
 	 */
 	protected boolean isDescendant() {
 		return ! this.isRoot();
-	}
-
-	/**
-	 * Return whether the entity is the top of an inheritance hierarchy.
-	 */
-	protected boolean isRoot() {
-		return this == this.getRootEntity();
 	}
 	
 	/**
@@ -1254,7 +1252,7 @@ public abstract class AbstractOrmEntity
 		super.update();
 		this.setSpecifiedName(this.resourceTypeMapping.getName());
 		this.setDefaultName(this.buildDefaultName());
-		this.idClassReference.update();
+		this.idClassReference.update(getJavaIdClassReferenceForDefaults());
 		this.updateInheritance(this.getResourceInheritance());
 		this.updateRootEntity();
 		this.updateDiscriminatorColumn();
@@ -1535,22 +1533,12 @@ public abstract class AbstractOrmEntity
 		return AbstractJavaEntity.getPrimaryKeyColumnName(this);
 	}
 	
-	public PersistentAttribute getPrimaryKeyAttribute() {
-		Iterator<PersistentAttribute> stream = this.allPrimaryKeyAttributes();
-		if (stream.hasNext()) {
-			PersistentAttribute attribute = stream.next();
-			return stream.hasNext() ? null /*more than one*/: attribute;
+	public PersistentAttribute getIdAttribute() {
+		Iterable<AttributeMapping> idAttributeMappings = getAllAttributeMappings(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		if (CollectionTools.size(idAttributeMappings) != 1) {
+			return null;
 		}
-		return null;
-	}
-
-	protected Iterator<PersistentAttribute> allPrimaryKeyAttributes() {
-		return new FilteringIterator<PersistentAttribute>(this.getPersistentType().allAttributes()) {
-			@Override
-			protected boolean accept(PersistentAttribute pa) {
-				return pa.isPrimaryKeyAttribute();
-			}
-		};
+		return idAttributeMappings.iterator().next().getPersistentAttribute();
 	}
 
 	public void addToResourceModel(XmlEntityMappings entityMappings) {
@@ -1581,126 +1569,16 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
-		// if an entity is non-root, it is not allowed to define primary keys
-		if (! isRoot()) {
-			validatePrimaryKeySettingsForNonRootEntity(messages, reporter);
-		}
-		else {
-			validatePrimaryKeySettingsForRootEntity(messages, reporter);
-		}
+		buildPrimaryKeyValidator().validate(messages, reporter);
 	}
 	
-	// split out to allow different implementations to override
-	protected void validatePrimaryKeySettingsForNonRootEntity(List<IMessage> messages, IReporter reporter) {
-		if (this.idClassReference.getIdClassName() != null) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,
-						new String[0],
-						this,
-						this.idClassReference.getValidationTextRange()));
-		}
-		for (OrmPersistentAttribute each : getPrimaryKeyAttributes()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
-						new String[0],
-						each,
-						each.getMapping().getValidationTextRange()));
-		}
+	protected PrimaryKeyValidator buildPrimaryKeyValidator() {
+		return new GenericEntityPrimaryKeyValidator(this, buildTextRangeResolver());
+		// TODO - JPA 2.0 validation
 	}
 	
-	// split out to allow different implementations to override
-	protected void validatePrimaryKeySettingsForRootEntity(List<IMessage> messages, IReporter reporter) {
-		// for JPA portability, a hierarchy must define its primary key on one class 
-		// (entity *or* mapped superclass)
-		if (primaryKeyIsDefinedOnAncestor()) {
-			if (this.idClassReference.getIdClassName() != null) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,
-							new String[0],
-							this,
-							this.idClassReference.getValidationTextRange()));
-			}
-			for (OrmPersistentAttribute each : getPrimaryKeyAttributes()) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,
-							new String[0],
-							each,
-							each.getMapping().getValidationTextRange()));
-			}
-			return;
-		}
-		
-		// if the primary key is not defined on an ancestor, it must be defined here
-		if (hasNoPrimaryKeyAttribute()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_NO_ID,
-						new String[] {this.getName()},
-						this,
-						this.getValidationTextRange()));
-		}
-		
-		if (this.idClassReference.getIdClass() != null) {
-			validateIdClass(messages, reporter);
-		}
-	}
-	
-	// split out to allow different implementations to override
-	// assumes id class is not null
-	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
-		JavaPersistentType idClass = this.idClassReference.getIdClass();
-		for (JavaPersistentAttribute idClassAttribute : 
-				new SubIterableWrapper<PersistentAttribute, JavaPersistentAttribute>(
-					CollectionTools.iterable(idClass.allAttributes()))) {
-			boolean foundMatch = false;
-			for (OrmPersistentAttribute persistentAttribute : 
-					CollectionTools.iterable(getPersistentType().attributes())) {
-				if (idClassAttribute.getName().equals(persistentAttribute.getName())) {
-					foundMatch = true;
-					
-					// the matching attribute should be a primary key
-					if (! persistentAttribute.isPrimaryKeyAttribute()) {
-						messages.add(DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
-								new String[0],
-								persistentAttribute,
-								persistentAttribute.getValidationTextRange()));
-					}
-					
-//					// the matching attribute's type should agree
-//					String persistentAttributeTypeName = persistentAttribute.getTypeName();
-//					if (persistentAttributeTypeName != null 	// if it's null, there should be 
-//																// another failing validation elsewhere
-//							&& ! idClassAttribute.getTypeName().equals(persistentAttributeTypeName)) {
-//						messages.add(DefaultJpaValidationMessages.buildMessage(
-//								IMessage.HIGH_SEVERITY,
-//								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
-//								new String[0],
-//								persistentAttribute,
-//								persistentAttribute.getValidationTextRange()));
-//					}
-				}
-			}
-			
-//			if (! foundMatch) {
-//				messages.add(DefaultJpaValidationMessages.buildMessage(
-//						IMessage.HIGH_SEVERITY,
-//						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
-//						new String[] {idClassAttribute.getName()},
-//						this,
-//						this.idClassReference.getValidationTextRange()));
-//			}
-		}
+	protected PrimaryKeyTextRangeResolver buildTextRangeResolver() {
+		return new OrmEntityTextRangeResolver(this);
 	}
 	
 	protected void validateTable(List<IMessage> messages, IReporter reporter) {
@@ -1840,12 +1718,6 @@ public abstract class AbstractOrmEntity
 
 	protected TextRange getInheritanceStrategyTextRange() {
 		return this.resourceTypeMapping.getInheritanceStrategyTextRange();
-	}
-	
-	@Override
-	public boolean specifiesPrimaryKey() {
-		return this.idClassReference.getIdClassName() != null
-				|| hasPrimaryKeyAttribute();
 	}
 		
 	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {

@@ -24,7 +24,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkEmbeddableImpl extends AbstractOrmEmbeddable
+public class OrmEclipseLinkEmbeddableImpl
+	extends AbstractOrmEmbeddable
 	implements OrmEclipseLinkEmbeddable
 {
 	protected final OrmEclipseLinkCustomizer customizer;
@@ -33,13 +34,24 @@ public class OrmEclipseLinkEmbeddableImpl extends AbstractOrmEmbeddable
 	
 	protected final OrmEclipseLinkConverterHolder converterHolder;
 	
+	
 	public OrmEclipseLinkEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
 		super(parent, resourceMapping);
 		this.customizer = new OrmEclipseLinkCustomizer(this, (XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
 		this.changeTracking = new OrmEclipseLinkChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
 		this.converterHolder = new OrmEclipseLinkConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping); 
 	}
-
+	
+	
+	@Override
+	public XmlEmbeddable getResourceTypeMapping() {
+		return (XmlEmbeddable) super.getResourceTypeMapping();
+	}
+	
+	public boolean usesPrimaryKeyColumns() {
+		return false;
+	}
+	
 	public EclipseLinkCustomizer getCustomizer() {
 		return this.customizer;
 	}

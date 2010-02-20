@@ -10,12 +10,11 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.db.Schema;
 
 /**
- * 
- * 
- * Provisional API: This interface is part of an interim API that is still under
+ * oProvisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
  * It is available at this early stage to solicit feedback from pioneering
  * adopters on the understanding that any code that uses this API will almost
@@ -31,7 +30,12 @@ public interface TypeMapping extends JpaContextNode {
 	PersistentType getPersistentType();
 
 	boolean isMapped();
-
+	
+	/**
+	 * Return the resolved id class specified on this type mapping, null otherwise
+	 */
+	JavaPersistentType getIdClass();
+	
 	/**
 	 * Return the type mapping's primary table name, null if a primary table
 	 * does not apply.
@@ -46,17 +50,18 @@ public interface TypeMapping extends JpaContextNode {
 	Schema getDbSchema();
 
 	/**
+	 * Return the type mapping of this type mapping's super type.
+	 * Return null if this is the root.
+	 */
+	TypeMapping getSuperTypeMapping();
+	
+	/**
 	 * Return the type mapping's "persistence" inheritance hierarchy,
 	 * <em>including</em> the type mapping itself.
 	 * The returned iterator will return elements infinitely if the hierarchy
 	 * has a loop.
 	 */
 	Iterator<TypeMapping> inheritanceHierarchy();
-	
-	/**
-	 * Return whether there is a primary key defined on this type mapping
-	 */
-	boolean specifiesPrimaryKey();
 	
 	/**
 	 * Return the type mapping's "associated" tables, which includes the primary
@@ -89,19 +94,28 @@ public interface TypeMapping extends JpaContextNode {
 	 */
 	boolean tableNameIsInvalid(String tableName);
 	
-
 	/**
-	 * A convenience methods for getting the attribute mappings from PersistentType.attributes()
+	 * A convenience method for getting the attribute mappings from PersistentType.attributes()
 	 */
 	<T extends AttributeMapping> Iterator<T> attributeMappings();
+	
+	/**
+	 * Return attribute mappings of a particular mapping type that are declared on this type mapping
+	 */
+	<T extends AttributeMapping> Iterable<T> getAttributeMappings(String mappingKey);
 	
 	/**
 	 * Return all the attribute mappings in the type mapping's
 	 * inheritance hierarchy.
 	 */
 	Iterator<AttributeMapping> allAttributeMappings();
-
+	
 	/**
+	 * Return attribute mappings of a particular mapping type that are declared anywhere on this 
+	 * type mapping's hierarchy
+	 */
+	<T extends AttributeMapping> Iterable<T> getAllAttributeMappings(String mappingKey);
+	
 	/**
 	 * Return an Iterator of attribute names that can be overridden by a 
 	 * sub type mapping.

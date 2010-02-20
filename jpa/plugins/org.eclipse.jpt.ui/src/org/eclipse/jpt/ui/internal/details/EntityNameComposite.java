@@ -37,7 +37,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EntityNameComposite extends Pane<Entity>
+public class EntityNameComposite<T extends Entity>
+	extends Pane<T>
 {
 	/**
 	 * Creates a new <code>EntityNameComposite</code>.
@@ -45,26 +46,26 @@ public class EntityNameComposite extends Pane<Entity>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EntityNameComposite(Pane<? extends Entity> parentPane,
-	                           Composite parent) {
-
+	public EntityNameComposite(
+			Pane<T> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
+	
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		CCombo combo = addLabeledEditableCCombo(
 			container,
 			JptUiDetailsMessages.EntityNameComposite_name,
 			buildDefaultEntityNameListHolder(),
 			buildEntityNameHolder(),
-			JpaHelpContextIds.ENTITY_NAME
-		);
-
+			JpaHelpContextIds.ENTITY_NAME);
+		
 		SWTUtil.attachDefaultValueHandler(combo);
 	}
-
+	
 	private ListValueModel<String> buildDefaultEntityNameListHolder() {
 		return new PropertyListValueModelAdapter<String>(
 			buildDefaultEntityNameHolder()

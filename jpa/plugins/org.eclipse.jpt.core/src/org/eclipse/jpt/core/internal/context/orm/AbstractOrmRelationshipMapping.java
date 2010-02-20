@@ -273,13 +273,13 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 				EmptyIterator.<AttributeMapping> instance();
 	}
 
-	protected String getTargetEntityPrimaryKeyAttributeName() {
-		PersistentAttribute attribute = this.getTargetEntityPrimaryKeyAttribute();
+	protected String getTargetEntityIdAttributeName() {
+		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
 		return (attribute == null) ? null : attribute.getName();
 	}
 
-	protected PersistentAttribute getTargetEntityPrimaryKeyAttribute() {
-		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getPrimaryKeyAttribute();
+	protected PersistentAttribute getTargetEntityIdAttribute() {
+		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
 	}
 
 	@Override

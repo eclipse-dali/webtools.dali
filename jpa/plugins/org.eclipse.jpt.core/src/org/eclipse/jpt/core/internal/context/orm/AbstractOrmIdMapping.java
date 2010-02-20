@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
@@ -161,11 +160,6 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 
 	@Override
 	public boolean isOverridableAttributeMapping() {
-		return true;
-	}
-
-	@Override
-	public boolean isPrimaryKeyMapping() {
 		return true;
 	}
 	

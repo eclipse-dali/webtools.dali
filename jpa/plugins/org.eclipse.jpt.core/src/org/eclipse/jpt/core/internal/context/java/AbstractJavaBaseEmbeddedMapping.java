@@ -73,6 +73,12 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		return this.targetEmbeddable;
 	}
 	
+	protected void setTargetEmbeddable_(Embeddable newTargetEmbeddable) {
+		Embeddable oldTargetEmbeddable = this.targetEmbeddable;
+		this.targetEmbeddable = newTargetEmbeddable;
+		firePropertyChanged(TARGET_EMBEDDABLE_PROPERTY, oldTargetEmbeddable, newTargetEmbeddable);
+	}
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -83,7 +89,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	@Override
 	protected void update() {
 		super.update();
-		this.targetEmbeddable = this.getPersistentAttribute().getEmbeddable();
+		setTargetEmbeddable_(this.getPersistentAttribute().getEmbeddable());
 		this.attributeOverrideContainer.update(this.getResourcePersistentAttribute());
 	}
 	

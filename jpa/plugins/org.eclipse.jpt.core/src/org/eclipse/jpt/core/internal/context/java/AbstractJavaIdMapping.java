@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BaseColumn;
@@ -339,11 +338,7 @@ public abstract class AbstractJavaIdMapping
 	public boolean isOverridableAttributeMapping() {
 		return true;
 	}
-
-	@Override
-	public boolean isPrimaryKeyMapping() {
-		return true;
-	}
+	
 
 	//*********** Validation ************
 	

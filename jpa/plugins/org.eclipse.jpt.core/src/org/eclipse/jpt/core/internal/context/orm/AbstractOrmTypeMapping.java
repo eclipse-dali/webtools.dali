@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -77,7 +76,12 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	public boolean isMapped() {
 		return true;
 	}
-
+	
+	/* default implementation */
+	public JavaPersistentType getIdClass() {
+		return null;
+	}
+	
 	public String getPrimaryTableName() {
 		return null;
 	}
@@ -160,6 +164,40 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 			}
 		};
 	}
+	
+	public Iterable<OrmAttributeMapping> getAttributeMappings(final String mappingKey) {
+		return new FilteringIterable<OrmAttributeMapping>(CollectionTools.collection(attributeMappings())) {
+			@Override
+			protected boolean accept(OrmAttributeMapping o) {
+				return StringTools.stringsAreEqual(o.getKey(), mappingKey);
+			}
+		};
+	}
+
+	public Iterator<AttributeMapping> allAttributeMappings() {
+		return new CompositeIterator<AttributeMapping>(
+			new TransformationIterator<TypeMapping, Iterator<AttributeMapping>>(this.inheritanceHierarchy()) {
+				@Override
+				protected Iterator<AttributeMapping> transform(TypeMapping typeMapping) {
+					return typeMapping.attributeMappings();
+				}
+			});
+	}
+	
+	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
+		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(allAttributeMappings())) {
+			@Override
+			protected boolean accept(AttributeMapping o) {
+				return StringTools.stringsAreEqual(o.getKey(), mappingKey);
+			}
+		};
+	}
+	
+	public TypeMapping getSuperTypeMapping() {
+		return (getPersistentType().getSuperPersistentType() == null) ?
+				null 
+				: getPersistentType().getSuperPersistentType().getMapping();
+	}
 
 	/**
 	 * Return an iterator of TypeMappings, each which inherits from the one before,
@@ -174,59 +212,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		};
 	}
 	
-	public boolean specifiesPrimaryKey() {
-		// default implementation
-		return false;
-	}
-	
-	/**
-	 * Return whether an ancestor class has defined a primary key
-	 */
-	protected boolean primaryKeyIsDefinedOnAncestor() {
-		for (TypeMapping each : CollectionTools.iterable(inheritanceHierarchy())) {
-			if (each != this && each.specifiesPrimaryKey()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	protected boolean hasNoPrimaryKeyAttribute() {
-		return ! this.hasPrimaryKeyAttribute();
-	}
-	
-	protected boolean hasPrimaryKeyAttribute() {
-		for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext(); ) {
-			if (stream.next().isPrimaryKeyAttribute()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Return all attributes defined on this type mapping that define the type's primary key
-	 */
-	protected Iterable<OrmPersistentAttribute> getPrimaryKeyAttributes() {
-		return new FilteringIterable<OrmPersistentAttribute>(
-				CollectionTools.collection(getPersistentType().attributes())) {
-			@Override
-			protected boolean accept(OrmPersistentAttribute o) {
-				return o.isPrimaryKeyAttribute();
-			}
-		};
-	}
-	
-	public Iterator<AttributeMapping> allAttributeMappings() {
-		return new CompositeIterator<AttributeMapping>(
-			new TransformationIterator<TypeMapping, Iterator<AttributeMapping>>(this.inheritanceHierarchy()) {
-				@Override
-				protected Iterator<AttributeMapping> transform(TypeMapping typeMapping) {
-					return typeMapping.attributeMappings();
-				}
-			});
-	}
-
 	public Iterator<String> overridableAttributeNames() {
 		return new CompositeIterator<String>(
 			new TransformationIterator<AttributeMapping, Iterator<String>>(this.attributeMappings()) {

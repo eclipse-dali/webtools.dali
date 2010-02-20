@@ -255,12 +255,34 @@ public interface Entity
 	
 	GeneratorContainer getGeneratorContainer();
 	
+	
+	// **************** entity inheritance ************************************
+	
+	/**
+	 * Return whether this entity is a root entity in an inheritance hierarchy
+	 */
+	boolean isRoot();
+	
+	/**
+	 * Return the ultimate top of the inheritance hierarchy 
+	 * This method should never return null. The root
+	 * is defined as the persistent type in the inheritance hierarchy
+	 * that has no parent.  The root should be an entity
+	 *  
+	 * Non-entities in the hierarchy should be ignored, ie skip
+	 * over them in the search for the root. 
+	 */
+	Entity getRootEntity();
+	
 	/**
 	 * The given Entity has this entity as its root entity, add
 	 * it as a sub entity.
 	 * @see org.eclipse.jpt.core.context.persistence.PersistenceUnit#addRootWithSubEntities(String)
 	 */
 	void addSubEntity(Entity subEntity);
+	
+	
+	// ************************************************************************
 	
 	/**
 	 * Returns the attribute mapping that matches the name.
@@ -269,8 +291,8 @@ public interface Entity
 	AttributeMapping resolveAttributeMapping(String name);
 	
 	/**
-	 * Return the entity's primary key attribute.
-	 * Return null if the entity has multiple primary key attributes.
+	 * If an entity has a single id attribute, return that attribute.  
+	 * Else return null.
 	 */
-	PersistentAttribute getPrimaryKeyAttribute();
+	PersistentAttribute getIdAttribute();
 }

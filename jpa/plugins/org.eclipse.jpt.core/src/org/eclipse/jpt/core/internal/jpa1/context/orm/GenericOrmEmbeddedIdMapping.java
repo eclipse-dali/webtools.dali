@@ -40,11 +40,6 @@ public class GenericOrmEmbeddedIdMapping
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	@Override
-	public boolean isPrimaryKeyMapping() {
-		return true;
-	}
 
 	public void addToResourceModel(Attributes resourceAttributes) {
 		resourceAttributes.getEmbeddedIds().add(this.resourceAttributeMapping);

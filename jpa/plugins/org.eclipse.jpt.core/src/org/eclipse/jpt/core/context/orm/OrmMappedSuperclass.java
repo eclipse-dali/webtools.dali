@@ -29,5 +29,6 @@ public interface OrmMappedSuperclass
 	 * Return null if there is no java persistent type or it is not a mapped superclass.
 	 */
 	JavaMappedSuperclass getJavaMappedSuperclass();
-
+	
+	public OrmIdClassReference getIdClassReference();
 }

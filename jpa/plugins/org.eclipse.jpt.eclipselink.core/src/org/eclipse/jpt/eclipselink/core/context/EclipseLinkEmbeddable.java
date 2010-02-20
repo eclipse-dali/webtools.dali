@@ -18,10 +18,11 @@ import org.eclipse.jpt.core.context.Embeddable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
-public interface EclipseLinkEmbeddable extends Embeddable
+public interface EclipseLinkEmbeddable 
+	extends EclipseLinkTypeMapping, Embeddable
 {
 	EclipseLinkCustomizer getCustomizer();
 	

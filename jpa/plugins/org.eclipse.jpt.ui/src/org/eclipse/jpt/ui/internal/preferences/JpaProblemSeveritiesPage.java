@@ -422,7 +422,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.TYPE_LEVEL_CATEGORY);
 
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ENTITY_NO_ID,                                            JpaValidationMessages.ENTITY_NO_ID);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ENTITY_NO_PK,                                            JpaValidationMessages.ENTITY_NO_PK);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,            JpaValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,           JpaValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,             JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED);

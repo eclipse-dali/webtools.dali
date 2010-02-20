@@ -318,30 +318,30 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		IdClassReference idClassRef = ormMappedSuperclass.getIdClassReference();
 		
 		assertNull(mappedSuperclassResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
 		assertNotNull(mappedSuperclassResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
 		mappedSuperclassResource.getIdClass().setClassName(nonExistentIdClassName);
 		assertEquals(nonExistentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
-		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
 		mappedSuperclassResource.getIdClass().setClassName(existentIdClassName);
 		assertEquals(existentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
-		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertEquals(existentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNotNull(idClassRef.getIdClass());
 		
 		//test setting  @IdClass value to null, id-class tag is not removed
 		mappedSuperclassResource.getIdClass().setClassName(null);
 		assertNotNull(mappedSuperclassResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		//reset @IdClass value and then remove id-class tag
@@ -349,7 +349,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		mappedSuperclassResource.getIdClass().setClassName("model.Foo");
 		mappedSuperclassResource.setIdClass(null);
 		assertNull(mappedSuperclassResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 	}
 	
@@ -363,24 +363,24 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		IdClassReference idClassRef = ormMappedSuperclass.getIdClassReference();
 		
 		assertNull(mappedSuperclassResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
-		idClassRef.setIdClassName(nonExistentIdClassName);
+		idClassRef.setSpecifiedIdClassName(nonExistentIdClassName);
 		assertEquals(nonExistentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
-		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
-		idClassRef.setIdClassName(existentIdClassName);
+		idClassRef.setSpecifiedIdClassName(existentIdClassName);
 		assertEquals(existentIdClassName, mappedSuperclassResource.getIdClass().getClassName());
-		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertEquals(existentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNotNull(idClassRef.getIdClass());
 		
-		idClassRef.setIdClassName(null);
+		idClassRef.setSpecifiedIdClassName(null);
 		assertNull(mappedSuperclassResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 	}
 }

@@ -72,6 +72,12 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		return this.targetEmbeddable;
 	}
 	
+	protected void setTargetEmbeddable_(Embeddable newTargetEmbeddable) {
+		Embeddable oldTargetEmbeddable = this.targetEmbeddable;
+		this.targetEmbeddable = newTargetEmbeddable;
+		firePropertyChanged(TARGET_EMBEDDABLE_PROPERTY, oldTargetEmbeddable, newTargetEmbeddable);
+	}
+	
 	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
 		if (this.getTargetEmbeddable() == null) {
 			return EmptyIterator.instance();
@@ -161,11 +167,11 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	@Override
 	public void update() {
 		super.update();
-		this.targetEmbeddable = embeddableFor(this.getJavaPersistentAttribute());
+		setTargetEmbeddable_(embeddableFor(this.getJavaPersistentAttribute()));
 		getAttributeOverrideContainer().update();
 	}
-
-
+	
+	
 	//******** Validation ******************
 
 	@Override

@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  target entity hyperlink label, combo and browse button 
  */
-public class TargetEntityComposite extends ClassChooserComboPane<RelationshipMapping>
+public class TargetEntityComposite
+	extends ClassChooserComboPane<RelationshipMapping>
 {
-
 	/**
 	 * Creates a new <code>TargetEntityComposite</code>.
 	 *
@@ -35,12 +35,13 @@ public class TargetEntityComposite extends ClassChooserComboPane<RelationshipMap
 	 * @param parent The parent container
 	 */
 	public TargetEntityComposite(
-								Pane<? extends RelationshipMapping> parentPane,
-	                           Composite parent) {
-
+			Pane<? extends RelationshipMapping> parentPane,
+	        Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
+	
 	@Override
 	protected String getClassName() {
 		return getSubject().getTargetEntity();

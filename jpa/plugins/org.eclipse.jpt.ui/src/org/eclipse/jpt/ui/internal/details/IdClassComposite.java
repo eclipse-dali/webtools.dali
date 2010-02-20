@@ -11,29 +11,19 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.IdClassReference;
-import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
+import org.eclipse.jpt.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                                                                           |
- * | ClassChooserPane                                                          |
- * |                                                                           |
- * -----------------------------------------------------------------------------</pre>
+ * Id class hyperlink label, combo, and browse button
  *
- * @see IdClass
- * @see ClassChooserPane
- * @see AbstractEntityComposite - A parent container
- * @see MappedSuperclassComposite - A parent container
- *
- * @version 2.0
- * @since 2.0
  */
 public class IdClassComposite<T extends IdClassReference>
 	extends Pane<T>
@@ -62,56 +52,87 @@ public class IdClassComposite<T extends IdClassReference>
 	}
 	
 	
-	private ClassChooserPane<IdClassReference> addClassChooser(Composite container) {
-		return new ClassChooserPane<IdClassReference>(this, container) {
-			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<IdClassReference, String>(
-						getSubjectHolder(), IdClassReference.ID_CLASS_NAME_PROPERTY) {
-					@Override
-					protected String buildValue_() {
-						return this.subject.getIdClassName();
-					}
-					
-					@Override
-					protected void setValue_(String value) {
-						if (value.length() == 0) {
-							value = null;
-						}
-						this.subject.setIdClassName(value);
-					}
-				};
-			}
-			
-			@Override
-			protected String getClassName() {
-				return getSubject().getIdClassName();
-			}
-			
-			@Override
-			protected String getLabelText() {
-				return JptUiDetailsMessages.IdClassComposite_label;
-			}
-			
-			@Override
-			protected JpaProject getJpaProject() {
-				return getSubject().getJpaProject();
-			}
-			
-			@Override
-			protected void setClassName(String className) {
-				getSubject().setIdClassName(className);
-			}
-			
-			@Override
-			protected char getEnclosingTypeSeparator() {
-				return getSubject().getIdClassEnclosingTypeSeparator();
-			}
-		};
-	}
-	
 	@Override
 	protected void initializeLayout(Composite container) {
-		addClassChooser(container);
+		new IdClassChooserComboPane(this, container);
+	}
+	
+	
+	private class IdClassChooserComboPane
+		extends ClassChooserComboPane<T>
+	{
+		public IdClassChooserComboPane(Pane<T> parentPane, Composite parent) {
+			super(parentPane, parent);
+		}
+		
+		
+		@Override
+		protected String getClassName() {
+			return getSubject().getIdClassName();
+		}
+		
+		@Override
+		protected void setClassName(String className) {
+			getSubject().setSpecifiedIdClassName(className);
+		}
+		
+		@Override
+		protected String getLabelText() {
+			return JptUiDetailsMessages.IdClassComposite_label;
+		}
+		
+		@Override
+		protected JpaProject getJpaProject() {
+			return getSubject().getJpaProject();
+		}
+		
+		@Override
+		protected char getEnclosingTypeSeparator() {
+			return getSubject().getIdClassEnclosingTypeSeparator();
+		}
+		
+		@Override
+		protected WritablePropertyValueModel<String> buildTextHolder() {
+			return new PropertyAspectAdapter<T, String>(
+					getSubjectHolder(), 
+					IdClassReference.SPECIFIED_ID_CLASS_NAME_PROPERTY,
+					IdClassReference.DEFAULT_ID_CLASS_NAME_PROPERTY) {
+				
+				@Override
+				protected String buildValue_() {
+					String value = this.subject.getSpecifiedIdClassName();
+					return (value == null) ? defaultText(this.subject) : value;
+				}
+				
+				@Override
+				protected void setValue_(String value) {
+					if (value == null 
+							|| value.length() == 0 
+							|| value.equals(defaultText(this.subject))) {
+						value = null;
+					}
+					this.subject.setSpecifiedIdClassName(value);
+				}
+			};
+		}
+		
+		protected String defaultText(T idClassReference) {
+			String defaultClassName = idClassReference.getDefaultIdClassName();
+			return (defaultClassName == null) ?
+					JptUiDetailsMessages.NoneSelected
+					: NLS.bind(JptUiDetailsMessages.DefaultWithOneParam, defaultClassName);
+		}
+		
+		@Override
+		protected ListValueModel<String> buildClassListHolder() {
+			return new PropertyListValueModelAdapter<String>(
+				new PropertyAspectAdapter<T, String>(
+						getSubjectHolder(), IdClassReference.DEFAULT_ID_CLASS_NAME_PROPERTY) {
+					@Override
+					protected String buildValue_() {
+						return defaultText(this.subject);
+					}
+				});
+		}
 	}
 }

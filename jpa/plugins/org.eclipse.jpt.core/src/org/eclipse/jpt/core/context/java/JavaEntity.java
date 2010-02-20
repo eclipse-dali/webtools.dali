@@ -25,6 +25,8 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 {
 	JavaTable getTable();
 	
+	public JavaIdClassReference getIdClassReference();
+	
 	JavaDiscriminatorColumn getDiscriminatorColumn();
 	
 	@SuppressWarnings("unchecked")
@@ -49,5 +51,4 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 	JavaQueryContainer getQueryContainer();
 	
 	JavaGeneratorContainer getGeneratorContainer();
-
 }

@@ -13,7 +13,6 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.Table;
@@ -27,6 +26,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -49,6 +49,10 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return (JavaPersistentType) super.getParent();
 	}
 	
+	protected JavaResourcePersistentType getResourcePersistentType() {
+		return this.javaResourcePersistentType;
+	}
+	
 	protected Annotation getResourceMappingAnnotation() {
 		return this.javaResourcePersistentType.getAnnotation(getAnnotationName());
 	}
@@ -58,7 +62,12 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	public JavaPersistentType getPersistentType() {
 		return getParent();
 	}
-
+	
+	/* default implementation */
+	public JavaPersistentType getIdClass() {
+		return null;
+	}
+	
 	public String getPrimaryTableName() {
 		return null;
 	}
@@ -90,7 +99,13 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	public Iterator<Table> associatedTablesIncludingInherited() {
 		return EmptyIterator.instance();
 	}
-
+	
+	public TypeMapping getSuperTypeMapping() {
+		return (getPersistentType().getSuperPersistentType() == null) ?
+				null 
+				: getPersistentType().getSuperPersistentType().getMapping();
+	}
+	
 	/**
 	 * Return an iterator of TypeMappings, each which inherits from the one before,
 	 * and terminates at the root entity (or at the point of cyclicity).
@@ -108,54 +123,20 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		};
 	}
 	
-	public boolean specifiesPrimaryKey() {
-		// default implementation
-		return false;
-	}
-	
-	/**
-	 * Return whether an ancestor class has defined a primary key
-	 */
-	protected boolean primaryKeyIsDefinedOnAncestor() {
-		for (TypeMapping each : CollectionTools.iterable(inheritanceHierarchy())) {
-			if (each != this && each.specifiesPrimaryKey()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	protected boolean hasNoPrimaryKeyAttribute() {
-		return ! this.hasPrimaryKeyAttribute();
-	}
-	
-	protected boolean hasPrimaryKeyAttribute() {
-		for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext(); ) {
-			if (stream.next().isPrimaryKeyAttribute()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Return all attributes defined on this type mapping that define the type's primary key
-	 */
-	protected Iterable<JavaPersistentAttribute> getPrimaryKeyAttributes() {
-		return new FilteringIterable<JavaPersistentAttribute>(
-				CollectionTools.collection(getPersistentType().attributes())) {
-			@Override
-			protected boolean accept(JavaPersistentAttribute o) {
-				return o.isPrimaryKeyAttribute();
-			}
-		};
-	}
-	
 	public Iterator<JavaAttributeMapping> attributeMappings() {
 		return new TransformationIterator<JavaPersistentAttribute, JavaAttributeMapping>(getPersistentType().attributes()) {
 			@Override
 			protected JavaAttributeMapping transform(JavaPersistentAttribute attribute) {
 				return attribute.getMapping();
+			}
+		};
+	}
+	
+	public Iterable<JavaAttributeMapping> getAttributeMappings(final String mappingKey) {
+		return new FilteringIterable<JavaAttributeMapping>(CollectionTools.collection(attributeMappings())) {
+			@Override
+			protected boolean accept(JavaAttributeMapping o) {
+				return StringTools.stringsAreEqual(o.getKey(), mappingKey);
 			}
 		};
 	}
@@ -168,6 +149,15 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 					return typeMapping == null ? EmptyIterator.<AttributeMapping> instance() : typeMapping.attributeMappings();
 				}
 		});
+	}
+	
+	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
+		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(allAttributeMappings())) {
+			@Override
+			protected boolean accept(AttributeMapping o) {
+				return StringTools.stringsAreEqual(o.getKey(), mappingKey);
+			}
+		};
 	}
 	
 	public Iterator<String> overridableAttributeNames() {

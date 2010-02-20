@@ -87,12 +87,6 @@ public interface PersistentAttribute
 	String getTypeName();
 	
 	/**
-	 * Return whether the attribute is mapped as a primary key
-	 * (id or embedded id, for instance)
-	 */
-	boolean isPrimaryKeyAttribute();
-	
-	/**
 	 * Return whether this attribute actually has a textual representation
 	 * in its underlying resource (false = no).
 	 */

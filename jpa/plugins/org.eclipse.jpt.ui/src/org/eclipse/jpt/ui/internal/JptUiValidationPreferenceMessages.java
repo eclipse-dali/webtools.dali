@@ -49,7 +49,7 @@ public class JptUiValidationPreferenceMessages {
 	public static String PERSISTENT_TYPE_UNRESOLVED_CLASS;
 
 	public static String TYPE_LEVEL_CATEGORY;
-	public static String ENTITY_NO_ID;
+	public static String ENTITY_NO_PK;
 	public static String ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE;
 	public static String ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE;
 	public static String ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED;

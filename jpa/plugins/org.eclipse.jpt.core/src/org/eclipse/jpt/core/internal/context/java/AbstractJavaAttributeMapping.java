@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
@@ -125,10 +124,6 @@ public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	}
 
 	public boolean isOverridableAssociationMapping() {
-		return false;
-	}
-
-	public boolean isPrimaryKeyMapping() {
 		return false;
 	}
 

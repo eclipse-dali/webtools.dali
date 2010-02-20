@@ -21,20 +21,27 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkEmbeddableImpl extends AbstractJavaEmbeddable implements JavaEclipseLinkEmbeddable
+public class JavaEclipseLinkEmbeddableImpl
+	extends AbstractJavaEmbeddable
+	implements JavaEclipseLinkEmbeddable
 {
-	
 	protected final JavaEclipseLinkConverterHolder converterHolder;
 	
 	protected final JavaEclipseLinkCustomizer customizer;
 	
 	protected final JavaEclipseLinkChangeTracking changeTracking;
 	
+	
 	public JavaEclipseLinkEmbeddableImpl(JavaPersistentType parent) {
 		super(parent);
 		this.converterHolder = new JavaEclipseLinkConverterHolderImpl(this);
 		this.customizer = new JavaEclipseLinkCustomizer(this);
 		this.changeTracking = new JavaEclipseLinkChangeTracking(this);
+	}
+	
+	
+	public boolean usesPrimaryKeyColumns() {
+		return false;
 	}
 	
 	public JavaEclipseLinkConverterHolder getConverterHolder() {

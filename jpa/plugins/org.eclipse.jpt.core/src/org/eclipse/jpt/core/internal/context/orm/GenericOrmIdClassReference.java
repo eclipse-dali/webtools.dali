@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -30,14 +31,17 @@ public class GenericOrmIdClassReference
 	extends AbstractXmlContextNode
 	implements OrmIdClassReference
 {
-	protected String idClassName;
+	protected String specifiedIdClassName;
+	
+	protected String defaultIdClassName;
 
 	protected JavaPersistentType idClass;
 	
 	
-	public GenericOrmIdClassReference(OrmTypeMapping parent) {
+	public GenericOrmIdClassReference(OrmTypeMapping parent, JavaIdClassReference javaIdClassReference) {
 		super(parent);
-		this.idClassName = buildIdClassName();
+		this.specifiedIdClassName = buildSpecifiedIdClassName();
+		this.defaultIdClassName = buildDefaultIdClassName(javaIdClassReference);
 		this.idClass = buildIdClass();
 	}
 	
@@ -65,13 +69,13 @@ public class GenericOrmIdClassReference
 	
 	// **************** IdClassReference impl *********************************
 	
-	public String getIdClassName() {
-		return this.idClassName;
+	public String getSpecifiedIdClassName() {
+		return this.specifiedIdClassName;
 	}
 	
-	public void setIdClassName(String newClassName) {
-		String oldClassName = this.idClassName;
-		this.idClassName = newClassName;
+	public void setSpecifiedIdClassName(String newClassName) {
+		String oldClassName = this.specifiedIdClassName;
+		this.specifiedIdClassName = newClassName;
 		if (valuesAreDifferent(oldClassName, newClassName)) {
 			if (getIdClassElement() != null) {
 				getIdClassElement().setClassName(newClassName);
@@ -84,21 +88,43 @@ public class GenericOrmIdClassReference
 				getIdClassElement().setClassName(newClassName);
 			}
 		}
-		firePropertyChanged(ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
+		firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
 	
-	protected void setIdClassName_(String newClassName) {
-		String oldClassName = this.idClassName;
-		this.idClassName = newClassName;
-		firePropertyChanged(ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
+	protected void setSpecifiedIdClassName_(String newClassName) {
+		String oldClassName = this.specifiedIdClassName;
+		this.specifiedIdClassName = newClassName;
+		firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
 	
-	protected String buildIdClassName() {
+	protected String buildSpecifiedIdClassName() {
 		XmlIdClass element = getIdClassElement();
 		if (element != null) {
 			return element.getClassName();
 		}
 		return null;
+	}
+	
+	public String getDefaultIdClassName() {
+		return this.defaultIdClassName;
+	}
+	
+	protected void setDefaultIdClassName_(String newClassName) {
+		String oldClassName = this.defaultIdClassName;
+		this.defaultIdClassName = newClassName;
+		firePropertyChanged(DEFAULT_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
+	}
+	
+	protected String buildDefaultIdClassName(JavaIdClassReference javaIdClassReference) {
+		return (javaIdClassReference == null) ? null : javaIdClassReference.getIdClassName();
+	}
+	
+	public String getIdClassName() {
+		return (this.specifiedIdClassName == null) ? this.defaultIdClassName : this.specifiedIdClassName;
+	}
+	
+	public boolean isSpecified() {
+		return getIdClassName() != null;
 	}
 	
 	public JavaPersistentType getIdClass() {
@@ -168,8 +194,9 @@ public class GenericOrmIdClassReference
 		return '$';
 	}
 	
-	public void update() {
-		setIdClassName_(buildIdClassName());
+	public void update(JavaIdClassReference javaIdClassReference) {
+		setDefaultIdClassName_(buildDefaultIdClassName(javaIdClassReference));
+		setSpecifiedIdClassName_(buildSpecifiedIdClassName());
 		updateIdClass();
 	}
 	
@@ -187,7 +214,7 @@ public class GenericOrmIdClassReference
 			}
 		}
 	}
-
+	
 	
 	// **************** validation ********************************************
 	
@@ -200,7 +227,6 @@ public class GenericOrmIdClassReference
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		
-		// TODO
+		// most validation is done "holistically" from the type mapping level
 	}
 }

@@ -26,5 +26,6 @@ public interface IdMapping extends AttributeMapping, ColumnMapping, ConvertibleM
 	GeneratedValue addGeneratedValue();
 	void removeGeneratedValue();
 		String GENERATED_VALUE_PROPERTY = "generatedValue"; //$NON-NLS-1$
-
+	
+	
 }

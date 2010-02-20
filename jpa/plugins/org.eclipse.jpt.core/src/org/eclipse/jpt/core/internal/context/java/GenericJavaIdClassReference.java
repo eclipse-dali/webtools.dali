@@ -56,11 +56,11 @@ public class GenericJavaIdClassReference
 	
 	// **************** IdClassReference impl *********************************
 	
-	public String getIdClassName() {
+	public String getSpecifiedIdClassName() {
 		return this.idClassName;
 	}
 	
-	public void setIdClassName(String newClassName) {
+	public void setSpecifiedIdClassName(String newClassName) {
 		String oldClassName = this.idClassName;
 		this.idClassName = newClassName;
 		if (this.valuesAreDifferent(newClassName, oldClassName)) {
@@ -74,13 +74,13 @@ public class GenericJavaIdClassReference
 				removeIdClassAnnotation();
 			}
 		}
-		firePropertyChanged(ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
+		firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
 	
 	protected void setIdClassName_(String newClassName) {
 		String oldClassName = this.idClassName;
 		this.idClassName = newClassName;
-		firePropertyChanged(ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
+		firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
 	
 	protected String buildIdClassName() {
@@ -89,6 +89,18 @@ public class GenericJavaIdClassReference
 			return annotation.getValue();
 		}
 		return null;
+	}
+	
+	public String getDefaultIdClassName() {
+		return null;
+	}
+	
+	public String getIdClassName() {
+		return getSpecifiedIdClassName();
+	}
+	
+	public boolean isSpecified() {
+		return getSpecifiedIdClassName() != null;
 	}
 	
 	public JavaPersistentType getIdClass() {

@@ -152,10 +152,6 @@ public abstract class AbstractJavaPersistentAttribute
 	public String getTypeName() {
 		return this.resourcePersistentAttribute.getTypeName();
 	}
-	
-	public boolean isPrimaryKeyAttribute() {
-		return this.getMapping().isPrimaryKeyMapping();
-	}
 
 	public boolean isVirtual() {
 		return false;

@@ -66,6 +66,8 @@ public interface OrmEntity
 	
 	OrmTable getTable();
 	
+	OrmIdClassReference getIdClassReference();
+	
 	OrmDiscriminatorColumn getDiscriminatorColumn();
 	
 	@SuppressWarnings("unchecked")

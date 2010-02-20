@@ -2616,30 +2616,30 @@ public class OrmEntityTests extends ContextModelTestCase
 		IdClassReference idClassRef = ormEntity.getIdClassReference();
 		
 		assertNull(entityResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		entityResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
 		assertNotNull(entityResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
 		entityResource.getIdClass().setClassName(nonExistentIdClassName);
 		assertEquals(nonExistentIdClassName, entityResource.getIdClass().getClassName());
-		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
 		entityResource.getIdClass().setClassName(existentIdClassName);
 		assertEquals(existentIdClassName, entityResource.getIdClass().getClassName());
-		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertEquals(existentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNotNull(idClassRef.getIdClass());
 		
 		//test setting  @IdClass value to null, id-class tag is not removed
 		entityResource.getIdClass().setClassName(null);
 		assertNotNull(entityResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		//reset @IdClass value and then remove id-class tag
@@ -2647,7 +2647,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityResource.getIdClass().setClassName("model.Foo");
 		entityResource.setIdClass(null);
 		assertNull(entityResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 	}
 	
@@ -2661,24 +2661,24 @@ public class OrmEntityTests extends ContextModelTestCase
 		IdClassReference idClassRef = ormEntity.getIdClassReference();
 		
 		assertNull(entityResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
-		idClassRef.setIdClassName(nonExistentIdClassName);
+		idClassRef.setSpecifiedIdClassName(nonExistentIdClassName);
 		assertEquals(nonExistentIdClassName, entityResource.getIdClass().getClassName());
-		assertEquals(nonExistentIdClassName, idClassRef.getIdClassName());
+		assertEquals(nonExistentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
-		idClassRef.setIdClassName(existentIdClassName);
+		idClassRef.setSpecifiedIdClassName(existentIdClassName);
 		assertEquals(existentIdClassName, entityResource.getIdClass().getClassName());
-		assertEquals(existentIdClassName, idClassRef.getIdClassName());
+		assertEquals(existentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNotNull(idClassRef.getIdClass());
 		
-		idClassRef.setIdClassName(null);
+		idClassRef.setSpecifiedIdClassName(null);
 		assertNull(entityResource.getIdClass());
-		assertNull(idClassRef.getIdClassName());
+		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 	}
 

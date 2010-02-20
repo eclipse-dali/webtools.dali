@@ -174,10 +174,6 @@ public abstract class AbstractOrmPersistentAttribute
 		JavaPersistentAttribute javaAttribute = getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getTypeName();
 	}
-
-	public boolean isPrimaryKeyAttribute() {
-		return this.attributeMapping.isPrimaryKeyMapping();
-	}
 	
 	public void update() {
 		this.attributeMapping.update();

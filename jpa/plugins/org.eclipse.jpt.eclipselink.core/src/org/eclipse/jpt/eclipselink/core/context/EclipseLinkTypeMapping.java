@@ -8,11 +8,9 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.eclipselink.core.context;
 
-import org.eclipse.jpt.core.context.IdClassReference;
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.java.JavaIdClassReference;
+import org.eclipse.jpt.core.context.TypeMapping;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -20,9 +18,18 @@ import org.eclipse.jpt.core.context.java.JavaIdClassReference;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.3
  */
-public interface OrmIdClassReference
-	extends IdClassReference, XmlContextNode
+public interface EclipseLinkTypeMapping extends TypeMapping
 {
-	void update(JavaIdClassReference javaIdClassReference);
+	/**
+	 * Return whether this type mapping specifies primary key columns rather than using
+	 * JPA-style attributes
+	 * (Uses the @PrimaryKey annotation for java, or the primary-key element for xml)
+	 * 
+	 * Note: there is no context-level or UI support for this feature as of yet.
+	 */
+	boolean usesPrimaryKeyColumns();
 }

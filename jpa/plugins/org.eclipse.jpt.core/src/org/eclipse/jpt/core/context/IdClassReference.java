@@ -24,20 +24,42 @@ public interface IdClassReference
 	extends JpaNode, PersistentType.Owner
 {
 	/**
-	 * Property string associated with changes to the {@link IdClassHolder}'s id class name
+	 * Property string associated with changes to the {@link IdClassHolder}'s specified id class name
 	 */
-	String ID_CLASS_NAME_PROPERTY = "idClassName"; //$NON-NLS-1$
+	String SPECIFIED_ID_CLASS_NAME_PROPERTY = "specifiedIdClassName"; //$NON-NLS-1$
 	
 	/**
-	 * Return the name of the id class, null if none is specified in the resource model
+	 * Return the specified name of the id class, null if none is specified in the resource model
+	 */
+	String getSpecifiedIdClassName();
+	
+	/**
+	 * Set the specified name of the id class.
+	 * Use null to remove the id class specification from the resource model
+	 */
+	void setSpecifiedIdClassName(String value);
+	
+	/**
+	 * Property string associated with changes to the {@link IdClassHolder}'s default id class name
+	 */
+	String DEFAULT_ID_CLASS_NAME_PROPERTY = "defaultIdClassName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the default name of the id class, null if there is none
+	 */
+	String getDefaultIdClassName();
+	
+	/**
+	 * Return the name of the id class, taking into consideration the default value if applicable
 	 */
 	String getIdClassName();
 	
 	/**
-	 * Set the name of the id class.
-	 * Use null to remove the id class specification from the resource model
+	 * Return whether the id class has been specified.
+	 * Generally, this simply means that the id class name has been set, although if a default
+	 * applies, this should also return true.
 	 */
-	void setIdClassName(String value);
+	boolean isSpecified();
 	
 	/**
 	 * Property string associated with changes to the {@link IdClassHolder}'s id class.

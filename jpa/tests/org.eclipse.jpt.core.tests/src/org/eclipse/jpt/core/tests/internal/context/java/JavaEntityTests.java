@@ -379,7 +379,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
 		entity.getGeneratorContainer().addTableGenerator();
 		entity.getGeneratorContainer().addSequenceGenerator();
-		entity.getIdClassReference().setIdClassName("myIdClass");
+		entity.getIdClassReference().setSpecifiedIdClassName("myIdClass");
 		entity.getQueryContainer().addNamedNativeQuery(0);
 		entity.getQueryContainer().addNamedQuery(0);
 		
@@ -418,7 +418,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
 		entity.getGeneratorContainer().addTableGenerator();
 		entity.getGeneratorContainer().addSequenceGenerator();
-		entity.getIdClassReference().setIdClassName("myIdClass");
+		entity.getIdClassReference().setSpecifiedIdClassName("myIdClass");
 		entity.getQueryContainer().addNamedNativeQuery(0);
 		entity.getQueryContainer().addNamedQuery(0);
 		
@@ -457,7 +457,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
 		entity.getGeneratorContainer().addTableGenerator();
 		entity.getGeneratorContainer().addSequenceGenerator();
-		entity.getIdClassReference().setIdClassName("myIdClass");
+		entity.getIdClassReference().setSpecifiedIdClassName("myIdClass");
 		entity.getQueryContainer().addNamedNativeQuery(0);
 		entity.getQueryContainer().addNamedQuery(0);
 		
@@ -3209,20 +3209,20 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(getJavaEntity().getIdClassReference().getIdClassName());
+		assertNull(getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNull(getJavaEntity().getIdClassReference().getIdClass());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		
 		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);	
 		getJpaProject().synchronizeContextModel();
-		assertNull(getJavaEntity().getIdClassReference().getIdClassName());
+		assertNull(getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNotNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		
 		// test setting id class name to nonexistent class.  test class name is set, but class is null
 		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
 		idClass.setValue(nonExistentIdClassName);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(nonExistentIdClassName, getJavaEntity().getIdClassReference().getIdClassName());
+		assertEquals(nonExistentIdClassName, getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertEquals(nonExistentIdClassName, ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
 		assertNull(getJavaEntity().getIdClassReference().getIdClass());
 		
@@ -3230,14 +3230,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
 		idClass.setValue(existentIdClassName);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(existentIdClassName, getJavaEntity().getIdClassReference().getIdClassName());
+		assertEquals(existentIdClassName, getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertEquals(existentIdClassName, ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
 		assertNotNull(getJavaEntity().getIdClassReference().getIdClass());
 		
 		//test setting  @IdClass value to null, IdClass annotation is removed
 		idClass.setValue(null);
 		getJpaProject().synchronizeContextModel();
-		assertNull(getJavaEntity().getIdClassReference().getIdClassName());
+		assertNull(getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(getJavaEntity().getIdClassReference().getIdClass());
 		
@@ -3246,7 +3246,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		idClass.setValue(existentIdClassName);
 		typeResource.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
-		assertNull(getJavaEntity().getIdClassReference().getIdClassName());
+		assertNull(getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(getJavaEntity().getIdClassReference().getIdClass());
 	}
@@ -3258,24 +3258,24 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(getJavaEntity().getIdClassReference().getIdClassName());
+		assertNull(getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(getJavaEntity().getIdClassReference().getIdClass());
 		
 		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
-		getJavaEntity().getIdClassReference().setIdClassName(nonExistentIdClassName);
+		getJavaEntity().getIdClassReference().setSpecifiedIdClassName(nonExistentIdClassName);
 		assertEquals(nonExistentIdClassName, ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
-		assertEquals(nonExistentIdClassName, getJavaEntity().getIdClassReference().getIdClassName());
+		assertEquals(nonExistentIdClassName, getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNull(getJavaEntity().getIdClassReference().getIdClass());
 		
 		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
-		getJavaEntity().getIdClassReference().setIdClassName(existentIdClassName);
+		getJavaEntity().getIdClassReference().setSpecifiedIdClassName(existentIdClassName);
 		assertEquals(existentIdClassName, ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
-		assertEquals(existentIdClassName, getJavaEntity().getIdClassReference().getIdClassName());
+		assertEquals(existentIdClassName, getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNotNull(getJavaEntity().getIdClassReference().getIdClass());
 		
-		getJavaEntity().getIdClassReference().setIdClassName(null);
-		assertNull(getJavaEntity().getIdClassReference().getIdClassName());
+		getJavaEntity().getIdClassReference().setSpecifiedIdClassName(null);
+		assertNull(getJavaEntity().getIdClassReference().getSpecifiedIdClassName());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(getJavaEntity().getIdClassReference().getIdClass());
 	}

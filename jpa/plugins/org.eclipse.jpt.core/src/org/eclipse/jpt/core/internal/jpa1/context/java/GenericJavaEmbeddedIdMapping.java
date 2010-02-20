@@ -15,12 +15,10 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.resource.java.EmbeddedIdAnnotation;
 
-
 public class GenericJavaEmbeddedIdMapping
 	extends AbstractJavaBaseEmbeddedMapping<EmbeddedIdAnnotation>
 	implements JavaEmbeddedIdMapping
 {
-
 	public GenericJavaEmbeddedIdMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
@@ -33,10 +31,5 @@ public class GenericJavaEmbeddedIdMapping
 	
 	public String getAnnotationName() {
 		return EmbeddedIdAnnotation.ANNOTATION_NAME;
-	}
-
-	@Override
-	public boolean isPrimaryKeyMapping() {
-		return true;
 	}
 }

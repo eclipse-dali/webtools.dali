@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
@@ -19,13 +20,17 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkEntityImpl extends AbstractJavaEntity implements JavaEclipseLinkEntity
+public class JavaEclipseLinkEntityImpl
+	extends AbstractJavaEntity
+	implements JavaEclipseLinkEntity
 {
 	protected final JavaEclipseLinkCaching eclipseLinkCaching;
 	
@@ -36,7 +41,8 @@ public class JavaEclipseLinkEntityImpl extends AbstractJavaEntity implements Jav
 	protected final JavaEclipseLinkCustomizer customizer;
 	
 	protected final JavaEclipseLinkChangeTracking changeTracking;
-
+	
+	
 	public JavaEclipseLinkEntityImpl(JavaPersistentType parent) {
 		super(parent);
 		this.eclipseLinkCaching = new JavaEclipseLinkCachingImpl(this);
@@ -44,6 +50,11 @@ public class JavaEclipseLinkEntityImpl extends AbstractJavaEntity implements Jav
 		this.readOnly = new JavaEclipseLinkReadOnly(this);
 		this.changeTracking = new JavaEclipseLinkChangeTracking(this);
 		this.customizer = new JavaEclipseLinkCustomizer(this);
+	}
+	
+	
+	public boolean usesPrimaryKeyColumns() {
+		return getResourcePersistentType().getAnnotation(EclipseLink.PRIMARY_KEY) != null;
 	}
 	
 	public JavaEclipseLinkCaching getCaching() {
@@ -105,5 +116,10 @@ public class JavaEclipseLinkEntityImpl extends AbstractJavaEntity implements Jav
 		this.readOnly.validate(messages, reporter, astRoot);
 		this.customizer.validate(messages, reporter, astRoot);
 		this.changeTracking.validate(messages, reporter, astRoot);
+	}
+	
+	@Override
+	protected PrimaryKeyValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
+		return new EclipseLinkEntityPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
 	}
 }

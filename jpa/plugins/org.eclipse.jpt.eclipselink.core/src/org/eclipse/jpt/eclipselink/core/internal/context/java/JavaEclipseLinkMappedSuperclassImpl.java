@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaMappedSuperclass;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -19,27 +20,29 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkMappedSuperclassImpl
 	extends AbstractJavaMappedSuperclass
-	implements JavaEclipseLinkMappedSuperclass,
-		CacheableHolder2_0
+	implements JavaEclipseLinkMappedSuperclass, CacheableHolder2_0
 {
 	protected JavaEclipseLinkCaching eclipseLinkCaching;
 	
 	protected final JavaEclipseLinkConverterHolder converterHolder;
 	
 	protected final JavaEclipseLinkReadOnly readOnly;
-
+	
 	protected final JavaEclipseLinkCustomizer customizer;
-
+	
 	protected final JavaEclipseLinkChangeTracking changeTracking;
-
+	
+	
 	public JavaEclipseLinkMappedSuperclassImpl(JavaPersistentType parent) {
 		super(parent);
 		this.eclipseLinkCaching = new JavaEclipseLinkCachingImpl(this);
@@ -47,6 +50,11 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.readOnly = new JavaEclipseLinkReadOnly(this);
 		this.customizer = new JavaEclipseLinkCustomizer(this);
 		this.changeTracking = new JavaEclipseLinkChangeTracking(this);
+	}
+	
+	
+	public boolean usesPrimaryKeyColumns() {
+		return getResourcePersistentType().getAnnotation(EclipseLink.PRIMARY_KEY) != null;
 	}
 	
 	public JavaEclipseLinkCaching getCaching() {
@@ -108,5 +116,10 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.readOnly.validate(messages, reporter, astRoot);
 		this.customizer.validate(messages, reporter, astRoot);
 		this.changeTracking.validate(messages, reporter, astRoot);
+	}
+	
+	@Override
+	protected PrimaryKeyValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
+		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
 	}
 }

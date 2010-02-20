@@ -20,7 +20,9 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public abstract class AbstractOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> implements OrmEmbeddable
+public abstract class AbstractOrmEmbeddable
+	extends AbstractOrmTypeMapping<XmlEmbeddable>
+	implements OrmEmbeddable
 {
 	protected AbstractOrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
 		super(parent, resourceMapping);

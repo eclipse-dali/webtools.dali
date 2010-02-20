@@ -12,21 +12,18 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.GenericMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -45,7 +42,7 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	
 	
 	protected OrmIdClassReference buildIdClassReference() {
-		return new GenericOrmIdClassReference(this);
+		return new GenericOrmIdClassReference(this, getJavaIdClassReferenceForDefaults());
 	}
 	
 	public int getXmlSequence() {
@@ -54,6 +51,11 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	
 	public String getKey() {
 		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
+	}
+	
+	@Override
+	public JavaPersistentType getIdClass() {
+		return this.idClassReference.getIdClass();
 	}
 	
 	
@@ -85,10 +87,9 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 		return getJavaMappedSuperclass();
 	}
 	
-	@Override
-	public boolean specifiesPrimaryKey() {
-		return this.idClassReference.getIdClassName() != null
-				|| hasPrimaryKeyAttribute();
+	protected JavaIdClassReference getJavaIdClassReferenceForDefaults() {
+		JavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
+		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getIdClassReference();
 	}
 	
 	public boolean tableNameIsInvalid(String tableName) {
@@ -123,7 +124,7 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	@Override
 	public void update() {
 		super.update();
-		this.idClassReference.update();
+		this.idClassReference.update(getJavaIdClassReferenceForDefaults());
 	}
 	
 	@Override
@@ -133,81 +134,15 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	}
 	
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
-		// for JPA portability, a hierarchy must define its primary key on one class 
-		// (entity *or* mapped superclass)
-		if (primaryKeyIsDefinedOnAncestor()) {
-			if (this.idClassReference.getIdClassName() != null) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,
-							new String[0],
-							this,
-							this.idClassReference.getValidationTextRange()));
-			}
-			for (OrmPersistentAttribute each : getPrimaryKeyAttributes()) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,
-							new String[0],
-							each,
-							each.getMapping().getValidationTextRange()));
-			}
-			return;
-		}
-		
-		if (this.idClassReference.getIdClass() != null) {
-			validateIdClass(messages, reporter);
-		}
+		buildPrimaryKeyValidator().validate(messages, reporter);
 	}
 	
-	// split out to allow different implementations to override
-	// assumes id class is not null
-	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {		
-		JavaPersistentType idClass = this.idClassReference.getIdClass();
-		for (JavaPersistentAttribute idClassAttribute : 
-				new SubIterableWrapper<PersistentAttribute, JavaPersistentAttribute>(
-					CollectionTools.iterable(idClass.allAttributes()))) {
-			boolean foundMatch = false;
-			for (OrmPersistentAttribute persistentAttribute : 
-					CollectionTools.iterable(getPersistentType().attributes())) {
-				if (idClassAttribute.getName().equals(persistentAttribute.getName())) {
-					foundMatch = true;
-					
-					// the matching attribute should be a primary key
-					if (! persistentAttribute.isPrimaryKeyAttribute()) {
-						messages.add(DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,
-								new String[0],
-								persistentAttribute,
-								persistentAttribute.getValidationTextRange()));
-					}
-					
-					// the matching attribute's type should agree
-					String persistentAttributeTypeName = persistentAttribute.getTypeName();
-					if (persistentAttributeTypeName != null 	// if it's null, there should be 
-																// another failing validation elsewhere
-							&& ! idClassAttribute.getTypeName().equals(persistentAttributeTypeName)) {
-						messages.add(DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
-								new String[0],
-								persistentAttribute,
-								persistentAttribute.getValidationTextRange()));
-					}
-				}
-			}
-			
-			if (! foundMatch) {
-				messages.add(DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,
-						new String[] {idClassAttribute.getName()},
-						this,
-						this.idClassReference.getValidationTextRange()));
-			}
-		}
-	}	
+	protected PrimaryKeyValidator buildPrimaryKeyValidator() {
+		return new GenericMappedSuperclassPrimaryKeyValidator(this, buildTextRangeResolver());
+		// TODO - JPA 2.0 validation
+	}
+	
+	protected PrimaryKeyTextRangeResolver buildTextRangeResolver() {
+		return new OrmMappedSuperclassTextRangeResolver(this);
+	}
 }

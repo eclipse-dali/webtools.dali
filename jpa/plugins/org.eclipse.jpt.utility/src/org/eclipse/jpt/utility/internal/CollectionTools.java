@@ -20,17 +20,17 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.RandomAccess;
 import java.util.TreeSet;
 import java.util.Vector;
-
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
-import org.eclipse.jpt.utility.internal.iterators.SuperIteratorWrapper;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
+import org.eclipse.jpt.utility.internal.iterators.SuperIteratorWrapper;
 
 /**
  * {@link Collection}-related utility methods.
@@ -1516,8 +1516,24 @@ public final class CollectionTools {
 		}
 		return size;
 	}
-
-
+	
+	/**
+	 * Return whether the specified iterable is empty
+	 * (Shortcuts the iterator rather than calculating the entire size)
+	 */
+	public static boolean isEmpty(Iterable<?> iterable) {
+		return isEmpty(iterable.iterator());
+	}
+	
+	/**
+	 * Return whether the specified iterator is empty
+	 * (Shortcuts the iterator rather than calculating the entire size)
+	 */
+	public static boolean isEmpty(Iterator<?> iterator) {
+		return ! iterator.hasNext();
+	}
+	
+	
 	// ********** sort **********
 
 	/**

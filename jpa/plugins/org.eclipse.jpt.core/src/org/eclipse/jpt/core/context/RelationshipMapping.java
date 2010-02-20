@@ -34,18 +34,19 @@ public interface RelationshipMapping
  	 * or it is a unidirectional mapping.
 	 */
 	RelationshipMapping getRelationshipOwner();
-
+	
+	
 	// **************** target entity **************************************
 	
 	String getTargetEntity();
-
+	
 	String getSpecifiedTargetEntity();
 	void setSpecifiedTargetEntity(String value);
 		String SPECIFIED_TARGET_ENTITY_PROPERTY = "specifiedTargetEntity"; //$NON-NLS-1$
-
+	
 	String getDefaultTargetEntity();
 		String DEFAULT_TARGET_ENTITY_PROPERTY = "defaultTargetEntity"; //$NON-NLS-1$
-
+	
 	Entity getResolvedTargetEntity();
 		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntity"; //$NON-NLS-1$
 	

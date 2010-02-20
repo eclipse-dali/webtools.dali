@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
@@ -109,11 +108,6 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	public JavaDerivedIdentity2_0 getDerivedIdentity() {
 		return this.derivedIdentity;
-	}
-	
-	@Override
-	public boolean isPrimaryKeyMapping() {
-		return this.derivedIdentity.usesIdDerivedIdentityStrategy();
 	}
 	
 	
