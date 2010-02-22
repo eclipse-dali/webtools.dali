@@ -30,6 +30,7 @@ public interface EclipseLinkTypeMapping extends TypeMapping
 	 * (Uses the @PrimaryKey annotation for java, or the primary-key element for xml)
 	 * 
 	 * Note: there is no context-level or UI support for this feature as of yet.
+	 * Note: this is a 1.1 feature, but this check has been implemented for all versions
 	 */
 	boolean usesPrimaryKeyColumns();
 }
