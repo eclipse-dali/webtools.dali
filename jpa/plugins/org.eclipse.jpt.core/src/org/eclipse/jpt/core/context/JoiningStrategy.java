@@ -62,4 +62,22 @@ public interface JoiningStrategy extends JpaContextNode
 	 */
 	Table getDbTable(String tableName);
 
+	/**
+	 * return whether the given table cannot be explicitly specified
+	 * in the column's 'table' element
+	 */
+	boolean tableNameIsInvalid(String tableName);
+
+	/**
+	 * Return a message description used when the column's table is not valid 
+	 * in this context. This will be passed in as a parameter to a validation
+	 * message. Here is an example where the description is what is returned 
+	 * by the implementation:
+	 * <p>location:
+	 * Table "table name" for map key column "column name" 
+	 * <p>description:
+	 * does not match join table
+	 */
+	String getColumnTableNotValidDescription();
+
 }

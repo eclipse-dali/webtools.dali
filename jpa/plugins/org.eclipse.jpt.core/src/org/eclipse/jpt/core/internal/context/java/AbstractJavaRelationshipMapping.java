@@ -17,7 +17,9 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
@@ -44,6 +46,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
+	protected PersistentType resolvedTargetType;
 	protected Entity resolvedTargetEntity;
 
 	protected final JavaRelationshipReference relationshipReference;
@@ -67,6 +70,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.specifiedFetch = this.getResourceFetch();
 		this.cascade.initialize(this.mappingAnnotation);
 		this.specifiedTargetEntity = this.getResourceTargetEntity();
+		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
 	}
 
@@ -78,6 +82,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.cascade.update(this.mappingAnnotation);
 		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
+		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
 	}
 
@@ -121,6 +126,17 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	protected abstract String buildDefaultTargetEntity();
 
+	public PersistentType getResolvedTargetType() {
+		return this.resolvedTargetType;
+	}
+
+	protected PersistentType buildResolvedTargetType() {
+		String targetEntityClassName = (this.specifiedTargetEntity == null) ?
+						this.defaultTargetEntity :
+						this.mappingAnnotation.getFullyQualifiedTargetEntityClassName();
+		return (targetEntityClassName == null) ? null : this.getPersistenceUnit().getPersistentType(targetEntityClassName);
+	}
+	
 	public Entity getResolvedTargetEntity() {
 		return this.resolvedTargetEntity;
 	}
@@ -132,10 +148,11 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 
 	protected Entity buildResolvedTargetEntity() {
-		String targetEntityClassName = (this.specifiedTargetEntity == null) ?
-						this.defaultTargetEntity :
-						this.mappingAnnotation.getFullyQualifiedTargetEntityClassName();
-		return (targetEntityClassName == null) ? null : this.getPersistenceUnit().getEntity(targetEntityClassName);
+		if (this.resolvedTargetType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 
 	public Iterator<String> allTargetEntityAttributeNames() {

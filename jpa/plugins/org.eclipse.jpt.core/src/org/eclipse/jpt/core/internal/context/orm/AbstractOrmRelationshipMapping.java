@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
@@ -39,6 +41,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
+	protected PersistentType resolvedTargetType;
 	protected Entity resolvedTargetEntity;
 	
 	protected final OrmRelationshipReference relationshipReference;
@@ -54,10 +57,22 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		this.cascade = getXmlContextNodeFactory().buildOrmCascade(this, this.resourceAttributeMapping);
 		this.specifiedTargetEntity = getResourceTargetEntity();
 		this.defaultTargetEntity = buildDefaultTargetEntity();
+		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.resolvedTargetEntity = buildResolvedTargetEntity();
 		this.specifiedFetch = getResourceFetch();
 	}
 	
+	@Override
+	public void update() {
+		super.update();
+		this.relationshipReference.update();
+		this.cascade.update();
+		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
+		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
+		this.resolvedTargetType = this.buildResolvedTargetType();
+		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
+		this.setSpecifiedFetch_(this.getResourceFetch());
+	}
 	
 	protected abstract OrmRelationshipReference buildRelationshipReference();
 
@@ -147,6 +162,63 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		this.firePropertyChanged(RESOLVED_TARGET_ENTITY_PROPERTY, old, targetEntity);
 	}
 
+	public PersistentType getResolvedTargetType() {
+		return this.resolvedTargetType;
+	}
+
+	protected PersistentType buildResolvedTargetType() {
+		String targetEntityName = this.getTargetEntity();
+		if (targetEntityName == null) {
+			return null;
+		}
+
+		// first try to resolve using only the locally specified name...
+		PersistentType targetEntity = this.getPersistentType(targetEntityName);
+		if (targetEntity != null) {
+			return targetEntity;
+		}
+
+		// ...then try to resolve by prepending the global package name
+		String defaultPackageName = this.getDefaultPackageName();
+		if (defaultPackageName == null) {
+			return null;
+		}
+		return this.getPersistentType(defaultPackageName + '.' + targetEntityName);
+	}
+
+	protected String getResourceTargetEntity() {
+		return this.resourceAttributeMapping.getTargetEntity();
+	}
+
+	protected String buildDefaultTargetEntity() {
+		if (this.getJavaPersistentAttribute() != null) {
+			return getResourceDefaultTargetEntity();
+		}
+		return null;
+	}
+
+	protected abstract String getResourceDefaultTargetEntity();
+
+	protected Entity buildResolvedTargetEntity() {
+		if (this.resolvedTargetType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
+	}
+
+	protected String getDefaultPackageName() {
+		return this.getPersistentAttribute().getOwningPersistentType().getDefaultPackage();
+	}
+
+	protected Entity getEntity(String typeName) {
+		return this.getPersistenceUnit().getEntity(typeName);
+	}
+
+	protected PersistentType getPersistentType(String typeName) {
+		return this.getPersistenceUnit().getPersistentType(typeName);
+	}
+
 
 	// **************** reference **********************************************
 	
@@ -184,67 +256,11 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		this.specifiedFetch = fetch;
 		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
 	}
-
-
-	// **************** resource => context ************************************
-	
-	@Override
-	public void update() {
-		super.update();
-		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
-		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
-		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
-		this.relationshipReference.update();
-		this.setSpecifiedFetch_(this.getResourceFetch());
-		this.cascade.update();
-	}
-	
-	protected String getResourceTargetEntity() {
-		return this.resourceAttributeMapping.getTargetEntity();
-	}
-	
 	protected FetchType getResourceFetch() {
 		return FetchType.fromOrmResourceModel(this.resourceAttributeMapping.getFetch());
 	}
-	
-	protected String buildDefaultTargetEntity() {
-		if (this.getJavaPersistentAttribute() != null) {
-			return getResourceDefaultTargetEntity();
-		}
-		return null;
-	}
-	
-	protected abstract String getResourceDefaultTargetEntity();
 
-	protected Entity buildResolvedTargetEntity() {
-		String targetEntityName = this.getTargetEntity();
-		if (targetEntityName == null) {
-			return null;
-		}
 
-		// first try to resolve using only the locally specified name...
-		Entity targetEntity = this.getEntity(targetEntityName);
-		if (targetEntity != null) {
-			return targetEntity;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		String defaultPackageName = this.getDefaultPackageName();
-		if (defaultPackageName == null) {
-			return null;
-		}
-		return this.getEntity(defaultPackageName + '.' + targetEntityName);
-	}
-
-	protected String getDefaultPackageName() {
-		return this.getPersistentAttribute().getOwningPersistentType().getDefaultPackage();
-	}
-
-	protected Entity getEntity(String typeName) {
-		return this.getPersistenceUnit().getEntity(typeName);
-	}
-	
-	
 	// ********** RelationshipMapping implementation **********
 
 	@Override

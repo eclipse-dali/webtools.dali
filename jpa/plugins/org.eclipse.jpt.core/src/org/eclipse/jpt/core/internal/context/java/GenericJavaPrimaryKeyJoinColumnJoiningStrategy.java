@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
@@ -81,8 +82,16 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		return getTypeMapping().getDbTable(tableName);
 	}
 
+	public boolean tableNameIsInvalid(String tableName) {
+		return getTypeMapping().tableNameIsInvalid(tableName);
+	}
+
 	protected TypeMapping getTypeMapping() {
 		return getRelationshipMapping().getTypeMapping();
+	}
+
+	public String getColumnTableNotValidDescription() {
+		return JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
 	// **************** primary key join columns *******************************

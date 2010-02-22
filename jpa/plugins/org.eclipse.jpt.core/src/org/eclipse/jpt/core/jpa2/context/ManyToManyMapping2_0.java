@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -18,6 +18,6 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OneToManyMapping2_0
-	extends OneToManyMapping, CollectionMapping2_0
+public interface ManyToManyMapping2_0
+	extends ManyToManyMapping, CollectionMapping2_0
 {}

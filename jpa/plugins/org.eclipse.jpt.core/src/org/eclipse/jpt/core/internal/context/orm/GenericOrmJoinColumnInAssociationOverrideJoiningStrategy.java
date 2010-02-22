@@ -54,6 +54,14 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		return getAssociationOverride().getOwner().getDbTable(tableName);
 	}
 
+	public boolean tableNameIsInvalid(String tableName) {
+		return getAssociationOverride().getOwner().tableNameIsInvalid(tableName);
+	}
+
+	public String getColumnTableNotValidDescription() {
+		return null;
+	}
+
 	public boolean isOverridableAssociation() {
 		return false;
 	}

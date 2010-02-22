@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -11,16 +11,16 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToManyMapping2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 
 public abstract class AbstractOrmManyToManyMapping<T extends XmlManyToMany> 
 	extends AbstractOrmMultiRelationshipMapping<T>
-	implements OrmManyToManyMapping
+	implements OrmManyToManyMapping2_0
 {
 	protected AbstractOrmManyToManyMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);

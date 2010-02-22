@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
@@ -28,7 +29,7 @@ public abstract class AbstractOrmRelationshipReference
 	protected AbstractXmlRelationshipMapping resourceMapping;
 	
 	// cache the strategy for property change notification
-	protected JoiningStrategy cachedPredominantJoiningStrategy;
+	protected OrmJoiningStrategy cachedPredominantJoiningStrategy;
 	
 	
 	protected AbstractOrmRelationshipReference(
@@ -78,7 +79,7 @@ public abstract class AbstractOrmRelationshipReference
 	
 	// **************** predominant joining strategy ***************************
 	
-	public JoiningStrategy getPredominantJoiningStrategy() {
+	public OrmJoiningStrategy getPredominantJoiningStrategy() {
 		return this.cachedPredominantJoiningStrategy;
 	}
 	
@@ -86,7 +87,7 @@ public abstract class AbstractOrmRelationshipReference
 		setPredominantJoiningStrategy(calculatePredominantJoiningStrategy());
 	}
 	
-	protected void setPredominantJoiningStrategy(JoiningStrategy newJoiningStrategy) {
+	protected void setPredominantJoiningStrategy(OrmJoiningStrategy newJoiningStrategy) {
 		JoiningStrategy oldJoiningStrategy = this.cachedPredominantJoiningStrategy;
 		this.cachedPredominantJoiningStrategy = newJoiningStrategy;
 		firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, oldJoiningStrategy, newJoiningStrategy);
@@ -110,7 +111,7 @@ public abstract class AbstractOrmRelationshipReference
 	
 	protected abstract void updateJoiningStrategies();
 	
-	protected abstract JoiningStrategy calculatePredominantJoiningStrategy();
+	protected abstract OrmJoiningStrategy calculatePredominantJoiningStrategy();
 	
 	
 	// **************** validation *********************************************

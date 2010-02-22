@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
@@ -52,6 +53,7 @@ import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -79,6 +81,7 @@ public class GenericJavaElementCollectionMapping2_0
 	protected String defaultTargetClass;
 	protected PersistentType resolvedTargetType;
 	protected Embeddable resolvedTargetEmbeddable;
+	protected Entity resolvedTargetEntity;
 
 	protected FetchType specifiedFetch;
 	
@@ -109,6 +112,11 @@ public class GenericJavaElementCollectionMapping2_0
 
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
+	protected PersistentType resolvedMapKeyType;
+	protected Embeddable resolvedMapKeyEmbeddable;
+	protected Entity resolvedMapKeyEntity;
+
+	protected final JavaColumn mapKeyColumn;
 
 	public GenericJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
 		super(parent);
@@ -119,6 +127,7 @@ public class GenericJavaElementCollectionMapping2_0
 		this.valueConverter = this.nullConverter;
 		this.valueAttributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
 		this.valueAssociationOverrideContainer = this.getJpaFactory().buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
+		this.mapKeyColumn = getJpaFactory().buildJavaMapKeyColumn(parent, new MapKeyColumnOwner());
 	}
 
 	@Override
@@ -135,16 +144,21 @@ public class GenericJavaElementCollectionMapping2_0
 		this.specifiedTargetClass = this.getResourceTargetClass();
 		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.resolvedTargetEmbeddable = this.buildResolvedTargetEmbeddable();
+		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
 		this.initializeCollectionTable();
 		this.initializeValueType();
 		this.initializeValueColumn();
 		this.initializeValueConverter();
 		this.valueAttributeOverrideContainer.initialize(getResourcePersistentAttribute());
 		this.valueAssociationOverrideContainer.initialize(getResourcePersistentAttribute());
-		this.initializeKeyType();
-		this.initializeMapKey();
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
+		this.resolvedMapKeyType = this.buildResolvedMapKeyType();
+		this.resolvedMapKeyEmbeddable = this.buildResolvedMapKeyEmbeddable();
+		this.resolvedMapKeyEntity = this.buildResolvedMapKeyEntity();
+		this.initializeKeyType();
+		this.initializeMapKey();
+		this.initializeMapKeyColumn();
 	}
 
 	@Override
@@ -162,10 +176,14 @@ public class GenericJavaElementCollectionMapping2_0
 		this.updateValueConverter();
 		this.valueAttributeOverrideContainer.update(getResourcePersistentAttribute());
 		this.valueAssociationOverrideContainer.update(getResourcePersistentAttribute());
-		this.updateKeyType();
-		this.updateMapKey();
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
+		this.resolvedMapKeyType = this.buildResolvedMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
+		this.setResolvedMapKeyEmbeddable(this.buildResolvedMapKeyEmbeddable());
+		this.setResolvedMapKeyEntity(this.buildResolvedMapKeyEntity());
+		this.updateKeyType();
+		this.updateMapKey();
+		this.updateMapKeyColumn();
 	}
 
 	@Override
@@ -263,7 +281,7 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 
 	public PersistentType getResolvedTargetType() {
-		return getResolvedTargetEmbeddable() == null ? null : getResolvedTargetEmbeddable().getPersistentType();
+		return this.resolvedTargetType;
 	}
 	
 	protected PersistentType buildResolvedTargetType() {
@@ -281,30 +299,14 @@ public class GenericJavaElementCollectionMapping2_0
 		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
 
-//	public Iterator<String> allTargetEntityAttributeNames() {
-//		return new CompositeIterator<String>(
-//			new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEntityAttributeMappings()) {
-//				@Override
-//				protected Iterator<String> transform(AttributeMapping mapping) {
-//					return mapping.allMappingNames();
-//				}
-//		});
-//	}
-//
-//	protected Iterator<AttributeMapping> allTargetEntityAttributeMappings() {
-//		return (this.resolvedTargetEntity != null) ?
-//				this.resolvedTargetEntity.allAttributeMappings() :
-//				EmptyIterator.<AttributeMapping> instance();
-//	}
-//
-//	protected String getTargetEntityIdAttributeName() {
-//		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
-//		return (attribute == null) ? null : attribute.getName();
-//	}
-//
-//	protected PersistentAttribute getTargetEntityIdAttribute() {
-//		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
-//	}
+	protected Entity buildResolvedTargetEntity() {
+		if (this.resolvedTargetType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
+	}
+
 
 	public char getTargetClassEnclosingTypeSeparator() {
 		return '.';
@@ -468,6 +470,27 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 
 
+	// ***************** map key column **************
+
+	public JavaColumn getMapKeyColumn() {
+		return this.mapKeyColumn;
+	}
+
+	protected void initializeMapKeyColumn() {
+		this.mapKeyColumn.initialize(getMapKeyColumnAnnotation());
+	}
+
+	protected void updateMapKeyColumn() {
+		getMapKeyColumn().update(getMapKeyColumnAnnotation());
+	}
+
+	public MapKeyColumn2_0Annotation getMapKeyColumnAnnotation() {
+		if (!this.isJpa2_0Compatible()) {
+			return null;
+		}
+		return (MapKeyColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+	}
+
 	// ********** ordering **********  
 	
 	public JavaOrderable getOrderable() {
@@ -500,18 +523,21 @@ public class GenericJavaElementCollectionMapping2_0
 		this.valueType = this.buildValueType();
 	}
 
+	protected void updateValueType() {
+		this.setValueType(this.buildValueType()); 
+	}
+
 	protected Type buildValueType() {
 		if (getResolvedTargetEmbeddable() != null) {
 			return Type.EMBEDDABLE_TYPE; 
+		}
+		else if (this.resolvedTargetEntity != null) {
+			return Type.ENTITY_TYPE; 
 		}
 		else if (getTargetClass() == null) {
 			return Type.NO_TYPE;
 		}
 		return Type.BASIC_TYPE;
-	}
-
-	protected void updateValueType() {
-		this.setValueType(buildValueType()); 
 	}
 
 	public Type getKeyType() {
@@ -525,13 +551,25 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 
 	protected void initializeKeyType() {
-		//TODO key type
+		this.keyType = this.buildKeyType();
 	}
 
 	protected void updateKeyType() {
-		//TODO key type
+		this.setKeyType(this.buildKeyType());
 	}
 
+	protected Type buildKeyType() {
+		if (getResolvedMapKeyEmbeddable() != null) {
+			return Type.EMBEDDABLE_TYPE; 
+		}
+		if (getResolvedMapKeyEntity() != null) {
+			return Type.ENTITY_TYPE; 
+		}
+		else if (getMapKeyClass() == null) {
+			return Type.NO_TYPE;
+		}
+		return Type.BASIC_TYPE;
+	}
 
 	// ********** map key **********  
 
@@ -776,6 +814,54 @@ public class GenericJavaElementCollectionMapping2_0
 		this.getResourcePersistentAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
+	public Embeddable getResolvedMapKeyEmbeddable() {
+		return this.resolvedMapKeyEmbeddable;
+	}
+
+	protected void setResolvedMapKeyEmbeddable(Embeddable embeddable) {
+		Embeddable old = this.resolvedMapKeyEmbeddable;
+		this.resolvedMapKeyEmbeddable = embeddable;
+		this.firePropertyChanged(RESOLVED_MAP_KEY_EMBEDDABLE_PROPERTY, old, embeddable);
+	}
+
+	public Entity getResolvedMapKeyEntity() {
+		return this.resolvedMapKeyEntity;
+	}
+
+	protected void setResolvedMapKeyEntity(Entity entity) {
+		Entity old = this.resolvedMapKeyEntity;
+		this.resolvedMapKeyEntity = entity;
+		this.firePropertyChanged(RESOLVED_MAP_KEY_ENTITY_PROPERTY, old, entity);
+	}
+
+	public PersistentType getResolvedMapKeyType() {
+		return getResolvedMapKeyEmbeddable() == null ? null : getResolvedMapKeyEmbeddable().getPersistentType();
+	}
+
+	protected PersistentType buildResolvedMapKeyType() {
+		String mapKeyClassName = (this.specifiedMapKeyClass == null) ?
+						this.defaultMapKeyClass :
+						this.getMapKeyClassAnnotation().getFullyQualifiedClassName();
+		return (mapKeyClassName == null) ? null : this.getPersistenceUnit().getPersistentType(mapKeyClassName);
+	}
+
+	protected Embeddable buildResolvedMapKeyEmbeddable() {
+		if (this.resolvedMapKeyType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = this.resolvedMapKeyType.getMapping();
+		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
+	}
+
+	protected Entity buildResolvedMapKeyEntity() {
+		if (this.resolvedMapKeyType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = this.resolvedMapKeyType.getMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
+	}
+
+
 
 	// ********** Java completion proposals **********  
 
@@ -809,9 +895,12 @@ public class GenericJavaElementCollectionMapping2_0
 		if (result != null) {
 			return result;
 		}
-		
 		if (this.mapKeyNameTouches(pos, astRoot)) {
 			return this.javaCandidateMapKeyNames(filter);
+		}
+		result = this.getMapKeyColumn().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
 		}
 		return null;
 	}
@@ -992,14 +1081,37 @@ public class GenericJavaElementCollectionMapping2_0
 		this.validateMapKeyClass(messages, astRoot);
 		this.getOrderable().validate(messages, reporter, astRoot);
 		this.getCollectionTable().validate(messages, reporter, astRoot);
+		this.validateValue(messages, reporter, astRoot);
+		this.validateMapKey(messages, reporter, astRoot);
+	}
+
+	public void validateValue(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		//TODO should we handle validation when the type is embeddable, but a value column is specified, or things like that if that is invalid?
 		if (getValueType() == Type.BASIC_TYPE) {
 			this.getValueColumn().validate(messages, reporter, astRoot);
 			this.getConverter().validate(messages, reporter, astRoot);
 		}
-		if (getValueType() == Type.EMBEDDABLE_TYPE) {
+		else if (getValueType() == Type.EMBEDDABLE_TYPE) {
 			this.getValueAttributeOverrideContainer().validate(messages, reporter, astRoot);
 			this.getValueAssociationOverrideContainer().validate(messages, reporter, astRoot);
+		}
+	}
+
+	public void validateMapKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (getMapKey() != null) {
+			//TODO validate that the map key refers to an existing attribute
+			return;
+		}
+		if (getKeyType() == Type.BASIC_TYPE) {
+			this.getMapKeyColumn().validate(messages, reporter, astRoot);
+			//validate map key converter
+		}
+		else if (getKeyType() == Type.ENTITY_TYPE) {
+			//validate map key join columns
+		}
+		else if (getKeyType() == Type.EMBEDDABLE_TYPE) {
+			//validate map key attribute overrides
+			//validate map key association overrides
 		}
 	}
 
@@ -1056,17 +1168,14 @@ public class GenericJavaElementCollectionMapping2_0
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
-	class ValueColumnOwner implements JavaBaseColumn.Owner {
+
+	abstract class ColumnOwner implements JavaBaseColumn.Owner {
 		public String getDefaultTableName() {
 			return getCollectionTable().getName();
 		}
 		
 		public TypeMapping getTypeMapping() {
 			return GenericJavaElementCollectionMapping2_0.this.getTypeMapping();
-		}
-		
-		public String getDefaultColumnName() {
-			return GenericJavaElementCollectionMapping2_0.this.getName();
 		}
 		
 		public Table getDbTable(String tableName) {
@@ -1091,6 +1200,12 @@ public class GenericJavaElementCollectionMapping2_0
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
 		}
+	}
+
+	class ValueColumnOwner extends ColumnOwner {		
+		public String getDefaultColumnName() {
+			return GenericJavaElementCollectionMapping2_0.this.getName();
+		}
 
 		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
@@ -1106,6 +1221,32 @@ public class GenericJavaElementCollectionMapping2_0
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+	}
+
+	class MapKeyColumnOwner extends ColumnOwner {		
+		public String getDefaultColumnName() {
+			return GenericJavaElementCollectionMapping2_0.this.getName() + "_KEY"; //$NON-NLS-1$
+		}
+
+		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID,
+				new String[] {column.getTable(), column.getName(), JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
+				column,
+				textRange
+			);
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME,
 				new String[] {column.getName(), column.getDbTable().getName()}, 
 				column, 
 				textRange

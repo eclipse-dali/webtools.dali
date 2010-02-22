@@ -14,13 +14,17 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.jpa2.context.ManyToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -143,6 +147,10 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 					sb.append(JPA.EMBEDDED);
 					sb.append(";");
 					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.MANY_TO_MANY);
+					sb.append(";");
+					sb.append(CR);
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("public class ").append("Address").append(" ");
@@ -157,6 +165,9 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 				sb.append("    private State state;").append(CR);
 				sb.append(CR);
 				sb.append("    private int zip;").append(CR);
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);
+				sb.append("    private java.util.Collection<AnnotationTestType> employees;").append(CR);
 				sb.append(CR);
 				sb.append("}").append(CR);
 		}
@@ -337,6 +348,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals("state.foo", attributeNames.next());
 		assertEquals("state.address", attributeNames.next());
 		assertEquals("zip", attributeNames.next());
+		assertEquals("employees", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
@@ -353,6 +365,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals("state.foo", attributeNames.next());
 		assertEquals("state.address", attributeNames.next());
 		assertEquals("zip", attributeNames.next());
+		assertEquals("employees", attributeNames.next());
 		assertFalse(attributeNames.hasNext());
 
 		AttributeMapping stateFooMapping = manyToManyMapping.getResolvedTargetEntity().resolveAttributeMapping("state.foo");
@@ -483,6 +496,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals("state.foo", mapKeyNames.next());
 		assertEquals("state.address", mapKeyNames.next());
 		assertEquals("zip", mapKeyNames.next());
+		assertEquals("employees", mapKeyNames.next());
 		assertFalse(mapKeyNames.hasNext());
 	}
 	
@@ -508,6 +522,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals("state.foo", mapKeyNames.next());
 		assertEquals("state.address", mapKeyNames.next());
 		assertEquals("zip", mapKeyNames.next());
+		assertEquals("employees", mapKeyNames.next());
 		assertFalse(mapKeyNames.hasNext());
 		
 		manyToManyMapping2_0.setSpecifiedTargetEntity("String");
@@ -520,7 +535,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -557,7 +572,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -584,7 +599,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals("java.lang.Integer", manyToManyMapping.getDefaultMapKeyClass());
 
@@ -598,7 +613,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(manyToManyMapping.getDefaultMapKeyClass());
 	}
@@ -608,7 +623,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals("java.lang.Integer", manyToManyMapping.getMapKeyClass());
 
@@ -739,5 +754,63 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PrintJob.java", sourceWriter);
+	}
+
+	public void testGetMapKeyColumnMappedByStrategy() throws Exception {
+		createTestEntityWithValidGenericMapManyToManyMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		manyToManyMapping.getRelationshipReference().setMappedByJoiningStrategy();
+		manyToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().setMappedByAttribute("employees");
+		
+		assertNull(manyToManyMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getName());
+		assertEquals("Address_" + TYPE_NAME, manyToManyMapping.getMapKeyColumn().getTable());//join table name of owning many-to-many
+		
+		PersistentType persistentType = getPersistenceUnit().getPersistentType("test.Address");
+		ManyToManyMapping owningManyToManyMapping = (ManyToManyMapping) persistentType.getAttributeNamed("employees").getMapping();
+		((JoinTableJoiningStrategy) owningManyToManyMapping.getRelationshipReference().getPredominantJoiningStrategy()).getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTable());
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) attributeResource.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		column.setName("foo");
+		getJpaProject().synchronizeContextModel();
+		
+		assertEquals("foo", manyToManyMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("foo", manyToManyMapping.getMapKeyColumn().getName());
+		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getDefaultName());
+	}
+
+	public void testGetMapKeyColumnJoinTableStrategy() throws Exception {
+		createTestEntityWithValidGenericMapManyToManyMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(manyToManyMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getName());
+		assertEquals(TYPE_NAME + "_Address", manyToManyMapping.getMapKeyColumn().getTable());//join table name
+		
+		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTable());
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) attributeResource.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		column.setName("foo");
+		getJpaProject().synchronizeContextModel();
+		
+		assertEquals("foo", manyToManyMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("foo", manyToManyMapping.getMapKeyColumn().getName());
+		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getDefaultName());
 	}
 }

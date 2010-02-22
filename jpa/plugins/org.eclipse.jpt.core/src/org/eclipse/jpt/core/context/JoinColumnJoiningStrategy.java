@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -34,10 +34,10 @@ public interface JoinColumnJoiningStrategy
 	void initializeFrom(JoinColumnJoiningStrategy oldStrategy);
 	
 	/**
-	 * Return the TypeMapping that this join column is contained in.
+	 * Return the TypeMapping in which this join column is contained.
 	 */
 	TypeMapping getTypeMapping();
-
+	//TODO getJoinColumnSourceTypeMapping();
 	/**
 	 * Return a list iterator of the join columns whether specified or default.
 	 * This will not be null.

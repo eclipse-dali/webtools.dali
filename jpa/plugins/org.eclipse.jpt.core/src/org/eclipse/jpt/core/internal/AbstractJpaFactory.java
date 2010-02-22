@@ -72,6 +72,7 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
@@ -130,6 +131,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistence
 import org.eclipse.jpt.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
@@ -417,4 +419,7 @@ public abstract class AbstractJpaFactory
 		throw new UnsupportedOperationException();
 	}
 
+	public JavaColumn buildJavaMapKeyColumn(JavaJpaContextNode parent, Owner owner) {
+		return new NullJavaMapKeyColumn2_0(parent);
+	}
 }

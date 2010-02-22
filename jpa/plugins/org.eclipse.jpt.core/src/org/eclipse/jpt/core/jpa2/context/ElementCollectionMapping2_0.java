@@ -12,14 +12,13 @@ package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 
 public interface ElementCollectionMapping2_0
-	extends AttributeMapping2_0, CollectionMapping, ConvertibleMapping
+	extends AttributeMapping2_0, CollectionMapping2_0, ConvertibleMapping
 {
 	/**
 	 * Return the entity that owns the mapping. This is
@@ -50,19 +49,6 @@ public interface ElementCollectionMapping2_0
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getTargetClassEnclosingTypeSeparator();
-
-	Type getValueType();
-		String VALUE_TYPE_PROPERTY = "valueType"; //$NON-NLS-1$
-
-	Type getKeyType();
-		String KEY_TYPE_PROPERTY = "keyType"; //$NON-NLS-1$
-
-	public enum Type {
-		BASIC_TYPE,
-		EMBEDDABLE_TYPE,
-		ENTITY_TYPE,
-		NO_TYPE
-	}
 
 
 	// **************** collection table **************************************

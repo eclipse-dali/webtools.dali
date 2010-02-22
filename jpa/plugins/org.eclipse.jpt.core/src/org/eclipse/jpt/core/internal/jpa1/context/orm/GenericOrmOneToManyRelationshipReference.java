@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
@@ -26,7 +26,7 @@ public class GenericOrmOneToManyRelationshipReference
 	
 	
 	@Override
-	protected JoiningStrategy calculatePredominantJoiningStrategy() {
+	protected OrmJoiningStrategy calculatePredominantJoiningStrategy() {
 		if (this.mappedByJoiningStrategy.getMappedByAttribute() != null) {
 			return this.mappedByJoiningStrategy;
 		}

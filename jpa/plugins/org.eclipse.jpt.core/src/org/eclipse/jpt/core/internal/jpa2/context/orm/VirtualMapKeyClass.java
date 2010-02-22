@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.CollectionMapping;
+import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 
 public class VirtualMapKeyClass extends XmlMapKeyClass
 {
-	CollectionMapping javaCollectionMapping;
+	CollectionMapping2_0 javaCollectionMapping;
 
-	public VirtualMapKeyClass(CollectionMapping collectionMapping) {
+	public VirtualMapKeyClass(CollectionMapping2_0 collectionMapping) {
 		super();
 		this.javaCollectionMapping = collectionMapping;
 	}

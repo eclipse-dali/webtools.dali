@@ -13,10 +13,12 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlManyToMany2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToManyMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
@@ -41,7 +43,7 @@ public class VirtualEclipseLinkXmlManyToMany2_0 extends XmlManyToMany
 	
 	protected final VirtualXmlManyToMany2_0 virtualXmlManyToMany;
 		
-	public VirtualEclipseLinkXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
+	public VirtualEclipseLinkXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping2_0 javaManyToManyMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;
@@ -142,6 +144,16 @@ public class VirtualEclipseLinkXmlManyToMany2_0 extends XmlManyToMany
 	@Override
 	public void setMapKeyClass(XmlMapKeyClass value) {
 		this.virtualXmlManyToMany.setMapKeyClass(value);
+	}
+	
+	@Override
+	public XmlColumn getMapKeyColumn() {
+		return this.virtualXmlManyToMany.getMapKeyColumn();
+	}
+	
+	@Override
+	public void setMapKeyColumn(XmlColumn newMapKeyColumn) {
+		this.virtualXmlManyToMany.setMapKeyColumn(newMapKeyColumn);
 	}
 
 	@Override

@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
@@ -1405,5 +1406,30 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		assertEquals(5, virtualAttributeOverride.getColumn().getLength());
 		assertEquals(6, virtualAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, virtualAttributeOverride.getColumn().getScale());
+	}
+
+	public void testGetMapKeyColumn() throws Exception {
+		createTestEntityWithValidGenericMapElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(elementCollectionMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("addresses_KEY", elementCollectionMapping.getMapKeyColumn().getName());
+		assertEquals(TYPE_NAME + "_addresses", elementCollectionMapping.getMapKeyColumn().getTable());//collection table name
+
+		elementCollectionMapping.getCollectionTable().setSpecifiedName("MY_COLLECTION_TABLE");
+		assertEquals("MY_COLLECTION_TABLE", elementCollectionMapping.getMapKeyColumn().getTable());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) attributeResource.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		column.setName("foo");
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals("foo", elementCollectionMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("foo", elementCollectionMapping.getMapKeyColumn().getName());
+		assertEquals("addresses_KEY", elementCollectionMapping.getMapKeyColumn().getDefaultName());
 	}
 }

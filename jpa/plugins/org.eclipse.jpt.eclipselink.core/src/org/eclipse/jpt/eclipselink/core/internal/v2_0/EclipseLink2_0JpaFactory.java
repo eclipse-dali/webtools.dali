@@ -15,13 +15,16 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
+import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.core.internal.jpa2.GenericPersistentTypeMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
@@ -138,5 +141,10 @@ public class EclipseLink2_0JpaFactory
 	@Override
 	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
 		return new GenericJavaOrderColumn2_0(parent, owner);
+	}
+
+	@Override
+	public JavaColumn buildJavaMapKeyColumn(JavaJpaContextNode parent, Owner owner) {
+		return new GenericJavaColumn(parent, owner);
 	}
 }

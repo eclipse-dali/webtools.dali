@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
@@ -24,6 +23,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.db.Table;
@@ -230,7 +230,7 @@ public class MappingTools {
 		}
 	}
 
-	public static String getMetamodelFieldMapKeyTypeName(CollectionMapping mapping) {
+	public static String getMetamodelFieldMapKeyTypeName(CollectionMapping2_0 mapping) {
 		PersistentType targetType = mapping.getResolvedTargetType();
 		String mapKey = mapping.getMapKey();
 		if (mapKey == null || targetType == null) {

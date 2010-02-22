@@ -42,6 +42,7 @@ import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverrideColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
@@ -107,7 +108,12 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
+	protected PersistentType resolvedMapKeyType;
+	protected Embeddable resolvedMapKeyEmbeddable;
+	protected Entity resolvedMapKeyEntity;
 	
+	protected final OrmColumn mapKeyColumn;
+
 	public GenericOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
 		this.specifiedFetch = this.getResourceFetch();
@@ -123,9 +129,13 @@ public class GenericOrmElementCollectionMapping2_0
 		this.valueConverter = this.buildConverter(this.getResourceConverterType());
 		this.valueAssociationOverrideContainer = buildValueAssociationOverrideContainer();
 		this.valueAttributeOverrideContainer = buildValueAttributeOverrideContainer();
+		this.resolvedMapKeyType = this.buildResolvedMapKeyType();
+		this.resolvedMapKeyEmbeddable = this.buildResolvedMapKeyEmbeddable();
+		this.resolvedMapKeyEntity = this.buildResolvedMapKeyEntity();
 		this.initializeMapKey();
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
+		this.mapKeyColumn = getXmlContextNodeFactory().buildOrmColumn(this, new MapKeyColumnOwner());
 	}
 	
 	@Override
@@ -143,10 +153,14 @@ public class GenericOrmElementCollectionMapping2_0
 		this.valueAttributeOverrideContainer.update();
 		this.valueAssociationOverrideContainer.update();
 		this.updateValueConverter();
+		this.resolvedMapKeyType = this.buildResolvedMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
+		this.setResolvedMapKeyEmbeddable(this.buildResolvedMapKeyEmbeddable());
+		this.setResolvedMapKeyEntity(this.buildResolvedMapKeyEntity());
 		this.setKeyType(buildKeyType()); 
 		this.updateMapKey();
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
+		this.mapKeyColumn.update(getResourceMapKeyColumn());
 	}
 
 	@Override
@@ -237,7 +251,7 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 
 	public PersistentType getResolvedTargetType() {
-		return getResolvedTargetEmbeddable() == null ? null : getResolvedTargetEmbeddable().getPersistentType();
+		return this.resolvedTargetType;
 	}
 
 	protected String getResourceTargetClass() {
@@ -445,7 +459,26 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 
 	protected Type buildKeyType() {
-		return null;//TODO
+		if (getResolvedMapKeyEmbeddable() != null) {
+			return Type.EMBEDDABLE_TYPE; 
+		}
+		if (getResolvedMapKeyEntity() != null) {
+			return Type.ENTITY_TYPE; 
+		}
+		else if (getMapKeyClass() == null) {
+			return Type.NO_TYPE;
+		}
+		return Type.BASIC_TYPE;
+	}
+
+	// ************** value column ********************************************
+
+	public OrmColumn getMapKeyColumn() {
+		return this.mapKeyColumn;
+	}
+	
+	protected XmlColumn getResourceMapKeyColumn() {
+		return this.resourceAttributeMapping.getMapKeyColumn();
 	}
 	
 	// **************** ordering ***********************************************
@@ -923,6 +956,67 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 	
 
+	public Embeddable getResolvedMapKeyEmbeddable() {
+		return this.resolvedMapKeyEmbeddable;
+	}
+
+	protected void setResolvedMapKeyEmbeddable(Embeddable embeddable) {
+		Embeddable old = this.resolvedMapKeyEmbeddable;
+		this.resolvedMapKeyEmbeddable = embeddable;
+		this.firePropertyChanged(RESOLVED_MAP_KEY_EMBEDDABLE_PROPERTY, old, embeddable);
+	}
+
+	public Entity getResolvedMapKeyEntity() {
+		return this.resolvedMapKeyEntity;
+	}
+
+	protected void setResolvedMapKeyEntity(Entity entity) {
+		Entity old = this.resolvedMapKeyEntity;
+		this.resolvedMapKeyEntity = entity;
+		this.firePropertyChanged(RESOLVED_MAP_KEY_ENTITY_PROPERTY, old, entity);
+	}
+
+	public PersistentType getResolvedMapKeyType() {
+		return getResolvedMapKeyEmbeddable() == null ? null : getResolvedMapKeyEmbeddable().getPersistentType();
+	}
+	
+	protected PersistentType buildResolvedMapKeyType() {
+		String mapKeyClassName = this.getMapKeyClass();
+		if (mapKeyClassName == null) {
+			return null;
+		}
+
+		// first try to resolve using only the locally specified name...
+		PersistentType mapKeyPersistentType = this.getPersistentType(mapKeyClassName);
+		if (mapKeyPersistentType != null) {
+			return mapKeyPersistentType;
+		}
+
+		// ...then try to resolve by prepending the global package name
+		String defaultPackageName = this.getDefaultPackageName();
+		if (defaultPackageName == null) {
+			return null;
+		}
+		return this.getPersistentType(defaultPackageName + '.' + mapKeyClassName);
+	}
+
+	protected Embeddable buildResolvedMapKeyEmbeddable() {
+		if (this.resolvedMapKeyType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = this.resolvedMapKeyType.getMapping();
+		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
+	}
+
+	protected Entity buildResolvedMapKeyEntity() {
+		if (this.resolvedMapKeyType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = this.resolvedMapKeyType.getMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
+	}
+
+
 	// ********** metamodel **********  
 	@Override
 	protected String getMetamodelFieldTypeName() {
@@ -962,6 +1056,12 @@ public class GenericOrmElementCollectionMapping2_0
 		this.validateMapKeyClass(messages);
 		this.getOrderable().validate(messages, reporter);
 		this.getCollectionTable().validate(messages, reporter);
+		this.validateValue(messages, reporter);
+		this.validateMapKey(messages, reporter);
+	}
+
+	public void validateValue(List<IMessage> messages, IReporter reporter) {
+		//TODO should we handle validation when the type is embeddable, but a value column is specified, or things like that if that is invalid?
 		if (getValueType() == Type.BASIC_TYPE) {
 			this.getValueColumn().validate(messages, reporter);
 			this.getConverter().validate(messages, reporter);
@@ -969,6 +1069,24 @@ public class GenericOrmElementCollectionMapping2_0
 		if (getValueType() == Type.EMBEDDABLE_TYPE) {
 			this.getValueAttributeOverrideContainer().validate(messages, reporter);
 			this.getValueAssociationOverrideContainer().validate(messages, reporter);
+		}
+	}
+
+	public void validateMapKey(List<IMessage> messages, IReporter reporter) {
+		if (getMapKey() != null) {
+			//TODO validate that the map key refers to an existing attribute
+			return;
+		}
+		if (getKeyType() == Type.BASIC_TYPE) {
+			this.getMapKeyColumn().validate(messages, reporter);
+			//validate map key converter
+		}
+		else if (getKeyType() == Type.ENTITY_TYPE) {
+			//validate map key join columns
+		}
+		else if (getKeyType() == Type.EMBEDDABLE_TYPE) {
+			//validate map key attribute overrides
+			//validate map key association overrides
 		}
 	}
 
@@ -1060,30 +1178,13 @@ public class GenericOrmElementCollectionMapping2_0
 		return this.resourceAttributeMapping.getTargetClassTextRange();
 	}
 
-	class ValueColumnOwner implements OrmColumn.Owner {
-		
-		public XmlColumn getResourceColumn() {
-			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getColumn();
-		}
-		
-		public void addResourceColumn() {
-			GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
-		}
-		
-		public void removeResourceColumn() {
-			GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.setColumn(null);
-		}
-		
+	abstract class AbstractColumnOwner implements OrmColumn.Owner {		
 		public String getDefaultTableName() {
 			return getCollectionTable().getName();
 		}
 		
 		public TypeMapping getTypeMapping() {
 			return GenericOrmElementCollectionMapping2_0.this.getTypeMapping();
-		}
-		
-		public String getDefaultColumnName() {
-			return GenericOrmElementCollectionMapping2_0.this.getName();
 		}
 		
 		public Table getDbTable(String tableName) {
@@ -1107,6 +1208,25 @@ public class GenericOrmElementCollectionMapping2_0
 		
 		public TextRange getValidationTextRange() {
 			return GenericOrmElementCollectionMapping2_0.this.getValidationTextRange();
+		}
+	}
+
+	class ValueColumnOwner extends AbstractColumnOwner {
+
+		public XmlColumn getResourceColumn() {
+			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getColumn();
+		}
+
+		public void addResourceColumn() {
+			GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
+		}
+
+		public void removeResourceColumn() {
+			GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.setColumn(null);
+		}
+
+		public String getDefaultColumnName() {
+			return GenericOrmElementCollectionMapping2_0.this.getName();
 		}
 
 		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
@@ -1149,6 +1269,71 @@ public class GenericOrmElementCollectionMapping2_0
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,
+				new String[] {getName(), column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+	}
+
+	class MapKeyColumnOwner extends AbstractColumnOwner {
+
+		public XmlColumn getResourceColumn() {
+			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getMapKeyColumn();
+		}
+
+		public void addResourceColumn() {
+			GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.setMapKeyColumn(OrmFactory.eINSTANCE.createXmlColumn());
+		}
+
+		public void removeResourceColumn() {
+			GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.setMapKeyColumn(null);
+		}
+
+		public String getDefaultColumnName() {
+			return GenericOrmElementCollectionMapping2_0.this.getName() + "_KEY"; //$NON-NLS-1$
+		}
+
+		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualTableNotValidMessage(column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID,
+				new String[] {column.getTable(), column.getName(), JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID,
+				new String[] {getName(), column.getTable(), column.getName(), JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
+				column,
+				textRange
+			);
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualUnresolvedNameMessage(column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME,
 				new String[] {getName(), column.getName(), column.getDbTable().getName()},
 				column, 
 				textRange

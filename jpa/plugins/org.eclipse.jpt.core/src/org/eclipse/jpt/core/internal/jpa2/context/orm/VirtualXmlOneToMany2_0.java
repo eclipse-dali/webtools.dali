@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlColumn;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOrderColumn;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
@@ -46,6 +48,8 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 
 	protected VirtualXmlOrderColumn orderColumn;
 
+	protected final VirtualXmlColumn mapKeyColumn;
+
 	public VirtualXmlOneToMany2_0(
 			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping2_0 javaOneToManyMapping) {
 		super();
@@ -56,6 +60,7 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
 			this.ormTypeMapping);
+		this.mapKeyColumn = new VirtualXmlColumn(ormTypeMapping, javaOneToManyMapping.getMapKeyColumn());
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -171,6 +176,16 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 
 	@Override
 	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	@Override
+	public XmlColumn getMapKeyColumn() {
+		return this.mapKeyColumn;
+	}
+
+	@Override
+	public void setMapKeyColumn(XmlColumn newMapKeyColumn) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 

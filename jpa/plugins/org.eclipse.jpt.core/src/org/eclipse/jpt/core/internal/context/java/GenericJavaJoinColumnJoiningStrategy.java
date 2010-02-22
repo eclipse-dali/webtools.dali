@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipRefere
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
@@ -55,6 +56,14 @@ public class GenericJavaJoinColumnJoiningStrategy
 
 	public Table getDbTable(String tableName) {
 		return getTypeMapping().getDbTable(tableName);
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getTypeMapping().tableNameIsInvalid(tableName);
+	}
+
+	public String getColumnTableNotValidDescription() {
+		return JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
 	public boolean isOverridableAssociation() {

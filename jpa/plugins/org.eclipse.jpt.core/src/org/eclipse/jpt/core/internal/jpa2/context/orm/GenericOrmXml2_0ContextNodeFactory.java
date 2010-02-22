@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNodeFactor
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
@@ -162,7 +163,7 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	
 	@Override
 	public XmlManyToMany buildVirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
-		return new VirtualXmlManyToMany2_0(ormTypeMapping, javaManyToManyMapping);
+		return new VirtualXmlManyToMany2_0(ormTypeMapping, (JavaManyToManyMapping2_0) javaManyToManyMapping);
 	}
 	
 	@Override

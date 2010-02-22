@@ -66,6 +66,16 @@ public class GenericJavaMappedByJoiningStrategy
 		return owner == null ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getDbTable(tableName);
 	}
 
+	public boolean tableNameIsInvalid(String tableName) {
+		RelationshipMapping owner = getRelationshipOwner();
+		return owner == null ? false : owner.getRelationshipReference().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
+	}
+
+	public String getColumnTableNotValidDescription() {
+		//this will not be called if getRelationshipOwner() is null
+		return getRelationshipOwner().getRelationshipReference().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
+	}
+
 	protected RelationshipMapping getRelationshipOwner() {
 		return getRelationshipMapping().getRelationshipOwner();
 	}
@@ -108,7 +118,7 @@ public class GenericJavaMappedByJoiningStrategy
 	
 	public void addStrategy() {
 		if (this.mappedByAttribute == null) {
-			setMappedByAttribute("");
+			setMappedByAttribute(""); //$NON-NLS-1$
 		}
 	}
 	

@@ -1292,4 +1292,130 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals("zip", attributeOverride.getName());
 	}
 
+	public void testVirtualMapKeyColumnDefaults() throws Exception {
+		createTestEntityWithValidMapElementCollectionMapping();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		//virtual attribute in orm.xml, java attribute has no value Column annotation
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
+		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
+		assertEquals("addresses_KEY", ormColumn.getSpecifiedName());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getSpecifiedTable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength().intValue());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision().intValue());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale().intValue());
+	
+		//set Column annotation in Java
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedName("FOO");		
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getMapKeyColumn().setColumnDefinition("COLUMN_DEFINITION");
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedInsertable(Boolean.FALSE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedUpdatable(Boolean.FALSE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedNullable(Boolean.FALSE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedUnique(Boolean.TRUE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedLength(Integer.valueOf(45));
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedPrecision(Integer.valueOf(46));
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedScale(Integer.valueOf(47));
+
+		assertEquals("FOO", ormColumn.getSpecifiedName());
+		assertEquals("FOO_TABLE", ormColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEFINITION", ormColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUnique());
+		assertEquals(Integer.valueOf(45), ormColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(46), ormColumn.getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(47), ormColumn.getSpecifiedScale());
+
+	
+		//set metadata-complete, orm.xml virtual column ignores java column annotation
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		//no longer an element collection mapping
+		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, addressesPersistentAttribute.getMappingKey());
+	}
+	
+	public void testNullMapKeyColumnDefaults() throws Exception {
+		createTestEntityWithValidMapElementCollectionMapping();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+
+		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
+		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
+
+		//set Column annotation in Java
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedName("FOO");		
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getMapKeyColumn().setColumnDefinition("COLUMN_DEFINITION");
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedInsertable(Boolean.FALSE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedUpdatable(Boolean.FALSE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedNullable(Boolean.FALSE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedUnique(Boolean.TRUE);	
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedLength(Integer.valueOf(45));
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedPrecision(Integer.valueOf(46));
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedScale(Integer.valueOf(47));
+
+
+		assertEquals("addresses_KEY", ormColumn.getDefaultName());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTable());
+		assertEquals(true, ormColumn.isDefaultInsertable());
+		assertEquals(true, ormColumn.isDefaultUpdatable());
+		assertEquals(true, ormColumn.isDefaultNullable());
+		assertEquals(false, ormColumn.isDefaultUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertNull(ormColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getColumnDefinition());
+		assertNull(ormColumn.getSpecifiedInsertable());
+		assertNull(ormColumn.getSpecifiedUpdatable());
+		assertNull(ormColumn.getSpecifiedNullable());
+		assertNull(ormColumn.getSpecifiedUnique());
+		assertNull(ormColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedPrecision());
+		assertNull(ormColumn.getSpecifiedScale());
+	}
+
+	public void testVirtualMapKeyColumnTable() throws Exception {
+		createTestEntityWithValidMapElementCollectionMapping();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		//virtual attribute in orm.xml, java attribute has no Column annotation
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
+		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
+		
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getSpecifiedTable());
+
+		//entity table should have no affect on the collection table default name
+		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE");
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getSpecifiedTable());
+
+		//set Column table element in Java
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
+		javaElementCollectionMapping.getCollectionTable().setSpecifiedName("JAVA_COLLECTION_TABLE");
+		assertEquals("JAVA_COLLECTION_TABLE", ormColumn.getSpecifiedTable());
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTable("JAVA_TABLE");	
+		assertEquals("JAVA_TABLE", ormColumn.getSpecifiedTable());
+
+		//make name persistent attribute not virtual
+		addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
+		ormColumn = addressesVirtualMapping.getMapKeyColumn();
+		assertNull(ormColumn.getSpecifiedTable());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTable());
+	}
 }

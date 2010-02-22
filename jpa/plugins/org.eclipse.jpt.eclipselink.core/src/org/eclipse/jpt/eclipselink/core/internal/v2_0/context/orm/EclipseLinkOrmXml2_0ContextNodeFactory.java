@@ -42,6 +42,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerato
 import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlAssociationOverride2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
@@ -171,7 +172,7 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 	
 	@Override
 	public XmlManyToMany buildVirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
-		return new VirtualEclipseLinkXmlManyToMany2_0(ormTypeMapping, javaManyToManyMapping);
+		return new VirtualEclipseLinkXmlManyToMany2_0(ormTypeMapping, (JavaManyToManyMapping2_0) javaManyToManyMapping);
 	}
 	
 	@Override

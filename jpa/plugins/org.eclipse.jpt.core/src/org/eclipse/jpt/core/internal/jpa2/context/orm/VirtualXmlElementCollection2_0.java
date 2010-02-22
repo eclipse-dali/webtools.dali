@@ -58,6 +58,8 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 
 	protected final VirtualXmlColumn valueColumn;
 
+	protected final VirtualXmlColumn mapKeyColumn;
+
 	public VirtualXmlElementCollection2_0(
 			OrmTypeMapping ormTypeMapping, JavaElementCollectionMapping2_0 javaMapping) {
 		super();
@@ -73,6 +75,7 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 			this.ormTypeMapping, 
 			this.javaAttributeMapping.getCollectionTable());
 		this.valueColumn = new VirtualXmlColumn(ormTypeMapping, javaMapping.getValueColumn());
+		this.mapKeyColumn = new VirtualXmlColumn(ormTypeMapping, javaMapping.getMapKeyColumn());
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -160,6 +163,16 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 
 	@Override
 	public void setColumn(XmlColumn newColumn) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	@Override
+	public XmlColumn getMapKeyColumn() {
+		return this.mapKeyColumn;
+	}
+
+	@Override
+	public void setMapKeyColumn(XmlColumn newMapKeyColumn) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 

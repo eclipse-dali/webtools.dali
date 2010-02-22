@@ -30,6 +30,20 @@ public interface CollectionMapping
 	PersistentType getResolvedTargetType();
 
 
+
+	Type getValueType();
+		String VALUE_TYPE_PROPERTY = "valueType"; //$NON-NLS-1$
+
+	Type getKeyType();
+		String KEY_TYPE_PROPERTY = "keyType"; //$NON-NLS-1$
+
+	public enum Type {
+		BASIC_TYPE,
+		EMBEDDABLE_TYPE,
+		ENTITY_TYPE,
+		NO_TYPE
+	}
+
 	//**************** map key *****************
 
 	String getMapKey();
@@ -53,23 +67,5 @@ public interface CollectionMapping
 	Iterator<String> candidateMapKeyNames();
 
 	String getMetamodelFieldMapKeyTypeName();
-
-
-	// **************** map key class **************************************
-	
-	String getMapKeyClass();
-
-	String getSpecifiedMapKeyClass();
-	void setSpecifiedMapKeyClass(String value);
-		String SPECIFIED_MAP_KEY_CLASS_PROPERTY = "specifiedMapKeyClass"; //$NON-NLS-1$
-
-	String getDefaultMapKeyClass();
-		String DEFAULT_MAP_KEY_CLASS_PROPERTY = "defaultMapKeyClass"; //$NON-NLS-1$
-
-	/**
-	 * Return the char to be used for browsing or creating the map key class IType.
-	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
-	 */
-	char getMapKeyClassEnclosingTypeSeparator();
 
 }

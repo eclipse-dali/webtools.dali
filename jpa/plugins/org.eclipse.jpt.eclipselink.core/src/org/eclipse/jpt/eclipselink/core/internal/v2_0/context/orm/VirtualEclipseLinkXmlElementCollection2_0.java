@@ -91,6 +91,16 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	}
 
 	@Override
+	public XmlColumn getMapKeyColumn() {
+		return this.virtualXmlElementCollection.getMapKeyColumn();
+	}
+
+	@Override
+	public void setMapKeyColumn(XmlColumn newMapKeyColumn) {
+		this.virtualXmlElementCollection.setMapKeyColumn(newMapKeyColumn);
+	}
+
+	@Override
 	public TemporalType getTemporal() {
 		return this.virtualXmlElementCollection.getTemporal();
 	}

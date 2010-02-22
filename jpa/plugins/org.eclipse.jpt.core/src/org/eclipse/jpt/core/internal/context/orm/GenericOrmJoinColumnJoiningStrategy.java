@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn.Owner;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -51,6 +52,14 @@ public class GenericOrmJoinColumnJoiningStrategy
 
 	public Table getDbTable(String tableName) {
 		return getTypeMapping().getDbTable(tableName);
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return getTypeMapping().tableNameIsInvalid(tableName);
+	}
+
+	public String getColumnTableNotValidDescription() {
+		return JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
 	public boolean isOverridableAssociation() {
