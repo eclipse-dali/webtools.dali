@@ -26,14 +26,12 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.utility.internal.Bag;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.Range;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.ReverseComparator;
 import org.eclipse.jpt.utility.internal.enumerations.EmptyEnumeration;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -1035,6 +1033,19 @@ public class CollectionToolsTests extends TestCase {
 	}
 
 
+	// ********** is empty **********
+	
+	public void testIsEmptyIterable() {
+		assertFalse(CollectionTools.isEmpty(buildObjectList1()));
+		assertTrue(CollectionTools.isEmpty(EmptyIterable.instance()));
+	}
+	
+	public void testIsEmptyIterator() {
+		assertFalse(CollectionTools.isEmpty(buildObjectList1().iterator()));
+		assertTrue(CollectionTools.isEmpty(EmptyIterator.instance()));
+	}
+	
+	
 	// ********** iterable/iterator **********
 
 	public void testIterableObjectArray() {
@@ -1858,8 +1869,8 @@ public class CollectionToolsTests extends TestCase {
 	public void testSizeIterator() {
 		assertEquals(3, CollectionTools.size(this.buildObjectList1().iterator()));
 	}
-
-
+	
+	
 	// ********** sort **********
 
 	public void testSortIterable() {
