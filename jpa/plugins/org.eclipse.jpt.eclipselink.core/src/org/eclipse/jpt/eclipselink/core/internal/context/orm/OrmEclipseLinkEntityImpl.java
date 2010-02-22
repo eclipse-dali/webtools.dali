@@ -67,7 +67,7 @@ public class OrmEclipseLinkEntityImpl
 	
 	public boolean usesPrimaryKeyColumns() {
 		return getResourceTypeMapping().getPrimaryKey() != null 
-				|| getJavaEntityForDefaults().usesPrimaryKeyColumns();
+				|| usesJavaPrimaryKeyColumns();
 	}
 	
 	public OrmEclipseLinkCaching getCaching() {
@@ -133,6 +133,11 @@ public class OrmEclipseLinkEntityImpl
 	protected JavaEclipseLinkCaching getJavaCaching() {
 		JavaEclipseLinkEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getCaching();
+	}
+	
+	protected boolean usesJavaPrimaryKeyColumns() {
+		JavaEclipseLinkEntity javaEntity = getJavaEntityForDefaults();
+		return (javaEntity == null) ? false : javaEntity.usesPrimaryKeyColumns();
 	}
 	
 	

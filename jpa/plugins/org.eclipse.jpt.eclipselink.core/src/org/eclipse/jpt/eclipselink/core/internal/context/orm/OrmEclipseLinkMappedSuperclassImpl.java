@@ -66,7 +66,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	
 	public boolean usesPrimaryKeyColumns() {
 		return getResourceTypeMapping().getPrimaryKey() != null 
-				|| getJavaMappedSuperclassForDefaults().usesPrimaryKeyColumns();
+				|| usesJavaPrimaryKeyColumns();
 	}
 	
 	public OrmEclipseLinkCaching getCaching() {
@@ -132,6 +132,11 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	protected JavaEclipseLinkCaching getJavaCaching() {
 		JavaEclipseLinkMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getCaching();
+	}
+	
+	protected boolean usesJavaPrimaryKeyColumns() {
+		JavaEclipseLinkMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
+		return (javaMappedSuperclass == null) ? false : javaMappedSuperclass.usesPrimaryKeyColumns();
 	}
 	
 	
