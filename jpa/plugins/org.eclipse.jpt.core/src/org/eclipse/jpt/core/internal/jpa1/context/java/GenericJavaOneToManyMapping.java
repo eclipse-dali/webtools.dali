@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyMapping;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 
 
-public class GenericJavaOneToManyMapping<T extends OneToManyAnnotation>
+public class GenericJavaOneToManyMapping
 	extends AbstractJavaOneToManyMapping<OneToManyAnnotation>
 {
 	
