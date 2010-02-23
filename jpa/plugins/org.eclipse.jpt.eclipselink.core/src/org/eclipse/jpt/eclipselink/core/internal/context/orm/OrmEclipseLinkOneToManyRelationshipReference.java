@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -24,32 +23,22 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumnJoiningStra
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkOneToManyRelationshipReference
 	extends AbstractOrmOneToManyRelationshipReference
 	implements EclipseLinkOneToManyRelationshipReference2_0
 {
-	protected OrmJoinColumnJoiningStrategy joinColumnJoiningStrategy;
-	
 	
 	public OrmEclipseLinkOneToManyRelationshipReference(
 			OrmEclipseLinkOneToManyMapping parent, XmlOneToMany resource) {
 		super(parent, resource);
 	}
 	
-	
 	@Override
-	protected void initializeJoiningStrategies() {
-		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();		
-		super.initializeJoiningStrategies();
-	}
-	
 	protected OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
 		return new GenericOrmJoinColumnJoiningStrategy(this, getResourceMapping());
 	}
-	
+
 	@Override
 	public void initializeOn(OrmRelationshipReference newRelationshipReference) {
 		super.initializeOn(newRelationshipReference);
@@ -64,7 +53,7 @@ public class OrmEclipseLinkOneToManyRelationshipReference
 		for (JoinColumn joinColumn : 
 				CollectionTools.iterable(
 					oldRelationshipReference.getJoinColumnJoiningStrategy().specifiedJoinColumns())) {
-			OrmJoinColumn newJoinColumn = getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(index++);
+			OrmJoinColumn newJoinColumn = this.joinColumnJoiningStrategy.addSpecifiedJoinColumn(index++);
 			newJoinColumn.initializeFrom(joinColumn);
 		}
 	}
@@ -91,74 +80,8 @@ public class OrmEclipseLinkOneToManyRelationshipReference
 	// **************** mapped by **********************************************
 	
 	@Override
-	protected void setMappedByJoiningStrategy_() {
-		super.setMappedByJoiningStrategy_();
-		this.joinColumnJoiningStrategy.removeStrategy();
-	}
-	
-	@Override
 	public boolean mayBeMappedBy(AttributeMapping mappedByMapping) {
 		return super.mayBeMappedBy(mappedByMapping) ||
 			mappedByMapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
-	}
-	
-	
-	// **************** join table *********************************************
-	
-	@Override
-	protected void setJoinTableJoiningStrategy_() {
-		super.setJoinTableJoiningStrategy_();
-		this.joinColumnJoiningStrategy.removeStrategy();
-	}
-	
-	@Override
-	public boolean mayHaveDefaultJoinTable() {
-		return super.mayHaveDefaultJoinTable()
-			&& ! this.joinColumnJoiningStrategy.hasSpecifiedJoinColumns();
-	}
-	
-	
-	// **************** join columns *******************************************
-	
-	public OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
-		return this.joinColumnJoiningStrategy;
-	}
-	
-	public boolean usesJoinColumnJoiningStrategy() {
-		return getPredominantJoiningStrategy() == this.joinColumnJoiningStrategy;
-	}
-	
-	public void setJoinColumnJoiningStrategy() {
-		this.joinColumnJoiningStrategy.addStrategy();
-		this.mappedByJoiningStrategy.removeStrategy();
-		this.joinTableJoiningStrategy.removeStrategy();
-		setPredominantJoiningStrategy();
-	}
-	
-	public void unsetJoinColumnJoiningStrategy() {
-		this.joinColumnJoiningStrategy.removeStrategy();
-		setPredominantJoiningStrategy();
-	}
-	
-	public boolean mayHaveDefaultJoinColumn() {
-		return false;
-	}
-	
-	
-	// **************** resource => context ************************************
-	
-	@Override
-	protected void updateJoiningStrategies() {
-		this.joinColumnJoiningStrategy.update();
-		super.updateJoiningStrategies();
-	}
-	
-	
-	// **************** Validation *********************************************
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		this.joinColumnJoiningStrategy.validate(messages, reporter);
 	}
 }

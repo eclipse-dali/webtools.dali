@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -18,35 +18,34 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyRelations
 public class GenericJavaOneToManyRelationshipReference
 	extends AbstractJavaOneToManyRelationshipReference
 {	
-	protected final JavaJoinColumnJoiningStrategy joinColumnJoiningStrategy;
 
 	public GenericJavaOneToManyRelationshipReference(JavaOneToManyMapping parent) {
 		super(parent);
-		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();
 	}	
 
+	@Override
 	protected JavaJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
 		return new NullJavaJoinColumnJoiningStrategy(this);
 	}
 
 	// **************** join columns *******************************************
 
-	public JavaJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
-		return this.joinColumnJoiningStrategy;
-	}
-
+	@Override
 	public boolean usesJoinColumnJoiningStrategy() {
 		return false;
 	}
 
+	@Override
 	public void setJoinColumnJoiningStrategy() {
 		throw new UnsupportedOperationException("join column joining strategy not supported on a 1.0 1-m mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void unsetJoinColumnJoiningStrategy() {
 		throw new UnsupportedOperationException("join column joining strategy not supported on a 1.0 1-m mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean mayHaveDefaultJoinColumn() {
 		return false;
 	}

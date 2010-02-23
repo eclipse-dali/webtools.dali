@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
@@ -32,12 +33,15 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	protected final JavaMappedByJoiningStrategy mappedByJoiningStrategy;
 	
 	protected final JavaJoinTableJoiningStrategy joinTableJoiningStrategy;
+
+	protected final JavaJoinColumnJoiningStrategy joinColumnJoiningStrategy;
 	
 	
 	protected AbstractJavaOneToManyRelationshipReference(JavaOneToManyMapping parent) {
 		super(parent);
 		this.mappedByJoiningStrategy = buildMappedByJoiningStrategy();
 		this.joinTableJoiningStrategy = buildJoinTableJoiningStrategy();
+		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();
 	}
 	
 	protected JavaMappedByJoiningStrategy buildMappedByJoiningStrategy() {
@@ -47,6 +51,8 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	protected JavaJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
 		return new GenericJavaJoinTableJoiningStrategy(this);
 	}
+
+	protected abstract JavaJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy();
 	
 	@Override
 	public JavaOneToManyMapping getRelationshipMapping() {
@@ -74,6 +80,9 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 		if (result == null) {
 			result = this.joinTableJoiningStrategy.javaCompletionProposals(pos, filter, astRoot);
 		}
+		if (result == null) {
+			result = this.joinColumnJoiningStrategy.javaCompletionProposals(pos, filter, astRoot);
+		}
 		return result;
 	}
 	
@@ -92,6 +101,7 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	protected void setMappedByJoiningStrategy_() {
 		this.mappedByJoiningStrategy.addStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
+		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
 	public final void unsetMappedByJoiningStrategy() {
@@ -130,6 +140,7 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	protected void setJoinTableJoiningStrategy_() {
 		// join table is default, so no need to add annotation
 		this.mappedByJoiningStrategy.removeStrategy();
+		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
 	public final void unsetJoinTableJoiningStrategy() {
@@ -142,7 +153,36 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	}
 	
 	public boolean mayHaveDefaultJoinTable() {
-		return this.mappedByJoiningStrategy.getMappedByAttribute() == null;
+		return this.mappedByJoiningStrategy.getMappedByAttribute() == null
+			&& ! this.joinColumnJoiningStrategy.hasSpecifiedJoinColumns();
+	}
+
+
+	// **************** join columns *******************************************
+
+	public JavaJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+		return this.joinColumnJoiningStrategy;
+	}
+
+	public boolean usesJoinColumnJoiningStrategy() {
+		return getPredominantJoiningStrategy() == this.joinColumnJoiningStrategy;
+	}
+
+	public void setJoinColumnJoiningStrategy() {
+		this.joinColumnJoiningStrategy.addStrategy();
+		this.mappedByJoiningStrategy.removeStrategy();
+		this.joinTableJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
+	}
+
+	public void unsetJoinColumnJoiningStrategy() {
+		this.joinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
+	}
+
+	public boolean mayHaveDefaultJoinColumn() {
+		return this.mappedByJoiningStrategy.getMappedByAttribute() == null 
+			&& this.joinTableJoiningStrategy.getJoinTable() == null;
 	}
 	
 	
@@ -152,12 +192,14 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	protected void initializeJoiningStrategies() {
 		this.mappedByJoiningStrategy.initialize();
 		this.joinTableJoiningStrategy.initialize();
+		this.joinColumnJoiningStrategy.initialize();
 	}
 	
 	@Override
 	protected void updateJoiningStrategies() {
 		this.mappedByJoiningStrategy.update();
 		this.joinTableJoiningStrategy.update();
+		this.joinColumnJoiningStrategy.update();
 	}
 	
 	
@@ -168,5 +210,6 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 		super.validate(messages, reporter, astRoot);
 		this.mappedByJoiningStrategy.validate(messages, reporter, astRoot);
 		this.joinTableJoiningStrategy.validate(messages, reporter, astRoot);
+		this.joinColumnJoiningStrategy.validate(messages, reporter, astRoot);
 	}
 }

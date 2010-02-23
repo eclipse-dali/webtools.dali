@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
@@ -31,10 +32,11 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 	implements OrmOneToManyRelationshipReference2_0
 {
 	protected OrmMappedByJoiningStrategy mappedByJoiningStrategy;
-	
+
 	protected OrmJoinTableJoiningStrategy joinTableJoiningStrategy;
-	
-	
+
+	protected OrmJoinColumnJoiningStrategy joinColumnJoiningStrategy;
+
 	protected AbstractOrmOneToManyRelationshipReference(
 			OrmOneToManyMapping parent, XmlOneToMany resource) {
 		super(parent, resource);
@@ -44,6 +46,7 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 	@Override
 	protected void initializeJoiningStrategies() {
 		this.mappedByJoiningStrategy = buildMappedByJoiningStrategy();
+		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();		
 		
 		// initialize join table last, as the existence of a default join 
 		// table is dependent on the other mechanisms (mappedBy)
@@ -58,6 +61,8 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 	protected OrmJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
 		return 	new GenericOrmJoinTableJoiningStrategy(this, getResourceMapping());
 	}
+
+	protected abstract OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy();
 	
 	public void initializeOn(OrmRelationshipReference newRelationshipReference) {
 		newRelationshipReference.initializeFromOwnableRelationshipReference(this);
@@ -115,6 +120,7 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 	protected void setMappedByJoiningStrategy_() {
 		this.mappedByJoiningStrategy.addStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
+		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
 	public final void unsetMappedByJoiningStrategy() {
@@ -153,6 +159,7 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 	protected void setJoinTableJoiningStrategy_() {
 		// join table is default, so no need to add to resource
 		this.mappedByJoiningStrategy.removeStrategy();
+		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
 	public final void unsetJoinTableJoiningStrategy() {
@@ -165,7 +172,35 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 	}
 	
 	public boolean mayHaveDefaultJoinTable() {
-		return this.mappedByJoiningStrategy.getMappedByAttribute() == null;
+		return this.mappedByJoiningStrategy.getMappedByAttribute() == null
+			&& ! this.joinColumnJoiningStrategy.hasSpecifiedJoinColumns();
+	}
+
+
+	// **************** join columns *******************************************
+
+	public OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+		return this.joinColumnJoiningStrategy;
+	}
+
+	public boolean usesJoinColumnJoiningStrategy() {
+		return getPredominantJoiningStrategy() == this.joinColumnJoiningStrategy;
+	}
+
+	public void setJoinColumnJoiningStrategy() {
+		this.joinColumnJoiningStrategy.addStrategy();
+		this.mappedByJoiningStrategy.removeStrategy();
+		this.joinTableJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
+	}
+
+	public void unsetJoinColumnJoiningStrategy() {
+		this.joinColumnJoiningStrategy.removeStrategy();
+		setPredominantJoiningStrategy();
+	}
+
+	public boolean mayHaveDefaultJoinColumn() {
+		return false;
 	}
 	
 	
@@ -174,6 +209,7 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 	@Override
 	protected void updateJoiningStrategies() {
 		this.mappedByJoiningStrategy.update();
+		this.joinColumnJoiningStrategy.update();
 		
 		// update join table last, as the existence of a default join 
 		// table is dependent on the other mechanisms (mappedBy)
@@ -189,5 +225,6 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 		super.validate(messages, reporter);
 		this.mappedByJoiningStrategy.validate(messages, reporter);
 		this.joinTableJoiningStrategy.validate(messages, reporter);
+		this.joinColumnJoiningStrategy.validate(messages, reporter);
 	}
 }

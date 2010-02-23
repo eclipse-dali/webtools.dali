@@ -53,7 +53,7 @@ public class NullJavaJoinColumnJoiningStrategy
 	}
 	
 	public void removeStrategy() {
-		throw new UnsupportedOperationException();
+		//do nothing, no join column to remove
 	}
 	
 	
@@ -86,7 +86,7 @@ public class NullJavaJoinColumnJoiningStrategy
 	}
 	
 	public boolean hasSpecifiedJoinColumns() {
-		throw new UnsupportedOperationException();
+		return false;
 	}
 	
 	public JavaJoinColumn addSpecifiedJoinColumn(int index) {

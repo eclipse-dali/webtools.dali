@@ -52,7 +52,7 @@ public class NullOrmJoinColumnJoiningStrategy
 	}
 	
 	public void removeStrategy() {
-		throw new UnsupportedOperationException();
+		//do nothing, no join column to remove
 	}
 	
 	
@@ -84,7 +84,7 @@ public class NullOrmJoinColumnJoiningStrategy
 	}
 
 	public boolean hasSpecifiedJoinColumns() {
-		throw new UnsupportedOperationException();
+		return false;
 	}
 
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {

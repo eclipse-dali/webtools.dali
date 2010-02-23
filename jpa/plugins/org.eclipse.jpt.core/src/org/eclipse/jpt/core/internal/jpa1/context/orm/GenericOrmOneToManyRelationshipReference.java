@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 public class GenericOrmOneToManyRelationshipReference
 	extends AbstractOrmOneToManyRelationshipReference
 {	
-	protected OrmJoinColumnJoiningStrategy joinColumnJoiningStrategy;
 
 	public GenericOrmOneToManyRelationshipReference(
 			OrmOneToManyMapping parent, XmlOneToMany resource) {
@@ -28,12 +27,6 @@ public class GenericOrmOneToManyRelationshipReference
 	}
 	
 	@Override
-	protected void initializeJoiningStrategies() {
-		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();		
-		super.initializeJoiningStrategies();
-	}
-	
-	
 	protected OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
 		return new NullOrmJoinColumnJoiningStrategy(this);
 	}
@@ -50,24 +43,23 @@ public class GenericOrmOneToManyRelationshipReference
 
 	// **************** join columns *******************************************
 	
-	public OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
-		return this.joinColumnJoiningStrategy;
-	}
-	
+	@Override
 	public boolean usesJoinColumnJoiningStrategy() {
 		return false;
 	}
 	
+	@Override
 	public void setJoinColumnJoiningStrategy() {
 		throw new UnsupportedOperationException("join column joining strategy not supported on a 1.0 1-m mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public void unsetJoinColumnJoiningStrategy() {
 		throw new UnsupportedOperationException("join column joining strategy not supported on a 1.0 1-m mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public boolean mayHaveDefaultJoinColumn() {
 		return false;
 	}
-
 }
