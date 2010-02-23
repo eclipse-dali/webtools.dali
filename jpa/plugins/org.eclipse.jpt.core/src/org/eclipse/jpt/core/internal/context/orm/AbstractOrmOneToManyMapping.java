@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
@@ -62,8 +62,8 @@ public abstract class AbstractOrmOneToManyMapping<T extends XmlOneToMany>
 	}
 	
 	@Override
-	public OrmOneToManyRelationshipReference getRelationshipReference() {
-		return (OrmOneToManyRelationshipReference) super.getRelationshipReference();
+	public OrmOneToManyRelationshipReference2_0 getRelationshipReference() {
+		return (OrmOneToManyRelationshipReference2_0) super.getRelationshipReference();
 	}
 
 	// ********** OrmOrphanRemovalHolder2_0 implementation **********

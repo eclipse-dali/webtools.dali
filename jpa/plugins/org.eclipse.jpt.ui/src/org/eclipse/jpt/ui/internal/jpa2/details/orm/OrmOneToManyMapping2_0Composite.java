@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -23,9 +24,11 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.OneToManyJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.OneToManyJoiningStrategy2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -94,7 +97,7 @@ public class OrmOneToManyMapping2_0Composite<T extends OrmOneToManyMapping2_0>
 		int groupBoxMargin = getGroupBoxMargin();
 
 		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
-		new OneToManyJoiningStrategyPane(this, this.buildJoiningHolder(), container);
+		new OneToManyJoiningStrategy2_0Pane(this, this.buildJoiningHolder(), container);
 		new AccessTypeComposite(this, this.buildAccessHolderHolder(), this.addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
 		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
@@ -119,4 +122,14 @@ public class OrmOneToManyMapping2_0Composite<T extends OrmOneToManyMapping2_0>
 			}
 		};
 	}
+	
+	protected PropertyValueModel<OrmOneToManyRelationshipReference2_0> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<T, OrmOneToManyRelationshipReference2_0>(getSubjectHolder()) {
+			@Override
+			protected OrmOneToManyRelationshipReference2_0 transform_(T value) {
+				return value.getRelationshipReference();
+			}
+		};
+	}
+
 }

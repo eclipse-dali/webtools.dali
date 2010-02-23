@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.OneToManyMapping;
-import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -76,15 +75,6 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 	                                 WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-	
-	protected PropertyValueModel<OneToManyRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<T, OneToManyRelationshipReference>(getSubjectHolder()) {
-			@Override
-			protected OneToManyRelationshipReference transform_(T value) {
-				return value.getRelationshipReference();
-			}
-		};
 	}
 	
 	protected PropertyValueModel<Cascade> buildCascadeHolder() {

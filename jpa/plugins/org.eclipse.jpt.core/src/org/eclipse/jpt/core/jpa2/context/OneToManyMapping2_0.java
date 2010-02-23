@@ -20,4 +20,7 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
  */
 public interface OneToManyMapping2_0
 	extends OneToManyMapping, CollectionMapping2_0
-{}
+{
+	OneToManyRelationshipReference2_0 getRelationshipReference();
+
+}

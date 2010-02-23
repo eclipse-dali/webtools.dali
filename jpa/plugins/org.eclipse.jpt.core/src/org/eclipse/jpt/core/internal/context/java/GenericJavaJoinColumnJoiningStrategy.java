@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -51,15 +52,18 @@ public class GenericJavaJoinColumnJoiningStrategy
 	}
 	
 	public String getTableName() {
-		return getTypeMapping().getPrimaryTableName();
+		TypeMapping typeMapping = getTypeMapping();
+		return typeMapping == null ? null : typeMapping.getPrimaryTableName();
 	}
 
 	public Table getDbTable(String tableName) {
-		return getTypeMapping().getDbTable(tableName);
+		TypeMapping typeMapping = getTypeMapping();
+		return typeMapping == null ? null : typeMapping.getDbTable(tableName);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		return getTypeMapping().tableNameIsInvalid(tableName);
+		TypeMapping typeMapping = getTypeMapping();
+		return typeMapping == null ? false : typeMapping.tableNameIsInvalid(tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {
@@ -164,22 +168,28 @@ public class GenericJavaJoinColumnJoiningStrategy
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {
-			return getTypeMapping().tableNameIsInvalid(tableName);
+			TypeMapping typeMapping = getTypeMapping();
+			return typeMapping == null ? false : typeMapping.tableNameIsInvalid(tableName);
 		}
 
 		/**
 		 * the join column can be on a secondary table
 		 */
 		public Iterator<String> candidateTableNames() {
-			return getTypeMapping().associatedTableNamesIncludingInherited();
+			TypeMapping typeMapping = getTypeMapping();
+			if (typeMapping == null) {
+				return EmptyIterator.instance();
+			}
+			return typeMapping.associatedTableNamesIncludingInherited();
 		}
 		
 		public TypeMapping getTypeMapping() {
-			return getRelationshipMapping().getTypeMapping();
+			return GenericJavaJoinColumnJoiningStrategy.this.getTypeMapping();
 		}
 		
 		public Table getDbTable(String tableName) {
-			return getTypeMapping().getDbTable(tableName);
+			TypeMapping typeMapping = getTypeMapping();
+			return typeMapping == null ? null : typeMapping.getDbTable(tableName);
 		}
 		
 		public Table getReferencedColumnDbTable() {

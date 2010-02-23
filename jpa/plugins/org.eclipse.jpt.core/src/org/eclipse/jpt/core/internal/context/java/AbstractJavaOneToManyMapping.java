@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -71,8 +72,8 @@ public abstract class AbstractJavaOneToManyMapping<T extends OneToManyAnnotation
 	}
 	
 	@Override
-	public JavaOneToManyRelationshipReference getRelationshipReference() {
-		return (JavaOneToManyRelationshipReference) super.getRelationshipReference();
+	public JavaOneToManyRelationshipReference2_0 getRelationshipReference() {
+		return (JavaOneToManyRelationshipReference2_0) super.getRelationshipReference();
 	}
 
 	// ********** JavaOrphanRemovalHolder2_0 implementation **********

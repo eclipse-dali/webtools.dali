@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
 
 /**
@@ -24,4 +25,6 @@ import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
  */
 public interface OrmOneToManyMapping2_0
 	extends OrmOneToManyMapping, OneToManyMapping2_0
-{}
+{
+	OrmOneToManyRelationshipReference2_0 getRelationshipReference();
+}

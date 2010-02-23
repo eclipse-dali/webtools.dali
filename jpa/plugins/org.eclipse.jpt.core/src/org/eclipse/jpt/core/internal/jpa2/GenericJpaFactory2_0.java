@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
@@ -35,6 +36,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedIdentit
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToManyMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
@@ -164,5 +166,10 @@ public class GenericJpaFactory2_0
 	@Override
 	public JavaColumn buildJavaMapKeyColumn(JavaJpaContextNode parent, Owner owner) {
 		return new GenericJavaColumn(parent, owner);
+	}
+	
+	@Override
+	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaOneToManyMapping2_0(parent);
 	}
 }

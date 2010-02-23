@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
-import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -57,7 +57,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	extends AbstractJavaRelationshipMapping<T> 
 	implements JavaMultiRelationshipMapping, CollectionMapping2_0
 {
-	protected final JavaOrderable orderable;
+	protected final JavaOrderable2_0 orderable;
 
 	protected Embeddable resolvedTargetEmbeddable;
 
@@ -79,7 +79,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.orderable = getJpaFactory().buildJavaOrderable(this, buildOrderableOwner());
+		this.orderable = ((JpaFactory2_0) this.getJpaFactory()).buildJavaOrderable(this, buildOrderableOwner());
 		this.mapKeyColumn = ((JpaFactory2_0) this.getJpaFactory()).buildJavaMapKeyColumn(parent, this.buildMapKeyColumnOwner());
 	}
 
@@ -146,7 +146,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	// ********** ordering **********  
 
-	public JavaOrderable getOrderable() {
+	public JavaOrderable2_0 getOrderable() {
 		return this.orderable;
 	}
 

@@ -10,7 +10,9 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -83,4 +85,12 @@ public class OneToManyMappingComposite
 		new OrderingComposite(this, container);
 	}
 
+	protected PropertyValueModel<OneToManyRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<OneToManyMapping, OneToManyRelationshipReference>(getSubjectHolder()) {
+			@Override
+			protected OneToManyRelationshipReference transform_(OneToManyMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
+	}
 }

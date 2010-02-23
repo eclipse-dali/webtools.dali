@@ -23,5 +23,8 @@ import org.eclipse.jpt.core.jpa2.context.ManyToManyMapping2_0;
  * @since 2.3
  */
 public interface JavaManyToManyMapping2_0
-	extends JavaManyToManyMapping, ManyToManyMapping2_0
-{}
+	extends
+		JavaManyToManyMapping,
+		ManyToManyMapping2_0
+{
+}

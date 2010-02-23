@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.context.orm;
+package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
@@ -18,33 +18,32 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkOneToManyRelationshipReference2_0;
+import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkOneToManyRelationshipReference
+public class GenericOrmOneToManyRelationshipReference2_0
 	extends AbstractOrmOneToManyRelationshipReference
-	implements EclipseLinkOneToManyRelationshipReference2_0
-{
+{	
 	protected OrmJoinColumnJoiningStrategy joinColumnJoiningStrategy;
-	
-	
-	public OrmEclipseLinkOneToManyRelationshipReference(
-			OrmEclipseLinkOneToManyMapping parent, XmlOneToMany resource) {
+
+	public GenericOrmOneToManyRelationshipReference2_0(
+			OrmOneToManyMapping parent, XmlOneToMany resource) {
+		
 		super(parent, resource);
 	}
-	
 	
 	@Override
 	protected void initializeJoiningStrategies() {
 		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();		
 		super.initializeJoiningStrategies();
 	}
+	
 	
 	protected OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
 		return new GenericOrmJoinColumnJoiningStrategy(this, getResourceMapping());
@@ -71,7 +70,7 @@ public class OrmEclipseLinkOneToManyRelationshipReference
 	
 	@Override
 	public XmlOneToMany getResourceMapping() {
-		return (XmlOneToMany) super.getResourceMapping();
+		return super.getResourceMapping();
 	}
 	
 	@Override

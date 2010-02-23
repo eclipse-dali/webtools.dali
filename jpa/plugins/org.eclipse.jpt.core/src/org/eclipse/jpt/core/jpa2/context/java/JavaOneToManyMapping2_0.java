@@ -24,4 +24,8 @@ import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
  */
 public interface JavaOneToManyMapping2_0
 	extends JavaOneToManyMapping, OneToManyMapping2_0
-{}
+{
+	JavaOneToManyRelationshipReference2_0 getRelationshipReference();
+
+	public JavaOrderable2_0 getOrderable();
+}

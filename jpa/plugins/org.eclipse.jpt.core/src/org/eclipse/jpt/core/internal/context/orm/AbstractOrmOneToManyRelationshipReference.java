@@ -19,16 +19,16 @@ import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmOneToManyRelationshipReference
 	extends AbstractOrmRelationshipReference
-	implements OrmOneToManyRelationshipReference
+	implements OrmOneToManyRelationshipReference2_0
 {
 	protected OrmMappedByJoiningStrategy mappedByJoiningStrategy;
 	

@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.OneToManyRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
+import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.EclipseLink2_0ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -735,8 +737,117 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getDefaultName());
 	}
 
-	//TODO
-	public void testGetMapKeyColumnJoinColumnStrategy() throws Exception {
+	public void testModifyPredominantJoiningStrategy() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
+		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceAttribute.getAnnotation(JPA.ONE_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
+		OneToManyRelationshipReference2_0 relationshipReference = mapping.getRelationshipReference();
+		
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setJoinColumnJoiningStrategy();
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setMappedByJoiningStrategy();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		relationshipReference.setJoinTableJoiningStrategy();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
 	}
-
+	
+	public void testUpdatePredominantJoiningStrategy() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
+		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceAttribute.getAnnotation(JPA.ONE_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
+		OneToManyRelationshipReference2_0 relationshipReference = mapping.getRelationshipReference();
+		
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		annotation.setMappedBy("foo");
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceAttribute.addAnnotation(JPA.JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		
+		annotation.setMappedBy(null);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		
+		resourceAttribute.removeAnnotation(JPA.JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
+		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(annotation.getMappedBy());
+		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
+		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
+		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+	}
 }

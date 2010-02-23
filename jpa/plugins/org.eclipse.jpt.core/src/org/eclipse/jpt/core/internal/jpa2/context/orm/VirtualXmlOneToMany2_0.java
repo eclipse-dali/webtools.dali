@@ -10,8 +10,11 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlColumn;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOrderColumn;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
@@ -23,6 +26,7 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
@@ -30,6 +34,7 @@ import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -224,7 +229,18 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	
 	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
-		return this.virtualXmlOneToMany.getJoinColumns();
+		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS);
+		if (isOrmMetadataComplete()) {
+			return joinColumns;
+		}
+		for (JoinColumn joinColumn : 
+			CollectionTools.iterable(
+				this.javaAttributeMapping.getRelationshipReference().
+					getJoinColumnJoiningStrategy().specifiedJoinColumns())) {
+			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, isOrmMetadataComplete());
+			joinColumns.add(xmlJoinColumn);
+		}
+		return joinColumns;
 	}
 	
 	@Override

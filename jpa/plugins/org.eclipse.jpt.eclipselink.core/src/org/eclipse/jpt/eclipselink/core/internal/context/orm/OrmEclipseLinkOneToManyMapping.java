@@ -18,11 +18,12 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkOneToManyMapping2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkOneToManyMapping extends AbstractOrmOneToManyMapping<XmlOneToMany>
-	implements EclipseLinkOneToManyMapping
+	implements EclipseLinkOneToManyMapping2_0
 {
 	protected OrmEclipseLinkPrivateOwned privateOwned;
 	

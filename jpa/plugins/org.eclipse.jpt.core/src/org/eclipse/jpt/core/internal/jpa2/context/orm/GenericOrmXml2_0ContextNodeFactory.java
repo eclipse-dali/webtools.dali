@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -132,6 +133,11 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	@Override
 	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, XmlCollectionTable resource) {
 		return new GenericOrmCollectionTable2_0(parent, resource);
+	}
+	
+	@Override
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+		return new GenericOrmOneToManyMapping2_0(parent, resourceMapping);
 	}
 	
 	// ********** ORM Virtual Resource Model **********

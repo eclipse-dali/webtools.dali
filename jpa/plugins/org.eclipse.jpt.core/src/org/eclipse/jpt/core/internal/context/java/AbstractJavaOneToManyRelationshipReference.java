@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -27,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaOneToManyRelationshipReference
 	extends AbstractJavaRelationshipReference
-	implements JavaOneToManyRelationshipReference
+	implements JavaOneToManyRelationshipReference2_0
 {
 	protected final JavaMappedByJoiningStrategy mappedByJoiningStrategy;
 	
