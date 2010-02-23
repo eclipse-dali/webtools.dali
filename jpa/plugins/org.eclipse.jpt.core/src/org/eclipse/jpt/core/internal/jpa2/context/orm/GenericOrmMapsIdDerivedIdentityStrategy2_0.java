@@ -131,7 +131,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		}		
 	}
 	
-	protected AttributeMapping getAttributeMappingValue() {
+	public AttributeMapping getResolvedAttributeMappingValue() {
 		if (getValue() != null) {
 			for (AttributeMapping each : getAllAttributeMappingChoices()) {
 				if (each.getName().equals(getValue())) {
@@ -179,7 +179,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		}
 		
 		// test whether value can be resolved
-		AttributeMapping attributeMappingValue = getAttributeMappingValue();
+		AttributeMapping attributeMappingValue = getResolvedAttributeMappingValue();
 		if (attributeMappingValue == null) {
 			// there is no defaulting, so only use the 'resolved' error, even if the value is empty string
 			messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {getValue()}));

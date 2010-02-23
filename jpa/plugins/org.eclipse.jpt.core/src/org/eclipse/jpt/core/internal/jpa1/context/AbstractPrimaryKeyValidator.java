@@ -129,6 +129,32 @@ public abstract class AbstractPrimaryKeyValidator
 		}
 	}
 	
+	protected void validateMapsIdMappings(List<IMessage> messages, IReporter reporter) {
+		for (SingleRelationshipMapping2_0 mapsIdRelationshipMapping : getMapsIdMappingsDefinedLocally(typeMapping())) {
+			// can't use maps id mappings with an id class
+			if (definesIdClass(typeMapping())) {
+				messages.add(DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID,
+						new String[] {mapsIdRelationshipMapping.getName()},
+						mapsIdRelationshipMapping,
+						textRangeResolver().getAttributeMappingTextRange(mapsIdRelationshipMapping.getName())));
+			}
+			
+			AttributeMapping resolvedAttributeMapping = 
+					mapsIdRelationshipMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getResolvedAttributeMappingValue();
+			if (resolvedAttributeMapping != null 
+					&& ! resolvedAttributeMapping.getPersistentAttribute().getTypeName().equals(getTargetEntityPrimaryKeyTypeName(mapsIdRelationshipMapping))) {
+				messages.add(DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
+						new String[] {mapsIdRelationshipMapping.getName()},
+						mapsIdRelationshipMapping,
+						textRangeResolver().getAttributeMappingTextRange(mapsIdRelationshipMapping.getName())));
+			}
+		}
+	}
+	
 	protected void validateIdClass(JavaPersistentType idClass, List<IMessage> messages, IReporter reporter) {
 		if (hasDerivedIdMappingMatchingIdClass(idClass)) {
 			validateIdClass_derivedIdMappingMatchingIdClass(idClass, messages, reporter);
@@ -189,7 +215,7 @@ public abstract class AbstractPrimaryKeyValidator
 		}
 		Collection<AttributeMapping> errorDerivedIdMappings = new HashBag<AttributeMapping>();
 		for (SingleRelationshipMapping2_0 each : getDerivedIdMappings(typeMapping())) {
-			if (derivedIdMappingMatchesIdClass(each, idClass)) {
+			if (idClass.getName().equals(getTargetEntityPrimaryKeyTypeName(each))) {
 				errorDerivedIdMappings.add(each);
 			}
 			else {
@@ -356,7 +382,8 @@ public abstract class AbstractPrimaryKeyValidator
 		return new CompositeIterable<AttributeMapping>(
 				getIdMappings(typeMapping),
 				getEmbeddedIdMappings(typeMapping),
-				getDerivedIdMappings(typeMapping));
+				getDerivedIdMappings(typeMapping),
+				getMapsIdMappings(typeMapping));
 	}
 	
 	/**
@@ -366,7 +393,8 @@ public abstract class AbstractPrimaryKeyValidator
 		return new CompositeIterable<AttributeMapping>(
 				getIdMappingsDefinedLocally(typeMapping),
 				getEmbeddedIdMappingsDefinedLocally(typeMapping),
-				getDerivedIdMappingsDefinedLocally(typeMapping));
+				getDerivedIdMappingsDefinedLocally(typeMapping),
+				getMapsIdMappingsDefinedLocally(typeMapping));
 	}
 	
 	protected boolean hasAnyPrimaryKeyMappings(TypeMapping typeMapping) {
@@ -452,6 +480,35 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 	
 	
+	// **************** maps id mappings **************************************
+	
+	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappings(TypeMapping typeMapping) {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(
+				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
+					new CompositeIterable<AttributeMapping>(
+						typeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
+						typeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+			@Override
+			protected boolean accept(SingleRelationshipMapping2_0 o) {
+				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
+			}
+		};
+	}
+	
+	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappingsDefinedLocally(TypeMapping typeMapping) {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(
+				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
+					new CompositeIterable<AttributeMapping>(
+						typeMapping.getAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
+						typeMapping.getAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+			@Override
+			protected boolean accept(SingleRelationshipMapping2_0 o) {
+				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
+			}
+		};
+	}
+	
+	
 	// **************** misc **************************************************
 	
 	/**
@@ -490,29 +547,20 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	protected boolean hasDerivedIdMappingMatchingIdClass(JavaPersistentType idClass) {
 		for (SingleRelationshipMapping2_0 each : getDerivedIdMappings(typeMapping())) {
-			if (derivedIdMappingMatchesIdClass(each, idClass)) {
+			String primaryKeyTypeName = getTargetEntityPrimaryKeyTypeName(each);
+			if (idClass.getName().equals(primaryKeyTypeName)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	protected boolean derivedIdMappingMatchesIdClass(
-			SingleRelationshipMapping2_0 relationshipMapping, JavaPersistentType idClass) {
-		
+	protected String getTargetEntityPrimaryKeyTypeName(SingleRelationshipMapping2_0 relationshipMapping) {
 		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 		if (targetEntity != null) {
-			JavaPersistentType otherIdClass = getIdClass(targetEntity);
-			if (otherIdClass != null && idClass.getName().equals(otherIdClass.getName())) {
-				return true;
-			}
-			EmbeddedIdMapping otherEmbeddedIdMapping = getEmbeddedIdMapping(targetEntity);
-			if (otherEmbeddedIdMapping != null 
-					&& idClass.getName().equals(otherEmbeddedIdMapping.getPersistentAttribute().getTypeName())) {
-				return true;
-			}
+			return getPrimaryKeyTypeName(targetEntity);
 		}
-		return false;
+		return null;
 	}
 	
 	protected String getTypeNameForIdClass(AttributeMapping attributeMapping) {

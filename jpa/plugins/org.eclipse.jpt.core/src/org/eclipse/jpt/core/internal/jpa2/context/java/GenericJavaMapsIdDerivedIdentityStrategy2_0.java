@@ -175,7 +175,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 				CollectionTools.collection(embeddable.allAttributeMappings()));
 	}
 	
-	protected AttributeMapping getAttributeMappingValue() {
+	public AttributeMapping getResolvedAttributeMappingValue() {
 		if (getValue() != null) {
 			for (AttributeMapping each : getAllAttributeMappingChoices()) {
 				if (each.getName().equals(getValue())) {
@@ -229,7 +229,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		}
 		
 		// test whether value can be resolved
-		AttributeMapping attributeMappingValue = getAttributeMappingValue();
+		AttributeMapping attributeMappingValue = getResolvedAttributeMappingValue();
 		if (attributeMappingValue == null) {
 			// if value is not specified, use that message
 			if (getSpecifiedValue() == null) {

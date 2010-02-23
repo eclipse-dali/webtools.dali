@@ -45,7 +45,7 @@ public class GenericMappedSuperclassPrimaryKeyValidator
 		// ... and only one embedded id
 		validateOneEmbeddedId(messages, reporter);
 		
-		if (idClassReference().getIdClass() != null) {
+		if (specifiesIdClass()) {
 			validateIdClass(idClassReference().getIdClass(), messages, reporter);
 		}
 	}

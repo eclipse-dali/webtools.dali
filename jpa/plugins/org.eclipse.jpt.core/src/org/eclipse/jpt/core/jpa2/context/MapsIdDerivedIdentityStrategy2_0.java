@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
+import org.eclipse.jpt.core.context.AttributeMapping;
+
 /**
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -63,4 +65,10 @@ public interface MapsIdDerivedIdentityStrategy2_0
 	 * Return a sorted iterator of possible value choices
 	 */
 	Iterable<String> getSortedValueChoices();
+	
+	/**
+	 * Return a resolved attribute mapping, which may be a mapping on the entity, or a mapping
+	 * within an embeddable mapping on the entity
+	 */
+	AttributeMapping getResolvedAttributeMappingValue();
 }

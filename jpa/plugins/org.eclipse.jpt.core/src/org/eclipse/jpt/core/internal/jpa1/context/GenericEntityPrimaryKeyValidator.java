@@ -72,7 +72,9 @@ public class GenericEntityPrimaryKeyValidator
 		// ... and only one embedded id
 		validateOneEmbeddedId(messages, reporter);
 		
-		if (idClassReference().getIdClass() != null) {
+		validateMapsIdMappings(messages, reporter);
+		
+		if (specifiesIdClass()) {
 			validateIdClass(idClassReference().getIdClass(), messages, reporter);
 		}
 	}
