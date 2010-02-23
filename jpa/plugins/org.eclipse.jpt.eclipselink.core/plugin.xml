@@ -173,7 +173,7 @@
 			
 			<public
 				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
-				uri="schemas/eclipselink_orm_2_0.xsd"/>
+				uri="schemas/eclipselink_orm_2_1.xsd"/>
 			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd"
@@ -190,6 +190,10 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_0.xsd"
 				uri="schemas/eclipselink_orm_2_0.xsd" />
+			
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_1.xsd"
+				uri="schemas/eclipselink_orm_2_1.xsd" />
 			
 			
 		</catalogContribution>
