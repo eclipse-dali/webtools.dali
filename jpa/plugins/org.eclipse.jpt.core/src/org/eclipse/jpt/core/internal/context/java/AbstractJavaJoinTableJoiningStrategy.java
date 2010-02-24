@@ -115,13 +115,18 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	protected abstract JoinTableAnnotation addAnnotation();
 	
 	protected abstract void removeAnnotation();
-		
 	
+	protected boolean mayHaveJoinTable() {
+		return getAnnotation().isSpecified() 
+			|| getRelationshipReference().mayHaveDefaultJoinTable();
+	}
+
+
 	// **************** resource => context ************************************
 
 	public void initialize() {
 		JoinTableAnnotation annotation = getAnnotation();
-		if (annotation.isSpecified() || getRelationshipReference().mayHaveDefaultJoinTable()) {
+		if (mayHaveJoinTable()) {
 			this.joinTable = getJpaFactory().buildJavaJoinTable(this);
 			this.joinTable.initialize(annotation);
 		}
@@ -129,7 +134,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	
 	public void update() {
 		JoinTableAnnotation annotation = getAnnotation();
-		if (annotation.isSpecified() || getRelationshipReference().mayHaveDefaultJoinTable()) {
+		if (mayHaveJoinTable()) {
 			if (this.joinTable == null) {
 				setJoinTable_(getJpaFactory().buildJavaJoinTable(this));
 			}

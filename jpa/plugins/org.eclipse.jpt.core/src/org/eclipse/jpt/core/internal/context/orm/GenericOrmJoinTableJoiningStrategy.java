@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -44,11 +41,6 @@ public class GenericOrmJoinTableJoiningStrategy
 	}
 	
 	@Override
-	public OrmRelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getRelationshipMapping();
-	}
-
-	@Override
 	protected void setResourceJoinTable(XmlJoinTable resourceJoinTable) {
 		this.resource.setJoinTable(resourceJoinTable);
 	}
@@ -63,64 +55,14 @@ public class GenericOrmJoinTableJoiningStrategy
 	
 	// **************** join table *********************************************
 	
-	@Override
-	public OrmJoinTable getJoinTable() {
-		return this.joinTable;
-	}
-	
-	@Override
-	public OrmJoinTable addJoinTable() {
-		addStrategy();
-		return this.joinTable;
-	}
-	
-	@Override
-	protected void setJoinTable_(OrmJoinTable newJoinTable) {
-		OrmJoinTable oldJoinTable = this.joinTable;
-		this.joinTable = newJoinTable;
-		this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, newJoinTable);
-	}
-	
-	@Override
-	public XmlJoinTable addResourceJoinTable() {
-		XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
-		this.resource.setJoinTable(resourceJoinTable);
-		return resourceJoinTable;
-	}
-	
 	public void removeResourceJoinTable() {
 		this.resource.setJoinTable(null);
-	}
-	
-	@Override
-	protected boolean mayHaveJoinTable() {
-		return getResourceJoinTable() != null 
-			|| getRelationshipReference().mayHaveDefaultJoinTable();
 	}
 	
 	public XmlJoinTable getResourceJoinTable() {
 		return this.resource.getJoinTable();
 	}
-	
-	
-	// **************** resource -> context ************************************
-	
-	@Override
-	public void update() {
-		if (mayHaveJoinTable()) {
-			if (this.joinTable == null) {
-				setJoinTable_(getXmlContextNodeFactory().buildOrmJoinTable(this, getResourceJoinTable()));
-			}
-			this.joinTable.update();
-		}
-		else {
-			if (this.joinTable != null) {
-				// no resource, so no clean up
-				setJoinTable_(null);
-			}
-		}
-	}
-	
+
 	
 	// **************** validation *********************************************
 	
