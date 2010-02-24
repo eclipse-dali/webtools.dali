@@ -367,7 +367,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmOneToOneMapping contextMapping = (OrmOneToOneMapping) contextAttribute.getMapping();
 		OrmOneToOneRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
-		XmlOneToOne resourceMapping = (XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
+		XmlOneToOne resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
@@ -408,7 +408,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmOneToOneMapping contextMapping = (OrmOneToOneMapping) contextAttribute.getMapping();
 		OrmOneToOneRelationshipReference relationshipReference = contextMapping.getRelationshipReference();
 		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
-		XmlOneToOne resourceMapping = (XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
+		XmlOneToOne resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertTrue(resourceMapping.getPrimaryKeyJoinColumns().isEmpty());
