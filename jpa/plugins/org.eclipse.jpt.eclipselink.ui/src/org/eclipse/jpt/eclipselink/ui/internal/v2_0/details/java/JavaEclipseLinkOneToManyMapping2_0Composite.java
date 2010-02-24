@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
@@ -28,7 +29,6 @@ import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -88,11 +88,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OrphanRemoval2_0Composite}
  * @see {@link OrderingComposite}
  */
-public class JavaEclipseLinkOneToManyMapping2_0Composite<T extends EclipseLinkOneToManyMapping2_0>
-	extends AbstractOneToManyMappingComposite<T>
+public class JavaEclipseLinkOneToManyMapping2_0Composite
+	extends AbstractOneToManyMappingComposite<JavaOneToManyMapping, EclipseLinkOneToManyRelationshipReference>
 {
 	public JavaEclipseLinkOneToManyMapping2_0Composite(
-			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
@@ -104,7 +104,7 @@ public class JavaEclipseLinkOneToManyMapping2_0Composite<T extends EclipseLinkOn
 		int groupBoxMargin = this.getGroupBoxMargin();
 		
 		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
-		new EclipseLinkOneToManyJoiningStrategyPane(this, this.buildEclipseLinkJoiningHolder(), container);
+		new EclipseLinkOneToManyJoiningStrategyPane(this, this.buildJoiningHolder(), container);
 		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
 		new EclipseLinkJoinFetchComposite(this, this.buildJoinFetchableHolder(), this.addPane(container, groupBoxMargin));
 		new EclipseLinkPrivateOwnedComposite(this, this.buildPrivateOwnableHolder(), this.addPane(container, groupBoxMargin));
@@ -112,36 +112,27 @@ public class JavaEclipseLinkOneToManyMapping2_0Composite<T extends EclipseLinkOn
 		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
 		new Ordering2_0Composite(this, container);
 	}
-
-	protected PropertyValueModel<EclipseLinkOneToManyRelationshipReference> buildEclipseLinkJoiningHolder() {
-		return new TransformationPropertyValueModel<T, EclipseLinkOneToManyRelationshipReference>(this.getSubjectHolder()) {
-			@Override
-			protected EclipseLinkOneToManyRelationshipReference transform_(T value) {
-				return value.getRelationshipReference();
-			}
-		};
-	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<JavaOneToManyMapping, EclipseLinkJoinFetch>(this.getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return this.subject.getJoinFetch();
+				return ((EclipseLinkOneToManyMapping2_0) this.subject).getJoinFetch();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<T, EclipseLinkPrivateOwned>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<JavaOneToManyMapping, EclipseLinkPrivateOwned>(this.getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPrivateOwned buildValue_() {
-				return this.subject.getPrivateOwned();
+				return ((EclipseLinkOneToManyMapping2_0) this.subject).getPrivateOwned();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<EclipseLinkOneToManyMapping2_0, OrphanRemovable2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<JavaOneToManyMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();

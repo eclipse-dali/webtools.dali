@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
@@ -28,7 +27,6 @@ import org.eclipse.jpt.ui.internal.jpa2.details.OneToManyJoiningStrategy2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -82,11 +80,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see OrphanRemoval2_0Composite
  * @see OrderingComposite
  */
-public class OrmOneToManyMapping2_0Composite<T extends OrmOneToManyMapping2_0>
-	extends AbstractOneToManyMappingComposite<T>
+public class OrmOneToManyMapping2_0Composite
+	extends AbstractOneToManyMappingComposite<OrmOneToManyMapping, OrmOneToManyRelationshipReference2_0>
 {
 	public OrmOneToManyMapping2_0Composite(
-			PropertyValueModel<T> subjectHolder,
+			PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
@@ -115,21 +113,11 @@ public class OrmOneToManyMapping2_0Composite<T extends OrmOneToManyMapping2_0>
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<T, OrphanRemovable2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmOneToManyMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();
 			}
 		};
 	}
-	
-	protected PropertyValueModel<OrmOneToManyRelationshipReference2_0> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<T, OrmOneToManyRelationshipReference2_0>(getSubjectHolder()) {
-			@Override
-			protected OrmOneToManyRelationshipReference2_0 transform_(T value) {
-				return value.getRelationshipReference();
-			}
-		};
-	}
-
 }

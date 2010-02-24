@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -59,7 +60,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMapping> 
+public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMapping, R extends OneToManyRelationshipReference> 
 	extends Pane<T>
 	implements JpaComposite
 {
@@ -85,7 +86,16 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 			}
 		};
 	}
-	
+
+	protected PropertyValueModel<R> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<T, R>(getSubjectHolder()) {
+			@SuppressWarnings("unchecked")
+			@Override
+			protected R transform_(T value) {
+				return (R) value.getRelationshipReference();
+			}
+		};
+	}	
 	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
