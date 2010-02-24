@@ -471,7 +471,7 @@ public class GenericOrmJoinTable
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				this.getUnresolvedNameMessage(),
+				this.getUnresolvedReferencedColumnNameMessage(),
 				new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
 				column, 
 				textRange
@@ -481,7 +481,7 @@ public class GenericOrmJoinTable
 		protected IMessage buildVirtualUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				this.getVirtualUnresolvedNameMessage(),
+				this.getVirtualUnresolvedReferencedColumnNameMessage(),
 				new String[] {this.getPersistentAttributeName(), column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
 				column, 
 				textRange
