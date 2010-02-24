@@ -11,6 +11,7 @@
 package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -62,6 +63,9 @@ public class JpaMappingImageHelper
 		}
 		else if (MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptUiPlugin.getImage(JptUiIcons.MANY_TO_MANY);
+		}
+		else if (MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptUiPlugin.getImage(JptUiIcons.ELEMENT_COLLECTION);
 		}
 		else if (MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptUiPlugin.getImage(JptUiIcons.TRANSIENT);
