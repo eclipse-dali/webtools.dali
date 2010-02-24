@@ -51,7 +51,7 @@ public class OneToOneJoiningStrategyPane
 {
 	public OneToOneJoiningStrategyPane(
 			Pane<?> parentPane, 
-			PropertyValueModel<OneToOneRelationshipReference> subjectHolder, 
+			PropertyValueModel<? extends OneToOneRelationshipReference> subjectHolder, 
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);

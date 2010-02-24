@@ -40,7 +40,7 @@ public class ManyToOneJoiningStrategyPane extends Pane<ManyToOneRelationshipRefe
 {
 	public ManyToOneJoiningStrategyPane(
 			Pane<?> parentPane, 
-			PropertyValueModel<ManyToOneRelationshipReference> subjectHolder, 
+			PropertyValueModel<? extends ManyToOneRelationshipReference> subjectHolder, 
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);

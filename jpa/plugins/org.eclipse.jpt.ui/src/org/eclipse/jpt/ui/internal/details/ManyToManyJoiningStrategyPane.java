@@ -46,7 +46,7 @@ public class ManyToManyJoiningStrategyPane
 {
 	public ManyToManyJoiningStrategyPane(
 			Pane<?> parentPane, 
-			PropertyValueModel<ManyToManyRelationshipReference> subjectHolder, 
+			PropertyValueModel<? extends ManyToManyRelationshipReference> subjectHolder, 
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);

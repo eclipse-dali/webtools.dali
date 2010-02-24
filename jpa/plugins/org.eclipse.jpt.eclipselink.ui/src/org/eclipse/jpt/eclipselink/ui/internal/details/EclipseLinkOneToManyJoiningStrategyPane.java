@@ -24,7 +24,7 @@ public class EclipseLinkOneToManyJoiningStrategyPane
 {
 	public EclipseLinkOneToManyJoiningStrategyPane(
 			Pane<?> parentPane, 
-			PropertyValueModel<EclipseLinkOneToManyRelationshipReference> subjectHolder, 
+			PropertyValueModel<? extends EclipseLinkOneToManyRelationshipReference> subjectHolder, 
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
