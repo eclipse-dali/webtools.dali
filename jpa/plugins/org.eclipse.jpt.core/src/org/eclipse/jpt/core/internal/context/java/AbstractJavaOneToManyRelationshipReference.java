@@ -181,8 +181,7 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	}
 
 	public boolean mayHaveDefaultJoinColumn() {
-		return this.mappedByJoiningStrategy.getMappedByAttribute() == null 
-			&& this.joinTableJoiningStrategy.getJoinTable() == null;
+		return false;
 	}
 	
 	

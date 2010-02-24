@@ -57,9 +57,4 @@ public class GenericOrmOneToManyRelationshipReference
 	public void unsetJoinColumnJoiningStrategy() {
 		throw new UnsupportedOperationException("join column joining strategy not supported on a 1.0 1-m mapping"); //$NON-NLS-1$
 	}
-	
-	@Override
-	public boolean mayHaveDefaultJoinColumn() {
-		return false;
-	}
 }

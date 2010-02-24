@@ -46,12 +46,6 @@ public class GenericJavaOneToManyRelationshipReference
 	}
 
 	@Override
-	public boolean mayHaveDefaultJoinColumn() {
-		return false;
-	}
-
-
-	@Override
 	protected JoiningStrategy calculatePredominantJoiningStrategy() {
 		if (this.mappedByJoiningStrategy.getMappedByAttribute() != null) {
 			return this.mappedByJoiningStrategy;
