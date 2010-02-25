@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 
@@ -27,11 +26,6 @@ public abstract class AbstractOrmManyToOneMapping<T extends XmlManyToOne>
 		super(parent, resourceMapping);
 	}
 	
-	
-	@Override
-	protected OrmRelationshipReference buildRelationshipReference() {
-		return new GenericOrmManyToOneRelationshipReference(this, this.resourceAttributeMapping);
-	}
 	
 	public int getXmlSequence() {
 		return 40;
@@ -54,7 +48,7 @@ public abstract class AbstractOrmManyToOneMapping<T extends XmlManyToOne>
 	}
 	
 	@Override
-	public OrmManyToOneRelationshipReference getRelationshipReference() {
-		return (OrmManyToOneRelationshipReference) super.getRelationshipReference();
+	public OrmManyToOneRelationshipReference2_0 getRelationshipReference() {
+		return (OrmManyToOneRelationshipReference2_0) super.getRelationshipReference();
 	}
 }

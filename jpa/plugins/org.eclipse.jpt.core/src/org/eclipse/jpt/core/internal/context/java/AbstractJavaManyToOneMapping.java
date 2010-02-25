@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 
 
@@ -22,12 +22,6 @@ public abstract class AbstractJavaManyToOneMapping
 {
 	protected AbstractJavaManyToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
-	}
-	
-	
-	@Override
-	protected JavaManyToOneRelationshipReference buildRelationshipReference() {
-		return new GenericJavaManyToOneRelationshipReference(this);
 	}
 	
 	public String getAnnotationName() {
@@ -44,8 +38,8 @@ public abstract class AbstractJavaManyToOneMapping
 	}
 	
 	@Override
-	public JavaManyToOneRelationshipReference getRelationshipReference() {
-		return (JavaManyToOneRelationshipReference) super.getRelationshipReference();
+	public JavaManyToOneRelationshipReference2_0 getRelationshipReference() {
+		return (JavaManyToOneRelationshipReference2_0) super.getRelationshipReference();
 	}
 		
 	@Override

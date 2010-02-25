@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,11 +12,10 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Vector;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaOneToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -47,11 +46,6 @@ public abstract class AbstractJavaOneToOneMapping
 	protected void update() {
 		super.update();
 		this.orphanRemoval.update(this.getResourcePersistentAttribute());
-	}
-
-	@Override
-	protected JavaRelationshipReference buildRelationshipReference() {
-		return new GenericJavaOneToOneRelationshipReference(this);
 	}
 	
 	public String getAnnotationName() {
@@ -87,8 +81,8 @@ public abstract class AbstractJavaOneToOneMapping
 	}
 	
 	@Override
-	public JavaOneToOneRelationshipReference getRelationshipReference() {
-		return (JavaOneToOneRelationshipReference) super.getRelationshipReference();
+	public JavaOneToOneRelationshipReference2_0 getRelationshipReference() {
+		return (JavaOneToOneRelationshipReference2_0) super.getRelationshipReference();
 	}
 
 	// ********** JavaOrphanRemovalHolder2_0 implementation **********

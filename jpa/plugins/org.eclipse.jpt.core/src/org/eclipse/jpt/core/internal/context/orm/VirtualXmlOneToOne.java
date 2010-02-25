@@ -138,8 +138,7 @@ public class VirtualXmlOneToOne extends XmlOneToOne
 	
 	@Override
 	public XmlJoinTable getJoinTable() {
-		//TODO we don't yet support JoinTable in the context model for many-to-one mappings
-		return null;//this.virtualJoinTable;
+		return null;
 	}
 
 	@Override

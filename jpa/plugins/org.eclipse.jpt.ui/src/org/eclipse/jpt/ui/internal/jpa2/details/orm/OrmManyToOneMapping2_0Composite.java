@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractManyToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.DerivedIdentity2_0Pane;
+import org.eclipse.jpt.ui.internal.jpa2.details.ManyToOneJoiningStrategy2_0Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -76,11 +78,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OptionalComposite}
  * @see {@link CascadeComposite}
  */
-public class OrmManyToOneMapping2_0Composite<T extends OrmManyToOneMapping2_0>
-	extends AbstractManyToOneMapping2_0Composite<T>
+public class OrmManyToOneMapping2_0Composite
+	extends AbstractManyToOneMapping2_0Composite<OrmManyToOneMapping, OrmManyToOneRelationshipReference2_0>
 {
 	public OrmManyToOneMapping2_0Composite(
-			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<? extends OrmManyToOneMapping> subjectHolder,
 			Composite parent,
 	        WidgetFactory widgetFactory) {
 		
@@ -94,7 +96,7 @@ public class OrmManyToOneMapping2_0Composite<T extends OrmManyToOneMapping2_0>
 		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
-		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new ManyToOneJoiningStrategy2_0Pane(this, buildJoiningHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new OptionalComposite(this, addPane(container, groupBoxMargin));

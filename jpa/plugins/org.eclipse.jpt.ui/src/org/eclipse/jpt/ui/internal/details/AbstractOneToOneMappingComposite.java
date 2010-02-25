@@ -19,7 +19,7 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping> 
+public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping, R extends OneToOneRelationshipReference> 
 	extends Pane<T>
 	implements JpaComposite
 {
@@ -35,17 +35,18 @@ public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping
 	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
-	
-	protected PropertyValueModel<OneToOneRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<T, OneToOneRelationshipReference>(
+
+	protected PropertyValueModel<R> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<T, R>(
 				getSubjectHolder()) {
+			@SuppressWarnings("unchecked")
 			@Override
-			protected OneToOneRelationshipReference transform_(T value) {
-				return value.getRelationshipReference();
+			protected R transform_(T value) {
+				return (R) value.getRelationshipReference();
 			}
 		};
 	}
-	
+
 	protected PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
 			@Override

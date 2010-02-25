@@ -17,8 +17,10 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
@@ -55,6 +57,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkManyToOneMapping2_0;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkOneToOneMapping2_0;
 
 /**
  *  EclipseLink2_0JpaFactory
@@ -147,4 +151,15 @@ public class EclipseLink2_0JpaFactory
 	public JavaColumn buildJavaMapKeyColumn(JavaJpaContextNode parent, Owner owner) {
 		return new GenericJavaColumn(parent, owner);
 	}
+
+	@Override
+	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
+		return new JavaEclipseLinkOneToOneMapping2_0(parent);
+	}
+
+	@Override
+	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
+		return new JavaEclipseLinkManyToOneMapping2_0(parent);
+	}
+
 }

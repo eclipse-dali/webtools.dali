@@ -190,15 +190,15 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	@Override
 	protected void initializeJoiningStrategies() {
 		this.mappedByJoiningStrategy.initialize();
-		this.joinTableJoiningStrategy.initialize();
 		this.joinColumnJoiningStrategy.initialize();
+		this.joinTableJoiningStrategy.initialize();
 	}
 	
 	@Override
 	protected void updateJoiningStrategies() {
 		this.mappedByJoiningStrategy.update();
-		this.joinTableJoiningStrategy.update();
 		this.joinColumnJoiningStrategy.update();
+		this.joinTableJoiningStrategy.update();
 	}
 	
 	

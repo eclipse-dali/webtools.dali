@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -21,4 +21,6 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
  */
 public interface OneToOneMapping2_0
 	extends OneToOneMapping, SingleRelationshipMapping2_0
-{}
+{
+	OneToOneRelationshipReference2_0 getRelationshipReference();
+}

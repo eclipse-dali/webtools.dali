@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlJoinTable;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToOne;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
@@ -101,7 +102,13 @@ public class VirtualXmlManyToOne2_0 extends XmlManyToOne
 	
 	@Override
 	public XmlJoinTable getJoinTable() {
-		return this.virtualXmlManyToOne.getJoinTable();
+		if (this.javaAttributeMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable() != null) {
+			return 	new VirtualXmlJoinTable(
+				this.ormTypeMapping, 
+				this.javaAttributeMapping.getRelationshipReference().
+					getJoinTableJoiningStrategy().getJoinTable());
+		}
+		return null;
 	}
 
 	@Override

@@ -19,9 +19,11 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipRefe
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
@@ -35,8 +37,10 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCollectionTabl
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToManyMapping2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
@@ -169,7 +173,18 @@ public class GenericJpaFactory2_0
 	}
 	
 	@Override
+	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaManyToOneMapping2_0(parent);
+	}
+
+	@Override
 	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		return new GenericJavaOneToManyMapping2_0(parent);
 	}
+
+	@Override
+	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaOneToOneMapping2_0(parent);
+	}
+
 }

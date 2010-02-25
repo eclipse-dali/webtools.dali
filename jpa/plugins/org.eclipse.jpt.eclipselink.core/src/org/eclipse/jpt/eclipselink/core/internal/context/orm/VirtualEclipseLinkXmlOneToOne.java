@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.AbstractJavaEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
@@ -36,11 +36,11 @@ public class VirtualEclipseLinkXmlOneToOne extends XmlOneToOne
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaEclipseLinkOneToOneMapping javaAttributeMapping;
+	protected final AbstractJavaEclipseLinkOneToOneMapping javaAttributeMapping;
 
 	protected final VirtualXmlOneToOne virtualXmlOneToOne;
 		
-	public VirtualEclipseLinkXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaEclipseLinkOneToOneMapping javaOneToOneMapping) {
+	public VirtualEclipseLinkXmlOneToOne(OrmTypeMapping ormTypeMapping, AbstractJavaEclipseLinkOneToOneMapping javaOneToOneMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToOneMapping;
