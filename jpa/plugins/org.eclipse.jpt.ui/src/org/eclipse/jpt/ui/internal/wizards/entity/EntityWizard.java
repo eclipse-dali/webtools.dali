@@ -63,8 +63,8 @@ public class EntityWizard extends DataModelWizard implements INewWizard {
 		EntityClassWizardPage page1 = new EntityClassWizardPage(
 		        getDataModel(),
 		        PAGE_ONE,
-		        EntityWizardMsg.ADD_ENTITY_WIZARD_PAGE_DESCRIPTION,
-		        EntityWizardMsg.ADD_ENTITY_WIZARD_PAGE_TITLE, 
+		        EntityWizardMsg.ENTITY_WIZARD_PAGE_DESCRIPTION,
+		        EntityWizardMsg.ENTITY_WIZARD_PAGE_TITLE, 
 				J2EEProjectUtilities.EJB);
 		addPage(page1);
 		EntityFieldsWizardPage page2 = new EntityFieldsWizardPage(getDataModel(), PAGE_TWO);

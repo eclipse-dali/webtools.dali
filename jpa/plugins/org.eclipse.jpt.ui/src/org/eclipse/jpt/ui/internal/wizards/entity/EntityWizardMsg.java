@@ -22,8 +22,8 @@ public class EntityWizardMsg extends NLS {
     private static ResourceBundle resourceBundle;
 
     public static String ENTITY_WIZARD_TITLE;
-    public static String ADD_ENTITY_WIZARD_PAGE_TITLE;    
-    public static String ADD_ENTITY_WIZARD_PAGE_DESCRIPTION;
+    public static String ENTITY_WIZARD_PAGE_TITLE;    
+    public static String ENTITY_WIZARD_PAGE_DESCRIPTION;
     public static String DEFAULT_PACKAGE_WARNING;
     public static String ENTITY_PROPERTIES_TITLE;
     public static String ENTITY_PROPERTIES_DESCRIPTION;

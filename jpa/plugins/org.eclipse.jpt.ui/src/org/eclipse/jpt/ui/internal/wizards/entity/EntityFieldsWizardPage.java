@@ -45,8 +45,8 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 
 	public EntityFieldsWizardPage(IDataModel model, String pageName) {
 		super(model, pageName);
-		setDescription(EntityWizardMsg.ADD_ENTITY_WIZARD_PAGE_DESCRIPTION);
 		this.setTitle(EntityWizardMsg.ENTITY_PROPERTIES_TITLE);
+		this.setDescription(EntityWizardMsg.ENTITY_PROPERTIES_DESCRIPTION);
 	}
 
 	/*
