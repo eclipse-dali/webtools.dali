@@ -156,6 +156,11 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 	
 	protected void validateIdClass(JavaPersistentType idClass, List<IMessage> messages, IReporter reporter) {
+		// there should already be a validation error if the id class does not resolve to a class
+		if (idClass == null) {
+			return;
+		}
+		
 		if (hasDerivedIdMappingMatchingIdClass(idClass)) {
 			validateIdClass_derivedIdMappingMatchingIdClass(idClass, messages, reporter);
 			return;
