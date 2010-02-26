@@ -30,16 +30,16 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer2_0()
+ * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer_2_0()
  * @model kind="class" interface="true" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlMapKeyAttributeOverrideContainer2_0 extends JpaEObject
+public interface XmlMapKeyAttributeOverrideContainer_2_0 extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
@@ -51,7 +51,7 @@ public interface XmlMapKeyAttributeOverrideContainer2_0 extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */

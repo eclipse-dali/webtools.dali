@@ -33,7 +33,7 @@ package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlCollectionMapping_2_0 extends XmlMapKeyAssociationOverrideContainer2_0
+public interface XmlCollectionMapping_2_0 extends XmlMapKeyAssociationOverrideContainer_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Convert</b></em>' attribute.

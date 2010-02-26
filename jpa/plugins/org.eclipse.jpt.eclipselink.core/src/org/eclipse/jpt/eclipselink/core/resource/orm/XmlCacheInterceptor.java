@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -40,7 +40,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlCacheInterceptor extends AbstractJpaEObject implements XmlCacheInterceptor2_0
+public class XmlCacheInterceptor extends AbstractJpaEObject implements XmlCacheInterceptor_2_0
 {
 	/**
 	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
@@ -93,7 +93,7 @@ public class XmlCacheInterceptor extends AbstractJpaEObject implements XmlCacheI
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Class Name</em>' attribute.
 	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheInterceptor2_0_ClassName()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheInterceptor_2_0_ClassName()
 	 * @model
 	 * @generated
 	 */
@@ -208,6 +208,7 @@ public class XmlCacheInterceptor extends AbstractJpaEObject implements XmlCacheI
 			elementName,
 			structuralFeature,
 			Translator.END_TAG_NO_INDENT,
+			EclipseLinkOrmPackage.eINSTANCE.getXmlCacheInterceptor(),
 			buildTranslatorChildren()
 		);
 	}
@@ -219,7 +220,7 @@ public class XmlCacheInterceptor extends AbstractJpaEObject implements XmlCacheI
 	}
 		
 	protected static Translator buildClassTranslator() {
-		return new Translator(JPA.CLASS, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCacheInterceptor2_0_ClassName(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.CLASS, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlCacheInterceptor_2_0_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlCacheInterceptor

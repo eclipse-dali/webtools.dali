@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -40,7 +40,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryRedirectors2_0
+public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryRedirectors_2_0
 {
 	/**
 	 * The default value of the '{@link #getAllQueries() <em>All Queries</em>}' attribute.
@@ -213,7 +213,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>All Queries</em>' attribute.
 	 * @see #setAllQueries(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors2_0_AllQueries()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_AllQueries()
 	 * @model
 	 * @generated
 	 */
@@ -248,7 +248,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Read All</em>' attribute.
 	 * @see #setReadAll(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors2_0_ReadAll()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_ReadAll()
 	 * @model
 	 * @generated
 	 */
@@ -283,7 +283,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Read Object</em>' attribute.
 	 * @see #setReadObject(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors2_0_ReadObject()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_ReadObject()
 	 * @model
 	 * @generated
 	 */
@@ -318,7 +318,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Report</em>' attribute.
 	 * @see #setReport(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors2_0_Report()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Report()
 	 * @model
 	 * @generated
 	 */
@@ -353,7 +353,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Update</em>' attribute.
 	 * @see #setUpdate(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors2_0_Update()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Update()
 	 * @model
 	 * @generated
 	 */
@@ -388,7 +388,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Insert</em>' attribute.
 	 * @see #setInsert(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors2_0_Insert()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Insert()
 	 * @model
 	 * @generated
 	 */
@@ -423,7 +423,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Delete</em>' attribute.
 	 * @see #setDelete(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors2_0_Delete()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Delete()
 	 * @model
 	 * @generated
 	 */
@@ -611,6 +611,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 			elementName,
 			structuralFeature,
 			Translator.END_TAG_NO_INDENT,
+			EclipseLinkOrmPackage.eINSTANCE.getXmlQueryRedirectors(),
 			buildTranslatorChildren()
 		);
 	}
@@ -628,30 +629,30 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	}
 	
 	protected static Translator buildAllQueriesTranslator() {
-		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__ALL_QUERIES, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__ALL_QUERIES, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors_2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildReadAllTranslator() {
-		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__READ_ALL, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors2_0_ReadAll(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__READ_ALL, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors_2_0_ReadAll(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildReadObjectTranslator() {
-		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__READ_OBJECT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors2_0_ReadObject(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__READ_OBJECT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors_2_0_ReadObject(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildReportTranslator() {
-		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__REPORT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__REPORT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors_2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildUpdateTranslator() {
-		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__UPDATE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__UPDATE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors_2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildInsertTranslator() {
-		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__INSERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__INSERT, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors_2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildDeleteTranslator() {
-		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__DELETE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_0.QUERY_REDIRECTORS__DELETE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlQueryRedirectors_2_0_AllQueries(), Translator.DOM_ATTRIBUTE);
 	}
 } // XmlQueryRedirectors

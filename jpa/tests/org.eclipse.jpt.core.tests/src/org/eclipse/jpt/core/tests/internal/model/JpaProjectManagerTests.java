@@ -76,6 +76,11 @@ public class JpaProjectManagerTests extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
+		if (jpaProject != null) {
+			jpaProject.setUpdater(JpaProject.Updater.Null.instance());
+		}
+			
 		this.testProject.getProject().delete(true, true, null);
 		this.testProject = null;
 		super.tearDown();

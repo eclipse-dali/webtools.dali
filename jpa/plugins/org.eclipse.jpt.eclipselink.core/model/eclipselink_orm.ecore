@@ -46,7 +46,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="existenceChecking" eType="#//ExistenceType"
         defaultValueLiteral=""/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlCacheInterceptor" eSuperTypes="#//v2_0/XmlCacheInterceptor2_0"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlCacheInterceptor" eSuperTypes="#//v2_0/XmlCacheInterceptor_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlChangeTracking">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//XmlChangeTrackingType"/>
   </eClassifiers>
@@ -116,7 +116,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbedded #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddedId #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlQueryContainer #//XmlPropertyContainer #//v1_1/XmlEntity_1_1">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlQueryContainer #//XmlPropertyContainer #//v1_1/XmlEntity_1_1 #//v2_0/XmlEntity_2_0">
     <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
@@ -134,7 +134,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlJoinFetch" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="joinFetch" eType="#//XmlJoinFetchType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToMany #//XmlAttributeMapping #//XmlJoinFetch #//v2_0/XmlCollectionMapping_2_0"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToMany #//XmlAttributeMapping #//XmlJoinFetch #//v2_0/XmlManyToMany_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOne #//XmlAttributeMapping #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlPropertyContainer #//v1_1/XmlMappedSuperclass_1_1 #//v2_0/XmlMappedSuperclass_2_0">
     <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
@@ -173,7 +173,7 @@
         eType="#//XmlConversionValue" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultObjectValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToMany #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch #//v2_0/XmlCollectionMapping_2_0"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToMany #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch #//v2_0/XmlOneToMany_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToOne #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOptimisticLocking">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//XmlOptimisticLockingType"/>
@@ -206,7 +206,7 @@
         upperBound="-1" eType="#//XmlNamedStoredProcedureQuery" containment="true"
         resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlQueryRedirectors" eSuperTypes="#//v2_0/XmlQueryRedirectors2_0"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlQueryRedirectors" eSuperTypes="#//v2_0/XmlQueryRedirectors_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlReadOnly" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="readOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
@@ -307,26 +307,26 @@
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="v2_0" nsURI="jpt.eclipselink.orm.v2_0.xmi" nsPrefix="org.eclipse.jpt.eclipselink.core.resource.orm.v2_0">
-    <eClassifiers xsi:type="ecore:EClass" name="XmlCacheInterceptor2_0" abstract="true"
+    <eClassifiers xsi:type="ecore:EClass" name="XmlCacheInterceptor_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlCollectionMapping_2_0" abstract="true"
-        interface="true" eSuperTypes="#//v2_0/XmlMapKeyAssociationOverrideContainer2_0">
+        interface="true" eSuperTypes="#//v2_0/XmlMapKeyAssociationOverrideContainer_2_0">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKeyConvert" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlAttributeMapping #//XmlConvertibleMapping #//XmlConvertersHolder #//v2_0/XmlCollectionMapping_2_0"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity2_0" abstract="true" interface="true"
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_0" abstract="true" interface="true"
         eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//v2_0/XmlEntity_2_0">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="cacheInterceptor" eType="#//v2_0/XmlCacheInterceptor2_0"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="cacheInterceptor" eType="#//v2_0/XmlCacheInterceptor_2_0"
           containment="true" resolveProxies="false"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="queryRedirectors" eType="#//v2_0/XmlQueryRedirectors2_0"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="queryRedirectors" eType="#//v2_0/XmlQueryRedirectors_2_0"
           containment="true" resolveProxies="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlConverterHolder #//v2_0/XmlCollectionMapping_2_0"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlMapKeyAssociationOverrideContainer2_0"
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMapKeyAssociationOverrideContainer_2_0"
         abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyAssociationOverrides"
           upperBound="-1" eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlAssociationOverride"
@@ -334,7 +334,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass_2_0" abstract="true"
         interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//v2_0/XmlCacheable_2_0">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="cacheInterceptor" eType="#//v2_0/XmlCacheInterceptor2_0"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="cacheInterceptor" eType="#//v2_0/XmlCacheInterceptor_2_0"
           containment="true" resolveProxies="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany_2_0" abstract="true"
@@ -343,7 +343,7 @@
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="correctionType" eType="#//v2_0/OrderCorrectionType_2_0"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlQueryRedirectors2_0" abstract="true"
+    <eClassifiers xsi:type="ecore:EClass" name="XmlQueryRedirectors_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="allQueries" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="readAll" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

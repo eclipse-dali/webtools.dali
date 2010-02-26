@@ -44,7 +44,7 @@ import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlMultiRelationshipMapping_2_0 extends XmlOrderable_2_0, XmlMapKeyAttributeOverrideContainer2_0
+public interface XmlMultiRelationshipMapping_2_0 extends XmlOrderable_2_0, XmlMapKeyAttributeOverrideContainer_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Class</b></em>' containment reference.

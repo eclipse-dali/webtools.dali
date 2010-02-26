@@ -395,8 +395,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlGenerator_2_0/description"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlManyToMany_2_0"/>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer2_0">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer2_0/mapKeyAttributeOverrides"/>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer_2_0">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer_2_0/mapKeyAttributeOverrides"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyClass_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyClass_2_0/className"/>

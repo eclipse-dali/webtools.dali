@@ -34,7 +34,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlElementCollection_2_0;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -680,7 +680,7 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMapKeyAssociationOverrideContainer_2_0_MapKeyAssociationOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1018,11 +1018,11 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAssociationOverrideContainer2_0.class)
+		if (baseClass == XmlMapKeyAssociationOverrideContainer_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES;
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20__MAP_KEY_ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -1105,11 +1105,11 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAssociationOverrideContainer2_0.class)
+		if (baseClass == XmlMapKeyAssociationOverrideContainer_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES;
+				case EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -1234,6 +1234,6 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	}
 	
 	protected static Translator buildMapKeyAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides());
+		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMapKeyAssociationOverrideContainer_2_0_MapKeyAssociationOverrides());
 	}
 }

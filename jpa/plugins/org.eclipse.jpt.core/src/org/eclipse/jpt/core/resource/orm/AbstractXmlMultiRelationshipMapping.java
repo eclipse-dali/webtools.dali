@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -397,7 +397,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -924,11 +924,11 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		if (baseClass == XmlMapKeyAttributeOverrideContainer_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -987,11 +987,11 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		if (baseClass == XmlMapKeyAttributeOverrideContainer_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				case OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}

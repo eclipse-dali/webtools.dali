@@ -105,7 +105,7 @@ public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping implement
 	}
 
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {
-		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides());
+		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides());
 	}
 	
 	protected static Translator buildMapKeyColumnTranslator() {

@@ -725,7 +725,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE_INTERCEPTOR__CLASS_NAME = EclipseLinkOrmV2_0Package.XML_CACHE_INTERCEPTOR2_0__CLASS_NAME;
+	public static final int XML_CACHE_INTERCEPTOR__CLASS_NAME = EclipseLinkOrmV2_0Package.XML_CACHE_INTERCEPTOR_20__CLASS_NAME;
 	/**
 	 * The number of structural features of the '<em>Xml Cache Interceptor</em>' class.
 	 * <!-- begin-user-doc -->
@@ -733,7 +733,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE_INTERCEPTOR_FEATURE_COUNT = EclipseLinkOrmV2_0Package.XML_CACHE_INTERCEPTOR2_0_FEATURE_COUNT + 0;
+	public static final int XML_CACHE_INTERCEPTOR_FEATURE_COUNT = EclipseLinkOrmV2_0Package.XML_CACHE_INTERCEPTOR_20_FEATURE_COUNT + 0;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking <em>Xml Change Tracking</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -2064,13 +2064,29 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ENTITY__PRIMARY_KEY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 11;
 	/**
+	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__CACHE_INTERCEPTOR = OrmPackage.XML_ENTITY_FEATURE_COUNT + 12;
+	/**
+	 * The feature id for the '<em><b>Query Redirectors</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__QUERY_REDIRECTORS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 13;
+	/**
 	 * The feature id for the '<em><b>Optimistic Locking</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__OPTIMISTIC_LOCKING = OrmPackage.XML_ENTITY_FEATURE_COUNT + 12;
+	public static final int XML_ENTITY__OPTIMISTIC_LOCKING = OrmPackage.XML_ENTITY_FEATURE_COUNT + 14;
 	/**
 	 * The feature id for the '<em><b>Copy Policy</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -2078,7 +2094,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 13;
+	public static final int XML_ENTITY__COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 15;
 	/**
 	 * The feature id for the '<em><b>Instantiation Copy Policy</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -2086,7 +2102,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__INSTANTIATION_COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 14;
+	public static final int XML_ENTITY__INSTANTIATION_COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 16;
 	/**
 	 * The feature id for the '<em><b>Clone Copy Policy</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -2094,7 +2110,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__CLONE_COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 15;
+	public static final int XML_ENTITY__CLONE_COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 17;
 	/**
 	 * The feature id for the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2102,7 +2118,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 16;
+	public static final int XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 18;
 	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
 	 * <!-- begin-user-doc -->
@@ -2110,7 +2126,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 17;
+	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 19;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings <em>Xml Entity Mappings</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -2653,13 +2669,45 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MANY_TO_MANY__JOIN_FETCH = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 2;
 	/**
+	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 3;
+	/**
+	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__TYPE_CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 4;
+	/**
+	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 5;
+	/**
+	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__STRUCT_CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 6;
+	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 3;
+	public static final int XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2667,7 +2715,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_CONVERT = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 4;
+	public static final int XML_MANY_TO_MANY__MAP_KEY_CONVERT = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 8;
 	/**
 	 * The number of structural features of the '<em>Xml Many To Many</em>' class.
 	 * <!-- begin-user-doc -->
@@ -2675,7 +2723,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 5;
+	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 9;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3371,13 +3419,45 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_MANY__JOIN_FETCH = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 3;
 	/**
+	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 4;
+	/**
+	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__TYPE_CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 5;
+	/**
+	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__OBJECT_TYPE_CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 6;
+	/**
+	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__STRUCT_CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 7;
+	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 4;
+	public static final int XML_ONE_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3385,7 +3465,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_CONVERT = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 5;
+	public static final int XML_ONE_TO_MANY__MAP_KEY_CONVERT = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 9;
 	/**
 	 * The number of structural features of the '<em>Xml One To Many</em>' class.
 	 * <!-- begin-user-doc -->
@@ -3393,7 +3473,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_FEATURE_COUNT = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 6;
+	public static final int XML_ONE_TO_MANY_FEATURE_COUNT = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 10;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3867,7 +3947,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS__ALL_QUERIES = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0__ALL_QUERIES;
+	public static final int XML_QUERY_REDIRECTORS__ALL_QUERIES = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20__ALL_QUERIES;
 	/**
 	 * The feature id for the '<em><b>Read All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3875,7 +3955,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS__READ_ALL = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0__READ_ALL;
+	public static final int XML_QUERY_REDIRECTORS__READ_ALL = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20__READ_ALL;
 	/**
 	 * The feature id for the '<em><b>Read Object</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3883,7 +3963,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS__READ_OBJECT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0__READ_OBJECT;
+	public static final int XML_QUERY_REDIRECTORS__READ_OBJECT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20__READ_OBJECT;
 	/**
 	 * The feature id for the '<em><b>Report</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3891,7 +3971,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS__REPORT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0__REPORT;
+	public static final int XML_QUERY_REDIRECTORS__REPORT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20__REPORT;
 	/**
 	 * The feature id for the '<em><b>Update</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3899,7 +3979,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS__UPDATE = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0__UPDATE;
+	public static final int XML_QUERY_REDIRECTORS__UPDATE = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20__UPDATE;
 	/**
 	 * The feature id for the '<em><b>Insert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3907,7 +3987,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS__INSERT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0__INSERT;
+	public static final int XML_QUERY_REDIRECTORS__INSERT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20__INSERT;
 	/**
 	 * The feature id for the '<em><b>Delete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3915,7 +3995,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS__DELETE = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0__DELETE;
+	public static final int XML_QUERY_REDIRECTORS__DELETE = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20__DELETE;
 	/**
 	 * The number of structural features of the '<em>Xml Query Redirectors</em>' class.
 	 * <!-- begin-user-doc -->
@@ -3923,7 +4003,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_QUERY_REDIRECTORS_FEATURE_COUNT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS2_0_FEATURE_COUNT + 0;
+	public static final int XML_QUERY_REDIRECTORS_FEATURE_COUNT = EclipseLinkOrmV2_0Package.XML_QUERY_REDIRECTORS_20_FEATURE_COUNT + 0;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly <em>Xml Read Only</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -7312,7 +7392,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlBasicCollectionEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlBasicMapEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
 		xmlBasicMapEClass.getESuperTypes().add(this.getXmlAttributeMapping());
-		xmlCacheInterceptorEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlCacheInterceptor2_0());
+		xmlCacheInterceptorEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlCacheInterceptor_2_0());
 		xmlConverterEClass.getESuperTypes().add(this.getXmlNamedConverter());
 		xmlConvertibleMappingEClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
 		xmlConvertibleMappingEClass.getESuperTypes().add(this.getXmlConverterHolder());
@@ -7336,6 +7416,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlEntityEClass.getESuperTypes().add(this.getXmlQueryContainer());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlPropertyContainer());
 		xmlEntityEClass.getESuperTypes().add(theEclipseLinkOrmV1_1Package.getXmlEntity_1_1());
+		xmlEntityEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlEntity_2_0());
 		xmlEntityMappingsEClass.getESuperTypes().add(theOrmPackage.getXmlEntityMappings());
 		xmlEntityMappingsEClass.getESuperTypes().add(this.getXmlConvertersHolder());
 		xmlEntityMappingsEClass.getESuperTypes().add(this.getXmlQueryContainer());
@@ -7346,7 +7427,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlManyToManyEClass.getESuperTypes().add(theOrmPackage.getXmlManyToMany());
 		xmlManyToManyEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlManyToManyEClass.getESuperTypes().add(this.getXmlJoinFetch());
-		xmlManyToManyEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlCollectionMapping_2_0());
+		xmlManyToManyEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlManyToMany_2_0());
 		xmlManyToOneEClass.getESuperTypes().add(theOrmPackage.getXmlManyToOne());
 		xmlManyToOneEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlManyToOneEClass.getESuperTypes().add(this.getXmlJoinFetch());
@@ -7364,7 +7445,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlOneToManyEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlOneToManyEClass.getESuperTypes().add(this.getXmlPrivateOwned());
 		xmlOneToManyEClass.getESuperTypes().add(this.getXmlJoinFetch());
-		xmlOneToManyEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlCollectionMapping_2_0());
+		xmlOneToManyEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlOneToMany_2_0());
 		xmlOneToOneEClass.getESuperTypes().add(theOrmPackage.getXmlOneToOne());
 		xmlOneToOneEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlOneToOneEClass.getESuperTypes().add(this.getXmlPrivateOwned());
@@ -7373,7 +7454,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlOrderColumnEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlOrderColumn_2_0());
 		xmlPersistenceUnitMetadataEClass.getESuperTypes().add(theOrmPackage.getXmlPersistenceUnitMetadata());
 		xmlPrimaryKeyEClass.getESuperTypes().add(theEclipseLinkOrmV1_1Package.getXmlPrimaryKey_1_1());
-		xmlQueryRedirectorsEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlQueryRedirectors2_0());
+		xmlQueryRedirectorsEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlQueryRedirectors_2_0());
 		xmlStructConverterEClass.getESuperTypes().add(this.getXmlNamedConverter());
 		xmlTransformationEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
 		xmlTransformationEClass.getESuperTypes().add(this.getXmlAttributeMapping());

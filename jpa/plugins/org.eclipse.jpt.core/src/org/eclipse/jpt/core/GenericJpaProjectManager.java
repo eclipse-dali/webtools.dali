@@ -152,7 +152,9 @@ class GenericJpaProjectManager
 	 */
 	private static final int RESOURCE_CHANGE_EVENT_TYPES =
 			IResourceChangeEvent.POST_CHANGE |
-			IResourceChangeEvent.POST_BUILD;
+			IResourceChangeEvent.POST_BUILD |
+			IResourceChangeEvent.PRE_DELETE |
+			IResourceChangeEvent.PRE_CLOSE;
 
 	/**
 	 * Listen for the JPA facet being added to or removed from a "faceted" project.

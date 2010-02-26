@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -581,7 +581,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1378,11 +1378,11 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		if (baseClass == XmlMapKeyAttributeOverrideContainer_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -1456,11 +1456,11 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		if (baseClass == XmlMapKeyAttributeOverrideContainer_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				case OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -1629,6 +1629,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {
-		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides());
+		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides());
 	}
 }

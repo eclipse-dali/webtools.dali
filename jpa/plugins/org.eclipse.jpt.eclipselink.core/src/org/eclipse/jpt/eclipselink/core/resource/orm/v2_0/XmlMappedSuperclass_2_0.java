@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -45,12 +45,12 @@ public interface XmlMappedSuperclass_2_0 extends XmlCacheable_2_0
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor2_0)
+	 * @see #setCacheInterceptor(XmlCacheInterceptor_2_0)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMappedSuperclass_2_0_CacheInterceptor()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlCacheInterceptor2_0 getCacheInterceptor();
+	XmlCacheInterceptor_2_0 getCacheInterceptor();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheInterceptor <em>Cache Interceptor</em>}' containment reference.
@@ -60,6 +60,6 @@ public interface XmlMappedSuperclass_2_0 extends XmlCacheable_2_0
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	void setCacheInterceptor(XmlCacheInterceptor2_0 value);
+	void setCacheInterceptor(XmlCacheInterceptor_2_0 value);
 
 } // XmlMappedSuperclass_2_0

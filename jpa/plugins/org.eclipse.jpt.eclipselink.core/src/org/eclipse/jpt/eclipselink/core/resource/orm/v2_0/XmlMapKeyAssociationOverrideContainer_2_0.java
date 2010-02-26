@@ -30,16 +30,16 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0#getMapKeyAssociationOverrides <em>Map Key Association Overrides</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer_2_0#getMapKeyAssociationOverrides <em>Map Key Association Overrides</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMapKeyAssociationOverrideContainer2_0()
+ * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMapKeyAssociationOverrideContainer_2_0()
  * @model kind="class" interface="true" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlMapKeyAssociationOverrideContainer2_0 extends JpaEObject
+public interface XmlMapKeyAssociationOverrideContainer_2_0 extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
@@ -51,7 +51,7 @@ public interface XmlMapKeyAssociationOverrideContainer2_0 extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMapKeyAssociationOverrideContainer_2_0_MapKeyAssociationOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */

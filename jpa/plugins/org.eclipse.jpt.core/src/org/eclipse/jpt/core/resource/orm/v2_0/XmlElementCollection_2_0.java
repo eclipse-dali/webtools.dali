@@ -57,7 +57,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlMapKeyAttributeOverrideContainer2_0
+public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlMapKeyAttributeOverrideContainer_2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Target Class</b></em>' attribute.

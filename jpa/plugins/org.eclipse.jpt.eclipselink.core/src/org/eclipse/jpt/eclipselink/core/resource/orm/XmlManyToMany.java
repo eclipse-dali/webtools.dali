@@ -29,7 +29,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlManyToMany_2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -53,7 +54,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMany implements XmlAttributeMapping, XmlJoinFetch, XmlCollectionMapping_2_0
+public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMany implements XmlAttributeMapping, XmlJoinFetch, XmlManyToMany_2_0
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -90,6 +91,46 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	 * @ordered
 	 */
 	protected XmlJoinFetchType joinFetch = JOIN_FETCH_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConverter()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlConverter converter;
+
+	/**
+	 * The cached value of the '{@link #getTypeConverter() <em>Type Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeConverter()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlTypeConverter typeConverter;
+
+	/**
+	 * The cached value of the '{@link #getObjectTypeConverter() <em>Object Type Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectTypeConverter()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlObjectTypeConverter objectTypeConverter;
+
+	/**
+	 * The cached value of the '{@link #getStructConverter() <em>Struct Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStructConverter()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlStructConverter structConverter;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyAssociationOverrides() <em>Map Key Association Overrides</em>}' containment reference list.
@@ -181,6 +222,246 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Converter</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Converter</em>' containment reference.
+	 * @see #setConverter(XmlConverter)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_Converter()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlConverter getConverter()
+	{
+		return converter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetConverter(XmlConverter newConverter, NotificationChain msgs)
+	{
+		XmlConverter oldConverter = converter;
+		converter = newConverter;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER, oldConverter, newConverter);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany#getConverter <em>Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Converter</em>' containment reference.
+	 * @see #getConverter()
+	 * @generated
+	 */
+	public void setConverter(XmlConverter newConverter)
+	{
+		if (newConverter != converter)
+		{
+			NotificationChain msgs = null;
+			if (converter != null)
+				msgs = ((InternalEObject)converter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER, null, msgs);
+			if (newConverter != null)
+				msgs = ((InternalEObject)newConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER, null, msgs);
+			msgs = basicSetConverter(newConverter, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER, newConverter, newConverter));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Type Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type Converter</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type Converter</em>' containment reference.
+	 * @see #setTypeConverter(XmlTypeConverter)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_TypeConverter()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlTypeConverter getTypeConverter()
+	{
+		return typeConverter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTypeConverter(XmlTypeConverter newTypeConverter, NotificationChain msgs)
+	{
+		XmlTypeConverter oldTypeConverter = typeConverter;
+		typeConverter = newTypeConverter;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER, oldTypeConverter, newTypeConverter);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany#getTypeConverter <em>Type Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Type Converter</em>' containment reference.
+	 * @see #getTypeConverter()
+	 * @generated
+	 */
+	public void setTypeConverter(XmlTypeConverter newTypeConverter)
+	{
+		if (newTypeConverter != typeConverter)
+		{
+			NotificationChain msgs = null;
+			if (typeConverter != null)
+				msgs = ((InternalEObject)typeConverter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER, null, msgs);
+			if (newTypeConverter != null)
+				msgs = ((InternalEObject)newTypeConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER, null, msgs);
+			msgs = basicSetTypeConverter(newTypeConverter, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER, newTypeConverter, newTypeConverter));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Object Type Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Object Type Converter</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Object Type Converter</em>' containment reference.
+	 * @see #setObjectTypeConverter(XmlObjectTypeConverter)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_ObjectTypeConverter()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlObjectTypeConverter getObjectTypeConverter()
+	{
+		return objectTypeConverter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetObjectTypeConverter(XmlObjectTypeConverter newObjectTypeConverter, NotificationChain msgs)
+	{
+		XmlObjectTypeConverter oldObjectTypeConverter = objectTypeConverter;
+		objectTypeConverter = newObjectTypeConverter;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER, oldObjectTypeConverter, newObjectTypeConverter);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany#getObjectTypeConverter <em>Object Type Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Object Type Converter</em>' containment reference.
+	 * @see #getObjectTypeConverter()
+	 * @generated
+	 */
+	public void setObjectTypeConverter(XmlObjectTypeConverter newObjectTypeConverter)
+	{
+		if (newObjectTypeConverter != objectTypeConverter)
+		{
+			NotificationChain msgs = null;
+			if (objectTypeConverter != null)
+				msgs = ((InternalEObject)objectTypeConverter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER, null, msgs);
+			if (newObjectTypeConverter != null)
+				msgs = ((InternalEObject)newObjectTypeConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER, null, msgs);
+			msgs = basicSetObjectTypeConverter(newObjectTypeConverter, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER, newObjectTypeConverter, newObjectTypeConverter));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Struct Converter</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Struct Converter</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Struct Converter</em>' containment reference.
+	 * @see #setStructConverter(XmlStructConverter)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_StructConverter()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlStructConverter getStructConverter()
+	{
+		return structConverter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetStructConverter(XmlStructConverter newStructConverter, NotificationChain msgs)
+	{
+		XmlStructConverter oldStructConverter = structConverter;
+		structConverter = newStructConverter;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER, oldStructConverter, newStructConverter);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany#getStructConverter <em>Struct Converter</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Struct Converter</em>' containment reference.
+	 * @see #getStructConverter()
+	 * @generated
+	 */
+	public void setStructConverter(XmlStructConverter newStructConverter)
+	{
+		if (newStructConverter != structConverter)
+		{
+			NotificationChain msgs = null;
+			if (structConverter != null)
+				msgs = ((InternalEObject)structConverter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER, null, msgs);
+			if (newStructConverter != null)
+				msgs = ((InternalEObject)newStructConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER, null, msgs);
+			msgs = basicSetStructConverter(newStructConverter, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER, newStructConverter, newStructConverter));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
 	 * <!-- begin-user-doc -->
@@ -190,7 +471,7 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMapKeyAssociationOverrideContainer_2_0_MapKeyAssociationOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -335,6 +616,14 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
+				return basicSetConverter(null, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
+				return basicSetTypeConverter(null, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER:
+				return basicSetObjectTypeConverter(null, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER:
+				return basicSetStructConverter(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getMapKeyAssociationOverrides()).basicRemove(otherEnd, msgs);
 		}
@@ -357,6 +646,14 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return getProperties();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				return getJoinFetch();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
+				return getConverter();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
+				return getTypeConverter();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER:
+				return getObjectTypeConverter();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER:
+				return getStructConverter();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
 				return getMapKeyAssociationOverrides();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
@@ -385,6 +682,18 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				setJoinFetch((XmlJoinFetchType)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
+				setConverter((XmlConverter)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
+				setTypeConverter((XmlTypeConverter)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER:
+				setObjectTypeConverter((XmlObjectTypeConverter)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER:
+				setStructConverter((XmlStructConverter)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
 				getMapKeyAssociationOverrides().clear();
@@ -416,6 +725,18 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				setJoinFetch(JOIN_FETCH_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
+				setConverter((XmlConverter)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
+				setTypeConverter((XmlTypeConverter)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER:
+				setObjectTypeConverter((XmlObjectTypeConverter)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER:
+				setStructConverter((XmlStructConverter)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
 				getMapKeyAssociationOverrides().clear();
 				return;
@@ -442,6 +763,14 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
 				return joinFetch != JOIN_FETCH_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
+				return converter != null;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
+				return typeConverter != null;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER:
+				return objectTypeConverter != null;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER:
+				return structConverter != null;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
 				return mapKeyAssociationOverrides != null && !mapKeyAssociationOverrides.isEmpty();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
@@ -489,11 +818,22 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAssociationOverrideContainer2_0.class)
+		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES;
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__CONVERTER;
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__TYPE_CONVERTER;
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER;
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMapKeyAssociationOverrideContainer_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20__MAP_KEY_ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -502,6 +842,13 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT: return EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToMany_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
 				default: return -1;
 			}
 		}
@@ -547,11 +894,22 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMapKeyAssociationOverrideContainer2_0.class)
+		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES;
+				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__CONVERTER: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER;
+				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER;
+				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER;
+				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__STRUCT_CONVERTER;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMapKeyAssociationOverrideContainer_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_0Package.XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER_20__MAP_KEY_ASSOCIATION_OVERRIDES: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -560,6 +918,13 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_0Package.XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToMany_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
 				default: return -1;
 			}
 		}
@@ -635,11 +1000,11 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	}
 	
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {
-		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides());
+		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides());
 	}
 	
 	protected static Translator buildMapKeyAssociationOverrideTranslator() {
-		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides());
+		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMapKeyAssociationOverrideContainer_2_0_MapKeyAssociationOverrides());
 	}	
 	
 	protected static Translator buildConverterTranslator() {

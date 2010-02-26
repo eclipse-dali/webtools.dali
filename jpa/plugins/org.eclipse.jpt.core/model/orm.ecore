@@ -451,7 +451,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_0" abstract="true"
-        interface="true" eSuperTypes="#//XmlConvertibleMapping #//XmlOrderable #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer #//v2_0/XmlMapKeyAttributeOverrideContainer2_0">
+        interface="true" eSuperTypes="#//XmlConvertibleMapping #//XmlOrderable #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer #//v2_0/XmlMapKeyAttributeOverrideContainer_2_0">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKey" eType="#//MapKey"
@@ -487,7 +487,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany_2_0" abstract="true"
         interface="true" eSuperTypes="#//v2_0/XmlMultiRelationshipMapping_2_0"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlMapKeyAttributeOverrideContainer2_0"
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMapKeyAttributeOverrideContainer_2_0"
         abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyAttributeOverrides"
           upperBound="-1" eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
@@ -501,7 +501,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsId" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMapping_2_0" abstract="true"
-        interface="true" eSuperTypes="#//v2_0/XmlOrderable_2_0 #//v2_0/XmlMapKeyAttributeOverrideContainer2_0">
+        interface="true" eSuperTypes="#//v2_0/XmlOrderable_2_0 #//v2_0/XmlMapKeyAttributeOverrideContainer_2_0">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyClass" eType="#//XmlMapKeyClass"
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKeyTemporal" eType="#//TemporalType"/>

@@ -84,16 +84,6 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ATTRIBUTE_MAPPING_20 = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0 <em>Xml Map Key Attribute Override Container2 0</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer2_0()
-	 * @generated
-	 */
-	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0 = 14;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0 <em>Xml Association Override 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -811,22 +801,32 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_20_FEATURE_COUNT = XML_MULTI_RELATIONSHIP_MAPPING_20_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0 <em>Xml Map Key Attribute Override Container 20</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer_2_0()
+	 * @generated
+	 */
+	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20 = 14;
+
+	/**
 	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES = 0;
+	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20__MAP_KEY_ATTRIBUTE_OVERRIDES = 0;
 
 	/**
-	 * The number of structural features of the '<em>Xml Map Key Attribute Override Container2 0</em>' class.
+	 * The number of structural features of the '<em>Xml Map Key Attribute Override Container 20</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0_FEATURE_COUNT = 1;
+	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
@@ -1396,13 +1396,6 @@ public class OrmV2_0Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlMapKeyAttributeOverrideContainer2_0EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass xmlAssociationOverride_2_0EClass = null;
 
 	/**
@@ -1481,6 +1474,13 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlManyToMany_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlMapKeyAttributeOverrideContainer_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1708,35 +1708,6 @@ public class OrmV2_0Package extends EPackageImpl
 	public EClass getXmlAttributeMapping_2_0()
 	{
 		return xmlAttributeMapping_2_0EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0 <em>Xml Map Key Attribute Override Container2 0</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Map Key Attribute Override Container2 0</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0
-	 * @generated
-	 */
-	public EClass getXmlMapKeyAttributeOverrideContainer2_0()
-	{
-		return xmlMapKeyAttributeOverrideContainer2_0EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Map Key Attribute Overrides</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0#getMapKeyAttributeOverrides()
-	 * @see #getXmlMapKeyAttributeOverrideContainer2_0()
-	 * @generated
-	 */
-	public EReference getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides()
-	{
-		return (EReference)xmlMapKeyAttributeOverrideContainer2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -2190,6 +2161,35 @@ public class OrmV2_0Package extends EPackageImpl
 	public EClass getXmlManyToMany_2_0()
 	{
 		return xmlManyToMany_2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0 <em>Xml Map Key Attribute Override Container 20</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Map Key Attribute Override Container 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0
+	 * @generated
+	 */
+	public EClass getXmlMapKeyAttributeOverrideContainer_2_0()
+	{
+		return xmlMapKeyAttributeOverrideContainer_2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Map Key Attribute Overrides</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0#getMapKeyAttributeOverrides()
+	 * @see #getXmlMapKeyAttributeOverrideContainer_2_0()
+	 * @generated
+	 */
+	public EReference getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides()
+	{
+		return (EReference)xmlMapKeyAttributeOverrideContainer_2_0EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -2882,8 +2882,8 @@ public class OrmV2_0Package extends EPackageImpl
 
 		xmlManyToMany_2_0EClass = createEClass(XML_MANY_TO_MANY_20);
 
-		xmlMapKeyAttributeOverrideContainer2_0EClass = createEClass(XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0);
-		createEReference(xmlMapKeyAttributeOverrideContainer2_0EClass, XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES);
+		xmlMapKeyAttributeOverrideContainer_2_0EClass = createEClass(XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20);
+		createEReference(xmlMapKeyAttributeOverrideContainer_2_0EClass, XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20__MAP_KEY_ATTRIBUTE_OVERRIDES);
 
 		xmlMapKeyClass_2_0EClass = createEClass(XML_MAP_KEY_CLASS_20);
 		createEAttribute(xmlMapKeyClass_2_0EClass, XML_MAP_KEY_CLASS_20__CLASS_NAME);
@@ -2984,12 +2984,12 @@ public class OrmV2_0Package extends EPackageImpl
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlOrderable());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAttributeOverrideContainer());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
-		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlMapKeyAttributeOverrideContainer2_0());
+		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlMapKeyAttributeOverrideContainer_2_0());
 		xmlEmbedded_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAssociationOverrideContainer());
 		xmlEntity_2_0EClass.getESuperTypes().add(this.getXmlCacheable_2_0());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlMultiRelationshipMapping_2_0());
 		xmlMultiRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlOrderable_2_0());
-		xmlMultiRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlMapKeyAttributeOverrideContainer2_0());
+		xmlMultiRelationshipMapping_2_0EClass.getESuperTypes().add(this.getXmlMapKeyAttributeOverrideContainer_2_0());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlMultiRelationshipMapping_2_0());
 		xmlOneToMany_2_0EClass.getESuperTypes().add(this.getXmlOrphanRemovable_2_0());
 		xmlOneToOne_2_0EClass.getESuperTypes().add(this.getXmlSingleRelationshipMapping_2_0());
@@ -3046,8 +3046,8 @@ public class OrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlManyToMany_2_0EClass, XmlManyToMany_2_0.class, "XmlManyToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(xmlMapKeyAttributeOverrideContainer2_0EClass, XmlMapKeyAttributeOverrideContainer2_0.class, "XmlMapKeyAttributeOverrideContainer2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides(), theOrmPackage.getXmlAttributeOverride(), null, "mapKeyAttributeOverrides", null, 0, -1, XmlMapKeyAttributeOverrideContainer2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlMapKeyAttributeOverrideContainer_2_0EClass, XmlMapKeyAttributeOverrideContainer_2_0.class, "XmlMapKeyAttributeOverrideContainer_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides(), theOrmPackage.getXmlAttributeOverride(), null, "mapKeyAttributeOverrides", null, 0, -1, XmlMapKeyAttributeOverrideContainer_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMapKeyClass_2_0EClass, XmlMapKeyClass_2_0.class, "XmlMapKeyClass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMapKeyClass_2_0_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlMapKeyClass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3140,24 +3140,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ATTRIBUTE_MAPPING_20 = eINSTANCE.getXmlAttributeMapping_2_0();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0 <em>Xml Map Key Attribute Override Container2 0</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0
-		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer2_0()
-		 * @generated
-		 */
-		public static final EClass XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0 = eINSTANCE.getXmlMapKeyAttributeOverrideContainer2_0();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES = eINSTANCE.getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0 <em>Xml Association Override 20</em>}' class.
@@ -3430,6 +3412,24 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MANY_TO_MANY_20 = eINSTANCE.getXmlManyToMany_2_0();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0 <em>Xml Map Key Attribute Override Container 20</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer_2_0()
+		 * @generated
+		 */
+		public static final EClass XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20 = eINSTANCE.getXmlMapKeyAttributeOverrideContainer_2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20__MAP_KEY_ATTRIBUTE_OVERRIDES = eINSTANCE.getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0 <em>Xml Map Key Class 20</em>}' class.
