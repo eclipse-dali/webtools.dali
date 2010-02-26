@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -30,6 +29,12 @@ import org.eclipse.jpt.core.utility.TextRange;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Xml Element Collection 20</b></em>'.
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
  * <p>
@@ -41,7 +46,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyClass <em>Map Key Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyTemporal <em>Map Key Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyEnumerated <em>Map Key Enumerated</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyAttributeOverrides <em>Map Key Attribute Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyColumn <em>Map Key Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyJoinColumns <em>Map Key Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getColumn <em>Column</em>}</li>
@@ -53,7 +57,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer
+public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrderable, XmlAttributeOverrideContainer, XmlAssociationOverrideContainer, XmlMapKeyAttributeOverrideContainer2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Target Class</b></em>' attribute.
@@ -219,22 +223,6 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrde
 	 * @generated
 	 */
 	void setMapKeyEnumerated(EnumType value);
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Attribute Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlElementCollection_2_0_MapKeyAttributeOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<XmlAttributeOverride> getMapKeyAttributeOverrides();
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Column</b></em>' containment reference.

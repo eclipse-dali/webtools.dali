@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -57,7 +59,9 @@ public class GenericOrmEmbeddedMapping
 		super(parent, resourceMapping);
 		this.associationOverrideContainer = 
 			((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
-				buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner(), this.resourceAttributeMapping);
+				buildOrmAssociationOverrideContainer(
+					this,
+					new AssociationOverrideContainerOwner());
 	}
 	
 	@Override
@@ -222,6 +226,10 @@ public class GenericOrmEmbeddedMapping
 		
 		public OrmTypeMapping getTypeMapping() {
 			return GenericOrmEmbeddedMapping.this.getTypeMapping();
+		}
+
+		public EList<XmlAssociationOverride> getResourceAssociationOverrides() {
+			return GenericOrmEmbeddedMapping.this.resourceAttributeMapping.getAssociationOverrides();
 		}
 
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {

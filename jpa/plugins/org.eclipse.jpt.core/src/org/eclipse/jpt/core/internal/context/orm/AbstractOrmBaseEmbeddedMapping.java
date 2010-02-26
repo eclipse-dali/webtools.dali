@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -48,7 +50,10 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	protected AbstractOrmBaseEmbeddedMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.targetEmbeddable = embeddableFor(this.getJavaPersistentAttribute());
-		this.attributeOverrideContainer = getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner(), this.resourceAttributeMapping);
+		this.attributeOverrideContainer =
+			getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(
+						this,
+						new AttributeOverrideContainerOwner());
 	}
 
 	@Override
@@ -210,7 +215,11 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmBaseEmbeddedMapping.this.getTargetEmbeddable();
 		}
-		
+
+		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
+			return AbstractOrmBaseEmbeddedMapping.this.resourceAttributeMapping.getAttributeOverrides();
+		}
+
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmBaseEmbeddedMapping.this.getTypeMapping();
 		}

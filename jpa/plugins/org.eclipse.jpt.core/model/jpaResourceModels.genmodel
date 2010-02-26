@@ -268,6 +268,9 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToOne">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlOneToOne/primaryKeyJoinColumns"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlOrderable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOrderable/orderBy"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlOrderColumn"/>
     <genClasses ecoreClass="orm.ecore#//XmlPersistenceUnitDefaults">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPersistenceUnitDefaults/schema"/>
@@ -337,9 +340,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlUniqueConstraint/columnNames"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlVersion"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlOrderable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOrderable/orderBy"/>
-    </genClasses>
     <nestedGenPackages prefix="OrmV2_0" basePackage="org.eclipse.jpt.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" ecorePackage="orm.ecore#//v2_0">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//v2_0/LockModeType_2_0">
@@ -352,17 +352,20 @@
         <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_0/LockModeType_2_0/PESSIMISTIC_WRITE"/>
         <genEnumLiterals ecoreEnumLiteral="orm.ecore#//v2_0/LockModeType_2_0/PESSIMISTIC_FORCE_INCREMENT"/>
       </genEnums>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlAttributeMapping_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlAssociationOverride_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlAssociationOverride_2_0/description"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlAssociationOverride_2_0/joinTable"/>
       </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlAttributeMapping_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlAttributeOverride_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlAttributeOverride_2_0/description"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlAttributes_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlAttributes_2_0/description"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlAttributes_2_0/elementCollections"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCacheable_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlCacheable_2_0/cacheable"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCollectionTable_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlDerivedId_2_0">
@@ -375,7 +378,6 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyTemporal"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyEnumerated"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyAttributeOverrides"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyJoinColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/column"/>
@@ -393,6 +395,9 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlGenerator_2_0/description"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlManyToMany_2_0"/>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer2_0">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer2_0/mapKeyAttributeOverrides"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyClass_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyClass_2_0/className"/>
       </genClasses>
@@ -403,7 +408,6 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyClass"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyTemporal"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyEnumerated"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyAttributeOverrides"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyJoinColumns"/>
       </genClasses>
@@ -412,10 +416,16 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOneToMany_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOneToOne_2_0"/>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrderable_2_0">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlOrderable_2_0/orderColumn"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrderColumn_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrderColumn_2_0/nullable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrderColumn_2_0/insertable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrderColumn_2_0/updatable"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrphanRemovable_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrphanRemovable_2_0/orphanRemoval"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlPersistenceUnitDefaults_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlPersistenceUnitDefaults_2_0/description"/>
@@ -440,15 +450,6 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlUniqueConstraint_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlUniqueConstraint_2_0/name"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCacheable_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlCacheable_2_0/cacheable"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrphanRemovable_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlOrphanRemovable_2_0/orphanRemoval"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlOrderable_2_0">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlOrderable_2_0/orderColumn"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

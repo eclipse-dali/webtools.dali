@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,10 +10,6 @@
  *******************************************************************************/
 
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
-
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,16 +26,14 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0#getMapKeyConvert <em>Map Key Convert</em>}</li>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0#getMapKeyAssociationOverrides <em>Map Key Association Overrides</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCollectionMapping_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlCollectionMapping_2_0 extends JpaEObject
+public interface XmlCollectionMapping_2_0 extends XmlMapKeyAssociationOverrideContainer2_0
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Convert</b></em>' attribute.
@@ -66,21 +60,5 @@ public interface XmlCollectionMapping_2_0 extends JpaEObject
 	 * @generated
 	 */
 	void setMapKeyConvert(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Association Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCollectionMapping_2_0_MapKeyAssociationOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<XmlAssociationOverride> getMapKeyAssociationOverrides();
 
 } // XmlCollectionMapping_2_0

@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
@@ -39,8 +38,7 @@ public interface OrmXml2_0ContextNodeFactory extends OrmXmlContextNodeFactory
 	//overloaded because the 2.0 JPA spec supports association overrides on an embedded mapping while the 1.0 spec did not
 	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(
 			OrmEmbeddedMapping2_0 parent, 
-			OrmAssociationOverrideContainer.Owner owner, 
-			XmlAssociationOverrideContainer resourceAssociationOverrideContainer);
+			OrmAssociationOverrideContainer.Owner owner);
 	
 	OrmDerivedIdentity2_0 buildOrmDerivedIdentity(
 			OrmSingleRelationshipMapping2_0 parent, XmlSingleRelationshipMapping_2_0 resource);

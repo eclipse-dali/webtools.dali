@@ -299,6 +299,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
         upperBound="-1" eType="#//XmlPrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOrderable" abstract="true" interface="true"
+      eSuperTypes="#//v2_0/XmlOrderable_2_0">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn" eSuperTypes="#//AbstractXmlNamedColumn #//v2_0/XmlOrderColumn_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults" eSuperTypes="#//XmlAccessHolder #//v2_0/XmlPersistenceUnitDefaults_2_0">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -384,10 +388,6 @@
         lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="#//AbstractXmlAttributeMapping #//ColumnMapping #//XmlConvertibleMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOrderable" abstract="true" interface="true"
-      eSuperTypes="#//v2_0/XmlOrderable_2_0">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="AccessType">
     <eLiterals name="PROPERTY"/>
     <eLiterals name="FIELD" value="1"/>
@@ -422,14 +422,14 @@
     <eLiterals name="TIMESTAMP" value="2"/>
   </eClassifiers>
   <eSubpackages name="v2_0" nsURI="jpt.orm.v2_0.xmi" nsPrefix="org.eclipse.jpt.core.resource.orm.v2_0">
-    <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping_2_0" abstract="true"
-        interface="true" eSuperTypes="#//XmlAccessHolder"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="joinTable" eType="#//XmlJoinTable"
           containment="true" resolveProxies="false"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping_2_0" abstract="true"
+        interface="true" eSuperTypes="#//XmlAccessHolder"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -440,6 +440,10 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="elementCollections" upperBound="-1"
           eType="#//XmlElementCollection" containment="true" resolveProxies="false"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlCacheable_2_0" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlCollectionTable_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlReferenceTable"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlDerivedId_2_0" abstract="true"
@@ -447,7 +451,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_0" abstract="true"
-        interface="true" eSuperTypes="#//XmlConvertibleMapping #//XmlOrderable #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer">
+        interface="true" eSuperTypes="#//XmlConvertibleMapping #//XmlOrderable #//XmlAttributeOverrideContainer #//XmlAssociationOverrideContainer #//v2_0/XmlMapKeyAttributeOverrideContainer2_0">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKey" eType="#//MapKey"
@@ -456,8 +460,6 @@
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKeyTemporal" eType="#//TemporalType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKeyEnumerated" eType="#//EnumType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyAttributeOverrides"
-          upperBound="-1" eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyColumn" eType="#//XmlColumn"
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyJoinColumns" upperBound="-1"
@@ -485,6 +487,11 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany_2_0" abstract="true"
         interface="true" eSuperTypes="#//v2_0/XmlMultiRelationshipMapping_2_0"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMapKeyAttributeOverrideContainer2_0"
+        abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyAttributeOverrides"
+          upperBound="-1" eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMapKeyClass_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
@@ -494,13 +501,11 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsId" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMapping_2_0" abstract="true"
-        interface="true" eSuperTypes="#//v2_0/XmlOrderable_2_0">
+        interface="true" eSuperTypes="#//v2_0/XmlOrderable_2_0 #//v2_0/XmlMapKeyAttributeOverrideContainer2_0">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyClass" eType="#//XmlMapKeyClass"
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKeyTemporal" eType="#//TemporalType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKeyEnumerated" eType="#//EnumType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyAttributeOverrides"
-          upperBound="-1" eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyColumn" eType="#//XmlColumn"
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyJoinColumns" upperBound="-1"
@@ -514,11 +519,20 @@
         interface="true" eSuperTypes="#//v2_0/XmlMultiRelationshipMapping_2_0 #//v2_0/XmlOrphanRemovable_2_0"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne_2_0" abstract="true" interface="true"
         eSuperTypes="#//v2_0/XmlSingleRelationshipMapping_2_0 #//v2_0/XmlOrphanRemovable_2_0"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlOrderable_2_0" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="orderColumn" eType="#//XmlOrderColumn"
+          containment="true" resolveProxies="false"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn_2_0" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlOrphanRemovable_2_0" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="orphanRemoval" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults_2_0" abstract="true"
         interface="true">
@@ -561,19 +575,6 @@
       <eLiterals name="PESSIMISTIC_READ" value="5"/>
       <eLiterals name="PESSIMISTIC_WRITE" value="6"/>
       <eLiterals name="PESSIMISTIC_FORCE_INCREMENT" value="7"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlCacheable_2_0" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlOrphanRemovable_2_0" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="orphanRemoval" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlOrderable_2_0" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="orderColumn" eType="#//XmlOrderColumn"
-          containment="true" resolveProxies="false"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

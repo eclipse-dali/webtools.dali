@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.xml.CommonPackage;
@@ -102,6 +101,34 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_CACHE_INTERCEPTOR2_0_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0 <em>Xml Map Key Association Override Container2 0</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMapKeyAssociationOverrideContainer2_0()
+	 * @generated
+	 */
+	public static final int XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0 = 5;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Map Key Association Override Container2 0</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0 <em>Xml Collection Mapping 20</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -112,22 +139,22 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_COLLECTION_MAPPING_20 = 1;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT = 0;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLLECTION_MAPPING_20__MAP_KEY_ASSOCIATION_OVERRIDES = 1;
+	public static final int XML_COLLECTION_MAPPING_20__MAP_KEY_ASSOCIATION_OVERRIDES = XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT = XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Collection Mapping 20</em>' class.
@@ -136,7 +163,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLLECTION_MAPPING_20_FEATURE_COUNT = 2;
+	public static final int XML_COLLECTION_MAPPING_20_FEATURE_COUNT = XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlElementCollection_2_0 <em>Xml Element Collection 20</em>}' class.
@@ -293,22 +320,22 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_20__STRUCT_CONVERTERS = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_20__MAP_KEY_CONVERT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
+	public static final int XML_ELEMENT_COLLECTION_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_20__MAP_KEY_CONVERT = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
 
 	/**
 	 * The number of structural features of the '<em>Xml Element Collection 20</em>' class.
@@ -412,22 +439,22 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_20__STRUCT_CONVERTER = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_CONVERT = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY_20__MAP_KEY_CONVERT = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Many To Many 20</em>' class.
@@ -446,7 +473,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMappedSuperclass_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_20 = 5;
+	public static final int XML_MAPPED_SUPERCLASS_20 = 6;
 
 	/**
 	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
@@ -483,7 +510,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlOneToMany_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_20 = 6;
+	public static final int XML_ONE_TO_MANY_20 = 7;
 
 	/**
 	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
@@ -522,22 +549,22 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ONE_TO_MANY_20__STRUCT_CONVERTER = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_CONVERT = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_ASSOCIATION_OVERRIDES = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY_20__MAP_KEY_CONVERT = EclipseLinkOrmPackage.XML_CONVERTER_HOLDER_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To Many 20</em>' class.
@@ -556,7 +583,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlOrderColumn_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN_20 = 7;
+	public static final int XML_ORDER_COLUMN_20 = 8;
 
 	/**
 	 * The feature id for the '<em><b>Correction Type</b></em>' attribute.
@@ -584,7 +611,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlQueryRedirectors2_0()
 	 * @generated
 	 */
-	public static final int XML_QUERY_REDIRECTORS2_0 = 8;
+	public static final int XML_QUERY_REDIRECTORS2_0 = 9;
 
 	/**
 	 * The feature id for the '<em><b>All Queries</b></em>' attribute.
@@ -666,7 +693,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getOrderCorrectionType_2_0()
 	 * @generated
 	 */
-	public static final int ORDER_CORRECTION_TYPE_20 = 9;
+	public static final int ORDER_CORRECTION_TYPE_20 = 10;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -730,6 +757,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlQueryRedirectors2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlMapKeyAssociationOverrideContainer2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -868,20 +902,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public EAttribute getXmlCollectionMapping_2_0_MapKeyConvert()
 	{
 		return (EAttribute)xmlCollectionMapping_2_0EClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0#getMapKeyAssociationOverrides <em>Map Key Association Overrides</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Map Key Association Overrides</em>'.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0#getMapKeyAssociationOverrides()
-	 * @see #getXmlCollectionMapping_2_0()
-	 * @generated
-	 */
-	public EReference getXmlCollectionMapping_2_0_MapKeyAssociationOverrides()
-	{
-		return (EReference)xmlCollectionMapping_2_0EClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1144,6 +1164,35 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0 <em>Xml Map Key Association Override Container2 0</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Map Key Association Override Container2 0</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0
+	 * @generated
+	 */
+	public EClass getXmlMapKeyAssociationOverrideContainer2_0()
+	{
+		return xmlMapKeyAssociationOverrideContainer2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0#getMapKeyAssociationOverrides <em>Map Key Association Overrides</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Map Key Association Overrides</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0#getMapKeyAssociationOverrides()
+	 * @see #getXmlMapKeyAssociationOverrideContainer2_0()
+	 * @generated
+	 */
+	public EReference getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides()
+	{
+		return (EReference)xmlMapKeyAssociationOverrideContainer2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0 <em>Order Correction Type 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1194,7 +1243,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 		xmlCollectionMapping_2_0EClass = createEClass(XML_COLLECTION_MAPPING_20);
 		createEAttribute(xmlCollectionMapping_2_0EClass, XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT);
-		createEReference(xmlCollectionMapping_2_0EClass, XML_COLLECTION_MAPPING_20__MAP_KEY_ASSOCIATION_OVERRIDES);
 
 		xmlElementCollection_2_0EClass = createEClass(XML_ELEMENT_COLLECTION_20);
 
@@ -1203,6 +1251,9 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		createEReference(xmlEntity2_0EClass, XML_ENTITY2_0__QUERY_REDIRECTORS);
 
 		xmlManyToMany_2_0EClass = createEClass(XML_MANY_TO_MANY_20);
+
+		xmlMapKeyAssociationOverrideContainer2_0EClass = createEClass(XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0);
+		createEReference(xmlMapKeyAssociationOverrideContainer2_0EClass, XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES);
 
 		xmlMappedSuperclass_2_0EClass = createEClass(XML_MAPPED_SUPERCLASS_20);
 		createEReference(xmlMappedSuperclass_2_0EClass, XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR);
@@ -1250,15 +1301,16 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
 		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI);
+		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		xmlCollectionMapping_2_0EClass.getESuperTypes().add(this.getXmlMapKeyAssociationOverrideContainer2_0());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlAttributeMapping());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConvertibleMapping());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConvertersHolder());
@@ -1276,7 +1328,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlCollectionMapping_2_0EClass, XmlCollectionMapping_2_0.class, "XmlCollectionMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCollectionMapping_2_0_MapKeyConvert(), ecorePackage.getEString(), "mapKeyConvert", null, 0, 1, XmlCollectionMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlCollectionMapping_2_0_MapKeyAssociationOverrides(), theOrmPackage.getXmlAssociationOverride(), null, "mapKeyAssociationOverrides", null, 0, -1, XmlCollectionMapping_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlElementCollection_2_0EClass, XmlElementCollection_2_0.class, "XmlElementCollection_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1285,6 +1336,9 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		initEReference(getXmlEntity2_0_QueryRedirectors(), this.getXmlQueryRedirectors2_0(), null, "queryRedirectors", null, 0, 1, XmlEntity2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToMany_2_0EClass, XmlManyToMany_2_0.class, "XmlManyToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlMapKeyAssociationOverrideContainer2_0EClass, XmlMapKeyAssociationOverrideContainer2_0.class, "XmlMapKeyAssociationOverrideContainer2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides(), theOrmPackage.getXmlAssociationOverride(), null, "mapKeyAssociationOverrides", null, 0, -1, XmlMapKeyAssociationOverrideContainer2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_0EClass, XmlMappedSuperclass_2_0.class, "XmlMappedSuperclass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMappedSuperclass_2_0_CacheInterceptor(), this.getXmlCacheInterceptor2_0(), null, "cacheInterceptor", null, 0, 1, XmlMappedSuperclass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1359,14 +1413,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_COLLECTION_MAPPING_20__MAP_KEY_CONVERT = eINSTANCE.getXmlCollectionMapping_2_0_MapKeyConvert();
-
-		/**
-		 * The meta object literal for the '<em><b>Map Key Association Overrides</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_COLLECTION_MAPPING_20__MAP_KEY_ASSOCIATION_OVERRIDES = eINSTANCE.getXmlCollectionMapping_2_0_MapKeyAssociationOverrides();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlElementCollection_2_0 <em>Xml Element Collection 20</em>}' class.
@@ -1525,6 +1571,24 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_QUERY_REDIRECTORS2_0__DELETE = eINSTANCE.getXmlQueryRedirectors2_0_Delete();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0 <em>Xml Map Key Association Override Container2 0</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer2_0
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMapKeyAssociationOverrideContainer2_0()
+		 * @generated
+		 */
+		public static final EClass XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0 = eINSTANCE.getXmlMapKeyAssociationOverrideContainer2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key Association Overrides</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAP_KEY_ASSOCIATION_OVERRIDE_CONTAINER2_0__MAP_KEY_ASSOCIATION_OVERRIDES = eINSTANCE.getXmlMapKeyAssociationOverrideContainer2_0_MapKeyAssociationOverrides();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.OrderCorrectionType_2_0 <em>Order Correction Type 20</em>}' enum.

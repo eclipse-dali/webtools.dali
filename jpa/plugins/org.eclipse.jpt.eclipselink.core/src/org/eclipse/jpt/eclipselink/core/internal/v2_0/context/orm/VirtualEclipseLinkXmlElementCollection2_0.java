@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -144,10 +145,15 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	public TextRange getTemporalTextRange() {
 		return this.virtualXmlElementCollection.getTemporalTextRange();
 	}
-	
+
 	@Override
 	public EList<XmlAttributeOverride> getAttributeOverrides() {
 		return this.virtualXmlElementCollection.getAttributeOverrides();
+	}
+
+	@Override
+	public EList<XmlAssociationOverride> getAssociationOverrides() {
+		return this.virtualXmlElementCollection.getAssociationOverrides();
 	}
 
 	@Override

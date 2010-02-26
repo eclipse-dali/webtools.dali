@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -55,6 +56,8 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
@@ -506,7 +509,7 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 
 	protected OrmAttributeOverrideContainer buildValueAttributeOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner(), this.getResourceAttributeMapping());
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
 	}
 
 	protected JavaAttributeOverride getJavaValueAttributeOverrideNamed(String attributeName) {
@@ -521,7 +524,7 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 
 	protected OrmAssociationOverrideContainer buildValueAssociationOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner(), this.getResourceAttributeMapping());
+		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
 	}
 
 	protected JavaAssociationOverride getJavaValueAssociationOverrideNamed(String attributeName) {
@@ -1350,6 +1353,10 @@ public class GenericOrmElementCollectionMapping2_0
 			return GenericOrmElementCollectionMapping2_0.this.getTypeMapping();
 		}
 
+		public EList<XmlAssociationOverride> getResourceAssociationOverrides() {
+			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getAssociationOverrides();
+		}
+
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
 			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
 				JavaAssociationOverride javaAssociationOverride = getJavaValueAssociationOverrideNamed(associationOverrideName);
@@ -1603,6 +1610,10 @@ public class GenericOrmElementCollectionMapping2_0
 		
 		public OrmTypeMapping getTypeMapping() {
 			return GenericOrmElementCollectionMapping2_0.this.getTypeMapping();
+		}
+
+		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
+			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getAttributeOverrides();
 		}
 
 		public Column resolveOverriddenColumn(String attributeOverrideName) {

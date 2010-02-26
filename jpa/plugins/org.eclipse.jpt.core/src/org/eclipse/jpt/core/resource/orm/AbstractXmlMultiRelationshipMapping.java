@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -104,6 +105,15 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 */
 	protected String orderBy = ORDER_BY_EDEFAULT;
 	/**
+	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyAttributeOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
+	/**
 	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -140,15 +150,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * @ordered
 	 */
 	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
-	/**
-	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyAttributeOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
 	/**
 	 * The cached value of the '{@link #getMapKeyColumn() <em>Map Key Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -387,6 +388,29 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key Attribute Overrides</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides()
+	{
+		if (mapKeyAttributeOverrides == null)
+		{
+			mapKeyAttributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES);
+		}
+		return mapKeyAttributeOverrides;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Map Key Class</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -520,29 +544,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 		mapKeyEnumerated = newMapKeyEnumerated == null ? MAP_KEY_ENUMERATED_EDEFAULT : newMapKeyEnumerated;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED, oldMapKeyEnumerated, mapKeyEnumerated));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Attribute Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_2_0_MapKeyAttributeOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides()
-	{
-		if (mapKeyAttributeOverrides == null)
-		{
-			mapKeyAttributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES);
-		}
-		return mapKeyAttributeOverrides;
 	}
 
 	/**
@@ -700,10 +701,10 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return basicSetJoinTable(null, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_COLUMN:
 				return basicSetOrderColumn(null, msgs);
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
-				return basicSetMapKeyClass(null, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				return ((InternalEList<?>)getMapKeyAttributeOverrides()).basicRemove(otherEnd, msgs);
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
+				return basicSetMapKeyClass(null, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				return basicSetMapKeyColumn(null, msgs);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS:
@@ -732,14 +733,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return getOrderColumn();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				return getOrderBy();
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				return getMapKeyAttributeOverrides();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
 				return getMapKeyClass();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				return getMapKeyTemporal();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				return getMapKeyEnumerated();
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return getMapKeyAttributeOverrides();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				return getMapKeyColumn();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS:
@@ -773,6 +774,10 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				setOrderBy((String)newValue);
 				return;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				getMapKeyAttributeOverrides().clear();
+				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
+				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
 				setMapKeyClass((XmlMapKeyClass)newValue);
 				return;
@@ -781,10 +786,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				setMapKeyEnumerated((EnumType)newValue);
-				return;
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				getMapKeyAttributeOverrides().clear();
-				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)newValue);
@@ -822,6 +823,9 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
 				return;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				getMapKeyAttributeOverrides().clear();
+				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
 				setMapKeyClass((XmlMapKeyClass)null);
 				return;
@@ -830,9 +834,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				setMapKeyEnumerated(MAP_KEY_ENUMERATED_EDEFAULT);
-				return;
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				getMapKeyAttributeOverrides().clear();
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)null);
@@ -865,14 +866,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return orderColumn != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
 				return mapKeyClass != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				return mapKeyTemporal != MAP_KEY_TEMPORAL_EDEFAULT;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				return mapKeyEnumerated != MAP_KEY_ENUMERATED_EDEFAULT;
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				return mapKeyColumn != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS:
@@ -923,6 +924,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMultiRelationshipMapping_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -930,7 +939,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS;
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL;
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED;
-				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN;
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS;
 				default: return -1;
@@ -979,6 +987,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMultiRelationshipMapping_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -986,7 +1002,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL;
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED;
-				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN;
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS;
 				default: return -1;

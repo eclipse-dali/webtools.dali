@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -29,7 +30,6 @@ import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -43,7 +43,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContextNode
 	implements OrmAssociationOverrideContainer
 {
-	protected final XmlAssociationOverrideContainer resourceAssociationOverrideContainer;
 	
 	protected final List<OrmAssociationOverride> specifiedAssociationOverrides;
 
@@ -51,10 +50,9 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 	protected final OrmAssociationOverrideContainer.Owner owner;
 	
-	public GenericOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner, XmlAssociationOverrideContainer resource) {
+	public GenericOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner) {
 		super(parent);
 		this.owner = owner;
-		this.resourceAssociationOverrideContainer = resource;
 		this.specifiedAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.initializeSpecifiedAssociationOverrides();
@@ -63,6 +61,10 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 	protected Owner getOwner() {
 		return this.owner;
+	}
+
+	protected EList<XmlAssociationOverride> getResourceAssociationOverrides() {
+		return getOwner().getResourceAssociationOverrides();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -115,7 +117,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 			}
 		}
 
-		this.resourceAssociationOverrideContainer.getAssociationOverrides().remove(index);
+		this.getResourceAssociationOverrides().remove(index);
 		fireItemRemoved(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		
 		if (virtualAssociationOverride != null) {
@@ -130,7 +132,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 		OrmAssociationOverride newAssociationOverride = buildAssociationOverride(xmlAssociationOverride);
 		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
 		
-		this.resourceAssociationOverrideContainer.getAssociationOverrides().add(xmlAssociationOverride);
+		this.getResourceAssociationOverrides().add(xmlAssociationOverride);
 		
 		int defaultIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
 		this.virtualAssociationOverrides.remove(defaultIndex);
@@ -165,7 +167,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 	
 	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
-		this.resourceAssociationOverrideContainer.getAssociationOverrides().move(targetIndex, sourceIndex);
+		this.getResourceAssociationOverrides().move(targetIndex, sourceIndex);
 		fireItemMoved(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -239,7 +241,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 
 	protected void initializeSpecifiedAssociationOverrides() {
-		for (XmlAssociationOverride associationOverride : this.resourceAssociationOverrideContainer.getAssociationOverrides()) {
+		for (XmlAssociationOverride associationOverride : this.getResourceAssociationOverrides()) {
 			this.specifiedAssociationOverrides.add(buildAssociationOverride(associationOverride));
 		}
 	}
@@ -251,7 +253,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 	protected void updateSpecifiedAssociationOverrides() {
 		// make a copy of the XML overrides (to prevent ConcurrentModificationException)
-		Iterator<XmlAssociationOverride> xmlOverrides = new CloneIterator<XmlAssociationOverride>(this.resourceAssociationOverrideContainer.getAssociationOverrides());
+		Iterator<XmlAssociationOverride> xmlOverrides = new CloneIterator<XmlAssociationOverride>(this.getResourceAssociationOverrides());
 		
 		for (Iterator<OrmAssociationOverride> contextOverrides = this.specifiedAssociationOverrides(); contextOverrides.hasNext(); ) {
 			OrmAssociationOverride contextOverride = contextOverrides.next();

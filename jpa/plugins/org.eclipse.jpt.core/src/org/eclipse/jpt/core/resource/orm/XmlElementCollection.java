@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -147,6 +148,16 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected EList<XmlAssociationOverride> associationOverrides;
 
 	/**
+	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyAttributeOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
+
+	/**
 	 * The default value of the '{@link #getTargetClass() <em>Target Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -233,16 +244,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @ordered
 	 */
 	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyAttributeOverrides() <em>Map Key Attribute Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyAttributeOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyColumn() <em>Map Key Column</em>}' containment reference.
@@ -571,6 +572,29 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key Attribute Overrides</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides()
+	{
+		if (mapKeyAttributeOverrides == null)
+		{
+			mapKeyAttributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES);
+		}
+		return mapKeyAttributeOverrides;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -827,29 +851,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map Key Attribute Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map Key Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlElementCollection_2_0_MapKeyAttributeOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides()
-	{
-		if (mapKeyAttributeOverrides == null)
-		{
-			mapKeyAttributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES);
-		}
-		return mapKeyAttributeOverrides;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Map Key Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1068,12 +1069,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				return ((InternalEList<?>)getMapKeyAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY:
 				return basicSetMapKey(null, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
 				return basicSetMapKeyClass(null, msgs);
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return ((InternalEList<?>)getMapKeyAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				return basicSetMapKeyColumn(null, msgs);
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS:
@@ -1110,6 +1111,8 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getAttributeOverrides();
 			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
 				return getAssociationOverrides();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				return getMapKeyAttributeOverrides();
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return getTargetClass();
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
@@ -1122,8 +1125,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getMapKeyTemporal();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
 				return getMapKeyEnumerated();
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return getMapKeyAttributeOverrides();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				return getMapKeyColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS:
@@ -1170,6 +1171,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				getAssociationOverrides().clear();
 				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				getMapKeyAttributeOverrides().clear();
+				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass((String)newValue);
 				return;
@@ -1187,10 +1192,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
 				setMapKeyEnumerated((EnumType)newValue);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				getMapKeyAttributeOverrides().clear();
-				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)newValue);
@@ -1240,6 +1241,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				getMapKeyAttributeOverrides().clear();
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
 				return;
@@ -1257,9 +1261,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
 				setMapKeyEnumerated(MAP_KEY_ENUMERATED_EDEFAULT);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				getMapKeyAttributeOverrides().clear();
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)null);
@@ -1301,6 +1302,8 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 			case OrmPackage.XML_ELEMENT_COLLECTION__ASSOCIATION_OVERRIDES:
 				return associationOverrides != null && !associationOverrides.isEmpty();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
+				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
@@ -1313,8 +1316,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return mapKeyTemporal != MAP_KEY_TEMPORAL_EDEFAULT;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
 				return mapKeyEnumerated != MAP_KEY_ENUMERATED_EDEFAULT;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
-				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				return mapKeyColumn != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS:
@@ -1377,6 +1378,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -1387,7 +1396,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_ENUMERATED;
-				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_COLUMN;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_JOIN_COLUMNS;
 				case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLUMN;
@@ -1448,6 +1456,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyAttributeOverrideContainer2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER2_0__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -1458,7 +1474,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_ENUMERATED: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED;
-				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_JOIN_COLUMNS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__COLUMN;
@@ -1544,7 +1559,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			buildMapKeyClassTranslator(),
 			buildMapKeyTemporalTranslator(),
 			buildMapKeyEnumeratedTranslator(),
-			XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyAttributeOverrides()),
+			buildMapKeyAttributeOverrideTranslator(),
 			XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyColumn()),
 			XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyJoinColumns()),
 			XmlColumn.buildTranslator(JPA.COLUMN, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_Column()),
@@ -1611,5 +1626,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	
 	protected static Translator buildAssociationOverrideTranslator() {
 		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
+	}
+	
+	protected static Translator buildMapKeyAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer2_0_MapKeyAttributeOverrides());
 	}
 }

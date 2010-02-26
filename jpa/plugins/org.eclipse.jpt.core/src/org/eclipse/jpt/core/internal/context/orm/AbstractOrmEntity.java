@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -66,6 +67,8 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
@@ -264,11 +267,15 @@ public abstract class AbstractOrmEntity
 	}
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner(), this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(
+			this,
+			new AssociationOverrideContainerOwner());
 	}
 	
 	protected OrmAttributeOverrideContainer buildAttributeOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner(), this.resourceTypeMapping);
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(
+			this,
+			new AttributeOverrideContainerOwner());
 	}
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
@@ -1729,6 +1736,10 @@ public abstract class AbstractOrmEntity
 			return AbstractOrmEntity.this.getTypeMapping();
 		}
 
+		public EList<XmlAssociationOverride> getResourceAssociationOverrides() {
+			return AbstractOrmEntity.this.resourceTypeMapping.getAssociationOverrides();
+		}
+
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
 			if (!isMetadataComplete()) {
 				JavaPersistentType javaPersistentType = getPersistentType().getJavaPersistentType();
@@ -1888,6 +1899,10 @@ public abstract class AbstractOrmEntity
 		
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmEntity.this.getTypeMapping();
+		}
+
+		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
+			return AbstractOrmEntity.this.resourceTypeMapping.getAttributeOverrides();
 		}
 
 		public Column resolveOverriddenColumn(String attributeOverrideName) {

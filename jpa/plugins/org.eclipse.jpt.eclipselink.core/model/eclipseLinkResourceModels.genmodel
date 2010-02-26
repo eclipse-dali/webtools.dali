@@ -268,7 +268,6 @@
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0/mapKeyConvert"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlCollectionMapping_2_0/mapKeyAssociationOverrides"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlElementCollection_2_0"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlEntity2_0">
@@ -276,6 +275,9 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlEntity2_0/queryRedirectors"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlManyToMany_2_0"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlMapKeyAssociationOverrideContainer2_0">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlMapKeyAssociationOverrideContainer2_0/mapKeyAssociationOverrides"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_0/XmlMappedSuperclass_2_0">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_0/XmlMappedSuperclass_2_0/cacheInterceptor"/>
       </genClasses>

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
@@ -41,7 +41,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextNode
 	implements OrmAttributeOverrideContainer
 {
-	private final XmlAttributeOverrideContainer resourceAttributeOverrideContainer;
 	
 	protected final List<OrmAttributeOverride> specifiedAttributeOverrides;
 
@@ -49,10 +48,9 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 
 	protected final Owner owner;
 
-	public GenericOrmAttributeOverrideContainer(XmlContextNode parent, Owner owner,  XmlAttributeOverrideContainer resource) {
+	public GenericOrmAttributeOverrideContainer(XmlContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
-		this.resourceAttributeOverrideContainer = resource;
 		this.specifiedAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 		this.virtualAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 		this.initializeSpecifiedAttributeOverrides();
@@ -72,6 +70,10 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		return this.owner;
 	}
 	
+	protected EList<XmlAttributeOverride> getResourceAttributeOverrides() {
+		return getOwner().getResourceAttributeOverrides();
+	}
+
 	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAttributeOverride> attributeOverrides() {
 		return new CompositeListIterator<OrmAttributeOverride>(specifiedAttributeOverrides(), virtualAttributeOverrides());
@@ -122,7 +124,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 			}
 		}
 
-		this.resourceAttributeOverrideContainer.getAttributeOverrides().remove(index);
+		this.getResourceAttributeOverrides().remove(index);
 		fireItemRemoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
@@ -137,7 +139,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		OrmAttributeOverride newAttributeOverride = getXmlContextNodeFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
-		this.resourceAttributeOverrideContainer.getAttributeOverrides().add(xmlAttributeOverride);
+		this.getResourceAttributeOverrides().add(xmlAttributeOverride);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
 		this.virtualAttributeOverrides.remove(defaultIndex);
@@ -163,7 +165,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride();
 		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.resourceAttributeOverrideContainer.getAttributeOverrides().add(index, xmlAttributeOverride);
+		this.getResourceAttributeOverrides().add(index, xmlAttributeOverride);
 		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -182,7 +184,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 	
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.resourceAttributeOverrideContainer.getAttributeOverrides().move(targetIndex, sourceIndex);
+		this.getResourceAttributeOverrides().move(targetIndex, sourceIndex);
 		fireItemMoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -235,13 +237,13 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 			}
 		}
 	}
-	
+
 	protected void initializeSpecifiedAttributeOverrides() {
-		for (XmlAttributeOverride attributeOverride : this.resourceAttributeOverrideContainer.getAttributeOverrides()) {
+		for (XmlAttributeOverride attributeOverride : this.getResourceAttributeOverrides()) {
 			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
 		}
 	}
-	
+
 	public void update() {
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
@@ -263,7 +265,7 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 
 	protected void updateSpecifiedAttributeOverrides() {
 		// make a copy of the XML overrides (to prevent ConcurrentModificationException)
-		Iterator<XmlAttributeOverride> xmlOverrides = new CloneIterator<XmlAttributeOverride>(this.resourceAttributeOverrideContainer.getAttributeOverrides());
+		Iterator<XmlAttributeOverride> xmlOverrides = new CloneIterator<XmlAttributeOverride>(this.getResourceAttributeOverrides());
 		
 		for (Iterator<OrmAttributeOverride> contextOverrides = this.specifiedAttributeOverrides(); contextOverrides.hasNext(); ) {
 			OrmAttributeOverride contextOverride = contextOverrides.next();

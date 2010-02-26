@@ -53,7 +53,6 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
@@ -98,10 +97,9 @@ public class GenericOrmXml2_0ContextNodeFactory extends AbstractOrmXmlContextNod
 	@Override
 	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(
 			OrmEmbeddedMapping2_0 parent, 
-			Owner owner, 
-			XmlAssociationOverrideContainer resourceAssociationOverrideContainer) {
+			Owner owner) {
 		
-		return new GenericOrmAssociationOverrideContainer(parent, owner, resourceAssociationOverrideContainer);
+		return new GenericOrmAssociationOverrideContainer(parent, owner);
 	}
 	
 	@Override
