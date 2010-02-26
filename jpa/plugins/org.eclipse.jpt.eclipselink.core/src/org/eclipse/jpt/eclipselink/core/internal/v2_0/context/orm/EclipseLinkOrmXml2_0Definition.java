@@ -58,7 +58,7 @@ public class EclipseLinkOrmXml2_0Definition
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkOrmXml2_0Definition() {
+	protected EclipseLinkOrmXml2_0Definition() {
 		super();
 	}
 	

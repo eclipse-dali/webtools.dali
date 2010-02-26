@@ -45,7 +45,7 @@ public class EclipseLink2_0JpaPlatformFactory
 			this.buildJpaVariation());
 	}
 	
-	private JpaPlatform.Version buildJpaVersion() {
+	protected JpaPlatform.Version buildJpaVersion() {
 		return new EclipseLinkVersion(
 				JptEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_0,
 				JptCorePlugin.JPA_FACET_VERSION_2_0

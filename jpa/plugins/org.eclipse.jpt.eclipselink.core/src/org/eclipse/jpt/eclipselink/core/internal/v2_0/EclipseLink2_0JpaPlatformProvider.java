@@ -75,7 +75,7 @@ public class EclipseLink2_0JpaPlatformProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLink2_0JpaPlatformProvider() {
+	protected EclipseLink2_0JpaPlatformProvider() {
 		super();
 	}
 	

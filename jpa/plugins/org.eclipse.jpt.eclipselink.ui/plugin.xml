@@ -19,11 +19,16 @@
 			id="eclipselink1_2.ui"
 			jpaPlatform="eclipselink1_2"
 			factoryClass="org.eclipse.jpt.eclipselink.ui.internal.v1_2.platform.EclipseLink1_2JpaPlatformUiFactory"/>
-
+		
 		<jpaPlatformUi
 			id="eclipselink2_0.ui"
 			jpaPlatform="eclipselink2_0"
 			factoryClass="org.eclipse.jpt.eclipselink.ui.internal.v2_0.platform.EclipseLink2_0JpaPlatformUiFactory"/>
+		
+		<jpaPlatformUi
+			id="eclipselink2_1.ui"
+			jpaPlatform="eclipselink2_1"
+			factoryClass="org.eclipse.jpt.eclipselink.ui.internal.v2_1.platform.EclipseLink2_1JpaPlatformUiFactory"/>
 		
 	</extension>
 	
@@ -89,6 +94,10 @@
 						<test
 							property="org.eclipse.jpt.core.jpaPlatform"
 							value="eclipselink2_0">
+						</test>
+						<test
+							property="org.eclipse.jpt.core.jpaPlatform"
+							value="eclipselink2_1">
 						</test>
 					</or>
 				</and>

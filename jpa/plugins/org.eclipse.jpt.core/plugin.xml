@@ -239,8 +239,9 @@
 		
 	</extension>
 	
-	<extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 	
+	<extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+		
 		<provider id="eclipselink-102-osgi-bundles-library-provider" extends="wtp-osgi-bundles-library-provider">
 			<label>EclipseLink 1.0.x</label>
 				<param name="container.label" value="EclipseLink 1.0.x"/>
@@ -255,15 +256,30 @@
 				</with>
 			</enablement>
 		</provider>
-
+		
 		<provider id="eclipselink-110-osgi-bundles-library-provider" extends="wtp-osgi-bundles-library-provider">
 			<label>EclipseLink 1.1.x</label>
 				<param name="container.label" value="EclipseLink 1.1.x"/>
-				<param name="bundle.0" value="javax.persistence:[1.0.0, 2.0.0)"/>
-				<param name="bundle.1" value="org.eclipse.persistence.core:[1.1.0, 2.0.0)"/>
-				<param name="bundle.2" value="org.eclipse.persistence.jpa:[1.1.0, 2.0.0)"/>
-				<param name="bundle.3" value="org.eclipse.persistence.asm:[1.1.0, 2.0.0)"/>
-				<param name="bundle.4" value="org.eclipse.persistence.antlr:[1.1.0, 2.0.0)"/>
+				<param name="bundle.0" value="javax.persistence:[1.99.0, 2.1.0)"/>
+				<param name="bundle.1" value="org.eclipse.persistence.core:[1.1.0, 1.2.0)"/>
+				<param name="bundle.2" value="org.eclipse.persistence.jpa:[1.1.0, 1.2.0)"/>
+				<param name="bundle.3" value="org.eclipse.persistence.asm:[1.1.0, 1.2.0)"/>
+				<param name="bundle.4" value="org.eclipse.persistence.antlr:[1.1.0, 1.2.0)"/>
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</provider>
+		
+		<provider id="eclipselink-120-osgi-bundles-library-provider" extends="wtp-osgi-bundles-library-provider">
+			<label>EclipseLink 1.2.x</label>
+				<param name="container.label" value="EclipseLink 1.2.x"/>
+				<param name="bundle.0" value="javax.persistence:[1.99.0, 2.1.0)"/>
+				<param name="bundle.1" value="org.eclipse.persistence.core:[1.2.0, 1.3.0)"/>
+				<param name="bundle.2" value="org.eclipse.persistence.jpa:[1.2.0, 1.3.0)"/>
+				<param name="bundle.3" value="org.eclipse.persistence.asm:[1.2.0, 1.3.0)"/>
+				<param name="bundle.4" value="org.eclipse.persistence.antlr:[1.2.0, 1.3.0)"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
 					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
@@ -285,9 +301,25 @@
 				</with>
 			</enablement>
 		</provider>
-
+		
+		<provider id="eclipselink-210-osgi-bundles-library-provider" extends="wtp-osgi-bundles-library-provider">
+			<label>EclipseLink 2.1.x</label>
+				<param name="container.label" value="EclipseLink 2.1.x"/>
+				<param name="bundle.0" value="javax.persistence:[2.0.0, 2.1.0)"/>
+				<param name="bundle.1" value="org.eclipse.persistence.core:[2.1.0, 2.2.0)"/>
+				<param name="bundle.2" value="org.eclipse.persistence.jpa:[2.1.0, 2.2.0)"/>
+				<param name="bundle.3" value="org.eclipse.persistence.asm:[2.1.0, 2.2.0)"/>
+				<param name="bundle.4" value="org.eclipse.persistence.antlr:[2.1.0, 2.2.0)"/>
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</provider>
+		
 	</extension>
-
+	
+	
 	<!-- ***** WTP extensions ***** -->
 
 	<extension

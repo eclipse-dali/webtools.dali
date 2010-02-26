@@ -66,7 +66,7 @@ import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLi
 public class EclipseLink2_0JpaFactory
 	extends EclipseLinkJpaFactory
 {
-	protected EclipseLink2_0JpaFactory() {
+	public EclipseLink2_0JpaFactory() {
 		super();
 	}
 	

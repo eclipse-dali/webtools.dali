@@ -68,7 +68,8 @@ public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDe
 	}
 	
 	public boolean providesUi(JpaResourceType resourceType) {
-		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE);
+		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE)
+				|| resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_1_RESOURCE_TYPE);
 	}
 	
 	public JpaStructureProvider getStructureProvider() {
