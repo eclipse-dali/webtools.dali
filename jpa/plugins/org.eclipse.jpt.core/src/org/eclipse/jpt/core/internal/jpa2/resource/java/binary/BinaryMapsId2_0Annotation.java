@@ -73,4 +73,8 @@ public class BinaryMapsId2_0Annotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
+	
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
 }

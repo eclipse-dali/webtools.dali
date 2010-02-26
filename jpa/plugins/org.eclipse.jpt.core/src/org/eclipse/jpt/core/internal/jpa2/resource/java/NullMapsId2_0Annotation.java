@@ -50,4 +50,8 @@ public class NullMapsId2_0Annotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
+	
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+		return false;
+	}
 }

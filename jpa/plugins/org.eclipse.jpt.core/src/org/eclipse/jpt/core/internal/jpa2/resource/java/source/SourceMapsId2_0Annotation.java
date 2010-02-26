@@ -91,6 +91,10 @@ public final class SourceMapsId2_0Annotation
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(VALUE_ADAPTER, pos, astRoot);
+	}
+	
 	
 	// ********** static methods **********
 	

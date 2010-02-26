@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
@@ -25,12 +26,14 @@ import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -210,6 +213,23 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	public void update() {
 		this.setSpecifiedValue_(getResourceValue());
 		this.setDefaultValue_(calculateDefaultValue());
+	}
+	
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (getAnnotation().valueTouches(pos, astRoot)) {
+			result = sortedJavaValueChoices(filter);
+		}
+		return result;
+	}
+	
+	protected Iterator<String> sortedJavaValueChoices(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterator<String>(getSortedValueChoices(), filter));
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

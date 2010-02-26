@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -123,6 +125,16 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	public FetchType getDefaultFetch() {
 		return DEFAULT_FETCH_TYPE;
+	}
+	
+	
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result == null) {
+			result = this.derivedIdentity.javaCompletionProposals(pos, filter, astRoot);
+		}
+		return result;
 	}
 	
 	@Override

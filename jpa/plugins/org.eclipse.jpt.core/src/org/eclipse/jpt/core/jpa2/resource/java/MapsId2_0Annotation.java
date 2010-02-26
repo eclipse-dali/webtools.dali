@@ -49,4 +49,10 @@ public interface MapsId2_0Annotation extends Annotation
 	 * does not exist return the {@link TextRange} for the MapsId annotation.
 	 */
 	TextRange getValueTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified position touches the 'value' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean valueTouches(int pos, CompilationUnit astRoot);
 }
