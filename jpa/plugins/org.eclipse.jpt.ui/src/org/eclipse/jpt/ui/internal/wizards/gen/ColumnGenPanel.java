@@ -94,7 +94,7 @@ public class ColumnGenPanel
 		mIsUpdatingControls = true;
 		boolean isGenerated = mColumn.isGenerated();
 		mGeneratedCheckbox.setSelection( isGenerated);
-
+		mGeneratedCheckbox.setEnabled(true);
 		enableControls(isGenerated);
 		try {
 			mPropNameField.setText(mColumn.getPropertyName());
@@ -112,6 +112,13 @@ public class ColumnGenPanel
 			
 			mPropSetScopePanel.enableComponents( isGenerated );
 			mPropSetScopePanel.setScope(mColumn.getPropertySetScope());
+
+			if( mColumn.isPartOfCompositePrimaryKey()){
+				enableControls(false);
+				mPropNameField.setEnabled(true);
+				mGeneratedCheckbox.setEnabled(false);
+			}
+			
 		} catch (Exception e) {
 			JptUiPlugin.log(e);
 		}

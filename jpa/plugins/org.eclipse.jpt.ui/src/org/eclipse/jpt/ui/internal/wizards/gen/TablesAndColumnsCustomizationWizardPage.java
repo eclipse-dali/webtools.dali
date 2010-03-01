@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.gen.internal.ORMGenColumn;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal.ORMGenTable;
-import org.eclipse.jpt.gen.internal.util.DTPUtil;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
@@ -295,14 +294,10 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 				ORMGenTable table = (ORMGenTable) parentElement;
 				List<ORMGenColumn> columns = table.getColumns();
 				List<ORMGenColumn> ret = new ArrayList<ORMGenColumn>();
-				boolean isCompositePk = table.getDbTable().getPrimaryKeyColumnsSize()>1;
 				for( ORMGenColumn col : columns){
 					if( col.isForeignKey() )
 						continue;
 					if( col.isPrimaryKey() ){
-						if( isCompositePk ){
-							continue;
-						}
 						ret.add(0,col );
 					}else{
 						ret.add(col);
