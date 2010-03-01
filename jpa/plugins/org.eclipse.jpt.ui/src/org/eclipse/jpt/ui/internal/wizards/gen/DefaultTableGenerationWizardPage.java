@@ -87,7 +87,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	 */
 	void init(IStructuredSelection selection) {
 		IJavaElement jelem = null;
-		if ( selection.getFirstElement() instanceof IJavaElement ) {
+		if ( selection!=null && selection.getFirstElement() instanceof IJavaElement ) {
 			jelem = (IJavaElement) selection.getFirstElement();
 		}else{
 			jelem = this.jpaProject.getJavaProject();			
