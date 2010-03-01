@@ -70,7 +70,6 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void tearDown() throws Exception {
 		this.persistenceXmlResource = null;
 		this.ormXmlResource = null;
-		getJpaProject().setUpdater(JpaProject.Updater.Null.instance());
 		JptCorePlugin.getWorkspacePreferences().clear();
 		this.waitForWorkspaceJobsToFinish();
 		super.tearDown();
