@@ -325,6 +325,7 @@ public class DatabaseGroup
 		} catch (Exception e) {
 			JptUiPlugin.log(e);
 		}
+		wizardContainer.updateButtons();
 	}
 
 	/**
