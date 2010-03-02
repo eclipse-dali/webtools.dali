@@ -211,7 +211,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCollectionTable_2_0()
 	 * @generated
 	 */
-	public static final int XML_COLLECTION_TABLE_20 = 5;
+	public static final int XML_COLLECTION_TABLE_20 = 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0 <em>Xml Derived Id 20</em>}' class.
@@ -221,7 +221,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlDerivedId_2_0()
 	 * @generated
 	 */
-	public static final int XML_DERIVED_ID_20 = 6;
+	public static final int XML_DERIVED_ID_20 = 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0 <em>Xml Element Collection 20</em>}' class.
@@ -231,7 +231,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlElementCollection_2_0()
 	 * @generated
 	 */
-	public static final int XML_ELEMENT_COLLECTION_20 = 7;
+	public static final int XML_ELEMENT_COLLECTION_20 = 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlEmbedded_2_0 <em>Xml Embedded 20</em>}' class.
@@ -241,7 +241,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlEmbedded_2_0()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_20 = 8;
+	public static final int XML_EMBEDDED_20 = 9;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0 <em>Xml Cacheable 20</em>}' class.
@@ -270,6 +270,34 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_CACHEABLE_20_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0 <em>Xml Cascade Type 20</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCascadeType_2_0()
+	 * @generated
+	 */
+	public static final int XML_CASCADE_TYPE_20 = 5;
+
+	/**
+	 * The feature id for the '<em><b>Cascade Detach</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE_TYPE_20__CASCADE_DETACH = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Cascade Type 20</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE_TYPE_20_FEATURE_COUNT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -504,7 +532,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlEntity_2_0()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_20 = 9;
+	public static final int XML_ENTITY_20 = 10;
 
 	/**
 	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
@@ -532,7 +560,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlEntityListener_2_0()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_LISTENER_20 = 10;
+	public static final int XML_ENTITY_LISTENER_20 = 11;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -560,7 +588,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlEventMethod_2_0()
 	 * @generated
 	 */
-	public static final int XML_EVENT_METHOD_20 = 11;
+	public static final int XML_EVENT_METHOD_20 = 12;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -588,7 +616,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlGenerator_2_0()
 	 * @generated
 	 */
-	public static final int XML_GENERATOR_20 = 12;
+	public static final int XML_GENERATOR_20 = 13;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -616,7 +644,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderable_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORDERABLE_20 = 21;
+	public static final int XML_ORDERABLE_20 = 22;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -644,7 +672,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMultiRelationshipMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20 = 17;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_20 = 18;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -726,7 +754,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlManyToMany_2_0()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY_20 = 13;
+	public static final int XML_MANY_TO_MANY_20 = 14;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -808,7 +836,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyAttributeOverrideContainer_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20 = 14;
+	public static final int XML_MAP_KEY_ATTRIBUTE_OVERRIDE_CONTAINER_20 = 15;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Attribute Overrides</b></em>' containment reference list.
@@ -836,7 +864,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapKeyClass_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAP_KEY_CLASS_20 = 15;
+	public static final int XML_MAP_KEY_CLASS_20 = 16;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -864,7 +892,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMapsId_2_0()
 	 * @generated
 	 */
-	public static final int XML_MAPS_ID_20 = 16;
+	public static final int XML_MAPS_ID_20 = 17;
 
 	/**
 	 * The feature id for the '<em><b>Maps Id</b></em>' attribute.
@@ -892,7 +920,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlNamedQuery_2_0()
 	 * @generated
 	 */
-	public static final int XML_NAMED_QUERY_20 = 18;
+	public static final int XML_NAMED_QUERY_20 = 19;
 
 	/**
 	 * The feature id for the '<em><b>Lock Mode</b></em>' attribute.
@@ -920,7 +948,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrphanRemovable_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORPHAN_REMOVABLE_20 = 23;
+	public static final int XML_ORPHAN_REMOVABLE_20 = 24;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOneToMany_2_0 <em>Xml One To Many 20</em>}' class.
@@ -930,7 +958,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToMany_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_20 = 19;
+	public static final int XML_ONE_TO_MANY_20 = 20;
 
 	/**
 	 * The feature id for the '<em><b>Order Column</b></em>' containment reference.
@@ -1021,7 +1049,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSingleRelationshipMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20 = 29;
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING_20 = 30;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -1058,7 +1086,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOneToOne_2_0()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_20 = 20;
+	public static final int XML_ONE_TO_ONE_20 = 21;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -1104,7 +1132,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderColumn_2_0()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN_20 = 22;
+	public static final int XML_ORDER_COLUMN_20 = 23;
 
 	/**
 	 * The feature id for the '<em><b>Nullable</b></em>' attribute.
@@ -1150,7 +1178,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlPersistenceUnitDefaults_2_0()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_20 = 24;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_20 = 25;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlPersistenceUnitMetadata_2_0 <em>Xml Persistence Unit Metadata 20</em>}' class.
@@ -1160,7 +1188,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlPersistenceUnitMetadata_2_0()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_METADATA_20 = 25;
+	public static final int XML_PERSISTENCE_UNIT_METADATA_20 = 26;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlQuery_2_0 <em>Xml Query 20</em>}' class.
@@ -1170,7 +1198,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlQuery_2_0()
 	 * @generated
 	 */
-	public static final int XML_QUERY_20 = 26;
+	public static final int XML_QUERY_20 = 27;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlQueryHint_2_0 <em>Xml Query Hint 20</em>}' class.
@@ -1180,7 +1208,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlQueryHint_2_0()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT_20 = 27;
+	public static final int XML_QUERY_HINT_20 = 28;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSequenceGenerator_2_0 <em>Xml Sequence Generator 20</em>}' class.
@@ -1190,7 +1218,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSequenceGenerator_2_0()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR_20 = 28;
+	public static final int XML_SEQUENCE_GENERATOR_20 = 29;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlSqlResultSetMapping_2_0 <em>Xml Sql Result Set Mapping 20</em>}' class.
@@ -1200,7 +1228,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlSqlResultSetMapping_2_0()
 	 * @generated
 	 */
-	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 30;
+	public static final int XML_SQL_RESULT_SET_MAPPING_20 = 31;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlUniqueConstraint_2_0 <em>Xml Unique Constraint 20</em>}' class.
@@ -1210,7 +1238,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlUniqueConstraint_2_0()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT_20 = 31;
+	public static final int XML_UNIQUE_CONSTRAINT_20 = 32;
 
 	/**
 	 * The feature id for the '<em><b>Orphan Removal</b></em>' attribute.
@@ -1382,7 +1410,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getLockModeType_2_0()
 	 * @generated
 	 */
-	public static final int LOCK_MODE_TYPE_20 = 32;
+	public static final int LOCK_MODE_TYPE_20 = 33;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1593,6 +1621,13 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlCacheable_2_0EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCascadeType_2_0EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2731,6 +2766,35 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0 <em>Xml Cascade Type 20</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Cascade Type 20</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0
+	 * @generated
+	 */
+	public EClass getXmlCascadeType_2_0()
+	{
+		return xmlCascadeType_2_0EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0#isCascadeDetach <em>Cascade Detach</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Cascade Detach</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0#isCascadeDetach()
+	 * @see #getXmlCascadeType_2_0()
+	 * @generated
+	 */
+	public EAttribute getXmlCascadeType_2_0_CascadeDetach()
+	{
+		return (EAttribute)xmlCascadeType_2_0EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0 <em>Xml Orphan Removable 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2849,6 +2913,9 @@ public class OrmV2_0Package extends EPackageImpl
 
 		xmlCacheable_2_0EClass = createEClass(XML_CACHEABLE_20);
 		createEAttribute(xmlCacheable_2_0EClass, XML_CACHEABLE_20__CACHEABLE);
+
+		xmlCascadeType_2_0EClass = createEClass(XML_CASCADE_TYPE_20);
+		createEAttribute(xmlCascadeType_2_0EClass, XML_CASCADE_TYPE_20__CASCADE_DETACH);
 
 		xmlCollectionTable_2_0EClass = createEClass(XML_COLLECTION_TABLE_20);
 
@@ -3013,6 +3080,9 @@ public class OrmV2_0Package extends EPackageImpl
 
 		initEClass(xmlCacheable_2_0EClass, XmlCacheable_2_0.class, "XmlCacheable_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCacheable_2_0_Cacheable(), theXMLTypePackage.getBooleanObject(), "cacheable", null, 0, 1, XmlCacheable_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlCascadeType_2_0EClass, XmlCascadeType_2_0.class, "XmlCascadeType_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCascadeType_2_0_CascadeDetach(), theXMLTypePackage.getBoolean(), "cascadeDetach", null, 0, 1, XmlCascadeType_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlCollectionTable_2_0EClass, XmlCollectionTable_2_0.class, "XmlCollectionTable_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3758,6 +3828,24 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_CACHEABLE_20__CACHEABLE = eINSTANCE.getXmlCacheable_2_0_Cacheable();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0 <em>Xml Cascade Type 20</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0
+		 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlCascadeType_2_0()
+		 * @generated
+		 */
+		public static final EClass XML_CASCADE_TYPE_20 = eINSTANCE.getXmlCascadeType_2_0();
+
+		/**
+		 * The meta object literal for the '<em><b>Cascade Detach</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CASCADE_TYPE_20__CASCADE_DETACH = eINSTANCE.getXmlCascadeType_2_0_CascadeDetach();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlOrphanRemovable_2_0 <em>Xml Orphan Removable 20</em>}' class.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -16,22 +16,28 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyClass_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Map Key Class</b></em>'.
+ * A representation of the model object '<em><b>Xml Class Reference</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlClassReference#getClassName <em>Class Name</em>}</li>
+ * </ul>
+ * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyClass()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlClassReference()
  * @model kind="class"
+ * @extends JpaEObject
  * @generated
  */
-public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass_2_0
+public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
@@ -58,7 +64,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlMapKeyClass()
+	protected XmlClassReference()
 	{
 		super();
 	}
@@ -71,7 +77,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.XML_MAP_KEY_CLASS;
+		return OrmPackage.Literals.XML_CLASS_REFERENCE;
 	}
 
 	/**
@@ -84,7 +90,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Class Name</em>' attribute.
 	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMapKeyClass_2_0_ClassName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlClassReference_ClassName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -94,7 +100,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMapKeyClass#getClassName <em>Class Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlClassReference#getClassName <em>Class Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Class Name</em>' attribute.
@@ -106,7 +112,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 		String oldClassName = className;
 		className = newClassName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAP_KEY_CLASS__CLASS_NAME, oldClassName, className));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_CLASS_REFERENCE__CLASS_NAME, oldClassName, className));
 	}
 
 	/**
@@ -119,7 +125,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAP_KEY_CLASS__CLASS_NAME:
+			case OrmPackage.XML_CLASS_REFERENCE__CLASS_NAME:
 				return getClassName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -135,7 +141,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAP_KEY_CLASS__CLASS_NAME:
+			case OrmPackage.XML_CLASS_REFERENCE__CLASS_NAME:
 				setClassName((String)newValue);
 				return;
 		}
@@ -152,7 +158,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAP_KEY_CLASS__CLASS_NAME:
+			case OrmPackage.XML_CLASS_REFERENCE__CLASS_NAME:
 				setClassName(CLASS_NAME_EDEFAULT);
 				return;
 		}
@@ -169,7 +175,7 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAP_KEY_CLASS__CLASS_NAME:
+			case OrmPackage.XML_CLASS_REFERENCE__CLASS_NAME:
 				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 		}
 		return super.eIsSet(featureID);
@@ -196,16 +202,19 @@ public class XmlMapKeyClass extends AbstractJpaEObject implements XmlMapKeyClass
 	// ********** translators **********
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+				elementName,
+				structuralFeature,
+				Translator.END_TAG_NO_INDENT,
+				buildTranslatorChildren());
 	}
 	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			buildClassNameTranslator()
-		};
+				buildClassTranslator()};
 	}
-		
-	protected static Translator buildClassNameTranslator() {
-		return new Translator(JPA.CLASS, OrmV2_0Package.eINSTANCE.getXmlMapKeyClass_2_0_ClassName(), Translator.DOM_ATTRIBUTE);
+	
+	private static Translator buildClassTranslator() {
+		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getXmlIdClass_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
 }

@@ -11,7 +11,6 @@
 
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -86,6 +85,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			case OrmPackage.XML_BASIC: return (EObject)createXmlBasic();
 			case OrmPackage.CASCADE_TYPE: return (EObject)createCascadeType();
+			case OrmPackage.XML_CLASS_REFERENCE: return (EObject)createXmlClassReference();
 			case OrmPackage.XML_COLLECTION_TABLE: return (EObject)createXmlCollectionTable();
 			case OrmPackage.XML_COLUMN: return (EObject)createXmlColumn();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
@@ -252,6 +252,17 @@ public class OrmFactory extends EFactoryImpl
 	{
 		CascadeType cascadeType = new CascadeType();
 		return cascadeType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlClassReference createXmlClassReference()
+	{
+		XmlClassReference xmlClassReference = new XmlClassReference();
+		return xmlClassReference;
 	}
 
 	/**

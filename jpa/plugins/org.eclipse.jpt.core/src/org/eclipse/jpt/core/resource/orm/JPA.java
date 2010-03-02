@@ -23,6 +23,7 @@ public interface JPA
 	String BASIC = "basic";
 	String CASCADE = "cascade";
 	String CASCADE_ALL = "cascade-all";
+	String CASCADE_DETACH = "cascade-detach";	
 	String CASCADE_MERGE = "cascade-merge";
 	String CASCADE_PERSIST = "cascade-persist";
 	String CASCADE_REFRESH = "cascade-refresh";	

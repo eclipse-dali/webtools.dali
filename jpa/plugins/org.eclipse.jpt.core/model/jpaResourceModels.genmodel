@@ -128,6 +128,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRemove"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRefresh"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlClassReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlClassReference/className"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlCollectionTable"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlColumn/length"/>
@@ -366,6 +369,9 @@
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCacheable_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlCacheable_2_0/cacheable"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCascadeType_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlCascadeType_2_0/cascadeDetach"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlCollectionTable_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlDerivedId_2_0">

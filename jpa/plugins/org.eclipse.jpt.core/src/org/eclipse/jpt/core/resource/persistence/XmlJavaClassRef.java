@@ -218,15 +218,14 @@ public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-				buildFileNameTranslator(),
+				buildClassNameTranslator(),
 			};
 	}
 
-	private static Translator buildFileNameTranslator() {
+	private static Translator buildClassNameTranslator() {
 		return new Translator(
 				Translator.TEXT_ATTRIBUTE_VALUE,
 				PersistencePackage.eINSTANCE.getXmlJavaClassRef_JavaClass()
 			);
 	}
-
 }

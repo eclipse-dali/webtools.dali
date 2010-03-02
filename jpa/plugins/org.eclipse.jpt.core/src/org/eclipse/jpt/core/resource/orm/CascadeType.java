@@ -15,8 +15,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCascadeType_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -43,11 +44,30 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getCascadeType()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class CascadeType extends AbstractJpaEObject implements JpaEObject
+public class CascadeType extends AbstractJpaEObject implements XmlCascadeType_2_0
 {
+	/**
+	 * The default value of the '{@link #isCascadeDetach() <em>Cascade Detach</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadeDetach()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CASCADE_DETACH_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isCascadeDetach() <em>Cascade Detach</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadeDetach()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean cascadeDetach = CASCADE_DETACH_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #isCascadeAll() <em>Cascade All</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -167,6 +187,41 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.CASCADE_TYPE;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Cascade Detach</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade Detach</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade Detach</em>' attribute.
+	 * @see #setCascadeDetach(boolean)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlCascadeType_2_0_CascadeDetach()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @generated
+	 */
+	public boolean isCascadeDetach()
+	{
+		return cascadeDetach;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.CascadeType#isCascadeDetach <em>Cascade Detach</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade Detach</em>' attribute.
+	 * @see #isCascadeDetach()
+	 * @generated
+	 */
+	public void setCascadeDetach(boolean newCascadeDetach)
+	{
+		boolean oldCascadeDetach = cascadeDetach;
+		cascadeDetach = newCascadeDetach;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_DETACH, oldCascadeDetach, cascadeDetach));
 	}
 
 	/**
@@ -354,6 +409,8 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.CASCADE_TYPE__CASCADE_DETACH:
+				return isCascadeDetach();
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
 				return isCascadeAll();
 			case OrmPackage.CASCADE_TYPE__CASCADE_PERSIST:
@@ -378,6 +435,9 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.CASCADE_TYPE__CASCADE_DETACH:
+				setCascadeDetach((Boolean)newValue);
+				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
 				setCascadeAll((Boolean)newValue);
 				return;
@@ -407,6 +467,9 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.CASCADE_TYPE__CASCADE_DETACH:
+				setCascadeDetach(CASCADE_DETACH_EDEFAULT);
+				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
 				setCascadeAll(CASCADE_ALL_EDEFAULT);
 				return;
@@ -436,6 +499,8 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.CASCADE_TYPE__CASCADE_DETACH:
+				return cascadeDetach != CASCADE_DETACH_EDEFAULT;
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
 				return cascadeAll != CASCADE_ALL_EDEFAULT;
 			case OrmPackage.CASCADE_TYPE__CASCADE_PERSIST:
@@ -461,7 +526,9 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (cascadeAll: ");
+		result.append(" (cascadeDetach: ");
+		result.append(cascadeDetach);
+		result.append(", cascadeAll: ");
 		result.append(cascadeAll);
 		result.append(", cascadePersist: ");
 		result.append(cascadePersist);
@@ -488,7 +555,8 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 			buildCascadePersistTranslator(),
 			buildCascadeMergeTranslator(),
 			buildCascadeRemoveTranslator(),
-			buildCascadeRefreshTranslator()
+			buildCascadeRefreshTranslator(),
+			buildCascadeDetachTranslator()
 		};
 	}
 	
@@ -512,4 +580,7 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 		return new EmptyTagBooleanTranslator(JPA.CASCADE_REFRESH, OrmPackage.eINSTANCE.getCascadeType_CascadeRefresh());
 	}
 	
-} // CascadeType
+	protected static Translator buildCascadeDetachTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.CASCADE_DETACH, OrmV2_0Package.eINSTANCE.getXmlCascadeType_2_0_CascadeDetach());
+	}	
+}
