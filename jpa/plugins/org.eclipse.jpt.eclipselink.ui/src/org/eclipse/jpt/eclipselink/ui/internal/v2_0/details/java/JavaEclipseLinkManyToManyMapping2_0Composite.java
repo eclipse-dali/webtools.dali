@@ -19,7 +19,6 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedCo
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.details.ManyToManyJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
@@ -85,7 +84,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OrderingComposite}
  */
 public class JavaEclipseLinkManyToManyMapping2_0Composite
-	extends EclipseLinkManyToManyMappingComposite
+	extends EclipseLinkManyToManyMappingComposite<ManyToManyMapping>
 {
 	public JavaEclipseLinkManyToManyMapping2_0Composite(
 			PropertyValueModel<? extends ManyToManyMapping> subjectHolder,
@@ -96,14 +95,15 @@ public class JavaEclipseLinkManyToManyMapping2_0Composite
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = this.getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new EclipseLinkJoinFetchComposite(this, this.buildJoinFetchableHolder(), this.addPane(container, groupBoxMargin));
+	protected void initializeManyToManySection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new FetchTypeComposite(this, container);
+		new EclipseLinkJoinFetchComposite(this, this.buildJoinFetchableHolder(), container);
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+	}
+
+	@Override
+	protected void initializeOrderingCollapsibleSection(Composite container) {
 		new Ordering2_0Composite(this, container);
 	}
 

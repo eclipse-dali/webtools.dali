@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Localized messages used by Dali mapping panes.
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public class JptUiDetailsMessages {
@@ -34,6 +34,20 @@ public class JptUiDetailsMessages {
 	public static String OverridesComposite_attributeOverridesGroup;
 	public static String OverridesComposite_attributeOverridesSection;
 	public static String OverridesComposite_overrideDefault;
+	
+	public static String BasicSection_title;
+	public static String EmbeddableSection_title;
+	public static String EmbeddedSection_title;
+	public static String EmbeddedIdSection_title;
+	public static String EntitySection_title;
+	public static String IdSection_title;
+	public static String ManyToManySection_title;
+	public static String ManyToOneSection_title;
+	public static String MappedSuperclassSection_title;
+	public static String OneToManySection_title;
+	public static String OneToOneSection_title;
+	public static String VersionSection_title;
+	
 	public static String BasicGeneralSection_enumeratedLabel;
 	public static String BasicGeneralSection_fetchLabel;
 	public static String BasicGeneralSection_lobLabel;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -47,10 +48,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see TemporalTypeComposite
  * @see IdMappingGenerationComposite
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.1
  */
-public class JavaEclipseLinkIdMapping2_0Composite extends EclipseLinkIdMappingComposite
+public class JavaEclipseLinkIdMapping2_0Composite extends EclipseLinkIdMappingComposite<JavaIdMapping>
                                 implements JpaComposite
 {
 	/**
@@ -60,7 +61,7 @@ public class JavaEclipseLinkIdMapping2_0Composite extends EclipseLinkIdMappingCo
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEclipseLinkIdMapping2_0Composite(PropertyValueModel<? extends IdMapping> subjectHolder,
+	public JavaEclipseLinkIdMapping2_0Composite(PropertyValueModel<? extends JavaIdMapping> subjectHolder,
 	                          Composite parent,
 	                          WidgetFactory widgetFactory) {
 
@@ -68,12 +69,7 @@ public class JavaEclipseLinkIdMapping2_0Composite extends EclipseLinkIdMappingCo
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeTypePane(container);
-
-		// Generation pane
+	protected void initializeGenerationCollapsibleSection(Composite container) {
 		new IdMappingGeneration2_0Composite(this, container);
 	}
-	
 }

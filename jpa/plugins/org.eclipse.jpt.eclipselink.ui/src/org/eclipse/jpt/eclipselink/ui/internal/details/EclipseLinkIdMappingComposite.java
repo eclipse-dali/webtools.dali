@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.core.context.Converter;
-import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
@@ -26,7 +25,6 @@ import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -58,10 +56,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see TemporalTypeComposite
  * @see IdMappingGenerationComposite
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.1
  */
-public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<IdMapping>
+public class EclipseLinkIdMappingComposite<T extends IdMapping> extends AbstractIdMappingComposite<T>
                                 implements JpaComposite
 {
 	/**
@@ -71,7 +69,7 @@ public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<Id
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkIdMappingComposite(PropertyValueModel<? extends IdMapping> subjectHolder,
+	public EclipseLinkIdMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent,
 	                          WidgetFactory widgetFactory) {
 
@@ -79,41 +77,20 @@ public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<Id
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeTypePane(container);
-
-		// Generation pane
-		new IdMappingGenerationComposite(this, container);
-	}
-	
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		// Column widgets
+	protected void initializeIdSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
-		
-		// Align the widgets under the ColumnComposite
-		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-
-		// Mutable widgets
 		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}	
 	
 	@Override
-	protected void initializeTypePane(Composite container) {
-
-		container = addCollapsibleSection(
-			addSubPane(container, 5),
-			JptUiDetailsMessages.TypeSection_type
-		);
+	protected void initializeTypeSection(Composite container) {
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildNoConverterHolder(), 
+			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
@@ -122,7 +99,7 @@ public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<Id
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildTemporalBooleanHolder(), 
+			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 
@@ -130,7 +107,7 @@ public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<Id
 		Button elConverterButton = addRadioButton(
 			container, 
 			EclipseLinkUiDetailsMessages.TypeSection_converted, 
-			buildEclipseLinkConverterBooleanHolder(), 
+			buildConverterBooleanHolder(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
@@ -140,7 +117,7 @@ public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<Id
 		gridData.horizontalIndent = 20;
 		registerSubPane(convertComposite);
 	}
-	
+
 	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
 		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
 	}
@@ -153,29 +130,9 @@ public class EclipseLinkIdMappingComposite extends AbstractIdMappingComposite<Id
 			}
 		};
 	}
-	
-	protected WritablePropertyValueModel<Boolean> buildEclipseLinkConverterBooleanHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
-				return Boolean.valueOf(converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-			}
 
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-				}
-			}
-		};
-	}
-	
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
-		return new PropertyAspectAdapter<IdMapping, EclipseLinkMutable>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkMutable buildValue_() {
 				return ((EclipseLinkIdMapping) this.subject).getMutable();

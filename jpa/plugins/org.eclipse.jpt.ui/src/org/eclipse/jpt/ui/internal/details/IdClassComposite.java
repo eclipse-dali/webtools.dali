@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Composite;
  * Id class hyperlink label, combo, and browse button
  *
  */
-public class IdClassComposite<T extends IdClassReference>
-	extends Pane<T>
+public class IdClassComposite
+	extends Pane<IdClassReference>
 {
 	/**
 	 * Creates a new <code>IdClassComposite</code>.
@@ -36,7 +36,7 @@ public class IdClassComposite<T extends IdClassReference>
 	 */
 	public IdClassComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<T> subjectHolder,
+			PropertyValueModel<? extends IdClassReference> subjectHolder,
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
@@ -44,7 +44,7 @@ public class IdClassComposite<T extends IdClassReference>
 	
 	public IdClassComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<T> subjectHolder,
+			PropertyValueModel<? extends IdClassReference> subjectHolder,
 			Composite parent,
         	boolean automaticallyAlignWidgets) {
 		
@@ -59,9 +59,9 @@ public class IdClassComposite<T extends IdClassReference>
 	
 	
 	private class IdClassChooserComboPane
-		extends ClassChooserComboPane<T>
+		extends ClassChooserComboPane<IdClassReference>
 	{
-		public IdClassChooserComboPane(Pane<T> parentPane, Composite parent) {
+		public IdClassChooserComboPane(Pane<IdClassReference> parentPane, Composite parent) {
 			super(parentPane, parent);
 		}
 		
@@ -93,7 +93,7 @@ public class IdClassComposite<T extends IdClassReference>
 		
 		@Override
 		protected WritablePropertyValueModel<String> buildTextHolder() {
-			return new PropertyAspectAdapter<T, String>(
+			return new PropertyAspectAdapter<IdClassReference, String>(
 					getSubjectHolder(), 
 					IdClassReference.SPECIFIED_ID_CLASS_NAME_PROPERTY,
 					IdClassReference.DEFAULT_ID_CLASS_NAME_PROPERTY) {
@@ -116,7 +116,7 @@ public class IdClassComposite<T extends IdClassReference>
 			};
 		}
 		
-		protected String defaultText(T idClassReference) {
+		protected String defaultText(IdClassReference idClassReference) {
 			String defaultClassName = idClassReference.getDefaultIdClassName();
 			return (defaultClassName == null) ?
 					JptUiDetailsMessages.NoneSelected
@@ -126,7 +126,7 @@ public class IdClassComposite<T extends IdClassReference>
 		@Override
 		protected ListValueModel<String> buildClassListHolder() {
 			return new PropertyListValueModelAdapter<String>(
-				new PropertyAspectAdapter<T, String>(
+				new PropertyAspectAdapter<IdClassReference, String>(
 						getSubjectHolder(), IdClassReference.DEFAULT_ID_CLASS_NAME_PROPERTY) {
 					@Override
 					protected String buildValue_() {

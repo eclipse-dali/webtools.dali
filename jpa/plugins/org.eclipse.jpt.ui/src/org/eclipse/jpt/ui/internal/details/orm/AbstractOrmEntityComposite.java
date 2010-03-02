@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see OrmEntity
  * @see BaseJavaUiFactory - The factory creating this pane
  *
- * @version 23.0
+ * @version 2.3
  * @since 1.0
  */
 public abstract class AbstractOrmEntityComposite extends AbstractEntityComposite<OrmEntity>
@@ -51,29 +51,22 @@ public abstract class AbstractOrmEntityComposite extends AbstractEntityComposite
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeQueriesPane(container);
-		initializeInheritancePane(container);
-		initializeAttributeOverridesPane(container);
-		initializeGeneratorsPane(container);
-		initializeSecondaryTablesPane(container);
+		this.initializeEntityCollapsibleSection(container);
+		this.initializeQueriesCollapsibleSection(container);
+		this.initializeInheritanceCollapsibleSection(container);
+		this.initializeAttributeOverridesCollapsibleSection(container);
+		this.initializeGeneratorsCollapsibleSection(container);
+		this.initializeSecondaryTablesCollapsibleSection(container);
 	}
-	
+
 	@Override
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new OrmJavaClassChooser(
-				this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+	protected void initializeEntitySection(Composite container) {
+		new OrmJavaClassChooser(this, getSubjectHolder(), container, false);
 		new TableComposite(this, container);
-		new EntityNameComposite(
-				this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new AccessTypeComposite(
-				this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new IdClassComposite(
-				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
-		new MetadataCompleteComposite(
-				this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new EntityNameComposite(this, container);
+		new AccessTypeComposite(this, buildAccessHolder(), container);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container, false);
+		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
@@ -84,14 +77,14 @@ public abstract class AbstractOrmEntityComposite extends AbstractEntityComposite
 			}
 		};
 	}
-	
+
 	@Override
-	protected void addSecondaryTablesComposite(Composite container) {
+	protected void initializeSecondaryTablesSection(Composite container) {
 		new OrmSecondaryTablesComposite(this, container);
 	}
-	
+
 	@Override
-	protected void addInheritanceComposite(Composite container) {
+	protected void initializeInheritanceSection(Composite container) {
 		new OrmInheritanceComposite(this, container);
 	}
 }

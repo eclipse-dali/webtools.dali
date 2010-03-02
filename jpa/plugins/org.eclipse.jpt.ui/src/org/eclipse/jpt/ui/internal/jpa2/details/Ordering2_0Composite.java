@@ -43,10 +43,10 @@ import org.eclipse.swt.widgets.Text;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see CollectionMapping
- * @see ManyToManyMappingComposite - A container of this pane
- * @see OneToManyMappingComposite - A container of this pane
+ * @see OrmManyToManyMappingComposite - A container of this pane
+ * @see OrmOneToManyMappingComposite - A container of this pane
  *
- * @version 3.0
+ * @version 2.3
  * @since 1.0
  */
 public class Ordering2_0Composite extends AbstractOrderingComposite

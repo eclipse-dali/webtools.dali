@@ -10,8 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.IdClassReference;
-import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
@@ -19,17 +17,17 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMappedSupercla
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractMappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.details.orm.MetadataCompleteComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmJavaClassChooser;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMappedSuperclass> 
-	extends Pane<T> 
+	extends AbstractMappedSuperclassComposite<T> 
 	implements JpaComposite
 {
 	protected AbstractOrmEclipseLinkMappedSuperclassComposite(
@@ -42,17 +40,29 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeCachingPane(container);
-		initializeConvertersPane(container);
-		initializeAdvancedPane(container);
+		this.initializeMappedSuperclassCollapsibleSection(container);
+		this.initializeCachingCollapsibleSection(container);
+		this.initializeConvertersCollapsibleSection(container);
+		this.initializeAdvancedCollapsibleSection(container);
 	}
 	
-	protected void initializeGeneralPane(Composite container) {
+	@Override
+	protected void initializeMappedSuperclassSection(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolder(), container);
 		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
+	}
+
+	protected void initializeCachingCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+				addSubPane(container, 5),
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
+		this.initializeCachingSection(container, buildCachingHolder());
+	}
+	
+	protected void initializeCachingSection(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
+		new OrmEclipseLinkCachingComposite(this, cachingHolder, container);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
@@ -64,26 +74,6 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		};
 	}
 	
-	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, IdClassReference>(getSubjectHolder()) {
-			@Override
-			protected IdClassReference buildValue_() {
-				return this.subject.getIdClassReference();
-			}
-		};
-	}
-	
-	protected void initializeCachingPane(Composite container) {
-		container = addCollapsibleSection(
-				addSubPane(container, 5),
-				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
-		addCachingComposite(container, buildCachingHolder());
-	}
-	
-	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
-		new OrmEclipseLinkCachingComposite(this, cachingHolder, container);
-	}
-	
 	private PropertyAspectAdapter<T, OrmEclipseLinkCaching> buildCachingHolder() {
 		return new PropertyAspectAdapter<T, OrmEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
@@ -93,11 +83,15 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		};
 	}
 	
-	protected void initializeConvertersPane(Composite container) {
+	protected void initializeConvertersCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
-				EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label);
-		new OrmEclipseLinkConvertersComposite(this, buildConverterHolder(), container);
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+		this.initializeConvertersSection(container, buildConverterHolder());
+	}
+	
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterHolder> converterHolder) {
+		new OrmEclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 	
 	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
@@ -109,7 +103,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		};
 	}
 	
-	protected void initializeAdvancedPane(Composite container) {
+	protected void initializeAdvancedCollapsibleSection(Composite container) {
 		new EclipseLinkMappedSuperclassAdvancedComposite(this, container);
 	}
 }

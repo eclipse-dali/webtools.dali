@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see JavaEclipseLinkEntity
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntity>
@@ -53,25 +53,25 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeCachingPane(container);
-		initializeQueriesPane(container);
-		initializeInheritancePane(container);
-		initializeAttributeOverridesPane(container);
-		initializeGeneratorsPane(container);
-		initializeConvertersPane(container);
-		initializeSecondaryTablesPane(container);
-		initializeAdvancedPane(container);
+		this.initializeEntityCollapsibleSection(container);
+		this.initializeCachingCollapsibleSectionPane(container);
+		this.initializeQueriesCollapsibleSection(container);
+		this.initializeInheritanceCollapsibleSection(container);
+		this.initializeAttributeOverridesCollapsibleSection(container);
+		this.initializeGeneratorsCollapsibleSection(container);
+		this.initializeConvertersCollapsibleSection(container);
+		this.initializeSecondaryTablesCollapsibleSection(container);
+		this.initializeAdvancedCollapsibleSection(container);
 	}
 	
-	protected void initializeCachingPane(Composite container) {
+	protected void initializeCachingCollapsibleSectionPane(Composite container) {
 		container = addCollapsibleSection(
 				addSubPane(container, 5),
 				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
-		addCachingComposite(container, buildCachingHolder());
+		initializeCachingSection(container, buildCachingHolder());
 	}
 	
-	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
+	protected void initializeCachingSection(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
 		new JavaEclipseLinkCachingComposite(this, cachingHolder, container);
 	}
 	
@@ -84,14 +84,18 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 		};
 	}
 	
-	protected void initializeConvertersPane(Composite container) {
+	protected void initializeConvertersCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
 				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
-		new JavaEclipseLinkConvertersComposite(this, buildConverterHolderValueModel(), container);
+		this.initializeConvertersSection(container, buildConverterHolderValueModel());
 	}
 	
-	protected PropertyValueModel<JavaEclipseLinkConverterHolder> buildConverterHolderValueModel() {
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<JavaEclipseLinkConverterHolder> converterHolder) {
+		new JavaEclipseLinkConvertersComposite(this, converterHolder, container);
+	}
+	
+	private PropertyValueModel<JavaEclipseLinkConverterHolder> buildConverterHolderValueModel() {
 		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkConverterHolder buildValue_() {
@@ -99,18 +103,18 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 			}	
 		};
 	}
-	
+
 	@Override
-	protected void addSecondaryTablesComposite(Composite container) {
+	protected void initializeSecondaryTablesSection(Composite container) {
 		new JavaSecondaryTablesComposite(this, container);
 	}
-	
+
 	@Override
-	protected void addInheritanceComposite(Composite container) {
+	protected void initializeInheritanceSection(Composite container) {
 		new JavaInheritanceComposite(this, container);
 	}
-	
-	protected void initializeAdvancedPane(Composite container) {
+
+	protected void initializeAdvancedCollapsibleSection(Composite container) {
 		new EclipseLinkEntityAdvancedComposite(this, container);
 	}
 }

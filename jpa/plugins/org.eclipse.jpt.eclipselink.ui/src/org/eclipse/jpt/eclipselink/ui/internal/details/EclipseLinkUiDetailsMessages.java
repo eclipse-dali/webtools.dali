@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * The localized strings used by the mapping panes.
  *
- * @version 2.2
+ * @version 2.3
  * @since 1.0
  */
 @SuppressWarnings("nls")
@@ -150,7 +150,6 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String DefaultEclipseLinkVariableOneToOneMappingUiProvider_linkLabel;
 	public static String DefaultEclipseLinkOneToManyMappingUiProvider_linkLabel;
 	
-	public static String EclipseLinkConvertersComposite_Label;
 	public static String EclipseLinkConverterDialog_name;
 	public static String EclipseLinkConverterDialog_converterType;
 	public static String EclipseLinkConverterDialog_addConverter;

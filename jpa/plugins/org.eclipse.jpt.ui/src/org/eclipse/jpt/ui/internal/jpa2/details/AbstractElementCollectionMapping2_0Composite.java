@@ -109,28 +109,48 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		this.initializeValuePane(container);
-		this.initializeKeyPane(container);
+		initializeElementCollectionCollapsibleSection(container);
+		initializeValueCollapsibleSection(container);
+		initializeKeyCollapsibleSection(container);
+		initializeOrderingCollapsibleSection(container);
+	}
+	
+	protected void initializeElementCollectionCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages2_0.ElementCollectionSection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeElementCollectionSection(container);
+	}
+
+	protected void initializeElementCollectionSection(Composite container) {
+		new TargetClassComposite(this, container);
+		new FetchTypeComposite(this, container);
+		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
+	}
+
+	protected void initializeOrderingCollapsibleSection(Composite container) {
 		new Ordering2_0Composite(this, container);
 	}
 	
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = this.getGroupBoxMargin();
-		new TargetClassComposite(this, this.addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
-		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
-	}
-	
-	protected void initializeValuePane(Composite container) {
+	protected void initializeValueCollapsibleSection(Composite container) {
 		Composite valueSection = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages2_0.AbstractElementCollectionMapping2_0_Composite_valueSectionTitle
 		);
-		PageBook pageBook = new PageBook(valueSection, SWT.NULL);
+		initializeValueSection(valueSection);
+	}
+	
+	protected void initializeKeyCollapsibleSection(Composite container) {
+		
+	}
+
+	protected void initializeValueSection(Composite container) {
+		PageBook pageBook = new PageBook(container, SWT.NULL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalIndent = 5;
 		pageBook.setLayoutData(gd);
@@ -236,10 +256,6 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			default :
 				return null;
 		}
-	}
-	
-	protected void initializeKeyPane(Composite container) {
-		
 	}
 	
 	protected PropertyValueModel<CollectionTable2_0> buildCollectionTableHolder() {

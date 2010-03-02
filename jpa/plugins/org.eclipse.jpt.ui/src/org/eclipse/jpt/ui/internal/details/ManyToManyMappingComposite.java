@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -52,11 +53,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link CascadeComposite}
  * @see {@link OrderingComposite}
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public class ManyToManyMappingComposite 
-	extends AbstractManyToManyMappingComposite<ManyToManyMapping>
+	extends AbstractManyToManyMappingComposite<ManyToManyMapping, ManyToManyRelationshipReference>
 {
 	/**
 	 * Creates a new <code>ManyToManyMappingComposite</code>.
@@ -73,14 +74,10 @@ public class ManyToManyMappingComposite
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+	protected void initializeManyToManySection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new FetchTypeComposite(this, container);
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
-		new OrderingComposite(this, container);
 	}
 
 }

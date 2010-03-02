@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OptionalComposite}
  * @see {@link CascadeComposite}
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public class ManyToOneMappingComposite 
@@ -74,13 +74,10 @@ public class ManyToOneMappingComposite
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new OptionalComposite(this, addPane(container, groupBoxMargin));
+	protected void initializeManyToOneSection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new FetchTypeComposite(this, container);
+		new OptionalComposite(this, container);
 		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
 

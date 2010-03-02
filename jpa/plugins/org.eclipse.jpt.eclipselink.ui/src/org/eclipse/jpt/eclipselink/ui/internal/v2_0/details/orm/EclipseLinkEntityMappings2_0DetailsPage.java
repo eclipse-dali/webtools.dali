@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -74,7 +74,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see PersistenceUnitMetadataComposite
  * @see SchemaCombo
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.1
  */
 public class EclipseLinkEntityMappings2_0DetailsPage extends AbstractEclipseLinkEntityMappingsDetailsPage
@@ -92,16 +92,12 @@ public class EclipseLinkEntityMappings2_0DetailsPage extends AbstractEclipseLink
 	}
 	
 	@Override
-	protected void buildEntityMappingsGeneratorsComposite(Composite container) {
-		new EntityMappingsGenerators2_0Composite(
-			this,
-			container
-		);
+	protected void initializeGeneratorsCollapsibleSection(Composite container) {
+		new EntityMappingsGenerators2_0Composite(this, container);
 	}
 
 	@Override
-	protected void buildOrmQueriesComposite(Composite container) {
+	protected void initializeQueriesCollapsibleSection(Composite container) {
 		new OrmQueries2_0Composite(this, container);
 	}
-
 }

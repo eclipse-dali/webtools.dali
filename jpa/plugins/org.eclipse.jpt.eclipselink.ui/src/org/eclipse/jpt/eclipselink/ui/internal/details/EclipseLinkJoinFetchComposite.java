@@ -31,11 +31,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see Fetchable
  * @see BasicMappingComposite - A container of this widget
  * @see JavaManyToManyMapping2_0Composite - A container of this widget
- * @see ManyToOneMappingComposite - A container of this widget
- * @see OneToManyMappingComposite - A container of this widget
- * @see OneToOneMappingComposite - A container of this widget
+ * @see OrmManyToOneMappingComposite - A container of this widget
+ * @see OrmOneToManyMappingComposite - A container of this widget
+ * @see OrmOneToOneMappingComposite - A container of this widget
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class EclipseLinkJoinFetchComposite extends Pane<EclipseLinkJoinFetch> {

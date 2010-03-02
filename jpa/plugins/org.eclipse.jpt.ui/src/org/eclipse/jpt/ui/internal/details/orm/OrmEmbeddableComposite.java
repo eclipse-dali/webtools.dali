@@ -13,13 +13,13 @@ import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddableComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEmbeddableComposite extends Pane<OrmEmbeddable> implements JpaComposite
+public class OrmEmbeddableComposite extends AbstractEmbeddableComposite<OrmEmbeddable> implements JpaComposite
 {
 	public OrmEmbeddableComposite(PropertyValueModel<? extends OrmEmbeddable> subjectHolder,
 	                          Composite parent,
@@ -27,9 +27,14 @@ public class OrmEmbeddableComposite extends Pane<OrmEmbeddable> implements JpaCo
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
+
 	@Override
 	protected void initializeLayout(Composite container) {
+		this.initializeEmbeddableCollapsibleSection(container);
+	}
+
+	@Override
+	protected void initializeEmbeddableSection(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolder(), container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);

@@ -10,19 +10,18 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractMappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.IdClassComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmMappedSuperclassComposite
-	extends Pane<OrmMappedSuperclass>
+	extends AbstractMappedSuperclassComposite<OrmMappedSuperclass>
     implements JpaComposite
 {
 	public OrmMappedSuperclassComposite(
@@ -33,9 +32,8 @@ public class OrmMappedSuperclassComposite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeMappedSuperclassSection(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolder(), container);
 		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
@@ -47,15 +45,6 @@ public class OrmMappedSuperclassComposite
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, IdClassReference>(getSubjectHolder()) {
-			@Override
-			protected IdClassReference buildValue_() {
-				return this.subject.getIdClassReference();
 			}
 		};
 	}

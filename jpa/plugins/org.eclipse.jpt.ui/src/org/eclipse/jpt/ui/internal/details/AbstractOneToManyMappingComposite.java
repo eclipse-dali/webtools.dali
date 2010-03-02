@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -57,7 +58,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see OrderingComposite
  * @see TargetEntityComposite
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMapping, R extends OneToManyRelationshipReference> 
@@ -77,14 +78,32 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 
 		super(subjectHolder, parent, widgetFactory);
 	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeOneToManyCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+		initializeOrderingCollapsibleSection(container);
+	}
 	
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(T value) {
-				return value.getCascade();
-			}
-		};
+	protected void initializeOneToManyCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.OneToManySection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeOneToManySection(container);
+	}
+
+	protected abstract void initializeOneToManySection(Composite container);
+
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
+		new OneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+	}
+
+	protected void initializeOrderingCollapsibleSection(Composite container) {
+		new OrderingComposite(this, container);
 	}
 
 	protected PropertyValueModel<R> buildJoiningHolder() {
@@ -96,6 +115,16 @@ public abstract class AbstractOneToManyMappingComposite<T extends OneToManyMappi
 			}
 		};
 	}	
+	
+	protected PropertyValueModel<Cascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
+			@Override
+			protected Cascade transform_(T value) {
+				return value.getCascade();
+			}
+		};
+	}
+
 	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,26 +11,20 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkIdMapping1_1Composite extends EclipseLinkIdMappingComposite
+public class OrmEclipseLinkIdMapping1_1Composite extends EclipseLinkIdMappingComposite<OrmIdMapping>
 {
-	/**
-	 * Creates a new <code>
-public</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmEclipseLinkIdMapping1_1Composite(PropertyValueModel<? extends IdMapping> subjectHolder,
+	public OrmEclipseLinkIdMapping1_1Composite(PropertyValueModel<? extends OrmIdMapping> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 
@@ -38,15 +32,9 @@ public</code>.
 	}
 
 	@Override
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		// Column widgets
+	protected void initializeIdSection(Composite container) {		
 		new ColumnComposite(this, buildColumnHolder(), container);
-		
-		// Align the widgets under the ColumnComposite
-		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -71,7 +72,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see PersistenceUnitMetadataComposite
  * @see SchemaCombo
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.0
  */
 public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMappings>
@@ -88,6 +89,61 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 		super(parent, widgetFactory);
 	}
 
+	@Override
+	protected void initializeLayout(Composite container) {
+		this.initializeEntityMappingsCollapsibleSection(container);
+		this.initializePersistenceUnitMetadataCollapsibleSection(container);
+		this.initializeGeneratorsCollapsibleSection(container);
+		this.initializeQueriesCollapsibleSection(container);
+	}
+	
+	protected void initializeEntityMappingsCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsOrmMessages.EntityMappingsSection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeEntityMappingsSection(container);
+	}
+	
+	protected void initializeEntityMappingsSection(Composite container) {
+		// Package widgets
+		new OrmPackageChooser(this, container);
+
+		// Schema widgets
+		addLabeledComposite(
+			container,
+			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_schema,
+			addSchemaCombo(container),
+			JpaHelpContextIds.ENTITY_ORM_SCHEMA
+		);
+
+		// Catalog widgets
+		addLabeledComposite(
+			container,
+			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_catalog,
+			addCatalogCombo(container),
+			JpaHelpContextIds.ENTITY_ORM_CATALOG
+		);
+
+		// Access Type widgets
+		addLabeledComposite(
+			container,
+			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_access,
+			addAccessTypeCombo(container),
+			JpaHelpContextIds.ENTITY_ORM_ACCESS
+		);
+	}
+
+	protected void initializePersistenceUnitMetadataCollapsibleSection(Composite container) {
+		new PersistenceUnitMetadataComposite(
+			this,
+			buildPersistentUnitMetadataHolder(),
+			addSubPane(container, 5)
+		);
+	}
+	
 	protected EnumFormComboViewer<EntityMappings, AccessType> addAccessTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<EntityMappings, AccessType>(this, container) {
@@ -199,61 +255,14 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Package widgets
-		new OrmPackageChooser(this, container);
-
-		// Schema widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_schema,
-			addSchemaCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_SCHEMA
-		);
-
-		// Catalog widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_catalog,
-			addCatalogCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_CATALOG
-		);
-
-		// Access Type widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_access,
-			addAccessTypeCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_ACCESS
-		);
-
-		// Persistence Unit Metadata widgets
-		new PersistenceUnitMetadataComposite(
-			this,
-			buildPersistentUnitMetadataHolder(),
-			addSubPane(container, 5)
-		);
-
-		// Generators pane
-		this.buildEntityMappingsGeneratorsComposite(container);
-
-		// Queries pane
-		this.buildOrmQueriesComposite(container);
-	}
-
-	protected void buildEntityMappingsGeneratorsComposite(Composite container) {
+	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		new EntityMappingsGeneratorsComposite(
 			this,
 			container
 		);
 	}
 
-	protected void buildOrmQueriesComposite(Composite container) {
+	protected void initializeQueriesCollapsibleSection(Composite container) {
 		new OrmQueriesComposite(this, container);
 	}
 }

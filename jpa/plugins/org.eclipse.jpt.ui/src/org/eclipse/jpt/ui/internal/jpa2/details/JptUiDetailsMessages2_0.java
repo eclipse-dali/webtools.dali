@@ -14,8 +14,8 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Localized messages used by Dali mapping panes.
  *
- * @version 3.0
- * @since 3.0
+ * @version 2.3
+ * @since 2.3
  */
 public class JptUiDetailsMessages2_0 
 {
@@ -35,6 +35,7 @@ public class JptUiDetailsMessages2_0
 	public static String ElementCollectionMapping2_0_label;
 	public static String ElementCollectionMapping2_0_linkLabel;
 	
+	public static String ElementCollectionSection_title;
 	public static String AbstractElementCollectionMapping2_0_Composite_valueSectionTitle;
 	
 	public static String Entity_cacheableLabel;

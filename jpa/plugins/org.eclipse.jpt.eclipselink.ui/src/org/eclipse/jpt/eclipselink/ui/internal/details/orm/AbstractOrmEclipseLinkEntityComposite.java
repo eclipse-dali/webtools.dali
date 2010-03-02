@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009 Oracle. 
+ *  Copyright (c) 2008, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -33,25 +33,25 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeCachingPane(container);
-		initializeQueriesPane(container);
-		initializeInheritancePane(container);
-		initializeAttributeOverridesPane(container);
-		initializeGeneratorsPane(container);
-		initializeConvertersPane(container);
-		initializeSecondaryTablesPane(container);
-		initializeAdvancedPane(container);
+		this.initializeEntityCollapsibleSection(container);
+		this.initializeCachingCollapsibleSectionPane(container);
+		this.initializeQueriesCollapsibleSection(container);
+		this.initializeInheritanceCollapsibleSection(container);
+		this.initializeAttributeOverridesCollapsibleSection(container);
+		this.initializeGeneratorsCollapsibleSection(container);
+		this.initializeConvertersCollapsibleSection(container);
+		this.initializeSecondaryTablesCollapsibleSection(container);
+		this.initializeAdvancedCollapsibleSection(container);
 	}
 	
-	protected void initializeCachingPane(Composite container) {
+	protected void initializeCachingCollapsibleSectionPane(Composite container) {
 		container = addCollapsibleSection(
-			addSubPane(container, 5),
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
-		addCachingComposite(container, buildCachingHolder());
+				addSubPane(container, 5),
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
+		initializeCachingSection(container, buildCachingHolder());
 	}
 	
-	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
+	protected void initializeCachingSection(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
 		new OrmEclipseLinkCachingComposite(this, cachingHolder, container);
 	}
 
@@ -64,15 +64,16 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 			}
 		};
 	}
-
-	protected void initializeConvertersPane(Composite container) {
-
+	
+	protected void initializeConvertersCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label
-		);
-
-		new OrmEclipseLinkConvertersComposite(this, buildConverterHolder(), container);
+				container,
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+		this.initializeConvertersSection(container, buildConverterHolder());
+	}
+	
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterHolder> converterHolder) {
+		new OrmEclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 	
 	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
@@ -84,7 +85,7 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 		};
 	}
 	
-	protected void initializeAdvancedPane(Composite container) {
+	protected void initializeAdvancedCollapsibleSection(Composite container) {
 		new EclipseLinkEntityAdvancedComposite(this, container);
 	}
 }

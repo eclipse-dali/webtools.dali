@@ -23,6 +23,7 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.OneToManyJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.OneToManyJoiningStrategy2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
@@ -89,20 +90,27 @@ public class OrmOneToManyMapping2_0Composite
 			WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
 
-		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
-		new OneToManyJoiningStrategy2_0Pane(this, this.buildJoiningHolder(), container);
-		new AccessTypeComposite(this, this.buildAccessHolderHolder(), this.addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
+	@Override
+	protected void initializeOneToManySection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, this.buildAccessHolderHolder(), container);
+		new FetchTypeComposite(this, container);
+		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), container);
 		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
+	}
+
+	@Override
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
+		new OneToManyJoiningStrategy2_0Pane(this, this.buildJoiningHolder(), container);
+	}
+
+	@Override
+	protected void initializeOrderingCollapsibleSection(Composite container) {
 		new Ordering2_0Composite(this, container);
 	}
-	
+
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
 		return new PropertyAspectAdapter<OrmOneToManyMapping, AccessHolder>(this.getSubjectHolder()) {
 			@Override

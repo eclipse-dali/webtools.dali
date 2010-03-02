@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,15 +37,12 @@ public class JavaIdMapping2_0Composite extends AbstractIdMappingComposite<IdMapp
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		
-		// Column widgets
+	protected void initializeIdSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
-
-		initializeTypePane(container);
-
-		// Generation pane
-		new IdMappingGeneration2_0Composite(this, addSubPane(container, 10));
 	}
 
+	@Override
+	protected void initializeGenerationCollapsibleSection(Composite container) {
+		new IdMappingGeneration2_0Composite(this, addSubPane(container, 10));
+	}
 }

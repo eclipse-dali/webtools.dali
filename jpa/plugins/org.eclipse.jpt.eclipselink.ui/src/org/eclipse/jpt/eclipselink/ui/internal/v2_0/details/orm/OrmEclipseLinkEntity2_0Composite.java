@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009 Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -29,24 +29,24 @@ public class OrmEclipseLinkEntity2_0Composite extends AbstractOrmEclipseLinkEnti
 			Composite parent, WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
+
 	@Override
-	protected void addAttributeOverridesComposite(Composite container) {
+	protected void initializeAttributeOverridesSection(Composite container) {
 		new Entity2_0OverridesComposite(this, container);
 	}
 
 	@Override
-	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
+	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
 		new Generation2_0Composite(this, generatorContainerHolder, container);
 	}
-	
+
 	@Override
-	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
+	protected void initializeCachingSection(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
 		new OrmEclipseLinkCaching2_0Composite(this, cachingHolder, container);
 	}
 
 	@Override
-	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
 		new Queries2_0Composite(this, queryContainerHolder, container);
 	}
 

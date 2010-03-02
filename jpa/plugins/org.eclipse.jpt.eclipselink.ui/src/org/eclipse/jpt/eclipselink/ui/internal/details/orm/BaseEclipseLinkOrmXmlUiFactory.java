@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,10 +20,6 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkManyToManyMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkManyToOneMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToManyMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToOneMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.TransientMappingComposite;
@@ -93,25 +89,23 @@ public abstract class BaseEclipseLinkOrmXmlUiFactory extends BaseOrmXmlUiFactory
 			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public JpaComposite createOrmOneToManyMappingComposite(
 			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public JpaComposite createOrmOneToOneMappingComposite(
 			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
@@ -119,7 +113,7 @@ public abstract class BaseEclipseLinkOrmXmlUiFactory extends BaseOrmXmlUiFactory
 			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

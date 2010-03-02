@@ -20,9 +20,8 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractManyToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.DerivedIdentity2_0Pane;
-import org.eclipse.jpt.ui.internal.jpa2.details.ManyToOneJoiningStrategy2_0Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -88,18 +87,14 @@ public class OrmManyToOneMapping2_0Composite
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	
+
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
-		new ManyToOneJoiningStrategy2_0Pane(this, buildJoiningHolder(), container);
-		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new OptionalComposite(this, addPane(container, groupBoxMargin));
+	protected void initializeManyToOneSection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
+		new FetchTypeComposite(this, container);
+		new OptionalComposite(this, container);
 		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,10 @@ import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.details.orm.AbstractEntityMappingsDetailsPage;
 import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsGeneratorsComposite;
-import org.eclipse.jpt.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPackageChooser;
 import org.eclipse.jpt.ui.internal.details.orm.OrmQueriesComposite;
 import org.eclipse.jpt.ui.internal.details.orm.PersistenceUnitMetadataComposite;
@@ -79,7 +77,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see PersistenceUnitMetadataComposite
  * @see SchemaCombo
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.1
  */
 public abstract class AbstractEclipseLinkEntityMappingsDetailsPage extends AbstractEntityMappingsDetailsPage
@@ -98,53 +96,23 @@ public abstract class AbstractEclipseLinkEntityMappingsDetailsPage extends Abstr
 
 	@Override
 	protected void initializeLayout(Composite container) {
+		this.initializeEntityMappingsCollapsibleSection(container);
+		this.initializePersistenceUnitMetadataCollapsibleSection(container);
+		this.initializeGeneratorsCollapsibleSection(container);
+		this.initializeQueriesCollapsibleSection(container);
+		this.initializeConvertersCollapsibleSection(container);
+	}
 
-		// Package widgets
-		new OrmPackageChooser(this, container);
-
-		// Schema widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_schema,
-			this.addSchemaCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_SCHEMA
-		);
-
-		// Catalog widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_catalog,
-			this.addCatalogCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_CATALOG
-		);
-
-		// Access Type widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_access,
-			this.addAccessTypeCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_ACCESS
-		);
-
-		// Persistence Unit Metadata widgets
-		new PersistenceUnitMetadataComposite(
-			this,
-			this.buildPersistentUnitMetadataHolder(),
-			this.addSubPane(container, 5)
-		);
-
-		// Generators pane
-		this.buildEntityMappingsGeneratorsComposite(container);
-
-		// Queries pane
-		this.buildOrmQueriesComposite(container);
-		
-		// Converters section
+	protected void initializeConvertersCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label
+			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
 		);
-		
+
+		this.initializeConvertersSection(container);
+	}
+
+	protected void initializeConvertersSection(Composite container) {
 		new OrmEclipseLinkConvertersComposite(
 			this,
 			this.buildConverterHolder(),

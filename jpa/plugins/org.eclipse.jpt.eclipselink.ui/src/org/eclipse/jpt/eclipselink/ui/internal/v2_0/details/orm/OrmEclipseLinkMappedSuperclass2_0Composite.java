@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009 Oracle. 
+ *  Copyright (c) 2009, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -26,10 +26,9 @@ public class OrmEclipseLinkMappedSuperclass2_0Composite<T extends OrmEclipseLink
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	
+
 	@Override
-	protected void addCachingComposite(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
+	protected void initializeCachingSection(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
 		new OrmEclipseLinkCaching2_0Composite(this, cachingHolder, container);
 	}
 }

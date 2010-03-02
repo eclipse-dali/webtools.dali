@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -59,10 +60,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link CascadeComposite}
  * @see {@link OrderingComposite}
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
-public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMapping> 
+public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMapping, R extends ManyToManyRelationshipReference> 
 	extends Pane<T>
     implements JpaComposite
 {
@@ -79,17 +80,42 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeManyToManyCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+		initializeOrderingCollapsibleSection(container);
 	}
 	
-	protected PropertyValueModel<ManyToManyRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<T, ManyToManyRelationshipReference>(
+	protected void initializeManyToManyCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.ManyToManySection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeManyToManySection(container);
+	}
+
+	protected abstract void initializeManyToManySection(Composite container);
+
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
+		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+	}
+
+	protected void initializeOrderingCollapsibleSection(Composite container) {
+		new OrderingComposite(this, container);
+	}
+
+	
+	protected PropertyValueModel<R> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<T, R>(
 				getSubjectHolder()) {
+			@SuppressWarnings("unchecked")
 			@Override
-			protected ManyToManyRelationshipReference transform_(T value) {
-				return value.getRelationshipReference();
+			protected R transform_(T value) {
+				return (R) value.getRelationshipReference();
 			}
 		};
 	}

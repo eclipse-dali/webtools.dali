@@ -43,8 +43,8 @@ import org.eclipse.ui.part.PageBook;
  * @see EmbeddedMapping
  * @see ColumnComposite
  *
- * @version 3.0
- * @since 3.0
+ * @version 2.3
+ * @since 2.3
  */
 public class EmbeddedMapping2_0OverridesComposite extends AbstractEmbeddedMappingOverridesComposite<EmbeddedMapping>
 {

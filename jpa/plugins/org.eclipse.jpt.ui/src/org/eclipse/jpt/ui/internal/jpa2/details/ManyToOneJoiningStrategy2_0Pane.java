@@ -38,10 +38,10 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see {@link ManyToOneMapping}
  * @see {@link ManyToOneRelationshipReference}
- * @see {@link ManyToOneMappingComposite}
+ * @see {@link OrmManyToOneMappingComposite}
  * @see {@link JoinColumnStrategyPane}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class ManyToOneJoiningStrategy2_0Pane extends Pane<ManyToOneRelationshipReference2_0>

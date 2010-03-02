@@ -84,17 +84,23 @@ public class JavaOneToManyMapping2_0Composite
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, this.addPane(container, groupBoxMargin));
-		new OneToManyJoiningStrategy2_0Pane(this, this.buildJoiningHolder(), container);
-		new FetchTypeComposite(this, this.addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), this.addPane(container, groupBoxMargin));
+	protected void initializeOneToManySection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new FetchTypeComposite(this, container);
+		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), container);
 		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
+	}
+
+	@Override
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
+		new OneToManyJoiningStrategy2_0Pane(this, this.buildJoiningHolder(), container);
+	}
+
+	@Override
+	protected void initializeOrderingCollapsibleSection(Composite container) {
 		new Ordering2_0Composite(this, container);
 	}
-	
+
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
 		return new PropertyAspectAdapter<JavaOneToManyMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
 			@Override

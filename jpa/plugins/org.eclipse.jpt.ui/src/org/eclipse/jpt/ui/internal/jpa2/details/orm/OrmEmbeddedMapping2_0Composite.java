@@ -13,9 +13,10 @@ import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -34,10 +35,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see EmbeddedMapping
  * @see BaseJavaUiFactory - The factory creating this pane
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  */
-public class OrmEmbeddedMapping2_0Composite extends Pane<OrmEmbeddedMapping>
+public class OrmEmbeddedMapping2_0Composite extends AbstractEmbeddedMappingComposite<OrmEmbeddedMapping>
                                       implements JpaComposite
 {
 	/**
@@ -54,9 +55,9 @@ public class OrmEmbeddedMapping2_0Composite extends Pane<OrmEmbeddedMapping>
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeEmbeddedSection(Composite container) {
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 
 		new EmbeddedMapping2_0OverridesComposite(

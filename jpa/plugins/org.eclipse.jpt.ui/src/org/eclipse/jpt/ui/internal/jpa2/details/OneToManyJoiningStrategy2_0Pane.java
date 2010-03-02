@@ -39,11 +39,11 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see {@link OneToManyMapping}
  * @see {@link OneToManyRelationshipReference}
- * @see {@link OneToManyMappingComposite}
+ * @see {@link OrmOneToManyMappingComposite}
  * @see {@link MappedByStrategyPane}
  * @see {@link JoinTableStrategyPane}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class OneToManyJoiningStrategy2_0Pane 

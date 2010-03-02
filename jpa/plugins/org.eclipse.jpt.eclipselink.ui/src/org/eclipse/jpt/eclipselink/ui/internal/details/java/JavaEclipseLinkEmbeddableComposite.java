@@ -10,14 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEmbeddableAdvancedComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,11 +21,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see JavaUiFactory - The factory creating this pane
  * @see EmbeddableUiProvider
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
-public class JavaEclipseLinkEmbeddableComposite extends Pane<JavaEmbeddable>
-                                 implements JpaComposite
+public class JavaEclipseLinkEmbeddableComposite extends AbstractJavaEclipseLinkEmbeddableComposite
 {
 	/**
 	 * Creates a new <code>EmbeddableComposite</code>.
@@ -46,34 +38,5 @@ public class JavaEclipseLinkEmbeddableComposite extends Pane<JavaEmbeddable>
 	                           WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-		initializeConvertersPane(container);
-		initializeAdvancedPane(container);
-	}
-
-	protected void initializeConvertersPane(Composite container) {
-
-		container = addCollapsibleSection(
-			addSubPane(container, 5),
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
-
-		new JavaEclipseLinkConvertersComposite(this, buildConverterHolderValueModel(), container);
-	}
-
-	protected PropertyValueModel<JavaEclipseLinkConverterHolder> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaEmbeddable, JavaEclipseLinkConverterHolder>(getSubjectHolder()) {
-			@Override
-			protected JavaEclipseLinkConverterHolder buildValue_() {
-				return ((JavaEclipseLinkEmbeddable) this.subject).getConverterHolder();
-			}	
-		};
-	}
-	
-	protected void initializeAdvancedPane(Composite container) {
-		new EclipseLinkEmbeddableAdvancedComposite(this, container);
 	}
 }

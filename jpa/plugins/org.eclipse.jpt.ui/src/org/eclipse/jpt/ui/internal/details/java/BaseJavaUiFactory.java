@@ -29,7 +29,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.ui.internal.details.BasicMappingComposite;
-import org.eclipse.jpt.ui.internal.details.EmbeddableComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.IdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.ManyToManyMappingComposite;
@@ -72,7 +71,7 @@ public abstract class BaseJavaUiFactory implements JavaUiFactory
 			PropertyValueModel<JavaEmbeddable> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	

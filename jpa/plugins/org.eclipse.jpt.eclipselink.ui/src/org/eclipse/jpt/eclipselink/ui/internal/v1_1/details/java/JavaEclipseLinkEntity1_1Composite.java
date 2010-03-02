@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see JavaEclipseLinkEntity
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  */
 public class JavaEclipseLinkEntity1_1Composite
@@ -49,18 +49,12 @@ public class JavaEclipseLinkEntity1_1Composite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
+	protected void initializeEntitySection(Composite container) {
 		new TableComposite(this, container);
-		new EntityNameComposite(
-				this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
-		new AccessTypeComposite(
-				this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
-		new IdClassComposite(
-				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new EntityNameComposite(this, container);	
+		new AccessTypeComposite(this, buildAccessHolder(), container);	
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container, false);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {

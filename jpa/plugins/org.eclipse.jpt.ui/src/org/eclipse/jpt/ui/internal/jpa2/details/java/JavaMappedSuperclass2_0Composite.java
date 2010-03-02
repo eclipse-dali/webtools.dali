@@ -10,15 +10,14 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractMappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -36,11 +35,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see BaseJavaUiFactory - The factory creating this pane
  * @see IdClassComposite
  *
- * @version 2.0
+ * @version 2.3
  * @since 2.0
  */
 public class JavaMappedSuperclass2_0Composite
-	extends Pane<JavaMappedSuperclass>
+	extends AbstractMappedSuperclassComposite<JavaMappedSuperclass>
     implements JpaComposite
 {
 	/**
@@ -58,9 +57,8 @@ public class JavaMappedSuperclass2_0Composite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeMappedSuperclassSection(Composite container) {
 		new AccessTypeComposite(this, buildAccessHolder(), container);	
 		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 	}
@@ -70,15 +68,6 @@ public class JavaMappedSuperclass2_0Composite
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, IdClassReference>(getSubjectHolder()) {
-			@Override
-			protected IdClassReference buildValue_() {
-				return this.subject.getIdClassReference();
 			}
 		};
 	}

@@ -9,21 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
-import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractManyToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -65,11 +63,12 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OptionalComposite}
  * @see {@link CascadeComposite}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
-public class EclipseLinkManyToOneMappingComposite extends Pane<ManyToOneMapping>
-                                       implements JpaComposite
+public class EclipseLinkManyToOneMappingComposite<T extends ManyToOneMapping> 
+	extends AbstractManyToOneMappingComposite<T, ManyToOneRelationshipReference>
+	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EclipseLinkManyToOneMappingComposite</code>.
@@ -78,7 +77,7 @@ public class EclipseLinkManyToOneMappingComposite extends Pane<ManyToOneMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkManyToOneMappingComposite(PropertyValueModel<? extends ManyToOneMapping> subjectHolder,
+	public EclipseLinkManyToOneMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
@@ -86,45 +85,19 @@ public class EclipseLinkManyToOneMappingComposite extends Pane<ManyToOneMapping>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		new OptionalComposite(this, addPane(container, groupBoxMargin));
+	protected void initializeManyToOneSection(Composite container) {		
+		new TargetEntityComposite(this, container);
+		new FetchTypeComposite(this, container);
+		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), container);
+		new OptionalComposite(this, container);
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
-	}
-
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-	
-	protected PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<ManyToOneMapping, ManyToOneRelationshipReference>(
-				getSubjectHolder()) {
-			@Override
-			protected ManyToOneRelationshipReference transform_(ManyToOneMapping value) {
-				return value.getRelationshipReference();
-			}
-		};
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<ManyToOneMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
 				return ((EclipseLinkRelationshipMapping) this.subject).getJoinFetch();
-			}
-		};
-	}
-
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<ManyToOneMapping, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(ManyToOneMapping value) {
-				return value.getCascade();
 			}
 		};
 	}

@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -29,10 +28,10 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see EmbeddedIdMapping
  *
- * @version 3.0
+ * @version 2.3
  * @since 1.0
  */
-public class EmbeddedIdMappingComposite extends Pane<EmbeddedIdMapping>
+public class EmbeddedIdMappingComposite extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
                                         implements JpaComposite
 {
 	/**
@@ -47,14 +46,5 @@ public class EmbeddedIdMappingComposite extends Pane<EmbeddedIdMapping>
 	                                  WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-	
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		new EmbeddedMappingOverridesComposite(
-			this,
-			container
-		);
 	}
 }

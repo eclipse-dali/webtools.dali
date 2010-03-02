@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -86,7 +87,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public abstract class AbstractEntityComposite<T extends Entity>
@@ -100,7 +101,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public AbstractEntityComposite(
+	protected AbstractEntityComposite(
 			PropertyValueModel<? extends T> subjectHolder,
 	        Composite parent,
 	        WidgetFactory widgetFactory) {
@@ -109,27 +110,34 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 	
 	
-	protected abstract void addSecondaryTablesComposite(Composite container);
+	protected abstract void initializeSecondaryTablesSection(Composite container);
 	
-	protected abstract void addInheritanceComposite(Composite container);
+	protected abstract void initializeInheritanceSection(Composite container);
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeQueriesPane(container);
-		initializeInheritancePane(container);
-		initializeAttributeOverridesPane(container);
-		initializeGeneratorsPane(container);
-		initializeSecondaryTablesPane(container);
+		this.initializeEntityCollapsibleSection(container);
+		this.initializeQueriesCollapsibleSection(container);
+		this.initializeInheritanceCollapsibleSection(container);
+		this.initializeAttributeOverridesCollapsibleSection(container);
+		this.initializeGeneratorsCollapsibleSection(container);
+		this.initializeSecondaryTablesCollapsibleSection(container);
 	}
 	
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
+	protected void initializeEntityCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.EntitySection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeEntitySection(container);
+	}
+	
+	protected void initializeEntitySection(Composite container) {
 		new TableComposite(this, container);
-		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new IdClassComposite(
-				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new EntityNameComposite(this, container);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container, false);
 	}
 	
 	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
@@ -141,14 +149,14 @@ public abstract class AbstractEntityComposite<T extends Entity>
 		};
 	}
 	
-	protected void initializeQueriesPane(Composite container) {
+	protected void initializeQueriesCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages.EntityComposite_queries);
-		addQueriesComposite(container, buildQueryContainerHolder());
+		this.initializeQueriesSection(container, buildQueryContainerHolder());
 	}
 	
-	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
 		new QueriesComposite(this, queryContainerHolder, container);
 	}
 	
@@ -161,32 +169,32 @@ public abstract class AbstractEntityComposite<T extends Entity>
 		};
 	}
 	
-	protected void initializeAttributeOverridesPane(Composite container) {
+	protected void initializeAttributeOverridesCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages.OverridesComposite_attributeOverridesSection);
-		addAttributeOverridesComposite(container);
+		initializeAttributeOverridesSection(container);
 	}
 	
-	protected void addAttributeOverridesComposite(Composite container) {
+	protected void initializeAttributeOverridesSection(Composite container) {
 		new EntityOverridesComposite(this, container);
 	}
 	
-	protected void initializeInheritancePane(Composite container) {
+	protected void initializeInheritanceCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages.EntityComposite_inheritance);
-		addInheritanceComposite(container);
+		initializeInheritanceSection(container);
 	}
 	
-	protected void initializeGeneratorsPane(Composite container) {
+	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
-		addGeneratorsComposite(container, buildGeneratorContainer());
+		initializeGeneratorsSection(container, buildGeneratorContainer());
 	}
 	
-	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
+	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
 		new GenerationComposite(this, generatorContainerHolder, container);
 	}
 	
@@ -199,10 +207,10 @@ public abstract class AbstractEntityComposite<T extends Entity>
 		};
 	}
 	
-	protected void initializeSecondaryTablesPane(Composite container) {
+	protected void initializeSecondaryTablesCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages.SecondaryTablesComposite_secondaryTables);
-		addSecondaryTablesComposite(container);
+		initializeSecondaryTablesSection(container);
 	}
 }

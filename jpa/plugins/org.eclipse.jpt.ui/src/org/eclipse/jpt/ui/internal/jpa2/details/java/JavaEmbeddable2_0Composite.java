@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddableComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -25,10 +25,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see Embeddable
  * @see EmbeddableUiProvider
  *
- * @version 2.0
+ * @version 2.3
  * @since 2.0
  */
-public class JavaEmbeddable2_0Composite extends Pane<JavaEmbeddable>
+public class JavaEmbeddable2_0Composite extends AbstractEmbeddableComposite<JavaEmbeddable>
                                  implements JpaComposite
 {
 	/**
@@ -47,6 +47,11 @@ public class JavaEmbeddable2_0Composite extends Pane<JavaEmbeddable>
 
 	@Override
 	protected void initializeLayout(Composite container) {
+		this.initializeEmbeddableCollapsibleSection(container);
+	}
+
+	@Override
+	protected void initializeEmbeddableSection(Composite container) {
 		new AccessTypeComposite(this, buildAccessHolder(), container);	
 	}
 

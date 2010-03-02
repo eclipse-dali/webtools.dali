@@ -12,8 +12,8 @@ package org.eclipse.jpt.ui.internal.jpa2.details.java;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -30,10 +30,10 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see EmbeddedMapping
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
-public class JavaEmbeddedMapping2_0Composite extends Pane<JavaEmbeddedMapping>
+public class JavaEmbeddedMapping2_0Composite extends AbstractEmbeddedMappingComposite<JavaEmbeddedMapping>
                                       implements JpaComposite
 {
 	/**
@@ -51,7 +51,7 @@ public class JavaEmbeddedMapping2_0Composite extends Pane<JavaEmbeddedMapping>
 	}
 	
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeEmbeddedSection(Composite container) {
 		new EmbeddedMapping2_0OverridesComposite(
 			this,
 			container

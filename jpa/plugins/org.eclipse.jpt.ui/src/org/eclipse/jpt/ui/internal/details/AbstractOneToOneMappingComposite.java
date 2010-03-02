@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -29,9 +30,30 @@ public abstract class AbstractOneToOneMappingComposite<T extends OneToOneMapping
 	        WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}	
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeOneToOneCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+	}
 	
-	
+	protected void initializeOneToOneCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.OneToOneSection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeOneToOneSection(container);
+	}
+
+	protected abstract void initializeOneToOneSection(Composite container);
+
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
+		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+	}
+
 	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}

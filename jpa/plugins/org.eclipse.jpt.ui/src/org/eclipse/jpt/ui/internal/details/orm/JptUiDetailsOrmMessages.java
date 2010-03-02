@@ -21,6 +21,8 @@ public class JptUiDetailsOrmMessages {
 
 	public static String Boolean_False;
 	public static String Boolean_True;
+
+	public static String EntityMappingsSection_title;
 	public static String EntityMappingsDetailsPage_access;
 	public static String EntityMappingsDetailsPage_catalog;
 	public static String EntityMappingsDetailsPage_field;
@@ -35,7 +37,7 @@ public class JptUiDetailsOrmMessages {
 	public static String MetadataCompleteComposite_metadataCompleteWithDefault;
 	public static String OrmGeneratorsComposite_displayString;
 	public static String OrmGeneratorsComposite_groupBox;
-	public static String OrmJavaAttributeChooser_javaAttribute;
+	public static String OrmMappingNameChooser_name;
 	public static String OrmJavaClassChooser_javaClass;
 	public static String OrmQueriesComposite_groupBox;
 	public static String PersistenceUnitMetadataComposite_access;

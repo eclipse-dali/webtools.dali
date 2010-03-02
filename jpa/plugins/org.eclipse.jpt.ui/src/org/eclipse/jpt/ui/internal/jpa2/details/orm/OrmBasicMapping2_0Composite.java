@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -38,15 +39,10 @@ public class OrmBasicMapping2_0Composite extends AbstractBasicMappingComposite<O
 	}
 
 	@Override
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-
+	protected void initializeBasicSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
-
-		// Align the widgets under the ColumnComposite
-		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
 	}

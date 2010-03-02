@@ -9,27 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
-import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractOneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.details.OneToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 
-public class EclipseLinkOneToOneMappingComposite<T extends EclipseLinkOneToOneMapping>
-	extends Pane<T>
+public class EclipseLinkOneToOneMappingComposite<T extends OneToOneMapping>
+	extends AbstractOneToOneMappingComposite<T, OneToOneRelationshipReference>
 	implements JpaComposite
 {
 	/**
@@ -47,37 +45,20 @@ public class EclipseLinkOneToOneMappingComposite<T extends EclipseLinkOneToOneMa
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		new OptionalComposite(this, addPane(container, groupBoxMargin));
-		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
+	protected void initializeOneToOneSection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new FetchTypeComposite(this, container);
+		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), container);
+		new OptionalComposite(this, container);
+		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), container);
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
-	}
-	
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-	
-	protected PropertyValueModel<OneToOneRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<T, OneToOneRelationshipReference>(
-				getSubjectHolder()) {
-			@Override
-			protected OneToOneRelationshipReference transform_(T value) {
-				return value.getRelationshipReference();
-			}
-		};
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
 		return new PropertyAspectAdapter<T, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return this.subject.getJoinFetch();
+				return ((EclipseLinkOneToOneMapping)this.subject).getJoinFetch();
 			}
 		};
 	}
@@ -86,17 +67,7 @@ public class EclipseLinkOneToOneMappingComposite<T extends EclipseLinkOneToOneMa
 		return new PropertyAspectAdapter<T, EclipseLinkPrivateOwned>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPrivateOwned buildValue_() {
-				return this.subject.getPrivateOwned();
-			}
-		};
-	}
-
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
-		
-			@Override
-			protected Cascade transform_(T value) {
-				return value.getCascade();
+				return ((EclipseLinkOneToOneMapping)this.subject).getPrivateOwned();
 			}
 		};
 	}

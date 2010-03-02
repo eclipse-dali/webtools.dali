@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
-import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.ui.internal.details.AbstractMappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.details.IdClassComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -34,12 +31,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see JavaUiFactory - The factory creating this pane
  * @see IdClassComposite
  *
- * @version 2.0
+ * @version 2.3
  * @since 2.0
  */
 public class JavaMappedSuperclassComposite
-	extends Pane<JavaMappedSuperclass>
-    implements JpaComposite
+	extends AbstractMappedSuperclassComposite<JavaMappedSuperclass>
 {
 	/**
 	 * Creates a new <code>MappedSuperclassComposite</code>.
@@ -54,20 +50,5 @@ public class JavaMappedSuperclassComposite
 			WidgetFactory widgetFactory) {
 		
 		super(subjectHolder, parent, widgetFactory);
-	}
-	
-	
-	@Override
-	protected void initializeLayout(Composite container) {
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
-	}
-	
-	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, IdClassReference>(getSubjectHolder()) {
-			@Override
-			protected IdClassReference buildValue_() {
-				return this.subject.getIdClassReference();
-			}
-		};
 	}
 }

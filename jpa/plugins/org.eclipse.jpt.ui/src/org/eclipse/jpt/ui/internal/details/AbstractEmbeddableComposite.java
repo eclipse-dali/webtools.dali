@@ -12,7 +12,9 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -20,13 +22,15 @@ import org.eclipse.swt.widgets.Composite;
  * This pane does not have any widgets.
  *
  * @see Embeddable
+ * @see JavaUiFactory - The factory creating this pane
  * @see EmbeddableUiProvider
  *
- * @version 2.0
- * @since 2.0
+ * @version 2.3
+ * @since 2.1
  */
-public class EmbeddableComposite extends Pane<Embeddable>
-                                 implements JpaComposite
+public abstract class AbstractEmbeddableComposite<T extends Embeddable> 
+	extends Pane<T>
+	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EmbeddableComposite</code>.
@@ -35,17 +39,28 @@ public class EmbeddableComposite extends Pane<Embeddable>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EmbeddableComposite(PropertyValueModel<? extends Embeddable> subjectHolder,
+	protected AbstractEmbeddableComposite(PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent,
 	                           WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
+	}
+	
+	protected void initializeEmbeddableCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.EmbeddableSection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeEmbeddableSection(container);
+	}
+	
+	protected void initializeEmbeddableSection(Composite container) {
+		
 	}
 }

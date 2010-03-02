@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see EclipseLinkMappedSuperclass
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
- * @version 3.0
- * @since 3.0
+ * @version 2.3
+ * @since 2.3
  */
 public class JavaEclipseLinkMappedSuperclass2_0Composite
 	extends AbstractJavaEclipseLinkMappedSuperclassComposite
@@ -47,14 +47,13 @@ public class JavaEclipseLinkMappedSuperclass2_0Composite
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	
+
 	@Override
-	protected void initializeGeneralPane(Composite container) {
+	protected void initializeMappedSuperclassSection(Composite container) {
 		new AccessTypeComposite(this, buildAccessHolder(), container);	
 		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 	}
-	
+
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
 		return new PropertyAspectAdapter<JavaMappedSuperclass, AccessHolder>(getSubjectHolder()) {
 			@Override
@@ -63,9 +62,9 @@ public class JavaEclipseLinkMappedSuperclass2_0Composite
 			}
 		};
 	}
-	
+
 	@Override
-	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
+	protected void initializeCachingSection(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
 		new JavaEclipseLinkCaching2_0Composite(this, cachingHolder, container);
 	}
 }

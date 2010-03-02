@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -29,6 +30,28 @@ public abstract class AbstractManyToOneMappingComposite<T extends ManyToOneMappi
 	        WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeManyToOneCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+	}
+	
+	protected void initializeManyToOneCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.ManyToOneSection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
+
+		this.initializeManyToOneSection(container);
+	}
+
+	protected abstract void initializeManyToOneSection(Composite container);
+
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
+		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
 	}
 
 	protected PropertyValueModel<Cascade> buildCascadeHolder() {

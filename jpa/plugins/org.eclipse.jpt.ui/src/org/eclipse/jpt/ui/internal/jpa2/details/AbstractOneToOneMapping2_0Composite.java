@@ -30,6 +30,17 @@ public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapp
 
 		super(subjectHolder, parent, widgetFactory);
 	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeOneToOneCollapsibleSection(container);
+		initializeDerivedIdentityCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+	}
+
+	protected void initializeDerivedIdentityCollapsibleSection(Composite container) {
+		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
+	}
 	
 	
 	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityHolder() {

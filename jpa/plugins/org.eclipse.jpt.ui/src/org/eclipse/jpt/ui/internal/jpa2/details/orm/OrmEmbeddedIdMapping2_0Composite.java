@@ -13,9 +13,10 @@ import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -34,10 +35,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see EmbeddedIdMapping
  * @see BaseJavaUiFactory - The factory creating this pane
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  */
-public class OrmEmbeddedIdMapping2_0Composite extends Pane<OrmEmbeddedIdMapping>
+public class OrmEmbeddedIdMapping2_0Composite extends AbstractEmbeddedIdMappingComposite<OrmEmbeddedIdMapping>
                                         implements JpaComposite
 {
 	/**
@@ -55,7 +56,8 @@ public class OrmEmbeddedIdMapping2_0Composite extends Pane<OrmEmbeddedIdMapping>
 	}
 	
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeEmbeddedIdSection(Composite container) {
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 
 		new EmbeddedMappingOverridesComposite(

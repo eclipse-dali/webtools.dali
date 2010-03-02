@@ -11,11 +11,13 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -33,10 +35,10 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see EmbeddedMapping
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  */
-public class OrmEclipseLinkEmbeddedMapping1_1Composite extends Pane<EmbeddedMapping>
+public class OrmEclipseLinkEmbeddedMapping1_1Composite extends AbstractEmbeddedMappingComposite<OrmEmbeddedMapping>
                                       implements JpaComposite
 {
 	/**
@@ -46,16 +48,16 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite extends Pane<EmbeddedMapp
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkEmbeddedMapping1_1Composite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
+	public OrmEclipseLinkEmbeddedMapping1_1Composite(PropertyValueModel<? extends OrmEmbeddedMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeEmbeddedSection(Composite container) {
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 
 		new EmbeddedMappingOverridesComposite(
@@ -65,7 +67,7 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite extends Pane<EmbeddedMapp
 	}	
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<EmbeddedMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmEmbeddedMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

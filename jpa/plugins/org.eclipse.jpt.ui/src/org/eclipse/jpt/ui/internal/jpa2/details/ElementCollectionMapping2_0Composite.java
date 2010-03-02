@@ -59,8 +59,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see OptionalComposite
  * @see TemporalTypeComposite
  *
- * @version 3.0
- * @since 3.0
+ * @version 2.3
+ * @since 2.3
  */
 public class ElementCollectionMapping2_0Composite extends AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
 {

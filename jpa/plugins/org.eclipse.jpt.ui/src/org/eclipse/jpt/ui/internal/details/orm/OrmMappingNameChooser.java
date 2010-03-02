@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Text;
 /**
  * @see OrmPersistentAttributeDetailsPage - The parent container
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
-public class OrmJavaAttributeChooser extends Pane<OrmAttributeMapping>
+public class OrmMappingNameChooser extends Pane<OrmAttributeMapping>
 {
 	private Text text;
 
@@ -34,55 +34,47 @@ public class OrmJavaAttributeChooser extends Pane<OrmAttributeMapping>
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public OrmJavaAttributeChooser(Pane<?> parentPane,
-	                               PropertyValueModel<OrmAttributeMapping> subjectHolder,
+	public OrmMappingNameChooser(Pane<?> parentPane,
+	                               PropertyValueModel<? extends OrmAttributeMapping> subjectHolder,
 	                               Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
+	@Override
+	protected void initializeLayout(Composite container) {
+		this.text = addLabeledText(
+			container,
+			JptUiDetailsOrmMessages.OrmMappingNameChooser_name,
+			buildNameHolder()
+		);
+	}
 	private WritablePropertyValueModel<String> buildNameHolder() {
 		return new PropertyAspectAdapter<OrmAttributeMapping, String>(getSubjectHolder(), OrmAttributeMapping.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getName();
+				return this.subject.getName();
 			}
 
 			@Override
 			protected void setValue_(String value) {
-				if (subject.getPersistentAttribute().isVirtual()) {
+				if (this.subject.getPersistentAttribute().isVirtual()) {
 					return;
 				}
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setName(value);
+				this.subject.setName(value);
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
 
-		if (!text.isDisposed()) {
-			text.setEnabled(enabled);
+		if (!this.text.isDisposed()) {
+			this.text.setEnabled(enabled);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		text = addLabeledText(
-			container,
-			JptUiDetailsOrmMessages.OrmJavaAttributeChooser_javaAttribute,
-			buildNameHolder()
-		);
 	}
 }

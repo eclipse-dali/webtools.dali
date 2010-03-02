@@ -19,6 +19,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -71,7 +72,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see OptionalComposite
  * @see TemporalTypeComposite
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public abstract class AbstractBasicMappingComposite<T extends BasicMapping> 
@@ -94,36 +95,42 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeTypePane(container);
+		initializeBasicCollapsibleSection(container);
+		initializeTypeCollapsibleSection(container);
 	}
 	
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
+	protected void initializeBasicCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.BasicSection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
 
+		this.initializeBasicSection(container);
+	}
+	
+	protected void initializeBasicSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
-
-		// Align the widgets under the ColumnComposite
-		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
-
 	}
 	
-	private void initializeTypePane(Composite container) {
-
+	protected void initializeTypeCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.TypeSection_type
 		);
+		this.initializeTypeSection(container);
+	}
+
+	protected void initializeTypeSection(Composite container) {
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildNoConverterHolder(), 
+			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -131,7 +138,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		Button lobButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_lob, 
-			buildLobConverterHolder(), 
+			buildConverterBooleanHolder(Converter.LOB_CONVERTER), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -140,7 +147,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildTemporalBooleanHolder(), 
+			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 		
@@ -149,7 +156,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_enumerated, 
-			buildEnumeratedBooleanHolder(), 
+			buildConverterBooleanHolder(Converter.ENUMERATED_CONVERTER), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
@@ -162,41 +169,8 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getConverter().getType() == Converter.NO_CONVERTER);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.NO_CONVERTER);
-				}
-			}
-		};
-	}
 	
-	private WritablePropertyValueModel<Boolean> buildLobConverterHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == Converter.LOB_CONVERTER);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.LOB_CONVERTER);
-				}
-			}
-		};
-	}
-	
-	private PropertyValueModel<Converter> buildConverterHolder() {
+	protected PropertyValueModel<Converter> buildConverterHolder() {
 		return new PropertyAspectAdapter<T, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
@@ -205,7 +179,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		};
 	}
 	
-	private PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+	protected PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
@@ -214,7 +188,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		};
 	}
 	
-	private PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
+	protected PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
 			@Override
 			protected EnumeratedConverter transform_(Converter converter) {
@@ -222,36 +196,19 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.TEMPORAL_CONVERTER);
-				}
-			}
-		};
-	}
 	
-	private WritablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == Converter.ENUMERATED_CONVERTER);
+				return Boolean.valueOf(converter.getType() == converterType);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.ENUMERATED_CONVERTER);
+					this.subject.setConverter(converterType);
 				}
 			}
 		};

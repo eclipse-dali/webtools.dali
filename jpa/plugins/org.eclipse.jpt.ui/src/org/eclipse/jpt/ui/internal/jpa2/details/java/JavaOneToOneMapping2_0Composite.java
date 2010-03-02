@@ -22,7 +22,6 @@ import org.eclipse.jpt.ui.internal.details.OneToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
-import org.eclipse.jpt.ui.internal.jpa2.details.DerivedIdentity2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.OneToOneJoiningStrategy2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -90,18 +89,18 @@ public class JavaOneToOneMapping2_0Composite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
+	@Override
+	protected void initializeOneToOneSection(Composite container) {
+		new TargetEntityComposite(this, container);
+		new FetchTypeComposite(this, container);
+		new OptionalComposite(this, container);
+		new OrphanRemoval2_0Composite(this, buildOrphanRemovableHolder(), container);
+		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
+	}
 	
 	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
 		new OneToOneJoiningStrategy2_0Pane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new OptionalComposite(this, addPane(container, groupBoxMargin));
-		new OrphanRemoval2_0Composite(this, buildOrphanRemovableHolder(), addPane(container, groupBoxMargin));
-		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {

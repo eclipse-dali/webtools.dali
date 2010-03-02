@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see JavaEclipseLinkEntity
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  */
 public class JavaEclipseLinkEntity2_0Composite
@@ -55,18 +55,12 @@ public class JavaEclipseLinkEntity2_0Composite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
+	protected void initializeEntitySection(Composite container) {
 		new TableComposite(this, container);
-		new EntityNameComposite(
-				this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
-		new AccessTypeComposite(
-				this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
-		new IdClassComposite(
-				this, buildIdClassReferenceHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new EntityNameComposite(this, container);	
+		new AccessTypeComposite(this, buildAccessHolder(), container);	
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container, false);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
@@ -77,24 +71,24 @@ public class JavaEclipseLinkEntity2_0Composite
 			}
 		};
 	}
-	
+
 	@Override
-	protected void addAttributeOverridesComposite(Composite container) {
+	protected void initializeAttributeOverridesSection(Composite container) {
 		new Entity2_0OverridesComposite(this, container);
 	}
-	
+
 	@Override
-	protected void addGeneratorsComposite(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
+	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
 		new Generation2_0Composite(this, generatorContainerHolder, container);
 	}
-	
+
 	@Override
-	protected void addCachingComposite(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
+	protected void initializeCachingSection(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
 		new JavaEclipseLinkCaching2_0Composite(this, cachingHolder, container);
 	}
-	
+
 	@Override
-	protected void addQueriesComposite(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
 		new Queries2_0Composite(this, queryContainerHolder, container);
 	}
 }

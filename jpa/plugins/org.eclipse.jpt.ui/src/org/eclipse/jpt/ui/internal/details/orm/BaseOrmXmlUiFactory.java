@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,16 +25,7 @@ import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
-import org.eclipse.jpt.ui.internal.details.BasicMappingComposite;
-import org.eclipse.jpt.ui.internal.details.EmbeddedIdMappingComposite;
-import org.eclipse.jpt.ui.internal.details.EmbeddedMappingComposite;
-import org.eclipse.jpt.ui.internal.details.IdMappingComposite;
-import org.eclipse.jpt.ui.internal.details.ManyToManyMappingComposite;
-import org.eclipse.jpt.ui.internal.details.ManyToOneMappingComposite;
-import org.eclipse.jpt.ui.internal.details.OneToManyMappingComposite;
-import org.eclipse.jpt.ui.internal.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.details.TransientMappingComposite;
-import org.eclipse.jpt.ui.internal.details.VersionMappingComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -75,63 +66,63 @@ public abstract class BaseOrmXmlUiFactory implements OrmXmlUiFactory
 			PropertyValueModel<OrmIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmEmbeddedIdMappingComposite(
 			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmBasicMappingComposite(
 			PropertyValueModel<OrmBasicMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmVersionMappingComposite(
 			PropertyValueModel<OrmVersionMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new VersionMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmManyToOneMappingComposite(
 			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new ManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmOneToManyMappingComposite(
 			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmOneToOneMappingComposite(
 			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmManyToManyMappingComposite(
 			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new ManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmEmbeddedMappingComposite(
 			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmTransientMappingComposite(

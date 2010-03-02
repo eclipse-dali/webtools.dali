@@ -30,8 +30,23 @@ public abstract class AbstractManyToOneMapping2_0Composite<T extends ManyToOneMa
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeManyToOneCollapsibleSection(container);
+		initializeDerivedIdentityCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+	}
+
+	protected void initializeDerivedIdentityCollapsibleSection(Composite container) {
+		new DerivedIdentity2_0Pane(this, buildDerivedIdentityHolder(), container);
+	}
+
+	@Override
+	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
+		new ManyToOneJoiningStrategy2_0Pane(this, buildJoiningHolder(), container);
+	}
+
 	protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityHolder() {
 		return new PropertyAspectAdapter<T, DerivedIdentity2_0>(getSubjectHolder()) {
 			@Override

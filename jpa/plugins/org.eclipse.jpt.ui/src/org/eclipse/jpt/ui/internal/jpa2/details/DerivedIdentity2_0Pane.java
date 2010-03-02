@@ -44,7 +44,6 @@ public class DerivedIdentity2_0Pane
 		addNullDerivedIdentityPane(composite);
 		addIdDerivedIdentityPane(composite);
 		addMapsIdDerivedIdentityPane(composite);
-		addSubPane(container, 5);
 	}
 	
 	protected void addNullDerivedIdentityPane(Composite parent) {

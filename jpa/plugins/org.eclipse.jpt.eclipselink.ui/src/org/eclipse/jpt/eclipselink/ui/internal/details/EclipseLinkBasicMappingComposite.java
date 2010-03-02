@@ -10,16 +10,12 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
-import org.eclipse.jpt.core.context.ConvertibleMapping;
-import org.eclipse.jpt.core.context.EnumeratedConverter;
-import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.EnumTypeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
@@ -30,7 +26,6 @@ import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -85,11 +80,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see OptionalComposite
  * @see TemporalTypeComposite
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
-public class EclipseLinkBasicMappingComposite extends Pane<BasicMapping>
-                                   implements JpaComposite
+public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends AbstractBasicMappingComposite<T>
 {
 	/**
 	 * Creates a new <code>BasicMappingComposite</code>.
@@ -98,7 +92,7 @@ public class EclipseLinkBasicMappingComposite extends Pane<BasicMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkBasicMappingComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
+	public EclipseLinkBasicMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                             Composite parent,
 	                             WidgetFactory widgetFactory) {
 
@@ -106,39 +100,22 @@ public class EclipseLinkBasicMappingComposite extends Pane<BasicMapping>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeTypePane(container);
-	}
-	
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-
+	protected void initializeBasicSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
-
-		// Align the widgets under the ColumnComposite
-		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
-		
-		// Mutable widgets
 		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}
 	
-	protected void initializeTypePane(Composite container) {
-
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.TypeSection_type
-		);
+	@Override
+	protected void initializeTypeSection(Composite container) {
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildNoConverterHolder(), 
+			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -187,47 +164,11 @@ public class EclipseLinkBasicMappingComposite extends Pane<BasicMapping>
 		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 	
-	protected PropertyValueModel<Column> buildColumnHolder() {
-		return new TransformationPropertyValueModel<BasicMapping, Column>(getSubjectHolder()) {
-			@Override
-			protected Column transform_(BasicMapping value) {
-				return value.getColumn();
-			}
-		};
-	}
-	
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
 		return new PropertyAspectAdapter<BasicMapping, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkMutable buildValue_() {
 				return ((EclipseLinkBasicMapping) this.subject).getMutable();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<Converter> buildConverterHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Converter buildValue_() {
-				return this.subject.getConverter();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
-			@Override
-			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == Converter.TEMPORAL_CONVERTER ? (TemporalConverter) converter : null;
-			}
-		};
-	}
-	
-	protected PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
-			@Override
-			protected EnumeratedConverter transform_(Converter converter) {
-				return converter.getType() == Converter.ENUMERATED_CONVERTER ? (EnumeratedConverter) converter : null;
 			}
 		};
 	}
@@ -240,37 +181,5 @@ public class EclipseLinkBasicMappingComposite extends Pane<BasicMapping>
 			}
 		};
 	}
-	
-	protected WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getConverter().getType() == Converter.NO_CONVERTER);
-			}
 
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.NO_CONVERTER);
-				}
-			}
-		};
-	}
-	
-	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == converterType);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(converterType);
-				}
-			}
-		};
-	}
 }

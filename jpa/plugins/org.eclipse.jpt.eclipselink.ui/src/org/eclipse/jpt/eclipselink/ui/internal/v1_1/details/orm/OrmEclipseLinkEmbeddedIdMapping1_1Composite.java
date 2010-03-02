@@ -11,11 +11,13 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -33,10 +35,10 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see EmbeddedIdMapping
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  */
-public class OrmEclipseLinkEmbeddedIdMapping1_1Composite extends Pane<EmbeddedIdMapping>
+public class OrmEclipseLinkEmbeddedIdMapping1_1Composite extends AbstractEmbeddedIdMappingComposite<OrmEmbeddedIdMapping>
                                         implements JpaComposite
 {
 	/**
@@ -46,7 +48,7 @@ public class OrmEclipseLinkEmbeddedIdMapping1_1Composite extends Pane<EmbeddedId
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkEmbeddedIdMapping1_1Composite(PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
+	public OrmEclipseLinkEmbeddedIdMapping1_1Composite(PropertyValueModel<? extends OrmEmbeddedIdMapping> subjectHolder,
 	                                  Composite parent,
 	                                  WidgetFactory widgetFactory) {
 
@@ -54,7 +56,8 @@ public class OrmEclipseLinkEmbeddedIdMapping1_1Composite extends Pane<EmbeddedId
 	}
 	
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void initializeEmbeddedIdSection(Composite container) {
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 
 		new EmbeddedMappingOverridesComposite(

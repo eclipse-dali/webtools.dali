@@ -18,6 +18,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -46,7 +47,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see ColumnComposite
  * @see TemporalTypeComposite
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public abstract class AbstractVersionMappingComposite<T extends VersionMapping> 
@@ -67,28 +68,40 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	protected PropertyValueModel<Column> buildColumnHolder() {
-		return new TransformationPropertyValueModel<T, Column>(getSubjectHolder()) {
-			@Override
-			protected Column transform_(T value) {
-				return value.getColumn();
-			}
-		};
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeVersionCollapsibleSection(container);
+		initializeTypeCollapsibleSection(container);
 	}
 	
-	protected void initializeConversionPane(Composite container) {
+	protected void initializeVersionCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.VersionSection_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+		);
 
+		this.initializeVersionSection(container);
+	}
+
+	protected abstract void initializeVersionSection(Composite container);
+
+	protected void initializeTypeCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 			container,
 			JptUiDetailsMessages.TypeSection_type
 		);
+		this.initializeTypeSection(container);
+	}
+	
+	protected void initializeTypeSection(Composite container) {
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildNoConverterHolder(), 
+			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
@@ -97,41 +110,32 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildTemporalBooleanHolder(), 
+			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
-	
 
-	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	protected PropertyValueModel<Column> buildColumnHolder() {
+		return new TransformationPropertyValueModel<T, Column>(getSubjectHolder()) {
 			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getConverter().getType() == Converter.NO_CONVERTER);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.NO_CONVERTER);
-				}
+			protected Column transform_(T value) {
+				return value.getColumn();
 			}
 		};
 	}
 
-
-	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
+	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
+				return Boolean.valueOf(converter.getType() == converterType);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.TEMPORAL_CONVERTER);
+					this.subject.setConverter(converterType);
 				}
 			}
 		};
@@ -154,5 +158,4 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 			}
 		};
 	}
-
 }

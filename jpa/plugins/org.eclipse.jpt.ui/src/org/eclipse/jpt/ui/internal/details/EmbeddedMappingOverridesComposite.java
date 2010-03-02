@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see EmbeddedMappingComposite - The parent container
  * @see ColumnComposite
  *
- * @version 3.0
+ * @version 2.3
  * @since 1.0
  */
 public class EmbeddedMappingOverridesComposite extends AbstractEmbeddedMappingOverridesComposite<BaseEmbeddedMapping>

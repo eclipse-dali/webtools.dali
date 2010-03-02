@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see TemporalTypeComposite
  * @see IdMappingGenerationComposite
  *
- * @version 2.2
+ * @version 2.3
  * @since 1.0
  */
 public class IdMappingComposite extends AbstractIdMappingComposite<IdMapping>
@@ -58,17 +58,9 @@ public class IdMappingComposite extends AbstractIdMappingComposite<IdMapping>
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
 	@Override
-	protected void initializeLayout(Composite container) {
-		
-		// Column widgets
+	protected void initializeIdSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
-
-		initializeTypePane(container);
-
-		// Generation pane
-		new IdMappingGenerationComposite(this, addSubPane(container, 10));
 	}
-
 }

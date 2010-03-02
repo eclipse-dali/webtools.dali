@@ -16,10 +16,10 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEmbeddableAdva
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddableComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.orm.MetadataCompleteComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmJavaClassChooser;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -30,11 +30,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see Embeddable
  * @see EmbeddableUiProvider
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddable> 
-	extends Pane<T>
+	extends AbstractEmbeddableComposite<T>
 	implements JpaComposite
 {
 	/**
@@ -53,12 +53,13 @@ public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddabl
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeConvertersPane(container);
-		initializeAdvancedPane(container);
+		this.initializeEmbeddableCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+		initializeAdvancedCollapsibleSection(container);
 	}
-	
-	protected void initializeGeneralPane(Composite container) {
+
+	@Override
+	protected void initializeEmbeddableSection(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolder(), container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
@@ -74,15 +75,17 @@ public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddabl
 			}
 		};
 	}
-
-	protected void initializeConvertersPane(Composite container) {
+	protected void initializeConvertersCollapsibleSection(Composite container) {
 
 		container = addCollapsibleSection(
 			addSubPane(container, 5),
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_Label
+			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
 		);
+		initializeConvertersSection(container, this.buildConverterHolder());
+	}
 
-		new OrmEclipseLinkConvertersComposite(this, buildConverterHolder(), container);
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterHolder> converterHolder) {
+		new OrmEclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 	
 	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
@@ -94,7 +97,7 @@ public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddabl
 		};
 	}
 	
-	protected void initializeAdvancedPane(Composite container) {
+	protected void initializeAdvancedCollapsibleSection(Composite container) {
 		new EclipseLinkEmbeddableAdvancedComposite(this, container);
 	}
 }
