@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0;
@@ -1047,4 +1048,39 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 		return MapKey.buildTranslator(JPA.MAP_KEY, OrmPackage.eINSTANCE.getAbstractXmlMultiRelationshipMapping_MapKey());
 	}
 
+	protected static Translator buildMapKeyTemporalTranslator() {
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyTemporal());
+	}
+
+	protected static Translator buildMapKeyEnumeratedTranslator() {
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyEnumerated());
+	}
+
+	protected static Translator buildMapKeyClassTranslator() {
+		return XmlClassReference.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyClass());
+	}
+
+	protected static Translator buildMapKeyColumnTranslator() {
+		return XmlColumn.buildTranslator(JPA2_0.MAP_KEY_COLUMN, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyColumn());
+	}
+
+	protected static Translator buildMapKeyJoinColumnTranslator() {
+		return XmlJoinColumn.buildTranslator(JPA2_0.MAP_KEY_JOIN_COLUMN, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyJoinColumns());
+	}
+
+	protected static Translator buildMappedByTranslator() {
+		return new Translator(JPA.MAPPED_BY, OrmPackage.eINSTANCE.getXmlMappedByMapping_MappedBy(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildMapKeyAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA2_0.MAP_KEY_ATTRIBUTE_OVERRIDE, OrmV2_0Package.eINSTANCE.getXmlMapKeyAttributeOverrideContainer_2_0_MapKeyAttributeOverrides());
+	}
+
+	protected static Translator buildJoinTableTranslator() {
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+	}
+
+	protected static Translator buildOrderColumnTranslator() {
+		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn());
+	}
 }
