@@ -44,7 +44,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.BaseEntityGenCustomizer;
 import org.eclipse.jpt.gen.internal.DatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
-import org.eclipse.jpt.gen.internal.PackageGenerator2;
+import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -202,7 +202,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			JptUiPlugin.log(e);
 		}
 		if(shouldShowOverwriteWarning())
-			PackageGenerator2.setOverwriteConfirmer( new OverwriteConfirmer());
+			PackageGenerator.setOverwriteConfirmer( new OverwriteConfirmer());
 		
 		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob( this.jpaProject, getCustomizer());
 		genEntitiesJob.schedule();
@@ -225,7 +225,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 			try{
-				PackageGenerator2.generate(jpaProject,this.customizer, monitor);
+				PackageGenerator.generate(jpaProject,this.customizer, monitor);
 			}catch(OperationCanceledException e){
 				//user canceled generation
 			}

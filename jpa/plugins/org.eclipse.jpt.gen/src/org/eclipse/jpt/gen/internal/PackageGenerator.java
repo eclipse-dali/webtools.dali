@@ -53,7 +53,7 @@ import org.osgi.framework.Bundle;
 /**
  * This generator will generate a package of entities for a set of tables.
  */
-public class PackageGenerator2 { 
+public class PackageGenerator { 
 
 	private static final String LOGGER_NAME = "org.eclipse.jpt.entities.gen.log"; //$NON-NLS-1$
 	private JpaProject jpaProject;
@@ -70,7 +70,7 @@ public class PackageGenerator2 {
 	 * @throws Exception 
 	 */
 	static public void generate(JpaProject jpaProject, ORMGenCustomizer customizer, IProgressMonitor monitor ) throws CoreException {
-		PackageGenerator2 generator = new PackageGenerator2();
+		PackageGenerator generator = new PackageGenerator();
 		generator.setProject(jpaProject);
 		generator.setCustomizer(customizer);
 		

@@ -173,8 +173,7 @@ public abstract class BaseJpaPlatformUi
 	// ********** entity generation **********
 	
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {
-		//EntitiesGenerator.generate(project, selection);
-		EntitiesGenerator2.generate(project, selection);
+		EntitiesGenerator.generate(project, selection);
 	}
 	
 	

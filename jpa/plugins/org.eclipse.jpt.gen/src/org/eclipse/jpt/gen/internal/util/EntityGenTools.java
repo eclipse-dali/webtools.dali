@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.gen.internal.old;
+package org.eclipse.jpt.gen.internal.util;
 
 import java.util.Collection;
 import org.eclipse.jpt.utility.internal.NameTools;
