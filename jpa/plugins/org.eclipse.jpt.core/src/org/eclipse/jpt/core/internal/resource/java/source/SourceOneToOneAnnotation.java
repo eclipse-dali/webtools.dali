@@ -13,9 +13,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToOne2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
@@ -25,9 +26,9 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 /**
  * javax.persistence.OneToOne
  */
-public abstract class SourceOneToOneAnnotation
+public final class SourceOneToOneAnnotation
 	extends SourceRelationshipMappingAnnotation
-	implements OneToOneAnnotation
+	implements OneToOne2_0Annotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -45,11 +46,16 @@ public abstract class SourceOneToOneAnnotation
 	private final AnnotationElementAdapter<String> mappedByAdapter;
 	private String mappedBy;
 
+	//added in JPA 2.0
+	private static final DeclarationAnnotationElementAdapter<Boolean> ORPHAN_REMOVAL_ADAPTER = buildOrphanRemovalAdapter();
+	private final AnnotationElementAdapter<Boolean> orphanRemovalAdapter;
+	private Boolean orphanRemoval;
 
 	public SourceOneToOneAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.mappedByAdapter = this.buildAnnotationElementAdapter(MAPPED_BY_ADAPTER);
 		this.optionalAdapter = this.buildBooleanAnnotationElementAdapter(OPTIONAL_ADAPTER);
+		this.orphanRemovalAdapter = this.buildBooleanAnnotationElementAdapter(ORPHAN_REMOVAL_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -61,6 +67,7 @@ public abstract class SourceOneToOneAnnotation
 		super.initialize(astRoot);
 		this.mappedBy = this.buildMappedBy(astRoot);
 		this.optional = this.buildOptional(astRoot);
+		this.orphanRemoval = this.buildOrphanRemoval(astRoot);
 	}
 
 	@Override
@@ -68,6 +75,7 @@ public abstract class SourceOneToOneAnnotation
 		super.synchronizeWith(astRoot);
 		this.syncMappedBy(this.buildMappedBy(astRoot));
 		this.syncOptional(this.buildOptional(astRoot));
+		this.syncOrphanRemoval(this.buildOrphanRemoval(astRoot));
 	}
 
 
@@ -147,6 +155,33 @@ public abstract class SourceOneToOneAnnotation
 		return this.getElementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
+	// ********** OneToOne2_0Annotation implementation **********
+
+	public Boolean getOrphanRemoval() {
+		return this.orphanRemoval;
+	}
+
+	public void setOrphanRemoval(Boolean orphanRemoval) {
+		if (this.attributeValueHasChanged(this.orphanRemoval, orphanRemoval)) {
+			this.orphanRemoval = orphanRemoval;
+			this.orphanRemovalAdapter.setValue(orphanRemoval);
+		}
+	}
+
+	private void syncOrphanRemoval(Boolean astOrphanRemoval) {
+		Boolean old = this.orphanRemoval;
+		this.orphanRemoval = astOrphanRemoval;
+		this.firePropertyChanged(ORPHAN_REMOVAL_PROPERTY, old, astOrphanRemoval);
+	}
+
+	public TextRange getOrphanRemovalTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(ORPHAN_REMOVAL_ADAPTER, astRoot);
+	}
+
+	private Boolean buildOrphanRemoval(CompilationUnit astRoot) {
+		return this.orphanRemovalAdapter.getValue(astRoot);
+	}
+
 
 	// ********** static methods **********
 
@@ -174,5 +209,11 @@ public abstract class SourceOneToOneAnnotation
 		return buildEnumArrayAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__CASCADE);
 	}
 
+	private static DeclarationAnnotationElementAdapter<Boolean> buildOrphanRemovalAdapter() {
+		return buildOrphanRemovalAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.ONE_TO_ONE__ORPHAN_REMOVAL);
+	}
 
+	private static DeclarationAnnotationElementAdapter<Boolean> buildOrphanRemovalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, false, BooleanExpressionConverter.instance());
+	}
 }

@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElemen
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.core.resource.java.CascadeType;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
@@ -36,7 +36,7 @@ import org.eclipse.jpt.utility.internal.ArrayTools;
  */
 abstract class SourceRelationshipMappingAnnotation
 	extends SourceAnnotation<Attribute>
-	implements RelationshipMappingAnnotation
+	implements RelationshipMapping2_0Annotation
 {
 	final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;
 	final AnnotationElementAdapter<String> targetEntityAdapter;
@@ -198,6 +198,7 @@ abstract class SourceRelationshipMappingAnnotation
 		this.syncCascadePersist(old);
 		this.syncCascadeRefresh(old);
 		this.syncCascadeRemove(old);
+		this.syncCascadeDetach(old);
 	}
 
 	private CascadeType[] buildCascadeTypes(CompilationUnit astRoot) {
@@ -297,6 +298,21 @@ abstract class SourceRelationshipMappingAnnotation
 		this.firePropertyChanged(CASCADE_REFRESH_PROPERTY, old, this.isCascadeRefresh());
 	}
 
+	// ***** cascade detach - JPA 2.0
+	public boolean isCascadeDetach() {
+		return this.cascadeTypeIsTrue(CascadeType.DETACH);
+	}
+
+	public void setCascadeDetach(boolean cascadeDetach) {
+		if (this.isCascadeDetach() != cascadeDetach) {
+			this.setCascadeType(CascadeType.DETACH, cascadeDetach);
+		}
+	}
+
+	private void syncCascadeDetach(CascadeType[] oldCascadeTypes) {
+		boolean old = ArrayTools.contains(oldCascadeTypes, CascadeType.DETACH);
+		this.firePropertyChanged(CASCADE_DETACH_PROPERTY, old, this.isCascadeDetach());
+	}
 
 	// ********** static methods **********
 

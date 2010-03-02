@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
@@ -27,7 +28,8 @@ public enum CascadeType {
 	PERSIST(JPA.CASCADE_TYPE__PERSIST),
 	MERGE(JPA.CASCADE_TYPE__MERGE),
 	REMOVE(JPA.CASCADE_TYPE__REMOVE),
-	REFRESH(JPA.CASCADE_TYPE__REFRESH);
+	REFRESH(JPA.CASCADE_TYPE__REFRESH),
+	DETACH(JPA2_0.CASCADE_TYPE__DETACH); //added in JPA 2.0
 
 
 	private String javaAnnotationValue;

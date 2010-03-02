@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.resource.java;
 
-import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
+import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,6 +21,6 @@ import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
  * @version 2.3
  * @since 2.3
  */
-public interface OneToOne2_0Annotation
-	extends OneToOneAnnotation, OrphanRemovable2_0Annotation, RelationshipMapping2_0Annotation
+public interface ManyToOne2_0Annotation
+	extends ManyToOneAnnotation, RelationshipMapping2_0Annotation
 {}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.core.resource.java.CascadeType;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.ArrayTools;
  */
 abstract class BinaryRelationshipMappingAnnotation
 	extends BinaryAnnotation
-	implements RelationshipMappingAnnotation
+	implements RelationshipMapping2_0Annotation
 {
 	String targetEntity;
 	FetchType fetch;
@@ -35,19 +35,23 @@ abstract class BinaryRelationshipMappingAnnotation
 	boolean cascadePersist;
 	boolean cascadeRefresh;
 	boolean cascadeRemove;
+	boolean cascadeDetach; //added in JPA 2.0
 
 
 	BinaryRelationshipMappingAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.targetEntity = this.buildTargetEntity();
 		this.fetch = this.buildFetch();
-
-		CascadeType[] cascadeTypes = this.buildCascadeTypes();
+		this.initializeCascadeTypes(this.buildCascadeTypes());
+	}
+	
+	protected void initializeCascadeTypes(CascadeType[] cascadeTypes) {
 		this.cascadeAll = ArrayTools.contains(cascadeTypes, CascadeType.ALL);
 		this.cascadeMerge = ArrayTools.contains(cascadeTypes, CascadeType.MERGE);
 		this.cascadePersist = ArrayTools.contains(cascadeTypes, CascadeType.PERSIST);
 		this.cascadeRefresh = ArrayTools.contains(cascadeTypes, CascadeType.REFRESH);
 		this.cascadeRemove = ArrayTools.contains(cascadeTypes, CascadeType.REMOVE);
+		this.cascadeDetach = ArrayTools.contains(cascadeTypes, CascadeType.DETACH);
 	}
 
 	@Override
@@ -55,15 +59,17 @@ abstract class BinaryRelationshipMappingAnnotation
 		super.update();
 		this.setTargetEntity_(this.buildTargetEntity());
 		this.setFetch_(this.buildFetch());
+		this.updateCascadeTypes(this.buildCascadeTypes());
+	}
 
-		CascadeType[] cascadeTypes = this.buildCascadeTypes();
+	protected void updateCascadeTypes(CascadeType[] cascadeTypes) {
 		this.setCascadeAll_(ArrayTools.contains(cascadeTypes, CascadeType.ALL));
 		this.setCascadeMerge_(ArrayTools.contains(cascadeTypes, CascadeType.MERGE));
 		this.setCascadePersist_(ArrayTools.contains(cascadeTypes, CascadeType.PERSIST));
 		this.setCascadeRefresh_(ArrayTools.contains(cascadeTypes, CascadeType.REFRESH));
 		this.setCascadeRemove_(ArrayTools.contains(cascadeTypes, CascadeType.REMOVE));
+		this.setCascadeDetach_(ArrayTools.contains(cascadeTypes, CascadeType.DETACH));
 	}
-
 
 	// ********** RelationshipMappingAnnotation implementation **********
 
@@ -207,6 +213,21 @@ abstract class BinaryRelationshipMappingAnnotation
 		boolean old = this.cascadeRemove;
 		this.cascadeRemove = cascadeRemove;
 		this.firePropertyChanged(CASCADE_REMOVE_PROPERTY, old, cascadeRemove);
+	}
+
+	// ***** cascade detach - JPA 2.0
+	public boolean isCascadeDetach() {
+		return this.cascadeDetach;
+	}
+
+	public void setCascadeDetach(boolean cascadeDetach) {
+		throw new UnsupportedOperationException();
+	}
+
+	private void setCascadeDetach_(boolean cascadeDetach) {
+		boolean old = this.cascadeDetach;
+		this.cascadeDetach = cascadeDetach;
+		this.firePropertyChanged(CASCADE_DETACH_PROPERTY, old, cascadeDetach);
 	}
 
 }

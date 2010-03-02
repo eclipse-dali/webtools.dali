@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.resource.java;
+
+import org.eclipse.jpt.core.resource.java.JPA;
 
 /**
  * JPA 2.0 Java-related stuff (annotations etc.)
@@ -37,6 +39,8 @@ public interface JPA2_0
 
 	String CACHEABLE = PACKAGE_ + "Cacheable";
 		String CACHEABLE__VALUE = "value";
+		
+	String CASCADE_TYPE__DETACH = JPA.CASCADE_TYPE_ + "DETACH";
 
 	String COLLECTION_TABLE = PACKAGE_ + "CollectionTable";
 		String COLLECTION_TABLE__NAME = "name";

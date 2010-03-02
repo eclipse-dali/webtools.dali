@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,25 +11,28 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToOne2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * javax.persistence.OneToOne
  */
-public abstract class BinaryOneToOneAnnotation
+public class BinaryOneToOneAnnotation
 	extends BinaryRelationshipMappingAnnotation
-	implements OneToOneAnnotation
+	implements OneToOne2_0Annotation
 {
 	private Boolean optional;
 	private String mappedBy;
+	private Boolean orphanRemoval; //added in JPA 2.0
 
 	public BinaryOneToOneAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.optional = this.buildOptional();
 		this.mappedBy = this.buildMappedBy();
+		this.orphanRemoval = this.buildOrphanRemoval();
 	}
 
 	public String getAnnotationName() {
@@ -41,6 +44,7 @@ public abstract class BinaryOneToOneAnnotation
 		super.update();
 		this.setOptional_(this.buildOptional());
 		this.setMappedBy_(this.buildMappedBy());
+		this.setOrphanRemoval_(this.buildOrphanRemoval());
 	}
 
 
@@ -117,4 +121,28 @@ public abstract class BinaryOneToOneAnnotation
 		throw new UnsupportedOperationException();
 	}
 
+
+	// ********** OneToOne2_0Annotation implementation **********
+
+	public Boolean getOrphanRemoval() {
+		return this.orphanRemoval;
+	}
+
+	public void setOrphanRemoval(Boolean orphanRemoval) {
+		throw new UnsupportedOperationException();
+	}
+
+	public TextRange getOrphanRemovalTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
+	private Boolean buildOrphanRemoval() {
+		return (Boolean) this.getJdtMemberValue(JPA2_0.ONE_TO_ONE__ORPHAN_REMOVAL);
+	}
+
+	private void setOrphanRemoval_(Boolean orphanRemoval) {
+		Boolean old = this.orphanRemoval;
+		this.orphanRemoval = orphanRemoval;
+		this.firePropertyChanged(ORPHAN_REMOVAL_PROPERTY, old, orphanRemoval);
+	}
 }

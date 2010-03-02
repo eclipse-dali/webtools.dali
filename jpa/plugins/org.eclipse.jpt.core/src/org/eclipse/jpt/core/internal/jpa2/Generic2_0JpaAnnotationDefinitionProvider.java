@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa2;
 
 import java.util.List;
-
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
@@ -28,8 +27,6 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.MapKeyTemporal2_0Annotat
 import org.eclipse.jpt.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQueries2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.NamedQuery2_0AnnotationDefinition;
-import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToMany2_0AnnotationDefinition;
-import org.eclipse.jpt.core.internal.jpa2.resource.java.OneToOne2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideAnnotationDefinition;
@@ -57,6 +54,8 @@ import org.eclipse.jpt.core.internal.resource.java.MapKeyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclassAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueriesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueryAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.OneToManyAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.OneToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OrderByAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumnsAnnotationDefinition;
@@ -162,8 +161,8 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 		definitions.add(MapKeyJoinColumn2_0AnnotationDefinition.instance());
 		definitions.add(MapKeyJoinColumns2_0AnnotationDefinition.instance());
 		definitions.add(MapKeyTemporal2_0AnnotationDefinition.instance());
-		definitions.add(OneToMany2_0AnnotationDefinition.instance());
-		definitions.add(OneToOne2_0AnnotationDefinition.instance());
+		definitions.add(OneToManyAnnotationDefinition.instance());
+		definitions.add(OneToOneAnnotationDefinition.instance());
 		definitions.add(OrderByAnnotationDefinition.instance());
 		definitions.add(OrderColumn2_0AnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());

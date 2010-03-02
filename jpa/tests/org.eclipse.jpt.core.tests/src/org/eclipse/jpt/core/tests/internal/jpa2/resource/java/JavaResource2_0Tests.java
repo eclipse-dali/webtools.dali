@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,8 @@ public class JavaResource2_0Tests {
 		suite.addTestSuite(Cacheable2_0AnnotationTests.class);
 		suite.addTestSuite(CollectionTable2_0AnnotationTests.class);
 		suite.addTestSuite(ElementCollection2_0AnnotationTests.class);
+		suite.addTestSuite(ManyToMany2_0AnnotationTests.class);
+		suite.addTestSuite(ManyToOne2_0AnnotationTests.class);
 		suite.addTestSuite(MapKeyClass2_0AnnotationTests.class);
 		suite.addTestSuite(MapKeyColumn2_0AnnotationTests.class);
 		suite.addTestSuite(MapKeyEnumerated2_0AnnotationTests.class);
@@ -30,6 +32,8 @@ public class JavaResource2_0Tests {
 		suite.addTestSuite(MapKeyJoinColumns2_0AnnotationTests.class);
 		suite.addTestSuite(MapKeyTemporal2_0AnnotationTests.class);
 		suite.addTestSuite(MapsId2_0AnnotationTests.class);
+		suite.addTestSuite(OneToMany2_0AnnotationTests.class);
+		suite.addTestSuite(OneToOne2_0AnnotationTests.class);
 		suite.addTestSuite(OrderColumn2_0AnnotationTests.class);
 		suite.addTestSuite(SequenceGenerator2_0AnnotationTests.class);
 			
