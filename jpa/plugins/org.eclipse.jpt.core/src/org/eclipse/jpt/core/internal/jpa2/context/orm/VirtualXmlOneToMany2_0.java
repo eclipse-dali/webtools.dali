@@ -27,10 +27,10 @@ import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -49,7 +49,7 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 
 	protected final VirtualXmlOneToMany virtualXmlOneToMany;
 
-	protected final XmlMapKeyClass mapKeyClass;
+	protected final XmlClassReference mapKeyClass;
 
 	protected VirtualXmlOrderColumn orderColumn;
 
@@ -61,7 +61,7 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToManyMapping;
 		this.virtualXmlOneToMany = new VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
-		this.mapKeyClass = new VirtualMapKeyClass(javaOneToManyMapping);
+		this.mapKeyClass = new VirtualMapKeyClassReference(javaOneToManyMapping);
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
 			this.ormTypeMapping);
@@ -172,7 +172,7 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	}
 	
 	@Override
-	public XmlMapKeyClass getMapKeyClass() {
+	public XmlClassReference getMapKeyClass() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
@@ -180,7 +180,7 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 	}
 
 	@Override
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+	public void setMapKeyClass(XmlClassReference newMapKeyClass) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 

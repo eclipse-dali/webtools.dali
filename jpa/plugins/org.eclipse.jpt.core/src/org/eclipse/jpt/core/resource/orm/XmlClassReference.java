@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -199,22 +200,30 @@ public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	
+	// **************** validation ********************************************
+	
+	public TextRange getClassNameTextRange() {
+		return getAttributeTextRange(JPA.CLASS);
+	}
+	
+	
 	// ********** translators **********
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
-				elementName,
-				structuralFeature,
-				Translator.END_TAG_NO_INDENT,
-				buildTranslatorChildren());
+			elementName,
+			structuralFeature,
+			Translator.END_TAG_NO_INDENT,
+			buildTranslatorChildren()
+		);
 	}
-	
+
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-				buildClassTranslator()};
+			buildClassTranslator()};
 	}
 	
 	private static Translator buildClassTranslator() {
-		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getXmlIdClass_ClassName(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getXmlClassReference_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
 }

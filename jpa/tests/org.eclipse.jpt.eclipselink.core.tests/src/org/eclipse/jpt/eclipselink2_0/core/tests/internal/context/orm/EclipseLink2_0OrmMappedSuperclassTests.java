@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
@@ -30,8 +31,8 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
@@ -348,8 +349,8 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
 		
 		// set xml customizer, check defaults
-		resourceMappedSuperclass.setCustomizer(EclipseLinkOrmFactory.eINSTANCE.createXmlCustomizer());
-		assertNull(resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		resourceMappedSuperclass.setCustomizer(OrmFactory.eINSTANCE.createXmlClassReference());
+		assertNull(resourceMappedSuperclass.getCustomizer().getClassName());
 		assertNull(javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
@@ -358,9 +359,9 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		
 		// set xml customizer class, check override
 		
-		resourceMappedSuperclass.getCustomizer().setCustomizerClassName("foo");
+		resourceMappedSuperclass.getCustomizer().setClassName("foo");
 		
-		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getClassName());
 		assertNull(javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
@@ -368,10 +369,10 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		
 		// clear xml customizer class, set java customizer class, check defaults
 		
-		resourceMappedSuperclass.getCustomizer().setCustomizerClassName(null);
+		resourceMappedSuperclass.getCustomizer().setClassName(null);
 		javaContextMappedSuperclass.getCustomizer().setSpecifiedCustomizerClass("bar");
 		
-		assertNull(resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertNull(resourceMappedSuperclass.getCustomizer().getClassName());
 		assertEquals("bar", javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
@@ -381,7 +382,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 
 		ormContextMappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
-		assertNull(resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertNull(resourceMappedSuperclass.getCustomizer().getClassName());
 		assertEquals("bar", javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
@@ -391,9 +392,9 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		
 		// set xml customizer class, check override
 		
-		resourceMappedSuperclass.getCustomizer().setCustomizerClassName("foo");
+		resourceMappedSuperclass.getCustomizer().setClassName("foo");
 		
-		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getClassName());
 		assertEquals("bar", javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
@@ -427,7 +428,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		
 		ormContextMappedSuperclass.getCustomizer().setSpecifiedCustomizerClass("foo");
 		
-		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getClassName());
 		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
 		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
 		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());

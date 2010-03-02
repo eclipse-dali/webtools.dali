@@ -58,10 +58,10 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -901,7 +901,7 @@ public class GenericOrmElementCollectionMapping2_0
 		String old = this.specifiedMapKeyClass;
 		this.specifiedMapKeyClass = mapKeyClass;
 		if (this.attributeValueHasChanged(old, mapKeyClass)) {
-			XmlMapKeyClass xmlMapKeyClass = this.getXmlMapKeyClass();
+			XmlClassReference xmlMapKeyClass = this.getXmlMapKeyClass();
 			if (mapKeyClass == null) {
 				if (xmlMapKeyClass != null) {
 					this.removeXmlMapKeyClass();
@@ -922,12 +922,12 @@ public class GenericOrmElementCollectionMapping2_0
 		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
 	}
 	
-	protected XmlMapKeyClass getXmlMapKeyClass() {
+	protected XmlClassReference getXmlMapKeyClass() {
 		return this.resourceAttributeMapping.getMapKeyClass();
 	}
 	
-	protected XmlMapKeyClass addXmlMapKeyClass() {
-		XmlMapKeyClass mapKeyClass = OrmFactory.eINSTANCE.createXmlMapKeyClass();
+	protected XmlClassReference addXmlMapKeyClass() {
+		XmlClassReference mapKeyClass = OrmFactory.eINSTANCE.createXmlClassReference();
 		this.resourceAttributeMapping.setMapKeyClass(mapKeyClass);
 		return mapKeyClass;
 	}
@@ -947,7 +947,7 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 
 	protected String getResourceMapKeyClass() {
-		XmlMapKeyClass mapKeyClass = this.resourceAttributeMapping.getMapKeyClass();
+		XmlClassReference mapKeyClass = this.resourceAttributeMapping.getMapKeyClass();
 		return mapKeyClass == null ? null : mapKeyClass.getClassName();
 	}
 	

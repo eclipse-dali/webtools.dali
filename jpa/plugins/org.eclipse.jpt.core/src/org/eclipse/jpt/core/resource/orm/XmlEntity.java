@@ -222,7 +222,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlIdClass idClass;
+	protected XmlClassReference idClass;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -553,12 +553,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
-	 * @see #setIdClass(XmlIdClass)
+	 * @see #setIdClass(XmlClassReference)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClassContainer_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlIdClass getIdClass()
+	public XmlClassReference getIdClass()
 	{
 		return idClass;
 	}
@@ -568,9 +568,9 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetIdClass(XmlIdClass newIdClass, NotificationChain msgs)
+	public NotificationChain basicSetIdClass(XmlClassReference newIdClass, NotificationChain msgs)
 	{
-		XmlIdClass oldIdClass = idClass;
+		XmlClassReference oldIdClass = idClass;
 		idClass = newIdClass;
 		if (eNotificationRequired())
 		{
@@ -588,7 +588,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @see #getIdClass()
 	 * @generated
 	 */
-	public void setIdClass(XmlIdClass newIdClass)
+	public void setIdClass(XmlClassReference newIdClass)
 	{
 		if (newIdClass != idClass)
 		{
@@ -1759,7 +1759,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				setCacheable((Boolean)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((XmlIdClass)newValue);
+				setIdClass((XmlClassReference)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
@@ -1854,7 +1854,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				setCacheable(CACHEABLE_EDEFAULT);
 				return;
 			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((XmlIdClass)null);
+				setIdClass((XmlClassReference)null);
 				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
@@ -2227,7 +2227,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	}
 	
 	protected static Translator buildIdClassTranslator() {
-		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlIdClassContainer_IdClass());
+		return XmlClassReference.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlIdClassContainer_IdClass());
 	}
 	
 	protected static Translator buildInheritanceTranslator() {

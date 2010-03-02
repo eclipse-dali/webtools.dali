@@ -20,9 +20,9 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
@@ -213,12 +213,12 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	}
 	
 	@Override
-	public XmlMapKeyClass getMapKeyClass() {
+	public XmlClassReference getMapKeyClass() {
 		return this.virtualXmlElementCollection.getMapKeyClass();
 	}
 	
 	@Override
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+	public void setMapKeyClass(XmlClassReference newMapKeyClass) {
 		this.virtualXmlElementCollection.setMapKeyClass(newMapKeyClass);
 	}
 	

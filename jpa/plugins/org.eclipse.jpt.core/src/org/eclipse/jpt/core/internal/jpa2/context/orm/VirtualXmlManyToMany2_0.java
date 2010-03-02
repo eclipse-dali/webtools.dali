@@ -20,10 +20,10 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -40,7 +40,7 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 
 	protected final VirtualXmlManyToMany virtualXmlManyToMany;
 	
-	protected final XmlMapKeyClass mapKeyClass;
+	protected final XmlClassReference mapKeyClass;
 	
 	protected VirtualXmlOrderColumn orderColumn;
 
@@ -51,7 +51,7 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;
 		this.virtualXmlManyToMany = new VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
-		this.mapKeyClass = new VirtualMapKeyClass(javaManyToManyMapping);
+		this.mapKeyClass = new VirtualMapKeyClassReference(javaManyToManyMapping);
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
 			this.ormTypeMapping);
@@ -144,7 +144,7 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	}
 	
 	@Override
-	public XmlMapKeyClass getMapKeyClass() {
+	public XmlClassReference getMapKeyClass() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
@@ -152,7 +152,7 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 	}
 
 	@Override
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+	public void setMapKeyClass(XmlClassReference newMapKeyClass) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	

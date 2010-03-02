@@ -321,7 +321,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
-		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
+		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createXmlClassReference());
 		assertNotNull(mappedSuperclassResource.getIdClass());
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
@@ -345,7 +345,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		assertNull(idClassRef.getIdClass());
 		
 		//reset @IdClass value and then remove id-class tag
-		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
+		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createXmlClassReference());
 		mappedSuperclassResource.getIdClass().setClassName("model.Foo");
 		mappedSuperclassResource.setIdClass(null);
 		assertNull(mappedSuperclassResource.getIdClass());

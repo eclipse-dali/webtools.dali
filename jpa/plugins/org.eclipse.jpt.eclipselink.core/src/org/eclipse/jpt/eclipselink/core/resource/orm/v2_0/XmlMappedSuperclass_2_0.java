@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
 
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheInterceptor;
 
 /**
  * <!-- begin-user-doc -->
@@ -46,12 +46,12 @@ public interface XmlMappedSuperclass_2_0 extends XmlCacheable_2_0
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor)
+	 * @see #setCacheInterceptor(XmlClassReference)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlMappedSuperclass_2_0_CacheInterceptor()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlCacheInterceptor getCacheInterceptor();
+	XmlClassReference getCacheInterceptor();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0#getCacheInterceptor <em>Cache Interceptor</em>}' containment reference.
@@ -61,6 +61,6 @@ public interface XmlMappedSuperclass_2_0 extends XmlCacheable_2_0
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	void setCacheInterceptor(XmlCacheInterceptor value);
+	void setCacheInterceptor(XmlClassReference value);
 
 } // XmlMappedSuperclass_2_0

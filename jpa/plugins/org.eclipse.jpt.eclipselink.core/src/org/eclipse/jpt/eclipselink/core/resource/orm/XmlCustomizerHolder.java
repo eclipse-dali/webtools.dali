@@ -10,6 +10,7 @@
 
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
@@ -51,12 +52,12 @@ public interface XmlCustomizerHolder extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Customizer</em>' containment reference.
-	 * @see #setCustomizer(XmlCustomizer)
+	 * @see #setCustomizer(XmlClassReference)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizerHolder_Customizer()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlCustomizer getCustomizer();
+	XmlClassReference getCustomizer();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder#getCustomizer <em>Customizer</em>}' containment reference.
@@ -66,6 +67,6 @@ public interface XmlCustomizerHolder extends JpaEObject
 	 * @see #getCustomizer()
 	 * @generated
 	 */
-	void setCustomizer(XmlCustomizer value);
+	void setCustomizer(XmlClassReference value);
 
 } // XmlCustomizerHolder

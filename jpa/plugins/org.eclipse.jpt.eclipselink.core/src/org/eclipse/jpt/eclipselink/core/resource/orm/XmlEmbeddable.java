@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -63,7 +64,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCustomizer customizer;
+	protected XmlClassReference customizer;
 
 	/**
 	 * The cached value of the '{@link #getChangeTracking() <em>Change Tracking</em>}' containment reference.
@@ -205,12 +206,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Customizer</em>' containment reference.
-	 * @see #setCustomizer(XmlCustomizer)
+	 * @see #setCustomizer(XmlClassReference)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizerHolder_Customizer()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCustomizer getCustomizer()
+	public XmlClassReference getCustomizer()
 	{
 		return customizer;
 	}
@@ -220,9 +221,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCustomizer(XmlCustomizer newCustomizer, NotificationChain msgs)
+	public NotificationChain basicSetCustomizer(XmlClassReference newCustomizer, NotificationChain msgs)
 	{
-		XmlCustomizer oldCustomizer = customizer;
+		XmlClassReference oldCustomizer = customizer;
 		customizer = newCustomizer;
 		if (eNotificationRequired())
 		{
@@ -240,7 +241,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @see #getCustomizer()
 	 * @generated
 	 */
-	public void setCustomizer(XmlCustomizer newCustomizer)
+	public void setCustomizer(XmlClassReference newCustomizer)
 	{
 		if (newCustomizer != customizer)
 		{
@@ -728,7 +729,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
-				setCustomizer((XmlCustomizer)newValue);
+				setCustomizer((XmlClassReference)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
 				setChangeTracking((XmlChangeTracking)newValue);
@@ -780,7 +781,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
-				setCustomizer((XmlCustomizer)null);
+				setCustomizer((XmlClassReference)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
 				setChangeTracking((XmlChangeTracking)null);
@@ -996,7 +997,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	}
 	
 	protected static Translator buildCustomizerTranslator() {
-		return XmlCustomizer.buildTranslator(EclipseLink.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
+		return XmlClassReference.buildTranslator(EclipseLink.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
 	}
 	
 	protected static Translator buildChangeTrackingTranslator() {

@@ -11,10 +11,10 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 
 public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
@@ -60,14 +60,14 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 		this.specifiedCustomizerClass = newCustomizerClass;
 		if (oldCustomizerClass != newCustomizerClass) {
 			if (this.getResourceCustomizer() != null) {
-				this.getResourceCustomizer().setCustomizerClassName(newCustomizerClass);						
+				this.getResourceCustomizer().setClassName(newCustomizerClass);						
 				if (this.getResourceCustomizer().isUnset()) {
 					removeResourceCustomizer();
 				}
 			}
 			else if (newCustomizerClass != null) {
 				addResourceCustomizer();
-				getResourceCustomizer().setCustomizerClassName(newCustomizerClass);
+				getResourceCustomizer().setClassName(newCustomizerClass);
 			}
 		}
 		firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
@@ -79,12 +79,12 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 		firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
 	}
 	
-	protected XmlCustomizer getResourceCustomizer() {
+	protected XmlClassReference getResourceCustomizer() {
 		return this.resource.getCustomizer();
 	}
 	
 	protected void addResourceCustomizer() {
-		this.resource.setCustomizer(EclipseLinkOrmFactory.eINSTANCE.createXmlCustomizer());		
+		this.resource.setCustomizer(OrmFactory.eINSTANCE.createXmlClassReference());		
 	}
 	
 	protected void removeResourceCustomizer() {
@@ -104,16 +104,16 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 	}
 	
 	protected String getResourceCustomizerClass() {
-		XmlCustomizer resource = getResourceCustomizer();
-		return (resource == null) ? null : resource.getCustomizerClassName();
+		XmlClassReference resource = getResourceCustomizer();
+		return (resource == null) ? null : resource.getClassName();
 	}
 	
 	
 	// **************** validation **************************************
 	
 	public TextRange getValidationTextRange() {
-		XmlCustomizer resource = getResourceCustomizer();
-		return resource == null ? null : resource.getCustomizerClassNameTextRange();
+		XmlClassReference resource = getResourceCustomizer();
+		return resource == null ? null : resource.getClassNameTextRange();
 	}
 
 }

@@ -225,9 +225,6 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlId">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/generatedValue"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlIdClass">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlIdClass/className"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlIdClassContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlIdClassContainer/idClass"/>
     </genClasses>
@@ -252,7 +249,6 @@
     <genClasses ecoreClass="orm.ecore#//MapKey">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MapKey/name"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlMapKeyClass"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlMappedByMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMappedByMapping/mappedBy"/>
     </genClasses>
@@ -403,9 +399,6 @@
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlManyToMany_2_0"/>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer_2_0">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer_2_0/mapKeyAttributeOverrides"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyClass_2_0">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyClass_2_0/className"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapsId_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapsId_2_0/mapsId"/>

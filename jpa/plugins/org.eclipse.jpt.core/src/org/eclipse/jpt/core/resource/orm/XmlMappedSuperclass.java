@@ -55,7 +55,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlIdClass idClass;
+	protected XmlClassReference idClass;
 
 	/**
 	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
@@ -145,12 +145,12 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
-	 * @see #setIdClass(XmlIdClass)
+	 * @see #setIdClass(XmlClassReference)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClassContainer_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlIdClass getIdClass()
+	public XmlClassReference getIdClass()
 	{
 		return idClass;
 	}
@@ -160,9 +160,9 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetIdClass(XmlIdClass newIdClass, NotificationChain msgs)
+	public NotificationChain basicSetIdClass(XmlClassReference newIdClass, NotificationChain msgs)
 	{
-		XmlIdClass oldIdClass = idClass;
+		XmlClassReference oldIdClass = idClass;
 		idClass = newIdClass;
 		if (eNotificationRequired())
 		{
@@ -180,7 +180,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	 * @see #getIdClass()
 	 * @generated
 	 */
-	public void setIdClass(XmlIdClass newIdClass)
+	public void setIdClass(XmlClassReference newIdClass)
 	{
 		if (newIdClass != idClass)
 		{
@@ -377,7 +377,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 		switch (featureID)
 		{
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				setIdClass((XmlIdClass)newValue);
+				setIdClass((XmlClassReference)newValue);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
 				setExcludeDefaultListeners((Boolean)newValue);
@@ -403,7 +403,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 		switch (featureID)
 		{
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				setIdClass((XmlIdClass)null);
+				setIdClass((XmlClassReference)null);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
 				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);
@@ -529,7 +529,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlId
 	}
 	
 	protected static Translator buildIdClassTranslator() {
-		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlIdClassContainer_IdClass());
+		return XmlClassReference.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlIdClassContainer_IdClass());
 	}
 	
 	protected static Translator buildExcludeDefaultListenersTranslator() {

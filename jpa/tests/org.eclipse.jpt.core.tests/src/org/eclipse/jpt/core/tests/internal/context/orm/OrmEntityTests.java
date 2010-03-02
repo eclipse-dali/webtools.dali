@@ -2619,7 +2619,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
-		entityResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
+		entityResource.setIdClass(OrmFactory.eINSTANCE.createXmlClassReference());
 		assertNotNull(entityResource.getIdClass());
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
@@ -2643,7 +2643,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(idClassRef.getIdClass());
 		
 		//reset @IdClass value and then remove id-class tag
-		entityResource.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());
+		entityResource.setIdClass(OrmFactory.eINSTANCE.createXmlClassReference());
 		entityResource.getIdClass().setClassName("model.Foo");
 		entityResource.setIdClass(null);
 		assertNull(entityResource.getIdClass());

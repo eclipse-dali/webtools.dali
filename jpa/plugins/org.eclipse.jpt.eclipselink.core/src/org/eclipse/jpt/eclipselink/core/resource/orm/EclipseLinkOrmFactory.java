@@ -87,7 +87,6 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
-			case EclipseLinkOrmPackage.XML_CACHE_INTERCEPTOR: return (EObject)createXmlCacheInterceptor();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
 			case EclipseLinkOrmPackage.XML_CLONE_COPY_POLICY: return (EObject)createXmlCloneCopyPolicy();
 			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE: return (EObject)createXmlConversionValue();
@@ -254,17 +253,6 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlCache xmlCache = new XmlCache();
 		return xmlCache;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlCacheInterceptor createXmlCacheInterceptor()
-	{
-		XmlCacheInterceptor xmlCacheInterceptor = new XmlCacheInterceptor();
-		return xmlCacheInterceptor;
 	}
 
 	/**

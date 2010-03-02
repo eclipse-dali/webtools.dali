@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
@@ -25,8 +26,8 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
@@ -326,8 +327,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertNull(ormContextEntity.getCustomizer().getSpecifiedCustomizerClass());
 		
 		// set xml customizer, check defaults
-		resourceEntity.setCustomizer(EclipseLinkOrmFactory.eINSTANCE.createXmlCustomizer());
-		assertNull(resourceEntity.getCustomizer().getCustomizerClassName());
+		resourceEntity.setCustomizer(OrmFactory.eINSTANCE.createXmlClassReference());
+		assertNull(resourceEntity.getCustomizer().getClassName());
 		assertNull(javaContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getDefaultCustomizerClass());
@@ -336,9 +337,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		
 		// set xml customizer class, check override
 		
-		resourceEntity.getCustomizer().setCustomizerClassName("foo");
+		resourceEntity.getCustomizer().setClassName("foo");
 		
-		assertEquals("foo", resourceEntity.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceEntity.getCustomizer().getClassName());
 		assertNull(javaContextEntity.getCustomizer().getCustomizerClass());
 		assertEquals("foo", ormContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getDefaultCustomizerClass());
@@ -346,10 +347,10 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		
 		// clear xml customizer class, set java customizer class, check defaults
 		
-		resourceEntity.getCustomizer().setCustomizerClassName(null);
+		resourceEntity.getCustomizer().setClassName(null);
 		javaContextEntity.getCustomizer().setSpecifiedCustomizerClass("bar");
 		
-		assertNull(resourceEntity.getCustomizer().getCustomizerClassName());
+		assertNull(resourceEntity.getCustomizer().getClassName());
 		assertEquals("bar", javaContextEntity.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextEntity.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextEntity.getCustomizer().getDefaultCustomizerClass());
@@ -359,7 +360,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 
 		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
-		assertNull(resourceEntity.getCustomizer().getCustomizerClassName());
+		assertNull(resourceEntity.getCustomizer().getClassName());
 		assertEquals("bar", javaContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getDefaultCustomizerClass());
@@ -369,9 +370,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		
 		// set xml customizer class, check override
 		
-		resourceEntity.getCustomizer().setCustomizerClassName("foo");
+		resourceEntity.getCustomizer().setClassName("foo");
 		
-		assertEquals("foo", resourceEntity.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceEntity.getCustomizer().getClassName());
 		assertEquals("bar", javaContextEntity.getCustomizer().getCustomizerClass());
 		assertEquals("foo", ormContextEntity.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextEntity.getCustomizer().getDefaultCustomizerClass());
@@ -405,7 +406,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		
 		ormContextEntity.getCustomizer().setSpecifiedCustomizerClass("foo");
 		
-		assertEquals("foo", resourceEntity.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceEntity.getCustomizer().getClassName());
 		assertEquals("foo", ormContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getDefaultCustomizerClass());
 		assertEquals("foo", ormContextEntity.getCustomizer().getSpecifiedCustomizerClass());

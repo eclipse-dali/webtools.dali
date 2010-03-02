@@ -457,7 +457,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		assertNull(manyToMany.getMapKeyClass());
 		
 		//set mapKey in the resource model, verify context model does not change
-		manyToMany.setMapKeyClass(OrmFactory.eINSTANCE.createXmlMapKeyClass());
+		manyToMany.setMapKeyClass(OrmFactory.eINSTANCE.createXmlClassReference());
 		assertNull(ormManyToManyMapping.getSpecifiedMapKeyClass());
 		assertNotNull(manyToMany.getMapKeyClass());
 				

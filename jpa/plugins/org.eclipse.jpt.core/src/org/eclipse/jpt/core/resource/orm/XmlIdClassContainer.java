@@ -41,12 +41,12 @@ public interface XmlIdClassContainer extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
-	 * @see #setIdClass(XmlIdClass)
+	 * @see #setIdClass(XmlClassReference)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClassContainer_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlIdClass getIdClass();
+	XmlClassReference getIdClass();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdClassContainer#getIdClass <em>Id Class</em>}' containment reference.
@@ -56,6 +56,6 @@ public interface XmlIdClassContainer extends JpaEObject
 	 * @see #getIdClass()
 	 * @generated
 	 */
-	void setIdClass(XmlIdClass value);
+	void setIdClass(XmlClassReference value);
 
 } // XmlIdClassContainer

@@ -211,7 +211,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlMapKeyClass mapKeyClass;
+	protected XmlClassReference mapKeyClass;
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -723,12 +723,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Class</em>' containment reference.
-	 * @see #setMapKeyClass(XmlMapKeyClass)
+	 * @see #setMapKeyClass(XmlClassReference)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlElementCollection_2_0_MapKeyClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlMapKeyClass getMapKeyClass()
+	public XmlClassReference getMapKeyClass()
 	{
 		return mapKeyClass;
 	}
@@ -738,9 +738,9 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetMapKeyClass(XmlMapKeyClass newMapKeyClass, NotificationChain msgs)
+	public NotificationChain basicSetMapKeyClass(XmlClassReference newMapKeyClass, NotificationChain msgs)
 	{
-		XmlMapKeyClass oldMapKeyClass = mapKeyClass;
+		XmlClassReference oldMapKeyClass = mapKeyClass;
 		mapKeyClass = newMapKeyClass;
 		if (eNotificationRequired())
 		{
@@ -758,7 +758,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @see #getMapKeyClass()
 	 * @generated
 	 */
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass)
+	public void setMapKeyClass(XmlClassReference newMapKeyClass)
 	{
 		if (newMapKeyClass != mapKeyClass)
 		{
@@ -1185,7 +1185,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				setMapKey((MapKey)newValue);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
-				setMapKeyClass((XmlMapKeyClass)newValue);
+				setMapKeyClass((XmlClassReference)newValue);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
 				setMapKeyTemporal((TemporalType)newValue);
@@ -1254,7 +1254,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				setMapKey((MapKey)null);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
-				setMapKeyClass((XmlMapKeyClass)null);
+				setMapKeyClass((XmlClassReference)null);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
 				setMapKeyTemporal(MAP_KEY_TEMPORAL_EDEFAULT);
@@ -1609,7 +1609,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildMapKeyClassTranslator() {
-		return XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass());
+		return XmlClassReference.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyClass());
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {

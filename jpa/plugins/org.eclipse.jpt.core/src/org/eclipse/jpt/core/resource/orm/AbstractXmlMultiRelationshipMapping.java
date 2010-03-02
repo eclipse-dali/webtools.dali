@@ -121,7 +121,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlMapKeyClass mapKeyClass;
+	protected XmlClassReference mapKeyClass;
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
@@ -419,12 +419,12 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Class</em>' containment reference.
-	 * @see #setMapKeyClass(XmlMapKeyClass)
+	 * @see #setMapKeyClass(XmlClassReference)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_2_0_MapKeyClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlMapKeyClass getMapKeyClass()
+	public XmlClassReference getMapKeyClass()
 	{
 		return mapKeyClass;
 	}
@@ -434,9 +434,9 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetMapKeyClass(XmlMapKeyClass newMapKeyClass, NotificationChain msgs)
+	public NotificationChain basicSetMapKeyClass(XmlClassReference newMapKeyClass, NotificationChain msgs)
 	{
-		XmlMapKeyClass oldMapKeyClass = mapKeyClass;
+		XmlClassReference oldMapKeyClass = mapKeyClass;
 		mapKeyClass = newMapKeyClass;
 		if (eNotificationRequired())
 		{
@@ -454,7 +454,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * @see #getMapKeyClass()
 	 * @generated
 	 */
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass)
+	public void setMapKeyClass(XmlClassReference newMapKeyClass)
 	{
 		if (newMapKeyClass != mapKeyClass)
 		{
@@ -779,7 +779,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
-				setMapKeyClass((XmlMapKeyClass)newValue);
+				setMapKeyClass((XmlClassReference)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				setMapKeyTemporal((TemporalType)newValue);
@@ -827,7 +827,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				getMapKeyAttributeOverrides().clear();
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
-				setMapKeyClass((XmlMapKeyClass)null);
+				setMapKeyClass((XmlClassReference)null);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				setMapKeyTemporal(MAP_KEY_TEMPORAL_EDEFAULT);

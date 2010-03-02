@@ -35,8 +35,8 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -448,7 +448,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		String old = this.specifiedMapKeyClass;
 		this.specifiedMapKeyClass = mapKeyClass;
 		if (this.attributeValueHasChanged(old, mapKeyClass)) {
-			XmlMapKeyClass xmlMapKeyClass = this.getXmlMapKeyClass();
+			XmlClassReference xmlMapKeyClass = this.getXmlMapKeyClass();
 			if (mapKeyClass == null) {
 				if (xmlMapKeyClass != null) {
 					this.removeXmlMapKeyClass();
@@ -469,12 +469,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
 	}
 	
-	protected XmlMapKeyClass getXmlMapKeyClass() {
+	protected XmlClassReference getXmlMapKeyClass() {
 		return this.resourceAttributeMapping.getMapKeyClass();
 	}
 	
-	protected XmlMapKeyClass addXmlMapKeyClass() {
-		XmlMapKeyClass mapKeyClass = OrmFactory.eINSTANCE.createXmlMapKeyClass();
+	protected XmlClassReference addXmlMapKeyClass() {
+		XmlClassReference mapKeyClass = OrmFactory.eINSTANCE.createXmlClassReference();
 		this.resourceAttributeMapping.setMapKeyClass(mapKeyClass);
 		return mapKeyClass;
 	}
@@ -494,7 +494,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	}
 
 	protected String getResourceMapKeyClass() {
-		XmlMapKeyClass mapKeyClass = this.resourceAttributeMapping.getMapKeyClass();
+		XmlClassReference mapKeyClass = this.resourceAttributeMapping.getMapKeyClass();
 		return mapKeyClass == null ? null : mapKeyClass.getClassName();
 	}
 	

@@ -387,7 +387,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	}
 	
 	protected static Translator buildMapKeyClassTranslator() {
-		return XmlMapKeyClass.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyClass());
+		return XmlClassReference.buildTranslator(JPA2_0.MAP_KEY_CLASS, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyClass());
 	}
 
 	protected static Translator buildMapKeyAttributeOverrideTranslator() {

@@ -18,11 +18,11 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderable;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -149,12 +149,12 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrde
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Class</em>' containment reference.
-	 * @see #setMapKeyClass(XmlMapKeyClass)
+	 * @see #setMapKeyClass(XmlClassReference)
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlElementCollection_2_0_MapKeyClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlMapKeyClass getMapKeyClass();
+	XmlClassReference getMapKeyClass();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0#getMapKeyClass <em>Map Key Class</em>}' containment reference.
@@ -164,7 +164,7 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrde
 	 * @see #getMapKeyClass()
 	 * @generated
 	 */
-	void setMapKeyClass(XmlMapKeyClass value);
+	void setMapKeyClass(XmlClassReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Temporal</b></em>' attribute.

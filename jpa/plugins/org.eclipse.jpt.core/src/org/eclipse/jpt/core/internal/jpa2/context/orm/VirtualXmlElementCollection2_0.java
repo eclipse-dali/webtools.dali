@@ -28,10 +28,10 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -50,7 +50,7 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	
 	protected final MapKey mapKey;
 	
-	protected final XmlMapKeyClass mapKeyClass;
+	protected final XmlClassReference mapKeyClass;
 
 	protected final VirtualXmlOrderColumn orderColumn;
 
@@ -67,7 +67,7 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 		this.javaAttributeMapping = javaMapping;
 		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaMapping);
 		this.mapKey = new VirtualMapKey(javaMapping);
-		this.mapKeyClass = new VirtualMapKeyClass(javaMapping);
+		this.mapKeyClass = new VirtualMapKeyClassReference(javaMapping);
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
 			this.ormTypeMapping);
@@ -228,7 +228,7 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	}
 
 	@Override
-	public XmlMapKeyClass getMapKeyClass() {
+	public XmlClassReference getMapKeyClass() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
@@ -236,7 +236,7 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	}
 
 	@Override
-	public void setMapKeyClass(XmlMapKeyClass newMapKeyClass) {
+	public void setMapKeyClass(XmlClassReference newMapKeyClass) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}	
 	

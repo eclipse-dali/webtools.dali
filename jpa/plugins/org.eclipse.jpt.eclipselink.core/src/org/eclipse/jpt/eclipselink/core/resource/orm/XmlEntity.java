@@ -87,7 +87,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCacheInterceptor cacheInterceptor;
+	protected XmlClassReference cacheInterceptor;
 
 	/**
 	 * The cached value of the '{@link #getQueryRedirectors() <em>Query Redirectors</em>}' containment reference.
@@ -147,7 +147,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCustomizer customizer;
+	protected XmlClassReference customizer;
 
 	/**
 	 * The cached value of the '{@link #getChangeTracking() <em>Change Tracking</em>}' containment reference.
@@ -370,12 +370,12 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Customizer</em>' containment reference.
-	 * @see #setCustomizer(XmlCustomizer)
+	 * @see #setCustomizer(XmlClassReference)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizerHolder_Customizer()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCustomizer getCustomizer()
+	public XmlClassReference getCustomizer()
 	{
 		return customizer;
 	}
@@ -385,9 +385,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCustomizer(XmlCustomizer newCustomizer, NotificationChain msgs)
+	public NotificationChain basicSetCustomizer(XmlClassReference newCustomizer, NotificationChain msgs)
 	{
-		XmlCustomizer oldCustomizer = customizer;
+		XmlClassReference oldCustomizer = customizer;
 		customizer = newCustomizer;
 		if (eNotificationRequired())
 		{
@@ -405,7 +405,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @see #getCustomizer()
 	 * @generated
 	 */
-	public void setCustomizer(XmlCustomizer newCustomizer)
+	public void setCustomizer(XmlClassReference newCustomizer)
 	{
 		if (newCustomizer != customizer)
 		{
@@ -1027,12 +1027,12 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor)
+	 * @see #setCacheInterceptor(XmlClassReference)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_0_CacheInterceptor()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCacheInterceptor getCacheInterceptor()
+	public XmlClassReference getCacheInterceptor()
 	{
 		return cacheInterceptor;
 	}
@@ -1042,9 +1042,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCacheInterceptor(XmlCacheInterceptor newCacheInterceptor, NotificationChain msgs)
+	public NotificationChain basicSetCacheInterceptor(XmlClassReference newCacheInterceptor, NotificationChain msgs)
 	{
-		XmlCacheInterceptor oldCacheInterceptor = cacheInterceptor;
+		XmlClassReference oldCacheInterceptor = cacheInterceptor;
 		cacheInterceptor = newCacheInterceptor;
 		if (eNotificationRequired())
 		{
@@ -1062,7 +1062,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	public void setCacheInterceptor(XmlCacheInterceptor newCacheInterceptor)
+	public void setCacheInterceptor(XmlClassReference newCacheInterceptor)
 	{
 		if (newCacheInterceptor != cacheInterceptor)
 		{
@@ -1377,7 +1377,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				setPrimaryKey((XmlPrimaryKey)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor)newValue);
+				setCacheInterceptor((XmlClassReference)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)newValue);
@@ -1393,7 +1393,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				setReadOnly((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
-				setCustomizer((XmlCustomizer)newValue);
+				setCustomizer((XmlClassReference)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
 				setChangeTracking((XmlChangeTracking)newValue);
@@ -1461,7 +1461,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				setPrimaryKey((XmlPrimaryKey)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor)null);
+				setCacheInterceptor((XmlClassReference)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)null);
@@ -1476,7 +1476,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
-				setCustomizer((XmlCustomizer)null);
+				setCustomizer((XmlClassReference)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
 				setChangeTracking((XmlChangeTracking)null);
@@ -1880,7 +1880,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 	
 	protected static Translator buildCustomizerTranslator() {
-		return XmlCustomizer.buildTranslator(EclipseLink.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
+		return XmlClassReference.buildTranslator(EclipseLink.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
 	}
 	
 	protected static Translator buildChangeTrackingTranslator() {
@@ -1904,7 +1904,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 	
 	protected static Translator buildCacheInterceptorTranslator() {
-		return XmlCacheInterceptor.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity_2_0_CacheInterceptor());
+		return XmlClassReference.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity_2_0_CacheInterceptor());
 	}
 	
 	protected static Translator buildFetchGroupsTranslator() {

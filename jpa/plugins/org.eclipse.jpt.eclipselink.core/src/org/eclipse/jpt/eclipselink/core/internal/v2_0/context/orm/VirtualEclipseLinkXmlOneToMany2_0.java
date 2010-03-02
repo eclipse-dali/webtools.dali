@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
@@ -138,12 +138,12 @@ public class VirtualEclipseLinkXmlOneToMany2_0 extends XmlOneToMany
 	}
 	
 	@Override
-	public XmlMapKeyClass getMapKeyClass() {
+	public XmlClassReference getMapKeyClass() {
 		return this.virtualXmlOneToMany.getMapKeyClass();
 	}
 	
 	@Override
-	public void setMapKeyClass(XmlMapKeyClass value) {
+	public void setMapKeyClass(XmlClassReference value) {
 		this.virtualXmlOneToMany.setMapKeyClass(value);
 	}
 

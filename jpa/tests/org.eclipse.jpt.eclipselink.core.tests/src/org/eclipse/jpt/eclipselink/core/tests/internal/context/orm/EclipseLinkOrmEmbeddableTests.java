@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -139,8 +140,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertNull(ormContextEmbeddable.getCustomizer().getSpecifiedCustomizerClass());
 		
 		// set xml customizer, check defaults
-		resourceEmbeddable.setCustomizer(EclipseLinkOrmFactory.eINSTANCE.createXmlCustomizer());
-		assertNull(resourceEmbeddable.getCustomizer().getCustomizerClassName());
+		resourceEmbeddable.setCustomizer(OrmFactory.eINSTANCE.createXmlClassReference());
+		assertNull(resourceEmbeddable.getCustomizer().getClassName());
 		assertNull(javaContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEmbeddable.getCustomizer().getDefaultCustomizerClass());
@@ -149,9 +150,9 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		
 		// set xml customizer class, check override
 		
-		resourceEmbeddable.getCustomizer().setCustomizerClassName("foo");
+		resourceEmbeddable.getCustomizer().setClassName("foo");
 		
-		assertEquals("foo", resourceEmbeddable.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceEmbeddable.getCustomizer().getClassName());
 		assertNull(javaContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertEquals("foo", ormContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEmbeddable.getCustomizer().getDefaultCustomizerClass());
@@ -159,10 +160,10 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		
 		// clear xml customizer class, set java customizer class, check defaults
 		
-		resourceEmbeddable.getCustomizer().setCustomizerClassName(null);
+		resourceEmbeddable.getCustomizer().setClassName(null);
 		javaContextEmbeddable.getCustomizer().setSpecifiedCustomizerClass("bar");
 		
-		assertNull(resourceEmbeddable.getCustomizer().getCustomizerClassName());
+		assertNull(resourceEmbeddable.getCustomizer().getClassName());
 		assertEquals("bar", javaContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextEmbeddable.getCustomizer().getDefaultCustomizerClass());
@@ -172,7 +173,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 
 		ormContextEmbeddable.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
-		assertNull(resourceEmbeddable.getCustomizer().getCustomizerClassName());
+		assertNull(resourceEmbeddable.getCustomizer().getClassName());
 		assertEquals("bar", javaContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEmbeddable.getCustomizer().getDefaultCustomizerClass());
@@ -182,9 +183,9 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		
 		// set xml customizer class, check override
 		
-		resourceEmbeddable.getCustomizer().setCustomizerClassName("foo");
+		resourceEmbeddable.getCustomizer().setClassName("foo");
 		
-		assertEquals("foo", resourceEmbeddable.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceEmbeddable.getCustomizer().getClassName());
 		assertEquals("bar", javaContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertEquals("foo", ormContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertEquals("bar", ormContextEmbeddable.getCustomizer().getDefaultCustomizerClass());
@@ -218,7 +219,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		
 		ormContextEmbeddable.getCustomizer().setSpecifiedCustomizerClass("foo");
 		
-		assertEquals("foo", resourceEmbeddable.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", resourceEmbeddable.getCustomizer().getClassName());
 		assertEquals("foo", ormContextEmbeddable.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEmbeddable.getCustomizer().getDefaultCustomizerClass());
 		assertEquals("foo", ormContextEmbeddable.getCustomizer().getSpecifiedCustomizerClass());

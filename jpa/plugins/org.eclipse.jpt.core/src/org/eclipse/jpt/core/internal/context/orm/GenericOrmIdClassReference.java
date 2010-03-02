@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlIdClass;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlIdClassContainer;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -98,7 +98,7 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected String buildSpecifiedIdClassName() {
-		XmlIdClass element = getIdClassElement();
+		XmlClassReference element = getIdClassElement();
 		if (element != null) {
 			return element.getClassName();
 		}
@@ -155,12 +155,12 @@ public class GenericOrmIdClassReference
 		return (XmlIdClassContainer) getResourceTypeMapping();
 	}
 	
-	protected XmlIdClass getIdClassElement() {
+	protected XmlClassReference getIdClassElement() {
 		return getResourceIdClassContainer().getIdClass();
 	}
 	
 	protected void addIdClassElement() {
-		getResourceIdClassContainer().setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
+		getResourceIdClassContainer().setIdClass(OrmFactory.eINSTANCE.createXmlClassReference());		
 	}
 	
 	protected void removeIdClassElement() {
@@ -168,7 +168,7 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected JavaResourcePersistentType getResourceIdClass() {
-		XmlIdClass element = getIdClassElement();
+		XmlClassReference element = getIdClassElement();
 		String className = (element == null) ?
 				null : element.getClassName();
 		if (className == null) {
@@ -219,7 +219,7 @@ public class GenericOrmIdClassReference
 	// **************** validation ********************************************
 	
 	public TextRange getValidationTextRange() {
-		XmlIdClass element = getIdClassElement();
+		XmlClassReference element = getIdClassElement();
 		return (element == null) ?
 			getTypeMapping().getValidationTextRange() : element.getClassNameTextRange();
 	}

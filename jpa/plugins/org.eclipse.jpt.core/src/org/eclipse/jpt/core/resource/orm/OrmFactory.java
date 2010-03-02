@@ -102,7 +102,6 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
 			case OrmPackage.XML_GENERATED_VALUE: return (EObject)createXmlGeneratedValue();
 			case OrmPackage.XML_ID: return (EObject)createXmlId();
-			case OrmPackage.XML_ID_CLASS: return (EObject)createXmlIdClass();
 			case OrmPackage.INHERITANCE: return (EObject)createInheritance();
 			case OrmPackage.XML_JOIN_COLUMN: return (EObject)createXmlJoinColumn();
 			case OrmPackage.XML_JOIN_TABLE: return (EObject)createXmlJoinTable();
@@ -110,7 +109,6 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
 			case OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case OrmPackage.MAP_KEY: return (EObject)createMapKey();
-			case OrmPackage.XML_MAP_KEY_CLASS: return (EObject)createXmlMapKeyClass();
 			case OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY: return (EObject)createXmlNamedNativeQuery();
 			case OrmPackage.XML_NAMED_QUERY: return (EObject)createXmlNamedQuery();
@@ -446,17 +444,6 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlIdClass createXmlIdClass()
-	{
-		XmlIdClass xmlIdClass = new XmlIdClass();
-		return xmlIdClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Inheritance createInheritance()
 	{
 		Inheritance inheritance = new Inheritance();
@@ -527,17 +514,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		MapKey mapKey = new MapKey();
 		return mapKey;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlMapKeyClass createXmlMapKeyClass()
-	{
-		XmlMapKeyClass xmlMapKeyClass = new XmlMapKeyClass();
-		return xmlMapKeyClass;
 	}
 
 	/**

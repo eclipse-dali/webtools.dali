@@ -828,7 +828,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertNull(elementCollection.getMapKeyClass());
 		
 		//set mapKey in the resource model, verify context model does not change
-		elementCollection.setMapKeyClass(OrmFactory.eINSTANCE.createXmlMapKeyClass());
+		elementCollection.setMapKeyClass(OrmFactory.eINSTANCE.createXmlClassReference());
 		assertNull(ormElementCollectionMapping.getSpecifiedMapKeyClass());
 		assertNotNull(elementCollection.getMapKeyClass());
 				

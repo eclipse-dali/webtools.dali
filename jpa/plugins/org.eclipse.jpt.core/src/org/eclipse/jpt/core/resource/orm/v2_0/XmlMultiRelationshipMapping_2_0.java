@@ -11,12 +11,11 @@
 package org.eclipse.jpt.core.resource.orm.v2_0;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
-import org.eclipse.jpt.core.resource.orm.XmlMapKeyClass;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,12 +54,12 @@ public interface XmlMultiRelationshipMapping_2_0 extends XmlOrderable_2_0, XmlMa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key Class</em>' containment reference.
-	 * @see #setMapKeyClass(XmlMapKeyClass)
+	 * @see #setMapKeyClass(XmlClassReference)
 	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlMultiRelationshipMapping_2_0_MapKeyClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlMapKeyClass getMapKeyClass();
+	XmlClassReference getMapKeyClass();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0#getMapKeyClass <em>Map Key Class</em>}' containment reference.
@@ -70,7 +69,7 @@ public interface XmlMultiRelationshipMapping_2_0 extends XmlOrderable_2_0, XmlMa
 	 * @see #getMapKeyClass()
 	 * @generated
 	 */
-	void setMapKeyClass(XmlMapKeyClass value);
+	void setMapKeyClass(XmlClassReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Map Key Temporal</b></em>' attribute.
