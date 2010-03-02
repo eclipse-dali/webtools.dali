@@ -10,8 +10,7 @@
 package org.eclipse.jpt.gen.tests.internal;
 
 import java.util.HashSet;
-
-import org.eclipse.jpt.gen.internal.old.EntityGenTools;
+import org.eclipse.jpt.gen.internal.util.EntityGenTools;
 
 import junit.framework.TestCase;
 
