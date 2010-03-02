@@ -100,6 +100,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
+			case EclipseLinkOrmPackage.XML_FETCH_ATTRIBUTE: return (EObject)createXmlFetchAttribute();
+			case EclipseLinkOrmPackage.XML_FETCH_GROUP: return (EObject)createXmlFetchGroup();
 			case EclipseLinkOrmPackage.XML_ID: return (EObject)createXmlId();
 			case EclipseLinkOrmPackage.XML_INSTANTIATION_COPY_POLICY: return (EObject)createXmlInstantiationCopyPolicy();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
@@ -116,6 +118,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_PRIMARY_KEY: return (EObject)createXmlPrimaryKey();
 			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
 			case EclipseLinkOrmPackage.XML_QUERY_REDIRECTORS: return (EObject)createXmlQueryRedirectors();
+			case EclipseLinkOrmPackage.XML_RETURN_INSERT: return (EObject)createXmlReturnInsert();
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER: return (EObject)createXmlStoredProcedureParameter();
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER: return (EObject)createXmlStructConverter();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
@@ -401,6 +404,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlFetchAttribute createXmlFetchAttribute()
+	{
+		XmlFetchAttribute xmlFetchAttribute = new XmlFetchAttribute();
+		return xmlFetchAttribute;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlFetchGroup createXmlFetchGroup()
+	{
+		XmlFetchGroup xmlFetchGroup = new XmlFetchGroup();
+		return xmlFetchGroup;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlId createXmlId()
 	{
 		XmlId xmlId = new XmlId();
@@ -570,6 +595,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlQueryRedirectors xmlQueryRedirectors = new XmlQueryRedirectors();
 		return xmlQueryRedirectors;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlReturnInsert createXmlReturnInsert()
+	{
+		XmlReturnInsert xmlReturnInsert = new XmlReturnInsert();
+		return xmlReturnInsert;
 	}
 
 	/**

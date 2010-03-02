@@ -20,6 +20,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.SqlResultSetMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
+import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
+import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
+import org.eclipse.jpt.core.resource.orm.XmlQueryContainer;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
@@ -29,8 +42,11 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Pack
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlMappedSuperclass_1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMappedSuperclass_2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -64,8 +80,148 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer, XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0
+public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
 {
+	/**
+	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlPrimaryKey primaryKey;
+
+	/**
+	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CACHEABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cacheable = CACHEABLE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getCacheInterceptor() <em>Cache Interceptor</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheInterceptor()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCacheInterceptor cacheInterceptor;
+
+	/**
+	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAssociationOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAssociationOverride> associationOverrides;
+
+	/**
+	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAttributeOverride> attributeOverrides;
+
+	/**
+	 * The cached value of the '{@link #getFetchGroups() <em>Fetch Groups</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFetchGroups()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlFetchGroup> fetchGroups;
+
+	/**
+	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSequenceGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlSequenceGenerator sequenceGenerator;
+
+	/**
+	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTableGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlTableGenerator tableGenerator;
+
+	/**
+	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedQuery> namedQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedNativeQueries() <em>Named Native Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedNativeQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedNativeQuery> namedNativeQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedStoredProcedureQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
+
+	/**
+	 * The cached value of the '{@link #getSqlResultSetMappings() <em>Sql Result Set Mappings</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSqlResultSetMappings()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<SqlResultSetMapping> sqlResultSetMappings;
+
+	/**
+	 * The cached value of the '{@link #getQueryRedirectors() <em>Query Redirectors</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getQueryRedirectors()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlQueryRedirectors queryRedirectors;
+
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -181,46 +337,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
-
-	/**
-	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPrimaryKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlPrimaryKey primaryKey;
-
-	/**
-	 * The default value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCacheable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean CACHEABLE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getCacheable() <em>Cacheable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCacheable()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean cacheable = CACHEABLE_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getCacheInterceptor() <em>Cache Interceptor</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCacheInterceptor()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlCacheInterceptor_2_0 cacheInterceptor;
 
 	/**
 	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
@@ -1016,12 +1132,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor_2_0)
+	 * @see #setCacheInterceptor(XmlCacheInterceptor)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_0_CacheInterceptor()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCacheInterceptor_2_0 getCacheInterceptor()
+	public XmlCacheInterceptor getCacheInterceptor()
 	{
 		return cacheInterceptor;
 	}
@@ -1031,9 +1147,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCacheInterceptor(XmlCacheInterceptor_2_0 newCacheInterceptor, NotificationChain msgs)
+	public NotificationChain basicSetCacheInterceptor(XmlCacheInterceptor newCacheInterceptor, NotificationChain msgs)
 	{
-		XmlCacheInterceptor_2_0 oldCacheInterceptor = cacheInterceptor;
+		XmlCacheInterceptor oldCacheInterceptor = cacheInterceptor;
 		cacheInterceptor = newCacheInterceptor;
 		if (eNotificationRequired())
 		{
@@ -1051,7 +1167,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	public void setCacheInterceptor(XmlCacheInterceptor_2_0 newCacheInterceptor)
+	public void setCacheInterceptor(XmlCacheInterceptor newCacheInterceptor)
 	{
 		if (newCacheInterceptor != cacheInterceptor)
 		{
@@ -1065,6 +1181,347 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR, newCacheInterceptor, newCacheInterceptor));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Association Overrides</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAssociationOverrideContainer_AssociationOverrides()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlAssociationOverride> getAssociationOverrides()
+	{
+		if (associationOverrides == null)
+		{
+			associationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES);
+		}
+		return associationOverrides;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Overrides</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeOverrideContainer_AttributeOverrides()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlAttributeOverride> getAttributeOverrides()
+	{
+		if (attributeOverrides == null)
+		{
+			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES);
+		}
+		return attributeOverrides;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Fetch Groups</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlFetchGroup}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Fetch Groups</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Fetch Groups</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlFetchGroupContainer_2_1_FetchGroups()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlFetchGroup> getFetchGroups()
+	{
+		if (fetchGroups == null)
+		{
+			fetchGroups = new EObjectContainmentEList<XmlFetchGroup>(XmlFetchGroup.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS);
+		}
+		return fetchGroups;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Sequence Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
+	 * @see #setSequenceGenerator(XmlSequenceGenerator)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer_SequenceGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlSequenceGenerator getSequenceGenerator()
+	{
+		return sequenceGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetSequenceGenerator(XmlSequenceGenerator newSequenceGenerator, NotificationChain msgs)
+	{
+		XmlSequenceGenerator oldSequenceGenerator = sequenceGenerator;
+		sequenceGenerator = newSequenceGenerator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getSequenceGenerator <em>Sequence Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Sequence Generator</em>' containment reference.
+	 * @see #getSequenceGenerator()
+	 * @generated
+	 */
+	public void setSequenceGenerator(XmlSequenceGenerator newSequenceGenerator)
+	{
+		if (newSequenceGenerator != sequenceGenerator)
+		{
+			NotificationChain msgs = null;
+			if (sequenceGenerator != null)
+				msgs = ((InternalEObject)sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR, null, msgs);
+			if (newSequenceGenerator != null)
+				msgs = ((InternalEObject)newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR, null, msgs);
+			msgs = basicSetSequenceGenerator(newSequenceGenerator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Table Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Table Generator</em>' containment reference.
+	 * @see #setTableGenerator(XmlTableGenerator)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer_TableGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlTableGenerator getTableGenerator()
+	{
+		return tableGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTableGenerator(XmlTableGenerator newTableGenerator, NotificationChain msgs)
+	{
+		XmlTableGenerator oldTableGenerator = tableGenerator;
+		tableGenerator = newTableGenerator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getTableGenerator <em>Table Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Table Generator</em>' containment reference.
+	 * @see #getTableGenerator()
+	 * @generated
+	 */
+	public void setTableGenerator(XmlTableGenerator newTableGenerator)
+	{
+		if (newTableGenerator != tableGenerator)
+		{
+			NotificationChain msgs = null;
+			if (tableGenerator != null)
+				msgs = ((InternalEObject)tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR, null, msgs);
+			if (newTableGenerator != null)
+				msgs = ((InternalEObject)newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR, null, msgs);
+			msgs = basicSetTableGenerator(newTableGenerator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlNamedQuery}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer_NamedQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedQuery> getNamedQueries()
+	{
+		if (namedQueries == null)
+		{
+			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES);
+		}
+		return namedQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Native Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Native Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer_NamedNativeQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedNativeQuery> getNamedNativeQueries()
+	{
+		if (namedNativeQueries == null)
+		{
+			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES);
+		}
+		return namedNativeQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Stored Procedure Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Stored Procedure Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer_NamedStoredProcedureQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedStoredProcedureQuery> getNamedStoredProcedureQueries()
+	{
+		if (namedStoredProcedureQueries == null)
+		{
+			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery>(XmlNamedStoredProcedureQuery.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES);
+		}
+		return namedStoredProcedureQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.SqlResultSetMapping}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Sql Result Set Mappings</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sql Result Set Mappings</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_1_SqlResultSetMappings()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<SqlResultSetMapping> getSqlResultSetMappings()
+	{
+		if (sqlResultSetMappings == null)
+		{
+			sqlResultSetMappings = new EObjectContainmentEList<SqlResultSetMapping>(SqlResultSetMapping.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS);
+		}
+		return sqlResultSetMappings;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Query Redirectors</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Query Redirectors</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Query Redirectors</em>' containment reference.
+	 * @see #setQueryRedirectors(XmlQueryRedirectors)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_1_QueryRedirectors()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlQueryRedirectors getQueryRedirectors()
+	{
+		return queryRedirectors;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetQueryRedirectors(XmlQueryRedirectors newQueryRedirectors, NotificationChain msgs)
+	{
+		XmlQueryRedirectors oldQueryRedirectors = queryRedirectors;
+		queryRedirectors = newQueryRedirectors;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS, oldQueryRedirectors, newQueryRedirectors);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getQueryRedirectors <em>Query Redirectors</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Query Redirectors</em>' containment reference.
+	 * @see #getQueryRedirectors()
+	 * @generated
+	 */
+	public void setQueryRedirectors(XmlQueryRedirectors newQueryRedirectors)
+	{
+		if (newQueryRedirectors != queryRedirectors)
+		{
+			NotificationChain msgs = null;
+			if (queryRedirectors != null)
+				msgs = ((InternalEObject)queryRedirectors).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS, null, msgs);
+			if (newQueryRedirectors != null)
+				msgs = ((InternalEObject)newQueryRedirectors).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS, null, msgs);
+			msgs = basicSetQueryRedirectors(newQueryRedirectors, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS, newQueryRedirectors, newQueryRedirectors));
 	}
 
 	/**
@@ -1112,6 +1569,30 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				return basicSetPrimaryKey(null, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
+				return basicSetCacheInterceptor(null, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES:
+				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES:
+				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS:
+				return ((InternalEList<?>)getFetchGroups()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR:
+				return basicSetSequenceGenerator(null, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR:
+				return basicSetTableGenerator(null, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES:
+				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES:
+				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
+				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
+				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
+				return basicSetQueryRedirectors(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CHANGE_TRACKING:
@@ -1128,10 +1609,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
-				return basicSetPrimaryKey(null, msgs);
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				return basicSetCacheInterceptor(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return basicSetOptimisticLocking(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1154,6 +1631,32 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				return getPrimaryKey();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return getCacheable();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
+				return getCacheInterceptor();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES:
+				return getAssociationOverrides();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES:
+				return getAttributeOverrides();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS:
+				return getFetchGroups();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR:
+				return getSequenceGenerator();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR:
+				return getTableGenerator();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES:
+				return getNamedQueries();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES:
+				return getNamedNativeQueries();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
+				return getNamedStoredProcedureQueries();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
+				return getSqlResultSetMappings();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
+				return getQueryRedirectors();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -1174,12 +1677,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return getStructConverters();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return getProperties();
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
-				return getPrimaryKey();
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
-				return getCacheable();
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				return getCacheInterceptor();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return getOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1205,6 +1702,52 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				setPrimaryKey((XmlPrimaryKey)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable((Boolean)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
+				setCacheInterceptor((XmlCacheInterceptor)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES:
+				getAssociationOverrides().clear();
+				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES:
+				getAttributeOverrides().clear();
+				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS:
+				getFetchGroups().clear();
+				getFetchGroups().addAll((Collection<? extends XmlFetchGroup>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES:
+				getNamedQueries().clear();
+				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES:
+				getNamedNativeQueries().clear();
+				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
+				getSqlResultSetMappings().clear();
+				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
+				setQueryRedirectors((XmlQueryRedirectors)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly((Boolean)newValue);
 				return;
@@ -1240,15 +1783,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
-				setPrimaryKey((XmlPrimaryKey)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
-				setCacheable((Boolean)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor_2_0)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)newValue);
 				return;
@@ -1278,6 +1812,45 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				setPrimaryKey((XmlPrimaryKey)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				setCacheable(CACHEABLE_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
+				setCacheInterceptor((XmlCacheInterceptor)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES:
+				getAssociationOverrides().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES:
+				getAttributeOverrides().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS:
+				getFetchGroups().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES:
+				getNamedQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES:
+				getNamedNativeQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
+				getSqlResultSetMappings().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
+				setQueryRedirectors((XmlQueryRedirectors)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -1308,15 +1881,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				getProperties().clear();
 				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
-				setPrimaryKey((XmlPrimaryKey)null);
-				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
-				setCacheable(CACHEABLE_EDEFAULT);
-				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor_2_0)null);
-				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)null);
 				return;
@@ -1346,6 +1910,32 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
+				return primaryKey != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
+				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
+				return cacheInterceptor != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES:
+				return associationOverrides != null && !associationOverrides.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES:
+				return attributeOverrides != null && !attributeOverrides.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS:
+				return fetchGroups != null && !fetchGroups.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR:
+				return sequenceGenerator != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR:
+				return tableGenerator != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES:
+				return namedQueries != null && !namedQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES:
+				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
+				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
+				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
+				return queryRedirectors != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -1366,12 +1956,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return structConverters != null && !structConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return properties != null && !properties.isEmpty();
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
-				return primaryKey != null;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
-				return CACHEABLE_EDEFAULT == null ? cacheable != null : !CACHEABLE_EDEFAULT.equals(cacheable);
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
-				return cacheInterceptor != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
 				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
@@ -1394,6 +1978,89 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlMappedSuperclass_1_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY: return EclipseLinkOrmV1_1Package.XML_MAPPED_SUPERCLASS_11__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlCacheable_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE: return OrmV2_0Package.XML_CACHEABLE_20__CACHEABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedSuperclass_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR: return EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES: return OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlFetchGroupContainer_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS: return EclipseLinkOrmV2_1Package.XML_FETCH_GROUP_CONTAINER_21__FETCH_GROUPS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES: return OrmPackage.XML_QUERY_CONTAINER__NAMED_QUERIES;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES: return OrmPackage.XML_QUERY_CONTAINER__NAMED_NATIVE_QUERIES;
+				default: return -1;
+			}
+		}
+		if (baseClass == org.eclipse.jpt.eclipselink.core.resource.orm.XmlQueryContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedSuperclass_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__SQL_RESULT_SET_MAPPINGS;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (derivedFeatureID)
@@ -1446,30 +2113,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMappedSuperclass_1_1.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY: return EclipseLinkOrmV1_1Package.XML_MAPPED_SUPERCLASS_11__PRIMARY_KEY;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlCacheable_2_0.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE: return OrmV2_0Package.XML_CACHEABLE_20__CACHEABLE;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlMappedSuperclass_2_0.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR: return EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR;
-				default: return -1;
-			}
-		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1481,6 +2124,89 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlMappedSuperclass_1_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV1_1Package.XML_MAPPED_SUPERCLASS_11__PRIMARY_KEY: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlCacheable_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_CACHEABLE_20__CACHEABLE: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedSuperclass_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAssociationOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER__ASSOCIATION_OVERRIDES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAttributeOverrideContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER__ATTRIBUTE_OVERRIDES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlFetchGroupContainer_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_FETCH_GROUP_CONTAINER_21__FETCH_GROUPS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__FETCH_GROUPS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_QUERY_CONTAINER__NAMED_QUERIES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_QUERIES;
+				case OrmPackage.XML_QUERY_CONTAINER__NAMED_NATIVE_QUERIES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES;
+				default: return -1;
+			}
+		}
+		if (baseClass == org.eclipse.jpt.eclipselink.core.resource.orm.XmlQueryContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedSuperclass_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__SQL_RESULT_SET_MAPPINGS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS;
+				case EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -1533,30 +2259,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlMappedSuperclass_1_1.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV1_1Package.XML_MAPPED_SUPERCLASS_11__PRIMARY_KEY: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlCacheable_2_0.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmV2_0Package.XML_CACHEABLE_20__CACHEABLE: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlMappedSuperclass_2_0.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV2_0Package.XML_MAPPED_SUPERCLASS_20__CACHE_INTERCEPTOR: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR;
-				default: return -1;
-			}
-		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1571,12 +2273,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (readOnly: ");
+		result.append(" (cacheable: ");
+		result.append(cacheable);
+		result.append(", readOnly: ");
 		result.append(readOnly);
 		result.append(", existenceChecking: ");
 		result.append(existenceChecking);
-		result.append(", cacheable: ");
-		result.append(cacheable);
 		result.append(", excludeDefaultMappings: ");
 		result.append(excludeDefaultMappings);
 		result.append(')');
@@ -1620,6 +2322,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			buildOptimisticLockingTranslator(),
 			buildCacheTranslator(),
 			buildCacheInterceptorTranslator(),
+			buildFetchGroupsTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
 			buildObjectTypeConverterTranslator(),
@@ -1627,6 +2330,13 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			buildCopyPolicyTranslator(),
 			buildInstantiationCoypPolicyTranslator(),
 			buildCloneCopyPolicyTranslator(),
+			buildSequenceGeneratorTranslator(),
+			buildTableGeneratorTranslator(),
+			buildNamedQueryTranslator(),
+			buildNamedNativeQueryTranslator(),
+			buildNamedStoredProcedureQueryTranslator(),
+			buildSqlResultSetMappingTranslator(),
+			buildQueryRedirectorsTranslator(),
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
@@ -1638,8 +2348,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			buildPostUpdateTranslator(),
 			buildPostLoadTranslator(),
 			buildPropertyTranslator(),
-			Attributes.buildTranslator()
-		};
+			buildAttributeOverrideTranslator(),
+			buildAssociationOverrideTranslator(),
+			Attributes.buildTranslator()};
 	}
 	
 	protected static Translator buildCacheableTranslator() {
@@ -1682,6 +2393,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		return XmlCacheInterceptor.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMappedSuperclass_2_0_CacheInterceptor());
 	}
 	
+	protected static Translator buildFetchGroupsTranslator() {
+		return XmlFetchGroup.buildTranslator(EclipseLink2_1.FETCH_GROUP, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlFetchGroupContainer_2_1_FetchGroups());
+	}
+	
 	protected static Translator buildConverterTranslator() {
 		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters());
 	}
@@ -1710,7 +2425,43 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		return XmlCloneCopyPolicy.buildTranslator(EclipseLink.CLONE_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlMappedSuperclass_CloneCopyPolicy());
 	}
 	
+	protected static Translator buildSequenceGeneratorTranslator() {
+		return XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
+	}
+	
+	protected static Translator buildTableGeneratorTranslator() {
+		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+	}
+	
+	protected static Translator buildNamedQueryTranslator() {
+		return XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries());
+	}
+	
+	protected static Translator buildNamedNativeQueryTranslator() {
+		return XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries());
+	}
+	
+	protected static Translator buildNamedStoredProcedureQueryTranslator() {
+		return XmlNamedStoredProcedureQuery.buildTranslator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY, EclipseLinkOrmPackage.eINSTANCE.getXmlQueryContainer_NamedStoredProcedureQueries());
+	}
+	
+	protected static Translator buildSqlResultSetMappingTranslator() {
+		return SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlMappedSuperclass_2_1_SqlResultSetMappings());
+	}
+	
+	protected static Translator buildQueryRedirectorsTranslator() {
+		return XmlQueryRedirectors.buildTranslator(EclipseLink2_0.QUERY_REDIRECTORS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlMappedSuperclass_2_1_QueryRedirectors());
+	}
+	
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+	}
+		
+	protected static Translator buildAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getXmlAttributeOverrideContainer_AttributeOverrides());
+	}
+	
+	protected static Translator buildAssociationOverrideTranslator() {
+		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
 }

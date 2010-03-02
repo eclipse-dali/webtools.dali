@@ -12,6 +12,7 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm.v1_1;
 
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrimaryKey;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,12 +42,12 @@ public interface XmlEntity_1_1 extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key</em>' containment reference.
-	 * @see #setPrimaryKey(XmlPrimaryKey_1_1)
+	 * @see #setPrimaryKey(XmlPrimaryKey)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package#getXmlEntity_1_1_PrimaryKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlPrimaryKey_1_1 getPrimaryKey();
+	XmlPrimaryKey getPrimaryKey();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlEntity_1_1#getPrimaryKey <em>Primary Key</em>}' containment reference.
@@ -56,6 +57,6 @@ public interface XmlEntity_1_1 extends JpaEObject
 	 * @see #getPrimaryKey()
 	 * @generated
 	 */
-	void setPrimaryKey(XmlPrimaryKey_1_1 value);
+	void setPrimaryKey(XmlPrimaryKey value);
 
 } // XmlEntity_1_1

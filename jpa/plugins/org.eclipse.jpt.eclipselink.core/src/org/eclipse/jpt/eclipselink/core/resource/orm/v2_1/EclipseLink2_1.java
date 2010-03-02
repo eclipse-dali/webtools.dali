@@ -19,4 +19,15 @@ public interface EclipseLink2_1
 	String SCHEMA_NAMESPACE = EclipseLink.SCHEMA_NAMESPACE;
 	String SCHEMA_LOCATION = "http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_1.xsd";
 	String SCHEMA_VERSION	= "2.1";
+	
+	
+	// EclipseLink 2.1 specific nodes
+	
+	String ATTRIBUTE = "attribute";
+	String CACHE_KEY_TYPE = "cache-key-type";
+	String CLASS_EXTRACTOR = "class-extractor";
+	String FETCH_GROUP = "fetch-group";
+	String RETURN_INSERT = "return-insert";
+	String RETURN_ONLY = "return-only";
+	String RETURN_UPDATE = "return-update";
 }

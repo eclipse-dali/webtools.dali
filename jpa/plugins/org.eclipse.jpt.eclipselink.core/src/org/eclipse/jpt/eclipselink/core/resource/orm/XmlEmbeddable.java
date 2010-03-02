@@ -984,12 +984,11 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			buildTypeConverterTranslator(),
 			buildObjectTypeConverterTranslator(),
 			buildStructConverterTranslator(),
-			buildPropertyTranslator(),
-			Attributes.buildTranslator(),
 			buildCopyPolicyTranslator(),
 			buildInstantiationCoypPolicyTranslator(),
 			buildCloneCopyPolicyTranslator(),
-		};
+			buildPropertyTranslator(),
+			Attributes.buildTranslator()};
 	}
 	
 	protected static Translator buildExcludeDefaultMappingsTranslator() {

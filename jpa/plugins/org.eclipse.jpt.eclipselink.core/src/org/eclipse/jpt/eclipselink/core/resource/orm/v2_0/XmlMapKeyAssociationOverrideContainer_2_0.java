@@ -11,9 +11,7 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
-
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**

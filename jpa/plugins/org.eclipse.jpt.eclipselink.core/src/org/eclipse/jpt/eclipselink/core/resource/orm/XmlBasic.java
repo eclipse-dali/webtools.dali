@@ -30,6 +30,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlBasic_1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlBasic_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -53,7 +56,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlBasic_1_1
+public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlBasic_2_1
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -173,6 +176,34 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	 * @ordered
 	 */
 	protected XmlGeneratedValue generatedValue;
+
+	/**
+	 * The cached value of the '{@link #getReturnInsert() <em>Return Insert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnInsert()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlReturnInsert returnInsert;
+	/**
+	 * The default value of the '{@link #getReturnUpdate() <em>Return Update</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnUpdate()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean RETURN_UPDATE_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getReturnUpdate() <em>Return Update</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnUpdate()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean returnUpdate = RETURN_UPDATE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -443,6 +474,101 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE, newGeneratedValue, newGeneratedValue));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Return Insert</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Return Insert</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Return Insert</em>' containment reference.
+	 * @see #setReturnInsert(XmlReturnInsert)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_1_ReturnInsert()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlReturnInsert getReturnInsert()
+	{
+		return returnInsert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetReturnInsert(XmlReturnInsert newReturnInsert, NotificationChain msgs)
+	{
+		XmlReturnInsert oldReturnInsert = returnInsert;
+		returnInsert = newReturnInsert;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT, oldReturnInsert, newReturnInsert);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic#getReturnInsert <em>Return Insert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Return Insert</em>' containment reference.
+	 * @see #getReturnInsert()
+	 * @generated
+	 */
+	public void setReturnInsert(XmlReturnInsert newReturnInsert)
+	{
+		if (newReturnInsert != returnInsert)
+		{
+			NotificationChain msgs = null;
+			if (returnInsert != null)
+				msgs = ((InternalEObject)returnInsert).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT, null, msgs);
+			if (newReturnInsert != null)
+				msgs = ((InternalEObject)newReturnInsert).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT, null, msgs);
+			msgs = basicSetReturnInsert(newReturnInsert, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT, newReturnInsert, newReturnInsert));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Return Update</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Return Update</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Return Update</em>' attribute.
+	 * @see #setReturnUpdate(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_1_ReturnUpdate()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getReturnUpdate()
+	{
+		return returnUpdate;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic#getReturnUpdate <em>Return Update</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Return Update</em>' attribute.
+	 * @see #getReturnUpdate()
+	 * @generated
+	 */
+	public void setReturnUpdate(Boolean newReturnUpdate)
+	{
+		Boolean oldReturnUpdate = returnUpdate;
+		returnUpdate = newReturnUpdate;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE, oldReturnUpdate, returnUpdate));
 	}
 
 	/**
@@ -796,6 +922,8 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return basicSetTableGenerator(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
 				return basicSetGeneratedValue(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				return basicSetReturnInsert(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -832,6 +960,10 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return getTableGenerator();
 			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
 				return getGeneratedValue();
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				return getReturnInsert();
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				return getReturnUpdate();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -881,6 +1013,12 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
 				setGeneratedValue((XmlGeneratedValue)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				setReturnInsert((XmlReturnInsert)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				setReturnUpdate((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -928,6 +1066,12 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
 				setGeneratedValue((XmlGeneratedValue)null);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				setReturnInsert((XmlReturnInsert)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				setReturnUpdate(RETURN_UPDATE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -964,6 +1108,10 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return tableGenerator != null;
 			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
 				return generatedValue != null;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				return returnInsert != null;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				return RETURN_UPDATE_EDEFAULT == null ? returnUpdate != null : !RETURN_UPDATE_EDEFAULT.equals(returnUpdate);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1040,6 +1188,15 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE: return EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT;
+				case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE;
 				default: return -1;
 			}
 		}
@@ -1121,6 +1278,15 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlBasic_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT: return EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT;
+				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE: return EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1139,6 +1305,8 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 		result.append(mutable);
 		result.append(", convert: ");
 		result.append(convert);
+		result.append(", returnUpdate: ");
+		result.append(returnUpdate);
 		result.append(')');
 		return result.toString();
 	}
@@ -1181,8 +1349,9 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			buildTableGeneratorTranslator(),
 			buildSequenceGeneratorTranslator(),
 			buildPropertyTranslator(),
-			buildAccessMethodsTranslator()
-		};
+			buildAccessMethodsTranslator(),
+			buildReturnInsertTranslator(),
+			buildReturnUpdateTranslator()};
 	}
 	
 	protected static Translator buildMutableTranslator() {
@@ -1227,5 +1396,13 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
+	}
+	
+	protected static Translator buildReturnInsertTranslator() {
+		return XmlReturnInsert.buildTranslator(EclipseLink2_1.RETURN_INSERT, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlBasic_2_1_ReturnInsert());
+	}
+	
+	protected static Translator buildReturnUpdateTranslator() {
+		return new Translator(EclipseLink2_1.RETURN_UPDATE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlBasic_2_1_ReturnUpdate());	
 	}
 }

@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_0;
 
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheInterceptor;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlQueryRedirectors;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Xml Entity2 0</b></em>'.
@@ -43,12 +46,12 @@ public interface XmlEntity_2_0 extends org.eclipse.jpt.core.resource.orm.v2_0.Xm
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor_2_0)
+	 * @see #setCacheInterceptor(XmlCacheInterceptor)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlEntity_2_0_CacheInterceptor()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlCacheInterceptor_2_0 getCacheInterceptor();
+	XmlCacheInterceptor getCacheInterceptor();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity_2_0#getCacheInterceptor <em>Cache Interceptor</em>}' containment reference.
@@ -58,7 +61,7 @@ public interface XmlEntity_2_0 extends org.eclipse.jpt.core.resource.orm.v2_0.Xm
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	void setCacheInterceptor(XmlCacheInterceptor_2_0 value);
+	void setCacheInterceptor(XmlCacheInterceptor value);
 
 	/**
 	 * Returns the value of the '<em><b>Query Redirectors</b></em>' containment reference.
@@ -69,12 +72,12 @@ public interface XmlEntity_2_0 extends org.eclipse.jpt.core.resource.orm.v2_0.Xm
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query Redirectors</em>' containment reference.
-	 * @see #setQueryRedirectors(XmlQueryRedirectors_2_0)
+	 * @see #setQueryRedirectors(XmlQueryRedirectors)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlEntity_2_0_QueryRedirectors()
 	 * @model containment="true"
 	 * @generated
 	 */
-	XmlQueryRedirectors_2_0 getQueryRedirectors();
+	XmlQueryRedirectors getQueryRedirectors();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity_2_0#getQueryRedirectors <em>Query Redirectors</em>}' containment reference.
@@ -84,6 +87,6 @@ public interface XmlEntity_2_0 extends org.eclipse.jpt.core.resource.orm.v2_0.Xm
 	 * @see #getQueryRedirectors()
 	 * @generated
 	 */
-	void setQueryRedirectors(XmlQueryRedirectors_2_0 value);
+	void setQueryRedirectors(XmlQueryRedirectors value);
 
 } // XmlEntity2_0

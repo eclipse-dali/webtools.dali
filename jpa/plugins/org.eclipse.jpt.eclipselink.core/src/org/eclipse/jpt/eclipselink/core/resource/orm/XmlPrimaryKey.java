@@ -28,6 +28,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.IdValidationType_1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlPrimaryKey_1_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.CacheKeyType_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlPrimaryKey_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -40,7 +44,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1_1
+public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1_1, XmlPrimaryKey_2_1
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -67,6 +71,26 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 	 * @ordered
 	 */
 	protected EList<XmlColumn> columns;
+
+	/**
+	 * The default value of the '{@link #getCacheKeyType() <em>Cache Key Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheKeyType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final CacheKeyType_2_1 CACHE_KEY_TYPE_EDEFAULT = CacheKeyType_2_1.ID_VALUE;
+
+	/**
+	 * The cached value of the '{@link #getCacheKeyType() <em>Cache Key Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheKeyType()
+	 * @generated
+	 * @ordered
+	 */
+	protected CacheKeyType_2_1 cacheKeyType = CACHE_KEY_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,6 +175,44 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cache Key Type</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.CacheKeyType_2_1}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cache Key Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cache Key Type</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.CacheKeyType_2_1
+	 * @see #setCacheKeyType(CacheKeyType_2_1)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrimaryKey_2_1_CacheKeyType()
+	 * @model
+	 * @generated
+	 */
+	public CacheKeyType_2_1 getCacheKeyType()
+	{
+		return cacheKeyType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrimaryKey#getCacheKeyType <em>Cache Key Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cache Key Type</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.CacheKeyType_2_1
+	 * @see #getCacheKeyType()
+	 * @generated
+	 */
+	public void setCacheKeyType(CacheKeyType_2_1 newCacheKeyType)
+	{
+		CacheKeyType_2_1 oldCacheKeyType = cacheKeyType;
+		cacheKeyType = newCacheKeyType == null ? CACHE_KEY_TYPE_EDEFAULT : newCacheKeyType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_PRIMARY_KEY__CACHE_KEY_TYPE, oldCacheKeyType, cacheKeyType));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -180,6 +242,8 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 				return getValidation();
 			case EclipseLinkOrmPackage.XML_PRIMARY_KEY__COLUMNS:
 				return getColumns();
+			case EclipseLinkOrmPackage.XML_PRIMARY_KEY__CACHE_KEY_TYPE:
+				return getCacheKeyType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -202,6 +266,9 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 				getColumns().clear();
 				getColumns().addAll((Collection<? extends XmlColumn>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_PRIMARY_KEY__CACHE_KEY_TYPE:
+				setCacheKeyType((CacheKeyType_2_1)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -222,6 +289,9 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 			case EclipseLinkOrmPackage.XML_PRIMARY_KEY__COLUMNS:
 				getColumns().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_PRIMARY_KEY__CACHE_KEY_TYPE:
+				setCacheKeyType(CACHE_KEY_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -240,8 +310,48 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 				return validation != VALIDATION_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_PRIMARY_KEY__COLUMNS:
 				return columns != null && !columns.isEmpty();
+			case EclipseLinkOrmPackage.XML_PRIMARY_KEY__CACHE_KEY_TYPE:
+				return cacheKeyType != CACHE_KEY_TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlPrimaryKey_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_PRIMARY_KEY__CACHE_KEY_TYPE: return EclipseLinkOrmV2_1Package.XML_PRIMARY_KEY_21__CACHE_KEY_TYPE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlPrimaryKey_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_PRIMARY_KEY_21__CACHE_KEY_TYPE: return EclipseLinkOrmPackage.XML_PRIMARY_KEY__CACHE_KEY_TYPE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -257,6 +367,8 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (validation: ");
 		result.append(validation);
+		result.append(", cacheKeyType: ");
+		result.append(cacheKeyType);
 		result.append(')');
 		return result.toString();
 	}
@@ -275,12 +387,17 @@ public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildValidationTranslator(),
+			buildCacheKeyTypeTranslator(),
 			buildColumnTranslator()
 		};
 	}
 	
 	protected static Translator buildValidationTranslator() {
 		return new Translator(EclipseLink1_1.PRIMARY_KEY__VALIDATION, EclipseLinkOrmV1_1Package.eINSTANCE.getXmlPrimaryKey_1_1_Validation(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildCacheKeyTypeTranslator() {
+		return new Translator(EclipseLink2_1.CACHE_KEY_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlPrimaryKey_2_1_CacheKeyType(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildColumnTranslator() {

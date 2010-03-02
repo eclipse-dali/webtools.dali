@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -827,16 +828,19 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		// Obtain or create and register interdependencies
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) instanceof EclipseLinkOrmPackage ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) : EclipseLinkOrmPackage.eINSTANCE);
 		EclipseLinkOrmV1_1Package theEclipseLinkOrmV1_1Package = (EclipseLinkOrmV1_1Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV1_1Package.eNS_URI) instanceof EclipseLinkOrmV1_1Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV1_1Package.eNS_URI) : EclipseLinkOrmV1_1Package.eINSTANCE);
+		EclipseLinkOrmV2_1Package theEclipseLinkOrmV2_1Package = (EclipseLinkOrmV2_1Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) instanceof EclipseLinkOrmV2_1Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) : EclipseLinkOrmV2_1Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV2_0Package.createPackageContents();
 		theEclipseLinkOrmPackage.createPackageContents();
 		theEclipseLinkOrmV1_1Package.createPackageContents();
+		theEclipseLinkOrmV2_1Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV2_0Package.initializePackageContents();
 		theEclipseLinkOrmPackage.initializePackageContents();
 		theEclipseLinkOrmV1_1Package.initializePackageContents();
+		theEclipseLinkOrmV2_1Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV2_0Package.freeze();
@@ -1332,8 +1336,8 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		initEClass(xmlElementCollection_2_0EClass, XmlElementCollection_2_0.class, "XmlElementCollection_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlEntity_2_0EClass, XmlEntity_2_0.class, "XmlEntity_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEntity_2_0_CacheInterceptor(), this.getXmlCacheInterceptor_2_0(), null, "cacheInterceptor", null, 0, 1, XmlEntity_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_2_0_QueryRedirectors(), this.getXmlQueryRedirectors_2_0(), null, "queryRedirectors", null, 0, 1, XmlEntity_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_0_CacheInterceptor(), theEclipseLinkOrmPackage.getXmlCacheInterceptor(), null, "cacheInterceptor", null, 0, 1, XmlEntity_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_0_QueryRedirectors(), theEclipseLinkOrmPackage.getXmlQueryRedirectors(), null, "queryRedirectors", null, 0, 1, XmlEntity_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToMany_2_0EClass, XmlManyToMany_2_0.class, "XmlManyToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1341,7 +1345,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		initEReference(getXmlMapKeyAssociationOverrideContainer_2_0_MapKeyAssociationOverrides(), theOrmPackage.getXmlAssociationOverride(), null, "mapKeyAssociationOverrides", null, 0, -1, XmlMapKeyAssociationOverrideContainer_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_0EClass, XmlMappedSuperclass_2_0.class, "XmlMappedSuperclass_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlMappedSuperclass_2_0_CacheInterceptor(), this.getXmlCacheInterceptor_2_0(), null, "cacheInterceptor", null, 0, 1, XmlMappedSuperclass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_2_0_CacheInterceptor(), theEclipseLinkOrmPackage.getXmlCacheInterceptor(), null, "cacheInterceptor", null, 0, 1, XmlMappedSuperclass_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_0EClass, XmlOneToMany_2_0.class, "XmlOneToMany_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

@@ -22,16 +22,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlEntity_1_1;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlPrimaryKey_1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCacheInterceptor_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlEntity_2_0;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors_2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -65,8 +67,58 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer, XmlEntity_1_1, XmlEntity_2_0
+public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
 {
+	/**
+	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlPrimaryKey primaryKey;
+
+	/**
+	 * The cached value of the '{@link #getCacheInterceptor() <em>Cache Interceptor</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheInterceptor()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCacheInterceptor cacheInterceptor;
+
+	/**
+	 * The cached value of the '{@link #getQueryRedirectors() <em>Query Redirectors</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getQueryRedirectors()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlQueryRedirectors queryRedirectors;
+
+	/**
+	 * The cached value of the '{@link #getFetchGroups() <em>Fetch Groups</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFetchGroups()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlFetchGroup> fetchGroups;
+
+	/**
+	 * The cached value of the '{@link #getClassExtractor() <em>Class Extractor</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getClassExtractor()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlClassReference classExtractor;
+
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -192,36 +244,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
-
-	/**
-	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPrimaryKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlPrimaryKey_1_1 primaryKey;
-
-	/**
-	 * The cached value of the '{@link #getCacheInterceptor() <em>Cache Interceptor</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCacheInterceptor()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlCacheInterceptor_2_0 cacheInterceptor;
-
-	/**
-	 * The cached value of the '{@link #getQueryRedirectors() <em>Query Redirectors</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getQueryRedirectors()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlQueryRedirectors_2_0 queryRedirectors;
 
 	/**
 	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
@@ -945,12 +967,12 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key</em>' containment reference.
-	 * @see #setPrimaryKey(XmlPrimaryKey_1_1)
+	 * @see #setPrimaryKey(XmlPrimaryKey)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_1_1_PrimaryKey()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlPrimaryKey_1_1 getPrimaryKey()
+	public XmlPrimaryKey getPrimaryKey()
 	{
 		return primaryKey;
 	}
@@ -960,9 +982,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPrimaryKey(XmlPrimaryKey_1_1 newPrimaryKey, NotificationChain msgs)
+	public NotificationChain basicSetPrimaryKey(XmlPrimaryKey newPrimaryKey, NotificationChain msgs)
 	{
-		XmlPrimaryKey_1_1 oldPrimaryKey = primaryKey;
+		XmlPrimaryKey oldPrimaryKey = primaryKey;
 		primaryKey = newPrimaryKey;
 		if (eNotificationRequired())
 		{
@@ -980,7 +1002,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @see #getPrimaryKey()
 	 * @generated
 	 */
-	public void setPrimaryKey(XmlPrimaryKey_1_1 newPrimaryKey)
+	public void setPrimaryKey(XmlPrimaryKey newPrimaryKey)
 	{
 		if (newPrimaryKey != primaryKey)
 		{
@@ -1005,12 +1027,12 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cache Interceptor</em>' containment reference.
-	 * @see #setCacheInterceptor(XmlCacheInterceptor_2_0)
+	 * @see #setCacheInterceptor(XmlCacheInterceptor)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_0_CacheInterceptor()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCacheInterceptor_2_0 getCacheInterceptor()
+	public XmlCacheInterceptor getCacheInterceptor()
 	{
 		return cacheInterceptor;
 	}
@@ -1020,9 +1042,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCacheInterceptor(XmlCacheInterceptor_2_0 newCacheInterceptor, NotificationChain msgs)
+	public NotificationChain basicSetCacheInterceptor(XmlCacheInterceptor newCacheInterceptor, NotificationChain msgs)
 	{
-		XmlCacheInterceptor_2_0 oldCacheInterceptor = cacheInterceptor;
+		XmlCacheInterceptor oldCacheInterceptor = cacheInterceptor;
 		cacheInterceptor = newCacheInterceptor;
 		if (eNotificationRequired())
 		{
@@ -1040,7 +1062,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @see #getCacheInterceptor()
 	 * @generated
 	 */
-	public void setCacheInterceptor(XmlCacheInterceptor_2_0 newCacheInterceptor)
+	public void setCacheInterceptor(XmlCacheInterceptor newCacheInterceptor)
 	{
 		if (newCacheInterceptor != cacheInterceptor)
 		{
@@ -1065,12 +1087,12 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query Redirectors</em>' containment reference.
-	 * @see #setQueryRedirectors(XmlQueryRedirectors_2_0)
+	 * @see #setQueryRedirectors(XmlQueryRedirectors)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_0_QueryRedirectors()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlQueryRedirectors_2_0 getQueryRedirectors()
+	public XmlQueryRedirectors getQueryRedirectors()
 	{
 		return queryRedirectors;
 	}
@@ -1080,9 +1102,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetQueryRedirectors(XmlQueryRedirectors_2_0 newQueryRedirectors, NotificationChain msgs)
+	public NotificationChain basicSetQueryRedirectors(XmlQueryRedirectors newQueryRedirectors, NotificationChain msgs)
 	{
-		XmlQueryRedirectors_2_0 oldQueryRedirectors = queryRedirectors;
+		XmlQueryRedirectors oldQueryRedirectors = queryRedirectors;
 		queryRedirectors = newQueryRedirectors;
 		if (eNotificationRequired())
 		{
@@ -1100,7 +1122,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @see #getQueryRedirectors()
 	 * @generated
 	 */
-	public void setQueryRedirectors(XmlQueryRedirectors_2_0 newQueryRedirectors)
+	public void setQueryRedirectors(XmlQueryRedirectors newQueryRedirectors)
 	{
 		if (newQueryRedirectors != queryRedirectors)
 		{
@@ -1114,6 +1136,89 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS, newQueryRedirectors, newQueryRedirectors));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Fetch Groups</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlFetchGroup}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Fetch Groups</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Fetch Groups</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlFetchGroupContainer_2_1_FetchGroups()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlFetchGroup> getFetchGroups()
+	{
+		if (fetchGroups == null)
+		{
+			fetchGroups = new EObjectContainmentEList<XmlFetchGroup>(XmlFetchGroup.class, this, EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS);
+		}
+		return fetchGroups;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Class Extractor</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Class Extractor</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Class Extractor</em>' containment reference.
+	 * @see #setClassExtractor(XmlClassReference)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_1_ClassExtractor()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlClassReference getClassExtractor()
+	{
+		return classExtractor;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetClassExtractor(XmlClassReference newClassExtractor, NotificationChain msgs)
+	{
+		XmlClassReference oldClassExtractor = classExtractor;
+		classExtractor = newClassExtractor;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR, oldClassExtractor, newClassExtractor);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getClassExtractor <em>Class Extractor</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Class Extractor</em>' containment reference.
+	 * @see #getClassExtractor()
+	 * @generated
+	 */
+	public void setClassExtractor(XmlClassReference newClassExtractor)
+	{
+		if (newClassExtractor != classExtractor)
+		{
+			NotificationChain msgs = null;
+			if (classExtractor != null)
+				msgs = ((InternalEObject)classExtractor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR, null, msgs);
+			if (newClassExtractor != null)
+				msgs = ((InternalEObject)newClassExtractor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR, null, msgs);
+			msgs = basicSetClassExtractor(newClassExtractor, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR, newClassExtractor, newClassExtractor));
 	}
 
 	/**
@@ -1161,6 +1266,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
+				return basicSetPrimaryKey(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
+				return basicSetCacheInterceptor(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
+				return basicSetQueryRedirectors(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
+				return ((InternalEList<?>)getFetchGroups()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
+				return basicSetClassExtractor(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
@@ -1179,12 +1294,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
-				return basicSetPrimaryKey(null, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
-				return basicSetCacheInterceptor(null, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
-				return basicSetQueryRedirectors(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return basicSetOptimisticLocking(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -1207,6 +1316,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
+				return getPrimaryKey();
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
+				return getCacheInterceptor();
+			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
+				return getQueryRedirectors();
+			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
+				return getFetchGroups();
+			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
+				return getClassExtractor();
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -1229,12 +1348,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getNamedStoredProcedureQueries();
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return getProperties();
-			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
-				return getPrimaryKey();
-			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
-				return getCacheInterceptor();
-			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
-				return getQueryRedirectors();
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return getOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -1260,6 +1373,22 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
+				setPrimaryKey((XmlPrimaryKey)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
+				setCacheInterceptor((XmlCacheInterceptor)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
+				setQueryRedirectors((XmlQueryRedirectors)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
+				getFetchGroups().clear();
+				getFetchGroups().addAll((Collection<? extends XmlFetchGroup>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
+				setClassExtractor((XmlClassReference)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly((Boolean)newValue);
 				return;
@@ -1299,15 +1428,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
-				setPrimaryKey((XmlPrimaryKey_1_1)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor_2_0)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
-				setQueryRedirectors((XmlQueryRedirectors_2_0)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)newValue);
 				return;
@@ -1337,6 +1457,21 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
+				setPrimaryKey((XmlPrimaryKey)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
+				setCacheInterceptor((XmlCacheInterceptor)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
+				setQueryRedirectors((XmlQueryRedirectors)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
+				getFetchGroups().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
+				setClassExtractor((XmlClassReference)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -1370,15 +1505,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				getProperties().clear();
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
-				setPrimaryKey((XmlPrimaryKey_1_1)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
-				setCacheInterceptor((XmlCacheInterceptor_2_0)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
-				setQueryRedirectors((XmlQueryRedirectors_2_0)null);
-				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)null);
 				return;
@@ -1408,6 +1534,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
+				return primaryKey != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
+				return cacheInterceptor != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
+				return queryRedirectors != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
+				return fetchGroups != null && !fetchGroups.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
+				return classExtractor != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -1430,12 +1566,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return properties != null && !properties.isEmpty();
-			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
-				return primaryKey != null;
-			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
-				return cacheInterceptor != null;
-			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
-				return queryRedirectors != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -1458,6 +1588,39 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlEntity_1_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY: return EclipseLinkOrmV1_1Package.XML_ENTITY_11__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntity_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR: return EclipseLinkOrmV2_0Package.XML_ENTITY_20__CACHE_INTERCEPTOR;
+				case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS: return EclipseLinkOrmV2_0Package.XML_ENTITY_20__QUERY_REDIRECTORS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlFetchGroupContainer_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS: return EclipseLinkOrmV2_1Package.XML_FETCH_GROUP_CONTAINER_21__FETCH_GROUPS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntity_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR: return EclipseLinkOrmV2_1Package.XML_ENTITY_21__CLASS_EXTRACTOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (derivedFeatureID)
@@ -1518,23 +1681,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEntity_1_1.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY: return EclipseLinkOrmV1_1Package.XML_ENTITY_11__PRIMARY_KEY;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlEntity_2_0.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR: return EclipseLinkOrmV2_0Package.XML_ENTITY_20__CACHE_INTERCEPTOR;
-				case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS: return EclipseLinkOrmV2_0Package.XML_ENTITY_20__QUERY_REDIRECTORS;
-				default: return -1;
-			}
-		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1546,6 +1692,39 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlEntity_1_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV1_1Package.XML_ENTITY_11__PRIMARY_KEY: return EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntity_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_0Package.XML_ENTITY_20__CACHE_INTERCEPTOR: return EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR;
+				case EclipseLinkOrmV2_0Package.XML_ENTITY_20__QUERY_REDIRECTORS: return EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlFetchGroupContainer_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_FETCH_GROUP_CONTAINER_21__FETCH_GROUPS: return EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntity_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_ENTITY_21__CLASS_EXTRACTOR: return EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -1603,23 +1782,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlEntity_1_1.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV1_1Package.XML_ENTITY_11__PRIMARY_KEY: return EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlEntity_2_0.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV2_0Package.XML_ENTITY_20__CACHE_INTERCEPTOR: return EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR;
-				case EclipseLinkOrmV2_0Package.XML_ENTITY_20__QUERY_REDIRECTORS: return EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS;
 				default: return -1;
 			}
 		}
@@ -1682,9 +1844,11 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			buildInheritanceTranslator(),
 			buildDiscriminatorValueTranslator(),
 			buildDiscriminatorColumnTranslator(),
+			buildClassExtractorTranslator(),
 			buildOptimisticLockingTranslator(),
 			buildCacheTranslator(),
 			buildCacheInterceptorTranslator(),
+			buildFetchGroupsTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
 			buildObjectTypeConverterTranslator(),
@@ -1712,8 +1876,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			buildPropertyTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
-			Attributes.buildTranslator()
-		};
+			Attributes.buildTranslator()};
 	}
 	
 	protected static Translator buildCustomizerTranslator() {
@@ -1728,6 +1891,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		return XmlPrimaryKey.buildTranslator(EclipseLink1_1.PRIMARY_KEY, EclipseLinkOrmV1_1Package.eINSTANCE.getXmlEntity_1_1_PrimaryKey());
 	}
 	
+	protected static Translator buildClassExtractorTranslator() {
+		return XmlClassReference.buildTranslator(EclipseLink2_1.CLASS_EXTRACTOR, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlEntity_2_1_ClassExtractor());
+	}
+	
 	protected static Translator buildOptimisticLockingTranslator() {
 		return XmlOptimisticLocking.buildTranslator(EclipseLink.OPTIMISTIC_LOCKING, EclipseLinkOrmPackage.eINSTANCE.getXmlEntity_OptimisticLocking());
 	}
@@ -1738,6 +1905,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	
 	protected static Translator buildCacheInterceptorTranslator() {
 		return XmlCacheInterceptor.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity_2_0_CacheInterceptor());
+	}
+	
+	protected static Translator buildFetchGroupsTranslator() {
+		return XmlFetchGroup.buildTranslator(EclipseLink2_1.FETCH_GROUP, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlFetchGroupContainer_2_1_FetchGroups());
 	}
 	
 	protected static Translator buildQueryRedirectorsTranslator() {

@@ -10,15 +10,11 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors_2_0;
